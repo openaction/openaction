@@ -1,0 +1,437 @@
+breadcrumb: Organization
+title: Your community
+
+sidebar:
+    community:
+        label: Community
+        contacts: Contacts
+        import: Import contacts
+        export: Export contacts
+        ambiguities: Duplicated contacts
+    configuration:
+        label: Configuration
+        tags: Tags
+        main_tags: Main tags
+        automation: Automations
+
+contacts:
+    back: Back to the list
+
+    list:
+        page_title: Your community
+        title: Contacts
+        desc: 'This list aggregates all the contacts from all your projects in one place: members, newsletter subscribers, ...'
+        configure: Configuration
+        create: New contact
+
+        facets:
+            tags: Tags
+            projects: Projects
+            status: Status
+            country: Country
+            province: Region/State
+            district: Department/County
+
+    view:
+        delete: Delete
+        delete_message: Are you sure you want to delete the contact "%email%"?
+        edit: Update details
+        profile:
+            label: Profile
+            area: 'Location:'
+            date: 'Date:'
+            tags: 'Tags:'
+            status:
+                label: 'Type:'
+                member: Member
+                contact: Contact
+            newsletter:
+                label: 'Newsletter:'
+                subscribed: Subscribed
+                unsubscribed: Unsubscribed
+            sms:
+                label: 'SMS campaigns:'
+                subscribed: Subscribed
+                unsubscribed: Unsubscribed
+            calls:
+                label: 'Phone calls:'
+                subscribed: Accepted
+                unsubscribed: Refused
+            subscriptions:
+                all:
+                    label: All projects
+            email: Email address
+            additional_emails: Additional email addresses
+            name: Full name
+            birthdate: Birthdate
+            gender: Gender
+            nationality: Nationality
+            company: Job and company
+            address: Postal address
+            phone: Phone number (personal)
+            workPhone: Phone number (work)
+            socials: Social networks
+        history:
+            label: Interactions history
+            help: Interactions your organization had with this contact.
+            joined:
+                label: Joined your community
+            emailing:
+                label: 'Received an email:'
+                openedAt: Opened on
+                neverOpened: Never opened
+                clickedAt: Clicked on
+                neverClicked: Never clicked
+                openCampaignReport: View the campaign report
+            texting:
+                label: 'Received a text:'
+            form_answer:
+                label: 'Answered a form:'
+                openAnswer: View the answer
+                openForm: View the form
+        customFields:
+            label: Custom fields (for technical users)
+            help: |
+                Custom fields are technical data fields that are used by your website to store
+                additional information regarding your contacts.
+
+    create:
+        page_title: Create a new contact
+        title: Create a new contact
+        desc: |
+            A contact is a person your organization had an interaction with. Once created, you and your
+            collaborators will be able to send emailing campaigns to this contact.
+        submit: Create
+
+    edit:
+        page_title: Update a contact
+        title: Update a contact
+        submit: Save
+        delete: Delete
+        delete_message: Are you sure you want to delete the contact "%email%"?
+
+    form:
+        email: Email address
+        additionalEmails: Additional email addresses
+        picture:
+            label: Picture
+            help: Leave this field empty to keep the current profile picture.
+        profile:
+            label: Profile
+            formalTitle: Title
+            firstName: First name
+            middleName: Middle name
+            lastName: Last name
+            birthdate: Birthdate
+            gender: Gender
+            nationality: Nationality
+            company: Company
+            jobTitle: Job title
+        tags:
+            label: Tags
+            help: |
+                Tags help you categorize contacts in segments to better target
+                them in communication campaigns afterward.
+        contact:
+            label: Contact details
+            phone:
+                label: 'Personal phone'
+                help: 'With international prefix (+33 for France)'
+            workPhone:
+                label: 'Work phone'
+                help: 'With international prefix (+33 for France)'
+        address:
+            label: Postal address
+            help: This postal address will be used to associate this contact to a local project if possible.
+            streetAddress: Street address
+            zipCode: Zipcode
+            city: City
+            country: Country
+        socials:
+            label: Social networks
+            facebook: Facebook profile URL
+            twitter: Twitter profile URL
+            linkedIn: LinkedIn profile URL
+            telegram: Telegram account name
+            whatsapp: Whatsapp phone number
+        metadata:
+            label: Subscription to communications
+            all_projects: Global settings
+            all_projects_help: |
+                A contact subscribed at the general level will receive all your communications, 
+                regardless of the project.
+            per_projects: Settings by project
+            per_projects_help: |
+                When a contact is unsubscribed at the general level, they can subscribe to project-specific
+                communications. They can only subscribe to communications from the projects they are part of.
+            receiveNewsletter: Subscribed to the newsletter
+            receiveSms: Subscribed to SMS campaigns
+            receiveCalls: Accept to be called by phone
+            comment: Internal note
+            commentHelp: |
+                You can save here any note you want to help your collaborators in the future.
+                This note will never be shared with the contact.
+                Do not store sensitive information in this field.
+
+    import:
+        page_title: Import a file of contacts
+        upload:
+            title: Import a file of contacts
+            note: |
+                <strong>Note:</strong> the first line of your file will be considered as header and
+                won't be imported. If you don't have a header line in your file, please add one
+                before importing it.
+            file:
+                label: File
+                help: Upload a Excel (XLSX) or LibreOffice (ODS) file containing your contacts list.
+                error: An error occured during the file upload, could you try again?
+        columns:
+            title: Match columns to contact information
+            columns:
+                label: Columns
+                help: '%count% columns were detected. Match them to the contact information you want to store.'
+            default_label: 'Column %i%'
+            types:
+                ignored: Ignore this column
+                email: Email address
+                profileFormalTitle: Title
+                profileFirstName: First name
+                profileMiddleName: Middle name
+                profileLastName: Last name
+                profileBirthdate: Birthdate
+                profileGender: Gender
+                profileCompany: Company
+                profileJobTitle: Job title
+                contactPhone: Personal phone
+                contactWorkPhone: Work phone
+                socialFacebook: Facebook profile URL
+                socialTwitter: Twitter account URL
+                socialLinkedIn: LinkedIn profile URL
+                socialTelegram: Telegram username
+                socialWhatsapp: Whatsapp phone number
+                addressStreetLine1: Street address line 1
+                addressStreetLine2: Street address line 2
+                addressZipCode: Zipcode
+                addressCity: City name
+                addressCountry: Country
+                settingsReceiveNewsletters: Subscribed to newsletter
+                settingsReceiveSms: Accept texts
+                settingsReceiveCalls: Accept calls
+                metadataComment: Comment
+                metadataTagsList: Tags separated by commas
+                metadataTag: Single tag
+            area:
+                label: Default area
+                help: |
+                    If a contact cannot be located using its postal address, to which area should it be associated?
+                    If you keep this field empty, contacts that couldn't be located will only be accessible
+                    from global projects.
+            submit: Start the import
+        progress:
+            title: Import a file of contacts
+            processing:
+                title: Processing contacts ...
+                desc: |
+                    Your file has been parsed and contacts are being processed, localized, and imported
+                    into your organization.
+            finished:
+                title: Finished!
+                desc: Your file has been imported successfully.
+                back: Back to contacts
+
+configure:
+    main_tags:
+        title: Main tags
+        help: |
+            Main tags are tags that can be assigned to your contacts directly from the contacts list. These tags
+            are usually the most important ones to monitor you community (onboard your new members,
+            organize your movement, ...).
+        tags:
+            label: Main tags
+            help: You can add up to 8 main tags. To create a tag, go in the Tags section in the left sidebar.
+        is_progress:
+            label: Are these main tags a marker of progression?
+            help: |
+                If you use main tags as an evolution status for each contact, enabling this option will
+                ensure main tags are consistent (enabling one will enable the previous ones automatically).
+        save: Save
+
+    tags:
+        index:
+            title: Tags
+            help: Tags are labels you can add on your contacts to send them targeted emailings.
+            create: New tag
+            no_records: Your organization does not contain any tag for now.
+            no_records_desc: Tags help you target your audience with better accuracy.
+            no_records_create: Create a first tag
+            columns:
+                name: Name
+                contacts: Contacts
+                created: Creation date
+            view_contacts: View contacts
+            export_contacts: Export contacts
+            edit: Edit
+            remove: Delete
+            remove_confirm: Are you sure you want to delete the tag "%name%"?
+
+        form:
+            title_create: New tag
+            title_edit: Edit a tag
+            back: Back to the list
+            name: Name
+            save: Save
+
+automation:
+    back: Back to the list
+
+    index:
+        title: E-mail automations
+        help: |
+            Automations allow you to automatically send emails to members of your community when
+            specific things happen (they just subscribed to your newsletter, they created a member
+            account, ...)
+        disabled: Disabled automations
+        create: New automation
+        no_records: There is no automation for now
+        no_result_create: Create an automation
+        trigger:
+            new_contact: Executed when a contact is created
+            new_form_answer: Executed when a form is answered
+        edit_details: Update details
+        edit_content: Update content
+        disable: Disable
+        disable_label: Yes, disable
+        disable_confirm: |
+            Are you sure you want to disable the automation "%name%"? When disabled,
+            this automation won't be executed anymore.
+        preview: Preview
+
+    disabled:
+        title: Disabled automations
+        no_records: There is no disabled automation for now
+        enable: Enable back
+        enable_label: Yes, enable back
+        enable_confirm: |
+            Are you sure you want to enable the automation "%name%"? When enabled,
+            this automation will start to be executed when necessary.
+
+    create:
+        name: '(Untitled automation)'
+        subject: '(Untitled message)'
+        fromName: '%user% from %organization%'
+
+        template:
+            back: Back
+            title: Create an email automation
+            desc: Choose a template to use to create your email automation.
+            choose: Choose this template
+
+            automation:
+                1.empty: Empty template
+                2.welcome: Welcome
+                3.thanks: Thank you
+
+    metadata:
+        title: Edit automation "%name%"
+        submit: Save details
+
+        automation:
+            title: Details
+            name:
+                label: Name
+                help: This name is not used by Citipo. It can help you remember what this automation aims to do.
+            trigger:
+                label: When should this automation be executed?
+                contact_created: Executed when a contact is created
+                form_answered: Executed when a form is answered
+                form_filter: For which form should this automation be executed?
+                form_filter_placeholder: Execute for all forms of the organization
+
+        subject:
+            title: Subject
+            desc: What's the subject line for this automation?
+            subject:
+                label: Subject
+                help:
+                    main: 'Great subjects give a reason to open your email. Here are a few tips:'
+                    1:
+                        strong: Space is limited
+                        muted: We suggest not using more than 60 characters
+                    2:
+                        strong: Easy to understand
+                        muted: Subjects with fewer than 9 words tend to perform better
+                    3:
+                        strong: Not too much punctuation
+                        muted: Simple subject lines get your point across better
+            preview:
+                label: Preview text
+                help: The preview is displayed as an email preview in some inboxes. (Optional)
+
+        from:
+            title: From
+            desc: Who is the sender of the email sent by this automation?
+            email:
+                label: Email address
+                help: |
+                    Ensure the domain of this address is properly configured with Citipo.
+                    If you are not sure, contact us at contact@citipo.com.
+            name: Name
+
+        to:
+            title: To
+            toEmailType:
+                label: To who should this automation send emails?
+                everyone: To all contacts concerned by the filters
+                specific: To a specific email address
+            toEmail: What specific email address?
+            typeFilter:
+                label: For which contacts should this automation be executed?
+                everyone: Execute for all contacts
+                contact: Execute only for non-members contacts
+                member: Execute only for members
+
+    content:
+        preview: Preview
+        metadata: Update details
+        enable: Enable this automation
+        enable_label: Yes, enable
+        enable_confirm: |
+            Are you sure you want to enable the automation "%name%"? When enabled,
+            this automation will start to be executed when necessary.
+        title: Edit automation "%name%"
+
+ambiguities:
+    index:
+        title: Duplicated contacts
+        desc: Citipo detects potential contacts duplicates and help you merge them together to clean your database.
+        no_records: We didn't detect any contact duplicate for now.
+        merge: Merge (with %email% as main email)
+        ignore: This detection is a false positive
+        ignore_rollback: Cancel false duplicate
+        new: Recent profile
+        old: Old profile
+
+buy_credits:
+    emails:
+        title: Buy email credits
+        desc: Email credits are used when sending your email campaigns.
+        amount:
+            label: Number of credits to buy
+            help: Minimum 1000, maximum 500 000. To buy more (at a lower price), contact us (contact@citipo.com).
+        unit_price: 'Price per credit:'
+        total_before_tax: 'Total before tax:'
+        vat_rate: 'VAT:'
+        total_after_tax: 'Total including tax:'
+        continue: Pay
+
+    texts:
+        title: Buy text credits
+        desc: Text credits are used when sending your text campaigns.
+        amount:
+            label: Number of credits to buy
+            help: Minimum 100, maximum 10 000. To buy more (at a lower price), contact us (contact@citipo.com).
+        unit_price: 'Price for 100 text credits:'
+        total_before_tax: 'Total before tax:'
+        vat_rate: 'VAT:'
+        total_after_tax: 'Total including tax:'
+        continue: Pay

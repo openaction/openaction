@@ -1,0 +1,11 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title current_project.terminology.membershipArea %}
+
+{% block membership_area_page_title '' %}
+
+{% block membership_area_content %}
+    <div class="user-content">
+        {{ page|apply_embed_consent|raw }}
+    </div>
+{% endblock %}

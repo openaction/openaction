@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block header_content %}
+    {% set payload = {
+        current_project: current_project.toArray(),
+        enable_embed_consent: enable_embed_consent,
+        homepage_url: url('homepage'),
+        membership: {
+            cookie_name: constant('App\\Security\\CookieManager::COOKIE_NAME'),
+            login_url: url('membership_login'),
+            area_url: url('membership_area_dashboard'),
+            account_url: url('membership_area_account'),
+            account_label: 'membership.menu.account'|trans,
+            logout_url: url('membership_logout'),
+            logout_label: 'membership.menu.logout'|trans,
+        },
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/header.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block footer_content %}
+    {% set payload = {
+        current_project: current_project.toArray,
+        enable_embed_consent: enable_embed_consent,
+        homepage_url: url('homepage'),
+        socials: {
+            rss_url: url('rss_feed'),
+            rss_label: 'socials.rss'|trans,
+            facebook_label: 'socials.facebook'|trans,
+            twitter_label: 'socials.twitter'|trans,
+            instagram_label: 'socials.instagram'|trans,
+            linkedin_label: 'socials.linkedin'|trans,
+            youtube_label: 'socials.youtube'|trans,
+            medium_label: 'socials.medium'|trans,
+            telegram_label: 'socials.telegram'|trans,
+            snapchat_label: 'socials.snapchat'|trans,
+        },
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/footer.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block page '' %}
+
+{% block body %}
+    {% set payload = {
+        current_project: current_project.toArray,
+        enable_embed_consent: enable_embed_consent,
+        header_content: block('header_content'),
+        footer_content: block('footer_content'),
+        page_content: block('page'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/layout.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}

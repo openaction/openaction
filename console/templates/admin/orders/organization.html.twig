@@ -1,0 +1,30 @@
+<strong>
+    {{ entity.instance.organization.name }}
+</strong>
+<br />
+<small style="color: #999">
+    {% set data = [
+        entity.instance.organization.billingName,
+        entity.instance.organization.billingEmail,
+        entity.instance.organization.billingAddressStreetLine1,
+        entity.instance.organization.billingAddressStreetLine2,
+        entity.instance.organization.billingAddressPostalCode,
+        (entity.instance.organization.billingAddressCity ~ ' ' ~ entity.instance.organization.billingAddressCountry)|trim,
+        entity.instance.organization.billingTaxId,
+    ] %}
+
+    {% for part in data|filter(x => x) %}
+        {{ part|nl2br }}<br />
+    {% endfor %}
+</small>
+<div style="margin-top: 10px">
+    <em>
+        <small>
+            Recipient: {{ entity.instance.recipient.firstName }} {{ entity.instance.recipient.lastName }}
+            <br />
+            <a href="mailto:{{ entity.instance.recipient.email }}" target="_blank">
+                {{ entity.instance.recipient.email }}
+            </a>
+        </small>
+    </em>
+</div>

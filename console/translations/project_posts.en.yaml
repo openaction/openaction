@@ -1,0 +1,57 @@
+index:
+    title: Posts
+    help: Create a chronological news feed to keep your community up-to-date with posts.
+    edit_categories: Edit categories
+    create: New post
+    no_result: Your project does not contain any posts for now.
+    no_result_create: Create a post
+    edit: Edit
+    duplicate: Duplicate
+    move: Move
+    delete: Delete
+    view: View
+    preview: Preview
+    draft: Draft
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    visits: visits
+    last_modified: Last edited on %datetime%
+    remove_confirm: Are you sure you want to delete the post "%name%"?
+
+create:
+    title: '(Untitled post)'
+
+edit:
+    title: Edit post "%title%"
+    back: Back to the list
+    view: View on the website
+
+move:
+    title: Move post "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this post?
+    submit: Move
+
+categories:
+    index:
+        back: Back to posts
+        title: Posts categories
+        create: New category
+        no_records: Your project does not contain any post category for now.
+        no_records_desc: Categories help you organize your content so that it's easier for your visitor to explore.
+        order: Order
+        name: Name
+        number: Posts
+        created: Creation date
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

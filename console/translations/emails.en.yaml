@@ -1,0 +1,127 @@
+transactional:
+    greetings: Our best,<br />The Citipo team
+    footer: |
+        You received this email because you are registered on Citipo.
+        If you wish to stop receiving emails from us, contact us at
+
+    registration:
+        verify:
+            subject: '[Citipo] You are almost there!'
+            title: You are almost there!
+            desc: 'Click on the button below to finish signing up:'
+            link: Finalize my account
+
+        welcome:
+            subject: '[Citipo] Welcome to Citipo!'
+            title: Welcome to Citipo
+            intro: 'Hello %name%,'
+            thanks: Thanks for signing up to Citipo!
+            cta: 'Starting from now, you can create your website and start to grow your community with Citipo:'
+            link: Start using Citipo
+            feedback: 'If you have any questions, ideas, or feedbacks, just reply to this email, we would love to hear from you!'
+
+    forgot_password:
+        request:
+            subject: '[Citipo] Reset your password'
+            title: Reset your password
+            desc: |
+                Someone (hopefully you!) requested a password reset on your Citipo account.
+                Click on the button below to reset your password:
+            link: Reset my password
+            ignore: |
+                If you didn't request a password reset on your account, you can safely ignore this
+                email and your password will remain the same.
+
+        updated:
+            subject: '[Citipo] Your password has been updated'
+            title: Your Citipo password has been updated
+            desc: |
+                If you didn't just reset your password, get in touch with us so that we can
+                help you secure your account:
+
+    invite:
+        subject: '[Citipo] %author% is waiting for you on Citipo'
+        title: Join your team on Citipo
+        desc: |
+            <strong>%author%</strong> invited you to join the <strong>%organization%</strong>
+            organization on Citipo. Just click below to start collaborating with your team in minutes:
+        link: Join my team
+
+    notification:
+        footer: |
+            This message is a notification relative to your account. You can update your notification
+            settings in your account configuration.
+
+        new_project:
+            subject: '[Citipo] A new project was created in your organization'
+            title: A new project was created in your organization
+            desc: |
+                The project <strong>%project%</strong> has been created in
+                the <strong>%organization%</strong> organization.
+            error: If you believe this project was created in error, you can remove it on your Citipo dashboard.
+
+        new_invoice:
+            subject: '[Citipo] Invoice %number% for %organization%'
+            title: A new invoice is available in your organization
+            desc: |
+                Please find attached your latest invoice for your organization %organization%.
+                This invoice is already paid, no further payment is due.
+
+        new_quote:
+            subject: '[Citipo] Quote %number% for %organization%'
+            title: A new quotation is available in your organization
+            desc: |
+                Please find attached your latest quotation for your organization %organization%.
+
+        subscription_expiration:
+            subject_early: '[IMPORTANT] The subscription of %organization% ends in %days_left% days'
+            subject_late: '[IMPORTANT] Your Citipo website will be disabled'
+            title: The subscription of %organization% expires in %days_left% days
+            desc: |
+                The subscription of your organization %organization% is ending in %days_left% days.
+                As soon as your subscription will be expired, your website will be innaccessible and
+                you won't have access to Citipo anymore.
+            ask_us: Contact us to renew your subscription now
+
+        export:
+            subject: '[Citipo] Export finished for %organization%'
+            title: The contacts export is finished
+            desc: 'The export you requested is finished. You can download it by clicking the button below:'
+            button: Download the export
+
+community:
+    register:
+        subject: Confirm your email address
+        title: Confirm your email address
+        desc: 'Click the link below to confirm your email address:'
+        link: Confirm my email
+
+    reset:
+        subject: Confirm your password reset request
+        title: Confirm your password reset request
+        desc: 'Click the link below to confirm your password reset request:'
+        link: Confirm my password reset request
+
+    update_email:
+        subject: Confirm your email update request
+        title: Confirm your email update request
+        desc: 'Click the link below to confirm your email update request:'
+        link: Confirm my email update request
+
+    unregister:
+        subject: Confirm your unsubscription
+        title: Confirm your unsubscription
+        desc: 'Click the link below to confirm your unsubscription:'
+        link: Confirm my unsubscription
+
+    footer:
+        copyright: All rights reserved
+        legalities: |
+            You have the right to access, correct, erase, and data portability over your personal data.
+            You also have the right to object or restrict the processing of your data. You can exercise
+            any of these rights by contacting us at %email%.
+        policy: 'You can also read our full data privacy policy on our website:'
+        unsubscribe:
+            label: 'You received this email as a subscriber of %name%.'
+            link: Unsubscribe or update preferences
+        automation: You received this automated email as a contact of %name%.

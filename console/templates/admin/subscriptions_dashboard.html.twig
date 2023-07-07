@@ -1,0 +1,123 @@
+{% extends ea.templatePath('layout') %}
+
+{% block content_title 'Subscriptions monitoring' %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var mrrData = new google.visualization.DataTable();
+            mrrData.addColumn('string', 'Date');
+            mrrData.addColumn('number', 'Revenue');
+            mrrData.addRows(JSON.parse('{{ mrr.chart|json_encode|e('js') }}'));
+
+            var mrrChart = new google.visualization.ColumnChart(document.getElementById('chart-mrr'));
+            mrrChart.draw(mrrData, {
+                hAxes: [{ textStyle: { fontSize: 12, color: '#999' } }],
+                legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#999' } },
+                colors: ['#24acfc'],
+                chartArea: { width: '90%', height: '80%', top: 20 }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            <div class="row">
+
+                <div class="col-xl-8 p-1">
+                    <div class="p-3" style="background: #fff; border: 1px solid #e5e5e5;">
+                        <h4 class="mb-2">
+                            Monthly recurring revenue
+                        </h4>
+
+                        <div class="text-muted">
+                            Total upcoming 12-month average:
+                            <strong style="color: #000">{{ mrr.next_year_average|round(2) }} € / month</strong>
+                        </div>
+
+                        <div class="mb-2 text-muted">
+                            Upcoming 12-month average per paying customer:
+                            <strong style="color: #000">{{ (mrr.next_year_average / active_subscriptions)|round(2) }} € / month</strong>
+                        </div>
+
+                        <div id="chart-mrr" style="height: 300px;"></div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 p-1">
+                    <div class="p-3" style="background: #fff; border: 1px solid #e5e5e5;">
+                        <h4 class="mb-2">
+                            Subscriptions monitoring
+                        </h4>
+
+                        <div class="mb-4">
+                            <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\OrganizationController')
+                                .set('filters', {
+                                    subscriptionTrialing: '0',
+                                    subscriptionCurrentPeriodEnd: {
+                                        comparison: '>',
+                                        value: 'now'|date('Y-m-d H:i:s'),
+                                    },
+                                })
+                            }}" class="btn btn-primary btn-block me-2">
+                                {{ active_subscriptions|format_number }} active
+                            </a>
+
+                            <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\OrganizationController')
+                                .set('filters', {
+                                    subscriptionTrialing: '1',
+                                    subscriptionCurrentPeriodEnd: {
+                                        comparison: '>',
+                                        value: 'now'|date('Y-m-d H:i:s'),
+                                    },
+                                })
+                            }}" class="btn btn-secondary me-2">{{ trialing_subscriptions|format_number }} currently trialing</a>
+
+                            <a href="{{ ea_url()
+                                .setController('App\\Controller\\Admin\\OrganizationController')
+                                .set('filters', {
+                                    subscriptionCurrentPeriodEnd: {
+                                        comparison: '<',
+                                        value: 'now'|date('Y-m-d H:i:s'),
+                                    },
+                                })
+                            }}" class="btn btn-secondary">{{ expired_subscriptions|format_number }} expired</a>
+                        </div>
+
+                        <div class="mb-1">
+                            <strong>Subscriptions expiring in less than 30 days:</strong>
+                        </div>
+
+                        <ul>
+                            {% for orga in almost_expired_subscriptions %}
+                                <li>
+                                    <a href="{{ ea_url()
+                                        .setController('App\\Controller\\Admin\\OrganizationController')
+                                        .setAction('edit')
+                                        .setEntityId(orga.id)
+                                    }}">
+                                        {{ orga.name }}
+                                        ({{ orga.subscriptionCurrentPeriodEnd|ago }})
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

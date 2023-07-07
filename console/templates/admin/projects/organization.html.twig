@@ -1,0 +1,6 @@
+<a href="{{ ea_url()
+    .setController('App\\Controller\\Admin\\OrganizationController')
+    .set('query', entity.instance.organization.id ~ ' ' ~ entity.instance.organization.name)
+}}">
+    {{ entity.instance.organization.name }}
+</a>

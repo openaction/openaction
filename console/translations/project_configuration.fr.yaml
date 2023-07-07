@@ -1,0 +1,43 @@
+save: Enregistrer
+
+access:
+    title: Contrôle d’accès du site
+    help: Configurer un mot de passe sur votre site pour qu'il ne soit pas accessible publiquement.
+    form:
+        user: Nom d’utilisateur
+        pass: Mot de passe
+        help: Garder les champs vides pour désactiver le contrôle d’accès.
+
+menu:
+    back: Retour aux menus
+    title: Menu et pied de page
+    help: Editer le menu du site internet et les liens du pied de page.
+    header_title: Menu
+    header_help: |
+        Vous pouvez indiquer les 3-4 pages les plus importantes du site dans le menu.
+        Il vaut mieux éviter d'en ajouter plus pour que les visiteurs puissent se concentrer sur le contenu de votre site.
+    footer_title: Pied de page
+    footer_help: |
+        Le pied de page est un bon endroit pour indiquer la liste exhaustive de toutes les pages
+        de votre site, pour que les visiteurs puissent retrouver l'ensemble du contenu et que les
+        moteurs de recherche puissent l’indexer efficacement.
+    target: 'Cible :'
+    create: Nouvel élément
+    no_records: Aucun nouvel élément pour vous
+    remove_confirm: Êtes-vous sûr de vouloir supprimer l'élément "%name%" ?
+
+    form:
+        create_title: Ajouter un nouvel élément au menu
+        edit_title: Editer un élément du menu
+        parent:
+            label: Elément Parent
+            help: Choisir un élément parent pour créer un sous-menu pour cet élément
+        label:
+            label: Nom du lien
+            help: Texte indiqué dans l'élément du menu
+        url:
+            label: Cible du lien
+            help: L'URL qui sera ouvert en cliquant sur l'élément du menu.
+        newTab:
+            label: Ouvrir le lien dans un nouvel onglet ?
+            help: Nous vous conseillons d'ouvrir un lien dans un nouvel onglet si le lien renvoie vers un site extérieur

@@ -1,0 +1,67 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'create.title'|trans({}, 'organization_projects') %}
+
+{% block content %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+
+    <div class="container mt-5 pt-5">
+        <div class="text-center mb-5">
+            <h2 class="mb-4">
+                {{ 'create.title'|trans({}, 'organization_projects') }}
+            </h2>
+
+            <div class="text-muted mb-2">
+                {{ 'create.subtitle'|trans({}, 'organization_projects') }}
+            </div>
+
+            <a href="{{ path('console_project_create_batch', {'organizationUuid': current_organization.uuid}) }}">
+                {{ 'create.batch'|trans({}, 'organization_projects') }}
+            </a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-11 col-lg-10">
+                {{ form_start(form) }}
+
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8 text-center">
+                        {{ form_errors(form) }}
+
+                        <strong>
+                            {{ form_label(form.name, 'create.form.name.label'|trans({}, 'organization_projects')) }}
+                        </strong>
+
+                        {{ form_errors(form.name) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control-lg'}}) }}
+
+                        <div class="p-1 mb-5 text-muted">
+                            {{ 'create.form.name.help'|trans({}, 'organization_projects') }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_errors(form.type) }}
+
+                <div data-controller="project--create"
+                     class="organization-manage-project-details mb-5">
+                    <div class="d-none">
+                        {{ form_widget(form.type, {'attr': {'data-project--create-target': 'type'}}) }}
+                        {{ form_widget(form.areasIds, {'attr': {'data-project--create-target': 'areas'}}) }}
+                        {{ form_widget(form.tags, {'attr': {'data-project--create-target': 'tags'}}) }}
+                        {{ form_widget(form.modules, {'attr': {'data-project--create-target': 'modules'}}) }}
+                        {{ form_widget(form.tools, {'attr': {'data-project--create-target': 'tools'}}) }}
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        {{ 'create.form.submit'|trans({}, 'organization_projects') }}
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

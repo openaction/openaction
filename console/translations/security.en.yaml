@@ -1,0 +1,72 @@
+registration:
+    signup:
+        title: Create your free Citipo account
+        desc: Launch your movement in minutes
+        form:
+            email:
+                label: Your work email address
+                help: We will send you an email to activate your account.
+            submit: Sign up
+            cancel: Back to the homepage
+        terms: |
+            By subscribing to Citipo, you agree to our
+            <a href="https://citipo.com/fr/pages/7HVg4wRMI0ZPKEN2QsSIKw/conditions-d-utilisation" target="_blank">Terms of service</a>
+            and to our
+            <a href="https://citipo.com/fr/pages/3tPVudZJMyuNwaZJrNJwm9/politique-de-donnees-personnelles" target="_blank">Privacy policy</a>.
+
+    verify:
+        title: Account created
+        desc: |
+            Your account was successfully created.
+            We sent you an email to continue the configuration of your profile, check your inbox!
+        resend:
+            desc: 'If after a few minutes of waiting you still didn''t receive the email, you can ask for a resend:'
+            link: Resend the email
+            contact_us: If the problem persists, you can reach us at
+
+    activate:
+        title: Finalize your account
+        desc: 'Your profile is almost ready: a few more details and you will be ready to use Citipo!'
+        form:
+            firstName: Your first name
+            lastName: Your last name
+            password: Choose a password
+            repeatPassword: Confirm this password
+            agreeTerms: I agree to the Privacy Policy and Terms of Service.
+            submit: Finalize
+
+login:
+    title: Log in
+    welcome: Welcome back!
+    email: E-mail address
+    password: Password
+    remember_me: Stay logged in
+    forgotten_password: Forgotten password?
+    submit: Log in
+    register: No account yet? Sign up for free!
+
+    two_factor:
+        title: Two-factor authentication
+        desc: 'Enter the code provided by your authentication application (Google Authenticator or Authy).'
+        login: Log in
+        cancel: Cancel
+
+forgot_password:
+    request:
+        title: Forgot your password?
+        desc: Don't worry. Resetting your password is easy, just tell us the email address you registered with on Citipo.
+        label: Your work email address
+        submit: Send
+        back: Back to log in
+
+    sent:
+        title: Check your inbox
+        desc: Check your inbox, we sent you an email to reset your password.
+        back: Back to log in
+
+    reset:
+        title: Reset my password
+        desc: Wonderful! You can now reset your password to something else so that you can log in again.
+        new_password: New password
+        confirm_password: Confirm the new password
+        submit: Update

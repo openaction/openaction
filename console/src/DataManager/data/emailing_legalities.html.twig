@@ -1,0 +1,18 @@
+<p class="text-center footer-legalities">
+    {{ 'community.footer.legalities'|trans({ '%email%': contact_email }, 'emails', project_locale) }}
+
+    {% if website_enabled %}
+        <br />
+        <br />
+        {{ 'community.footer.policy'|trans({}, 'emails', project_locale) }}
+        <a href="{{ website_url }}" target="_blank">{{ website_url }}</a>
+    {% endif %}
+</p>
+
+<p class="text-center">
+    {{ 'community.footer.unsubscribe.label'|trans({ '%name%': organization_name }, 'emails', project_locale) }}
+    <br />
+    <a href="{{ gdpr_manage_url }}" target="_blank">
+        {{ 'community.footer.unsubscribe.link'|trans({}, 'emails', project_locale) }}
+    </a>
+</p>

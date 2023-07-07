@@ -1,0 +1,64 @@
+{% extends 'console/project/community/printing/finalize/base.html.twig' %}
+
+{% block tab_delivery 'active' %}
+
+{% block tab_page %}
+    <h4 class="mb-3">
+        {{ 'edit.delivery.title'|trans({}, 'project_printing') }}
+    </h4>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="mb-5">
+        <div class="mb-1">
+            <strong>
+                {{ 'edit.delivery.addressed.columns.label'|trans({}, 'project_printing') }}
+            </strong>
+        </div>
+
+        <div class="text-muted mb-3">
+            {{ 'edit.delivery.addressed.columns.help'|trans({'%count%': order.deliveryAddressFileFirstLines[0]|length}, 'project_printing') }}
+        </div>
+
+        <table class="table table-sm table-striped table-responsive import-columns">
+            <thead>
+            <tr>
+                {% for i, v in order.deliveryAddressFileFirstLines[0] %}
+                    <th class="import-columns-column">
+                        <small>
+                            {{ 'edit.delivery.addressed.columns.default_label'|trans({'%i%': i + 1}, 'project_printing') }}
+                        </small>
+                    </th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for columnField in form.columnsTypes %}
+                    <th class="import-columns-column">
+                        {{ form_widget(columnField, {'label': false}) }}
+                    </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in order.deliveryAddressFileFirstLines %}
+                <tr>
+                    {% for value in row %}
+                        <td>
+                            <small>{{ value|u.truncate(30, '…') }}</small>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4 mb-4">
+        <button type="submit" class="btn btn-lg btn-primary">
+            {{ 'edit.delivery.addressed.columns.submit'|trans({}, 'project_printing') }}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

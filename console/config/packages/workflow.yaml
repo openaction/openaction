@@ -1,0 +1,127 @@
+framework:
+    workflows:
+        domain_configuration:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'configurationStatus'
+            supports:
+                - App\Entity\Domain
+            initial_marking: cloudflare_pending
+            places:
+                - cloudflare_pending
+                - cloudflare_created
+                - cloudflare_provisioned
+                - cloudflare_ready
+                - sendgrid_domain_pending
+                - sendgrid_domain_created
+                - sendgrid_branded_link_pending
+                - sendgrid_branded_link_created
+                - sendgrid_provisioned
+                - sendgrid_ready
+                - postmark_pending
+                - postmark_ready
+            transitions:
+                cloudflare_create:
+                    from: cloudflare_pending
+                    to: cloudflare_created
+                cloudflare_provision:
+                    from: cloudflare_created
+                    to: cloudflare_provisioned
+                cloudflare_active:
+                    from: cloudflare_provisioned
+                    to: [cloudflare_ready, sendgrid_domain_pending, sendgrid_branded_link_pending, postmark_pending]
+                sendgrid_domain_create:
+                    from: sendgrid_domain_pending
+                    to: sendgrid_domain_created
+                sendgrid_branded_link_create:
+                    from: sendgrid_branded_link_pending
+                    to: sendgrid_branded_link_created
+                sendgrid_provision:
+                    from: [sendgrid_domain_created, sendgrid_branded_link_created]
+                    to: sendgrid_provisioned
+                sendgrid_active:
+                    from: sendgrid_provisioned
+                    to: sendgrid_ready
+                postmark_configure:
+                    from: postmark_pending
+                    to: postmark_ready
+
+        print_order:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Community\PrintingOrder
+            initial_marking: draft
+            places:
+                - draft
+                - payment_pending
+                - payment_received
+                - bat_pending
+                - bat_validated
+                - printing
+                - delivering
+                - delivered
+            transitions:
+                order:
+                    from: draft
+                    to: [payment_pending, bat_pending]
+                receive_payment:
+                    from: payment_pending
+                    to: payment_received
+                validate_bat:
+                    from: bat_pending
+                    to: bat_validated
+                start_print:
+                    from: [payment_received, bat_validated]
+                    to: printing
+                start_deliver:
+                    from: printing
+                    to: delivering
+                finish:
+                    from: delivering
+                    to: delivered
+
+        print_campaign:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Community\PrintingCampaign
+            initial_marking: draft
+            places:
+                - draft
+                - bat_pending
+                - bat_received
+                - bat_validated
+                - printing
+                - delivering
+                - delivered
+            transitions:
+                order:
+                    from: draft
+                    to: bat_pending
+                receive_bat:
+                    from: bat_pending
+                    to: bat_received
+                validate_bat:
+                    from: bat_received
+                    to: bat_validated
+                start_print:
+                    from: bat_validated
+                    to: printing
+                start_deliver:
+                    from: printing
+                    to: delivering
+                finish:
+                    from: delivering
+                    to: delivered

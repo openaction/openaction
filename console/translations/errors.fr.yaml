@@ -1,0 +1,9 @@
+404:
+    title: Page introuvable
+    help: La page que vous avez demandée est introuvable.
+    back: Retourner sur la Console
+
+500:
+    title: Une erreur s'est produite
+    help: Nous avons été alertés et nous allons intervenir.
+    back: Retourner sur la Console

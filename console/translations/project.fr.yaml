@@ -1,0 +1,152 @@
+breadcrumb: Projets
+
+sidebar:
+    quick_start: Démarrage
+    statistics: Statistiques
+
+    website:
+        label: Site internet
+        view: Voir le site
+        posts: Actualités
+        pages: Pages
+        documents: Documents
+        trombinoscope: Trombinoscope
+        manifesto: Propositions
+
+    community:
+        label: Communauté
+        contacts: Contacts
+        emailing: Campagnes email
+        texting: Campagnes SMS
+        phoning: Campagnes d'appels
+        print: Campagnes d'imprimés
+        events: Évènements
+        forms: Questionnaires
+
+    socials:
+        label: Réseaux sociaux
+        accounts: Vos comptes
+        metas: Paramètres de partage
+        sharers: Outils de partage
+
+    stats:
+        label: Analyse
+        website: Rapport de trafic
+        community: Rapport de communauté
+
+    configuration:
+        label: Configuration
+        appearance: Apparence
+        menu: Menu et pied de page
+        access: Contrôle d'accès
+        legal_details: Mentions légales
+        settings: Paramètres du projet
+        membership: Espace membre
+
+    developers:
+        label: Développeurs
+        theme: Code du thème
+        redirections: Redirections
+        api: Accès API
+
+quick_start:
+    title: Démarrage
+
+    launch:
+        title: Lancer son projet
+        team:
+            title: Inviter son équipe
+            desc: Inviter les membres de votre équipe pour leur permettre de mettre à jour le site and de contacter votre communauté.
+            link: Inviter les membres de votre équipe
+        modules:
+            title: Configurer les modules de votre projet
+            desc: Permet de choisir les modules dont vous avez besoin pour adapter au mieux Citipo à vos besoins.
+            link: Configurer les modules
+
+    website:
+        title: Créer votre site internet
+        appearance:
+            title: Créer votre propre identité numérique
+            desc: Personnaliser le site internet public de votre projet.
+            link: Personnaliser le site
+        pages:
+            title: Présenter votre projet
+            desc: Présenter votre vision, votre équipe et vos idées sur des pages de contenus dédiées.
+            link: Créer des pages de contenu
+        posts:
+            title: Garder votre communauté informée
+            desc: Partager vos actions sur un fil d'actualité chronologique.
+            link: Créer une actualité
+        socials:
+            title: Connecter vos réseaux sociaux
+            desc: Créer votre écosystème de communication digital en liant vos réseaux sociaux à votre site internet.
+            link: Configurer les réseaux sociaux
+
+    community:
+        title: Connaître sa communauté et la faire grandir
+        contacts:
+            title: Explorer la base de données
+            desc: Garder un historique de vos rencontres et gérer la relation avec vos sympathisants
+            link: Explorer les contacts
+        emailing:
+            title: Envoyer des campagnes d'emailing
+            desc: Mobiliser votre communauté grâce à des envois d'email de masse
+            link: Créer une campagne d'emailing
+
+developers:
+    access:
+        title: Accès API
+        description:
+            1: |
+                Citipo dispose de plusieurs API permettant d'accéder et de modifier les
+                différentes sections de votre organisation de manière programmatique.
+            2: |
+                Citipo identifie les requêtes sur les API Site internet, Communauté et Espace membre
+                en utilisant le token API de votre projet. Si le token est incorrect, expiré ou
+                manquant dans votre requête, Citipo affichera une erreur.
+        learn_more: Lire la documentation de l'API
+        subtitle: Token API du projet
+
+    theme:
+        title: Modifier le code du thème
+        description: |
+            Modifier le code du thème pour une personnalisation avancée (attention : cette opération
+            nécessite des compétences en développement et peux avoir des conséquences négatives sur
+            votre site en cas de mauvaise utilisation).
+        templates: Templates
+        assets: Ressources
+        assets_add: Envoyer une ressource
+        save: Enregistrer
+
+    redirections:
+        back: Retour aux redirections
+        title: Redirections
+        help: Créez des URL personnalisées pour mieux partager vos contenus.
+        create: Nouvelle redirection
+        no_records: Aucune redirection pour le moment
+        order: Ordre
+        source: URL source
+        target: URL de destination
+        type: Type
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Êtes-vous sûr de vouloir supprimer la redirection "%name%" ?
+
+        form:
+            create_title: Créer une redirection
+            edit_title: Modifier une redirection
+            source:
+                label: URL source
+                help: |
+                    Quelle URL doit être redirigée ? N'indiquez pas le nom de domaine
+                    (par exemple pour l'URL "https://example.com/projet", indiquez "/projet").
+                    Vous pouvez utilisez une astérisque (*) pour indiquer "n'importe quel caractère".
+                    Attention : les redirections sont appliquées après toutes les autres URL de votre projet.
+                    Si une autre URL existe avec la même source, la redirection ne sera pas appliquée.
+            target:
+                label: URL de destination
+                help: Vers quelle URL doivent être redirigés les visiteurs ? Indiquez l'URL complète
+            code:
+                label: Type de redirection
+                help: Indiquez si vous souhaitez utiliser une redirection permanente (301) ou temporaire (302).
+            save: Enregistrer

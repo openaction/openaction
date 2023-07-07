@@ -1,0 +1,44 @@
+{
+    "name": {
+        "en": "Name EN",
+        "fr": "Name FR"
+    },
+    "description": {
+        "en": "Description EN",
+        "fr": "Description FR"
+    },
+    "defaultColors": {
+        "primary": "000",
+        "secondary": "111",
+        "third": "222"
+    },
+    "defaultFonts": {
+        "title": "Roboto Slab",
+        "text": "Roboto"
+    },
+    "thumbnail": "thumbnail.jpg",
+    "templates": {
+        "style": "src/style.css.twig",
+        "script": "src/script.js.twig",
+        "head": "src/head.html.twig",
+        "layout": "src/layout.html.twig",
+        "header": "src/header.html.twig",
+        "footer": "src/footer.html.twig",
+        "list": "src/list.html.twig",
+        "content": "src/content.html.twig",
+        "home": "src/home.html.twig",
+        "home-calls-to-action": "src/home/calls-to-action.html.twig",
+        "home-custom-content": "src/home/custom-content.html.twig",
+        "home-newsletter": "src/home/newsletter.html.twig",
+        "home-posts": "src/home/posts.html.twig",
+        "home-events": "src/home/events.html.twig",
+        "home-socials": "src/home/socials.html.twig",
+        "manifesto-list": "src/manifesto/list.html.twig",
+        "manifesto-view": "src/manifesto/view.html.twig",
+        "trombinoscope-list": "src/trombinoscope/list.html.twig",
+        "trombinoscope-view": "src/trombinoscope/view.html.twig"
+    },
+    "assets": [
+        "assets/picture.jpg"
+    ]
+}

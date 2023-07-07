@@ -1,0 +1,57 @@
+index:
+    title: Trombinoscope
+    help: Create a list of persons and their photos (candidates, elected officials, figures from your organization, ...) on your website.
+    edit_categories: Edit categories
+    create: Add a person
+    no_result: Your trombinoscope does not contain anyone for now.
+    no_result_create: Add a first person
+    edit: Edit
+    duplicate: Duplicate
+    move: Move
+    delete: Delete
+    view: View
+    preview: Preview
+    draft: Draft
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    last_modified: Last edited on %datetime%
+    visits: visits
+    remove_confirm: Are you sure you want to remove the person "%name%"?
+
+create:
+    title: '(Unnamed person)'
+
+edit:
+    title: Edit "%name%"
+    back: Back to the list
+    view: View on the website
+
+move:
+    title: Move person "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this trombinoscope person?
+    submit: Move
+
+categories:
+    index:
+        back: Back to the trombinoscope
+        title: Trombinoscope categories
+        create: New category
+        no_records: Your project does not contain any trombinoscope category for now.
+        no_records_desc: Categories help you organize your team, for instance by geography or by theme.
+        order: Order
+        name: Name
+        number: Persons
+        created: Creation date
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

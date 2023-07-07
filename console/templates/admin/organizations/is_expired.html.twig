@@ -1,0 +1,19 @@
+<div>
+    <div class="mb-1">
+        <small class="badge badge-light text-muted bg-white">
+            {{ entity.instance.subscriptionCurrentPeriodEnd|format_date }}
+        </small>
+    </div>
+
+    {% if entity.instance.isSubscriptionExpired %}
+        <small class="badge badge-danger">Expired</small>
+    {% elseif date().diff(entity.instance.subscriptionCurrentPeriodEnd).days <= 30 %}
+        <span class="badge badge-warning">
+            Expires {{ entity.instance.subscriptionCurrentPeriodEnd|ago }}
+        </span>
+    {% else %}
+        <small class="badge badge-light">
+            {{ entity.instance.isSubscriptionTrialing ? 'Trial' : 'Active' }}
+        </small>
+    {% endif %}
+</div>

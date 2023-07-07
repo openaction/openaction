@@ -1,0 +1,33 @@
+<div class="manifesto manifesto-topics" data-aos="fade-up" data-aos-duration="600">
+    <h1 class="manifesto-topics-title">
+        {{ manifesto_title }}
+    </h1>
+
+    <div class="manifesto-topics-social-sharers">
+        {{ social_sharers|raw }}
+    </div>
+
+    <div class="manifesto-topics-list">
+        <div class="row justify-content-center">
+            {% for topic in manifesto %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <a href="{{ topic.url }}"
+                       class="manifesto-topics-list-item"
+                       data-turbo="optional"
+                       style="background-color: {{ topic.backgroundColor }}; color: #{{ topic.color }};">
+                        <div class="manifesto-topics-list-item-image"
+                             {% if topic.image %}style="background-image: url('{{ topic.image }}')"{% endif %}></div>
+
+                        <div class="manifesto-topics-list-item-title">{{ topic.title }}</div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="manifesto-topics-list-none">
+                        {{ no_elements }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

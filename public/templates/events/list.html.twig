@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.events %}
+
+{% block body_class 'body-events-list' %}
+
+{% block page %}
+    {% set items = [] %}
+    {% for event in events %}
+        {% set itemCategories = {} %}
+        {% for category in event.categories %}
+            {% set itemCategories = itemCategories|merge({ (category.name): path('event_list', {'c': category.id}) }) %}
+        {% endfor %}
+
+        {% set items = items|merge([
+            {
+                'title': event.title,
+                'url': path('event_view', {'id': event.id, 'slug': event.slug}),
+                'description': (event.content|u.truncate(150, '...')) ~ '',
+                'image': event.image,
+                'date': event.begin_at ? event.begin_at|format_datetime('medium', 'short') : null,
+                'categories': itemCategories,
+            }
+        ]) %}
+    {% endfor %}
+
+    {% set filters = [
+        {
+            'name': 'base.show_all'|trans,
+            'url': path('event_list'),
+            'isActive': current_category == null
+        }
+    ] %}
+
+    {% for category in categories %}
+        {% set filters = filters|merge([
+            {
+                'name': category.name,
+                'url': path('event_list', {'c': category.id}),
+                'isActive': current_category == category.id
+            }
+        ]) %}
+    {% endfor %}
+
+    {% set pagination = events.meta.pagination.links %}
+
+    {% set payload = {
+        'current_url': url(current_route, current_route_params),
+        'current_project': current_project.toArray,
+        'enable_embed_consent': enable_embed_consent,
+        'default_list_image': asset('res/default.jpg'),
+        'play_icon': asset('res/play.svg'),
+        'section_id': 'events',
+        'section_name': current_project.terminology.events,
+        'items': items,
+        'no_items_message': 'base.no_element'|trans,
+        'categories': filters,
+        'previous': pagination.previous is defined ? path('event_list', {'p': current_page - 1, 'c': current_category}) : null,
+        'next': pagination.next is defined ? path('event_list', {'p': current_page + 1, 'c': current_category}) : null,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/list.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}

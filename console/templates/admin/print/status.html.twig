@@ -1,0 +1,31 @@
+<div style="text-align: center">
+    <div class="mb-2">
+        {% if entity.instance.order %}
+            {{ entity.instance.order.amountDescription }}
+        {% else %}
+            <small style="color: #999; font-style: italic">Not ordered yet</small>
+        {% endif %}
+    </div>
+
+    {% if entity.instance.status['delivered'] is defined %}
+        <span style="color: green">Delivered</span>
+    {% elseif entity.instance.status['delivering'] is defined %}
+        <span style="color: #333">Delivering</span>
+    {% elseif entity.instance.status['printing'] is defined %}
+        <span style="color: #333">Printing</span>
+    {% elseif entity.instance.status['draft'] is defined %}
+        <span style="color: #333">Draft</span>
+    {% else %}
+        {% if entity.instance.status['bat_validated'] is defined %}
+            <span style="color: green">BAT validated</span>
+        {% else %}
+            <span style="color: orange">BAT pending</span>
+        {% endif %}
+        <br />
+        {% if entity.instance.status['payment_received'] is defined %}
+            <span style="color: green">Payment received</span>
+        {% else %}
+            <span style="color: orange">Payment pending</span>
+        {% endif %}
+    {% endif %}
+</div>

@@ -1,0 +1,53 @@
+{% extends 'security/registration/base.html.twig' %}
+
+{% block body_class 'full-height' %}
+
+{% block page_title 'registration.signup.title'|trans({}, 'security') %}
+
+{% block content %}
+    <div class="p-4">
+        {{ form_start(form) }}
+
+        <div class="p-4 mt-5">
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger border-0 text-center">
+                    {{ message|trans({}, 'flashes') }}
+                </div>
+            {% endfor %}
+
+            <div data-controller="security--registration" class="mb-4 cfcd208495d565ef66e7dff9f98764da">
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, { attr: { class: 'form-control-lg', autocomplete: 'off'} }) }}
+                    {{ form_help(form.email) }}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-group">
+                    {{ form_label(form.name, 'registration.signup.form.email.label'|trans({}, 'security')) }}
+                    {{ form_widget(form.name, { attr: { class: 'form-control-lg'} }) }}
+                    {{ form_help(form.name, { help: 'registration.signup.form.email.help'|trans({}, 'security') }) }}
+                    {{ form_errors(form.name) }}
+                </div>
+            </div>
+
+            <div class="text-center mt-5 mb-3">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">
+                    {{ 'registration.signup.form.submit'|trans({}, 'security') }}
+                </button>
+            </div>
+
+            <div class="text-center mb-5">
+                <a href="{{ path('homepage_redirect') }}" class="btn btn-link">
+                    {{ 'registration.signup.form.cancel'|trans({}, 'security') }}
+                </a>
+            </div>
+
+            <div class="text-muted text-center">
+                {{ 'registration.signup.terms'|trans({}, 'security')|raw }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

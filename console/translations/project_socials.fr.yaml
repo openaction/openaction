@@ -1,0 +1,50 @@
+accounts:
+    title: Vos comptes sociaux
+    help: Configurez les comptes sociaux associés à votre projet pour les mettre en avant sur votre site et vos campagnes.
+    email: À quelle adresse email publique peut-on vous contacter ?
+    facebook: Quelle est l'adresse URL de votre page Facebook ?
+    twitter: Quelle est l'adresse URL de votre fil Twitter ?
+    instagram: Quelle est l'adresse URL de votre compte Instagram ?
+    linkedIn: Quelle est l'adresse URL de votre page LinkedIn ?
+    youtube: Quelle est l'adresse URL de votre chaine YouTube ?
+    medium: Quelle est l'adresse URL de votre fil Medium ?
+    telegram: Quel est le nom d'utilisateur de votre compte Telegram ?
+    snapchat: Quel est le nom d'utilisateur de votre compte Snapchat ?
+    submit: Enregistrer
+
+sharers:
+    title: Outils de partage
+    help: Configurez quels boutons de partage afficher sur les contenus de votre site internet.
+    label: Quels boutons de partage doivent être affichés sur les contenus de votre site ?
+    label_help: Les boutons de partage sont des liens que vos visiteurs peuvent utiliser pour partager rapidement votre contenu sur leurs réseaux sociaux.
+    facebook: Partager sur Facebook
+    twitter: Partager sur Twitter
+    linkedin: Partager sur LinkedIn
+    telegram: Partager sur Telegram
+    whatsapp: Partager sur Whatsapp
+    email: Partager par email
+    submit: Enregistrer
+
+metas:
+    title: Paramètres de partage
+    help: Configurez la façon dont est affiché votre site internet sur les réseaux sociaux
+    metaTitle:
+        label: Titre du site
+        help: |
+            Le titre est affiché aux visiteurs potentiels sur les réseaux sociaux et
+            les moteurs de recherche. Nous vous conseillons de choisir un titre court
+            (moins de 40 caractères) décrivant le thème principal de votre site :
+            le nom de votre organisation, évènement, ...
+    metaDescription:
+        label: Description du site
+        help: |
+            La description est affichée aux visiteurs potentiels sur les réseaux sociaux et
+            les moteurs de recherche. Nous vous conseillons d'y décrire le contenu de votre site
+            (moins de 150 caractères).
+    sharer:
+        label: Image de partage du site
+        help: |
+            Cette image est utilisée sur les réseaux sociaux quand un lien renvoyant vers votre site
+            est partagé par un utilisateur. Cette image doit représenter le contenu du site. Utilisez
+            une image de 1200x630 pixels pour le meilleur résultat.
+    submit: Enregistrer

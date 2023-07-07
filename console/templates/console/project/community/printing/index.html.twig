@@ -1,0 +1,312 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    {% if app.request.locale == 'fr' and current_project.tools == ['community_printing'] %}
+        <div data-controller="joyride--print"></div>
+        <div data-controller="joyride--print-warning"></div>
+    {% endif %}
+
+    <div class="world-box mb-3 printing-block-drafts">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-1">
+                        {{ 'index.title'|trans({}, 'project_printing') }}
+                    </h3>
+
+                    <a href="https://citipo.com/doc-print" target="_blank" class="btn btn-outline-primary border-0">
+                        <i class="far fa-question-circle mr-1"></i>
+                        {{ 'index.doc'|trans({}, 'project_printing') }}
+                    </a>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ console_print_support }}" target="_blank" class="btn btn-secondary mr-2">
+                        <i class="far fa-file-invoice mr-1"></i>
+                        {{ 'index.quote'|trans({}, 'project_printing') }}
+                    </a>
+
+                    <a href="{{ path('console_community_printing_create', { 'projectUuid': current_project.uuid }) }}"
+                       class="btn btn-primary printing-create-button">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_printing') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            {% if orders_drafts|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.drafts.no_records'|trans({}, 'project_printing') }}
+                        </h4>
+
+                        <a href="{{ path('console_community_printing_create', { 'projectUuid': current_project.uuid }) }}"
+                           class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.drafts.no_result_create'|trans({}, 'project_printing') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                {% for draft in orders_drafts %}
+                    <div class="world-block p-4 mb-4 border {{ not draft.isContentReadyToOrder ? 'print-order-waiting-for-action' }}"
+                         id="order-{{ draft.uuid }}" data-order="{{ draft.uuid }}">
+                        <div class="row align-items-center print-order-reference no-gutters">
+                            <div class="col-lg-2">
+                                <div class="print-order-label">
+                                    {{ 'label_reference'|trans({}, 'project_printing') }}
+                                </div>
+                                <h4 class="mb-3 posts-title" title="{{ draft.uuid }}">
+                                    {{ draft.reference }}
+                                </h4>
+
+                                <a href="{{ csrf_path('console_community_printing_delete', { 'projectUuid': current_project.uuid, 'uuid': draft.uuid }) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'index.drafts.delete_confirm'|trans({'%uuid%': draft.reference}, 'project_printing') }}"
+                                   data-target="#order-{{ draft.uuid }}"
+                                   class="btn btn-sm btn-outline-danger">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    {{ 'index.drafts.delete'|trans({}, 'project_printing') }}
+                                </a>
+                            </div>
+
+                            <div class="col-lg-8">
+                                <div class="row align-items-center">
+                                    {% for campaign in draft.campaigns %}
+                                        <div class="col-md-2 my-2 text-center print-order-product" id="campaign-{{ campaign.uuid }}">
+                                            <div class="print-order-thumbnail">
+                                                <img src="{{ cdn_image_url(campaign.preview, 'print/no-imge.png') }}"/>
+                                            </div>
+
+                                            <div class="font-weight-bold mb-2">
+                                                {{ ('products.'~campaign.product)|trans({}, 'global') }}
+                                            </div>
+
+                                            <div class="mb-1">
+                                                <a href="{{ path('console_community_printing_configure', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                                   class="btn btn-outline-primary btn-sm">
+                                                    {{ 'index.drafts.configure'|trans({}, 'project_printing') }}
+                                                </a>
+                                            </div>
+
+                                            <a href="{{ csrf_path('console_community_printing_product_delete', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                               data-controller="delete"
+                                               data-message="{{ 'index.drafts.delete_product_confirm'|trans({}, 'project_printing') }}"
+                                               data-target="#campaign-{{ campaign.uuid }}"
+                                               class="btn btn-sm btn-outline-danger border-0">
+                                                {{ 'index.drafts.delete'|trans({}, 'project_printing') }}
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="col-md-2 my-2 text-center">
+                                        <a href="{{ path('console_community_printing_create', { 'projectUuid': current_project.uuid, 'uuid': draft.uuid }) }}"
+                                           class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus mr-1"></i>
+                                            {{ 'index.drafts.add_product'|trans({}, 'project_printing') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 text-center" data-order-actions>
+                                <div class="mb-2">
+                                    {% if draft.isContentReadyToOrder %}
+                                        <a href="{{ path('console_community_printing_delivery', { 'projectUuid': current_project.uuid, 'uuid': draft.uuid }) }}"
+                                           class="btn btn-sm btn-success">
+                                            <i class="fas fa-print mr-1"></i>
+                                            {{ 'index.drafts.buy'|trans({}, 'project_printing') }}
+                                        </a>
+                                    {% else %}
+                                        <button class="btn btn-sm btn-danger" disabled>
+                                            <i class="fas fa-print mr-1"></i>
+                                            {{ 'index.drafts.not_ready'|trans({}, 'project_printing') }}
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="world-box mb-3 printing-block-ordered">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'index.ordered.title'|trans({}, 'project_printing') }}
+            </h3>
+        </div>
+
+        <div class="bg-light">
+            {% if orders_ordered|length == 0 %}
+                <div class="text-center p-5">
+                    <h4 class="my-4">
+                        {{ 'index.ordered.no_records'|trans({}, 'project_printing') }}
+                    </h4>
+                </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'index.ordered.id'|trans({}, 'project_printing') }}
+                        </th>
+                        <th scope="col" class="text-center">
+                            {{ 'index.ordered.content'|trans({}, 'project_printing') }}
+                        </th>
+                        <th scope="col" class="text-center">
+                            {{ 'index.ordered.status'|trans({}, 'project_printing') }}
+                        </th>
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ordered in orders_ordered %}
+                        <tr data-order="{{ ordered.uuid }}" id="order-{{ ordered.uuid }}"
+                            {% if ordered.isWaitingForAction %}class="print-order-waiting-for-action"{% endif %}>
+                            <td class="world-table-date text-left">
+                                <small class="text-muted">
+                                    {{ 'label_reference'|trans({}, 'project_printing') }}
+                                </small>
+                                <div class="font-weight-bold mb-2">
+                                    {{ ordered.reference }}
+                                </div>
+                                <small class="text-muted">
+                                    {{ 'index.ordered.ordered_at'|trans({}, 'project_printing') }}
+                                    <br />
+                                    {{ ordered.order.createdAt|format_datetime }}
+                                </small>
+                            </td>
+                            <td>
+                                <div class="row align-items-center">
+                                    {% for campaign in ordered.campaigns %}
+                                        <div class="col-md-3 my-2 text-center">
+                                            <div class="print-order-thumbnail">
+                                                <img src="{{ cdn_image_url(campaign.preview, 'print/no-imge.png') }}"/>
+                                            </div>
+
+                                            <div class="font-weight-bold mb-1">
+                                                {{ ('products.'~campaign.product)|trans({}, 'global') }}
+                                            </div>
+
+                                            <div class="text-muted mb-1">
+                                                {{ campaign.quantity|format_number }}
+                                            </div>
+
+                                            {% if campaign.batValidatedAt %}
+                                                <small class="text-success">
+                                                    {{ 'index.ordered.actions.bat_validated'|trans({}, 'project_printing') }}
+                                                </small>
+                                            {% elseif campaign.bat %}
+                                                <a href="{{ path('console_community_printing_bat', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0 mr-1">
+                                                    {{ 'index.ordered.actions.validate'|trans({}, 'project_printing') }}
+                                                </a>
+                                            {% else %}
+                                                <small class="text-muted">
+                                                    {{ 'index.ordered.actions.bat_generating'|trans({}, 'project_printing') }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="world-table-date text-center">
+                                {% if ordered.status['payment_pending'] is defined %}
+                                    <div class="text-danger">
+                                        <i class="fal fa-exclamation-triangle mr-1"></i>
+                                        {{ 'index.ordered.order_status.payment_pending'|trans({}, 'project_printing') }}
+                                    </div>
+
+                                    {% if is_granted('community_printing_order', current_project) %}
+                                        <div class="mt-1">
+                                            <a href="{{ path('console_organization_billing_order_pay', {'organizationUuid': current_organization.uuid, 'uuid': ordered.order.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
+                                                {{ 'index.ordered.actions.pay'|trans({}, 'project_printing') }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% elseif ordered.status['bat_pending'] is defined %}
+                                    <div class="text-danger">
+                                        <i class="fal fa-exclamation-triangle mr-1"></i>
+                                        {{ 'index.ordered.order_status.bat_pending'|trans({}, 'project_printing') }}
+                                    </div>
+                                {% elseif ordered.status['printing'] is defined %}
+                                    <div>
+                                        {{ 'index.ordered.order_status.printing'|trans({}, 'project_printing') }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ ordered.batValidatedAt|format_datetime }}
+                                    </small>
+                                {% elseif ordered.status['delivering'] is defined %}
+                                    <div>
+                                        {{ 'index.ordered.order_status.delivering'|trans({}, 'project_printing') }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ ordered.printedAt|format_datetime }}
+                                    </small>
+                                {% elseif ordered.status['delivered'] is defined %}
+                                    <div>
+                                        {{ 'index.ordered.order_status.delivered'|trans({}, 'project_printing') }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ ordered.deliveredAt|format_datetime }}
+                                    </small>
+                                {% endif %}
+                            </td>
+                            <td class="world-table-actions text-center">
+                                <div class="mb-3">
+                                    <div class="text-muted">{{ 'index.ordered.price'|trans({}, 'project_printing') }}</div>
+                                    {{ price_calculator.computePriceEstimate(ordered)|format_currency('EUR', {}, 'fr') }} TTC
+                                </div>
+
+                                {% if is_granted('community_printing_order', current_project) %}
+                                    <div>
+                                        <a href="{{ path('console_community_printing_view', {'projectUuid': current_project.uuid, 'uuid': ordered.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary mr-1">
+                                            {{ 'index.ordered.details'|trans({}, 'project_printing') }}
+                                        </a>
+                                    </div>
+
+                                    {% if ordered.status['payment_pending'] is defined
+                                        or ordered.status['bat_pending'] is defined %}
+                                        <div class="mt-1">
+                                            <a href="{{ csrf_path('console_community_printing_delete', { 'projectUuid': current_project.uuid, 'uuid': ordered.uuid }) }}"
+                                               data-controller="delete"
+                                               data-message="{{ 'index.ordered.actions.cancel_confirm'|trans({'%uuid%': ordered.reference}, 'project_printing') }}"
+                                               data-target="#order-{{ ordered.uuid }}"
+                                               class="btn btn-sm btn-outline-danger">
+                                                <i class="far fa-ban mr-1"></i>
+                                                {{ 'index.ordered.actions.cancel'|trans({}, 'project_printing') }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if ordered.order.hasInvoice %}
+                                        <div class="mt-3">
+                                            <a href="{{ path('console_organization_billing_download', {'organizationUuid': current_organization.uuid, 'uuid': ordered.order.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary mr-1" target="_blank">
+                                                <i class="fad fa-file-invoice mr-1"></i>
+                                                {{ 'index.ordered.invoice'|trans({}, 'project_printing') }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

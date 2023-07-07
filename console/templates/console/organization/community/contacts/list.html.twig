@@ -1,0 +1,164 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'contacts.list.page_title'|trans({}, 'organization_community') %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title border-0">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'contacts.list.title'|trans({}, 'organization_community') }}
+                    </h3>
+                    <div class="text-muted">
+                        {{ 'contacts.list.desc'|trans({}, 'organization_community') }}
+                    </div>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ path('console_organization_community_contacts_create', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'contacts.list.create'|trans({}, 'organization_community') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="crm" {{ react_component('Organization/Community/ContactsList', {
+            'search': {
+                'endpoint': meilisearch_endpoint,
+                'index': current_organization.crmIndexName,
+                'token': organization_member.getCrmTenantToken,
+            },
+            'batch': {
+                'export': path('console_organization_community_contacts_batch_export', {'organizationUuid': current_organization.uuid}),
+                'addTag': path('console_organization_community_contacts_batch_add_tag', {'organizationUuid': current_organization.uuid}),
+                'removeTag': path('console_organization_community_contacts_batch_remove_tag', {'organizationUuid': current_organization.uuid}),
+                'remove': path('console_organization_community_contacts_batch_remove', {'organizationUuid': current_organization.uuid}),
+            },
+            'tags': {
+                'endpoint': path('console_api_tags_search', {'o': current_organization.uuid}),
+                'updateEndpoint': path('console_organization_community_contacts_update_tags', {'organizationUuid': current_organization.uuid, 'uuid': '-uuid-'}),
+                'defaultFilter': tag_filter,
+            },
+            'tagsNamesRegistry': organization_tags_names,
+            'links': {
+                'view': path('console_organization_community_contacts_view', {'organizationUuid': current_organization.uuid, 'uuid': '-uuid-'}),
+                'edit': path('console_organization_community_contacts_edit', {'organizationUuid': current_organization.uuid, 'uuid': '-uuid-'}),
+                'history': path('console_organization_community_contacts_history', {'organizationUuid': current_organization.uuid, 'uuid': '-uuid-'}),
+            },
+            'facetsRegistries': {
+                'projectsNames': organization_projects_names,
+            },
+            'searchFieldLabels': {
+                'placeholder': 'crm.search_field.placeholder'|trans({}, 'global'),
+                'modeSimple': 'crm.search_field.mode_simple'|trans({}, 'global'),
+                'modeAdvanced': 'crm.search_field.mode_advanced'|trans({}, 'global'),
+                'enterQuery': 'crm.search_field.enter_query'|trans({}, 'global'),
+                'runQuery': 'crm.search_field.run_query'|trans({}, 'global'),
+            },
+            'listLabels': {
+                'location': 'crm.list.location'|trans({}, 'global'),
+                'createdAt': 'crm.list.createdAt'|trans({}, 'global'),
+                'status': 'crm.list.status'|trans({}, 'global'),
+                'noResultsTitle': 'crm.list.no_results.title'|trans({}, 'global'),
+                'noResultsDescription': 'crm.list.no_results.description'|trans({}, 'global'),
+                'loadMore': 'crm.list.load_more'|trans({}, 'global'),
+                'sortBy': 'crm.list.sort_by.label'|trans({}, 'global'),
+                'sortByAsc': 'crm.list.sort_by.asc'|trans({}, 'global'),
+                'sortByDesc': 'crm.list.sort_by.desc'|trans({}, 'global'),
+                'sortByDate': 'crm.list.sort_by.date'|trans({}, 'global'),
+                'sortByFirstName': 'crm.list.sort_by.first_name'|trans({}, 'global'),
+                'sortByLastName': 'crm.list.sort_by.last_name'|trans({}, 'global'),
+                'sortByEmail': 'crm.list.sort_by.email'|trans({}, 'global'),
+            },
+            'facetsLabels': {
+                'tags_names': 'crm.facets.tags'|trans({}, 'global'),
+                'projects': 'crm.facets.projects'|trans({}, 'global'),
+                'status': 'crm.facets.status'|trans({}, 'global'),
+                'area_country_code': 'crm.facets.country'|trans({}, 'global'),
+                'area_province_name': 'crm.facets.province'|trans({}, 'global'),
+                'area_district_name': 'crm.facets.district'|trans({}, 'global'),
+                'includeFilter': 'crm.facets.include'|trans({}, 'global'),
+                'excludeFilter': 'crm.facets.exclude'|trans({}, 'global'),
+                'cancelFilter': 'crm.facets.cancel'|trans({}, 'global'),
+                'valueSearch': 'crm.facets.value'|trans({}, 'global'),
+            },
+            'actionsLabels': {
+                'nbHits': 'crm.actions.nb_hits'|trans({}, 'global'),
+                'clear': 'crm.actions.clear'|trans({}, 'global'),
+                'applyLabel': 'crm.actions.apply_label'|trans({}, 'global'),
+                'export': 'crm.actions.export'|trans({}, 'global'),
+                'exportQuestion': 'crm.actions.exportQuestion'|trans({}, 'global'),
+                'exportConfirm': 'crm.actions.exportConfirm'|trans({}, 'global'),
+                'exportCancel': 'crm.actions.exportCancel'|trans({}, 'global'),
+                'exportStarting': 'crm.actions.exportStarting'|trans({}, 'global'),
+                'exportInProgress': 'crm.actions.exportInProgress'|trans({}, 'global'),
+                'exportSuccess': 'crm.actions.exportSuccess'|trans({}, 'global'),
+                'exportDownload': 'crm.actions.exportDownload'|trans({}, 'global'),
+                'addTag': 'crm.actions.addTag'|trans({}, 'global'),
+                'addTagQuestion': 'crm.actions.addTagQuestion'|trans({}, 'global'),
+                'addTagLabel': 'crm.actions.addTagLabel'|trans({}, 'global'),
+                'addTagNoResults': 'crm.actions.addTagNoResults'|trans({}, 'global'),
+                'addTagConfirm': 'crm.actions.addTagConfirm'|trans({}, 'global'),
+                'addTagCancel': 'crm.actions.addTagCancel'|trans({}, 'global'),
+                'addTagStarting': 'crm.actions.addTagStarting'|trans({}, 'global'),
+                'addTagInProgress': 'crm.actions.addTagInProgress'|trans({}, 'global'),
+                'addTagSuccess': 'crm.actions.addTagSuccess'|trans({}, 'global'),
+                'removeTag': 'crm.actions.removeTag'|trans({}, 'global'),
+                'removeTagQuestion': 'crm.actions.removeTagQuestion'|trans({}, 'global'),
+                'removeTagLabel': 'crm.actions.removeTagLabel'|trans({}, 'global'),
+                'removeTagNoResults': 'crm.actions.removeTagNoResults'|trans({}, 'global'),
+                'removeTagConfirm': 'crm.actions.removeTagConfirm'|trans({}, 'global'),
+                'removeTagCancel': 'crm.actions.removeTagCancel'|trans({}, 'global'),
+                'removeTagStarting': 'crm.actions.removeTagStarting'|trans({}, 'global'),
+                'removeTagInProgress': 'crm.actions.removeTagInProgress'|trans({}, 'global'),
+                'removeTagSuccess': 'crm.actions.removeTagSuccess'|trans({}, 'global'),
+                'remove': 'crm.actions.remove'|trans({}, 'global'),
+                'removeQuestion': 'crm.actions.removeQuestion'|trans({}, 'global'),
+                'removeConfirm': 'crm.actions.removeConfirm'|trans({}, 'global'),
+                'removeCancel': 'crm.actions.removeCancel'|trans({}, 'global'),
+                'removeStarting': 'crm.actions.removeStarting'|trans({}, 'global'),
+                'removeInProgress': 'crm.actions.removeInProgress'|trans({}, 'global'),
+                'removeSuccess': 'crm.actions.removeSuccess'|trans({}, 'global'),
+            },
+            'itemLabels': {
+                'status': {
+                    'c': 'crm.item.status.c'|trans({}, 'global'),
+                    'm': 'crm.item.status.m'|trans({}, 'global'),
+                    'u': 'crm.item.status.u'|trans({}, 'global'),
+                },
+                'actions': {
+                    'view': 'crm.item.actions.view'|trans({}, 'global'),
+                    'edit': 'crm.item.actions.edit'|trans({}, 'global'),
+                },
+            },
+            'tagsLabels': {
+                'noTags': 'crm.tags.none'|trans({}, 'global'),
+                'placeholder': 'crm.tags.placeholder'|trans({}, 'global'),
+                'noTagsFound': 'crm.tags.no_result'|trans({}, 'global'),
+            },
+            'profileLabels': {
+                'historyTitle': 'crm.profile.history.title'|trans({}, 'global'),
+                'historyDescription': 'crm.profile.history.description'|trans({}, 'global'),
+                'newsletter': 'crm.profile.newsletter'|trans({}, 'global'),
+                'sms': 'crm.profile.sms'|trans({}, 'global'),
+                'calls': 'crm.profile.calls'|trans({}, 'global'),
+                'birthdate': 'crm.profile.birthdate'|trans({}, 'global'),
+                'address': 'crm.profile.address'|trans({}, 'global'),
+                'phone': 'crm.profile.phone'|trans({}, 'global'),
+                'work': 'crm.profile.work'|trans({}, 'global'),
+                'socials': 'crm.profile.socials'|trans({}, 'global'),
+                'projects': 'crm.profile.projects'|trans({}, 'global'),
+            },
+        }) }}>
+            <div class="py-5 text-center">
+                <div class="h2 my-5">
+                    <i class="fal fa-circle-notch fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

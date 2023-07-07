@@ -1,0 +1,9 @@
+{% set payload = {
+    'current_project': current_project.toArray,
+    'enable_embed_consent': enable_embed_consent,
+    'content': block.config.content,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-custom-content.html.twig' with payload %}
+{% endsandbox %}

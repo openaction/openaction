@@ -1,0 +1,71 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title 'membership.events.title'|trans %}
+
+{% block membership_area_content %}
+    <div class="list-view">
+        <div class="list-items">
+            {% for event in events %}
+                <div class="list-items-item box-offset">
+                    <a href="{{ path('membership_area_event_view', {'id': event.id, 'slug': event.slug}) }}"
+                       class="streched-link list-items-item-link">
+                        <div class="list-items-item-box">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ event.title }}</span>
+                                    </h5>
+
+                                    <div class="list-items-item-description">
+                                        <div class="list-items-item-date">
+                                            {{ event.begin_at|format_date('medium') }}
+                                        </div>
+
+                                        {{ (event.content|u.truncate(150, '...')) ~ '' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="{{ event.image|default(asset('res/default.jpg')) }}"
+                                         class="list-items-item-image" width="1700" height="1080" />
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="list-items-none">
+                    {{ 'base.no_element'|trans }}
+                </div>
+            {% endfor %}
+
+            {% set pagination = events.meta.pagination.links %}
+            {% set previous = pagination.previous is defined ? path('membership_area_events', {'p': current_page - 1, 'c': current_category}) : null %}
+            {% set next = pagination.next is defined ? path('membership_area_events', {'p': current_page + 1, 'c': current_category}) : null %}
+
+            <div class="list-items-pagination">
+                <div class="row">
+                    <div class="col-6">
+                        {% if previous %}
+                            <a href="{{ previous }}" class="btn btn-secondary">
+                                <i class="fal fa-angle-left"></i>
+                                <span class="ml-1">
+                                {{ 'base.pagination.previous'|trans }}
+                            </span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                        {% if next %}
+                            <a href="{{ next }}" class="btn btn-secondary">
+                            <span class="mr-1">
+                                {{ 'base.pagination.next'|trans }}
+                            </span>
+                                <i class="fal fa-angle-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

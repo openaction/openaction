@@ -1,0 +1,74 @@
+index:
+    title: Texting campaigns
+    create: New texting campaign
+    drafts:
+        title: Texting campaigns
+        no_records: There are no campaign drafts for now
+        no_result_create: Create a campaign
+        draft: Draft
+        to: To all your contacts
+        to_areas: To contacts from %areas%
+        to_tags: To contacts with tags %tags%
+        to_contacts: To %contacts% specific contacts
+        to_areas_tags: To contacts from %areas% and with tags %tags%
+        edit: Update
+        delete: Delete
+        delete_confirm: 'Are you sure you want to delete the campaign "%subject%"?'
+        send_test: Send a test
+        send_all: Send to everyone
+
+    sent:
+        title: Sent campaigns
+        no_records: No campaigns have been sent yet
+        content: Content
+        stats: Statistics
+        stats_sent: Sent
+        date: Sent at
+        duplicate: Duplicate
+
+create:
+    content: '(Empty text message)'
+
+edit:
+    back: Back to the list
+    title: Edit campaign
+    content:
+        title: Text message content
+        preview: Preview
+        label: What text message would you like to send to your community?
+        help:
+            main: 'Our tips:'
+            1:
+                strong: Space is limited
+                muted: A text message can't contain more than 140 characters.
+            2:
+                strong: Easy to understand
+                muted: Simple and actionable text messages work better.
+            3:
+                strong: Not much punctation
+                muted: Sober text messages better convey your message.
+    submit: Save
+    to:
+        title: To
+        desc: Who are you sending this campaign to?
+
+send_test:
+    back: Back to the list of campaigns
+    title: Send a preview
+    recipients: To which phone number would you like to send this test?
+    send: Send the preview
+
+send_all:
+    back: Back to the list of campaigns
+    title: Send the campaign
+    confirm: |
+        You're about to send the campaign to <strong>%count% subscribers</strong>.
+        <br />
+        <br />
+        Sending this campaign will use <strong>%count% credits</strong> from your organization.
+        <br />
+        <br />
+        Are you sure you are ready to send it?
+        Once sent, you won't be able to update it anymore.
+    send: Send the campaign
+    cancel: Cancel

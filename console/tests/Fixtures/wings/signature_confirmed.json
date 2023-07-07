@@ -1,0 +1,30 @@
+{
+    "action": "signature.confirmed",
+    "signature": {
+        "id": "ZxjxJnAXArI1Q3AywkxA",
+        "newsletter": true,
+        "terms": false,
+        "privacyConsent": true,
+        "confirmed": false,
+        "customFields": [],
+        "createdAt": 1661437360182,
+        "constituent": {
+            "id": "4jXj73AKAGsZYP4QVxkA",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "test@citipo.com",
+            "emailVerified": false
+        },
+        "petition": {
+            "id": "5kY41Pv32NUKmVVG7wm4",
+            "title": "Signez notre pétition pour toutes sortes de choses importantes",
+            "resourceType": "node.petition",
+            "slug": "petition",
+            "status": "PUBLISHED",
+            "publishedAt": 1660939544000,
+            "updatedAt": 1660939704212,
+            "createdAt": 1660939551610
+        },
+        "projectId": "mmJjM5nKKmIYwyzOkVJp"
+    }
+}

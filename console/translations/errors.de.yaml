@@ -1,0 +1,8 @@
+404:
+    title: 'Seite nicht gefunden'
+    help: 'Die von Ihnen angeforderte Seite konnte nicht gefunden werden.'
+    back: 'Zurück zur Konsole'
+500:
+    title: 'Es ist ein Fehler aufgetreten'
+    help: 'Wir wurden alarmiert und werden uns das ansehen.'
+    back: 'Zurück zur Konsole'

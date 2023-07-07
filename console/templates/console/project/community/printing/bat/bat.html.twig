@@ -1,0 +1,131 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'bat.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'bat.title'|trans({}, 'project_printing') }}
+            </h3>
+        </div>
+
+        <div class="print-bat">
+            <div class="print-bat-actions bg-light">
+                <div class="row justify-content-center">
+                    <div class="col-lg-9 col-xl-6">
+                        {% if campaign.batErrors %}
+                            <div class="alert alert-danger mb-4">
+                                <h5>
+                                    {{ 'bat.errors_title'|trans({}, 'project_printing') }}
+                                </h5>
+
+                                <p>
+                                    {{ 'bat.blocking_errors'|trans({}, 'project_printing')|raw }}
+                                </p>
+
+                                <ul>
+                                    {% for error in campaign.batErrors %}
+                                    <li>
+                                        {{ error }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if campaign.batWarnings %}
+                            <div class="alert alert-warning mb-4">
+                                <h5>
+                                    {{ 'bat.errors_title'|trans({}, 'project_printing') }}
+                                </h5>
+
+                                <p>
+                                    {{ 'bat.non_blocking_errors'|trans({}, 'project_printing')|raw }}
+                                </p>
+
+                                <ul>
+                                    {% for warning in campaign.batWarnings %}
+                                    <li>
+                                        {{ warning }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <div class="world-block p-3 mb-5">
+                            {% if campaign.bat and not campaign.batErrors %}
+                                <div class="mb-2">
+                                    {{ 'bat.help'|trans({}, 'project_printing')|raw }}
+                                </div>
+
+                                <div class="mb-5">
+                                    <a href="{{ cdn_url(campaign.bat) }}" class="btn btn-primary" target="_blank">
+                                        {{ 'bat.download'|trans({}, 'project_printing') }}
+                                    </a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-2">
+                                            {{ 'bat.accept_help'|trans({}, 'project_printing') }}
+                                        </div>
+
+                                        <div class="mb-2">
+                                            {{ form_start(form) }}
+
+                                            <button type="submit" class="btn btn-success">
+                                                {{ 'bat.accept'|trans({}, 'project_printing') }}
+                                            </button>
+
+                                            {{ form_end(form) }}
+                                        </div>
+
+                                        <div class="font-weight-bold">
+                                            {{ 'bat.accept_warning'|trans({}, 'project_printing') }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="mb-2">
+                                            {{ 'bat.refuse_help'|trans({}, 'project_printing')|raw }}
+                                        </div>
+
+                                        <div>
+                                            <a href="{{ path('console_community_printing_bat_reconfigure', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                               class="btn btn-danger">
+                                                {{ 'bat.refuse'|trans({}, 'project_printing') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="mb-2">
+                                    {{ 'bat.error_refuse_help'|trans({}, 'project_printing')|raw }}
+                                </div>
+
+                                <div>
+                                    <a href="{{ path('console_community_printing_bat_reconfigure', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                       class="btn btn-danger">
+                                        {{ 'bat.error_refuse'|trans({}, 'project_printing') }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            {{ 'bat.question'|trans({}, 'project_printing') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

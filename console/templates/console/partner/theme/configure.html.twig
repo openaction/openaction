@@ -1,0 +1,38 @@
+{% extends 'console/partner/base.html.twig' %}
+
+{% block page_title theme.repositoryFullName %}
+
+{% block sidebar_themes 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_partner_themes_manage') }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'theme.back'|trans({}, 'partner') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ theme.repositoryFullName }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-11 col-lg-10 col-xl-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.forOrganizations, {'label': 'theme.for_organizations'|trans({}, 'partner')}) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'theme.save'|trans({}, 'partner') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

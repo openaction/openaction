@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnfocusReport version="3.0" unit="mm" xml:lang="fr-FR">
+  <PreflightReport errors="0" criticalfailures="0" noncriticalfailures="0" signoffs="0" fixes="0" warnings="0"/>
+  <ProcessInfo>
+    <PreflightProfile>LGP_legislatives 2022_Preflight</PreflightProfile>
+    <ProfileCreator>
+      <Author>Thomas Deschamps</Author>
+      <Company>Bluewest</Company>
+    </ProfileCreator>
+    <PageRange>1-2</PageRange>
+    <HostAppName>Enfocus PitStop Server 21 update 1</HostAppName>
+    <EngineFlavor>Enfocus PitStop Library 21 update 1</EngineFlavor>
+    <PreflightDateTime>2022-05-03T16:59:12+02:00</PreflightDateTime>
+  </ProcessInfo>
+  <GeneralDocInfo>
+    <DocumentProperties>
+      <DocumentName>_096G9_LREM_35_Jean Duguet_AP__fbf6c9dd-ca6f-43eb-8472-331d34038939__ab62e18d-a44f-40a8-98a0-6b1b69b6b182.pdf</DocumentName>
+      <NumPages>2</NumPages>
+      <PDFVersion major="1" minor="4">1.4</PDFVersion>
+      <CreationDate>2022-04-22T13:54:32+02:00</CreationDate>
+      <ModificationDate>2022-05-03T16:59:07+02:00</ModificationDate>
+      <Producer>Adobe PDF Library 15.0</Producer>
+      <Creator>Adobe InDesign CC 2015 (Windows)</Creator>
+      <Author>La Galiotte Prenant</Author>
+      <Title>_096G7_LREM_35_Jean Duguet_AP__fbf6c9dd-ca6f-43eb-8472-331d34038939__ab62e18d-a44f-40a8-98a0-6b1b69b6b182.pdf</Title>
+      <Subject>Législatives 2022</Subject>
+      <Keywords>2022, législatives, bluewest, CITIPO</Keywords>
+      <Trapped>false</Trapped>
+      <PrinergyTraps>false</PrinergyTraps>
+      <WasRepairedOnOpen>false</WasRepairedOnOpen>
+      <IsLinearized>false</IsLinearized>
+      <ContainsThumbnails>false</ContainsThumbnails>
+      <LeftToRightReading>left</LeftToRightReading>
+      <ContainsJobTicket>false</ContainsJobTicket>
+    </DocumentProperties>
+    <DocumentSecurity>
+      <EncryptionType>none</EncryptionType>
+      <Permissions>
+        <ExtractAccessibility>true</ExtractAccessibility>
+        <ExtractNonAccessibility>true</ExtractNonAccessibility>
+        <ModifyNotes>true</ModifyNotes>
+        <ModifyFillAndSign>true</ModifyFillAndSign>
+        <ModifyAssembleDoc>true</ModifyAssembleDoc>
+        <ModifyOther>true</ModifyOther>
+        <ModifySecurity>true</ModifySecurity>
+        <PrintLowQuality>true</PrintLowQuality>
+        <PrintHighQuality>true</PrintHighQuality>
+      </Permissions>
+    </DocumentSecurity>
+    <DocumentCompression>
+      <DataFormat>binary</DataFormat>
+      <IsCompressed>true</IsCompressed>
+      <FilterType>JPEG</FilterType>
+      <FilterType>ZIP</FilterType>
+    </DocumentCompression>
+  </GeneralDocInfo>
+</EnfocusReport>

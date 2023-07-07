@@ -1,0 +1,194 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'view.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'view.title'|trans({}, 'project_printing') }}
+                {{ order.reference }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row align-items-center">
+                        {% for campaign in order.campaigns %}
+                            <div class="col-md-3 my-2 text-center">
+                                <div class="print-order-thumbnail print-order-thumbnail-lg">
+                                    <img src="{{ cdn_image_url(campaign.preview, 'print/no-imge.png') }}"/>
+                                </div>
+
+                                <div class="font-weight-bold mb-1">
+                                    {{ ('products.'~campaign.product)|trans({}, 'global') }}
+                                </div>
+
+                                <div class="text-muted mb-2">
+                                    {{ campaign.quantity|format_number }}
+                                </div>
+
+                                {% if campaign.batValidatedAt %}
+                                    <small class="text-success">
+                                        {{ 'index.ordered.actions.bat_validated'|trans({}, 'project_printing') }}
+                                    </small>
+                                {% elseif campaign.bat %}
+                                    <a href="{{ path('console_community_printing_bat', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-1">
+                                        {{ 'index.ordered.actions.validate'|trans({}, 'project_printing') }}
+                                    </a>
+                                {% else %}
+                                    <small class="text-muted">
+                                        {{ 'index.ordered.actions.bat_generating'|trans({}, 'project_printing') }}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.price.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        <div class="text-muted">
+                            {{ price|format_currency('eur') }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.payment.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        {% if order.order and order.order.paidAt %}
+                            <div class="text-success">
+                                {{ 'view.payment.paid'|trans({}, 'project_printing') }}
+                            </div>
+
+                            {% if order.order.hasInvoice %}
+                                <div class="mt-2">
+                                    <a href="{{ path('console_organization_billing_download', {'organizationUuid': current_organization.uuid, 'uuid': order.order.uuid}) }}"
+                                       class="btn btn-sm btn-secondary border-0 mr-1" target="_blank">
+                                        <i class="fad fa-file-invoice mr-1"></i>
+                                        {{ 'view.payment.invoice'|trans({}, 'project_printing') }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-danger">
+                                {{ 'view.payment.not_paid'|trans({}, 'project_printing') }}
+                            </div>
+
+                            {% if order.order %}
+                                <div class="mt-2">
+                                    <a href="{{ path('console_organization_billing_order_pay', {'organizationUuid': current_organization.uuid, 'uuid': order.order.uuid}) }}"
+                                       class="btn btn-sm btn-secondary border-0 mr-1" target="_blank">
+                                        {{ 'view.payment.pay'|trans({}, 'project_printing') }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.bat.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        {% if order.allBatValidated %}
+                            <div class="text-success">
+                                {{ 'view.bat.validated'|trans({}, 'project_printing') }}
+                            </div>
+                        {% else %}
+                            <div class="text-danger">
+                                {{ 'view.bat.not_validated'|trans({}, 'project_printing') }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.delivery.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        <div class="text-muted">
+                            {% if order.deliveryAddressed %}
+                                {{ 'view.delivery.addressed'|trans({'%count%': order.deliveryAddressList|length}, 'project_printing') }}
+                            {% elseif order.deliveryUseMediapost %}
+                                {{ 'view.delivery.mediapost'|trans({}, 'project_printing') }}
+                                <a href="https://citipo.com/managers-mediapost" target="_blank">
+                                    {{ 'view.delivery.mediapost_download'|trans({}, 'project_printing') }}</a>.
+                            {% else %}
+                                {{ 'view.delivery.unaddressed'|trans({}, 'project_printing') }}
+                                <br />
+                                {% set parts = [
+                                    order.deliveryMainAddressName,
+                                    order.deliveryMainAddressStreet1,
+                                    order.deliveryMainAddressStreet2,
+                                    order.deliveryMainAddressZipCode ~ ' ' ~ order.deliveryMainAddressCountry,
+                                    order.deliveryMainAddressInstructions,
+                                ] %}
+
+                                {% for part in parts|filter(x => x) %}
+                                    {{ part|nl2br }}
+                                    <br />
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        {% if order.deliveryPosterAddressCity %}
+                            <div class="text-muted">
+                                {{ 'view.delivery.poster'|trans({}, 'project_printing') }}
+                                <br />
+                                {% set parts = [
+                                    order.deliveryPosterAddressName,
+                                    order.deliveryPosterAddressStreet1,
+                                    order.deliveryPosterAddressStreet2,
+                                    order.deliveryPosterAddressZipCode ~ ' ' ~ order.deliveryPosterAddressCountry,
+                                    order.deliveryPosterAddressInstructions,
+                                ] %}
+
+                                {% for part in parts|filter(x => x) %}
+                                    {{ part|nl2br }}
+                                    <br />
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.recipient.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        <div class="text-muted">
+                            {{ order.recipientFirstName }} {{ order.recipientLastName }}<br />
+                            {{ order.recipientDepartment }} - {{ order.recipientCirconscription }}<br />
+                            {{ order.recipientEmail }}<br />
+                            {{ order.recipientPhone }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'view.help.title'|trans({}, 'project_printing') }}
+                        </strong>
+
+                        <div class="text-muted">
+                            {{ 'view.help.desc'|trans({}, 'project_printing')|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

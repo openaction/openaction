@@ -1,0 +1,5 @@
+docker-compose.override.yaml
+supervisord.log
+supervisord.pid
+.php-cs-fixer.cache
+.phpunit.result.cache

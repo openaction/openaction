@@ -1,0 +1,249 @@
+base:
+    form_legalities: |
+        Você tem o direito de acesso, retificação, remoção e portabilidade dos
+        seus dados, bem como o direito de se opor e de limitar o tratamento
+        dos seus dados pessoais. Você pode exercer seus direitos entrando em
+        contato conosco no endereço disponível na Política de Privacidade.
+    pagination:
+        previous: Anterior
+        next: Próximo
+    show_all: Mostrar todos
+    categories: Categorias
+    no_element: Sem conteúdo no momento.
+    formal_title:
+        madam: Senhora
+        sir: Senhor
+    gender:
+        male: Masculino
+        female: Feminino
+        transgender: Transgênero
+        non_binary: Não-binário
+        other: Outro
+    embed-consent:
+        title: Conteúdo externo
+        description: |
+            Esse conteúdo incorporado é hospedado por um serviço externo. Ao exibir este conteúdo,
+            você concorda em %host% armazenar cookies em seu navegador.
+        accept: Exibir o conteúdo
+        external: Aberto
+        cancel: Não reproduza esses conteúdos
+
+home:
+    blocks:
+        socials:
+            title: Redes sociais
+
+posts:
+    not_published: Essa postagem ainda não foi publicada. Você está visualizando como administrador.
+
+events:
+    more: Mais
+    show_all: Mostrar todos
+    begin_at: Começa em
+    address: Endereço
+    online: Evento online
+    no_element: Sem eventos no momento.
+    not_published: Esse evento ainda não foi publicado. Você está visualizando como administrador.
+
+newsletter:
+    email: Seu endereço de e-mail *
+    phone: Seu número de telefone
+    firstname: Seu primeiro nome
+    lastname: Seu último nome
+    country: País
+    zipCode: Código postal
+    submit: Assinar
+    success: Você se inscreveu para receber o boletim de notícias.
+
+legalities:
+    title: Avisos legais
+    editor: Editor
+    publisher: Diretor de publicação
+    development:
+        title: Desenvolvimento
+        text: Mantido pela plataforma
+    hosting:
+        title: Provedor de hospedagem
+        data: Os dados são armazenados em Frankfurt, Alemanha.
+        technical: 'Serviço técnico :'
+
+gdpr:
+    title: Gerenciar minhas preferências
+    success: As preferências foram armazenadas com sucesso.
+    all_projects: Definir minhas configurações gerais
+    per_projects: Defina minhas configurações por tópico
+    newsletter: Eu aceito receber o boletim de notícias.
+    sms: Eu aceito receber mensagens de texto.
+    calls: Eu aceito receber ligações telefônicas.
+    submit: Atualizar
+
+share:
+    facebook: Compartilhar no Facebook
+    twitter: Compartilhar no Twitter
+    linkedin: Compartilhar no LinkedIn
+    telegram: Compartilhar no Telegram
+    whatsapp: Compartilhar no Whatsapp
+    email: Compartilhar por e-mail
+
+socials:
+    rss: RSS
+    facebook: Nos encontre no Facebook
+    twitter: Nos encontre no Twitter
+    instagram: Nos encontre no Instagram
+    linkedin: Nos encontre no LinkedIn
+    youtube: Nos encontre no Youtube
+    medium: Nos encontre no Medium
+    telegram: Nos encontre no Telegram
+    snapchat: Nos encontre no Snapchat
+
+forms:
+    phoning_campaign: |
+        Este formulário está associado a uma campanha por telefone. Você está visualizando
+        como administrador, mas ele só poderá ser acessado no contexto da campanha.
+    no_value: Sem resposta
+    submit: Enviar
+    never_passwords: Nunca envie senhas por meio deste formulário.
+    newsletter: Eu gostaria de receber o boletim de notícias.
+    success: O formulário foi enviado com sucesso.
+
+trombinoscope:
+    no_element: Sem informações no momento.
+    contact_person: Contato
+    contact_by_mail: Contato por e-mail
+    socials:
+        find_on:
+            facebook: Seguir no Facebook
+            twitter: Seguir no Twitter
+            instagram: Seguir no Instagram
+            linkedin: Seguir no LinkedIn
+            youtube: Seguir no Youtube
+            medium: Seguir no Medium
+            telegram: Seguir no Telegram
+
+membership:
+    menu:
+        connected: Conectado
+        account: Minha conta
+        logout: Desconectar
+    login:
+        register_success: Sua conta foi criada com sucesso. Agora você pode se conectar.
+        reset_success: Sua senha foi redefinida com sucesso. Agora você pode se conectar.
+        update_email_success: Seu endereço de e-mail foi atualizado com sucesso. Agora você pode se conectar.
+        email: Endereço de e-mail
+        password: Senha
+        submit: Entrar
+        reset: Esqueci minha senha
+        join_question: Ainda não possui uma conta?
+    reset:
+        title: Esqueci minha senha
+        email: Endereço de e-mail
+        submit: Redefinir minha senha
+    reset_verify:
+        title: Verifique sua caixa de entrada
+        message: |
+            Enviamos um e-mail de confirmação para você.
+            Clique no link que está no e-mail para finalizar a redefinição da sua senha.
+    reset_update:
+        title: Alterar sua senha
+        password_first: Nova senha
+        password_second: Confirmação da nova senha
+        submit: Redefinir minha senha
+    form:
+        submit: Save
+        submit_join: Enviar
+        sections:
+            account: Sua conta
+            details: Sua identificação
+            contact: Suas informações de contato
+            address: Seu endereço
+            notifications: Suas notificações
+        account:
+            update_email: Atualizar meu endereço de e-mail
+            unregister: Remover conta
+        fields:
+            # Required
+            email: Endereço de e-mail
+            password_first: Senha
+            password_second: Confirmação da senha
+            profileFirstName: Nome
+            profileMiddleName:
+            profileLastName: Sobrenome
+            acceptPolicy: Eu concordo com a Política de Privacidade e os Termos de Uso do Serviço.
+
+            # Optional/Disabled
+            profileFormalTitle: Formal title
+            profileBirthdate: Data de nascimento
+            profileGender: Gênero
+            profileNationality: Nacionalidade
+            profileJobTitle: Profissão
+            profileCompany: Empregador
+            contactPhone: Telefone pessoal
+            contactWorkPhone: Telefone de trabalho
+            socialFacebook: URL da conta do Facebook
+            socialTwitter: Nome de usuário do Twitter
+            socialLinkedIn: URL da conta do LinkedIn
+            socialTelegram: Nome de usuário do telegrama
+            socialWhatsapp: Telefone do WhatsApp
+            addressStreetLine1: Endereço
+            addressStreetLine2: Logradouro
+            addressZipCode: Código postal
+            addressCity: Cidade
+            addressCountry: País
+            settingsReceiveNewsletters: Aceito ser contatado por e-mail.
+            settingsReceiveSms: Aceito ser contatado por mensagem de texto.
+            settingsReceiveCalls: Aceito ser contatado por telefone.
+        choices:
+            profileFormalTitle:
+                mr: Sr.
+                ms: Sra.
+            profileGender:
+                male: Masculino
+                female: Feminino
+                transgender: Transgênero
+                non_binary: Não-binário
+                other: Outro
+    join_verify:
+        title: Verifique sua caixa de entrada
+        message: |
+            Enviamos um e-mail de confirmação para você.
+            Clique no link que está no e-mail para finalizar seu cadastro.
+    account:
+        title: Minha conta
+        update_email:
+            title: Atualizar meu endereço de e-mail
+            desc: Um e-mail de confirmação será enviado para que você confirme a atualização.
+            field: Novo endereço de e-mail
+            submit: Save
+            cancel: Cancelar
+            success: |
+                Seu pedido de atualização foi registrado. Enviamos um e-mail de confirmação para você.
+                Clique no link que está no e-mail para finalizar a atualização.
+        unregister:
+            title: Remover conta
+            desc: Tem certeza de que deseja remover sua conta? Um e-mail de confirmação será enviado para que você confirme a remoção da sua conta.
+            submit: Save
+            cancel: Cancelar
+            success: |
+                Seu pedido de remoção de conta foi registrado. Enviamos um e-mail de confirmação para você.
+                lique no link que está no e-mail para finalizar a remoção da sua conta.
+    resources:
+        title: Recursos
+    posts:
+        title: Notícias
+    events:
+        title: Eventos
+    forms:
+        title: Formulários
+
+phoning:
+    start: Iniciar uma nova chamada telefônica
+    finished: A campanha por telefone está concluída, todos os destinatários foram contatados.
+    calling: Eu comecei a chamada telefônica
+    details:
+        title: Você está ligando ...
+        failed_invalid: A ligação falhou
+        failed_no_answer: Eles não atenderam
+        failed_no_call: Eles não querem receber ligações novamente
+        failed_unregister: Eles desejam remover a conta
+        failed_call_later: Eles desejam receber ligação em outro momento
+        accepted: Eles aceitam responder as perguntas

@@ -1,0 +1,78 @@
+{% extends ea.templatePath('layout') %}
+
+{% block content_title 'Print dashboard' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            <div class="row mt-3 mb-5">
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Print projects
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ print_projects_count|format_number }}
+                    </h2>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Quotes
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ quotes_count|format_number }}
+                    </h2>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Ordered
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ ordered_count|format_number }}
+                    </h2>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Waiting for BAT validation
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ waiting_payment_count|format_number }}
+                    </h2>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Waiting for payment
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ waiting_payment_count|format_number }}
+                    </h2>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mr-1">
+                        <small class="text-muted text-uppercase">
+                            Draft
+                        </small>
+                    </div>
+
+                    <h2>
+                        {{ draft_count|format_number }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

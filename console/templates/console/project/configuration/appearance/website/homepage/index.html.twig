@@ -1,0 +1,291 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'homepage.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-light">
+            <a href="{{ path('console_configuration_appearance', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'homepage.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'homepage.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-white p-4">
+            <div class="d-flex justify-content-center">
+                <div class="appearance-homepage">
+                    <ul>
+                        <li class="appearance-homepage-section">
+                            <div class="appearance-homepage-section-move"></div>
+
+                            <div class="flex-grow-1">
+                                <div class="mb-1">
+                                    <strong>
+                                        {{ 'homepage.header.title'|trans({}, 'project_appearance') }}
+                                    </strong>
+                                </div>
+
+                                <div class="appearance-homepage-section-help">
+                                    {{ 'homepage.header.help'|trans({}, 'project_appearance') }}
+                                </div>
+
+                                <div class="bg-white p-2 mt-3">
+                                    <div class="row align-items-start">
+                                        <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+                                            {% if current_project.appearanceLogoDark %}
+                                                <img src="{{ cdn_image_url(current_project.appearanceLogoDark) }}"
+                                                     class="appearance-homepage-section-header-logo" />
+                                            {% else %}
+                                                <small class="text-muted">
+                                                    {{ 'homepage.header.logo.no_logo'|trans({}, 'project_appearance') }}
+                                                </small>
+                                            {% endif %}
+
+                                            <div class="mt-1">
+                                                <a href="{{ path('console_configuration_appearance_logos', {'projectUuid': current_project.uuid, 'from': 'homepage'}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.header.logo.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-8 mb-lg-0">
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    {% if header|length > 0 %}
+                                                        {% for item in header %}
+                                                            <small class="text-muted mr-2">
+                                                                {{ item.label }}
+                                                            </small>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <small class="text-muted">
+                                                            {{ 'homepage.header.menu.no_menu'|trans({}, 'project_appearance') }}
+                                                        </small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-1">
+                                                <a href="{{ path('console_configuration_menu', {'projectUuid': current_project.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.header.menu.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="appearance-homepage-section">
+                            <div class="appearance-homepage-section-move"></div>
+
+                            <div class="flex-grow-1">
+                                <div class="mb-1">
+                                    <strong>
+                                        {{ 'homepage.intro.title'|trans({}, 'project_appearance') }}
+                                    </strong>
+                                </div>
+
+                                <div class="appearance-homepage-section-help">
+                                    {{ 'homepage.intro.help'|trans({}, 'project_appearance') }}
+                                </div>
+
+                                <div class="bg-white p-2 mt-3">
+                                    <div class="row align-items-start">
+                                        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                                            {% if current_project.websiteMainImage %}
+                                                <img src="{{ cdn_image_url(current_project.websiteMainImage) }}"
+                                                     class="appearance-homepage-section-main-image" />
+                                            {% else %}
+                                                <small class="text-muted">
+                                                    {{ 'homepage.intro.image.no_image'|trans({}, 'project_appearance') }}
+                                                </small>
+                                            {% endif %}
+
+                                            <div class="mt-1">
+                                                <a href="{{ path('console_configuration_appearance_website_intro', {'projectUuid': current_project.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.intro.image.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                                            <small class="text-muted">
+                                                {% if current_project.websiteMainIntroTitle and current_project.websiteMainIntroContent %}
+                                                    <strong>
+                                                        {{ current_project.websiteMainIntroTitle }}
+                                                    </strong>
+                                                    <br />
+                                                    {{ current_project.websiteMainIntroContent|raw }}
+                                                {% else %}
+                                                    {{ 'homepage.intro.text.no_text'|trans({}, 'project_appearance') }}
+                                                {% endif %}
+                                            </small>
+
+                                            <div class="mt-1">
+                                                <a href="{{ path('console_configuration_appearance_website_intro', {'projectUuid': current_project.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.intro.text.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div data-controller="sortable"
+                         data-endpoint="{{ path('console_configuration_appearance_website_homepage_sort', {'projectUuid': current_project.uuid}) }}">
+
+                        <ul data-sortable-target="element">
+                            {% for block in home_blocks %}
+                                <li class="appearance-homepage-section" data-id="{{ block.id }}" id="block-{{ block.id }}">
+                                    <div class="appearance-homepage-section-move">
+                                        <i class="far fa-arrows-alt handle"></i>
+                                    </div>
+
+                                    <div class="flex-grow-1">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-1">
+                                                    <strong>
+                                                        {{ ('homepage.'~block.type~'.title')|trans({}, 'project_appearance') }}
+                                                    </strong>
+                                                </div>
+
+                                                <div class="appearance-homepage-section-help">
+                                                    {{ ('homepage.'~block.type~'.help')|trans({}, 'project_appearance') }}
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="{{ csrf_path('console_configuration_appearance_website_homepage_block_delete', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                   data-controller="delete"
+                                                   data-message="{{ 'homepage.remove_confirm'|trans({}, 'project_appearance') }}"
+                                                   data-target="#block-{{ block.id }}"
+                                                   class="btn btn-sm btn-outline-danger border-0">
+                                                    <i class="fad fa-trash mr-1"></i>
+                                                    {{ 'homepage.remove_block'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {% if block.type == 'cta' %}
+                                            <div class="bg-white p-2 mt-3">
+                                                <div class="d-flex">
+                                                    <div class="border border-muted px-1 mr-2">
+                                                        <small class="text-muted font-weight-bold">
+                                                            {{ block.config.primary.label }}
+                                                        </small>
+                                                    </div>
+
+                                                    <div class="border border-muted px-1">
+                                                        <small class="text-muted">
+                                                            {{ block.config.secondary.label }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                       class="btn btn-sm btn-outline-primary border-0">
+                                                        <i class="fad fa-edit"></i>
+                                                        {{ 'homepage.cta.link'|trans({}, 'project_appearance') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% elseif block.type == 'posts' %}
+                                            <div class="bg-white p-2 mt-3">
+                                                <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.posts.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        {% elseif block.type == 'events' %}
+                                            <div class="bg-white p-2 mt-3">
+                                                <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0">
+                                                    <i class="fad fa-edit"></i>
+                                                    {{ 'homepage.events.link'|trans({}, 'project_appearance') }}
+                                                </a>
+                                            </div>
+                                        {% elseif block.type == 'content' %}
+                                            <div class="bg-white p-2 mt-3">
+                                                {% if block.config.content %}
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            {{ block.config.content|striptags|u.truncate(200, '…') }}
+                                                        </small>
+                                                    </div>
+                                                {% endif %}
+
+                                                <div class="mt-1">
+                                                    <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                       class="btn btn-sm btn-outline-primary border-0">
+                                                        <i class="fad fa-edit"></i>
+                                                        {{ 'homepage.content.link'|trans({}, 'project_appearance') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% elseif block.type == 'socials' %}
+                                            <div class="bg-white p-2 mt-3">
+                                                {% if block.config.facebook %}
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            {{ block.config.facebook }}
+                                                        </small>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if block.config.twitter %}
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            {{ block.config.twitter }}
+                                                        </small>
+                                                    </div>
+                                                {% endif %}
+
+                                                <div class="mt-1">
+                                                    <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
+                                                       class="btn btn-sm btn-outline-primary border-0">
+                                                        <i class="fad fa-edit"></i>
+                                                        {{ 'homepage.socials.link'|trans({}, 'project_appearance') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+
+                    <div class="text-center text-uppercase mt-4 mb-3">
+                        <a href="{{ path('console_configuration_appearance_website_homepage_block_create', {'projectUuid': current_project.uuid}) }}"
+                           class="btn btn-outline-primary border-0">
+                            {{ 'homepage.add_block'|trans({}, 'project_appearance') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+sidebar:
+    area: Partner
+    dashboard: Dashboard
+    menu: 'Benutzerdefiniertes Menü'
+    theme: 'Benutzerdefinierte Themen'
+dashboard:
+    title: Partner-Dashboard
+    projects: Projekte
+    contacts: Kontakte
+menu:
+    title: 'Benutzerdefiniertes Menü'
+    help: "Als offizieller Partner von Citipo können Sie ein individuelles Menü auf der Konsole der Kunden anzeigen, die Sie\nbegleiten. Dieses benutzerdefinierte Menü wird in allen Projekten aller Ihrer Kunden angezeigt.\nOrganisationen.\n"
+    form:
+        icon: 'Symbol für den Menüpunkt'
+        label: 'Beschriftung des Menüpunkts'
+        url: 'Ziel-URL des Menüpunkts'
+        save: 'Speichern Sie'
+theme:
+    title: 'Benutzerdefinierte Themen'
+    desc: 'Verknüpfen Sie Ihr GitHub-Konto, um benutzerdefinierte Themen für Ihre Organisationen zu erstellen.'
+    configure: 'Themen hinzufügen/entfernen'
+    none: 'Im Moment kein eigenes Thema'
+    usable_everyone: 'Verwendbar für alle Ihre Organisationen'
+    usable_orgas: 'Verwendbar für'
+    usable_configure: 'Konfigurieren Sie'
+    syncing: Synchronisierung
+    sync: Synchronisieren
+    last_synced: 'Zuletzt synchronisiert am'
+    github: 'Auf GitHub öffnen'
+    linking:
+        title: 'Verknüpfung von GitHub-Repositories'
+        desc: 'Ihre GitHub-Repositories werden ein erstes Mal synchronisiert'
+    back: 'Zurück zu den Themen'
+    for_organizations: 'Welche Organisationen sollten Zugang zu diesem Thema haben?'
+    save: 'Speichern Sie'

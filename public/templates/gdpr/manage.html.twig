@@ -1,0 +1,97 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title 'gdpr.title'|trans %}
+
+{% block body_class 'body-forms-view' %}
+
+{% block metas %}
+    <meta name="robots" content="noindex" />
+{% endblock %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'enable_embed_consent': enable_embed_consent,
+        'title': 'gdpr.title'|trans,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="user-form gdpr-form">
+        {% if saved %}
+            <div class="user-form-success">
+                {{ 'gdpr.success'|trans }}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+        {{ form_errors(form) }}
+
+        <div {{ stimulus_controller('gdpr') }}>
+            <div class="gdpr-section">
+                <h2 class="gdpr-section-name">
+                    {{ 'gdpr.all_projects'|trans }}
+                </h2>
+
+                {{ form_row(form.settingsReceiveNewsletters, {
+                    'label': 'gdpr.newsletter'|trans,
+                    'attr': {'data-gdpr-target': 'globalNewsletter'},
+                }) }}
+                {{ form_row(form.settingsReceiveSms, {
+                    'label': 'gdpr.sms'|trans,
+                    'attr': {'data-gdpr-target': 'globalSms'},
+                }) }}
+                {{ form_row(form.settingsReceiveCalls, {
+                    'label': 'gdpr.calls'|trans,
+                    'attr': {'data-gdpr-target': 'globalCalls'},
+                }) }}
+            </div>
+
+            {# Hide projects if there is only one available #}
+            <div class="gdpr-section {{ form.settingsByProject|length <= 1 ? 'd-none' }}">
+                <h2 class="gdpr-section-name">
+                    {{ 'gdpr.per_projects'|trans }}
+                </h2>
+
+                {% for project in form.settingsByProject %}
+                    <div class="gdpr-section-project">
+                        <h3 class="gdpr-section-project-name">
+                            {{ project.vars.value.projectName }}
+                        </h3>
+
+                        {{ form_row(project.settingsReceiveNewsletters, {
+                            'label': 'gdpr.newsletter'|trans,
+                            'attr': {'data-gdpr-target': 'projectNewsletter'},
+                        }) }}
+                        {{ form_row(project.settingsReceiveSms, {
+                            'label': 'gdpr.sms'|trans,
+                            'attr': {'data-gdpr-target': 'projectSms'},
+                        }) }}
+                        {{ form_row(project.settingsReceiveCalls, {
+                            'label': 'gdpr.calls'|trans,
+                            'attr': {'data-gdpr-target': 'projectCalls'},
+                        }) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="user-form-submit">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ 'gdpr.submit'|trans }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+
+        <div class="form-legalities user-form-legalities">
+            {{ 'base.form_legalities'|trans }}
+        </div>
+    </div>
+{% endblock %}

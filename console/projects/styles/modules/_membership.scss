@@ -1,0 +1,25 @@
+.membership {
+    &-view {
+        @include make-container();
+        max-width: 1140px;
+        padding: 15px 15px 13px 15px;
+        margin-top: 80px;
+    }
+
+    &-title {
+        margin: 0;
+        font-size: 38px;
+        padding-bottom: 36px;
+    }
+
+    &-page {
+        &-content {
+            box-shadow: 0 0 10px 0 rgba(151, 169, 149, 0.15);
+            border: 1px solid #e2e2e2;
+        }
+    }
+
+    .list-categories {
+        margin-top: 0 !important;
+    }
+}

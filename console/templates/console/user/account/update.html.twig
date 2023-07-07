@@ -1,0 +1,42 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% block page_title 'account.title'|trans({}, 'user') %}
+
+{% block sidebar_account 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'account.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="px-4 py-5 bg-light">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.firstName, {
+                        'label': 'account.firstName'|trans({}, 'user'),
+                    }) }}
+
+                    {{ form_row(form.lastName, {
+                        'label': 'account.lastName'|trans({}, 'user'),
+                    }) }}
+
+                    {{ form_row(form.locale, {
+                        'label': 'account.locale'|trans({}, 'user'),
+                    }) }}
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">
+                            {{ 'account.submit'|trans({}, 'user') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

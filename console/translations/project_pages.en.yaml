@@ -1,0 +1,52 @@
+index:
+    title: Content pages
+    help: Explain who you are, your project, and your ideas with content pages.
+    edit_categories: Edit categories
+    create: New page
+    no_result: Your project does not contain any page for now.
+    no_result_create: Create a page
+    edit: Edit
+    duplicate: Duplicate
+    move: Move
+    view: View
+    created_at: Created on %datetime%
+    last_modified: Last edited on %datetime%
+    visits: visits
+    remove: Delete
+    remove_confirm: Are you sure you want to delete the page "%name%"?
+
+create:
+    title: '(Untitled page)'
+
+edit:
+    title: Edit page "%title%"
+    back: Back to the list
+    view: View on the website
+
+move:
+    title: Move page "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this page?
+    submit: Move
+
+categories:
+    index:
+        back: Back to pages
+        title: Pages categories
+        create: New category
+        no_records: Your project does not contain any page for now.
+        no_records_desc: Categories help you organize your content so that it's easier for your visitor to explore.
+        order: Order
+        name: Name
+        number: Pages
+        created: Creation date
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

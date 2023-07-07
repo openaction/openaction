@@ -1,0 +1,42 @@
+{% extends 'console/organization/billing/base.html.twig' %}
+
+{% block page_title 'order.title'|trans({'%number%': order.uuid|toBase62}, 'organization_billing') %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3>
+                {{ 'order.title'|trans({'%number%': order.uuid|toBase62}, 'organization_billing') }}
+            </h3>
+            <div class="text-muted">
+                <span class="mr-3">{{ (order.amount / 100)|format_number }} €</span>
+                {{ order.createdAt|format_datetime }}
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-6">
+                    <h5 class="mb-3 text-success">
+                        <i class="fal fa-check mr-1"></i>
+                        {{ 'order.message.title'|trans({}, 'organization_billing') }}
+                    </h5>
+
+                    <p>
+                        {{ 'order.message.1'|trans({}, 'organization_billing') }}
+                        {{ 'order.message.2'|trans({}, 'organization_billing') }}
+                    </p>
+
+                    <p class="text-muted font-italic">
+                        {{ 'order.message.3'|trans({}, 'organization_billing') }}
+                    </p>
+
+                    <a href="{{ path('console_organization_projects', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-secondary">
+                        {{ 'order.back'|trans({}, 'organization_billing') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/app.a9efa7eb.js"
+      ]
+    },
+    "aos": {
+      "css": [
+        "/build/aos.d3a65e4b.css"
+      ],
+      "js": [
+        "/build/aos.61553d77.js"
+      ]
+    },
+    "ejs": {
+      "js": [
+        "/build/ejs.61553d77.js"
+      ]
+    },
+    "turbo": {
+      "js": [
+        "/build/turbo.35d246e7.js"
+      ]
+    },
+    "aoh": {
+      "css": [
+        "/build/aoh.8e0019b8.css"
+      ]
+    }
+  }
+}

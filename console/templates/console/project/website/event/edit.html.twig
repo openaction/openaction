@@ -1,0 +1,130 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title'|trans({'%title%': event.title}, 'project_events') %}
+
+{% block sidebar_events 'current' %}
+
+{% do expose('endpoints', {
+    'metadata': path('console_website_event_update_metadata', {'projectUuid': event.project.uuid, 'uuid': event.uuid}),
+    'image': path('console_website_event_update_image', {'projectUuid': event.project.uuid, 'uuid': event.uuid}),
+    'shareUrl': domain_share_url(event.project, 'event', event.uuid|toBase62, event.slug),
+}) %}
+
+{% set categoryIds = event.categories|map(p => p.id) %}
+
+{% do expose('event_metadata', {
+    'image': event.image ? cdn_image_url(event.image) : event.image,
+    'publishedAt': event.publishedAt ? event.publishedAt.format('Y-m-d\\TH:i:sP') : null,
+    'categories': categories,
+    'categoryIds': categoryIds,
+    'onlyForMembers': event.onlyForMembers,
+}) %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_events', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_events') }}</span>
+                    </a>
+
+                    <a href="{{ path('console_website_event_view', { 'projectUuid': current_project.uuid, 'uuid': event.uuid }) }}"
+                       class="btn btn-outline-primary btn-sm border-0 ml-2" target="_blank">
+                        <i class="fas fa-eye mr-1"></i>
+                        {{ 'edit.view'|trans({}, 'project_events') }}
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="event--edit"
+                         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
+                        <div class="d-none">
+                            {{ form_widget(form.publishedAt, {'attr': {'data-event--edit-target': 'publishedAt'}}) }}
+                            {{ form_widget(form.categories, {'attr': {'data-event--edit-target': 'categories'}}) }}
+                            {{ form_widget(form.onlyForMembers, {'attr': {'data-event--edit-target': 'onlyForMembers'}}) }}
+                            {{ form_widget(image_form.file, {'attr': {'data-event--edit-target': 'image'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.title, {
+                        'label': 'edit.form.title.label'|trans({}, 'project_events'),
+                        'help': 'edit.form.title.help'|trans({}, 'project_events'),
+                        'attr': {'class': 'form-control-lg'},
+                    }) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'edit.form.details'|trans({}, 'project_events') }}
+                    </div>
+
+                    {{ form_row(form.beginAt, {
+                        'label': 'edit.form.beginAt.label'|trans({}, 'project_events'),
+                        'help': 'edit.form.beginAt.help'|trans({}, 'project_events'),
+                    }) }}
+
+                    <div>
+                        {{ form_row(form.address, {
+                            'label': 'edit.form.address.label'|trans({}, 'project_events'),
+                            'help': 'edit.form.address.help'|trans({}, 'project_events'),
+                        }) }}
+
+                        {{ form_row(form.latitude) }}
+                        {{ form_row(form.longitude) }}
+                    </div>
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'edit.form.content.label'|trans({}, 'project_events') }}
+                    </div>
+
+                    {{ form_row(form.content, {
+                        'label': false,
+                        'help': 'edit.form.content.help'|trans({}, 'project_events'),
+                    }) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'edit.form.button.title'|trans({}, 'project_events') }}
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="form-text text-muted">
+                            {{ 'edit.form.button.help'|trans({}, 'project_events') }}
+                        </small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-5">
+                            {{ form_row(form.buttonText, {
+                                'label': 'edit.form.buttonText.label'|trans({}, 'project_events'),
+                                'help': 'edit.form.buttonText.help'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                        <div class="col-12 col-lg-7">
+                            {{ form_row(form.url, {
+                                'label': 'edit.form.buttonUrl.label'|trans({}, 'project_events'),
+                                'help': 'edit.form.buttonUrl.help'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'edit.form.submit'|trans({}, 'project_events') }}
+                        </button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

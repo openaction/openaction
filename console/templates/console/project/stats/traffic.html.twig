@@ -1,0 +1,401 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'traffic.title'|trans({}, 'project_stats') %}
+
+{% block sidebar_stats_traffic 'current' %}
+
+{% block head_javascripts %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw==" crossorigin="anonymous" />
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {
+            packages: ['corechart', 'geochart'],
+            mapsApiKey: 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{{ 'traffic.traffic.date'|trans({}, 'project_stats') }}');
+            data.addColumn('number', '{{ 'traffic.traffic.page_views'|trans({}, 'project_stats') }}');
+            data.addColumn('number', '{{ 'traffic.traffic.users'|trans({}, 'project_stats') }}');
+            data.addRows(JSON.parse('{{ dashboard.traffic|json_encode|e('js') }}'));
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart-traffic'));
+            chart.draw(data, {
+                hAxes: [{ textStyle: { fontSize: 12, color: '#999' } }],
+                legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#999' } },
+                colors: ['#24acfc', '#00c5e5'],
+                chartArea: { width: '90%', height: '80%', top: 20 }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-light">
+            <h3>
+                {{ 'traffic.title'|trans({}, 'project_stats') }}
+            </h3>
+
+            <div class="text-muted">
+                <span class="mr-2">
+                    {{ 'traffic.periods.label'|trans({}, 'project_stats') }}
+                </span>
+
+                {% for period in periods %}
+                    {% if current_period == period %}
+                        <span class="font-weight-bold text-dark mr-2">
+                            {{ ('traffic.periods.'~period)|trans({}, 'project_stats') }}
+                        </span>
+                    {% else %}
+                        <a href="{{ path('console_stats_traffic', {'projectUuid': current_project.uuid, 'period': period}) }}"
+                           class="mr-2">
+                            {{ ('traffic.periods.'~period)|trans({}, 'project_stats') }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="p-4">
+
+            <div class="stats-report">
+                <div class="row justify-content-center mt-3 mb-5">
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'traffic.totals.users'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="users">
+                            {{ dashboard.totals.users|format_number }}
+                        </h1>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'traffic.totals.page_views'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="page_views">
+                            {{ dashboard.totals.page_views|format_number }}
+                        </h1>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                <i class="fas fa-bolt text-danger mr-1"></i>
+                                {{ 'traffic.totals.live'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-controller="project--stats--live"
+                            data-url="{{ path('console_stats_traffic_live', {'projectUuid': current_project.uuid}) }}">
+                            -
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h3>
+                        {{ 'traffic.traffic.label'|trans({}, 'project_stats') }}
+                    </h3>
+
+                    <div id="chart-traffic" class="chart-lg"></div>
+                </div>
+
+                <div class="mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <h3>
+                                {{ 'traffic.pages.label'|trans({}, 'project_stats') }}
+                            </h3>
+
+                            <div class="p-2">
+                                <div class="chart-table">
+                                    {% for label, pageViews in dashboard.pages %}
+                                        <div class="chart-table-row">
+                                            <div class="chart-table-row-value">
+                                                {{ pageViews|format_number }}
+                                            </div>
+
+                                            <div class="chart-table-row-label">
+                                                <abbr title="{{ label }}">
+                                                    {{ label|u.truncate(60, '…') }}
+                                                </abbr>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <h3>
+                                {{ 'traffic.sources.label'|trans({}, 'project_stats') }}
+                            </h3>
+
+                            <div class="p-2">
+                                <div class="chart-table">
+                                    {% for label, pageViews in dashboard.sources %}
+                                        <div class="chart-table-row">
+                                            <div class="chart-table-row-value">
+                                                {{ pageViews|format_number }}
+                                            </div>
+
+                                            <div class="chart-table-row-label">
+                                                <abbr title="{{ label }}">
+                                                    {{ label|u.truncate(25, '…') }}
+                                                </abbr>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h3>
+                                {{ 'traffic.countries.label'|trans({}, 'project_stats') }}
+                            </h3>
+
+                            <div class="p-2">
+                                <div class="chart-percentage">
+                                    {% for country, percentage in dashboard.countries %}
+                                        <div class="chart-percentage-row">
+                                            <div class="chart-percentage-row-label">
+                                            <span class="flag-icon flag-icon-{{ country }}"
+                                                  title="{{ country|upper|country_name }}"></span>
+                                            </div>
+
+                                            <div class="chart-percentage-row-value">
+                                                <div class="chart-percentage-row-value-hover">
+                                                    <span class="chart-percentage-row-value-hover-percentage">
+                                                        {{ percentage|format_number }}%
+                                                    </span>
+                                                    <span class="chart-percentage-row-value-hover-absolute">
+                                                        {{ country|upper }} :
+                                                        {{ dashboard.countriesRaw[country]|format_number }}
+                                                        {{ 'traffic.percentages.absolute'|trans({}, 'project_stats') }}
+                                                    </span>
+                                                </div>
+                                                <div class="chart-percentage-row-value-bar"
+                                                     style="width: {{ percentage }}%;"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h3>
+                                {{ 'traffic.browsers.label'|trans({}, 'project_stats') }}
+                            </h3>
+
+                            {% set icons = {
+                                'chrome': 'fab fa-chrome',
+                                'firefox': 'fab fa-firefox-browser',
+                                'safari': 'fab fa-safari',
+                                'edge': 'fab fa-edge',
+                                'opera': 'fab fa-opera',
+                                'msie': 'fab fa-internet-explorer',
+                                'android browser': 'fab fa-android',
+                            } %}
+
+                            <div class="p-2">
+                                <div class="chart-percentage">
+                                    {% for browser, percentage in dashboard.browsers %}
+                                        <div class="chart-percentage-row">
+                                            <div class="chart-percentage-row-label">
+                                                <i class="{{ icons[browser]|default('fas fa-circle default-icon') }}"
+                                                   title="{{ browser }}"></i>
+                                            </div>
+
+                                            <div class="chart-percentage-row-value">
+                                                <div class="chart-percentage-row-value-hover">
+                                                    <span class="chart-percentage-row-value-hover-percentage">
+                                                        {{ percentage|format_number }}%
+                                                    </span>
+                                                    <span class="chart-percentage-row-value-hover-absolute">
+                                                        {{ browser|title }} :
+                                                        {{ dashboard.browsersRaw[browser]|format_number }}
+                                                        {{ 'traffic.percentages.absolute'|trans({}, 'project_stats') }}
+                                                    </span>
+                                                </div>
+                                                <div class="chart-percentage-row-value-bar" style="width: {{ percentage }}%;"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h3>
+                                {{ 'traffic.platforms.label'|trans({}, 'project_stats') }}
+                            </h3>
+
+                            {% set icons = {
+                                'android': 'fab fa-android',
+                                'iphone': 'fab fa-apple',
+                                'windows': 'fab fa-windows',
+                                'macintosh': 'fad fa-desktop',
+                                'linux': 'fab fa-linux',
+                                'ipad': 'fab fa-apple',
+                                'chrome os': 'fab fa-chrome',
+                            } %}
+
+                            <div class="p-2">
+                                <div class="chart-percentage">
+                                    {% for platform, percentage in dashboard.platforms %}
+                                        <div class="chart-percentage-row">
+                                            <div class="chart-percentage-row-label">
+                                                <i class="{{ icons[platform]|default('fas fa-circle default-icon') }}"
+                                                   title="{{ platform }}"></i>
+                                            </div>
+
+                                            <div class="chart-percentage-row-value">
+                                                <div class="chart-percentage-row-value-hover">
+                                                    <span class="chart-percentage-row-value-hover-percentage">
+                                                        {{ percentage|format_number }}%
+                                                    </span>
+                                                    <span class="chart-percentage-row-value-hover-absolute">
+                                                        {{ platform|title }} :
+                                                        {{ dashboard.platformsRaw[platform]|format_number }}
+                                                        {{ 'traffic.percentages.absolute'|trans({}, 'project_stats') }}
+                                                    </span>
+                                                </div>
+                                                <div class="chart-percentage-row-value-bar" style="width: {{ percentage }}%;"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 mb-3">
+                        <h3>
+                            {{ 'traffic.utm_tags.title'|trans({}, 'project_stats') }}
+                        </h3>
+
+                        <div class="mb-3 text-muted">
+                            {{ 'traffic.utm_tags.description'|trans({}, 'project_stats') }}
+                            <a href="https://ga-dev-tools.web.app/ga4/campaign-url-builder/" target="_blank">
+                                {{ 'traffic.utm_tags.link'|trans({}, 'project_stats') }}</a>.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h5>
+                                    {{ 'traffic.utm_sources.label'|trans({}, 'project_stats') }}
+                                </h5>
+
+                                <div class="p-2">
+                                    <div class="chart-table">
+                                        {% for label, pageViews in dashboard.utmSources %}
+                                            <div class="chart-table-row">
+                                                <div class="chart-table-row-value">
+                                                    {{ pageViews|format_number }}
+                                                </div>
+
+                                                <div class="chart-table-row-label">
+                                                    <abbr title="{{ label }}">
+                                                        {{ label|u.truncate(25, '…') }}
+                                                    </abbr>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <h5>
+                                    {{ 'traffic.utm_mediums.label'|trans({}, 'project_stats') }}
+                                </h5>
+
+                                <div class="p-2">
+                                    <div class="chart-table">
+                                        {% for label, pageViews in dashboard.utmMedium %}
+                                            <div class="chart-table-row">
+                                                <div class="chart-table-row-value">
+                                                    {{ pageViews|format_number }}
+                                                </div>
+
+                                                <div class="chart-table-row-label">
+                                                    <abbr title="{{ label }}">
+                                                        {{ label|u.truncate(25, '…') }}
+                                                    </abbr>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <h5>
+                                    {{ 'traffic.utm_campaigns.label'|trans({}, 'project_stats') }}
+                                </h5>
+
+                                <div class="p-2">
+                                    <div class="chart-table">
+                                        {% for label, pageViews in dashboard.utmCampaign %}
+                                            <div class="chart-table-row">
+                                                <div class="chart-table-row-value">
+                                                    {{ pageViews|format_number }}
+                                                </div>
+
+                                                <div class="chart-table-row-label">
+                                                    <abbr title="{{ label }}">
+                                                        {{ label|u.truncate(25, '…') }}
+                                                    </abbr>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 mb-3">
+                        <h3>
+                            {{ 'traffic.events.title'|trans({}, 'project_stats') }}
+                        </h3>
+
+                        <div class="mb-3 text-muted">
+                            {{ 'traffic.events.description'|trans({}, 'project_stats') }}
+                        </div>
+                    </div>
+
+                    <div class="p-2 mb-4">
+                        <div class="chart-table">
+                            {% for label, pageViews in dashboard.events %}
+                                <div class="chart-table-row">
+                                    <div class="chart-table-row-value">
+                                        {{ pageViews|format_number }}
+                                    </div>
+
+                                    <div class="chart-table-row-label">
+                                        <abbr title="{{ label }}">
+                                            {{ label|u.truncate(25, '…') }}
+                                        </abbr>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

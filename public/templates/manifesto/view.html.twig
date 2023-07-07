@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title topic.title %}
+
+{% block body_class 'body-manifesto-view' %}
+
+{% block meta_canonical url('manifesto_view', {'id': topic.id, 'slug': topic.slug}) %}
+{% block meta_image topic.sharer|default(current_project.sharer|default('')) %}
+{% block meta_description topic.content|default('') %}
+
+{% block page %}
+    <div data-controller="citipo-contentview"
+         data-citipo-contentview-type-value="manifesto"
+         data-citipo-contentview-id-value="{{ topic.id }}"></div>
+
+    {% set topic = topic.toArray() %}
+
+    {% set previous = null %}
+    {% if topic.previous is defined %}
+        {% set previous = topic.previous|merge({
+            url: path('manifesto_view', {'id': topic.previous.id, 'slug': topic.previous.slug}),
+            backgroundColor: hex2rgba(topic.previous.color, 0.1),
+        }) %}
+    {% endif %}
+
+    {% set next = null %}
+    {% if topic.next is defined %}
+        {% set next = topic.next|merge({
+            url: path('manifesto_view', {'id': topic.next.id, 'slug': topic.next.slug}),
+            backgroundColor: hex2rgba(topic.next.color, 0.1),
+        }) %}
+    {% endif %}
+
+    {% set topicPayload = topic|merge({
+        previous: previous,
+        next: next,
+        backgroundColor: hex2rgba(topic.color, 0.1),
+    }) %}
+
+    {% set payload = {
+        'current_project': current_project.toArray,
+        'enable_embed_consent': enable_embed_consent,
+        'manifesto_title': current_project.terminology.manifesto,
+        'manifesto_url': path('manifesto_list'),
+        'section_id': 'manifesto',
+        'section_name': current_project.terminology.manifesto,
+        'section_url': path('manifesto_list'),
+        'topic': topicPayload,
+        'default_image': asset('res/default.jpg'),
+        'social_sharers': include('_include/social_sharers.html.twig', {
+            'route': 'manifesto_view',
+            'params': {'id': topic.id, 'slug': topic.slug}
+        }),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/manifesto-view.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+

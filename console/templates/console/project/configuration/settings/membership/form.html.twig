@@ -1,0 +1,115 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'membership.form.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_membership 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_membership', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'membership.back'|trans({}, 'project_settings') }}</span>
+            </a>
+
+            <h3>
+                {{ 'membership.form.title'|trans({}, 'project_settings') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'membership.form.desc'|trans({}, 'project_settings')|raw }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+
+                    <div class="text-uppercase text-muted mb-2">
+                        {{ 'membership.form.label.introduction.title'|trans({}, 'project_settings') }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ 'membership.form.label.introduction.desc'|trans({}, 'project_settings') }}
+                    </div>
+
+                    {{ form_row(form.introduction, {'label': false, 'attr': {'rows': 5}}) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'membership.form.label.fields.title'|trans({}, 'project_settings') }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ 'membership.form.label.fields.desc'|trans({}, 'project_settings') }}
+                    </div>
+
+                    {% set fields = [
+                        'email',
+                        'password',
+                        'profileFirstName',
+                        'profileLastName',
+
+                        'profileFormalTitle',
+                        'profileMiddleName',
+                        'profileBirthdate',
+                        'profileGender',
+                        'profileNationality',
+                        'profileCompany',
+                        'profileJobTitle',
+
+                        'contactPhone',
+                        'contactWorkPhone',
+
+                        'addressStreetLine1',
+                        'addressStreetLine2',
+                        'addressZipCode',
+                        'addressCity',
+                        'addressCountry',
+
+                        'socialFacebook',
+                        'socialTwitter',
+                        'socialLinkedIn',
+                        'socialTelegram',
+                        'socialWhatsapp',
+
+                        'settingsReceiveNewsletters',
+                        'settingsReceiveSms',
+                        'settingsReceiveCalls',
+                    ] %}
+
+                    {% set unmappedFields = ['email', 'password', 'profileFirstName', 'profileLastName'] %}
+
+                    {% for field in fields %}
+                        <div class="row align-items-center mb-2">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                {{ form_label(form[field], ('membership.form.label.'~field)|trans({}, 'project_settings')) }}
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6">
+                                {{ form_widget(form[field]) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {% if field in unmappedFields %}
+                                    <small class="text-muted">
+                                        {{ 'membership.form.label.unmapped'|trans({}, 'project_settings') }}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {{ form_errors(form[field]) }}
+                    {% endfor %}
+
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'save'|trans({}, 'project_settings') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

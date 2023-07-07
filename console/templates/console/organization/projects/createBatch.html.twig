@@ -1,0 +1,76 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'create_batch.title'|trans({}, 'organization_projects') %}
+
+{% block content %}
+    <div class="container mt-5 pt-5">
+        <div class="text-center mb-5">
+            <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'create_batch.back'|trans({}, 'organization_projects') }}</span>
+            </a>
+
+            <h2 class="mt-3 mb-4">
+                {{ 'create_batch.title'|trans({}, 'organization_projects') }}
+            </h2>
+
+            <div class="text-muted">
+                {{ 'create_batch.subtitle'|trans({}, 'organization_projects') }}
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {% for i, item in form.items %}
+            <div class="world-block p-3 mb-2">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="mb-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'create_batch.form.name'|trans({}, 'organization_projects') }}
+                            </small>
+                        </div>
+
+                        {{ form_widget(item.name) }}
+                        {{ form_errors(item.name) }}
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mb-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'create_batch.form.adminEmail'|trans({}, 'organization_projects') }}
+                            </small>
+                        </div>
+
+                        {{ form_widget(item.adminEmail) }}
+                        {{ form_errors(item.adminEmail) }}
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mb-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'create_batch.form.areas'|trans({}, 'organization_projects') }}
+                            </small>
+                        </div>
+
+                        <div data-controller="project--create-batch" data-key="{{ i }}"
+                             class="organization-manage-project-details">
+                            <div class="d-none">
+                                {{ form_widget(item.type, {'attr': {'data-project--create-batch-target': 'type'}}) }}
+                                {{ form_widget(item.areasIds, {'attr': {'data-project--create-batch-target': 'areas'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="text-center mt-5">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ 'create.form.submit'|trans({}, 'organization_projects') }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.notification.new_invoice.title'|trans({}, 'emails', locale) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.notification.new_invoice.desc'|trans({'%organization%': organization_name}, 'emails', locale)|raw }}
+    </p>
+{% endblock %}

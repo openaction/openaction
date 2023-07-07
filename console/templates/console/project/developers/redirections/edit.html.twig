@@ -1,0 +1,50 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'developers.redirections.form.edit_title'|trans({}, 'project') %}
+
+{% block sidebar_redirections 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            <a href="{{ path('console_developers_redirections', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'developers.redirections.back'|trans({}, 'project') }}</span>
+            </a>
+
+            <br />
+
+            {{ 'developers.redirections.form.edit_title'|trans({}, 'project') }}
+        </h3>
+
+        <div class="bg-light">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.source, {
+                        'label': 'developers.redirections.form.source.label'|trans({}, 'project'),
+                        'help': 'developers.redirections.form.source.help'|trans({}, 'project'),
+                    }) }}
+
+                    {{ form_row(form.target, {
+                        'label': 'developers.redirections.form.target.label'|trans({}, 'project'),
+                        'help': 'developers.redirections.form.target.help'|trans({}, 'project'),
+                    }) }}
+
+                    {{ form_row(form.code, {
+                        'label': 'developers.redirections.form.code.label'|trans({}, 'project'),
+                        'help': 'developers.redirections.form.code.help'|trans({}, 'project'),
+                    }) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'developers.redirections.form.save'|trans({}, 'project') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

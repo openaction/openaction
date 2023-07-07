@@ -1,0 +1,41 @@
+{% apply inky_to_html|inline_css %}
+    {% block metas '' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <style>
+        {{ include('emails/community/style/foundation.css.twig') }}
+        {{ include('emails/community/style/content.css.twig') }}
+
+        {% block stylesheets '' %}
+    </style>
+
+    <table class="body">
+        <tr>
+            <td>
+                <container>
+                    <spacer size="32"></spacer>
+
+                    {% block header '' %}
+
+                    <spacer size="32"></spacer>
+
+                    {% block content '' %}
+
+                    <spacer size="48"></spacer>
+                </container>
+
+                <container class="footer">
+                    <row>
+                        <columns>
+                            <spacer size="32"></spacer>
+
+                            {% block footer '' %}
+
+                            <spacer size="32"></spacer>
+                        </columns>
+                    </row>
+                </container>
+            </td>
+        </tr>
+    </table>
+{% endapply %}

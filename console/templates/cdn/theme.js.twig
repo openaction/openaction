@@ -1,0 +1,13 @@
+{% autoescape false %}
+
+{#
+# Include the project theme JS
+#}
+{{ project.websiteTheme.templates.script }}
+
+{#
+ # Include the project custom JS
+ #}
+{{ project.websiteCustomJs }}
+
+{% endautoescape %}

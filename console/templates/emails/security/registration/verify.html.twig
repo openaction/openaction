@@ -1,0 +1,21 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.registration.verify.title'|trans({}, 'emails', locale|default('en')) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.registration.verify.desc'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand"
+            href="{{ url('security_register_finalizing', {'uuid': registration_uuid, 'token': registration_token}) }}">
+        {{ 'transactional.registration.verify.link'|trans({}, 'emails', locale|default('en')) }}
+    </button>
+{% endblock %}
+

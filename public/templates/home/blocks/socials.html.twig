@@ -1,0 +1,17 @@
+{% set payload = {
+    'current_project': current_project.toArray,
+    'enable_embed_consent': enable_embed_consent,
+    'socials_title': current_project.terminology.socialNetworks,
+    'facebook_url': block.config.facebook,
+    'twitter_url': block.config.twitter,
+    'twitter_label': 'socials.twitter'|trans,
+    'titleLabel': 'base.embed-consent.title'|trans,
+    'descriptionLabel': 'base.embed-consent.description'|trans,
+    'acceptLabel': 'base.embed-consent.accept'|trans,
+    'externalLabel': 'base.embed-consent.external'|trans,
+    'cancelLabel': 'base.embed-consent.cancel'|trans,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-socials.html.twig' with payload %}
+{% endsandbox %}

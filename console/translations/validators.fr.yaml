@@ -1,0 +1,55 @@
+code_invalid: Code d'identification invalide.
+
+console:
+    user:
+        two_factor:
+            invalid_code: Le code d'identification %code% est invalide.
+        password:
+            error:
+                new_equal_to_old: Votre nouveau mot de passe doit être différent du précédent.
+
+    organization:
+        subscription:
+            missing_required_slots: |
+                Votre organisation a %current_count% projets actifs. Vous devez en supprimer
+                certains avant de pouvoir diminuer le nombre d'emplacements de projet disponible
+                dans votre abonnement en dessous de %current_count%..
+
+        manage_project:
+            missing_area: Ce champ est requis pour créer un projet local.
+            missing_tag: Ce champ est requis pour créer un projet thématique.
+            missing_module: Vous devez sélectionner au moins un module.
+            missing_tool: Vous devez sélectionner au moins un outil du module.
+
+        team:
+            empty_permissions: Vous devez sélectionner une permission au minimum.
+
+        community:
+            email_not_equal: Vous devez indiquer un email différent de votre email actuel.
+            minimal_data_required: |
+                Vous devez indiquer au moins un nom de famille, une adresse email ou un numéro de téléphone.
+
+    project:
+        emailing:
+            email_invalid: L'adresse de l'expéditeur est invalide
+            reply_to_invalid: L'adresse de reply-to est invalide
+
+        settings:
+            socials:
+                invalid_url: La valeur entrée n'est pas une URL valide (http et https uniquement)
+                invalid_length: La valeur entrée est trop longue. Elle doit avoir {{ limit }} signes ou moins.
+                invalid_email: La valeur entrée n'est pas un email valide.
+                invalid_facebook: Ce lien ne semble pas être un lien Facebook valide.
+                invalid_instagram:  Ce lien ne semble pas être un lien Instagram valide.
+                invalid_twitter: Ce lien ne semble pas être un lien Twitter valide.
+                invalid_youtube: Ce lien ne semble pas être un lien Youtube valide.
+                invalid_linkedin: Ce lien ne semble pas être un lien Linkedin valide.
+                invalid_medium: Ce lien ne semble pas être un lien Medium valide.
+                invalid_telegram: Ce nom d'utilisateur Telegram n'est pas valide
+                invalid_snapchat: Ce nom d'utilisateur Snapchat n'est pas valide
+        appearance:
+            homepage:
+                socials:
+                    invalid_length: Cette valeur est trop longue. Elle devrait contenir {{ limit }} caractères ou moins.
+                    invalid_facebook: Cette URL n'est pas une URL Facebook valide.
+                    invalid_twitter: Cette URL n'est pas une URL Twitter valide.

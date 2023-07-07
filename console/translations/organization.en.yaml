@@ -1,0 +1,93 @@
+create:
+    page_title: Create an organization
+    title: Tell us more about your organization
+    subtitle: Then create your first projects and invite your team!
+    form:
+        name:
+            label: Organization name
+            help: |
+                This will show up in menus and headings. It will usually be (or include) the name
+                of your company or association. You will be able to change it later. Maximum 60 characters.
+        button: Continue
+
+no_orga:
+    title: You are not associated to any organization on Citipo.
+    launch: |
+        Citipo brings together all the features we know to be the most important:
+        website, contact database, emailings and text messages, participatory democracy,
+        team management, ...
+    learn_more: 'Learn more about Citipo:'
+    ask_citipo: 'Contact us to continue using Citipo:'
+
+expired:
+    title: Your Citipo subscription has expired.
+    end_date: Your organization's subscription came to a close. It officially ended on %date%.
+    data: If you don't subscribe, your organization's data will be deleted in 90 days.
+    ask_citipo: 'Contact us to renew your subscription and continue using Citipo:'
+
+not_enough_slots:
+    title: Upgrade now to create a new project
+    desc: '<strong>%slots% of the %slots% project slots</strong> of %organization% are used.'
+    upgrade: 'To create a new project, you need to upgrade your subscription.'
+    ask_citipo: 'Contact us to upgrade your subscription and create a new project:'
+
+upgrade:
+    title: Upgrade now
+    desc: Your organization is using the %plan% plan, which does not include this feature.
+    pricing: Discover our plans
+    contact_us: Contact us to upgrade
+    plans:
+        essential: Essential
+        standard: Standard
+        premium: Premium
+        organization: Organization
+    features:
+        generic:
+            title: Discover all the features of Citipo on <a href="https://citipo.com/en">citipo.com</a>.
+            desc: Citipo is able to help you at every step of your projects.
+        website_pages:
+            title: Publish captivating pages to acquire new contacts
+            desc: Our content editor allow you to describe your ideas with no technical skill required.
+        website_posts:
+            title: Publish captivating news to acquire new contacts
+            desc: Our content editor allow you to describe your news with no technical skill required.
+        website_events:
+            title: Organize physical or virtual event to mobilize your community
+            desc: Show them on your website in minutes.
+        website_forms:
+            title: Enrich your database with the customizable surveys
+            desc: Constitue a high-quality contacts database to better mobilize.
+        website_documents:
+            title: Share your documents through your website
+            desc: Use the domain name of your website to share public documnts easily.
+        website_trombinoscope:
+            title: Show your team (candidates, elected officials, activists, ...)
+            desc: Display a list of persons and their photos on your website.
+        website_manifesto:
+            title: Explain your ideas and proposals
+            desc: Display a list of proposals organized by topics and once elected, associate a progress status to these proposals to show your actions.
+        feature_website_social_sharers:
+            title: Use the sharing tools to amplify your social networks
+            desc: Configure your social accounts and the social share links to increase the impact of your communications on social networks.
+        feature_community_emailing_tags:
+            title: Add tags on your contacts to better target your communication
+            desc: Add tags for roles, themes, status, interests, ...
+        feature_community_contacts_flags:
+            title: Organize your processes and onboard your new contacts
+            desc: Main tags are small data associated to your contacts helping you monitor their evolution in your internal processes.
+        feature_community_automations:
+            title: Automate your interactions to better engage your supporters
+            desc: Send emails automatically to your contacts when they do specific actions.
+        feature_community_contacts_history:
+            title: Keep a detailed history of interactions
+            desc: Keep a detailed history of interactions with your contacts to better integrate them in your community.
+        feature_api:
+            title: Implement a fully custom design or develop custom integrations
+            desc: |
+                Getting an access to the Citipo API for your projects allow you to fully customize the look of the
+                websites powered by Citipo and to better integrate Citipo in your projects.
+        feature_statistics:
+            title: Measure the impact of your actions to choose which one to do again
+            desc: |
+                Citipo statistics help you understand which actions (events, blog posts, emailings, surveys, ...)
+                had the most impact on your community, helping you decide which one to do again.

@@ -1,0 +1,133 @@
+list:
+    page_title: Team
+    description: Manage the access permission of your team
+    invite: Invite a new collaborator
+    search: Find a collaborator ...
+    label:
+        administrator: Administrator
+        collaborator: Collaborator
+        full_access: Access to all projects
+    more_count: and %count% more
+    pending:
+        single: '%pending% pending invite'
+        plural: '%pending% pending invites'
+
+pending:
+    title: Pending invites
+    page_title: Pending invites
+    description: These invites are sent but not yet validated
+    back: Back to the list of collaborators
+    delete_message: Are you sure you want to delete the invite of "%user%"?
+    more_count: and %count% more
+    label:
+        administrator: Administrator
+        collaborator: Collaborator
+        full_access: Access to all projects
+
+permissions:
+    check_all: Grant full access to this project
+    detailed_permissions: Detailed permissions
+
+    website: Website
+
+    pages: Content pages
+    website_pages_manage: Manage the content pages
+    website_pages_manage_categories: Manage the page categories
+
+    posts: Posts
+    website_posts_manage_drafts: Manage the draft posts
+    website_posts_publish: Publish posts
+    website_posts_manage_published: Manage the published posts
+    website_posts_manage_categories: Manage the post categories
+
+    documents: Documents
+    website_documents_manage: Manage the documents
+
+    trombinoscope: Trombinoscope
+    website_trombinoscope_manage_drafts: Manage trombinoscope drafts
+    website_trombinoscope_publish: Publish trombinoscope persons
+    website_trombinoscope_manage_published: Manage the published trombinoscope
+    website_trombinoscope_manage_categories: Manage the trombinoscope categories
+
+    manifesto: Manifesto
+    website_manifesto_manage_drafts: Manage the draft proposals
+    website_manifesto_publish: Publish proposals
+    website_manifesto_manage_published: Manage the published proposals
+
+    stats: Statistics
+    website_access_stats: Access website visits statistics
+    community_access_stats: Access community statistics
+
+    community: Community
+
+    contacts: Contacts
+    community_contacts_view: View the contacts
+    community_contacts_update: Update contacts details
+    community_contacts_delete: Delete contacts
+    community_contacts_tag_add: Create new contact tags
+
+    emailing: Email campaigns
+    community_emailing_manage_drafts: Manage draft emails
+    community_emailing_send: Send email campaigns
+    community_emailing_stats: Access emails statistics
+
+    texting: Text campaigns
+    community_texting_manage_drafts: Manage draft texts
+    community_texting_send: Send text campaigns
+    community_texting_stats: Access texts statistics
+
+    phoning: Phone campaigns
+    community_phoning_manage_drafts: Manage draft phone campaigns
+    community_phoning_manage_active: Start and stop phone campaigns
+    community_phoning_stats: Access phone campaigns statistics
+
+    printing: Print campaigns
+    community_printing_manage_drafts: Manage draft print campaigns
+    community_printing_order: Order and pay for print campaigns
+    community_printing_stats: Access print campaigns statistics
+
+    events: Events
+    website_events_manage_drafts: Manage the draft events
+    website_events_publish: Publish events
+    website_events_manage_published: Manage the published events
+
+    forms: Forms
+    website_forms_manage: Manage the forms
+    website_forms_access_results: View forms results
+
+    configuration: Configuration
+
+    settings: Settings
+    project_config_appearance: Configure the project appearance (website, emails, ...)
+    project_config_socials: Configure the social integrations
+
+    developer: Developers
+    project_developer_theme: Edit the project theme code
+    project_developer_redirections: Manage URL redirections
+    project_developer_access: Access to the developer settings
+
+invite_member:
+    back: Back to your team
+    page_title: Invite a new collaborator
+    title: Invite a new collaborator
+    email: E-mail address of your collaborator
+    locale: What is the prefered language of this collaborator to work on Citipo?
+    labels:
+        label: Custom external permissions
+        help: |
+            If you wish to differentiate collaborators in the Citipo API, you can assign them external permissions.
+            These permissions are simple labels which will be accessible from the API so that you can adapt your
+            tools behavior based on them.
+    is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
+    permissions: 'Or configure specific permissions per project:'
+    button: Send the invite
+
+permission_member:
+    back: Back to your team
+    page_title: Update the permissions of %name%
+    title: Update the permissions of %name%
+    is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
+    permissions: 'Or configure specific permissions per project:'
+    button: Save
+    button_remove: Remove
+    remove_confirm: Are you sure you want to delete the access of %name% to your organization?

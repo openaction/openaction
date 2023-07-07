@@ -1,0 +1,42 @@
+{% apply inky_to_html|inline_css(source('@emails/inky.css'), source('@emails/custom.css')) %}
+    {% block style '' %}
+
+    <spacer size="16"></spacer>
+
+    <container>
+        <row class="header">
+            <columns>
+                <spacer size="16"></spacer>
+
+                <a href="{{ url('homepage_redirect') }}">
+                    <center>
+                        <img src="{{ email is defined ? email.image('@emails/logo.png') : asset('emails/logo.png') }}"
+                             class="logo" alt="{{ 'platform'|trans({}, 'global', locale|default('en')) }}" />
+                    </center>
+                </a>
+            </columns>
+        </row>
+        <row>
+            <columns>
+                <spacer size="32"></spacer>
+
+                {% block content '' %}
+
+                <spacer size="16"></spacer>
+
+                <p>
+                    {{ 'transactional.greetings'|trans({}, 'emails', locale|default('en'))|raw }}
+                </p>
+
+                <spacer size="32"></spacer>
+
+                <center>
+                    <small>
+                        {{ 'transactional.footer'|trans({}, 'emails', locale|default('en')) }}
+                        <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}">{{ 'contact_email'|trans({}, 'global', locale|default('en')) }}</a>.
+                    </small>
+                </center>
+            </columns>
+        </row>
+    </container>
+{% endapply %}

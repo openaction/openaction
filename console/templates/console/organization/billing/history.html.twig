@@ -1,0 +1,78 @@
+{% extends 'console/organization/billing/base.html.twig' %}
+
+{% block page_title 'history.title'|trans({}, 'organization_billing') %}
+
+{% block sidebar_history 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3>
+                {{ 'history.title'|trans({}, 'organization_billing') }}
+            </h3>
+            <div class="text-muted">
+                {{ 'history.desc'|trans({}, 'organization_billing') }}
+            </div>
+        </div>
+
+        <div class="bg-light">
+            <table class="world-table table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">
+                        {{ 'history.table.order'|trans({}, 'organization_billing') }}
+                    </th>
+                    <th scope="col" class="text-center">
+                        {{ 'history.table.number'|trans({}, 'organization_billing') }}
+                    </th>
+                    <th scope="col" class="text-center">
+                        {{ 'history.table.amount'|trans({}, 'organization_billing') }}
+                    </th>
+                    <th scope="col" class="world-table-date">
+                        {{ 'history.table.date'|trans({}, 'organization_billing') }}
+                    </th>
+                    <th scope="col" class="world-table-actions"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for invoice in invoices %}
+                    <tr>
+                        <td class="text-center">
+                            {{ invoice.uuid|toBase62 }}
+                        </td>
+                        <td class="text-center">
+                            {{ invoice.invoiceNumber }}
+                        </td>
+                        <td class="text-center">
+                            {{ (invoice.amount / 100)|format_number }} €
+                        </td>
+                        <td class="world-table-date text-center">
+                            {{ invoice.createdAt|format_datetime('medium', 'short') }}
+                        </td>
+                        <td class="world-table-actions-lg">
+                            {% if invoice.invoicePdf %}
+                                <a href="{{ path('console_organization_billing_download', {'organizationUuid': current_organization.uuid, 'uuid': invoice.uuid}) }}"
+                                   target="_blank" class="btn btn-sm btn-outline-primary border-0">
+                                    <i class="fad fa-cloud-download mr-1"></i>
+                                    {{ 'history.table.download'|trans({}, 'organization_billing') }}
+                                </a>
+                            {% else %}
+                                <small class="text-muted font-italic">
+                                    {{ 'history.table.generating'|trans({}, 'organization_billing') }}
+                                </small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center p-5">
+                            {{ 'history.table.no_result'|trans({}, 'organization_billing') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

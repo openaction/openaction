@@ -1,0 +1,49 @@
+accounts:
+    title: Your social accounts
+    help: Configure your social network accounts to show them on your website and in your campaigns.
+    email: Which public email address should your visitors be able to contact you on?
+    facebook: What is the URL of your Facebook page?
+    twitter: What is the URL of your Twitter account?
+    instagram: What is the URL of your Instagram account?
+    linkedIn: What is the URL of your LinkedIn account?
+    youtube: What is the URL of your YouTube channel?
+    medium: What is the URL of your Medium account?
+    telegram: What is the username of your Telegram account?
+    snapchat: What is the username of your Snapchat account?
+    submit: Save
+
+sharers:
+    title: Social sharing tools
+    help: Configure which social networks sharing buttons should be displayed on your website content.
+    label: Which social links should be displayed on your website content pages?
+    label_help: Social links are tools allowing your visitors to share content on their social networks easily.
+    facebook: Share on Facebook
+    twitter: Share on Twitter
+    linkedin: Share on LinkedIn
+    telegram: Share on Telegram
+    whatsapp: Share on Whatsapp
+    email: Share by e-mail
+    submit: Save
+
+metas:
+    title: Social sharing details
+    help: Configure how your website appears in social networks
+    metaTitle:
+        label: Website title
+        help: |
+            This title is shown in social networks and search engines to potential
+            visitors. You should keep it very short (under 40 characters) and describe
+            the main topic of the website: the name of your organization, event, ...
+    metaDescription:
+        label: Website description
+        help: |
+            This description is shown in social networks and search engines to potential
+            visitors. You should use it to describe the content of your website.
+            You should keep it under 150 characters.
+    sharer:
+        label: Website share image
+        help: |
+            This image is used in social networks when a link to your website is shared
+            by a user. You should use this image to show the content are about to see
+            when they click on the link. Use an image by 1200x630 pixels for the best result.
+    submit: Save

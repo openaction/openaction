@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnfocusReport version="3.0" unit="mm" xml:lang="fr-FR">
+  <PreflightReport errors="1" criticalfailures="0" noncriticalfailures="0" signoffs="0" fixes="0" warnings="0">
+    <Errors>
+      <PreflightReportItem ActionID="3004">
+        <Message>Des objets transparents ont été trouvés (1x à la page 1)</Message>
+        <StringContext>
+          <BaseString>Des objets transparents ont été trouvés</BaseString>
+        </StringContext>
+        <Location page="1" minX="0" minY="0" maxX="614.012" maxY="860.985"/>
+      </PreflightReportItem>
+      <PreflightReportItem ActionID="3004">
+        <Message>Des objets transparents ont été trouvés (1x à la page 1)</Message>
+        <StringContext>
+          <BaseString>Des objets transparents ont été trouvés</BaseString>
+        </StringContext>
+        <Location page="1" minX="0" minY="0" maxX="614.012" maxY="860.985"/>
+      </PreflightReportItem>
+    </Errors>
+  </PreflightReport>
+  <ProcessInfo>
+    <PreflightProfile>LGP_legislatives 2022_Preflight</PreflightProfile>
+    <ProfileCreator>
+      <Author>Thomas Deschamps</Author>
+      <Company>Bluewest</Company>
+    </ProfileCreator>
+    <PageRange>1</PageRange>
+    <HostAppName>Enfocus PitStop Server 21 update 1</HostAppName>
+    <EngineFlavor>Enfocus PitStop Library 21 update 1</EngineFlavor>
+    <PreflightDateTime>2022-04-30T17:58:49+02:00</PreflightDateTime>
+  </ProcessInfo>
+  <GeneralDocInfo>
+    <DocumentProperties>
+      <DocumentName>_08V2U__01_Titouan Galopin_AO__1a7d306b-520e-4e63-bd35-520c113bf852__2e0d082a-915b-4cdb-a439-f19a0c38ccbb.pdf</DocumentName>
+      <NumPages>1</NumPages>
+      <PDFVersion major="1" minor="5">1.5</PDFVersion>
+      <CreationDate>2022-04-30T17:57:56+02:00</CreationDate>
+      <ModificationDate>2022-04-30T17:58:45+02:00</ModificationDate>
+      <Producer>cairo 1.16.0 (https://cairographics.org)</Producer>
+      <Creator></Creator>
+      <Author>La Galiotte Prenant</Author>
+      <Title>_08V17__01_Titouan Galopin_AO__1a7d306b-520e-4e63-bd35-520c113bf852__2e0d082a-915b-4cdb-a439-f19a0c38ccbb.pdf</Title>
+      <Subject>Législatives 2022</Subject>
+      <Keywords>2022, législatives, bluewest, CITIPO</Keywords>
+      <Trapped>unknown</Trapped>
+      <PrinergyTraps>false</PrinergyTraps>
+      <WasRepairedOnOpen>false</WasRepairedOnOpen>
+      <IsLinearized>false</IsLinearized>
+      <ContainsThumbnails>false</ContainsThumbnails>
+      <LeftToRightReading>left</LeftToRightReading>
+      <ContainsJobTicket>false</ContainsJobTicket>
+    </DocumentProperties>
+    <DocumentSecurity>
+      <EncryptionType>none</EncryptionType>
+      <Permissions>
+        <ExtractAccessibility>true</ExtractAccessibility>
+        <ExtractNonAccessibility>true</ExtractNonAccessibility>
+        <ModifyNotes>true</ModifyNotes>
+        <ModifyFillAndSign>true</ModifyFillAndSign>
+        <ModifyAssembleDoc>true</ModifyAssembleDoc>
+        <ModifyOther>true</ModifyOther>
+        <ModifySecurity>true</ModifySecurity>
+        <PrintLowQuality>true</PrintLowQuality>
+        <PrintHighQuality>true</PrintHighQuality>
+      </Permissions>
+    </DocumentSecurity>
+    <DocumentCompression>
+      <DataFormat>binary</DataFormat>
+      <IsCompressed>true</IsCompressed>
+      <FilterType>ZIP</FilterType>
+    </DocumentCompression>
+  </GeneralDocInfo>
+</EnfocusReport>

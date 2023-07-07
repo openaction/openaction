@@ -1,0 +1,127 @@
+<div class="content">
+    <div class="content-splash" data-aos="fade-up" data-aos-duration="600">
+        {% if previewing_text|default(null) %}
+            <div class="content-splash-previewing">
+                {{ previewing_text }}
+            </div>
+        {% endif %}
+
+        {% if section_name|default(null) %}
+            <h3 class="content-splash-section">
+                {% if section_url|default(null) %}
+                    <a href="{{ section_url }}" data-turbo="optional">
+                        {{ section_name }}
+                    </a>
+                {% else %}
+                    {{ section_name }}
+                {% endif %}
+            </h3>
+        {% endif %}
+
+        <h1 class="content-splash-title">
+            {{ title }}
+        </h1>
+
+        {% if date|default(null) or categories|default([])|length > 0 %}
+            <div class="content-splash-metadata">
+                {% if date|default(null) %}
+                    <div class="content-splash-metadata-published-at">
+                        {{ date }}
+                    </div>
+                {% endif %}
+
+                {% if categories|default([])|length > 0 %}
+                    <div class="content-splash-metadata-categories">
+                        {% for name, url in categories %}
+                            <a href="{{ url }}" data-turbo="optional">{{ name }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if social_sharers|default(null) %}
+            <div class="content-splash-social-sharers">
+                {{ social_sharers|raw }}
+            </div>
+        {% endif %}
+
+        {% if video|default(null) %}
+            {% if 'youtube' == video[0] %}
+                <div class="content-splash-video"
+                     style="background-image: url('https://i1.ytimg.com/vi/{{ video[1] }}/hqdefault.jpg')"
+                        {{ stimulus_controller('embed-consent', {
+                            'type': 'youtube-video',
+                            'url': 'https://www.youtube-nocookie.com/embed/' ~ video[1],
+                            'titleLabel': titleLabel,
+                            'descriptionLabel': descriptionLabel,
+                            'acceptLabel': acceptLabel,
+                            'externalLabel': externalLabel,
+                            'cancelLabel': cancelLabel,
+                        }) }}></div>
+            {% elseif 'facebook' == video[0] %}
+                <div class="content-splash-video"
+                        {{ stimulus_controller('embed-consent', {
+                            'type': 'facebook-video',
+                            'url': 'https://www.facebook.com/watch/?v=' ~ video[1],
+                            'titleLabel': titleLabel,
+                            'descriptionLabel': descriptionLabel,
+                            'acceptLabel': acceptLabel,
+                            'externalLabel': externalLabel,
+                            'cancelLabel': cancelLabel,
+                        }) }}></div>
+            {% endif %}
+        {% elseif image|default(null) %}
+            <img src="{{ image }}" class="content-splash-image" />
+        {% endif %}
+    </div>
+
+    <div class="content-publication" data-aos="fade-up" data-aos-duration="600">
+        {{ content|raw }}
+    </div>
+
+    {% if more|default([])|length > 0 %}
+        <div class="content-more" data-aos="fade-up" data-aos-duration="600">
+            <div class="row justify-content-center">
+                {% for other in more|default([]) %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="zoom-hover">
+                            <div class="content-more-item box-offset">
+                                <div class="content-more-item-thumbnail">
+                                    {% if other.video|default(null) %}
+                                        <div class="list-items-item-video"
+                                             style="background-image: url('https://i1.ytimg.com/vi/{{ other.video[1] }}/hqdefault.jpg')">
+                                            <div class="list-items-item-video-icon"
+                                                 style="background: url('{{ play_icon }}') 50% 50% no-repeat transparent">
+                                                <div class="list-items-item-video-inner" style="width: 1110px; height: 705px"></div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <img src="{{ other.image|default(default_list_image) }}"
+                                             class="list-items-item-image" width="1700" height="1080" />
+                                    {% endif %}
+                                </div>
+
+                                <a href="{{ other.url }}" class="stretched-link list-items-item-link" data-turbo="optional">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ other.title }}</span>
+                                    </h5>
+                                </a>
+
+                                {% if other.date|default(null) %}
+                                    <div class="list-items-item-date">
+                                        {{ other.date }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="list-items-item-description">
+                                    {{ other.description }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>

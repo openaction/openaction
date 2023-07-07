@@ -1,0 +1,24 @@
+{% set html = '
+    <h1 id="{id}">Lorem ipsum</h1>
+
+    <p>This is a code block. You can edit this block using the source dialog.</p>
+
+    <script>
+        var docReady = function (fn) {
+            var stateCheck = setInterval(function () {
+                if (document.readyState !== "complete") return;
+                clearInterval(stateCheck);
+                try{fn()}catch(e){}
+            }, 1);
+        };
+        docReady(function() {
+            document.querySelector(\'#{id}\').innerHTML =\'<b>Hello World..!</b>\';
+        });
+    </script>
+' %}
+
+<div class="row clearfix">
+    <div class="col-md-12" data-noedit data-html="{{ html|url_encode|raw }}"></div>
+</div>
+
+

@@ -1,0 +1,99 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'automation.index.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_automation 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'automation.index.title'|trans({}, 'organization_community') }}
+                    </h3>
+                    <div class="text-muted">
+                        {{ 'automation.index.help'|trans({}, 'organization_community') }}
+                    </div>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ path('console_organization_community_automation_disabled', { 'organizationUuid': current_organization.uuid }) }}"
+                       class="btn btn-secondary mr-2">
+                        <i class="fad fa-bell-slash mr-1"></i>
+                        {{ 'automation.index.disabled'|trans({}, 'organization_community') }}
+                    </a>
+
+                    <a href="{{ path('console_organization_community_automation_create_template', { 'organizationUuid': current_organization.uuid }) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'automation.index.create'|trans({}, 'organization_community') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if automations|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'automation.index.no_records'|trans({}, 'organization_community') }}
+                        </h4>
+
+                        <a href="{{ path('console_organization_community_automation_create_template', { 'organizationUuid': current_organization.uuid }) }}" class="btn btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'automation.index.no_result_create'|trans({}, 'organization_community') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for automation in automations %}
+                        <div class="world-list-row p-4" id="automation-{{ automation.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg">
+                                    <h4 class="mb-1 posts-title">
+                                        {{ automation.name }}
+                                    </h4>
+
+                                    <div class="text-muted">
+                                        {{ ('automation.index.trigger.'~automation.trigger)|trans({}, 'organization_community') }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-auto">
+                                    <a href="{{ path('console_organization_community_automation_preview', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        {{ 'automation.index.preview'|trans({}, 'organization_community') }}
+                                    </a>
+
+                                    <a href="{{ path('console_organization_community_automation_content', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                        <i class="far fa-text mr-1"></i>
+                                        {{ 'automation.index.edit_content'|trans({}, 'organization_community') }}
+                                    </a>
+
+                                    <a href="{{ path('console_organization_community_automation_metadata', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                        <i class="fad fa-cogs mr-1"></i>
+                                        {{ 'automation.index.edit_details'|trans({}, 'organization_community') }}
+                                    </a>
+
+                                    <a href="{{ csrf_path('console_organization_community_automation_disable', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid }) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'automation.index.disable_confirm'|trans({'%name%': automation.name}, 'organization_community') }}"
+                                       data-delete-label="{{ 'automation.index.disable_label'|trans({}, 'organization_community') }}"
+                                       data-target="#automation-{{ automation.uuid }}"
+                                       class="btn btn-sm btn-outline-danger border-0">
+                                        <i class="fad fa-bell-slash mr-1"></i>
+                                        {{ 'automation.index.disable'|trans({}, 'organization_community') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

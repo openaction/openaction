@@ -1,0 +1,228 @@
+back: Back to appearance options
+back_homepage: Back to homepage structure
+save: Save
+
+index:
+    title: Appearance
+    help: Configure appearance options used by Citipo products.
+    theme:
+        title: Theme and colors
+        desc: Choose a theme and colors matching the needs of your project.
+        link: Configure the theme and colors
+    logos:
+        title: Logo and icon
+        desc: Upload a custom logo and icon to personalize your emails and your website.
+        link: Configure the logo and the icon
+    terminology:
+        title: Terminology
+        desc: Configure the wording used to describe the key contents of your project (posts, events, ...).
+        link: Configure the terminology
+    homepage:
+        title: Homepage structure
+        desc: Update the website homepage structure to better show what matters to you the most.
+        link: Configure the homepage structure
+
+logos:
+    title: Logo and icon
+    help: Upload a custom logo and icon to personalize your emailings and website.
+    appearanceLogoDark:
+        label: Dark logo
+        help: Dark logo over a transparent background. Max 4Mb, will be resized to 400x200.
+    appearanceLogoWhite:
+        label: White logo
+        help: White logo over a transparent background. Max 4Mb, will be resized to 400x200.
+    appearanceIcon:
+        label: Icon
+        help: Icon over a transparent background. Max 2Mb, will be resized to 256x256.
+
+terminology:
+    title: Terminology
+    help: Configure the wording used to describe the key contents of your project (posts, events, ...).
+    posts: Title of the Posts section
+    events: Title of the Events section
+    trombinoscope: Title of the Trombinoscope section
+    manifesto: Title of the Manifesto section
+    newsletter: Title of the newsletter subscription form
+    acceptPrivacy: Field label to request for privacy policy approval
+    socialNetworks: Title of the social networks integrations
+    membershipRegister: Title of the membership registration form
+    membershipLogin: Title of the membership log in form
+    membershipArea: Title of the membership area
+
+theme:
+    title: Theme
+    help: Choose and configure a website theme matching your needs.
+    structure:
+        label: General structure
+        choices:
+            campaign:
+                label: Structured
+                help: |
+                    The main image is displayed in full width. The buttons and the slogan are displayed on top of it.
+                    The logo and the menu are integrated in an independant banner.
+            classic:
+                label: Bold
+                help: |
+                    The main image is displayed in full width and takes 85% of the height. The logo, menu,
+                    slogan and buttons are displayed on top of it.
+            narrow:
+                label: Efficient
+                help: |
+                    The slogan and the main image are displayed side by side. Buttons are displayed
+                    on top of the main image and the slogan is displayed in a dedicated colored box.
+            organization:
+                label: Organization
+                help: For the main website of an organization.
+    options:
+        label: Options
+        help: Additional theme options
+        positions:
+            label: Title alignment
+            help: How should the main title be aligned?
+            choices:
+                left: Align to the left
+                center: Center
+                right: Align to the right
+        overlay:
+            label: Display the black overlay over the main image?
+            help: If disabled, be careful to ensure your title is still readable over your image.
+        animateElements:
+            label: Apply an animation when elements appear on the page?
+            help: If enabled, an animation will be played when certain elements appear on the page.
+        animateLinks:
+            label: Apply an animation between page changes?
+            help: If enabled, a transition animation will be played between the load of pages.
+    colors:
+        label: Color palette
+        help: Colors used by the theme.
+        appearancePrimary: Primary color
+        appearanceSecondary: Secondary color
+        appearanceThird: Third color
+    fonts:
+        label: Fonts
+        help: |
+            You can configure which fonts are used on your website. These fonts come from
+            Google Font, a service providing free and open-source fonts for websites.
+            Have a look at their website to find fonts matching your needs:
+        title:
+            label: Titles
+            help: The font to use for the website titles.
+        text:
+            label: Content
+            help: The font to use for the website content.
+
+homepage:
+    title: Homepage structure
+    help: Update the website homepage structure to better show what matters to you the most.
+    add_block: Add a block
+    remove_block: Delete
+    remove_confirm: Are you sure you want to delete this block?
+    header:
+        title: Header
+        help: |
+            The header contains the logo and the menu and is present on all pages.
+            It helps users navigate your website.
+        logo:
+            no_logo: No logo yet
+            link: Change the logo
+        menu:
+            no_menu: No menu yet
+            link: Change the menu
+    intro:
+        title: Introduction
+        help: |
+            The introduction consists of a main image and an introduction text. It is the main
+            elements your visitors will see: choose them wisely!
+        image:
+            no_image: No main image yet
+            link: Change the main image
+        text:
+            no_text: No introduction text yet
+            link: Change the introduction text
+        form:
+            websiteMainImage:
+                label: Main image
+                help: |
+                    This image will be the first image your visitors will see. You should probably
+                    choose an image that represents your project (a photo of a political candidate,
+                    an image of your city, a photo of volunteers, ...).
+                delete: Delete the main image
+            websiteMainVideo:
+                label: Main video
+                help: |
+                    If you send a main video, it will be displayed instead of the main image,
+                    background. We recommend sending the first frame of this video as the main image,
+                    so that the loading of the video is transparent for your visitors.
+                    This video must be a maximum of 5MB and must be in MP4 format.
+                delete: Delete the main video
+            websiteMainIntro:
+                label: Introduction
+                title: Introduction title
+                content: Introduction text
+                help: |
+                    The introduction will be shown next to the main image. You can use it
+                    to explain your project, introduce a political candidate, ask visitors to
+                    join your movement, ...
+    cta:
+        title: Call to action
+        help: |
+            Highly visible buttons to emphasize the most important actions you want your visitors
+            to do. These key actions help your visitors understand your website.
+        link: Change the call to action
+        form:
+            primary:
+                label: Primary button
+                help: |
+                    The primary button is the most important action you would like your visitors to do.
+                    Examples: "Receive our newsletter", "Join the movement", ...
+            secondary:
+                label: Secondary button
+                help: |
+                    The secondary button is an alternative action your visitors may want to do.
+                    Examples: "Read our manifesto", "Register to an event", ...
+            button:
+                label: Text displayed in the button
+                url: URL that should be opened on click on the menu item
+                newTab: Should this link be opened in a new tab?
+    posts:
+        title: Latest posts
+        help: List of the latest posts published on your website.
+        link: Configure the displayed categories
+        form:
+            category:
+                label: Which category of posts should be displayed on the homepage (keep empty to display posts from all categories)?
+                help: |
+                    You can select a specific post category to ensure only posts from this category
+                    will be displayed on the homepage.
+    events:
+        title: Upcoming events
+        help: List of the upcoming events published on your website.
+        link: Configure the displayed categories
+        form:
+            category:
+                label: Which category of events should be displayed on the homepage (keep empty to display events from all categories)?
+                help: |
+                    You can select a specific event category to ensure only events from this category
+                    will be displayed on the homepage.
+    newsletter:
+        title: Newsletter subscription
+        help: |
+            Form to let your visitors subscribe to your newsletter. Subscribers are added to
+            your Community so that you can contact them easily.
+    socials:
+        title: Social network integrations
+        link: Configure the social accounts
+        help: |
+            Display the latest publications of social networks accounts directly on your homepage.
+        form:
+            facebook: What is the URL of the Facebook page you want to display?
+            twitter: What is the URL of the Twitter feed you want to display?
+    content:
+        title: Custom content
+        help: Fully customizable content to display anything you wish on your homepage.
+        link: Configure the content
+    create:
+        title: Add a homepage block
+        help: Homepage blocks are used to create a structured homepage customized to match your goals.
+        label: What type of block would you like to add to your homepage?
+        submit: Create

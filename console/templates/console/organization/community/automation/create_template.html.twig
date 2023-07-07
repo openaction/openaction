@@ -1,0 +1,48 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'automation.disabled.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_automation 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_organization_community_automation', {'organizationUuid': current_organization.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'automation.create.template.back'|trans({}, 'organization_community') }}</span>
+            </a>
+
+            <h3 class="mt-2">
+                {{ 'automation.create.template.title'|trans({}, 'organization_community') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'automation.create.template.desc'|trans({}, 'organization_community') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row">
+                {% for template in templates %}
+                    <div class="col-lg-3">
+                        <div class="card mb-4">
+                            <img src="{{ asset('templates/'~template.name~'.png') }}" />
+
+                            <div class="p-3">
+                                <h5 class="mb-2">
+                                    {{ ('automation.create.template.' ~ template.name)|trans({}, 'organization_community') }}
+                                </h5>
+
+                                <a href="{{ csrf_path('console_organization_community_automation_create_template', {'organizationUuid': current_organization.uuid, 'templateId': template.id}) }}"
+                                   class="btn btn-outline-primary">
+                                    {{ 'automation.create.template.choose'|trans({}, 'organization_community') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

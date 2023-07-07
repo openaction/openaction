@@ -1,0 +1,139 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'quote.type.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'quote.type.title'|trans({}, 'project_printing') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-5">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="world-block p-4 mb-4">
+                <h5>
+                    {{ 'quote.form.quantities'|trans({}, 'project_printing') }}
+                </h5>
+
+                <div class="row align-items-end">
+                    {% for field in form.quantities %}
+                        <div class="col-12 col-md-4 col-lg-3 text-left mt-3 print-product">
+                            <div class="print-product-image print-product-image-{{ field.vars.label }}">
+                                <img src="{{ asset('print/'~field.vars.label~'.png') }}" />
+                            </div>
+
+                            {{ form_row(field, {
+                                'label_attr': {'class': 'radio-custom'},
+                                'label': ('products.' ~ field.vars.label)|trans({}, 'global'),
+                                'help': ('products_help.' ~ field.vars.label)|trans({}, 'global'),
+                                'help_html': true,
+                            }) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="world-block p-4 mb-4">
+                <h5>
+                    {{ 'quote.form.delivery'|trans({}, 'project_printing') }}
+                </h5>
+
+                {{ form_row(form.deliveryStreet1, {
+                    'label': 'edit.delivery.unaddressed.address.street1'|trans({}, 'project_printing'),
+                    'label_html': true,
+                }) }}
+
+                {{ form_row(form.deliveryStreet2, {
+                    'label': 'edit.delivery.unaddressed.address.street2'|trans({}, 'project_printing'),
+                    'label_html': true,
+                }) }}
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        {{ form_row(form.deliveryZipCode, {
+                            'label': 'edit.delivery.unaddressed.address.zipCode'|trans({}, 'project_printing'),
+                            'label_html': true,
+                        }) }}
+                    </div>
+
+                    <div class="col-lg-6">
+                        {{ form_row(form.deliveryCity, {
+                            'label': 'edit.delivery.unaddressed.address.city'|trans({}, 'project_printing'),
+                            'label_html': true,
+                        }) }}
+                    </div>
+
+                    <div class="col-lg-3">
+                        {{ form_row(form.deliveryCountry, {
+                            'label': 'edit.delivery.unaddressed.address.country'|trans({}, 'project_printing'),
+                            'label_html': true,
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="world-block p-4 mb-4">
+                <h5>
+                    {{ 'quote.form.billing'|trans({}, 'project_printing') }}
+                </h5>
+
+                {{ form_row(form.billingOrganization, {
+                    'label': 'details.form.details.name.label'|trans({}, 'organization_billing'),
+                    'help': 'details.form.details.name.help'|trans({}, 'organization_billing'),
+                }) }}
+
+                {{ form_row(form.billingEmail, {
+                    'label': 'details.form.details.email.label'|trans({}, 'organization_billing'),
+                    'help': 'details.form.details.email.help'|trans({}, 'organization_billing'),
+                }) }}
+
+                {{ form_row(form.billingStreet1, {
+                    'label': 'details.form.address.streetLine1'|trans({}, 'organization_billing'),
+                }) }}
+
+                {{ form_row(form.billingStreet2, {
+                    'label': 'details.form.address.streetLine2'|trans({}, 'organization_billing'),
+                }) }}
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        {{ form_row(form.billingZipCode, {
+                            'label': 'details.form.address.postalCode'|trans({}, 'organization_billing'),
+                        }) }}
+                    </div>
+
+                    <div class="col-lg-6">
+                        {{ form_row(form.billingCity, {
+                            'label': 'details.form.address.city'|trans({}, 'organization_billing'),
+                        }) }}
+                    </div>
+
+                    <div class="col-lg-3">
+                        {{ form_row(form.billingCountry, {
+                            'label': 'details.form.address.country'|trans({}, 'organization_billing'),
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 mb-4">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    <i class="far fa-download mr-2"></i>
+                    {{ 'quote.form.submit'|trans({}, 'project_printing') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

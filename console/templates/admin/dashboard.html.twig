@@ -1,0 +1,344 @@
+{% extends ea.templatePath('layout') %}
+
+{% block content_title 'Dashboard' %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw==" crossorigin="anonymous" />
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        .chart-table-row {
+            display: flex;
+        }
+
+        .chart-table-row-value {
+            flex-basis: 0;
+            width: 50px;
+            min-width: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #24acfc;
+        }
+
+        .chart-table-row-label {
+            font-family: monospace;
+        }
+
+        .chart-table-row-label abbr {
+            border: 0;
+            text-decoration: none;
+            cursor: default;
+        }
+    </style>
+    <script>
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var trafficData = new google.visualization.DataTable();
+            trafficData.addColumn('string', 'Date');
+            trafficData.addColumn('number', 'Page views');
+            trafficData.addColumn('number', 'Users');
+            trafficData.addRows(JSON.parse('{{ traffic_dashboard.traffic|json_encode|e('js') }}'));
+
+            var trafficChart = new google.visualization.AreaChart(document.getElementById('chart-traffic'));
+            trafficChart.draw(trafficData, {
+                hAxes: [{ textStyle: { fontSize: 12, color: '#999' } }],
+                legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#999' } },
+                colors: ['#24acfc', '#00c5e5'],
+                chartArea: { width: '90%', height: '80%', top: 20 }
+            });
+
+            var communityData = new google.visualization.DataTable();
+            communityData.addColumn('string', '{{ 'community.growth.date'|trans({}, 'project_stats') }}');
+            communityData.addColumn('number', '{{ 'community.growth.new_contacts'|trans({}, 'project_stats') }}');
+            communityData.addColumn('number', '{{ 'community.growth.new_members'|trans({}, 'project_stats') }}');
+            communityData.addRows(JSON.parse('{{ community_dashboard.growth|json_encode|e('js') }}'));
+
+            var communityChart = new google.visualization.AreaChart(document.getElementById('chart-community'));
+            communityChart.draw(communityData, {
+                hAxes: [{ textStyle: { fontSize: 12, color: '#999' } }],
+                legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#999' } },
+                colors: ['#24acfc', '#00c5e5'],
+                chartArea: { width: '90%', height: '80%', top: 20 }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+
+            <div class="p-3 mb-3" style="background: #fff; border: 1px solid #e5e5e5;">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                Organizations
+                            </small>
+                        </div>
+
+                        <h2>
+                            {{ organizations_count|format_number }}
+                        </h2>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                Users
+                            </small>
+                        </div>
+
+                        <h2>
+                            {{ users_count|format_number }}
+                        </h2>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                All projects
+                            </small>
+                        </div>
+
+                        <h2>
+                            {{ all_projects_count|format_number }}
+                        </h2>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                Print projects
+                            </small>
+                        </div>
+
+                        <h2>
+                            {{ print_projects_count|format_number }}
+                        </h2>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                Web projects
+                            </small>
+                        </div>
+
+                        <h2>
+                            {{ web_projects_count|format_number }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6 p-1">
+                    <div class="p-3" style="background: #fff; border: 1px solid #e5e5e5;">
+                        <h4 class="mb-4">
+                            Traffic on public websites in the last 60 days
+                        </h4>
+
+                        <div class="row justify-content-center mt-3 mb-5">
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        Users
+                                    </small>
+                                </div>
+
+                                <h2 data-total="users">
+                                    {{ traffic_dashboard.totals.users|format_number }}
+                                </h2>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        Page views
+                                    </small>
+                                </div>
+
+                                <h2 data-total="page_views">
+                                    {{ traffic_dashboard.totals.page_views|format_number }}
+                                </h2>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        <i class="fas fa-bolt text-danger mr-1"></i>
+                                        Live
+                                    </small>
+                                </div>
+
+                                <h2 data-total="live">
+                                    {{ live_visitors|format_number }}
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div id="chart-traffic" style="height: 400px;"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h4>
+                                Most active projects
+                            </h4>
+
+                            <div class="p-2">
+                                <div class="chart-table">
+                                    {% for project, pageViews in traffic_dashboard.projects %}
+                                        <div class="chart-table-row">
+                                            <div class="chart-table-row-value">
+                                                {{ pageViews|format_number }}
+                                            </div>
+
+                                            <div class="chart-table-row-label">
+                                                <abbr title="{{ project }}">
+                                                    {{ project|u.truncate(60, '…') }}
+                                                </abbr>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 p-1">
+                    <div class="p-3" style="background: #fff; border: 1px solid #e5e5e5;">
+                        <h4 class="mb-4">
+                            Organizations community growth
+                        </h4>
+
+                        <div class="row justify-content-center mt-3 mb-5">
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        Contacts
+                                    </small>
+                                </div>
+
+                                <h2 data-total="contacts" class="mb-0">
+                                    {{ community_dashboard.totals.contacts|format_number }}
+                                </h2>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        Members
+                                    </small>
+                                </div>
+
+                                <h2 data-total="members" class="mb-0">
+                                    {{ community_dashboard.totals.members|format_number }}
+                                </h2>
+
+                                {% if community_dashboard.totals.contacts > 0 %}
+                                    <small class="text-muted">
+                                        {{ (((community_dashboard.totals.members / community_dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                        % of contacts
+                                    </small>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        Newsletters
+                                    </small>
+                                </div>
+
+                                <h2 data-total="newsletter_subscribers" class="mb-0">
+                                    {{ community_dashboard.totals.newsletter_subscribers|format_number }}
+                                </h2>
+
+                                {% if community_dashboard.totals.contacts > 0 %}
+                                    <small class="text-muted">
+                                        {{ (((community_dashboard.totals.newsletter_subscribers / community_dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                        % of contacts
+                                    </small>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mr-1">
+                                    <small class="text-muted text-uppercase">
+                                        SMS
+                                    </small>
+                                </div>
+
+                                <h2 data-total="newsletter_subscribers" class="mb-0">
+                                    {{ community_dashboard.totals.sms_subscribers|format_number }}
+                                </h2>
+
+                                {% if community_dashboard.totals.contacts > 0 %}
+                                    <small class="text-muted">
+                                        {{ (((community_dashboard.totals.sms_subscribers / community_dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                        % of contacts
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div id="chart-community" style="height: 400px"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h4>
+                                Biggest organizations
+                            </h4>
+
+                            <div class="p-2">
+                                <div class="chart-table">
+                                    {% for organization, contacts in community_dashboard.organizations %}
+                                        <div class="chart-table-row">
+                                            <div class="chart-table-row-value">
+                                                {{ contacts|format_number }}
+                                            </div>
+
+                                            <div class="chart-table-row-label">
+                                                <abbr title="{{ organization }}">
+                                                    {{ organization|u.truncate(60, '…') }}
+                                                </abbr>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if community_dashboard.countries %}
+                            <div class="mb-3">
+                                <h4>
+                                    Countries
+                                </h4>
+
+                                <div class="p-2">
+                                    <div class="chart-table">
+                                        {% for country, contacts in community_dashboard.countries %}
+                                            <div class="chart-table-row">
+                                                <div class="chart-table-row-value">
+                                                    {{ contacts|format_number }}
+                                                </div>
+
+                                                <div class="chart-table-row-label">
+                                                    <span class="flag-icon flag-icon-{{ country }}"
+                                                          title="{{ country|upper|country_name }}"></span>
+
+                                                    {{ country|upper|country_name }}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

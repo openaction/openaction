@@ -1,0 +1,101 @@
+{% extends 'console/project/community/printing/finalize/base.html.twig' %}
+
+{% block tab_recipient 'active' %}
+
+{% block tab_page %}
+    <div class="row">
+        <div class="col-md-10 col-lg-9 col-xl-8">
+            <h4 class="mb-2">
+                {{ 'edit.recipient.title'|trans({}, 'project_printing') }}
+            </h4>
+
+            <div class="text-muted mb-4">
+                {{ 'edit.recipient.help'|trans({}, 'project_printing') }}
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {% if not order.recipientCandidate %}
+                <small class="text-danger">
+                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                </small>
+            {% endif %}
+            {{ form_row(form.candidate, {
+                'label': 'edit.recipient.candidate'|trans({}, 'project_printing'),
+                'label_html': true,
+            }) }}
+
+            {% if not order.recipientCirconscription %}
+                <small class="text-danger">
+                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                </small>
+            {% endif %}
+            {{ form_row(form.circonscription, {
+                'label': 'edit.recipient.circonscription'|trans({}, 'project_printing'),
+                'label_html': true,
+            }) }}
+
+            <div class="row">
+                <div class="col-lg-6">
+                    {% if not order.recipientFirstName %}
+                        <small class="text-danger">
+                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                        </small>
+                    {% endif %}
+                    {{ form_row(form.firstName, {
+                        'label': 'edit.recipient.firstName'|trans({}, 'project_printing'),
+                        'label_html': true,
+                    }) }}
+                </div>
+                <div class="col-lg-6">
+                    {% if not order.recipientLastName %}
+                        <small class="text-danger">
+                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                        </small>
+                    {% endif %}
+                    {{ form_row(form.lastName, {
+                        'label': 'edit.recipient.lastName'|trans({}, 'project_printing'),
+                        'label_html': true,
+                    }) }}
+                </div>
+            </div>
+
+            {% if not order.recipientEmail %}
+                <small class="text-danger">
+                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                </small>
+            {% endif %}
+            {{ form_row(form.email, {
+                'label': 'edit.recipient.email.label'|trans({}, 'project_printing'),
+                'label_html': true,
+                'help': 'edit.recipient.email.help'|trans({}, 'project_printing'),
+            }) }}
+
+            {% if not order.recipientPhone %}
+                <small class="text-danger">
+                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                </small>
+            {% endif %}
+            {{ form_row(form.phone, {
+                'label': 'edit.recipient.phone.label'|trans({}, 'project_printing'),
+                'label_html': true,
+                'help': 'edit.recipient.phone.help'|trans({}, 'project_printing'),
+            }) }}
+
+            <button type="submit" class="btn btn-primary">
+                {{ 'edit.save'|trans({}, 'project_printing') }}
+            </button>
+
+            {% if order.isReadyToOrder %}
+                <a href="{{ path('console_community_printing_order', { 'projectUuid': current_project.uuid, 'uuid': order.uuid }) }}"
+                   class="btn btn-secondary ml-1">
+                    <i class="fas fa-print mr-1"></i>
+                    {{ 'edit.finalize'|trans({}, 'project_printing') }}
+                </a>
+            {% endif %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

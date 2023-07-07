@@ -1,0 +1,48 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'create.template.title'|trans({}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'create.template.back'|trans({}, 'project_emailings') }}</span>
+            </a>
+
+            <h3 class="mt-2">
+                {{ 'create.template.title'|trans({}, 'project_emailings') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'create.template.desc'|trans({}, 'project_emailings') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row">
+                {% for template in templates %}
+                    <div class="col-lg-3">
+                        <div class="card mb-4">
+                            <img src="{{ asset('templates/'~template.name~'.png') }}" />
+
+                            <div class="p-3">
+                                <h5 class="mb-2">
+                                    {{ ('create.template.' ~ template.name)|trans({}, 'project_emailings') }}
+                                </h5>
+
+                                <a href="{{ csrf_path('console_community_emailing_create_template', {'projectUuid': current_project.uuid, 'templateId': template.id}) }}"
+                                   class="btn btn-outline-primary">
+                                    {{ 'create.template.choose'|trans({}, 'project_emailings') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

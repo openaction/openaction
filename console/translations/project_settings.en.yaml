@@ -1,0 +1,184 @@
+back: Back to the settings
+save: Save
+
+index:
+    title: Project settings
+    details:
+        label: Project details
+        desc: Update the project details like its name or its area of focus.
+        link: Update project details
+    modules:
+        label: Modules and tools
+        desc: Only enable the tools you use to better fit your project to your strategy.
+        link: Enable/disable modules and tools
+    domain:
+        label: Domain name
+        desc: |
+            Configure the domain name to use for your website or to improve the
+            deliverability of your emailing campaigns.
+        link: Configure the domain name
+    duplicate:
+        label: Duplicate this project
+        desc: Create a copy of this project with the same website and configuration.
+        link: Duplicate project
+    move:
+        label: Move this project
+        desc: Move this project in a different organization.
+        link: Move project
+    remove:
+        label: Delete this project
+        desc: Delete this project and all of its associated data. No contact will be deleted.
+        link: Delete this project
+        confirm: |
+            Are you absolutely sure you want to remove this project?
+            This action cannot be undone. This will permanently delete
+            the %name% project, its website, and all its content.
+            It won't delete your contacts.
+
+domain:
+    title: Domain name
+    current_domain: 'Your project currently uses the following domain name:'
+    change_it: |
+        Changing it requires a bit of technical work on our part.
+        If you wish to change it, contact us:
+    contact_us: 'Contact us'
+
+details:
+    title: Project details
+    name:
+        label: Project name
+        help: 'This name is internal: it will show up in menus and headings. Maximum 60 characters.'
+    locale:
+        label: Project language
+        help: 'In which language should this project website and emailings be displayed?'
+    submit: Save
+
+modules:
+    title: Project modules and tools
+    submit: Save
+
+move:
+    title: Move project "%title%"
+    to: In which organization would you like to move this project?
+    submit: Move
+
+legalities:
+    title: Legal details
+    help: Configure legal details relative to website laws, emailing laws, and GDPR.
+    missing: |
+        Your legal details are missing. You should provide them before launching your
+        project to ensure compliance with website and emailing laws.
+    form:
+        general:
+            title: General details
+            help: |
+                French law (as well as most EU countries law) requires specific details
+                to be displayed on websites for visitors to know who publishes them.
+            name:
+                label: Full official name of your organization
+                help: |
+                    If that's not clear in your situation, use the name of the organization/person
+                    who benefits from the publishing of this website/these emailing campaigns.
+            address:
+                label: Postal address of your organization
+                help: |
+                    Where is the headquarters of your organization located, precisely?
+                    This address will be used by visitors who want to contact your organization
+                    for legal reasons.
+            publisherName:
+                label: Publication director full name
+                help: |
+                    The publication director is the physical person responsible for the content
+                    published on the website. It cannot be a moral entity.
+            publisherRole:
+                label: Publication director role
+                help: What is the role of the publication director in your organization?
+        gdpr:
+            title: General Data Protection Regulation details
+            help: |
+                The GDPR is a regulation in EU law on data protection and privacy.
+                It creates rights for your visitors on how you process their
+                data and what you can store about them. In order to exercise these
+                rights, visitors need to know who to contact in your organization.
+                The following details are thus meant to be used by visitors wanting to
+                exercise their GDPR rights. You should probably provide the contact details
+                of your legal department or your Data Protection Officer.
+            email:
+                label: Email address of your legal contact
+
+membership:
+    back: Back to Membership area configuration
+
+    index:
+        title: Membership area configuration
+        help: |
+            The Membership area is an area reserved to the members of your community (people who chose to create
+            an account on your website).
+            <br />
+            Each content you create on Citipo can be configured to be accessible only by members.
+        blocks:
+            homepage:
+                title: Main page
+                desc: Update the content of the Membership area main page, displayed to all members when they log in.
+                link: Configure the main page
+            form:
+                title: Members data
+                desc: Choose which data to ask your members when they register and when they update their account.
+                link: Configure the members data
+            custom:
+                title: Custom questions
+                desc: Add custom questions to the registration and members account forms.
+                link: Configure custom questions
+
+    form:
+        title: Members data
+        desc: Choose which data to ask your members when they register and when they update their account.
+        label:
+            introduction:
+                title: Introduction
+                desc: This text will be displayed on top of the membership registration form, before people register.
+
+            fields:
+                title: Fields
+                desc: |
+                    For each form field, you can choose to require it at registration, to ask for it at
+                    registration optionally, to ask for it only after registration in the member's account
+                    section (optionally) or to not ask for it at all.
+
+            unmapped: This field is required by Citipo.
+
+            email: Email address
+            password: Password
+            profileFormalTitle: Formal title
+            profileFirstName: First name
+            profileMiddleName: Middle name
+            profileLastName: Last name
+            profileBirthdate: Birthdate
+            profileGender: Gender
+            profileNationality: Nationality
+            profileCompany: Company / Organisation
+            profileJobTitle: Job title
+            contactPhone: Personal phone number
+            contactWorkPhone: Work phone number
+            socialFacebook: Facebook profile URL
+            socialTwitter: Twitter account URL
+            socialLinkedIn: LinkedIn profile URL
+            socialTelegram: Telegram username
+            socialWhatsapp: WhatsApp phone number
+            addressStreetLine1: Street address, line 1
+            addressStreetLine2: Street address, line 2
+            addressZipCode: ZIP code
+            addressCity: City name
+            addressCountry: Country
+            settingsReceiveNewsletters: I subscribe to the newsletter
+            settingsReceiveSms: I accept to receive text messages
+            settingsReceiveCalls: I accept to receive calls
+        rule:
+            required: Ask on registration (required)
+            optional: Ask on registration (optional)
+            update: Ask only on account update (optional)
+            ignore: Do not ask
+
+    homepage:
+        title: Main page
+        desc: Update the content of the Membership area main page, displayed to all members when they log in.

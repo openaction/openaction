@@ -1,0 +1,74 @@
+{% extends 'member/phoning/base.html.twig' %}
+
+{% block phoning_content %}
+    <div class="user-form pt-5 pb-5">
+        <h5 class="mb-4">
+            {{ call.contact.profileFormalTitle }}
+            {{ call.contact.profileFirstName }}
+            {{ call.contact.profileLastName }}
+            <br />
+            {{ call.contact.addressZipCode }}
+            {{ call.contact.addressCity }}
+            {{ call.contact.addressCountry }}
+        </h5>
+
+        {% if success %}
+            <div class="user-form-success">
+                {{ 'forms.success'|trans }}
+            </div>
+        {% endif %}
+
+        {% if formData.description %}
+            <div class="user-form-description">
+                {{ formData.description|nl2br }}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+        {{ form_errors(form) }}
+
+        {% for key, block in formData.blocks %}
+            <div class="user-form-field">
+                {% if 'header' == block.type %}
+                    <h4 class="m-0">
+                        {{ block.content|nl2br }}
+                    </h4>
+
+                {% elseif 'paragraph' == block.type %}
+                    <div class="user-content m-0">
+                        {{ block.content|nl2br }}
+                    </div>
+
+                {% elseif 'html' == block.type %}
+                    <div class="user-content m-0">
+                        {{ block.content|apply_embed_consent|raw }}
+                    </div>
+
+                {% elseif 'textarea' == block.type %}
+                    {{ form_row(form['field'~key], {'attr': {'rows': 5}}) }}
+
+                {% elseif 'rating' == block.type %}
+                    {{ form_row(form['field'~key], {
+                        'attr': {'class': 'form-rating'},
+                    }) }}
+
+                {% elseif 'newsletter' == block.type %}
+                    {{ form_row(form['field'~key], {'label': 'forms.newsletter'|trans}) }}
+
+                {% else %}
+                    {{ form_row(form['field'~key]) }}
+
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="user-form-submit">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ 'forms.submit'|trans }}
+            </button>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

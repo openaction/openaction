@@ -1,0 +1,128 @@
+index:
+    title: Campagnes emails
+    create: Nouvelle campagne emails
+    drafts:
+        title: Campagnes emails
+        no_records: Aucun brouillon
+        no_result_create: Créer une campagne
+        draft: Brouillon
+        from: De %from%
+        to: À tous vos contacts
+        to_areas: À tous les contacts dans la zone %areas%
+        to_tags: À tous les contacts ayant les tags %tags%
+        to_contacts: À %contacts% contacts spécifiques
+        to_areas_tags: Aux contacts dans la zone %areas% et ayant les tags %tags%
+        edit_details: Modifier les paramètres
+        edit_content: Modifier le contenu
+        delete: Supprimer
+        delete_confirm: 'Voulez-vous vraiment supprimer la campagne "%subject%" ?'
+        preview: Prévisualiser
+        send_test: Envoyer un test
+        send_all: Envoyer à tous
+
+    sent:
+        title: Campagnes envoyées
+        shareable_history: Ouvrir l'historique partageable
+        no_records: Aucune campagne n'a été envoyée pour le moment
+        subject: Sujet
+        stats: Statistiques
+        view: Voir le contenu
+        report: Ouvertures
+        duplicate: Dupliquer
+
+create:
+    subject: '(Campagne sans nom)'
+    fromName: '%user% de %organization%'
+
+    template:
+        back: Retour
+        title: Créer une campagne emails
+        desc: Choisissez un modèle à utiliser pour créer votre campagne email.
+        choose: Choisir ce modèle
+
+        emailing:
+            1.empty: Modèle vide
+            2.newsletter: Lettre d'information
+            3.event: Événement
+            4.thanks: Remerciement
+            5.fundraising: Collecte de dons
+            6.vote: Appel au vote
+
+metadata:
+    back: Retour à la liste
+    title: Modifier la campagne "%title%"
+    submit: Enregistrer
+
+    from:
+        title: Émetteur
+        desc: Qui est l'émetteur de cette campagne ?
+        email: Adresse email
+        name: Nom
+
+    reply:
+        title: Reply-to (optional)
+        desc: |
+            Qui doit recevoir les emails de réponses à cette campagne ?
+            (si vous laissez ce champ vide, les informations de l'émetteur seront utilisées en Reply-to)
+        email: Adresse email
+        name: Nom
+
+    to:
+        title: Destinataire
+        desc: À qui cette campagne doit-elle être envoyée ?
+
+    subject:
+        title: Sujet
+        desc: Sujet de l'email de cette campagne.
+        subject:
+            label: Sujet
+            help:
+                main: 'Les bons sujets donnent une raison d''ouvrir votre email. Quelques conseils :'
+                1:
+                    strong: L'espace est limité
+                    muted: Nous conseillons de ne pas utiliser plus de 60 caractères
+                2:
+                    strong: Simple à comprendre
+                    muted: Les sujets avec moins de 9 mots tendent à mieux fonctionner
+                3:
+                    strong: Peu de ponctuation
+                    muted: Les sujets sobres transmettent vos idées plus efficacement
+        preview:
+            label: Texte de prévisualisation
+            help: Certaines boites de réception affichent ce test de prévisualisation à côté du sujet. (Optionnel)
+
+content:
+    back: Retour à la liste
+    title: Modifier la campagne "%title%"
+    preview: Prévisualiser
+    metadata: Modifier les paramètres
+    send: Envoyer un test
+
+send_test:
+    back: Retour à la liste
+    title: Envoyer un test de "%title%"
+    recipients:
+        label: À qui souhaitez-vous envoyer ce test ?
+        help: 5 emails maximum, séparés par des virgules.
+    send: Envoyer le test
+
+send_all:
+    back: Retour à la liste
+    title: Envoyer la campagne d'emailing "%title%"
+    confirm: |
+        Vous vous apprêtez à envoyer une campagne d'emailing à <strong>%count% personnes</strong>.
+        <br />
+        <br />
+        Envoyer cette campagne utilisera <strong>%count% crédits</strong> de votre organisation.
+        <br />
+        <br />
+        Êtes-vous certain(e) d'être prêt(e) à l'envoyer ?
+        Une fois la campagne envoyée, vous ne pourrez plus annuler l'envoi.
+    send: Envoyer la campagne
+    cancel: Annuler
+
+stats:
+    report:
+        back: Retour à la liste
+        title: Rapport de la campagne "%subject%"
+        export: Exporter

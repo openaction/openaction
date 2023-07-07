@@ -1,0 +1,81 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title'|trans({'%title%': page.title}, 'project_pages') %}
+
+{% block sidebar_pages 'current' %}
+
+{% do expose('endpoints', {
+    'content': path('console_website_page_update_content', {'projectUuid': page.project.uuid, 'uuid': page.uuid}),
+    'metadata': path('console_website_page_update_metadata', {'projectUuid': page.project.uuid, 'uuid': page.uuid}),
+    'image': path('console_website_page_update_image', {'projectUuid': page.project.uuid, 'uuid': page.uuid}),
+    'shareUrl': domain_share_url(page.project, 'page', page.uuid|toBase62, page.slug),
+}) %}
+
+{% set categoryIds = page.categories|map(p => p.id) %}
+
+{% do expose('page_metadata', {
+    'description': page.description,
+    'image': page.image ? cdn_image_url(page.image) : page.image,
+    'categories': categories,
+    'categoryIds': categoryIds,
+    'onlyForMembers': page.onlyForMembers,
+}) %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_pages', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_pages') }}</span>
+                    </a>
+
+                    <a href="{{ path('console_website_page_view', { 'projectUuid': current_project.uuid, 'uuid': page.uuid }) }}"
+                       class="btn btn-outline-primary btn-sm border-0 ml-2" target="_blank">
+                        <i class="fas fa-eye mr-1"></i>
+                        {{ 'edit.view'|trans({}, 'project_pages') }}
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="page--edit"
+                         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
+                        <div class="d-none">
+                            {{ form_widget(form.title, {'attr': {'data-page--edit-target': 'title'}}) }}
+                            {{ form_widget(form.content, {'attr': {'data-page--edit-target': 'content'}}) }}
+                            {{ form_widget(form.description, {'attr': {'data-page--edit-target': 'description'}}) }}
+                            {{ form_widget(form.categories, {'attr': {'data-page--edit-target': 'categories'}}) }}
+                            {{ form_widget(form.onlyForMembers, {'attr': {'data-page--edit-target': 'onlyForMembers'}}) }}
+                            {{ form_widget(image_form.file, {'attr': {'data-page--edit-target': 'image'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="text-center">
+                <input type="text" class="editor-title" value="{{ page.title }}" id="page-title" />
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-upload-url="{{ path('console_website_page_upload_image', {'projectUuid': current_project.uuid, 'uuid': page.uuid}) }}"
+                     id="page-editor">{{ page.content|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

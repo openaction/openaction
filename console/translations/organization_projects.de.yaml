@@ -1,0 +1,66 @@
+list:
+    page_title: Projekte
+    help: "Projekte helfen Ihnen, Ihre Arbeit zu organisieren, indem sie alle Werkzeuge zu einem\nzum gleichen Thema an einem Ort zusammenfassen: eine Website, ein E-Mail-System, ...\n"
+    search: 'Suche nach einem Projekt ...'
+    global_projects:
+        title: 'Globale Projekte'
+        desc: "Globale Projekte sind organisationsweite Projekte.\nSie haben keine geografischen Beschränkungen.\n"
+        new: 'Ein neues globales Projekt starten'
+    thematic_projects:
+        title: 'Thematische Projekte'
+        desc: "Thematische Projekte sind Projekte, die sich auf bestimmte Themen konzentrieren.\nIhre Module sind so angepasst, dass sie sich auf die mit diesen Tags verbundenen Kontakte konzentrieren.\n"
+        new: 'Lancieren Sie ein neues wissenschaftliches Projekt'
+    local_projects:
+        title: 'Lokale Projekte'
+        desc: "Lokale Projekte sind Projekte, die sich auf ein bestimmtes Gebiet konzentrieren.\nIhre Module sind so angepasst, dass sie sich auf die Kontakte in diesem Gebiet konzentrieren.\n"
+        new: 'Ein neues lokales Projekt starten'
+    no_website: 'Keine Citipo-Website'
+    members: Mitglieder
+    contacts: Kontakte
+create:
+    title: 'Ein Projekt starten'
+    subtitle: 'Starten Sie ein Projekt, um eine Gemeinschaft rund um Ihre Aktionen zu schaffen und auszubauen.'
+    batch: 'Ich möchte mehrere Projekte auf einmal erstellen'
+    form:
+        name:
+            label: 'Name des Projekts'
+            help: "Dieser Name ist intern: er wird in Menüs und Überschriften erscheinen und Sie können\neinen anderen öffentlichen Namen angeben, wenn Sie dies wünschen. Sie können ihn auch\nspäter ändern. Maximal 60 Zeichen.\n"
+        submit: erstellen.
+    meta_description: 'Erfahren Sie mehr über %name% und werden Sie Mitglied der Community.'
+    main_intro_content: 'Lassen Sie uns unsere Kräfte bündeln, um etwas zu verändern!'
+    pages:
+        manifesto: Manifest
+        who_we_are: 'Wer wir sind'
+        legalities: 'Rechtliche Hinweise'
+        privacy_policy: Datenschutzbestimmungen
+        terms_service: 'Bedingungen der Dienstleistung'
+    menus:
+        header:
+            home: Startseite
+            manifesto: Manifest
+            who_we_are: 'Wer wir sind'
+            events: Veranstaltungen
+            posts: Nachrichten
+            donate: 'Spenden Sie'
+        footer:
+            home: Startseite
+            manifesto: Manifest
+            events: Veranstaltungen
+            posts: Nachrichten
+            donate: 'Spenden Sie'
+            who_we_are: 'Wer wir sind'
+            legalities: 'Rechtliche Hinweise'
+            privacy_policy: Datenschutzbestimmungen
+            terms_service: 'Bedingungen der Dienstleistung'
+    home_blocks:
+        cta_newsletter: 'Erhalten Sie den Newsletter'
+        cta_manifesto: 'Lesen Sie unser Manifest'
+create_batch:
+    back: Zurück
+    title: 'Mehrere Projekte auf einmal erstellen'
+    subtitle: 'Starten Sie Projekte, um eine Gemeinschaft rund um Ihre Aktionen zu schaffen und zu vergrößern.'
+    form:
+        name: 'Name des Projekts'
+        adminEmail: 'E-Mail-Adresse des Projektleiters (fakultativ)'
+        areas: 'Typ und Zonen'
+        submit: erstellen.

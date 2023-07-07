@@ -1,0 +1,19 @@
+# See the configuration reference at https://github.com/scheb/two-factor-bundle/blob/master/Resources/doc/configuration.md
+scheb_two_factor:
+    trusted_device:
+        enabled: true
+        lifetime: 5184000
+        extend_lifetime: true
+        cookie_name: trusted_device
+        cookie_secure: false
+
+    totp:
+        enabled: true
+        issuer: Citipo
+        window: 1
+        parameters:
+            image: 'https://console.citipo.com/res/icon/icon.png'
+        template: security/login/two-factor.html.twig
+
+    backup_codes:
+        enabled: true

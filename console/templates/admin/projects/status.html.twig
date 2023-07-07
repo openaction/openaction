@@ -1,0 +1,31 @@
+<div style="width: 250px; padding: 5px 0;">
+    <div style="display: flex; margin-bottom: 5px;">
+        <div style="flex-basis: 0; flex-grow: 1; text-align: right; margin-right: 10px;">
+            Access control
+        </div>
+        <div style="flex-basis: 0; flex-grow: 1">
+            {% if entity.instance.websiteAccessUser and entity.instance.websiteAccessPass %}
+                <span class="badge badge-light">Enabled</span>
+            {% else %}
+                <span class="badge badge-success">Disabled</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if not is_on_premise %}
+        <div style="display: flex;">
+            <div style="flex-basis: 0; flex-grow: 1; text-align: right; margin-right: 10px;">
+                Subscription
+            </div>
+            <div style="flex-basis: 0; flex-grow: 1">
+                {% if entity.instance.organization.isSubscriptionTrialing %}
+                    <span class="badge badge-light">Trial</span>
+                {% elseif entity.instance.organization.isSubscriptionExpired %}
+                    <span class="badge badge-danger">Expired</span>
+                {% else %}
+                    <span class="badge badge-success">Paying</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>

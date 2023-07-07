@@ -1,0 +1,205 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'list.page_title'|trans({}, 'organization_projects') %}
+
+{% block content %}
+    {% if app.request.locale == 'fr' %}
+        <div data-controller="joyride--organization"></div>
+    {% endif %}
+
+    <div class="pb-5 mb-5">
+        <div class="row justify-content-center mb-3">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="text-muted text-center">
+                    {{ 'list.help'|trans({}, 'organization_projects') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="text-center mt-5 mb-4">
+                    <h4 class="text-center mb-2">
+                        {{ 'list.global_projects.title'|trans({}, 'organization_projects') }}
+                    </h4>
+
+                    <div class="text-muted mb-2">
+                        {{ 'list.global_projects.desc'|trans({}, 'organization_projects') }}
+                    </div>
+
+                    {% if is_granted('organization_project_manage', current_organization) %}
+                        <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
+                           class="btn btn-link launch-project">
+                            <i class="fal fa-plus"></i>
+                            {{ 'list.global_projects.new'|trans({}, 'organization_projects') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" data-global>
+            {% for item in dashboard.globalProjects %}
+                {% set project = item.project %}
+
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <a href="{{ path('console_project_home_start', {'projectUuid': project.uuid}) }}"
+                       class="projects-item world-box text-dark lift p-3">
+                        <h5 class="mb-2">
+                            {{ project.name }}
+                        </h5>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-link"></i>
+                            </div>
+                            {% if project.isModuleEnabled('website') and project.fullDomain %}
+                                {{ project.fullDomain|u.truncate(20, '…') }}
+                            {% else %}
+                                <em>{{ 'list.no_website'|trans({}, 'organization_projects') }}</em>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-id-card"></i>
+                            </div>
+                            {{ item.members|format_number }} {{ 'list.members'|trans({}, 'organization_projects') }}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-paper-plane"></i>
+                            </div>
+                            {{ item.contacts|format_number }} {{ 'list.contacts'|trans({}, 'organization_projects') }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="text-center mt-5 mb-4">
+                    <h4 class="text-center mb-2">
+                        {{ 'list.thematic_projects.title'|trans({}, 'organization_projects') }}
+                    </h4>
+
+                    <div class="text-muted mb-2">
+                        {{ 'list.thematic_projects.desc'|trans({}, 'organization_projects') }}
+                    </div>
+
+                    {% if is_granted('organization_project_manage', current_organization) %}
+                        <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
+                           class="btn btn-link launch-project">
+                            <i class="fal fa-plus"></i>
+                            {{ 'list.thematic_projects.new'|trans({}, 'organization_projects') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" data-thematic>
+            {% for item in dashboard.thematicProjects %}
+                {% set project = item.project %}
+
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <a href="{{ path('console_project_home_start', {'projectUuid': project.uuid}) }}"
+                       class="projects-item world-box text-dark lift p-3">
+                        <h5 class="mb-2">
+                            {{ project.name }}
+                        </h5>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-link"></i>
+                            </div>
+                            {% if project.isModuleEnabled('website') and project.fullDomain %}
+                                {{ project.fullDomain|u.truncate(20, '…') }}
+                            {% else %}
+                                <em>{{ 'list.no_website'|trans({}, 'organization_projects') }}</em>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-id-card"></i>
+                            </div>
+                            {{ item.members|format_number }} {{ 'list.members'|trans({}, 'organization_projects') }}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-paper-plane"></i>
+                            </div>
+                            {{ item.contacts|format_number }} {{ 'list.contacts'|trans({}, 'organization_projects') }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="text-center mt-5 mb-4">
+                    <h4 class="text-center mb-2">
+                        {{ 'list.local_projects.title'|trans({}, 'organization_projects') }}
+                    </h4>
+
+                    <div class="text-muted mb-2">
+                        {{ 'list.local_projects.desc'|trans({}, 'organization_projects') }}
+                    </div>
+
+                    {% if is_granted('organization_project_manage', current_organization) %}
+                        <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
+                           class="btn btn-link launch-project">
+                            <i class="fal fa-plus"></i>
+                            {{ 'list.local_projects.new'|trans({}, 'organization_projects') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" data-local>
+            {% for item in dashboard.localProjects %}
+                {% set project = item.project %}
+
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <a href="{{ path('console_project_home_start', {'projectUuid': project.uuid}) }}"
+                       class="projects-item world-box text-dark lift p-3">
+                        <h5 class="mb-2">
+                            {{ project.name }}
+                        </h5>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-link"></i>
+                            </div>
+                            {% if project.isModuleEnabled('website') and project.fullDomain %}
+                                {{ project.fullDomain|u.truncate(20, '…') }}
+                            {% else %}
+                                <em>{{ 'list.no_website'|trans({}, 'organization_projects') }}</em>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-id-card"></i>
+                            </div>
+                            {{ item.members|format_number }} {{ 'list.members'|trans({}, 'organization_projects') }}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-paper-plane"></i>
+                            </div>
+                            {{ item.contacts|format_number }} {{ 'list.contacts'|trans({}, 'organization_projects') }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

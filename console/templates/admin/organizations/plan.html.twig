@@ -1,0 +1,44 @@
+{% set plans = {
+    'essential': {
+        'stars': ['fa-star', 'fa-star-o', 'fa-star-o', 'fa-star-o'],
+        'color': '#0077cc',
+        'name': 'Essential',
+    },
+    'standard': {
+        'stars': ['fa-star', 'fa-star', 'fa-star-o', 'fa-star-o'],
+        'color': '#7a6eea',
+        'name': 'Standard',
+    },
+    'premium': {
+        'stars': ['fa-star', 'fa-star', 'fa-star', 'fa-star-o'],
+        'color': '#44ae8f',
+        'name': 'Premium',
+    },
+    'organization': {
+        'stars': ['fa-star', 'fa-star', 'fa-star', 'fa-star'],
+        'color': '#ec486b',
+        'name': 'Organization',
+    },
+} %}
+
+{% set color = entity.instance.isSubscriptionTrialing ? '#bbb' : plans[entity.instance.subscriptionPlan].color %}
+
+<div style="min-width: 200px; max-width: 200px; color: {{ color }}">
+    <div>
+        {% for star in plans[entity.instance.subscriptionPlan].stars %}
+            <i class="fa {{ star }}" style="color: {{ star == 'fa-star-o' ? '#ddd' }}"></i>
+        {% endfor %}
+    </div>
+
+    <small>
+        <span style="{{ not entity.instance.isSubscriptionTrialing ? 'font-weight: bold;' }}">
+            {{ plans[entity.instance.subscriptionPlan].name }}
+        </span>
+
+        {% if entity.instance.isSubscriptionTrialing %}
+            (trial)
+        {% else %}
+            ({{ (entity.instance.billingPricePerMonth / 100)|format_currency('EUR') }}/m)
+        {% endif %}
+    </small>
+</div>

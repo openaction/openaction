@@ -1,0 +1,60 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'membership.homepage.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_membership 'current' %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% block content %}
+    {% do expose('endpoints', {
+        'content': path('console_configuration_membership_homepage_update', {'projectUuid': current_project.uuid}),
+    }) %}
+
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-end">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_configuration_membership', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0 mb-2">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'membership.back'|trans({}, 'project_settings') }}</span>
+                    </a>
+
+                    <h3>
+                        {{ 'membership.homepage.title'|trans({}, 'project_settings') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'membership.homepage.desc'|trans({}, 'project_settings')|raw }}
+                    </div>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="project--membership-main-page">
+                        <div class="d-none">
+                            {{ form_widget(form.content, {'attr': {'data-project--membership-main-page-target': 'content'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-upload-url="{{ path('console_configuration_membership_homepage_upload_image', {'projectUuid': current_project.uuid}) }}"
+                     id="page-editor">{{ pageContent|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

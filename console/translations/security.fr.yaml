@@ -1,0 +1,72 @@
+registration:
+    signup:
+        title: Créer votre compte Citio gratuitement
+        desc: Lancer votre communauté en quelques minutes
+        form:
+            email:
+                label: Votre adresse e-mail de travail
+                help: Vous allez recevoir un email pour valider votre inscription.
+            submit: S'inscrire
+            cancel: Retour à la page d'accueil
+        terms: |
+            En vous inscrivant sur Citipo, vous acceptez les
+            <a href="https://citipo.com/fr/pages/7HVg4wRMI0ZPKEN2QsSIKw/conditions-d-utilisation" target="_blank">Conditions d'utilisation</a>
+            et notre
+            <a href="https://citipo.com/fr/pages/3tPVudZJMyuNwaZJrNJwm9/politique-de-donnees-personnelles" target="_blank">Politique de données personnelles</a>.
+
+    verify:
+        title: Compté créé
+        desc: |
+            Votre compte a été créé avec succès.
+            Nous vous avons envoyé un email pour continuer la configuration de votre compte. Vérifiez votre messagerie !
+        resend:
+            desc: 'Si vous n''avez pas reçu d''email après quelques minutes, nous pouvons le renvoyer :'
+            link: Renvoyer l'email
+            contact_us: Si le problème persiste, vous pouvez nous contacter à
+
+    activate:
+        title: Finalisez votre compte
+        desc: 'Votre compte est presque prêt : nous avons encore besoin de quelques informations et vous serez prêt à utiliser Citipo !'
+        form:
+            firstName: Votre prénom
+            lastName: Votre nom
+            password: Choisissez un mot de passe
+            repeatPassword: Confirmez ce mot de passe
+            agreeTerms: J'accepte la Politique de données personnelles et les Conditions d'utilisation.
+            submit: Finaliser
+
+login:
+    title: Se connecter
+    welcome: Content de vous revoir !
+    email: Adresse e-mail
+    password: Mot de passe
+    remember_me: Rester connecté
+    forgotten_password: Mot de passe oublié ?
+    submit: Se connecter
+    register: Pas encore de compte ? Inscrivez-vous gratuitement !
+
+    two_factor:
+        title: Identification à deux facteurs
+        desc: 'Entrez le code fourni par votre application d''identification (Google Authenticator ou Authy)'
+        login: Se connecter
+        cancel: Annuler
+
+forgot_password:
+    request:
+        title: Mot de passe oublié ?
+        desc: Pas d'inquiétudes. Réinitialiser un mot de passe est simple, il vous suffit de nous indiquer l'adresse mail avec laquelle vous vous êtes inscrit sur Citipo.
+        label: Votre adresse mail
+        submit: Envoyer
+        back: Retour à la connexion
+
+    sent:
+        title: Regardez votre boîte mail
+        desc: Regardez votre boîte mail, nous vous avons envoyé un email pour réinitialiser votre mot de passe.
+        back: Retour à la connexion
+
+    reset:
+        title: Réinitialiser mon mot de passe
+        desc: Parfait ! Vous pouvez maintenant réinitialiser votre mot de passe pour vous connecter à nouveau.
+        new_password: Nouveau mot de passe
+        confirm_password: Confirmer le mot de passe
+        submit: Mettre à jour

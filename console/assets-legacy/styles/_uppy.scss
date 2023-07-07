@@ -1,0 +1,66 @@
+@import '~@uppy/dashboard/src/style.scss';
+
+.uppy-reloading {
+    position: relative;
+
+    &.inactive {
+        .uppy-reloading-loader {
+            display: none;
+        }
+
+        .uppy-reloading-dashboard {
+            opacity: 1;
+        }
+    }
+
+    &.active {
+        .uppy-reloading-loader {
+            position: absolute;
+            z-index: 99;
+            font-size: 32px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uppy-reloading-dashboard {
+            opacity: 0.25;
+        }
+    }
+}
+
+.uppy-Dashboard-inner {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.uppy-Dashboard-browse,
+.uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn--upload,
+.uppy-size--md .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn--upload {
+    &,
+    &:hover {
+        @extend .btn;
+        @extend .btn-primary;
+        @extend .btn-lg;
+        color: white !important;
+        padding: 0.5rem 1rem !important;
+    }
+}
+
+.uppy-Dashboard-browse {
+    margin-left: 10px !important;
+}
+
+.uppy-DashboardItem-action--remove,
+.uppy-StatusBar-actionCircleBtn {
+    border: 0;
+    background: transparent;
+}
+
+.uppy-StatusBar-actionBtn--retry {
+    color: $primary !important;
+    border: 0 !important;
+    background: transparent !important;
+}

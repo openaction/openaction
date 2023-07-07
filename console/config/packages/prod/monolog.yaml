@@ -1,0 +1,25 @@
+monolog:
+    handlers:
+        main:
+            type: fingers_crossed
+            action_level: error
+            handler: group
+            excluded_http_codes: [404, 405]
+            buffer_size: 50
+        group:
+            type: group
+            members: [file, buffer]
+        file:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+        buffer:
+            type: buffer
+            handler: sentry
+        sentry:
+            type: service
+            id: 'App\Bridge\Sentry\SentryHandler'
+        console:
+            type: console
+            process_psr_3_messages: false
+            channels: ['!event', '!doctrine']

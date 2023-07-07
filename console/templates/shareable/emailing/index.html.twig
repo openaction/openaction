@@ -1,0 +1,42 @@
+{% extends 'shareable/base.html.twig' %}
+
+{% from 'shareable/_macros/pagination.html.twig' import pagination %}
+
+{% block page %}
+    <div class="mt-3">
+        {% if campaigns|length == 0 %}
+            <div class="text-center p-5">
+                <div class="my-4">
+                    <h4 class="mb-3">
+                        {{ 'emailing.index.no_records'|trans({}, 'shareable') }}
+                    </h4>
+                </div>
+            </div>
+        {% else %}
+            {% for sent in campaigns %}
+                <div class="world-box p-3 mb-3 position-relative">
+                    <div>
+                        <strong>
+                            <a href="{{ path('shareable_emailing_view', {'projectId': project.uuid|toBase62, 'id': sent.uuid|toBase62}) }}"
+                               class="stretched-link text-dark">
+                                {{ sent.subject }}
+                            </a>
+                        </strong>
+                    </div>
+                    <small class="text-muted">
+                        {{ sent.sentAt|format_datetime('medium', 'short', '', null, 'gregorian', project.websiteLocale) }}
+                    </small>
+                    {% if sent.preview %}
+                        <div class="text-muted mt-2">
+                            {{ sent.preview }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="p-3">
+                {{ pagination(campaigns, current_page, items_per_page) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

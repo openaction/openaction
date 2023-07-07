@@ -1,0 +1,134 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'pending.page_title'|trans({}, 'organization_team') %}
+
+{% block content %}
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-8 col-xl-6">
+            <div class="text-center mt-5">
+                <h4 class="text-center mb-2">
+                    {{ 'pending.page_title'|trans({}, 'organization_team') }}
+                </h4>
+
+                <div class="text-muted mb-2">
+                    {{ 'pending.description'|trans({}, 'organization_team') }}
+                </div>
+
+                <a href="{{ path('console_organization_team', {'organizationUuid': current_organization.uuid}) }}" class="btn btn-link">
+                    <i class="fal fa-angle-left"></i>
+                    {{ 'pending.back'|trans({}, 'organization_team') }}
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        {% for invite in pendingInvites %}
+            {% if invite.isAdmin %}
+                <div class="col-md-6 col-lg-3 mb-3" id="invite-{{ invite.uuid }}">
+                    <a class="projects-item world-box text-dark p-3 lift administrator"
+                       href="{{ csrf_path('console_organization_team_pending_remove', {
+                           'organizationUuid': current_organization.uuid,
+                           'uuid': invite.uuid
+                       }) }}"
+                       data-controller="delete"
+                       data-message="{{ 'pending.delete_message'|trans({'%user%': invite.email}, 'organization_team') }}"
+                       data-target="#invite-{{ invite.uuid }}">
+
+                        <h5 class="mb-2">
+                            {{ invite.email|u.truncate(24, '...') }}
+                            <i class="fad fa-trash-alt text-danger float-right"></i>
+                        </h5>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-user-tag"></i>
+                            </div>
+                            {{ 'pending.label.administrator'|trans({}, 'organization_team') }}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-clock"></i>
+                            </div>
+                            <em>{{ invite.createdAt|format_datetime('medium', 'short') }}</em>
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-cubes"></i>
+                            </div>
+                            <em>{{ 'pending.label.full_access'|trans({}, 'organization_team') }}</em>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        {% for invite in pendingInvites %}
+            {% if not invite.isAdmin %}
+                <div class="col-md-6 col-lg-3 mb-3" id="invite-{{ invite.uuid }}">
+                    <a class="projects-item world-box text-dark p-3 lift collaborator"
+                       href="{{ csrf_path('console_organization_team_pending_remove', {
+                           'organizationUuid': current_organization.uuid,
+                           'uuid': invite.uuid
+                       }) }}"
+                       data-controller="delete"
+                       data-message="{{ 'pending.delete_message'|trans({'%user%': invite.email}, 'organization_team') }}"
+                       data-target="#invite-{{ invite.uuid }}">
+
+                        <h5 class="mb-2">
+                            {{ invite.email|u.truncate(24, '...') }}
+
+                            <i class="fad fa-trash-alt text-danger float-right"></i>
+                        </h5>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-user-tag"></i>
+                            </div>
+                            {{ 'pending.label.collaborator'|trans({}, 'organization_team') }}
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-clock"></i>
+                            </div>
+                            <em>{{ invite.createdAt|format_datetime('medium', 'short') }}</em>
+                        </div>
+
+                        {% set displayed = [] %}
+                        {% set moreCount = 0 %}
+                        {% set i = 0 %}
+
+                        {% set accessibleProjects = current_organization.filterAccessibleProjects(current_organization.projects, invite) %}
+                        {% for project in accessibleProjects %}
+                            {% set i = i + 1 %}
+
+                            {% if i <= 2 %}
+                                {% set displayed = displayed|merge([project.name]) %}
+                            {% else %}
+                                {% set moreCount = moreCount + 1 %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="d-flex align-items-center text-muted mt-1">
+                            <div class="projects-item-icon mr-1">
+                                <i class="fad fa-cubes"></i>
+                            </div>
+                            <em>
+                                {{ displayed|join(', ') }}
+                                {% if moreCount > 0 %}
+                                    {{ 'pending.more_count'|trans({'%count%': moreCount}, 'organization_team') }}
+                                {% endif %}
+                            </em>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

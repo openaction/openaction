@@ -1,0 +1,47 @@
+.embed-consent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 250px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    line-height: 1.5;
+}
+.embed-consent > div {
+    max-width: 400px;
+}
+
+.embed-consent-title {
+    font-size: 16px;
+}
+
+.embed-consent-description {
+    font-size: 12px;
+}
+
+.embed-consent-cancel .btn {
+    font-size: 10px;
+    font-weight: 400;
+    margin: 10px;
+    color: #666;
+}
+
+.content-splash-video .embed-consent,
+.embed-responsive .embed-consent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.content-splash-video .embed-consent-cancel,
+.embed-responsive .embed-consent-cancel {
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}

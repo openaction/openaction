@@ -1,0 +1,260 @@
+back: Back to integrations
+
+index:
+    page_title: Integrations
+    help: Connect Citipo to the tools you use every day to simplify your usages.
+    configure: Configure
+    read_doc: Documentation
+
+    acquisition:
+        title: Acquisition
+        description: Acquire new contacts faster.
+
+        twitter_revue:
+            title: Twitter Revue
+            help: Display a button on your Twitter profile to join your Citipo contacts database in one click.
+
+        wings:
+            title: Wings
+            help: |
+                Synchronize petition signatures, donations, events registrations and all other contacts 
+                between Citipo et Wings.
+
+        quorum:
+            title: Qomon
+            help: |
+                Synchronize your contacts between Citipo and Qomon.
+                This integration requires manual activation, contact us to use it.
+            link: Contact us
+
+    tools:
+        title: Productivity
+        description: Simplify your use of Citipo.
+
+        airtable:
+            title: Airtable
+            help: Add your contacts to an AirTable spreadsheet or automatically create Citipo contacts from AirTable responses.
+
+        google_sheets:
+            title: Google Sheets
+            help: Add your contacts to an Google Sheets spreadsheet or automatically create Citipo contacts from Google Sheets responses.
+
+        excel365:
+            title: Microsoft 365 Excel
+            help: Add your contacts to an Excel spreadsheet or automatically create Citipo contacts from Excel responses.
+
+        evernote:
+            title: Evernote
+            help: Create an Evernote note when a contact joins your organization.
+
+        trello:
+            title: Trello
+            help: Create a Trello task when a contact joins your organization.
+
+        typeform:
+            title: Typeform
+            help: Save the responses of your Typeform forms in your contacts database.
+
+    synchronization:
+        title: Synchronization
+        description: Synchronize your Citipo contacts database with the database of other tools.
+
+        google_contacts:
+            title: Google Contacts
+            help: Synchronize your contacts between Citipo and Google Contacts.
+
+        campaign_monitor:
+            title: Campaign Monitor
+            help: Synchronize your contacts between Citipo and Campaign Monitor.
+
+        mailchimp:
+            title: Mailchimp
+            help: Synchronize your contacts between Citipo and Mailchimp.
+
+        mailjet:
+            title: Mailjet
+            help: Synchronize your contacts between Citipo and Mailjet.
+
+        sendgrid:
+            title: Sendgrid
+            help: Synchronize your contacts between Citipo and Sendgrid.
+
+        sendinblue:
+            title: Sendinblue
+            help: Synchronize your contacts between Citipo and Sendinblue.
+
+        shopify:
+            title: Shopify
+            help: Synchronize your contacts between Citipo and Shopify.
+
+        surveymonkey:
+            title: Survey Monkey
+            help: Synchronize your contacts between Citipo and Survey Monkey.
+
+        wix:
+            title: Wix
+            help: Synchronize your contacts between Citipo and Wix.
+
+    messaging:
+        title: Instant messaging
+        description: |
+            Be notified when new contacts join your database, and act on your database directly
+            from your messaging application.
+
+        discord:
+            title: Discord
+            help: |
+                Get notified on Discord when new contacts join your contacts database.
+                Act on your contacts database by sending messages to Discord.
+
+        slack:
+            title: Slack
+            help: |
+                Get notified on Slack when new contacts join your contacts database.
+                Act on your contacts database by sending messages to Slack.
+
+        mattermost:
+            title: Mattermost
+            help: |
+                Get notified on Mattermost when new contacts join your contacts database.
+                Act on your contacts database by sending messages to Mattermost.
+
+        telegram:
+            title: Telegram
+            help: |
+                Get notified on Telegram when new contacts join your contacts database.
+                Act on your contacts database by sending messages to Telegram.
+
+        messenger:
+            title: Facebook Messenger
+            help: |
+                Get notified on Messenger when new contacts join your contacts database.
+                Act on your contacts database by sending messages to Messenger.
+
+    events:
+        title: Events
+        description: Add the participants of your events in your contact database.
+
+        calendly:
+            title: Calendly
+            help: Add the participants of your Calendly events in your contacts database.
+
+        eventbrite:
+            title: Eventbrite
+            help: Add the participants of your Eventbrite events in your contacts database.
+
+        zoom:
+            title: Zoom
+            help: Add the participants of your Zoom meetings in your contacts database.
+
+    developers:
+        title: Developers
+        description: Build your own tools based on Citipo.
+
+        telegram_bots:
+            title: Telegram Bots
+            help: |
+                Create Telegram bots for your collaborators using Citipo to identify them,
+                or allow your community to access your Citipo content from Telegram.
+
+        api:
+            title: Citipo API
+            help: Use the Citipo API to build your own projects integrated with Citipo.
+            link: Learn more
+
+revue:
+    read_doc: Learn how to use the Twitter Revue integration
+
+    index:
+        page_title: Twitter Revue accounts
+        help: |
+            Connect your Twitter Revue accounts on Citipo to automatically add your Revue subscribers to your
+            Citipo contacts database.
+        register: Connect an account
+        none: No account connected yet.
+        edit: Edit
+        delete: Disconnect
+        delete_confirm: |
+            Are you sure you want to disconnect the account %label%? This will stop the synchronisation of the account
+            contacts with Citipo.
+
+    create:
+        page_title: Connect a Twitter Revue account
+
+    form:
+        back: Back to accounts
+        help: Subscribers of the Twitter Revue account will be automatically added on Citipo.
+        label: What is the Twitter username of this account?
+        apiToken: What is the Twitter Revue API token of the account?
+        submit: Save
+
+wings:
+    title: Synchronization Citipo x Wings
+    help: Link your Wings project to a Citipo project to synchronize contacts between the two platforms.
+    project: Which Citipo project would you link to link to your Wings project?
+    webhook:
+        help: |
+            To enable synchronization between Wings and Citipo, open your Wings project and go to "Settings > Webhooks".
+            Click on "Add Webhook" and fill the following information:
+        name: For the "Name" field, you can choose the name you prefer (for instance Citipo Synchronization)
+        endpoint: For the "Endpoint" field, put the following URL address
+        events: |
+            For the "Events" field, select the events you want to synchronize with Citipo.
+            If you want to sync only contacts whose email has been verified, select events
+            ".confirmed". Otherwise, select all events.
+        http_method: For the "HTTP Method" field, choose "POST"
+        save_help: Then click on Save to save the configuration. The synchronization will then be active.
+
+telegram:
+    index:
+        page_title: Telegram bots
+        help: Register your Telegram bots on Citipo to use them to authentify your collaborators on Telegram.
+        register: Register a bot
+        none: No bot registered yet.
+        details: Shareable URL
+        delete: Delete
+        delete_confirm: |
+            Are you sure you want to unregister the bot %username%? This will invalidate all users authenticated
+            on Telegram using this bot. It cannot be undone.
+
+    register:
+        back: Back to bots
+        page_title: Register a bot
+        help: Once a bot is registered, you will get a URL to share with your collaborators to use it with Citipo.
+        username: What is the username of the bot?
+        submit: Register
+
+    details:
+        back: Back to bots
+        url: Shareable URL to authentify your collaborators
+        url_help: |
+            Share this URL with your collaborats. They will be able to login on Citipo and authorize your bot to
+            access their account data.
+
+    authorize:
+        page_title: Authorize access to your account
+        description: |
+            Telegram bot <strong>%username%</strong> wishes to access your Citipo account's information and to be
+            able to act on your behalf on Citipo.
+            <br /><br />
+            This bot will only have access to the organization <strong>%organisation%</strong>.
+        question: Do you want to share your account access with this bot?
+        yes: Yes, authorize
+        no: No, cancel
+
+integromat:
+    description:
+        1: |
+            This integration works based on Integromat. Integromat helps you connect your tools together
+            and automate your processes with just a few clicks.
+        2: |
+            Citipo integrates with Integromat to allow you to perform automatic actions when contacts join
+            your community or to change your contacts database in response to others events.
+        3: |
+            To use this integration, you must register and use Integromat. The token below you will be
+            asked to create your integration.
+        4: |
+            We are here to help you set up this integration if necessary.
+    learn_more: Learn how to use Integromat
+    contact_us: Ask us for help
+    subtitle: API token to use on Integromat

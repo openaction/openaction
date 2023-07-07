@@ -1,0 +1,83 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-light border-0">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0 mb-2">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+                    </a>
+
+                    <div class="print-order-label">
+                        {{ 'label_reference'|trans({}, 'project_printing') }}
+                    </div>
+                    <h4 class="mb-0 posts-title" title="{{ order.uuid }}">
+                        {{ order.reference }}
+                    </h4>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    {% if order.isReadyToOrder %}
+                        <a href="{{ path('console_community_printing_order', { 'projectUuid': current_project.uuid, 'uuid': order.uuid }) }}"
+                           class="btn btn-primary">
+                            <i class="fas fa-print mr-1"></i>
+                            {% if order.isSubrogatedOrder %}
+                                {{ 'edit.finalize_subrogation'|trans({}, 'project_printing') }}
+                            {% else %}
+                                {{ 'edit.finalize'|trans({}, 'project_printing') }}
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <button class="btn btn-primary" disabled>
+                            <i class="fas fa-print mr-1"></i>
+                            {{ 'edit.not_ready'|trans({}, 'project_printing') }}
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            <ul class="nav nav-tabs">
+                <li class="nav-item ml-3">
+                    <a class="nav-link {% block tab_delivery '' %}"
+                       href="{{ path('console_community_printing_delivery', { 'projectUuid': current_project.uuid, 'uuid': order.uuid }) }}">
+                        {% if order.isDeliveryReadyToOrder %}
+                            <span class="text-success">
+                                <i class="fal fa-check mr-1"></i>
+                                {{ 'edit.tabs.delivery'|trans({}, 'project_printing') }}
+                            </span>
+                        {% else %}
+                            <span class="text-danger">
+                                <i class="fal fa-exclamation-triangle mr-1"></i>
+                                {{ 'edit.tabs.delivery'|trans({}, 'project_printing') }}
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block tab_recipient '' %}"
+                       href="{{ path('console_community_printing_recipient', { 'projectUuid': current_project.uuid, 'uuid': order.uuid }) }}">
+                        {% if order.isRecipientReadyToOrder %}
+                            <span class="text-success">
+                                <i class="fal fa-check mr-1"></i>
+                                {{ 'edit.tabs.recipient'|trans({}, 'project_printing') }}
+                            </span>
+                        {% else %}
+                            <span class="text-danger">
+                                <i class="fal fa-exclamation-triangle mr-1"></i>
+                                {{ 'edit.tabs.recipient'|trans({}, 'project_printing') }}
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+            </ul>
+
+            <div class="bg-white p-4">
+                {% block tab_page '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

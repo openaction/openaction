@@ -1,0 +1,57 @@
+index:
+    title: Actualités
+    help: Créez un fil chronologique d'actualités pour maintenir votre communauté informée de vos nouveautés.
+    edit_categories: Modifier les catégories
+    create: Nouvelle actualité
+    no_result: Aucune actualité
+    no_result_create: Créer une première actualité
+    edit: Modifier
+    duplicate: Dupliquer
+    move: Déplacer
+    delete: Supprimer
+    view: Voir sur le site
+    preview: Prévisualiser
+    draft: Brouillon
+    scheduled: Planifiée
+    scheduled_for: pour le %datetime%
+    published: Publiée
+    published_at: le %datetime%
+    visits: visites
+    last_modified: Dernière modification le %datetime%
+    remove_confirm: Êtes-vous sûr de vouloir supprimer l'actualité "%name%" ?
+
+create:
+    title: '(Actualité sans nom)'
+
+edit:
+    title: Modifier l'actualité "%title%"
+    back: Retour à la liste
+    view: Voir sur le site
+
+move:
+    title: Déplacer l'actualité "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer cette actualité ?
+    submit: Déplacer
+
+categories:
+    index:
+        back: Retour aux actualités
+        title: Catégories d'actualités
+        create: Nouvelle catégorie
+        no_records: Aucune catégorie d'actualité pour le moment
+        no_records_desc: Les catégories aident vos visiteurs à découvrir vos actualités plus efficacement.
+        order: Ordre
+        name: Nom
+        number: Actualités
+        created: Date de création
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Êtes-vous sûr de vouloir supprimer la catégorie "%name%" ?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier une catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Enregistrer

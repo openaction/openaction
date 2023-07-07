@@ -1,0 +1,52 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $translationsDir: '%kernel.project_dir%/translations'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    #
+    # API client
+    #
+    App\Client\CitipoInterface:
+        class: 'App\Client\Citipo'
+
+    #
+    # Bridge
+    #
+    App\Bridge\Sentry\SentryHandler: ~
+
+    Sentry\State\HubInterface:
+        factory: ['@App\Bridge\Sentry\SentryHubFactory', 'create']
+        arguments:
+            $dsn: '%env(SENTRY_DSN)%'
+            $projectRoot: '%kernel.project_dir%'
+            $cacheDir: '%kernel.cache_dir%'
+
+    Monolog\Processor\PsrLogMessageProcessor:
+        tags: ['monolog.processor']
+
+    App\Bridge\Uploadcare\Uploadcare:
+        arguments:
+            $publicKey: '%env(UPLOADCARE_PUBLIC_KEY)%'
+            $secretKey: '%env(UPLOADCARE_SECRET_KEY)%'
+
+    #
+    # Twig
+    #
+    App\Twig\EmbedConsentExtension:
+        arguments:
+            $enableEmbedConsent: '%env(bool:APP_ENABLE_EMBED_CONSENT)%'
+            $stimulus: '@webpack_encore.twig_stimulus_extension'

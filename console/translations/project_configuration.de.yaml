@@ -1,0 +1,35 @@
+save: 'Speichern Sie'
+access:
+    title: 'Zugangskontrolle zur Website'
+    help: 'Konfigurieren Sie ein Passwort auf Ihrer Website, um sie vor der Freigabe vorzubereiten.'
+    form:
+        user: Benutzername
+        pass: Passwort
+        help: 'Lassen Sie die Werte leer, um die Zugriffskontrolle zu deaktivieren.'
+menu:
+    back: 'Zurück zu den Menüs'
+    title: 'Menü und Fußzeile'
+    help: 'Ändern Sie das Navigationsmenü der Website und die Links in der Fußzeile.'
+    header_title: 'Menü Kopfzeile'
+    header_help: "Sie sollten die 3-4 wichtigsten Seiten Ihrer Website in das Kopfmenü aufnehmen.\nVermeiden Sie es, mehr hinzuzufügen, damit sich die Besucher auf den Kerninhalt Ihrer Website konzentrieren können.\n"
+    footer_title: 'Menü in der Fußzeile'
+    footer_help: "Die Fußzeile ist ein guter Ort, um eine ausführliche Liste der Seiten Ihrer Website zu erstellen, damit\nBesucher alles finden können, was sie suchen, und Suchmaschinen Ihre Inhalte effizient indizieren können.\nIhre Inhalte effizient indexieren können.\n"
+    target: 'Ziel:'
+    create: 'Neuer Artikel'
+    no_records: 'Vorläufig kein Artikel'
+    remove_confirm: 'Sind Sie sicher, dass Sie den Eintrag "%name%" löschen wollen?'
+    form:
+        create_title: 'Einen neuen Menüpunkt hinzufügen'
+        edit_title: 'Einen Menüpunkt bearbeiten'
+        parent:
+            label: 'Übergeordneter Artikel'
+            help: 'Wählen Sie ein übergeordnetes Element, um ein Untermenü für dieses übergeordnete Element zu erstellen.'
+        label:
+            label: Link-Etikett
+            help: 'Im Menüpunkt angezeigter Text'
+        url:
+            label: 'Link Ziel'
+            help: 'URL, die bei Klick auf den Menüpunkt geöffnet werden soll'
+        newTab:
+            label: 'Soll dieser Link in einer neuen Registerkarte geöffnet werden?'
+            help: 'Sie sollten Links in neuen Tabs öffnen, wenn die Links auf externe Websites verweisen'

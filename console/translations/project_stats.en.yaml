@@ -1,0 +1,74 @@
+traffic:
+    title: Website traffic report
+    periods:
+        label: 'Period:'
+        1d: 24h
+        7d: Week
+        30d: Month
+        90d: 3 months
+        1y: Year
+    totals:
+        users: Unique visitors
+        page_views: Page views
+        live: Live
+    traffic:
+        label: 'Website traffic evolution'
+        date: Date
+        page_views: Page views
+        users: Unique visitors
+    pages:
+        label: 'Visited pages'
+    sources:
+        label: 'Traffic sources'
+    percentages:
+        absolute: visits
+    countries:
+        label: 'Country'
+    browsers:
+        label: 'Browsers'
+    platforms:
+        label: 'Platforms'
+    utm_tags:
+        title: 'UTM tags'
+        description: |
+            UTM tags are additional information that some services provide when visitors click on a 
+            link to your website on their platform. They can be used to understand the source of visits.
+            You can create your own UTM links to measure specific links usages using
+        link: the Google UTM tags generator
+    utm_sources:
+        label: 'UTM sources'
+    utm_mediums:
+        label: 'UTM mediums'
+    utm_campaigns:
+        label: 'UTM campaigns'
+    events:
+        title: 'Custom events (developers)'
+        description: |
+            When developing your application, you can send custom events to store them in Citipo as statistics.
+
+community:
+    title: Community report
+    periods:
+        label: 'Period:'
+        1d: 24h
+        7d: Week
+        30d: Month
+        90d: 3 months
+        1y: Year
+    totals:
+        contacts: Contacts
+        members: Members
+        members_percentage: '% of contacts'
+        newsletter_subscribers: Newsletter subscribers
+        newsletter_subscribers_percentage: '% of contacts'
+        sms_subscribers: Texts subscribers
+        sms_subscribers_percentage: '% of contacts'
+    growth:
+        label: 'Evolution of community growth'
+        date: Date
+        new_contacts: New contacts
+        new_members: New members
+    tags:
+        label: 'Tags'
+    countries:
+        label: 'Countries'

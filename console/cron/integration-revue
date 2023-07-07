@@ -1,0 +1,3 @@
+#!/bin/sh
+
+php /app/bin/console app:integration:revue-sync

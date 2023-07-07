@@ -1,0 +1,60 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'quote.type.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'quote.type.title'|trans({}, 'project_printing') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-5">
+            <h4 class="mb-4">
+                {{ 'quote.type.question'|trans({}, 'project_printing') }}
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="world-block p-3">
+                        <h5 class="mb-2">
+                            {{ 'quote.type.official.label'|trans({}, 'project_printing') }}
+                        </h5>
+
+                        <div class="text-muted mb-3">
+                            {{ 'quote.type.official.help'|trans({}, 'project_printing') }}
+                        </div>
+
+                        <a href="{{ path('console_community_printing_quote_form', {'projectUuid': current_project.uuid, 'type': 'official'}) }}"
+                           class="btn btn-primary">
+                            {{ 'quote.type.official.button'|trans({}, 'project_printing') }}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="world-block p-3">
+                        <h5 class="mb-2">
+                            {{ 'quote.type.campaign.label'|trans({}, 'project_printing') }}
+                        </h5>
+
+                        <div class="text-muted mb-3">
+                            {{ 'quote.type.campaign.help'|trans({}, 'project_printing') }}
+                        </div>
+
+                        <a href="{{ path('console_community_printing_quote_form', {'projectUuid': current_project.uuid, 'type': 'campaign'}) }}"
+                           class="btn btn-primary">
+                            {{ 'quote.type.campaign.button'|trans({}, 'project_printing') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

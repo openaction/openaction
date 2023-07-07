@@ -1,0 +1,27 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        Un Bon à Tirer est prêt à être examiné
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        Bonjour,
+    </p>
+
+    <p>
+        Un Bon à Tirer a été généré pour l'un des produits de votre commande n°{{ reference }}
+        pour la campagne de {{ candidate }}.
+    </p>
+
+    <p>
+        Un Bons à Tirer est un fichier au format PDF correspondant exactement au rendu final d'impression.
+        Vous devez le valider afin que la commande soit envoyée en production.
+    </p>
+
+    <button class="large expand" href="{{ url('console_community_printing_bat', {'projectUuid': project_uuid, 'uuid': campaign_uuid}) }}">
+        Je consulte le Bon à Tirer
+    </button>
+{% endblock %}

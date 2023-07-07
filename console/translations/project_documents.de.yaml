@@ -1,0 +1,14 @@
+index:
+    upload:
+        title: 'Ein neues Dokument hochladen'
+    list:
+        title: Dokumente
+        no_records: 'Ihr Projekt enthält im Moment kein Dokument.'
+        no_records_desc: "Laden Sie oben ein Dokument hoch und erstellen Sie eine öffentlich zugängliche URL\nfür dieses Dokument mit dem Domainnamen Ihrer Website zu erstellen.\n"
+        name: Name
+        date: Datum
+        view: Siehe
+        copy_url: 'Öffentliche URL kopieren'
+        download: Herunterladen
+        delete: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie das Dokument "%name%" löschen wollen?'

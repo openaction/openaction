@@ -1,0 +1,94 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'logos.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{
+                app.request.get('from') == 'homepage'
+                    ? path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid})
+                    : path('console_configuration_appearance', {'projectUuid': current_project.uuid})
+            }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>
+                    {{
+                        app.request.get('from') == 'homepage'
+                            ? 'back_homepage'|trans({}, 'project_appearance')
+                            : 'back'|trans({}, 'project_appearance')
+                    }}
+                </span>
+            </a>
+
+            <h3>
+                {{ 'logos.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'logos.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 p-lg-5">
+            {{ form_start(form) }}
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-xl-3 mb-4">
+                    {{ form_row(form.appearanceLogoDark, {
+                        'label': 'logos.appearanceLogoDark.label'|trans({}, 'project_appearance'),
+                        'help': 'logos.appearanceLogoDark.help'|trans({}, 'project_appearance')
+                    }) }}
+
+                    {% if current_project.appearanceLogoDark %}
+                        <div class="d-flex justify-content-center p-3">
+                            <div class="world-list-image">
+                                <img src="{{ cdn_image_url(current_project.appearanceLogoDark) }}" class="img-fluid" />
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    {{ form_row(form.appearanceLogoWhite, {
+                        'label': 'logos.appearanceLogoWhite.label'|trans({}, 'project_appearance'),
+                        'help': 'logos.appearanceLogoWhite.help'|trans({}, 'project_appearance')
+                    }) }}
+
+                    {% if current_project.appearanceLogoWhite %}
+                        <div class="d-flex justify-content-center p-3 bg-dark">
+                            <div class="world-list-image">
+                                <img src="{{ cdn_image_url(current_project.appearanceLogoWhite) }}" class="img-fluid" />
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    {{ form_row(form.appearanceIcon, {
+                        'label': 'logos.appearanceIcon.label'|trans({}, 'project_appearance'),
+                        'help': 'logos.appearanceIcon.help'|trans({}, 'project_appearance')
+                    }) }}
+
+                    {% if current_project.appearanceIcon %}
+                        <div class="d-flex justify-content-center p-3">
+                            <div class="world-list-image">
+                                <img src="{{ cdn_image_url(current_project.appearanceIcon) }}" class="img-fluid" />
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'save'|trans({}, 'project_appearance') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

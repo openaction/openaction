@@ -1,0 +1,157 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    {% set official_products = [] %}
+    {% set campaign_products = [] %}
+
+    {% for field in form.product %}
+        {% if field.vars.label starts with 'official_' %}
+            {% set official_products = official_products|merge([field]) %}
+        {% else %}
+            {% set campaign_products = campaign_products|merge([field]) %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3>
+                {{ 'create.title'|trans({}, 'project_printing') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'create.help'|trans({}, 'project_printing') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-5">
+            {{ form_start(form) }}
+
+            <h4 class="font-weight-bold mb-2">
+                {{ 'create.label'|trans({}, 'project_printing') }}
+            </h4>
+
+            <h5 class="text-muted font-weight-normal mb-4">
+                {{ 'create.label_help'|trans({}, 'project_printing') }}
+            </h5>
+
+            {{ form_errors(form) }}
+            {{ form_errors(form.product) }}
+
+            {% if not order_has_campaigns %}
+                <div class="world-block p-4">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <h5 class="text-uppercase">
+                                {{ 'create.official_products_oneclick_title'|trans({}, 'project_printing') }}
+                            </h5>
+
+                            <div class="mb-3 text-muted">
+                                {{ 'create.official_products_oneclick_help'|trans({}, 'project_printing')|raw }}
+                            </div>
+
+                            <a href="{{ csrf_path('console_community_printing_create_kit', {'projectUuid': current_project.uuid, 'kit': 'official'}) }}"
+                               class="btn btn-primary btn-lg">
+                                {{ 'create.official_products_oneclick_button'|trans({}, 'project_printing')|raw }}
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="print-product-kit">
+                                {% for field in official_products %}
+                                    <div class="print-product-kit-image">
+                                        <img src="{{ asset('print/'~field.vars.label~'.png') }}" />
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if order_has_campaigns and not order_is_official %}
+                <div class="world-block p-4 font-italic">
+                    {{ 'create.official_products_disabled'|trans({}, 'project_printing')|raw }}
+                </div>
+
+                {% for field in official_products %}
+                    {% do field_name(field) %}
+                {% endfor %}
+            {% else %}
+                <div class="world-block p-4 mt-4">
+                    <h5 class="text-uppercase">
+                        {{ 'create.official_products'|trans({}, 'project_printing') }}
+                    </h5>
+
+                    <div class="text-muted">
+                        {{ 'create.official_products_help'|trans({}, 'project_printing')|raw }}
+                    </div>
+
+                    <div class="row align-items-end">
+                        {% for field in official_products %}
+                            <div class="col-12 col-md-4 col-lg-3 text-left mt-3 print-product">
+                                <div class="print-product-image print-product-image-{{ field.vars.label }}">
+                                    <img src="{{ asset('print/'~field.vars.label~'.png') }}" />
+                                </div>
+
+                                {{ form_row(field, {
+                                    'label_attr': {'class': 'radio-custom'},
+                                    'label': ('products.' ~ field.vars.label)|trans({}, 'global'),
+                                    'help': ('products_help.' ~ field.vars.label)|trans({}, 'global'),
+                                    'help_html': true,
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if order_has_campaigns and order_is_official %}
+                <div class="world-block p-4 mt-4 font-italic">
+                    {{ 'create.campaign_products_disabled'|trans({}, 'project_printing')|raw }}
+                </div>
+
+                {% for field in campaign_products %}
+                    {% do field_name(field) %}
+                {% endfor %}
+            {% else %}
+                <div class="world-block p-4 mt-4">
+                    <h5 class="text-uppercase">
+                        {{ 'create.campaign_products'|trans({}, 'project_printing') }}
+                    </h5>
+
+                    <div class="row align-items-end">
+                        {% for field in campaign_products %}
+                            <div class="col-12 col-md-4 col-lg-3 text-left mt-3 print-product">
+                                <div class="print-product-image print-product-image-{{ field.vars.label }}">
+                                    <img src="{{ asset('print/'~field.vars.label~'.png') }}" />
+                                </div>
+
+                                {{ form_row(field, {
+                                    'label_attr': {'class': 'radio-custom'},
+                                    'label': ('products.' ~ field.vars.label)|trans({}, 'global'),
+                                    'help': ('products_help.' ~ field.vars.label)|trans({}, 'global'),
+                                    'help_html': true,
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'create.submit'|trans({}, 'project_printing') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

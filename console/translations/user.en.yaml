@@ -1,0 +1,75 @@
+sidebar:
+    account: Account
+    password: Password
+    2fa: Two-factor authentication
+    notifications: Notifications
+
+account:
+    title: Account
+    firstName: First name
+    lastName: Last name
+    locale: Administration panel language
+    submit: Update
+
+update_password:
+    title: Change my password
+    old_password: Current password
+    new_password: Choose a new password
+    repeat_new_password: Confirm the new password
+    submit: Change
+
+notification_settings:
+    title: Notifications
+    event:
+        label: 'I want to receive a notification by email when:'
+        project_created: A project is created in an organization where I am an administrator
+        newsletter_sent: An emailing campaign is sent in an organization where I am an administrator
+        low_credits: An organization where I am an administrator reaches low credits
+        feature_added: A new feature is added to Citipo
+    submit: Update
+
+confirm_password:
+    title: Confirm your password
+    desc: You need to confirm your current password to do this action.
+    label: Current password
+    submit: Continue
+
+two_factor:
+    status:
+        title: Two-factor authentication
+        desc: |
+            Keep your account extra secure with a second authentication step.
+            It's entirely free and greatly increases the security of your account,
+            we recommend all users of Citipo to enable it.
+        disabled:
+            label: Two-factor authentication is not yet enabled on your account.
+            enable: Enable two-factor authentication
+        enabled:
+            label: Two-factor authentication is enabled on your account.
+            disable: Disable two-factor authentication
+            disable_confirm: |
+                Disabling two-factor authentication will decrease the security of your account.
+                Are you sure you want to disable it?
+
+    enable:
+        title: Add two-factor authentication
+        desc: |
+            Download either
+            <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator app</a>
+            or <a href="https://authy.com/download/" target="_blank">Authy app</a>,
+            add a new account, and then scan this barcode to set up your account:
+        manual_code: 'You can also manually add the following code to your prefered application:'
+        enter_code: 'Once done, enter the code you see in the application here:'
+        submit: Enable
+
+    enabled:
+        title: Two-factor authentication has been enabled
+        desc: |
+            Two-factor authentication has been successfully enabled on your account. The next time
+            you will log in on Citipo, you will be asked the code provided by your mobile application.
+        warning: |
+            To avoid being locked out of your account, you should download and store somewhere
+            safe the following codes. If you lose access to your phone, you will be able to use
+            them to log in:
+        download: Download these codes
+        skip: Continue

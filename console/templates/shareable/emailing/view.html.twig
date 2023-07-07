@@ -1,0 +1,111 @@
+{% extends 'emails/community/organization_base.html.twig' %}
+
+{% block metas %}
+    <title>{{ campaign.subject }}</title>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ include('emails/community/style/custom.css.twig', {
+        primary: project.appearancePrimary|default('000000'),
+        secondary: project.appearanceSecondary|default('000000'),
+        third: project.appearanceThird|default('000000'),
+    }) }}
+{% endblock %}
+
+{% block header %}
+    {% if not project.appearanceLogoDark %}
+        <h1 class="text-center">
+            {{ organization.name }}
+        </h1>
+    {% elseif is_granted('website_see_module', project) %}
+        <a href="{{ domain_url(project, '/') }}" target="_blank">
+            <center>
+                <img src="{{ cdn_image_url(project.appearanceLogoDark) }}" class="logo" alt="{{ organization.name }}" />
+            </center>
+        </a>
+    {% else %}
+        <center>
+            <img src="{{ cdn_image_url(project.appearanceLogoDark) }}"
+                 class="logo" alt="{{ organization.name }}" />
+        </center>
+    {% endif %}
+{% endblock %}
+
+{% block content campaign.content|raw %}
+
+{% block footer %}
+    <center>
+        <menu>
+            {% if project.socialFacebook %}
+                <item>
+                    <a href="{{ project.socialFacebook }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/facebook.png') : 'cid:social-facebook' }}"
+                             class="social-link" alt="Facebook" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialTwitter %}
+                <item>
+                    <a href="{{ project.socialTwitter }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/twitter.png') : 'cid:social-twitter' }}"
+                             class="social-link" alt="Twitter" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialInstagram %}
+                <item>
+                    <a href="{{ project.socialInstagram }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/instagram.png') : 'cid:social-instagram' }}"
+                             class="social-link" alt="Instagram" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialLinkedIn %}
+                <item>
+                    <a href="{{ project.socialLinkedIn }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/linkedin.png') : 'cid:social-linkedin' }}"
+                             class="social-link" alt="LinkedIn" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialYoutube %}
+                <item>
+                    <a href="{{ project.socialTwitter }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/youtube.png') : 'cid:social-youtube' }}"
+                             class="social-link" alt="Youtube" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialMedium %}
+                <item>
+                    <a href="{{ project.socialMedium }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/medium.png') : 'cid:social-medium' }}"
+                             class="social-link" alt="Medium" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialTelegram %}
+                <item>
+                    <a href="https://t.me/{{ project.socialTelegram }}" target="_blank">
+                        <img src="{{ preview ? asset('emails/socials/telegram.png') : 'cid:social-telegram' }}"
+                             class="social-link" alt="Telegram" />
+                    </a>
+                </item>
+            {% endif %}
+        </menu>
+    </center>
+
+    <spacer size="16"></spacer>
+
+    <p class="text-center">
+        © {{ 'now'|date('Y') }} {{ 'emailing.view.copyright'|trans({}, 'shareable', project.websiteLocale) }}
+        <br />
+        {{ project.legalGdprName }} {{ project.legalGdprAddress }}
+    </p>
+{% endblock %}

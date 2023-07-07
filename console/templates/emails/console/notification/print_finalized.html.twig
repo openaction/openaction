@@ -1,0 +1,53 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        Nous avons bien reçu votre commande
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        Bonjour,
+    </p>
+
+    <p>
+        Nous avons bien reçu votre commande n°{{ reference }} pour la campagne de {{ candidate }} sur Citipo.
+    </p>
+
+    <p>
+        Il vous reste encore deux étapes à compléter avant que votre commande ne soit envoyée en impression.
+        Ces étapes sont indispensables et doivent être complétées dès que possible :
+    </p>
+
+    <ol>
+        <li>
+            <strong>Étape 1 : Paiement</strong><br />
+            Vous avez reçu
+            <a href="{{ url('console_organization_billing_order_pay', {'organizationUuid': organization_uuid, 'uuid': order_uuid}) }}">un lien de virement</a>
+            correspondant à votre commande. La réception du
+            virement est nécessaire pour déclencher l’impression. Attention, vous devez effectuer un
+            virement avec le montant exact demandé, en une seule fois (sinon, le virement sera refusé).
+            <br />
+            <br />
+        </li>
+
+        <li>
+            <strong>Étape 2 : Validation des Bons à Tirer (BAT)</strong><br />
+            Des Bons à Tirer au format PDF correspondant exactement au rendu final vont être générés
+            automatiquement par la plateforme. Vous serez notifiés par email lorsque les BAT seront
+            disponibles. Vous devez accepter les BAT directement sur Citipo pour chacun de vos produits
+            afin de valider la commande définitivement.
+        </li>
+    </ol>
+
+    <p>
+        À tout moment, vous pouvez retrouver le détail de votre commande sur la plateforme :
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand" href="{{ url('console_community_printing', {'projectUuid': project_uuid}) }}">
+        Je consulte mes commandes
+    </button>
+{% endblock %}

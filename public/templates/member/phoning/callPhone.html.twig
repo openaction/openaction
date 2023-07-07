@@ -1,0 +1,14 @@
+{% extends 'member/phoning/base.html.twig' %}
+
+{% block phoning_content %}
+    <div class="text-center">
+        <h1 class="mb-5">
+            {{ call.contact.contactPhone }}
+        </h1>
+
+        <a href="{{ path('membership_phoning_call_details', {'id': campaign.id, 'callId': call.id}) }}"
+           class="btn btn-outline-primary" data-turbo="true">
+            {{ 'phoning.calling'|trans }}
+        </a>
+    </div>
+{% endblock %}

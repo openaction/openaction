@@ -1,0 +1,69 @@
+traffic:
+    title: Website-Verkehrsbericht
+    periods:
+        label: 'Zeitraum:'
+        1d: 24h
+        7d: Woche
+        30d: Monat
+        90d: '3 Monate'
+        1y: Jahr
+    totals:
+        users: 'Einzigartige Besucher'
+        page_views: Seitenansichten
+        live: Live
+    traffic:
+        label: 'Entwicklung des Website-Verkehrs'
+        date: Datum
+        page_views: Seitenansichten
+        users: 'Einzigartige Besucher'
+    pages:
+        label: 'Besuchte Seiten'
+    sources:
+        label: Verkehrsquellen
+    percentages:
+        absolute: besucht
+    countries:
+        label: Land
+    browsers:
+        label: Browser
+    platforms:
+        label: Plattformen
+    utm_tags:
+        title: UTM-Tags
+        description: "UTM-Tags sind zusätzliche Informationen, die einige Dienste bereitstellen, wenn Besucher auf einen\nLink zu Ihrer Website auf deren Plattform klicken. Sie können verwendet werden, um die Quelle der Besuche zu verstehen.\nSie können Ihre eigenen UTM-Links erstellen, um die Nutzung bestimmter Links zu messen, indem Sie\n"
+        link: 'der Google UTM-Tag-Generator'
+    utm_sources:
+        label: UTM-Quellen
+    utm_mediums:
+        label: UTM-Medien
+    utm_campaigns:
+        label: UTM-Kampagnen
+    events:
+        title: 'Benutzerdefinierte Ereignisse (Entwickler)'
+        description: "Wenn Sie Ihre Anwendung entwickeln, können Sie benutzerdefinierte Ereignisse senden, um sie in Citipo als Statistiken zu speichern.\n"
+community:
+    title: 'Bericht der Gemeinschaft'
+    periods:
+        label: 'Zeitraum:'
+        1d: 24h
+        7d: Woche
+        30d: Monat
+        90d: '3 Monate'
+        1y: Jahr
+    totals:
+        contacts: Kontakte
+        members: Mitglieder
+        members_percentage: '% der Kontakte'
+        newsletter_subscribers: Newsletter-Abonnenten
+        newsletter_subscribers_percentage: '% der Kontakte'
+        sms_subscribers: 'Texte Abonnenten'
+        sms_subscribers_percentage: '% der Kontakte'
+    growth:
+        label: 'Entwicklung des Wachstums der Gemeinschaft'
+        date: Datum
+        new_contacts: 'Neue Kontakte'
+        new_members: 'Neue Mitglieder'
+    tags:
+        label: Tags
+    countries:
+        label: Länder

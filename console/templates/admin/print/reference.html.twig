@@ -1,0 +1,26 @@
+<div>
+    <strong>
+        {{ entity.instance.reference }}
+    </strong>
+</div>
+<div style="color: #999" class="mb-3">
+    Created on {{ entity.instance.createdAt|date('Y-m-d H:i') }}
+</div>
+<div>
+    <a href="{{ ea_url()
+        .setController('App\\Controller\\Admin\\OrganizationController')
+        .set('query', entity.instance.project.organization.id ~ ' ' ~ entity.instance.project.organization.name)
+    }}">
+        {{ entity.instance.project.organization.name }}
+    </a>
+    <div>
+        <a href="{{ path('admin_organization_impersonate', {
+            'id': entity.instance.project.organization.id,
+            'route': 'console_community_printing_view',
+            'projectUuid': entity.instance.project.uuid,
+            'uuid': entity.instance.uuid,
+        }) }}" style="font-size: 12px;">
+            View as admin (impersonate)
+        </a>
+    </div>
+</div>

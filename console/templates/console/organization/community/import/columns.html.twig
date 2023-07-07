@@ -1,0 +1,96 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'contacts.import.page_title'|trans({}, 'organization_community') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'contacts.import.columns.title'|trans({}, 'organization_community') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="mb-5">
+                <div class="mb-1">
+                    <strong>
+                        {{ 'contacts.import.columns.columns.label'|trans({}, 'organization_community') }}
+                    </strong>
+                </div>
+
+                <div class="text-muted mb-3">
+                    {{ 'contacts.import.columns.columns.help'|trans({'%count%': import.head.columns|length}, 'organization_community') }}
+                </div>
+
+                <table class="table table-sm table-striped table-responsive import-columns">
+                    <thead>
+                    <tr>
+                        {% for i, label in import.head.columns %}
+                            <th class="import-columns-column">
+                                <small>
+                                    {{ label|default('contacts.import.columns.default_label'|trans({'%i%': i + 1}, 'organization_community')) }}
+                                </small>
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for columnField in form.columnsTypes %}
+                            <th class="import-columns-column">
+                                {{ form_widget(columnField, {'label': false}) }}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in import.head.firstLines %}
+                        <tr>
+                            {% for value in row %}
+                                <td>
+                                    <small>{{ value|u.truncate(30, '…') }}</small>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-5">
+                <div class="mb-1">
+                    <strong>
+                        {{ 'contacts.import.columns.area.label'|trans({}, 'organization_community') }}
+                    </strong>
+                </div>
+
+                <div class="text-muted mb-3">
+                    {{ 'contacts.import.columns.area.help'|trans({}, 'organization_community') }}
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-5">
+                        <div data-controller="community--import-area" data-input-name="{{ form.areaId.vars.full_name }}">
+                            {{ form_widget(form.areaId) }}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_errors(form.areaId) }}
+            </div>
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    {{ 'contacts.import.columns.submit'|trans({}, 'organization_community') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}

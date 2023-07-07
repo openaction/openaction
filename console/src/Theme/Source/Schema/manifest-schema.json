@@ -1,0 +1,164 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "object",
+            "properties": {
+                "fr": {
+                    "type": "string"
+                },
+                "en": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "fr",
+                "en"
+            ]
+        },
+        "description": {
+            "type": "object",
+            "properties": {
+                "fr": {
+                    "type": "string"
+                },
+                "en": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "fr",
+                "en"
+            ]
+        },
+        "defaultColors": {
+            "type": "object",
+            "properties": {
+                "primary": {
+                    "type": "string"
+                },
+                "secondary": {
+                    "type": "string"
+                },
+                "third": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "primary",
+                "secondary",
+                "third"
+            ]
+        },
+        "defaultFonts": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "text"
+            ]
+        },
+        "thumbnail": {
+            "type": "string"
+        },
+        "templates": {
+            "type": "object",
+            "properties": {
+                "style": {
+                    "type": "string"
+                },
+                "script": {
+                    "type": "string"
+                },
+                "head": {
+                    "type": "string"
+                },
+                "layout": {
+                    "type": "string"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "footer": {
+                    "type": "string"
+                },
+                "list": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "home": {
+                    "type": "string"
+                },
+                "home-calls-to-action": {
+                    "type": "string"
+                },
+                "home-custom-content": {
+                    "type": "string"
+                },
+                "home-newsletter": {
+                    "type": "string"
+                },
+                "home-posts": {
+                    "type": "string"
+                },
+                "home-events": {
+                    "type": "string"
+                },
+                "home-socials": {
+                    "type": "string"
+                },
+                "manifesto-list": {
+                    "type": "string"
+                },
+                "manifesto-view": {
+                    "type": "string"
+                },
+                "trombinoscope-list": {
+                    "type": "string"
+                },
+                "trombinoscope-view": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "style",
+                "script",
+                "head",
+                "layout",
+                "header",
+                "footer",
+                "list",
+                "content",
+                "home",
+                "home-calls-to-action",
+                "home-custom-content",
+                "home-newsletter",
+                "home-posts",
+                "home-events",
+                "home-socials",
+                "manifesto-list",
+                "manifesto-view",
+                "trombinoscope-list",
+                "trombinoscope-view"
+            ]
+        },
+        "assets": {
+            "type": "array"
+        }
+    },
+    "required": [
+        "name",
+        "description",
+        "thumbnail",
+        "templates"
+    ]
+}

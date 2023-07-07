@@ -1,0 +1,9 @@
+<div style="padding: 5px 0;">
+    {% if entity.instance.paidAt %}
+        <span class="badge badge-success">Paid</span>
+    {% elseif entity.instance.invoiceNumber %}
+        <span class="badge badge-warning">To pay</span>
+    {% else %}
+        <span class="badge badge-light">Draft</span>
+    {% endif %}
+</div>

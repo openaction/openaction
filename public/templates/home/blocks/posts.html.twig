@@ -1,0 +1,37 @@
+{% set posts = [] %}
+
+{% for post in block.posts %}
+    {% set videoImage = null %}
+    {% if post.video|default(null) %}
+        {% set videoId = post.video|split(':') %}
+        {% set videoImage = 'https://i1.ytimg.com/vi/'~videoId[1]~'/hqdefault.jpg' %}
+    {% endif %}
+
+    {% set itemCategories = {} %}
+    {% for category in post.categories %}
+        {% set itemCategories = itemCategories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
+    {% endfor %}
+
+    {% set post = post|merge({
+        url: path('post_view', {'id': post.id, 'slug': post.slug}),
+        videoImage: videoImage,
+        publishedAt: post.published_at|format_date('medium'),
+        categories: itemCategories,
+    }) %}
+
+    {% set posts = posts|merge([post]) %}
+{% endfor %}
+
+{% set payload = {
+    'current_project': current_project.toArray,
+    'enable_embed_consent': enable_embed_consent,
+    'posts_title': current_project.terminology.posts,
+    'posts': posts,
+    'play_image': asset('res/play.svg'),
+    'default_image': asset('res/default.jpg'),
+    'no_elements': 'base.no_element'|trans,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-posts.html.twig' with payload %}
+{% endsandbox %}

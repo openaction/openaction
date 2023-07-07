@@ -1,0 +1,116 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'homepage.intro.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back_homepage'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'homepage.intro.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'homepage.intro.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 p-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-7">
+                    {{ form_start(form) }}
+
+                    <div class="mb-4">
+                        {{ form_label(form.websiteMainImage, 'homepage.intro.form.websiteMainImage.label'|trans({}, 'project_appearance')) }}
+
+                        {% if current_project.websiteMainImage %}
+                            <img src="{{ cdn_image_url(current_project.websiteMainImage) }}" class="img-fluid" />
+
+                            <div class="mb-2">
+                                <small>
+                                    <a href="{{ csrf_path('console_configuration_appearance_website_intro_remove_image', {'projectUuid': current_project.uuid}) }}">
+                                        {{ 'homepage.intro.form.websiteMainImage.delete'|trans({}, 'project_appearance') }}
+                                    </a>
+                                </small>
+                            </div>
+                        {% endif %}
+
+                        {{ form_widget(form.websiteMainImage) }}
+
+                        <small class="form-text text-muted">
+                            {{ 'homepage.intro.form.websiteMainImage.help'|trans({}, 'project_appearance') }}
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(form.websiteMainVideo, 'homepage.intro.form.websiteMainVideo.label'|trans({}, 'project_appearance')) }}
+
+                        {% if current_project.websiteMainVideo %}
+                            <video controls style="width: 100%; height: auto;">
+                                <source src="{{ cdn_url(current_project.websiteMainVideo) }}" type="video/mp4">
+                            </video>
+
+                            <div class="mb-2">
+                                <small>
+                                    <a href="{{ csrf_path('console_configuration_appearance_website_intro_remove_video', {'projectUuid': current_project.uuid}) }}">
+                                        {{ 'homepage.intro.form.websiteMainVideo.delete'|trans({}, 'project_appearance') }}
+                                    </a>
+                                </small>
+                            </div>
+                        {% endif %}
+
+                        {{ form_widget(form.websiteMainVideo) }}
+
+                        <small class="form-text text-muted">
+                            {{ 'homepage.intro.form.websiteMainVideo.help'|trans({}, 'project_appearance') }}
+                        </small>
+                    </div>
+
+                    <div>
+                        {{ 'homepage.intro.form.websiteMainIntro.label'|trans({}, 'project_appearance') }}
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="form-text text-muted">
+                            {{ 'homepage.intro.form.websiteMainIntro.help'|trans({}, 'project_appearance') }}
+                        </small>
+                    </div>
+
+                    <div class="mb-1">
+                        {{ form_row(form.websiteMainIntroTitle, {
+                            'label': false,
+                            'attr': {
+                                'class': 'form-control-lg',
+                                'placeholder': 'homepage.intro.form.websiteMainIntro.title'|trans({}, 'project_appearance'),
+                            },
+                        }) }}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_row(form.websiteMainIntroContent, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'homepage.intro.form.websiteMainIntro.content'|trans({}, 'project_appearance'),
+                            },
+                        }) }}
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {{ 'save'|trans({}, 'project_appearance') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

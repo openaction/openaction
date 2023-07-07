@@ -1,0 +1,60 @@
+breadcrumb: Organization
+title: Billing
+
+sidebar:
+    details: Billing details
+    history: Invoices history
+
+details:
+    title: Billing details
+    desc: Details used to generate and send you your orders and invoices.
+    form:
+        details:
+            title: Billing details
+            name:
+                label: Organization name *
+                help: The name displayed on your invoices for your organization. Maximum 50 characters.
+            email:
+                label: Billing email
+                help: The email to which quotes and invoices should be sent when they are issued.
+        address:
+            title: Billing address
+            streetLine1: Street address *
+            streetLine2: Additional street address line (optional)
+            postalCode: Postal code *
+            city: City *
+            country: Country *
+        recipient:
+            title: Person doing the wire transfer
+            firstName:
+                label: First name of the person doing the wire transfer
+                help: Displayed on the invoice as recipient.
+            lastName:
+                label: Last name of the person doing the wire transfer
+                help: Displayed on the invoice as recipient.
+            email:
+                label: Email address of the person doing the wire transfer
+                help: The person doing the wire transfer will receive payment information by email at this address.
+        submit: Save
+
+history:
+    title: Invoices history
+    desc: List of all past invoices for your account.
+    table:
+        order: Order
+        number: Invoice number
+        amount: Amount
+        date: Date
+        download: Download
+        generating: The invoice PDF is being generated...
+        no_result: No invoice for the moment
+
+order:
+    title: 'Order %number%'
+    desc: Your order has been successfully processed
+    message:
+        title: Your order has been processed
+        1: We are now waiting for our payment processor to receive the funds in order to finalize it.
+        2: If you didn't already initiated the payment, you have received the payment instructions by email.
+        3: Note that the payment can take a few days to be confirmed.
+    back: Back to the organization

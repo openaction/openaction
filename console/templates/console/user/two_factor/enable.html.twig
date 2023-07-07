@@ -1,0 +1,55 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% block page_title 'two_factor.enable.title'|trans({}, 'user') %}
+
+{% block sidebar_2fa 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'two_factor.enable.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="p-4 p-lg-5 bg-light">
+            <div class="mb-4">
+                {{ 'two_factor.enable.desc'|trans({}, 'user')|raw }}
+            </div>
+
+            <div class="mb-4">
+                <img src="{{ path('console_user_2fa_qr_code') }}" style="width: 200px; height: 200px;" />
+            </div>
+
+            <div class="mb-4">
+                <div class="mb-1">
+                    {{ 'two_factor.enable.manual_code'|trans({}, 'user')|raw }}
+                </div>
+
+                <input type="text" class="form-control" disabled value="{{ app.user.getGoogleAuthenticatorSecret }}" />
+            </div>
+
+            <div class="text-muted mb-2">
+                {{ 'two_factor.enable.enter_code'|trans({}, 'user')|raw }}
+            </div>
+
+            {{ form_start(form) }}
+
+            <div class="row mb-3">
+                <div class="col-10 col-md-6 col-lg-5 col-xl-4">
+                    {{ form_row(form.code, {
+                        'attr': {
+                            'class': 'form-control-lg',
+                            'maxlength': 6,
+                            'inputmode': 'numeric'
+                        }
+                    }) }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                {{ 'two_factor.enable.submit'|trans({}, 'user') }}
+            </button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

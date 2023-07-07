@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body_class 'full-height' %}
+
+{% block page_title '404.title'|trans({}, 'errors') %}
+
+{% block body %}
+    <div class="security">
+        <div class="security-box">
+            <div class="mt-5 mb-5 text-center">
+                <a href="{{ path('homepage_redirect') }}">
+                    <img src="{{ asset('res/logo/logo-dark.svg') }}" class="security-logo" alt="{{ 'platform'|trans({}, 'global') }}" />
+                </a>
+            </div>
+
+            <div class="world-box">
+                <div class="p-4">
+                    <h4 class="mb-4 text-center">{{ '404.title'|trans({}, 'errors') }}</h4>
+
+                    <div class="alert alert-danger border-0 text-center mb-5">
+                        {{ '404.help'|trans({}, 'errors') }}
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{{ path('homepage_redirect') }}" class="btn btn-primary">
+                            {{ '404.back'|trans({}, 'errors') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-5 text-center">
+                <small class="text-muted">
+                    <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" class="text-muted">{{ 'contact_us'|trans({}, 'global') }}</a>
+                    |
+                    {{ 'now'|date('Y') }} © {{ 'legal_name'|trans({}, 'global') }}
+                </small>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'member/phoning/base.html.twig' %}
+
+{% block phoning_content %}
+    <div class="text-center">
+        <p>
+            {{ 'phoning.details.title'|trans }}
+        </p>
+
+        <h1 class="mb-3">
+            {{ call.contact.profileFormalTitle }}
+            {{ call.contact.profileFirstName }}
+            {{ call.contact.profileLastName }}
+        </h1>
+
+        <div class="mb-5">
+            {{ call.contact.addressZipCode }}
+            {{ call.contact.addressCity }}
+            {{ call.contact.addressCountry }}
+        </div>
+
+        <div class="mb-2">
+            <a href="{{ path('membership_phoning_call_failed', {'id': campaign.id, 'callId': call.id, 'type': 'invalid'}) }}"
+               class="btn btn-outline-primary" data-turbo="true">
+                {{ 'phoning.details.failed_invalid'|trans }}
+            </a>
+        </div>
+
+        <div class="mb-2">
+            <a href="{{ path('membership_phoning_call_failed', {'id': campaign.id, 'callId': call.id, 'type': 'no_answer'}) }}"
+               class="btn btn-outline-primary" data-turbo="true">
+                {{ 'phoning.details.failed_no_answer'|trans }}
+            </a>
+        </div>
+
+        <div class="mb-2">
+            <a href="{{ path('membership_phoning_call_failed', {'id': campaign.id, 'callId': call.id, 'type': 'no_call'}) }}"
+               class="btn btn-outline-primary" data-turbo="true">
+                {{ 'phoning.details.failed_no_call'|trans }}
+            </a>
+        </div>
+
+        <div class="mb-2">
+            <a href="{{ path('membership_phoning_call_failed', {'id': campaign.id, 'callId': call.id, 'type': 'unregister'}) }}"
+               class="btn btn-outline-primary" data-turbo="true">
+                {{ 'phoning.details.failed_unregister'|trans }}
+            </a>
+        </div>
+
+        <div class="mb-4">
+            <a href="{{ path('membership_phoning_call_failed', {'id': campaign.id, 'callId': call.id, 'type': 'call_later'}) }}"
+               class="btn btn-outline-primary" data-turbo="true">
+                {{ 'phoning.details.failed_call_later'|trans }}
+            </a>
+        </div>
+
+        <a href="{{ path('membership_phoning_call_answered', {'id': campaign.id, 'callId': call.id}) }}"
+           class="btn btn-primary" data-turbo="true">
+            {{ 'phoning.details.accepted'|trans }}
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'automation.metadata.title'|trans({'%name%': automation.name}, 'organization_community') %}
+
+{% block sidebar_automation 'current' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-light">
+            <div class="row align-items-center">
+                <div class="col-lg mb-3 mb-lg-0">
+                    <a href="{{ path('console_organization_community_automation', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'automation.back'|trans({}, 'organization_community') }}</span>
+                    </a>
+
+                    <h3 class="mt-2 mb-0">
+                        {{ 'automation.metadata.title'|trans({'%name%': automation.name}, 'organization_community') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto">
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'automation.metadata.submit'|trans({}, 'organization_community') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'automation.metadata.automation.title'|trans({}, 'organization_community') }}
+        </h3>
+
+        <div class="bg-light p-3" {{ stimulus_controller('automation-form-filter') }}>
+            {{ form_row(form.name, {
+                'label': 'automation.metadata.automation.name.label'|trans({}, 'organization_community'),
+                'help': 'automation.metadata.automation.name.help'|trans({}, 'organization_community'),
+            }) }}
+
+            {{ form_row(form.trigger, {
+                'label': 'automation.metadata.automation.trigger.label'|trans({}, 'organization_community'),
+                'attr': {'data-automation-form-filter-target': 'triggerField'},
+            }) }}
+
+            <div {{ stimulus_target('automation-form-filter', 'formFilter') }}>
+                {{ form_row(form.formFilter, {
+                    'label': 'automation.metadata.automation.trigger.form_filter'|trans({}, 'organization_community'),
+                }) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'automation.metadata.subject.title'|trans({}, 'organization_community') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="text-muted mb-3">
+                        {{ 'automation.metadata.subject.desc'|trans({}, 'organization_community') }}
+                    </div>
+
+                    {{ form_row(form.subject, {
+                        'label': 'automation.metadata.subject.subject.label'|trans({}, 'organization_community'),
+                        'attr': {'class': 'form-control-lg'},
+                    }) }}
+
+                    {{ form_row(form.preview, {
+                        'label': 'automation.metadata.subject.preview.label'|trans({}, 'organization_community'),
+                        'help': 'automation.metadata.subject.preview.help'|trans({}, 'organization_community'),
+                    }) }}
+                </div>
+
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="text-muted mb-2">
+                        <em>
+                            {{ 'automation.metadata.subject.subject.help.main'|trans({}, 'organization_community') }}
+                        </em>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'automation.metadata.subject.subject.help.1.strong'|trans({}, 'organization_community') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'automation.metadata.subject.subject.help.1.muted'|trans({}, 'organization_community') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'automation.metadata.subject.subject.help.2.strong'|trans({}, 'organization_community') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'automation.metadata.subject.subject.help.2.muted'|trans({}, 'organization_community') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'automation.metadata.subject.subject.help.3.strong'|trans({}, 'organization_community') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'automation.metadata.subject.subject.help.3.muted'|trans({}, 'organization_community') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="world-box mb-3">
+                <h3 class="world-box-title">
+                    {{ 'automation.metadata.from.title'|trans({}, 'organization_community') }}
+                </h3>
+
+                <div class="bg-light p-3">
+                    <div class="text-muted mb-3">
+                        {{ 'automation.metadata.from.desc'|trans({}, 'organization_community') }}
+                    </div>
+
+                    {{ form_row(form.fromEmail, {
+                        'label': 'automation.metadata.from.email.label'|trans({}, 'organization_community'),
+                        'help': 'automation.metadata.from.email.help'|trans({}, 'organization_community'),
+                    }) }}
+
+                    {{ form_row(form.fromName, {'label': 'automation.metadata.from.name'|trans({}, 'organization_community')}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="world-box mb-3">
+                <h3 class="world-box-title">
+                    {{ 'automation.metadata.to.title'|trans({}, 'organization_community') }}
+                </h3>
+
+                <div class="bg-light p-3">
+                    <div data-controller="automation--to">
+                        {{ form_row(form.toEmailType, {
+                            'label': 'automation.metadata.to.toEmailType.label'|trans({}, 'organization_community'),
+                            'attr': {'data-automation--to-target': 'typeField'},
+                        }) }}
+
+                        {{ form_row(form.toEmail, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'automation.metadata.to.toEmail'|trans({}, 'organization_community'),
+                                'data-automation--to-target': 'emailField',
+                            },
+                        }) }}
+                    </div>
+
+                    {{ form_row(form.typeFilter, {'label': 'automation.metadata.to.typeFilter.label'|trans({}, 'organization_community')}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-lg btn-primary">
+            {{ 'automation.metadata.submit'|trans({}, 'organization_community') }}
+        </button>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

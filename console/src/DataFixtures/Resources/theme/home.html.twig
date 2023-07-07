@@ -1,0 +1,49 @@
+<div class="home">
+    <div class="home-jumbo" {% if jumbo_image %}style="background-image: url('{{ jumbo_image }}');"{% endif %}>
+        {% if jumbo_video %}
+            <div class="home-jumbo-video">
+                <video autoplay="autoplay" loop="loop" muted="muted" playsinline="playsinline">
+                    <source src="{{ jumbo_video }}" type="video/mp4">
+                </video>
+            </div>
+        {% endif %}
+
+        {% if jumbo_overlay %}
+            <div class="home-jumbo-overlay"></div>
+        {% endif %}
+
+        <div class="home-jumbo-intro-container">
+            <div class="home-jumbo-intro home-jumbo-intro-{{ jumbo_position }}">
+                <div class="home-jumbo-intro-view">
+                    <h2 data-aos="fade-up" data-aos-duration="600">
+                        {{ jumbo_title }}
+                    </h2>
+
+                    <p data-aos="fade-up" data-aos-duration="600">
+                        {{ jumbo_content|raw }}
+                    </p>
+
+                    {% if jumbo_position != 'center' and blocks[0] is defined and blocks[0].type == 'cta' %}
+                        <div class="home-jumbo-buttons" data-aos="fade-up" data-aos-duration="600">
+                            {{ blocks[0].content|raw }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if jumbo_position == 'center' and blocks[0] is defined and blocks[0].type == 'cta' %}
+                <div class="home-jumbo-buttons" data-aos="fade-up" data-aos-duration="600">
+                    {{ blocks[0].content|raw }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="home-blocks">
+        {% for key, block in blocks %}
+            {% if key != 0 or block.type != 'cta' %}
+                {{ block.content|raw }}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

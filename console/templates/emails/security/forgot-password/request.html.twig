@@ -1,0 +1,26 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.forgot_password.request.title'|trans({}, 'emails', locale|default('en')) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.forgot_password.request.desc'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand"
+            href="{{ url('security_forgot_password', { 'uuid': secret }) }}">
+        {{ 'transactional.forgot_password.request.link'|trans({}, 'emails', locale|default('en')) }}
+    </button>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.forgot_password.request.ignore'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+{% endblock %}

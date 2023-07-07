@@ -1,0 +1,453 @@
+{% extends 'console/base.html.twig' %}
+
+{% block page_title current_project.name %}
+
+{% block flashes '' %}
+
+{% block page %}
+    <div class="container-fluid px-5 mb-5">
+        <div class="row no-gutters align-items-end">
+            <div class="col-md-6">
+                <div class="mt-4 mb-4">
+                    <h5 class="font-weight-normal">
+                        <a href="{{ path('console_organization_projects', {'organizationUuid': current_organization.uuid}) }}"
+                           class="text-muted">{{ 'breadcrumb'|trans({}, 'project') }}</a>
+                        <i class="fal fa-angle-right text-muted mr-1 ml-1"></i>
+                        {{ current_project.name }}
+                    </h5>
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                {% block module_top '' %}
+            </div>
+        </div>
+
+        <div class="row">
+            {% if current_project.tools != ['community_printing'] %}
+                <div class="col-12 world-sidebar">
+                    <div class="mb-3">
+                        <a href="{{ path('console_project_home_start', { 'projectUuid': current_project.uuid }) }}"
+                           class="world-sidebar-item {% block sidebar_quick_start '' %}">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-rocket-launch"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.quick_start'|trans({}, 'project') }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {% if is_granted('website_see_module', current_project) %}
+                        <div class="mb-3 world-sidebar-category-website">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.website.label'|trans({}, 'project') }}
+                            </span>
+
+                            <a href="{{ path('console_website_view', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item mb-2" target="_blank">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-external-link"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.website.view'|trans({}, 'project') }}
+                                </div>
+                            </a>
+
+                            {% if is_granted('website_pages_manage', current_project) %}
+                                <a href="{{ path('console_website_pages', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-pages {% block sidebar_pages '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-file-alt"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.website.pages'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_posts_manage_drafts', current_project) %}
+                                <a href="{{ path('console_website_posts', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-posts {% block sidebar_posts '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-newspaper"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.website.posts'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_trombinoscope_manage_drafts', current_project) %}
+                                <a href="{{ path('console_website_trombinoscope', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-trombinoscope {% block sidebar_trombinoscope '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-id-card"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.website.trombinoscope'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_manifesto_manage_drafts', current_project) %}
+                                <a href="{{ path('console_website_manifesto', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-manifesto {% block sidebar_manifesto '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-book"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.website.manifesto'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_documents_manage', current_project) %}
+                                <a href="{{ path('console_website_documents', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-documents {% block sidebar_documents '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-folders"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.website.documents'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_events_manage_drafts', current_project) %}
+                                <a href="{{ path('console_website_events', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-events {% block sidebar_events '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.events'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('website_forms_manage', current_project) %}
+                                <a href="{{ path('console_website_forms', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-forms {% block sidebar_forms '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-file-edit"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.forms'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('community_see_module', current_project) %}
+                        <div class="mb-3 world-sidebar-category-community">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.community.label'|trans({}, 'project') }}
+                            </span>
+
+                            {% if is_granted('community_contacts_view', current_project) %}
+                                <a href="{{ path('console_community_contacts', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-contacts {% block sidebar_contacts '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-database"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.contacts'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('community_emailing_manage_drafts', current_project) %}
+                                <a href="{{ path('console_community_emailing', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-emailing {% block sidebar_emailing '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-paper-plane"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.emailing'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('community_texting_manage_drafts', current_project) %}
+                                <a href="{{ path('console_community_texting', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-texting {% block sidebar_texting '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-comment-alt-lines"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.texting'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('community_phoning_manage_drafts', current_project) %}
+                                <a href="{{ path('console_community_phoning', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-phoning {% block sidebar_phoning '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-phone"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.phoning'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('community_printing_manage_drafts', current_project) and current_organization.showPreview %}
+                                <a href="{{ path('console_community_printing', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-print {% block sidebar_print '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-print"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.community.print'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('project_config_socials', current_project) %}
+                        <div class="mb-3 world-sidebar-category-socials">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.socials.label'|trans({}, 'project') }}
+                            </span>
+
+                            <a href="{{ path('console_configuration_social_networks_accounts', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item world-sidebar-item-accounts {% block sidebar_socials_accounts '' %}">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-share-alt"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.socials.accounts'|trans({}, 'project') }}
+                                </div>
+                            </a>
+
+                            <a href="{{ path('console_configuration_social_networks_sharers', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item world-sidebar-item-sharers {% block sidebar_socials_sharers '' %}">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-share"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.socials.sharers'|trans({}, 'project') }}
+                                </div>
+                            </a>
+
+                            <a href="{{ path('console_configuration_social_networks_metas', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item world-sidebar-item-metas {% block sidebar_socials_metas '' %}">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-images"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.socials.metas'|trans({}, 'project') }}
+                                </div>
+
+                                {% if
+                                    not current_project.websiteSharer
+                                    or not current_project.websiteMetaTitle
+                                    or not current_project.websiteMetaDescription
+                                %}
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-exclamation-triangle text-danger"></i>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('website_access_stats', current_project)
+                        or is_granted('community_access_stats', current_project) %}
+                        <div class="mb-3 world-sidebar-category-stats">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.stats.label'|trans({}, 'project') }}
+                            </span>
+
+                            {% if is_granted('website_access_stats', current_project) %}
+                                <a href="{{ path('console_stats_traffic', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-stats-website {% block sidebar_stats_traffic '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-globe-europe"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.stats.website'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('community_access_stats', current_project) %}
+                                <a href="{{ path('console_stats_community', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-stats-community {% block sidebar_stats_community '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-users-class"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.stats.community'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('project_config_appearance', current_project)
+                        or is_granted('organization_project_manage', current_organization) %}
+                        <div class="mb-3 world-sidebar-category-configuration">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.configuration.label'|trans({}, 'project') }}
+                            </span>
+
+                            {% if is_granted('project_config_appearance', current_project) %}
+                                <a href="{{ path('console_configuration_appearance', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-appearance {% block sidebar_appearance '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-palette"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.configuration.appearance'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+
+                                <a href="{{ path('console_configuration_menu', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-menu {% block sidebar_menu '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-list"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.configuration.menu'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+
+                                <a href="{{ path('console_configuration_access', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-access {% block sidebar_access '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-lock"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.configuration.access'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('organization_project_manage', current_organization) %}
+                                <a href="{{ path('console_configuration_settings_legalities', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-legal {% block sidebar_legal_details '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-briefcase"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.configuration.legal_details'|trans({}, 'project') }}
+                                    </div>
+                                    {% if
+                                        not current_project.legalGdprName
+                                        or not current_project.legalGdprAddress
+                                        or not current_project.legalPublisherName
+                                        or not current_project.legalPublisherRole
+                                        or not current_project.legalGdprEmail
+                                    %}
+                                        <div class="world-sidebar-item-icon">
+                                            <i class="fad fa-exclamation-triangle text-danger"></i>
+                                        </div>
+                                    {% endif %}
+                                </a>
+
+                                {% if current_project.isModuleEnabled('members_area') %}
+                                    <a href="{{ path('console_configuration_membership', { 'projectUuid': current_project.uuid }) }}"
+                                       class="world-sidebar-item world-sidebar-item-membership {% block sidebar_membership '' %}">
+                                        <div class="world-sidebar-item-icon">
+                                            <i class="fad fa-users"></i>
+                                        </div>
+                                        <div class="world-sidebar-item-label">
+                                            {{ 'sidebar.configuration.membership'|trans({}, 'project') }}
+                                        </div>
+                                    </a>
+                                {% endif %}
+
+                                <a href="{{ path('console_configuration_settings', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-settings {% block sidebar_settings '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-cogs"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.configuration.settings'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('project_developer_redirections', current_project)
+                        or is_granted('project_developer_theme', current_project)
+                        or is_granted('project_developer_access', current_project) %}
+                        <div class="mb-3 world-sidebar-category-developers">
+                            <span class="world-sidebar-category">
+                                {{ 'sidebar.developers.label'|trans({}, 'project') }}
+                            </span>
+
+                            {% if is_granted('project_developer_redirections', current_project) %}
+                                <a href="{{ path('console_developers_redirections', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-redirections {% block sidebar_redirections '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-share-all"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.developers.redirections'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('project_developer_theme', current_project) %}
+                                <a href="{{ path('console_developers_theme', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-theme {% block sidebar_theme '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-terminal"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.developers.theme'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('project_developer_access', current_project) %}
+                                <a href="{{ path('console_developers_access', { 'projectUuid': current_project.uuid }) }}"
+                                   class="world-sidebar-item world-sidebar-item-api {% block sidebar_api '' %}">
+                                    <div class="world-sidebar-item-icon">
+                                        <i class="fad fa-key"></i>
+                                    </div>
+                                    <div class="world-sidebar-item-label">
+                                        {{ 'sidebar.developers.api'|trans({}, 'project') }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="col-12 {% if current_project.tools != ['community_printing'] %}col-lg-10{% endif %}">
+                {% block project_flashes %}
+                    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+                        {% for message in messages %}
+                            <div class="world-alert alert alert-bg-{{ type }}">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto pr-3">
+                                        {% if type == 'success' %}
+                                            <i class="far fa-check"></i>
+                                        {% elseif type == 'warning' %}
+                                            <i class="far fa-exclamation-triangle"></i>
+                                        {% elseif type == 'error' %}
+                                            <i class="far fa-times"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {{ message|trans({}, 'flashes') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

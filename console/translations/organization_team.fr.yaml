@@ -1,0 +1,133 @@
+list:
+    page_title: Équipe
+    description: Gérez les accès de vos collaborateurs à Citipo
+    invite: Inviter un nouveau collaborateur
+    search: Trouver un collaborateur ...
+    label:
+        administrator: Administrateur
+        collaborator: Collaborateur
+        full_access: A accès à tous les projets
+    more_count: et %count% autres
+    pending:
+        single: '%pending% invitation en attente'
+        plural: '%pending% invitations en attente'
+
+pending:
+    title: Invitations en attente
+    page_title: Invitations en attente
+    description: Ces invitations ont été envoyées mais n'ont pas encore été acceptées.
+    back: Retour à la liste des collaborateurs
+    delete_message: Voulez-vous vraiment supprimer l'invitation de "%user%" ?
+    more_count: et %count% autres
+    label:
+        administrator: Administrateur
+        collaborator: Collaborateur
+        full_access: A accès à tous les projets
+
+permissions:
+    check_all: Donner un accès complet à ce projet
+    detailed_permissions: Permissions détaillées
+
+    website: Site internet
+
+    pages: Pages de contenu
+    website_pages_manage: Gérer les pages de contenu
+    website_pages_manage_categories: Gérer les catégories de pages
+
+    posts: Actualités
+    website_posts_manage_drafts: Gérer les brouillons d'actualités
+    website_posts_publish: Publier des actualités
+    website_posts_manage_published: Gérer les actualités publiées
+    website_posts_manage_categories: Gérer les catégories d'actualités
+
+    documents: Documents
+    website_documents_manage: Gérer les documents
+
+    trombinoscope: Trombinoscope
+    website_trombinoscope_manage_drafts: Gérer les brouillons de fiches du trombinoscope
+    website_trombinoscope_publish: Publier des fiches du trombinoscope
+    website_trombinoscope_manage_published: Gérer les fiches du trombinoscope publiées
+    website_trombinoscope_manage_categories: Gérer les catégories du trombinoscope
+
+    manifesto: Manifesto
+    website_manifesto_manage_drafts: Gérer les brouillons de propositions
+    website_manifesto_publish: Publier des propositions
+    website_manifesto_manage_published: Gérer les propositions publiées
+
+    stats: Statistiques
+    website_access_stats: Voir les statistiques de visites du site
+    community_access_stats: Voir les statistiques de la communauté
+
+    community: Communauté
+
+    contacts: Contacts
+    community_contacts_view: Voir les contacts
+    community_contacts_update: Modifier les informations des contacts
+    community_contacts_delete: Supprimer des contacts
+    community_contacts_tag_add: Créer de nouveaux tags de contacts
+
+    emailing: Campagnes emails
+    community_emailing_manage_drafts: Gérer les brouillons d'emails
+    community_emailing_send: Envoyer des emails
+    community_emailing_stats: Voir les statistiques des emails
+
+    texting: Campagnes SMS
+    community_texting_manage_drafts: Gérer les brouillons de SMS
+    community_texting_send: Envoyer des SMS
+    community_texting_stats: Voir les statistiques des SMS
+
+    phoning: Campagnes d'appels
+    community_phoning_manage_drafts: Gérer les brouillons de campagnes d'appels
+    community_phoning_manage_active: Démarrer et stopper les campagnes d'appels
+    community_phoning_stats: Voir les statistiques des campagnes d'appels
+
+    printing: Campagnes d'imprimés
+    community_printing_manage_drafts: Gérer les brouillons de campagnes d'imprimés
+    community_printing_order: Commander et payer les campagnes d'imprimés
+    community_printing_stats: Accéder aux statistiques des campagnes d'imprimés
+
+    events: Événements
+    website_events_manage_drafts: Gérer les brouillons d'événements
+    website_events_publish: Publier des événements
+    website_events_manage_published: Gérer les événements publiés
+
+    forms: Questionnaires
+    website_forms_manage: Gérer les questionnaires
+    website_forms_access_results: Voir les résultats des questionnaires
+
+    configuration: Configuration
+
+    settings: Paramètres
+    project_config_appearance: Configurer l'apparence du projet (site internet, emails, ...)
+    project_config_socials: Configurer les réseaux sociaux
+
+    developer: Développeurs
+    project_developer_theme: Modifier le code du thème du projet
+    project_developer_redirections: Gérer les URL de redirection
+    project_developer_access: Accéder à l'espace développeurs
+
+invite_member:
+    back: Retour à votre équipe
+    page_title: Inviter un nouveau collaborateur
+    title: Inviter un nouveau collaborateur
+    email: Adresse email de votre collaborateur
+    locale: Quelle est la langue préférée par ce collaborateur pour travailler sur Citipo ?
+    labels:
+        label: Permissions externes personnalisées
+        help: |
+            Si vous souhaitez différencier vos collaborateurs depuis l'API Citipo, vous pouvez leur associer
+            des permissions externes. Ces permissions sont de simples étiquettes accessibles depuis l'API Citipo
+            afin que vous puissiez adapter le comportement de vos outils selon cette information.
+    is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
+    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
+    button: Envoyer l'invitation
+
+permission_member:
+    back: Retour à votre équipe
+    page_title: Modifier les permissions de %name%
+    title: Modifier les permissions de %name%
+    is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
+    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
+    button: Enregistrer
+    button_remove: Supprimer
+    remove_confirm: Voulez-vous vraiment supprimer l'accès de "%user%" à votre organisation ?

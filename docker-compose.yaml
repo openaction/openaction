@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+    console:
+        image: docker.pkg.github.com/citipo/docker-php/docker-php-dev:latest
+        hostname: console
+        volumes:
+            - ./console:/app
+        depends_on:
+            - database
+            - redis
+
+    public:
+        image: docker.pkg.github.com/citipo/docker-php/docker-php-dev:latest
+        volumes:
+            - ./public:/app
+        depends_on:
+            - redis
+
+    database:
+        image: postgres:13
+        ports: ['5432']
+        environment:
+            POSTGRES_USER: main
+            POSTGRES_PASSWORD: main
+            POSTGRES_DB: main
+
+    redis:
+        image: redis:6.2-alpine
+
+    rabbitmq:
+        image: rabbitmq:3.9-management-alpine
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+
+    meilisearch:
+        image: getmeili/meilisearch:v0.28.1
+        ports: ['7700']
+        environment:
+            MEILI_MASTER_KEY: secret
+
+    gotenberg:
+        image: gotenberg/gotenberg:7
+        ports: ['3000']
+
+    mailcatcher:
+        image: schickling/mailcatcher
+        ports: ['1025', '1080']

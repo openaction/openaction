@@ -1,0 +1,43 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block page_title 'notification_settings.title'|trans({}, 'user') %}
+
+{% block sidebar_notifications 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'notification_settings.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="px-4 py-5 bg-light">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-11 col-lg-10 col-xl-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <strong>
+                        {{ 'notification_settings.event.label'|trans({}, 'user') }}
+                    </strong>
+
+                    <div class="p-3">
+                        {% for event in form.events %}
+                            {{ form_row(event, {
+                                'label': ('notification_settings.event.' ~ event.vars.value)|trans({}, 'user'),
+                                'label_attr': {'class': 'switch-custom'}
+                            }) }}
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'notification_settings.submit'|trans({}, 'user') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

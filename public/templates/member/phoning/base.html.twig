@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block body_class 'body-phoning' %}
+{% block page_title campaign.form.title %}
+
+{% block body %}
+    <div class="container-fluid phoning">
+        <div class="row phoning-row">
+            <div class="col-md-4 phoning-left">
+                <div class="p-4">
+                    <div class="mb-5">
+                        {% if current_project.logoDark %}
+                            <img src="{{ current_project.logoDark }}"
+                                 class="header-logo" />
+                        {% else %}
+                            <h1 class="header-title">
+                                {{ current_project.metaTitle|default(current_project.name) }}
+                            </h1>
+                        {% endif %}
+                    </div>
+
+                    <h3 class="mb-4">
+                        {{ campaign.form.title }}
+                    </h3>
+
+                    <p>
+                        {{ campaign.form.description }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-8 phoning-right">
+                <div class="phoning-content">
+                    {% block phoning_content '' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

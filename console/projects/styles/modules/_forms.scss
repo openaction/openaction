@@ -1,0 +1,66 @@
+.user-form {
+    @include make-container();
+    max-width: 650px;
+
+    &-success {
+        color: $success;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    &-description {
+        margin-bottom: 40px;
+    }
+
+    &-field {
+        margin-bottom: 20px;
+    }
+
+    &-submit {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    &-legalities {
+        margin-top: 80px;
+    }
+
+    .form-group {
+        border: 1px solid #dee2e6;
+        background: #fafafa;
+        padding: 20px;
+
+        legend {
+            width: auto;
+            padding: 0 10px;
+        }
+    }
+
+    .form-rating {
+        display: flex;
+        margin-bottom: 15px;
+
+        .form-check {
+            flex-basis: 0;
+            flex-grow: 1;
+            text-align: center;
+
+            &-input {
+                position: initial;
+                margin: 0;
+            }
+
+            &-label {
+                display: block;
+            }
+        }
+    }
+}
+
+.newsletter-form {
+    &-phone,
+    &-firstname,
+    &-lastname {
+        display: none;
+    }
+}

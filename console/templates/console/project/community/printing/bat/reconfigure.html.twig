@@ -1,0 +1,105 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'edit.content.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing_bat', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <h3>
+                {{ 'edit.content.reconfigure_title'|trans({}, 'project_printing') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'edit.content.desc'|trans({}, 'project_printing') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <h5 class="mb-2">
+                        {{ ('products.'~campaign.product)|trans({}, 'global') }}
+                    </h5>
+
+                    <div class="mb-4">
+                        {{ expectedSize[0] }}mm x {{ expectedSize[1] }}mm, {{ expectedPages }} pages
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if campaign.preview %}
+                                <img src="{{ cdn_url(campaign.preview) }}" class="img-fluid world-block rounded-0 mb-2" />
+
+                                <div class="mb-5">
+                                    <a href="{{ cdn_url(campaign.source) }}" target="_blank" class="btn btn-outline-primary">
+                                        {{ 'edit.content.file.field.view'|trans({}, 'project_printing') }}
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="mb-4 print-upload-placeholder">
+                                    {{ 'edit.content.file.field.none'|trans({}, 'project_printing') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="uploadcare">{{ 'edit.content.file.field.label'|trans({}, 'project_printing') }}</label>
+                    </div>
+
+                    <div class="print-uploader">
+                        <div {{ react_component('Project/Print/Uploader', {
+                            uploadKey: uploadKey.toArray,
+                            uploadUrl: csrf_path('console_community_printing_bat_upload', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}),
+                            statusUrl: path('console_community_printing_bat_status', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}),
+                            redirectUrl: path('console_community_printing', {'projectUuid': current_project.uuid}),
+                        }) }}></div>
+                    </div>
+
+                    <div class="font-weight-bold mt-5 mb-2">
+                        {{ 'edit.content.file.format.title'|trans({}, 'project_printing') }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ 'edit.content.file.format.desc'|trans({}, 'project_printing') }}
+                    </div>
+
+                    {% set products_helps = {
+                        'official_poster': ['bleeding_edge', 'legalities_rcs', 'receive_bat'],
+                        'official_banner': ['bleeding_edge', 'legalities_rcs', 'receive_bat'],
+                        'official_pledge': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'receive_bat'],
+                        'official_ballot': ['bleeding_edge', 'receive_bat'],
+                        'campaign_poster': ['bleeding_edge', 'legalities_rcs', 'receive_bat'],
+                        'campaign_flyer': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_booklet_4': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_booklet_8': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_large_flyer': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_letter': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_door': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                        'campaign_card': ['bleeding_edge', 'legalities_rcs', 'legalities_dont_throw', 'legalities_credits', 'receive_bat'],
+                    } %}
+
+                    <ul>
+                        <li class="mb-3">
+                            {{ 'edit.content.file.field.help'|trans({'%width%': expectedSize[0], '%height%': expectedSize[1]}, 'project_printing')|raw }}
+                        </li>
+                        {% for help in products_helps[campaign.product]|default([]) %}
+                            <li class="mb-3">
+                                {{ ('products_formats.' ~ help)|trans({}, 'project_printing')|raw }}
+                            </li>
+                        {% endfor %}
+                        <li class="mb-3">
+                            {{ 'edit.content.file.format.contact'|trans({}, 'project_printing')|raw }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

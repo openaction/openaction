@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnfocusReport version="3.0" unit="mm" xml:lang="fr-FR">
+  <PreflightReport errors="0" criticalfailures="0" noncriticalfailures="0" signoffs="0" fixes="0" warnings="1">
+    <Warnings>
+      <PreflightReportItem ActionID="1150">
+        <Message>La résolution d'image est 97 x 97 ppi - image couleur ou en gamme de gris est inférieur(e) à 150 ppi (1x à la page 1)</Message>
+        <StringContext>
+          <BaseString>La résolution d'image est %[...]ActualResolution% ppi - %ImageType% est %Comparator% %ReferenceResolution% ppi</BaseString>
+          <Var name="Comparator">inférieur(e) à</Var>
+          <Var name="ReferenceResolution">150</Var>
+          <Var name="ImageType">image couleur ou en gamme de gris</Var>
+          <Var name="ActualResolution">97 x 97</Var>
+        </StringContext>
+        <Location page="1" minX="5" minY="4.553" maxX="609" maxY="856"/>
+      </PreflightReportItem>
+      <PreflightReportItem ActionID="1150">
+        <Message>La résolution d'image est 97 x 97 ppi - image couleur ou en gamme de gris est inférieur(e) à 150 ppi (1x à la page 1)</Message>
+        <StringContext>
+          <BaseString>La résolution d'image est %[...]ActualResolution% ppi - %ImageType% est %Comparator% %ReferenceResolution% ppi</BaseString>
+          <Var name="Comparator">inférieur(e) à</Var>
+          <Var name="ReferenceResolution">150</Var>
+          <Var name="ImageType">image couleur ou en gamme de gris</Var>
+          <Var name="ActualResolution">97 x 97</Var>
+        </StringContext>
+        <Location page="1" minX="5" minY="4.553" maxX="609" maxY="856"/>
+      </PreflightReportItem>
+    </Warnings>
+  </PreflightReport>
+  <ProcessInfo>
+    <PreflightProfile>LGP_legislatives 2022_Preflight</PreflightProfile>
+    <ProfileCreator>
+      <Author>Thomas Deschamps</Author>
+      <Company>Bluewest</Company>
+    </ProfileCreator>
+    <PageRange>1</PageRange>
+    <HostAppName>Enfocus PitStop Server 21 update 1</HostAppName>
+    <EngineFlavor>Enfocus PitStop Library 21 update 1</EngineFlavor>
+    <PreflightDateTime>2022-04-29T13:29:27+02:00</PreflightDateTime>
+  </ProcessInfo>
+  <GeneralDocInfo>
+    <DocumentProperties>
+      <DocumentName>_08T5N_LREM_35_Jeanne Martin_AO__a9b5e3b1-8067-44ca-a027-11fb3194fcb5__48046e75-2ad9-4f64-a296-010e678b7e30.pdf</DocumentName>
+      <NumPages>1</NumPages>
+      <PDFVersion major="1" minor="4">1.4</PDFVersion>
+      <CreationDate>2022-04-20T12:56:59+02:00</CreationDate>
+      <ModificationDate>2022-04-29T13:29:23+02:00</ModificationDate>
+      <Producer>Adobe PDF Library 15.0</Producer>
+      <Creator>Adobe InDesign CC 2015 (Windows)</Creator>
+      <Author>La Galiotte Prenant</Author>
+      <Title>_08T5G_LREM_35_Jeanne Martin_AO__a9b5e3b1-8067-44ca-a027-11fb3194fcb5__48046e75-2ad9-4f64-a296-010e678b7e30.pdf</Title>
+      <Subject>Législatives 2022</Subject>
+      <Keywords>2022, législatives, bluewest, CITIPO</Keywords>
+      <Trapped>false</Trapped>
+      <PrinergyTraps>false</PrinergyTraps>
+      <WasRepairedOnOpen>false</WasRepairedOnOpen>
+      <IsLinearized>false</IsLinearized>
+      <ContainsThumbnails>false</ContainsThumbnails>
+      <LeftToRightReading>left</LeftToRightReading>
+      <ContainsJobTicket>false</ContainsJobTicket>
+    </DocumentProperties>
+    <DocumentSecurity>
+      <EncryptionType>none</EncryptionType>
+      <Permissions>
+        <ExtractAccessibility>true</ExtractAccessibility>
+        <ExtractNonAccessibility>true</ExtractNonAccessibility>
+        <ModifyNotes>true</ModifyNotes>
+        <ModifyFillAndSign>true</ModifyFillAndSign>
+        <ModifyAssembleDoc>true</ModifyAssembleDoc>
+        <ModifyOther>true</ModifyOther>
+        <ModifySecurity>true</ModifySecurity>
+        <PrintLowQuality>true</PrintLowQuality>
+        <PrintHighQuality>true</PrintHighQuality>
+      </Permissions>
+    </DocumentSecurity>
+    <DocumentCompression>
+      <DataFormat>binary</DataFormat>
+      <IsCompressed>true</IsCompressed>
+      <FilterType>JPEG</FilterType>
+      <FilterType>ZIP</FilterType>
+    </DocumentCompression>
+  </GeneralDocInfo>
+</EnfocusReport>

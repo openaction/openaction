@@ -1,0 +1,240 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-0">
+                        {{ 'index.drafts.title'|trans({}, 'project_emailings') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ path('console_community_emailing_create_template', { 'projectUuid': project.uuid }) }}" class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_emailings') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if campaigns_drafts|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.drafts.no_records'|trans({}, 'project_emailings') }}
+                        </h4>
+
+                        <a href="{{ path('console_community_emailing_create_template', { 'projectUuid': project.uuid }) }}" class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.drafts.no_result_create'|trans({}, 'project_emailings') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for draft in campaigns_drafts %}
+                        <div class="world-list-row p-4" id="campaign-{{ draft.uuid }}" data-campaign="{{ draft.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg">
+                                    <h4 class="mb-1 posts-title">
+                                        {{ draft.subject }}
+                                    </h4>
+
+                                    <div class="text-muted">
+                                        {% set from = draft.fullFromEmail %}
+                                        {% if draft.fromName %}
+                                            {% set from = draft.fromName ~ ' <' ~ draft.fullFromEmail ~ '>' %}
+                                        {% endif %}
+
+                                        {{ 'index.drafts.from'|trans({'%from%': from}, 'project_emailings') }}
+                                    </div>
+
+                                    <div class="text-muted">
+                                        {% set to = 'to' %}
+                                        {% set toParams = {} %}
+
+                                        {% if draft.areasFilter|length > 0 %}
+                                            {% set to = to ~ '_areas' %}
+                                            {% set toParams = toParams|merge({'%areas%': draft.areasFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.tagsFilter|length > 0 %}
+                                            {% set to = to ~ '_tags' %}
+                                            {% set toParams = toParams|merge({'%tags%': draft.tagsFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.contactsFilter is not null %}
+                                            {% set to = to ~ '_contacts' %}
+                                            {% set toParams = toParams|merge({'%contacts%': draft.contactsFilter|length}) %}
+                                        {% endif %}
+
+                                        {{ ('index.drafts.' ~ to)|trans(toParams, 'project_emailings') }}
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a href="{{ path('console_community_emailing_content', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="far fa-text mr-1"></i>
+                                            {{ 'index.drafts.edit_content'|trans({}, 'project_emailings') }}
+                                        </a>
+
+                                        <a href="{{ path('console_community_emailing_metadata', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="fad fa-cogs mr-1"></i>
+                                            {{ 'index.drafts.edit_details'|trans({}, 'project_emailings') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_emailing_delete', { 'projectUuid': project.uuid, 'uuid': draft.uuid }) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.drafts.delete_confirm'|trans({'%subject%': draft.subject}, 'project_emailings') }}"
+                                           data-target="#campaign-{{ draft.uuid }}"
+                                           class="btn btn-sm btn-outline-danger border-0">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.drafts.delete'|trans({}, 'project_emailings') }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-auto">
+                                    <a href="{{ path('console_community_emailing_preview', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
+                                        {{ 'index.drafts.preview'|trans({}, 'project_emailings') }}
+                                    </a>
+
+                                    <a href="{{ path('console_community_emailing_send_test', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                        {{ 'index.drafts.send_test'|trans({}, 'project_emailings') }}
+                                    </a>
+
+                                    <a href="{{ path('console_community_emailing_send_all', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                       class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-paper-plane mr-1"></i>
+                                        {{ 'index.drafts.send_all'|trans({}, 'project_emailings') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-0">
+                        {{ 'index.sent.title'|trans({}, 'project_emailings') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ path('shareable_emailing', {'projectId': current_project.uuid|toBase62}) }}"
+                       class="btn btn-secondary" target="_blank">
+                        <i class="far fa-external-link mr-1"></i>
+                        {{ 'index.sent.shareable_history'|trans({}, 'project_emailings') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if campaigns_sent|length == 0 %}
+            <div class="text-center p-5">
+                <div class="my-4">
+                    <h4 class="mb-3">
+                        {{ 'index.sent.no_records'|trans({}, 'project_emailings') }}
+                    </h4>
+                </div>
+            </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'index.sent.subject'|trans({}, 'project_emailings') }}
+                        </th>
+                        {% if is_granted('community_emailing_stats', current_project) %}
+                            <th scope="col" class="world-table-stats text-center">
+                                {{ 'index.sent.stats'|trans({}, 'project_emailings') }}
+                            </th>
+                        {% endif %}
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for sent in campaigns_sent %}
+                        <tr id="campaign-{{ sent.uuid }}">
+                            <td>
+                                <div class="font-weight-bold">
+                                    {{ sent.subject }}
+                                </div>
+                                <div class="text-muted">
+                                    {{ sent.sentAt|format_datetime('medium', 'short') }}
+                                </div>
+                            </td>
+                            {% if is_granted('community_emailing_stats', current_project) %}
+                                <td class="world-table-stats text-muted"
+                                    data-controller="emailing--stats"
+                                    data-sent-at="{{ sent.sentAt|date('Y-m-d\TH:i:sP') }}"
+                                    data-url="{{ path('console_community_emailing_stats', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                    data-link="{{ path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}">
+                                </td>
+                            {% endif %}
+                            <td class="world-table-actions-documents text-muted">
+                                <div class="row no-gutters justify-content-end">
+                                    <div class="col-auto">
+                                        <a href="{{ path('console_community_emailing_preview', { 'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
+                                            {{ 'index.sent.view'|trans({}, 'project_emailings') }}
+                                        </a>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <a href="{{ path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
+                                            {{ 'index.sent.report'|trans({}, 'project_emailings') }}
+                                        </a>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <a href="{{ csrf_path('console_community_emailing_delete', { 'projectUuid': project.uuid, 'uuid': sent.uuid }) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.drafts.delete_confirm'|trans({'%subject%': sent.subject}, 'project_emailings') }}"
+                                           data-target="#campaign-{{ sent.uuid }}"
+                                           class="btn btn-sm btn-outline-danger border-0 mr-1">
+                                            {{ 'index.drafts.delete'|trans({}, 'project_emailings') }}
+                                        </a>
+                                    </div>
+
+                                    {% if sent.isUnlayerEnabled %}
+                                        <div class="col-auto">
+                                            <a href="{{ csrf_path('console_community_emailing_duplicate', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                               class="btn btn-secondary btn-sm mr-1">
+                                                {{ 'index.sent.duplicate'|trans({}, 'project_emailings') }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="p-3">
+                    {{ pagination(campaigns_sent, current_page, items_per_page) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'developers.access.title'|trans({}, 'project') %}
+
+{% block sidebar_api 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'developers.access.title'|trans({}, 'project') }}
+        </h3>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-6">
+
+                    <div class="mb-3">
+                        {{ 'developers.access.description.1'|trans({}, 'project') }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ 'developers.access.description.2'|trans({}, 'project') }}
+                    </div>
+
+                    <div class="mb-4">
+                        <a href="https://citipo.com/doc-api" class="btn btn-primary"
+                           target="_blank" rel="noreferrer noopener">
+                            {{ 'developers.access.learn_more'|trans({}, 'project') }}
+                        </a>
+                    </div>
+
+                    <div class="world-block p-4 mb-4">
+                        <div class="text-uppercase text-muted font-weight-normal mb-3">
+                            {{ 'developers.access.subtitle'|trans({}, 'project') }}
+                        </div>
+
+                        <div class="input-group mb-3"
+                             data-controller="stimulus-clipboard"
+                             data-stimulus-clipboard-success-content="{{ 'clipboard.copied'|trans({}, 'global') }}">
+
+                            <input type="text" class="form-control" data-token
+                                   data-stimulus-clipboard-target="source"
+                                   value="{{ current_project.apiToken }}" />
+
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button"
+                                        data-action="stimulus-clipboard#copy"
+                                        data-stimulus-clipboard-target="button">
+                                    {{ 'clipboard.copy'|trans({}, 'global') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

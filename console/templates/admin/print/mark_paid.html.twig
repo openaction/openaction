@@ -1,0 +1,39 @@
+{% extends ea.templatePath('layout') %}
+
+{% block content_title 'Print dashboard' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            <h5 class="mb-4">
+                Mark order {{ order.reference }} as paid?
+            </h5>
+
+            <div class="mb-1">
+                <strong>
+                    Are you sure you want to mark this order as paid?
+                </strong>
+            </div>
+
+            <div class="mb-4">
+                This will mark this order as manually paid and will trigger production if all BAT are validated.
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <button type="submit" class="btn btn-primary">
+                Yes, mark as paid
+            </button>
+
+            <a href="{{ ea_url()
+                .setController('App\\Controller\\Admin\\PrintingOrderController')
+                .set('status', 'ordered')
+            }}" class="btn btn-link">
+                No, cancel
+            </a>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

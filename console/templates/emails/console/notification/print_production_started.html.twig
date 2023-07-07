@@ -1,0 +1,18 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        Votre commande vient d'être envoyée en production
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        Bonjour,
+    </p>
+
+    <p>
+        Suite à la réception de votre paiement et la validation des Bons à Tirer, votre commande n°{{ reference }}
+        pour la campagne de {{ candidate }} a été envoyée en production.
+    </p>
+{% endblock %}

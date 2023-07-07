@@ -1,0 +1,423 @@
+{% extends 'console/project/community/printing/finalize/base.html.twig' %}
+
+{% block tab_delivery 'active' %}
+
+{% block tab_page %}
+    <h4 class="mb-2">
+        {{ 'edit.delivery.title'|trans({}, 'project_printing') }}
+    </h4>
+
+    <div class="text-muted mb-4">
+        {{ 'edit.delivery.help'|trans({}, 'project_printing') }}
+    </div>
+
+    <div data-controller="printing--delivery">
+        <div class="form-group d-none">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="delivery-addressed"
+                       data-printing--delivery-target="input" {% if order.deliveryAddressed %}checked{% endif%} />
+
+                <label class="custom-control-label" for="delivery-addressed">
+                    {{ 'edit.delivery.addressed.label'|trans({}, 'project_printing') }}
+                </label>
+            </div>
+
+            <small class="form-text text-muted">
+                {{ 'edit.delivery.addressed.help'|trans({}, 'project_printing') }}
+            </small>
+        </div>
+
+        <div class="world-block p-4" data-printing--delivery-target="addressed"
+             {% if not order.deliveryAddressed %}style="display: none"{% endif %}>
+
+            <div class="row">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <h4 class="mb-4">
+                        {{ 'edit.delivery.addressed.title'|trans({}, 'project_printing') }}
+                    </h4>
+
+                    {% if order.deliveryAddressList|length == 0 %}
+                        <small class="text-danger">
+                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                        </small>
+                    {% endif %}
+                    <div class="mt-1 mb-5">
+                        {% if order.deliveryAddressList %}
+                            <div class="font-weight-bold">
+                                {{ order.deliveryAddressList|length }}
+                                {{ 'edit.delivery.addressed.data.count'|trans({}, 'project_printing') }}
+                            </div>
+
+                            <div class="row">
+                                {% for address in order.deliveryAddressList[0:20] %}
+                                    <div class="col-lg-3 mb-2">
+                                        <small>
+                                            {{ address.formalTitle }}
+                                            {{ address.firstName }}
+                                            {{ address.lastName }}
+                                            <br />
+                                            <em class="text-muted">
+                                                {% if address.street1 %}
+                                                    {{ address.street1 }}<br />
+                                                {% endif %}
+                                                {% if address.street2 %}
+                                                    {{ address.street2 }}<br />
+                                                {% endif %}
+                                                {{ address.zipCode }}
+                                                {{ address.city }}
+                                                {{ address.country }}
+                                            </em>
+                                        </small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="world-block p-3">
+                                <div class="text-center font-italic">
+                                    {{ 'edit.delivery.addressed.data.none'|trans({}, 'project_printing') }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {{ form_start(addressedForm) }}
+                    {{ form_errors(addressedForm) }}
+
+                    {{ form_row(addressedForm.addressList, {
+                        'label': 'edit.delivery.addressed.addressList.label'|trans({}, 'project_printing'),
+                        'help': 'edit.delivery.addressed.addressList.help'|trans({}, 'project_printing'),
+                    }) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'edit.save'|trans({}, 'project_printing') }}
+                    </button>
+
+                    {{ form_end(addressedForm) }}
+
+                    <div class="mt-4 mb-3">
+                        <strong>
+                            {{ 'edit.delivery.addressed.addressList.tips.title'|trans({}, 'project_printing') }}
+                        </strong>
+                    </div>
+
+                    <ul>
+                        <li class="mb-3">
+                            {{ 'edit.delivery.addressed.addressList.tips.1'|trans({}, 'project_printing') }}
+                        </li>
+                        <li class="mb-3">
+                            {{ 'edit.delivery.addressed.addressList.tips.2'|trans({}, 'project_printing') }}
+                        </li>
+                        <li>
+                            {{ 'edit.delivery.addressed.addressList.tips.3'|trans({}, 'project_printing') }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="world-block p-4" data-printing--delivery-target="unaddressed"
+             {% if order.deliveryAddressed %}style="display: none"{% endif %}>
+
+            {% if not order.officialOrder %}
+                <h4 class="mb-2">
+                    {{ 'edit.delivery.unaddressed.title'|trans({}, 'project_printing') }}
+                </h4>
+
+                <div class="text-muted mb-5">
+                    {{ 'edit.delivery.unaddressed.help'|trans({}, 'project_printing') }}
+                </div>
+            {% endif %}
+
+            {{ form_start(unaddressedForm) }}
+            {{ form_errors(unaddressedForm) }}
+
+            <h5>
+                {{ 'edit.delivery.unaddressed.quantities.title'|trans({}, 'project_printing') }}
+            </h5>
+
+            <div class="text-muted mb-3">
+                {{ 'edit.delivery.unaddressed.quantities.help'|trans({}, 'project_printing') }}
+            </div>
+
+            {% if order.subrogatedOrder %}
+                <div class="alert alert-success">
+                    <strong>{{ 'edit.subgrodation.title'|trans({}, 'project_printing') }}</strong>
+                    <br />
+                    {{ 'edit.subgrodation.message'|trans({}, 'project_printing') }}
+                    <br />
+                    <strong>
+                        <a href="https://citipo.com/print-subrogation-doc" target="_blank">
+                            {{ 'edit.subgrodation.link'|trans({}, 'project_printing') }}
+                        </a>
+                    </strong>
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <div class="row">
+                    {% for campaign in campaigns %}
+                        <div class="col-2">
+                            <div class="print-order-thumbnail print-order-thumbnail-lg">
+                                <img src="{{ cdn_image_url(campaign.preview, 'print/no-imge.png') }}"/>
+                            </div>
+
+                            <div class="font-weight-bold mb-2">
+                                {{ ('products.'~campaign.product)|trans({}, 'global') }}
+                            </div>
+
+                            {{ form_widget(unaddressedForm.quantities[campaign.id]) }}
+                            {{ form_errors(unaddressedForm.quantities[campaign.id]) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    {% if order.officialOrder %}
+                        <h5 class="mb-3">
+                            {{ 'edit.delivery.unaddressed.address.official_title'|trans({}, 'project_printing') }}
+                        </h5>
+                    {% else %}
+                        <h5 class="mb-3">
+                            {{ 'edit.delivery.unaddressed.address.campaign_title'|trans({}, 'project_printing') }}
+                        </h5>
+                    {% endif %}
+
+                    <div {% if unaddressedForm.useMediapost is defined %}data-controller="printing--mediapost"{% endif %}
+                         class="mb-3">
+                        {% if unaddressedForm.useMediapost is defined %}
+                            {{ form_row(unaddressedForm.useMediapost, {
+                                'label_attr': {'class': 'checkbox-custom'},
+                                'label': 'edit.delivery.unaddressed.useMediapost.label'|trans({}, 'project_printing'),
+                                'help': 'edit.delivery.unaddressed.useMediapost.help'|trans({}, 'project_printing'),
+                                'attr': {'data-printing--mediapost-target': 'input'},
+                            }) }}
+                        {% endif %}
+
+                        <div data-printing--mediapost-target="yes"
+                             {% if not order.deliveryUseMediapost %}style="display: none"{% endif %}>
+                            <strong>
+                                {{ 'edit.delivery.unaddressed.address.mediapost.title'|trans({}, 'project_printing') }}
+                            </strong>
+
+                            <div class="text-muted mt-2 mb-3">
+                                {{ 'edit.delivery.unaddressed.address.mediapost.tip.1'|trans({}, 'project_printing') }}
+                                (<a href="https://citipo.com/managers-mediapost" target="_blank">
+                                    {{ 'edit.delivery.unaddressed.address.mediapost.download_managers'|trans({}, 'project_printing') }}</a>)
+                                {{ 'edit.delivery.unaddressed.address.mediapost.tip.2'|trans({}, 'project_printing') }}
+                            </div>
+
+                            <div class="d-none">
+                                {% if unaddressedForm.withEnveloping is defined %}
+                                    {{ form_row(unaddressedForm.withEnveloping, {
+                                        'label_attr': {'class': 'checkbox-custom'},
+                                        'label': 'edit.delivery.unaddressed.withEnveloping.label'|trans({}, 'project_printing'),
+                                        'help': 'edit.delivery.unaddressed.withEnveloping.help'|trans({}, 'project_printing'),
+                                    }) }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div data-printing--mediapost-target="no"
+                             {% if order.deliveryUseMediapost %}style="display: none"{% endif %}>
+
+                            {% if unaddressedForm.addressName is defined %}
+                                {% if order.officialOrder %}
+                                    <strong>
+                                        {{ 'edit.delivery.unaddressed.address.prefecture.title'|trans({}, 'project_printing') }}
+                                    </strong>
+
+                                    <div class="text-muted mt-2 mb-3">
+                                        {{ 'edit.delivery.unaddressed.address.prefecture.help'|trans({}, 'project_printing') }}
+                                    </div>
+                                {% else %}
+                                    <strong>
+                                        {{ 'edit.delivery.unaddressed.address.individual.title'|trans({}, 'project_printing') }}
+                                    </strong>
+
+                                    <div class="text-muted mt-2 mb-3">
+                                        {{ 'edit.delivery.unaddressed.address.individual.help'|trans({}, 'project_printing') }}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+
+                        {% if unaddressedForm.addressName is defined %}
+                            {% if not order.deliveryMainAddressName %}
+                                <small class="text-danger">
+                                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                                </small>
+                            {% endif %}
+                            {{ form_row(unaddressedForm.addressName, {
+                                'label': 'edit.delivery.unaddressed.address.name'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+                        {% endif %}
+
+                        {% if unaddressedForm.addressStreet1 is defined %}
+                            {% if not order.deliveryMainAddressStreet1 %}
+                                <small class="text-danger">
+                                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                                </small>
+                            {% endif %}
+                            {{ form_row(unaddressedForm.addressStreet1, {
+                                'label': 'edit.delivery.unaddressed.address.street1'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+                        {% endif %}
+
+                        {% if unaddressedForm.addressStreet2 is defined %}
+                            {{ form_row(unaddressedForm.addressStreet2, {
+                                'label': 'edit.delivery.unaddressed.address.street2'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+                        {% endif %}
+
+                        <div class="row">
+                            {% if unaddressedForm.addressZipCode is defined %}
+                                <div class="col-lg-3">
+                                    {% if not order.deliveryMainAddressZipCode %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+
+                                    {{ form_row(unaddressedForm.addressZipCode, {
+                                        'label': 'edit.delivery.unaddressed.address.zipCode'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+                            {% endif %}
+
+                            {% if unaddressedForm.addressCity is defined %}
+                                <div class="col-lg-6">
+                                    {% if not order.deliveryMainAddressCity %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+
+                                    {{ form_row(unaddressedForm.addressCity, {
+                                        'label': 'edit.delivery.unaddressed.address.city'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+                            {% endif %}
+
+                            {% if unaddressedForm.addressCountry is defined %}
+                                <div class="col-lg-3">
+                                    {% if not order.deliveryMainAddressCountry %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+
+                                    {{ form_row(unaddressedForm.addressCountry, {
+                                        'label': 'edit.delivery.unaddressed.address.country'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if unaddressedForm.addressInstructions is defined %}
+                            {{ form_row(unaddressedForm.addressInstructions, {
+                                'label': 'edit.delivery.unaddressed.address.instructions'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+                        {% endif %}
+                    </div>
+
+                    {% if unaddressedForm.posterAddressName is defined %}
+                        <div class="mt-5 mb-4">
+                            <strong>
+                                {{ 'edit.delivery.unaddressed.posterAddress.title'|trans({}, 'project_printing') }}
+                            </strong>
+
+                            <div class="text-muted mt-2 mb-3">
+                                {{ 'edit.delivery.unaddressed.posterAddress.help'|trans({}, 'project_printing') }}
+                            </div>
+
+                            {% if not order.deliveryPosterAddressName %}
+                                <small class="text-danger">
+                                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                                </small>
+                            {% endif %}
+                            {{ form_row(unaddressedForm.posterAddressName, {
+                                'label': 'edit.delivery.unaddressed.posterAddress.name'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+
+                            {% if not order.deliveryPosterAddressStreet1 %}
+                                <small class="text-danger">
+                                    {{ 'edit.required'|trans({}, 'project_printing') }}
+                                </small>
+                            {% endif %}
+                            {{ form_row(unaddressedForm.posterAddressStreet1, {
+                                'label': 'edit.delivery.unaddressed.posterAddress.street1'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+
+                            {{ form_row(unaddressedForm.posterAddressStreet2, {
+                                'label': 'edit.delivery.unaddressed.posterAddress.street2'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    {% if not order.deliveryPosterAddressZipCode %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+                                    {{ form_row(unaddressedForm.posterAddressZipCode, {
+                                        'label': 'edit.delivery.unaddressed.posterAddress.zipCode'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+
+                                <div class="col-lg-6">
+                                    {% if not order.deliveryPosterAddressCity %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+                                    {{ form_row(unaddressedForm.posterAddressCity, {
+                                        'label': 'edit.delivery.unaddressed.posterAddress.city'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+
+                                <div class="col-lg-3">
+                                    {% if not order.deliveryPosterAddressCountry %}
+                                        <small class="text-danger">
+                                            {{ 'edit.required'|trans({}, 'project_printing') }}
+                                        </small>
+                                    {% endif %}
+                                    {{ form_row(unaddressedForm.posterAddressCountry, {
+                                        'label': 'edit.delivery.unaddressed.posterAddress.country'|trans({}, 'project_printing'),
+                                        'label_html': true,
+                                    }) }}
+                                </div>
+                            </div>
+
+                            {{ form_row(unaddressedForm.posterAddressInstructions, {
+                                'label': 'edit.delivery.unaddressed.posterAddress.instructions'|trans({}, 'project_printing'),
+                                'label_html': true,
+                            }) }}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'edit.save'|trans({}, 'project_printing') }}
+                    </button>
+
+                    {{ form_end(unaddressedForm) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

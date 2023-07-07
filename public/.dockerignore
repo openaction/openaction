@@ -1,0 +1,5 @@
+node_modules
+bin/.phpunit
+var
+tests
+vendor/symfony/*/Tests

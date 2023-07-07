@@ -1,0 +1,278 @@
+platform: Citipo
+legal_name: 'CPGT SAS'
+contact_us: Kontakt
+contact_email: contact@citipo.com
+meta:
+    description: 'Ihr erster Unterstützer: die Plattform zum Ausbau Ihrer digitalen Gemeinschaft'
+pagination:
+    previous: Vorherige
+    next: Weiter
+clipboard:
+    copy: Kopieren
+    copied: Kopiert!
+gender:
+    male: Männlich
+    female: Weiblich
+    transgender: Transgender
+    non_binary: Nicht-binär
+    other: Andere
+console:
+    title: Konsole
+    header:
+        soon_expires:
+            desc: 'Ihr Abonnement läuft am %date% (in %days% Tagen) ab.'
+            ask_citipo: 'Kontaktieren Sie uns, wenn Sie Citipo nach diesem Datum weiter nutzen möchten:'
+        trialing:
+            desc: 'Die Studie Ihrer Organisation endet am %date%.'
+            ask_citipo: 'Kontaktieren Sie uns, um Citipo weiterhin zu nutzen:'
+        menu:
+            projects: Projekte
+            team: Team
+            contacts: Organisation
+            integrations: Integrationen
+            doc: Dokumentation
+            help: Unterstützung
+            whats_new: 'Was gibt es Neues?'
+        organization:
+            email_credits: E-Mail-Kredite
+            buy_email_credits: 'E-Mail-Guthaben kaufen'
+            text_credits: Textnachweise
+            buy_text_credits: 'Textguthaben kaufen'
+            billing_details: 'Angaben zur Rechnungsstellung'
+            billing_history: 'Geschichte der Rechnungen'
+            switch: 'Organisation wechseln'
+            create: 'Erstellen Sie eine Organisation'
+        user:
+            account: Konto
+            password: Passwort
+            2fa: Zwei-Faktor-Authentifizierung
+            notifications: Benachrichtigungen
+            partner: Partnerbereich
+            logout: Abmelden
+        launch_project: 'Ein Projekt starten'
+tools:
+    label: 'Werkzeuge:'
+    youtube_generator: YouTube-Thumbnail-Generator
+status:
+    saving: Sparen...
+    saved: Gerettet
+    error: 'Es ist ein Fehler aufgetreten'
+content_editor:
+    defaults:
+        text: 'Dies ist ein neuer Textblock. Ändern Sie den Text.'
+        title: Überschrift
+    merge_tags:
+        id: Kontakt-Kennung
+        email: 'Kontakt E-Mail'
+        phone: 'Telefonnummer des Ansprechpartners'
+        formaltitle: 'Kontakt formale Anrede'
+        firstname: 'Vorname des Ansprechpartners'
+        lastname: 'Nachname der Kontaktperson'
+        fullname: 'Vollständiger Name der Kontaktperson'
+        gender: 'Kontakt Geschlecht'
+        nationality: 'Nationalität des Ansprechpartners'
+        company: 'Kontakt zum Unternehmen'
+        jobtitle: 'Kontakt Berufsbezeichnung'
+        streetline1: 'Postanschrift der Kontaktperson'
+        streetline2: 'Postanschrift der Kontaktperson (Zeile 2)'
+        zipcode: Kontakt-Postleitzahl
+        city: 'Kontakt Stadt'
+        country: 'Kontakt Land'
+crm:
+    search_field:
+        placeholder: Suche...
+        mode_simple: Einfacher Modus
+        mode_advanced: Erweiterter Modus
+        enter_query: Eingabe einer Abfrage...
+        run_query: Ausführen
+    list:
+        location: Standort
+        createdAt: Datum
+        status: Status
+        no_results:
+            title: 'Kein Ergebnis'
+            description: "Ihre Suche hat zu keinem Kontakt geführt. Versuchen Sie, nach etwas anderem zu suchen, oder erstellen Sie einen neuen Kontakt.\n"
+        load_more: 'Mehr laden'
+        sort_by:
+            label: 'Sortieren nach'
+            asc: aufsteigend
+            desc: absteigend
+            date: Datum
+            first_name: Vornamen
+            last_name: Nachname
+            email: 'E-Mail Adresse'
+    facets:
+        tags: Tags
+        projects: Projekte
+        status: Status
+        country: Land
+        province: Bundesland/Staat
+        district: Bezirk/Landkreis
+        include: 'Diesen Filter einbeziehen'
+        exclude: 'Diesen Filter ausschließen'
+        cancel: Abbrechen
+        value: 'Suche ...'
+    actions:
+        nb_hits: Kontakte
+        clear: Klar
+        apply_label: 'Für diese Kontakte:'
+        export: Exportieren
+        exportQuestion: 'Exportieren von %nbHits%-Kontakten in das XLSX-Format'
+        exportConfirm: Exportieren
+        exportCancel: 'Schließen Sie'
+        exportStarting: 'Starten Sie den Export ...'
+        exportInProgress: 'Erstellung der Exportdatei in Arbeit...'
+        exportSuccess: 'Der Export wurde erfolgreich erstellt.'
+        exportDownload: 'Laden Sie die XLSX-Datei herunter'
+        addTag: 'Tag hinzufügen'
+        addTagQuestion: 'Eine Markierung zu %nbHits%-Kontakten hinzufügen'
+        addTagLabel: 'Wählen Sie einen Tag'
+        addTagNoResults: 'Kein Tag gefunden'
+        addTagConfirm: 'Den Tag hinzufügen'
+        addTagCancel: 'Schließen Sie'
+        addTagStarting: 'Vorbereiten ...'
+        addTagInProgress: 'Hinzufügen des Tags in Arbeit ...'
+        addTagSuccess: "Das Tag wurde erfolgreich zu den Kontakten hinzugefügt. Es kann ein paar Minuten dauern, bis die Änderung\nMinuten dauern, bis sie bei allen betroffenen Kontakten sichtbar ist.\n"
+        removeTag: 'Tag entfernen'
+        removeTagQuestion: 'Entfernen einer Markierung aus %nbHits%-Kontakten'
+        removeTagLabel: 'Wählen Sie einen Tag'
+        removeTagNoResults: 'Kein Tag gefunden'
+        removeTagConfirm: 'Entfernen Sie das Etikett'
+        removeTagCancel: 'Schließen Sie'
+        removeTagStarting: 'Vorbereiten ...'
+        removeTagInProgress: 'Entfernen des Tags in Arbeit ...'
+        removeTagSuccess: "Die Markierung wurde erfolgreich aus den Kontakten entfernt. Es kann ein paar Minuten dauern, bis die Änderung\nMinuten dauern, bis sie bei allen betroffenen Kontakten sichtbar ist.\n"
+        remove: 'Kontakte entfernen'
+        removeQuestion: '%nbHits% Kontakte entfernen'
+        removeConfirm: 'Kontakte entfernen'
+        removeCancel: 'Schließen Sie'
+        removeStarting: 'Vorbereiten ...'
+        removeInProgress: 'Kontakte werden gerade entfernt...'
+        removeSuccess: "Die Kontakte wurden erfolgreich gelöscht. Die Umstellung kann noch einige Zeit in Anspruch nehmen Minuten für alle betroffenen Kontakte gelten."
+    item:
+        status:
+            c: Kontakt
+            m: Mitglied
+            u: Abbestellt
+        actions:
+            view: 'Profil ansehen'
+            edit: 'Kontakt bearbeiten'
+    tags:
+        none: 'Keine Markierung'
+        placeholder: 'Einen Tag suchen ...'
+        no_result: 'Kein Ergebnis'
+    profile:
+        history:
+            title: 'Interaktionen Geschichte'
+            description: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hat'
+        newsletter: E-Mail-Kampagnen
+        sms: Text-Kampagnen
+        calls: 'Anrufe Kampagnen'
+        birthdate: Geburtsdatum
+        address: Postanschrift
+        phone: 'Telefonnummer (persönlich)'
+        work: Arbeit
+        socials: 'Soziale Netzwerke'
+        projects: Projekte
+products:
+    plan_essential: 'Plan Essentiel'
+    plan_standard: 'Plan Standard'
+    plan_premium: 'Plan Prämie'
+    plan_organization: 'Organisation planen'
+    plan_legislatives: 'Paket Legislative'
+    plan_website: 'Pack Site internet de campagne'
+    plan_avecvous: 'Pack Avec Vous'
+    email_credit: 'Crédit E-Mail'
+    text_credit: 'Crédit SMS'
+    domain_name: 'Nom de domaine personnalisé'
+    custom_service: 'Persönliche Begleitung'
+    gsuite_campaign_account: 'Compte Google GSuite'
+    official_poster: 'Offizielle Affiche'
+    official_poster_150: 'Offizielle Affiche (x150)'
+    official_poster_300: 'Offizielle Affiche (x300)'
+    official_poster_450: 'Offizielle Affiche (x450)'
+    official_banner: "Bandeau d'affiche"
+    official_banner_150: "Bandeau d'affiche (x150)"
+    official_banner_300: "Bandeau d'affiche (x300)"
+    official_banner_450: "Bandeau d'affiche (x450)"
+    official_pledge: 'Beruf de foi'
+    official_pledge_50000: 'Lebensberuf (x50 000)'
+    official_pledge_75000: 'Lebensberuf (x75 000)'
+    official_pledge_100000: 'Lebensberuf (x100 000)'
+    official_pledge_125000: 'Lebensberuf (x125 000)'
+    official_pledge_150000: 'Lebensberuf (x150 000)'
+    official_ballot: 'Bulletins de vote'
+    official_ballot_100000: 'Bulletins de vote (x100 000)'
+    official_ballot_150000: 'Bulletins de vote (x150 000)'
+    official_ballot_200000: 'Bulletins de vote (x200 000)'
+    official_ballot_250000: 'Bulletins de vote (x250 000)'
+    official_ballot_300000: 'Bulletins de vote (x300 000)'
+    campaign_flyer: 'Trakt A5'
+    campaign_flyer_5000: 'Trakt A5 (x5 000)'
+    campaign_flyer_10000: 'Trakt A5 (x10 000)'
+    campaign_flyer_25000: 'Trakt A5 (x25 000)'
+    campaign_flyer_50000: 'Trakt A5 (x50 000)'
+    campaign_large_flyer: 'Trakt A4'
+    campaign_large_flyer_5000: 'Trakt A4 (x5 000)'
+    campaign_large_flyer_10000: 'Trakt A4 (x10 000)'
+    campaign_large_flyer_25000: 'Trakt A4 (x25 000)'
+    campaign_large_flyer_50000: 'Trakt A4 (x50 000)'
+    campaign_door: Accroche-Porte
+    campaign_door_1000: 'Accroche-Porte (x1 000)'
+    campaign_door_3000: 'Accroche-Porte (x3 000)'
+    campaign_door_5000: 'Accroche-Porte (x5 000)'
+    campaign_booklet_4: 'Livret 4 Seiten'
+    campaign_booklet_4_5000: 'Sparbuch 4 Seiten (x5 000)'
+    campaign_booklet_4_10000: 'Sparbuch 4 Seiten (x10 000)'
+    campaign_booklet_4_25000: 'Sparbuch 4 Seiten (x25 000)'
+    campaign_booklet_4_50000: 'Sparbuch 4 Seiten (x50 000)'
+    campaign_booklet_8: 'Livret 8 Seiten'
+    campaign_booklet_8_5000: 'Sparbuch 8 Seiten (x5 000)'
+    campaign_booklet_8_10000: 'Sparbuch 8 Seiten (x10 000)'
+    campaign_booklet_8_25000: 'Sparbuch 8 Seiten (x25 000)'
+    campaign_booklet_8_50000: 'Sparbuch 8 Seiten (x50 000)'
+    campaign_letter: 'Brief A4'
+    campaign_letter_5000: 'Lettre A4 (x5 000)'
+    campaign_letter_10000: 'Brief A4 (x10 000)'
+    campaign_letter_25000: 'Lettre A4 (x25 000)'
+    campaign_letter_50000: 'Lettre A4 (x50 000)'
+    campaign_poster: 'Affiche de campagne'
+    campaign_poster_150: 'Affiche de campagne (x150)'
+    campaign_poster_300: 'Affiche de campagne (x300)'
+    campaign_poster_450: 'Affiche de campagne (x450)'
+    campaign_card: 'Carte postale'
+    campaign_card_5000: 'Ansichtskarte (x5 000)'
+    campaign_card_10000: 'Ansichtskarte (x10 000)'
+    campaign_card_25000: 'Ansichtskarte (x25 000)'
+    campaign_card_50000: 'Ansichtskarte (x50 000)'
+    enveloping: 'Mise sous pli'
+    delivery: Livraison
+    sending: Affranchissement
+products_help:
+    plan_essential: "Internetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Baustein Newsletter<br />\n- Modul Dokumente<br />\n- Soziale Netzwerke<br />\n- Intégrations sociales<br />\n<br />\nKontaktbasis :<br />\n- Zentrale Datenbank für Ihre Kontakte/Sympathisanten<br />\n- Excel importieren / exportieren<br />\n- Begrenzte Anzahl von Kontakten<br />\n- Géolocalisation der Kontakte<br />\n<br />\nCampagnes :<br />\n- Modul Emailings (1500 Kredits/Monat inbegriffen)<br />\n- Modul SMS (Crédits nicht inbegriffen, nous contacter)<br />\n<br />\nBegrenzte Anzahl von Mitarbeitern, 100% RGPD-konform, Unterbringung in Europa\n"
+    plan_standard: "Internetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Baustein Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Partages sociaux<br />\n- Intégrations sociales<br />\n<br />\nKontaktbasis :<br />\n- Zentrale Datenbank für Ihre Kontakte/Sympathisanten<br />\n- Excel importieren / exportieren<br />\n- Begrenzte Anzahl von Kontakten<br />\n- Géolocalisation der Kontakte<br />\n<br />\nCampagnes :<br />\n- Modul Emailings (1500 Kredits/Monat inbegriffen)<br />\n- Modul SMS (Crédits nicht inbegriffen, nous contacter)<br />\n- Ciblage par tag / zone géographique<br />\n<br />\nBegrenzte Anzahl von Mitarbeitern, 100% konform mit der RGPD, Unterbringung in Europa\n"
+    plan_premium: "Internetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Baustein Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Soziale Netzwerke<br />\n- Modul Veranstaltungen<br />\n- Modul Beratungen<br />\n- Soziale Einbindung<br />\n- Bericht über Verkehr und Gemeinschaft<br />\n<br />\nKontaktbasis:<br />\n- Zentrale Datenbank für Ihre Kontakte/Sympathisanten<br />\n- Excel importieren / exportieren<br />\n- Begrenzte Anzahl von Kontakten<br />\n- Lokalisierung der Kontakte<br />\n- Historie nach Kontakten<br />\n- Verknüpfung mit Qomon<br />\n- Einbindung in Telegram<br />\n<br />\nCampagnes :<br />\n- Modul Emailings (3000 crédits/mois inklusive)<br />\n- Modul SMS (Crédits nicht inbegriffen, nous contacter)<br />\n- Zuordnung nach Tag / geografischer Zone<br />\n- Statistiken über Zugriffe und Klicks<br />\n- E-Mail-Automatisierung<br />\n<br />\nAPI-Zugang für Entwickler<br />\nBegrenzte Anzahl von Mitarbeitern, 100% RGPD-konform, Unterbringung in Europa\n"
+    plan_organization: "Internetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Baustein Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Soziale Netzwerke<br />\n- Modul Veranstaltungen<br />\n- Modul Beratungen<br />\n- Soziale Einbindung<br />\n- Bericht über Verkehr und Gemeinschaft<br />\n<br />\nKontaktbasis:<br />\n- Zentrale Datenbank für Ihre Kontakte/Sympathisanten<br />\n- Excel importieren / exportieren<br />\n- Begrenzte Anzahl von Kontakten<br />\n- Lokalisierung der Kontakte<br />\n- Historie nach Kontakten<br />\n- Verknüpfung mit Qomon<br />\n- Einbindung in Telegram<br />\n- Mitgliedschaftsbereich<br />\n<br />\nCampagnes :<br />\n- Modul Emailings (5000 Kredits/Monat inklusive)<br />\n- Modul SMS (Crédits nicht inbegriffen, nous contacter)<br />\n- Zuordnung nach Tag / geografischer Zone<br />\n- Statistiken über Zugriffe und Klicks<br />\n- E-Mail-Automatisierung<br />\n<br />\nAPI-Zugang für Entwickler<br />\nBegrenzte Anzahl von Mitarbeitern, 100% RGPD-konform, Unterbringung in Europa\n"
+    plan_legislatives: "Zugang für die Dauer der Kampagne<br />\n<br />\nInternetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Modul Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Soziale Netzwerke<br />\n- Modul Veranstaltungen<br />\n- Modul Beratungen<br />\n- Soziale Einbindung<br />\n- Bericht über Verkehr und Gemeinschaft<br />\n<br />\nKontaktbasis:<br />\n- Zentrale Datenbank für Ihre Kontakte/Sympathisanten<br />\n- Excel importieren / exportieren<br />\n- Begrenzte Anzahl von Kontakten<br />\n- Lokalisierung der Kontakte<br />\n- Historie nach Kontakten<br />\n- Intégration mit Quorum<br />\n<br />\nCampagnes :<br />\n- Modul Emailings<br />\n- Modul SMS (crédits non inclus, nous contacter)<br />\n- Ciblage par tag / zone géographique<br />\n- Statistiken über Zugriffe und Klicks<br />\n- E-Mail-Automatisierung<br />\n<br />\n1 Hauptprojekt und 5 Nebenprojekte inbegriffen<br />\n<br />\nBegrenzte Anzahl von Mitarbeitern, 100% konform mit RGPD, Unterbringung in Europa\n"
+    plan_website: "Zugang für die Dauer der Kampagne<br />\n<br />\nInternetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Modul Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Soziale Netzwerke<br />\n- Modul Veranstaltungen<br />\n- Modul Beratungen<br />\n- Soziale Eingliederung<br />\n- Rapport de trafic<br />\n<br />\nBegrenzte Anzahl von Mitarbeitern, 100% RGPD-konform, Unterbringung in Europa\n"
+    plan_avecvous: "Zugang für die Dauer der Kampagne<br />\n<br />\nInternetauftritt:<br />\n- Modul Inhaltsseiten<br />\n- Modul Aktualitäten<br />\n- Modul Rundschreiben<br />\n- Modul Dokumente<br />\n- Baustein Trombinoskop<br />\n- Modul Manifest<br />\n- Soziale Netzwerke<br />\n- Modul Veranstaltungen<br />\n- Modul Beratungen<br />\n- Soziale Eingliederung<br />\n- Rapport de trafic<br />\n<br />\nBegrenzte Anzahl von Mitarbeitern, 100% RGPD-konform, Unterbringung in Europa\n"
+    email_credit: 'Im Rahmen von E-Mail-Kampagnen verwendbarer Kredit'
+    text_credit: 'Im Rahmen von SMS-Kampagnen einsetzbarer Kredit'
+    domain_name: 'Beschaffung und Konfiguration eines personalisierten Bereichsnamens für das Projekt'
+    custom_service: 'Persönliche Begleitung durch unsere Mitarbeiter'
+    gsuite_campaign_account: "Beschaffung und Konfiguration eines Google Gsuite-Computers (E-Mails, Dokumente, Agenda, ...)\nfür die gesamte Dauer der Kampagne.\n"
+    campaign_flyer: "158mm x 220mm, 2 Seiten<br />\nPapier 1/2 matt recyclé 70g<br />\nAbdruck quadri recto verso\n"
+    campaign_large_flyer: "220mm x 307mm, 2 Seiten<br />\nPapier 1/2 mat recyclé 70g<br />\nAbdruck quadri recto verso\n"
+    campaign_door: "70mm x 220mm, 2 Seiten<br />\nPapier 1/2 matt 200g<br />\nAbdruck quadri recto verso\n"
+    campaign_booklet_4: "158mm x 220mm, 4 Seiten<br />\nPapier 1/2 mat recyclé 70g<br />\nAbdruck quadri recto verso\n"
+    campaign_booklet_8: "158mm x 220mm, 8 Seiten<br />\nPapier 1/2 mat recyclé 70g<br />\nAbdruck quadri recto verso\n"
+    campaign_letter: "220mm x 307mm, 1 Seite<br />\nAbdruck quadri recto\n"
+    campaign_poster: "604mm x 851mm, 1 Seite<br />\nPapier 1/2 matt 115g<br />\nAbdruck quadri recto seul\n"
+    campaign_card: "158mm x 115mm, 2 Seiten<br />\nPapier 1/2 matt 200g<br />\nAbdruck quadri recto verso\n"
+    official_poster: "604mm x 851mm, 1 Seite<br />\nPapier Offset 80g<br />\nAbdruck quadri recto seul\n"
+    official_banner: "430mm x 307mm, 1 Seite<br />\nPapier 1/2 matt 90g<br />\nAbdruck quadri recto seul\n"
+    official_pledge: "220mm x 307mm, 2 Seiten<br />\nPapier 1/2 mat recyclé 70g<br />\nAbdruck quadri recto verso\n"
+    official_ballot: "158mm x 115mm, 1 Seite\n"
+    enveloping: 'Aufbereitung von Dokumenten'
+    delivery: 'Versand in Kolonne/Palette - Gewicht: %Gewicht% kg'
+    sending: 'Affranchissement pour addressage'

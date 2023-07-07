@@ -1,0 +1,58 @@
+nelmio_api_doc:
+    areas:
+        path_patterns:
+            - ^/api
+
+    documentation:
+        info:
+            title: Citipo API Reference
+
+        servers:
+          - url: https://console.citipo.com/api
+            description: Citipo API
+
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+
+    models:
+        names:
+            # General
+            - { alias: Area, type: 'App\Api\Transformer\AreaTransformer'}
+            - { alias: Project, type: 'App\Api\Transformer\ProjectTransformer'}
+            - { alias: Sitemap, type: 'App\Api\Transformer\SitemapTransformer'}
+            - { alias: Prices, type: 'App\Api\Transformer\PricesTransformer'}
+
+            # Community
+            - { alias: Contact, type: 'App\Api\Transformer\Community\ContactTransformer'}
+            - { alias: Tag, type: 'App\Api\Transformer\Community\TagTransformer'}
+            - { alias: AuthorizationToken, type: 'App\Api\Transformer\Community\AuthorizationTokenTransformer'}
+
+            # Integrations
+            - { alias: OrganizationMember, type: 'App\Api\Transformer\Integrations\OrganizationMemberTransformer'}
+            - { alias: Dashboard, type: 'App\Api\Transformer\Integrations\DashboardTransformer'}
+            - { alias: CommunityDashboard, type: 'App\Api\Transformer\Integrations\CommunityDashboardTransformer'}
+            - { alias: TrafficDashboard, type: 'App\Api\Transformer\Integrations\TrafficDashboardTransformer'}
+
+            # Website
+            - { alias: Document, type: 'App\Api\Transformer\Website\DocumentTransformer' }
+            - { alias: EventCategory, type: 'App\Api\Transformer\Website\EventCategoryTransformer' }
+            - { alias: Event, type: 'App\Api\Transformer\Website\EventTransformer' }
+            - { alias: FormBlock, type: 'App\Api\Transformer\Website\FormBlockTransformer' }
+            - { alias: FormFull, type: 'App\Api\Transformer\Website\FormFullTransformer' }
+            - { alias: FormPartial, type: 'App\Api\Transformer\Website\FormPartialTransformer' }
+            - { alias: ManifestoTopicFull, type: 'App\Api\Transformer\Website\ManifestoTopicFullTransformer' }
+            - { alias: ManifestoTopicPartial, type: 'App\Api\Transformer\Website\ManifestoTopicPartialTransformer' }
+            - { alias: MenuItem, type: 'App\Api\Transformer\Website\MenuItemTransformer' }
+            - { alias: PageBlock, type: 'App\Api\Transformer\Website\PageBlockTransformer' }
+            - { alias: PageCategory, type: 'App\Api\Transformer\Website\PageCategoryTransformer' }
+            - { alias: PageFull, type: 'App\Api\Transformer\Website\PageFullTransformer' }
+            - { alias: PagePartial, type: 'App\Api\Transformer\Website\PagePartialTransformer' }
+            - { alias: PostCategory, type: 'App\Api\Transformer\Website\PostCategoryTransformer' }
+            - { alias: PostFull, type: 'App\Api\Transformer\Website\PostFullTransformer' }
+            - { alias: PostPartial, type: 'App\Api\Transformer\Website\PostPartialTransformer' }
+            - { alias: TrombinoscopeCategory, type: 'App\Api\Transformer\Website\TrombinoscopeCategoryTransformer' }
+            - { alias: TrombinoscopePersonFull, type: 'App\Api\Transformer\Website\TrombinoscopePersonFullTransformer' }
+            - { alias: TrombinoscopePersonPartial, type: 'App\Api\Transformer\Website\TrombinoscopePersonPartialTransformer' }

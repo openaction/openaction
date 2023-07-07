@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=1000, user-scalable=yes, initial-scale=0.7">
+    <meta name="referrer" content="origin" />
+
+    <title>Devis {{ quote.number }} | {{ company.name }}</title>
+
+    <style>
+        {{ include('billing/_includes/normalize.css.twig') }}
+        {{ include('billing/_includes/invoice.css.twig') }}
+    </style>
+</head>
+<body class="A4">
+    <section class="sheet padding-10mm">
+        <div class="invoice-head">
+            <div class="invoice-head-logo">
+                {{ include('billing/_includes/logo-'~company.code~'.html.twig') }}
+            </div>
+            <div class="invoice-head-address">
+                {{ company.addressName }}<br />
+                {{ company.addressStreet }}<br />
+                {{ company.addressCity }}<br />
+                Email : <a href="mailto:{{ company.email }}" target="_blank">{{ company.email }}</a>
+            </div>
+            <div class="invoice-head-details">
+                <div>
+                    <span class="invoice-head-details-label">N° TVA</span>
+                    {{ company.vatNumber }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">Forme</span>
+                    {{ company.structure }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">Siret</span>
+                    {{ company.siret }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">RCS</span>
+                    {{ company.rcs }}
+                </div>
+            </div>
+        </div>
+
+        <div class="invoice-intro">
+            <div class="invoice-details">
+                <h1 class="invoice-number">
+                    Devis {{ quote.number }}
+                </h1>
+
+                <div>
+                    <span class="invoice-details-label">Date</span>
+                    {{ quote.createdAt|format_datetime('medium', 'short', '', null, 'gregorian', 'fr') }}
+                </div>
+                <div>
+                    <span class="invoice-details-label">Validité</span>
+                    24 heures
+                </div>
+            </div>
+
+            <div class="invoice-recipient">
+                {{ quote.organization.billingName }}<br />
+                {{ quote.organization.billingAddressStreetLine1 }}<br />
+                {% if quote.organization.billingAddressStreetLine2 %}
+                    {{ quote.organization.billingAddressStreetLine2 }}<br />
+                {% endif %}
+                {{ quote.organization.billingAddressPostalCode }}
+                {{ quote.organization.billingAddressCity }}
+                {{ quote.organization.billingAddressCountry }}<br />
+                Email : <a href="mailto:{{ quote.organization.billingEmail }}" target="_blank">{{ quote.organization.billingEmail }}</a>
+            </div>
+        </div>
+
+        <div class="invoice-lines-head">
+            <div class="invoice-lines-product">
+                Produit
+            </div>
+            <div class="invoice-lines-quantity">
+                Quantité
+            </div>
+            <div class="invoice-lines-price">
+                Total HT
+            </div>
+            <div class="invoice-lines-price">
+                TVA
+            </div>
+            <div class="invoice-lines-price">
+                Total TTC
+            </div>
+        </div>
+
+        {% set total = 0 %}
+
+        {% for line in quote.lines %}
+            {% set total = total + line.totalAmountIncludingTaxes %}
+
+            <div class="invoice-lines-line">
+                <div class="invoice-lines-product">
+                    <strong>
+                        {{ line.name }}
+                    </strong>
+                    <br />
+                    <div class="invoice-lines-product-description">
+                        {{ line.description|raw }}
+                    </div>
+                </div>
+                <div class="invoice-lines-quantity">
+                    {{ line.quantity|format_number({}, 'decimal', 'default', 'fr') }}
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalAmountExcludingTaxes|format_currency('eur', {}, 'fr') }}
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalVatAmount|format_currency('eur', {}, 'fr') }}
+                    <br />
+                    <span class="invoice-lines-product-description">{{ line.vatRate|format_number({ fraction_digit: 1 }, 'decimal', 'default', 'fr') }} %</span>
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalAmountIncludingTaxes|format_currency('eur', {}, 'fr') }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="invoice-total">
+            <div class="invoice-total-view">
+                <div class="invoice-total-after-tax">
+                    <span class="invoice-total-label">Total TTC</span>
+                    {{ total|format_currency('eur', {}, 'fr') }}
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

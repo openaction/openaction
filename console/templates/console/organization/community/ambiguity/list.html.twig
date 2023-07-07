@@ -1,0 +1,165 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'ambiguities.index.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_ambiguities 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+               <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'ambiguities.index.title'|trans({}, 'organization_community') }}
+                    </h3>
+                    <div class="text-muted">
+                        {{ 'ambiguities.index.desc'|trans({}, 'organization_community') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-light p-3">
+            {% if ambiguities|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'ambiguities.index.no_records'|trans({}, 'organization_community') }}
+                        </h4>
+                    </div>
+                </div>
+            {% else %}
+                {% for ambiguity in ambiguities %}
+                    <div class="world-block community-ambiguity p-3 mb-3">
+                        <div class="row align-items-center no-gutters mb-3">
+                            <div class="col-lg-6">
+                                <div class="community-ambiguity-label">
+                                    {{ 'ambiguities.index.old'|trans({}, 'organization_community') }}
+                                </div>
+
+                                <div class="community-ambiguity-profile">
+                                    <div class="community-ambiguity-profile-picture">
+                                        {% if ambiguity.oldest.picture %}
+                                            {% set pictureUrl = cdn_url(ambiguity.oldest.picture) %}
+
+                                            <a href="{{ pictureUrl }}" target="_blank">
+                                                <img src="{{ pictureUrl }}" />
+                                            </a>
+                                        {% else %}
+                                            <img src="https://www.gravatar.com/avatar/{{ ambiguity.oldest.emailHash }}?d=mp&s=800" />
+                                        {% endif %}
+                                    </div>
+                                    <div class="community-ambiguity-profile-details">
+                                        <div>
+                                            <a href="{{ path('console_organization_community_contacts_view', {'organizationUuid': current_organization.uuid, 'uuid': ambiguity.oldest.uuid}) }}"
+                                               target="_blank">
+                                                <strong>{{ ambiguity.oldest.email }}</strong>
+                                            </a>
+                                        </div>
+
+                                        <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                            <i class="fal fa-clock mr-1"></i>
+                                            {{ ambiguity.oldest.createdAt|format_datetime('short', 'short') }}
+                                        </span>
+
+                                        {% if ambiguity.oldest.profileFirstName
+                                            or ambiguity.oldest.profileLastName %}
+                                            <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                                <i class="fal fa-address-card mr-1"></i>
+                                                {{ ambiguity.oldest.profileFormalTitle }}
+                                                {{ ambiguity.oldest.profileFirstName }}
+                                                {{ ambiguity.oldest.profileMiddleName }}
+                                                {{ ambiguity.oldest.profileLastName }}
+                                            </span>
+                                        {% endif %}
+
+                                        {% if ambiguity.oldest.contactPhone %}
+                                            <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                                <i class="fal fa-phone mr-1"></i>
+                                                {{ ambiguity.oldest.contactPhone }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="community-ambiguity-label">
+                                    {{ 'ambiguities.index.new'|trans({}, 'organization_community') }}
+                                </div>
+
+                                <div class="community-ambiguity-profile">
+                                    <div class="community-ambiguity-profile-picture">
+                                        {% if ambiguity.newest.picture %}
+                                            {% set pictureUrl = cdn_url(ambiguity.newest.picture) %}
+
+                                            <a href="{{ pictureUrl }}" target="_blank">
+                                                <img src="{{ pictureUrl }}" />
+                                            </a>
+                                        {% else %}
+                                            <img src="https://www.gravatar.com/avatar/{{ ambiguity.newest.emailHash }}?d=mp&s=800" />
+                                        {% endif %}
+                                    </div>
+                                    <div class="community-ambiguity-profile-details">
+                                        <div>
+                                            <a href="{{ path('console_organization_community_contacts_view', {'organizationUuid': current_organization.uuid, 'uuid': ambiguity.newest.uuid}) }}"
+                                               target="_blank">
+                                                <strong>{{ ambiguity.newest.email }}</strong>
+                                            </a>
+                                        </div>
+
+                                        <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                            <i class="fal fa-clock mr-1"></i>
+                                            {{ ambiguity.newest.createdAt|format_datetime('short', 'short') }}
+                                        </span>
+
+                                        {% if ambiguity.newest.profileFirstName
+                                            or ambiguity.newest.profileLastName %}
+                                            <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                                <i class="fal fa-address-card mr-1"></i>
+                                                {{ ambiguity.newest.profileFormalTitle }}
+                                                {{ ambiguity.newest.profileFirstName }}
+                                                {{ ambiguity.newest.profileMiddleName }}
+                                                {{ ambiguity.newest.profileLastName }}
+                                            </span>
+                                        {% endif %}
+
+                                        {% if ambiguity.newest.contactPhone %}
+                                            <span class="world-badge world-badge-white text-muted world-badge-sm">
+                                                <i class="fal fa-phone mr-1"></i>
+                                                {{ ambiguity.newest.contactPhone }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            {% if ambiguity.ignoredAt is null %}
+                                <a href="{{ csrf_path('console_organization_community_ambiguities_merge', {'type': 'oldest', 'organizationUuid': current_organization.uuid, 'id': ambiguity.id}) }}"
+                                   class="btn btn-sm btn-secondary mr-1">
+                                    {{ 'ambiguities.index.merge'|trans({'%email%': ambiguity.oldest.email}, 'organization_community') }}
+                                </a>
+
+                                <a href="{{ csrf_path('console_organization_community_ambiguities_merge', {'type': 'newest', 'organizationUuid': current_organization.uuid, 'id': ambiguity.id}) }}"
+                                   class="btn btn-sm btn-secondary mr-1">
+                                    {{ 'ambiguities.index.merge'|trans({'%email%': ambiguity.newest.email}, 'organization_community') }}
+                                </a>
+                            {% endif %}
+
+                            <a href="{{ csrf_path('console_organization_community_ambiguities_ignore', {'organizationUuid': current_organization.uuid, 'id': ambiguity.id}) }}"
+                               class="btn btn-sm btn-outline-primary border-0">
+                                {% if ambiguity.ignoredAt is null %}
+                                    {{ 'ambiguities.index.ignore'|trans({}, 'organization_community') }}
+                                {% else %}
+                                    {{ 'ambiguities.index.ignore_rollback'|trans({}, 'organization_community') }}
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title telegramApp.botUsername %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title bg-white">
+            <a href="{{ path('console_organization_integrations_telegram', {'organizationUuid': current_organization.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'telegram.details.back'|trans({}, 'organization_integrations') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ telegramApp.botUsername }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center my-4">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <div class="mb-4">
+                        <div class="mb-2">
+                            {{ 'telegram.details.url'|trans({}, 'organization_integrations') }}
+                        </div>
+
+                        <div class="mb-2 text-muted">
+                            {{ 'telegram.details.url_help'|trans({}, 'organization_integrations') }}
+                        </div>
+
+                        <div class="input-group mb-3"
+                             data-controller="stimulus-clipboard"
+                             data-stimulus-clipboard-success-content="{{ 'clipboard.copied'|trans({}, 'global') }}">
+
+                            <input type="text" class="form-control"
+                                   data-stimulus-clipboard-target="source"
+                                   value="{{ url('console_organization_integrations_telegram_authorize', {'encodedUuid': telegramApp.uuid|toBase62}) }}" />
+
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button"
+                                        data-action="stimulus-clipboard#copy"
+                                        data-stimulus-clipboard-target="button">
+                                    {{ 'clipboard.copy'|trans({}, 'global') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

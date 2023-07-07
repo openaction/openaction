@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.membershipLogin %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'title': current_project.terminology.membershipLogin,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            {{ form_start(form, {'attr': {'data-turbo': 'false', 'class': 'no-required-marker'}}) }}
+            {{ form_errors(form) }}
+
+            {% if register_success %}
+                <div class="text-center text-success mb-4">
+                    {{ 'membership.login.register_success'|trans }}
+                </div>
+            {% endif %}
+
+            {% if reset_success %}
+                <div class="text-center text-success mb-4">
+                    {{ 'membership.login.reset_success'|trans }}
+                </div>
+            {% endif %}
+
+            {% if update_email_success %}
+                <div class="text-center text-success mb-4">
+                    {{ 'membership.login.update_email_success'|trans }}
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                {{ form_row(form.email, {'label': 'membership.login.email'|trans}) }}
+                {{ form_row(form.password, {'label': 'membership.login.password'|trans}) }}
+            </div>
+
+            <div class="user-form-submit">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'membership.login.submit'|trans }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+
+            <div class="mt-3 mb-5 text-center font-size-sm">
+                <a href="{{ path('membership_reset') }}">
+                    {{ 'membership.login.reset'|trans }}
+                </a>
+            </div>
+
+            <div class="text-center font-size-sm">
+                <div class="mb-2">
+                    {{ 'membership.login.join_question'|trans }}
+                </div>
+
+                <a href="{{ path('membership_join') }}" class="btn btn-outline-primary">
+                    {{ current_project.terminology.membershipRegister }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

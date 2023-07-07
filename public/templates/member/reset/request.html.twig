@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title 'membership.reset.title'|trans %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'title': 'membership.reset.title'|trans,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+            {{ form_errors(form) }}
+
+            <div class="mb-4">
+                {{ form_row(form.email, {'label': 'membership.reset.email'|trans}) }}
+            </div>
+
+            <div class="user-form-submit">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'membership.reset.submit'|trans }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

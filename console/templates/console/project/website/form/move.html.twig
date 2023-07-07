@@ -1,0 +1,32 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'move.title'|trans({'%title%': formData.title}, 'project_forms') %}
+
+{% block sidebar_forms 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <a href="{{ path('console_website_posts', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'move.back'|trans({}, 'project_forms') }}</span>
+            </a>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.into, {'label': 'move.to'|trans({}, 'project_forms')}) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'move.submit'|trans({}, 'project_forms') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

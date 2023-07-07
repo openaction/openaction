@@ -1,0 +1,156 @@
+framework:
+    messenger:
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - 'App\Messenger\UniqueIdMiddleware'
+                    - 'App\Messenger\TimeMiddleware'
+
+        failure_transport: failed
+        reset_on_message: true
+
+        transports:
+            async_emailing:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
+                    max_retries: 12
+                    delay: 1000
+                    multiplier: 2
+                options:
+                    exchange:
+                        name: emailing
+                    queues:
+                        messages_emailing: ~
+
+            async_texting:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
+                    max_retries: 12
+                    delay: 1000
+                    multiplier: 2
+                options:
+                    exchange:
+                        name: texting
+                    queues:
+                        messages_texting: ~
+
+            async_printing:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    # Retry after 3 seconds, 6 seconds, 12 seconds
+                    max_retries: 2
+                    delay: 3000
+                    multiplier: 2
+                options:
+                    exchange:
+                        name: printing
+                    queues:
+                        messages_printing: ~
+
+            async_priority_high:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: priority_high
+                    queues:
+                        messages_priority_high: ~
+
+            async_priority_low:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: priority_low
+                    queues:
+                        messages_priority_low: ~
+
+            async_indexing:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: indexing
+                    queues:
+                        messages_indexing: ~
+
+            failed: 'doctrine://default?queue_name=failed'
+
+        routing:
+            # Proxy
+            'App\Proxy\Consumer\ConfigureTrialSubdomainMessage': async_priority_high
+            'App\Proxy\Consumer\CloudflareCreateDomainMessage': async_priority_high
+            'App\Proxy\Consumer\CloudflareProvisionDomainMessage': async_priority_high
+            'App\Proxy\Consumer\CloudflareCheckDomainMessage': async_priority_low
+            'App\Proxy\Consumer\SendgridConfigureDomainMessage': async_priority_high
+            'App\Proxy\Consumer\SendgridCheckDomainMessage': async_priority_low
+            'App\Proxy\Consumer\PostmarkConfigureDomainMessage': async_priority_high
+            'App\Proxy\Consumer\PostmarkCheckDomainMessage': async_priority_low
+
+            # Billing
+            'App\Billing\Invoice\GenerateInvoicePdfMessage': async_priority_high
+            'App\Billing\Invoice\GenerateQuotePdfMessage': async_priority_high
+
+            # Community
+            'App\Community\Consumer\SendEmailingCampaignMessage': async_priority_high
+            'App\Community\Consumer\SendTextingCampaignMessage': async_priority_high
+            'App\Community\Consumer\StartPhoningCampaignMessage': async_priority_high
+            'App\Community\Consumer\CreateEmailingCampaignBatchesMessage': async_priority_low
+            'App\Community\Consumer\CreateTextingCampaignBatchesMessage': async_priority_low
+            'App\Community\Printing\Consumer\ImportPrintingAddressFileMessage': async_priority_high
+            'App\Community\Printing\Consumer\RequestCampaignPreflightMessage': async_printing
+            'App\Community\Printing\Consumer\RequestOrderProductionMessage': async_printing
+            'App\Community\Printing\Consumer\DownloadSourceMessage': async_printing
+            'App\Community\Printing\Consumer\ImportPreflightResultMessage': async_printing
+            'App\Bridge\Sendgrid\Consumer\SendgridMessage': async_emailing
+            'App\Bridge\Twilio\Consumer\TwilioMessage': async_texting
+
+            # Analytics
+            'App\Analytics\Consumer\BuildWebsiteSessionsMessage': async_priority_low
+            'App\Analytics\Consumer\ClearWebsiteSessionsMessage': async_priority_low
+            'App\Analytics\Consumer\RefreshContactStatsMessage': async_priority_low
+
+            # Import / Export
+            'App\Community\ImportExport\Consumer\ImportMessage': async_priority_high
+            'App\Community\ImportExport\Consumer\ExportMessage': async_priority_high
+
+            # Integrations
+            'App\Bridge\Quorum\Consumer\QuorumMessage': async_priority_low
+            'App\Bridge\Integromat\Consumer\IntegromatWebhookMessage': async_priority_low
+            'App\Bridge\Spallian\Consumer\SpallianMessage': async_priority_low
+            'App\Bridge\Revue\Consumer\RevueSyncMessage': async_priority_low
+
+            # Webhooks
+            'App\Community\Webhook\SendgridWebhookMessage': async_priority_low
+            'App\Community\Webhook\TwilioWebhookMessage': async_priority_low
+            'App\Community\Webhook\WingsWebhookMessage': async_priority_low
+
+            # Themes
+            'App\Theme\Consumer\SyncThemeMessage': async_priority_high
+
+            # Indexing
+            'App\Search\Consumer\UpdateCrmDocumentsMessage': async_indexing
+            'App\Search\Consumer\RemoveCrmDocumentMessage': async_indexing
+            'App\Search\Consumer\ReindexOrganizationCrmMessage': async_indexing
+            'App\Search\Consumer\UpdateCmsDocumentMessage': async_indexing
+            'App\Search\Consumer\RemoveCmsDocumentMessage': async_indexing
+
+            # Batch
+            'App\Search\Consumer\AddTagCrmBatchMessage': async_priority_high
+            'App\Search\Consumer\RemoveTagCrmBatchMessage': async_priority_high
+            'App\Search\Consumer\ExportCrmBatchMessage': async_priority_high
+            'App\Search\Consumer\RemoveCrmBatchMessage': async_priority_high
+
+            # Transactional emails
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async_priority_high
+
+when@test:
+    framework:
+        messenger:
+            transports:
+                async_emailing: 'in-memory://'
+                async_texting: 'in-memory://'
+                async_printing: 'in-memory://'
+                async_priority_high: 'in-memory://'
+                async_priority_low: 'in-memory://'
+                async_indexing: 'in-memory://'
+                failed: 'in-memory://'

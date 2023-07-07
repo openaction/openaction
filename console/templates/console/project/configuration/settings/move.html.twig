@@ -1,0 +1,37 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'move.title'|trans({'%title%': current_project.name}, 'project_settings') %}
+
+{% block sidebar_settings 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_settings', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_settings') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'move.title'|trans({'%title%': current_project.name}, 'project_settings') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.into, {'label': 'move.to'|trans({}, 'project_settings')}) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'move.submit'|trans({}, 'project_settings') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+<div style="min-width: 200px; max-width: 200px" class="my-1">
+    <div>
+        <strong>
+            {{ entity.instance.name }}
+        </strong>
+
+        <div style="font-size: 11px; font-style: italic">
+            {% if entity.instance.showPreview %}
+                <span style="color: #44ae8f; margin-right: 10px">
+                    Preview
+                </span>
+            {% endif %}
+
+            {% if entity.instance.partner %}
+                <span style="color: #999">Partner:</span>
+                <span style="color: #444">{{ entity.instance.partner.fullName }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        <a href="{{ path('admin_organization_add_myself', {'id': entity.instance.id}) }}" style="font-size: 12px;">
+            Open in Console
+        </a>
+    </div>
+</div>

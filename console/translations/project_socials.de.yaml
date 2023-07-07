@@ -1,0 +1,38 @@
+accounts:
+    title: 'Ihre sozialen Konten'
+    help: 'Konfigurieren Sie Ihre sozialen Netzwerkkonten so, dass sie auf Ihrer Website und in Ihren Kampagnen angezeigt werden.'
+    email: 'Über welche öffentliche E-Mail-Adresse sollen Ihre Besucher Sie kontaktieren können?'
+    facebook: 'Wie lautet die URL Ihrer Facebook-Seite?'
+    twitter: 'Wie lautet die URL Ihres Twitter-Kontos?'
+    instagram: 'Wie lautet die URL Ihres Instagram-Kontos?'
+    linkedIn: 'Wie lautet die URL Ihres LinkedIn-Kontos?'
+    youtube: 'Wie lautet die URL Ihres YouTube-Kanals?'
+    medium: 'Wie lautet die URL Ihres Medium-Kontos?'
+    telegram: 'Wie lautet der Benutzername deines Telegram-Kontos?'
+    snapchat: 'Wie lautet der Nutzername deines Snapchat-Kontos?'
+    submit: 'Speichern Sie'
+sharers:
+    title: 'Tools für den sozialen Austausch'
+    help: 'Legen Sie fest, welche Schaltflächen für die Weitergabe von Inhalten aus sozialen Netzwerken auf Ihrer Website angezeigt werden sollen.'
+    label: 'Welche sozialen Links sollten auf den Inhaltsseiten Ihrer Website angezeigt werden?'
+    label_help: 'Soziale Links sind Werkzeuge, die es Ihren Besuchern ermöglichen, Inhalte auf einfache Weise in ihren sozialen Netzwerken zu teilen.'
+    facebook: 'Auf Facebook teilen'
+    twitter: 'Auf Twitter teilen'
+    linkedin: 'Auf LinkedIn teilen'
+    telegram: 'Auf Telegramm teilen'
+    whatsapp: 'Auf Whatsapp teilen'
+    email: 'Per E-Mail teilen'
+    submit: 'Speichern Sie'
+metas:
+    title: 'Details zum sozialen Austausch'
+    help: 'Konfigurieren Sie, wie Ihre Website in sozialen Netzwerken erscheint'
+    metaTitle:
+        label: 'Titel der Website'
+        help: "Dieser Titel wird in sozialen Netzwerken und Suchmaschinen für potenzielle\nBesucher angezeigt. Sie sollten ihn sehr kurz halten (unter 40 Zeichen) und Folgendes beschreiben\ndas Hauptthema der Website: den Namen Ihrer Organisation, Veranstaltung, ...\n"
+    metaDescription:
+        label: 'Beschreibung der Website'
+        help: "Diese Beschreibung wird in sozialen Netzwerken und Suchmaschinen für potenzielle Besucher angezeigt.\nBesuchern angezeigt. Sie sollten sie verwenden, um den Inhalt Ihrer Website zu beschreiben.\nSie sollte nicht länger als 150 Zeichen sein.\n"
+    sharer:
+        label: 'Website Bild freigeben'
+        help: "Dieses Bild wird in sozialen Netzwerken verwendet, wenn ein Link zu Ihrer Website\nvon einem Nutzer geteilt wird. Sie sollten dieses Bild verwenden, um den Inhalt zu zeigen, den sie sehen werden\nwenn sie auf den Link klicken. Verwenden Sie ein Bild von 1200x630 Pixel für das beste Ergebnis.\n"
+    submit: 'Speichern Sie'

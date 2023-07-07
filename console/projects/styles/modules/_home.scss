@@ -1,0 +1,143 @@
+.home {
+    &-blocks {
+        @include make-container();
+        max-width: 1140px;
+
+        &-block {
+            margin-top: 50px;
+            margin-bottom: 50px;
+
+            &-title {
+                font-weight: 800;
+                color: $third;
+                font-size: 34px;
+                margin-bottom: 24px;
+            }
+
+            &-newsletter {
+                background: $primary;
+                color: #fff;
+
+                &-form {
+                    padding: 24px;
+                }
+
+                &-image {
+                    background-size: cover;
+                    background-position: 50% 50%;
+                }
+            }
+
+            &-socials {
+                &-block {
+                    border: 1px solid $secondary;
+                    background: #fff;
+                    margin-bottom: 30px;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                }
+
+                &-facebook,
+                &-facebook iframe {
+                    max-width: 500px;
+                }
+
+                &-facebook iframe {
+                    border: none;
+                    overflow: hidden;
+                    width: 100%;
+                    height: 600px;
+                }
+            }
+
+            &-posts {
+                // By default, display only one row
+                &-row-1,
+                &-row-2,
+                &-row-3,
+                &-row-4,
+                &-row-5 {
+                    display: none !important;
+                }
+
+                &-row {
+                    @include media-breakpoint-up(lg) {
+                        display: flex;
+                        margin-right: -15px;
+                        margin-left: -15px;
+                    }
+                }
+
+                .zoom-hover {
+                    vertical-align: top;
+                    display: inline-block;
+                    width: 100%;
+
+                    @include media-breakpoint-up(lg) {
+                        padding-right: 15px;
+                        padding-left: 15px;
+                        flex: 0 0 33.33333%;
+                        min-width: 33.33333%;
+                    }
+                }
+
+                &-item {
+                    border: 1px solid $secondary;
+                    padding: 16px;
+                    background: #fff;
+                    margin: 0 0 30px 0;
+
+                    &-thumbnail {
+                        margin-bottom: 22px;
+                    }
+                }
+            }
+
+            &-cta {
+                text-align: center;
+                margin-bottom: 75px;
+
+                &-button {
+                    display: inline-block;
+                    font-family: $btn-font-family;
+                    font-weight: $btn-font-weight;
+                    color: $body-color;
+                    text-align: center;
+                    text-decoration: none;
+                    white-space: $btn-white-space;
+                    vertical-align: middle;
+                    user-select: none;
+                    background-color: transparent;
+                    border: $btn-border-width solid transparent;
+                    margin: 5px;
+                    @include button-size(
+                        $btn-padding-y-lg,
+                        $btn-padding-x-lg,
+                        $btn-font-size-lg,
+                        $btn-line-height-lg,
+                        $btn-border-radius-lg
+                    );
+                    @include transition($btn-transition);
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                &-primary {
+                    @include button-variant($secondary, $secondary);
+                }
+
+                &-secondary {
+                    @include button-outline-variant($light, $light);
+
+                    &:hover {
+                        color: #212529;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+code_invalid: 'Ungültiger Authentifizierungscode.'
+console:
+    user:
+        two_factor:
+            invalid_code: 'Ungültiger Authentifizierungscode %code%.'
+        password:
+            error:
+                new_equal_to_old: 'Ihr neues Passwort muss sich von Ihrem aktuellen Passwort unterscheiden.'
+    organization:
+        subscription:
+            missing_required_slots: "Ihre Organisation hat derzeit %current_count% Projekte. Sie müssen\nentfernen, bevor Sie die Anzahl der Projekt-Slots Ihres Abonnements\nIhres Abonnements unter %current_count% senken können.\n"
+        manage_project:
+            missing_area: 'Für ein lokales Projekt ist mindestens ein Gebiet erforderlich.'
+            missing_tag: 'Mindestens ein Tag ist für ein thematisches Projekt erforderlich.'
+            missing_module: 'Sie müssen mindestens ein Modul aktivieren.'
+            missing_tool: 'Sie müssen mindestens ein Werkzeug des Moduls aktivieren.'
+        team:
+            empty_permissions: 'Sie müssen mindestens eine Genehmigung auswählen.'
+        community:
+            email_not_equal: 'Sie müssen eine andere E-Mail-Adresse als Ihre derzeitige angeben.'
+            minimal_data_required: 'Sie müssen mindestens einen Nachnamen, eine E-Mail-Adresse oder eine Telefonnummer angeben.'
+    project:
+        emailing:
+            email_invalid: 'Die E-Mail-Adresse dieses Absenders ist ungültig.'
+            reply_to_invalid: 'Diese Antwort-E-Mail-Adresse ist ungültig.'
+        settings:
+            socials:
+                invalid_url: 'Dieser Wert ist keine gültige URL (nur http und https).'
+                invalid_length: 'Dieser Wert ist zu lang. Er sollte {{ limit }} Zeichen oder weniger haben.'
+                invalid_email: 'Dieser Wert ist keine gültige E-Mail.'
+                invalid_facebook: 'Dieser Link scheint kein Facebook-Link zu sein.'
+                invalid_instagram: 'Dieser Link scheint kein Instagram-Link zu sein.'
+                invalid_twitter: 'Dieser Link scheint kein Twitter-Link zu sein.'
+                invalid_youtube: 'Dieser Link scheint kein gültiger Youtube-Link zu sein.'
+                invalid_linkedin: 'Dieser Link scheint kein gültiger LinkedIn-Link zu sein.'
+                invalid_medium: 'Dieser Link scheint kein gültiger Medium-Link zu sein.'
+                invalid_telegram: 'Dieser Telegram-Benutzername ist nicht gültig.'
+                invalid_snapchat: 'Dieser Snapchat-Benutzername ist nicht gültig.'
+        appearance:
+            homepage:
+                socials:
+                    invalid_length: 'Dieser Wert ist zu lang. Er sollte {{ limit }} Zeichen oder weniger haben.'
+                    invalid_facebook: 'Dieser Link scheint kein Facebook-Link zu sein.'
+                    invalid_twitter: 'Dieser Link scheint kein Twitter-Link zu sein.'

@@ -1,0 +1,22 @@
+{% extends 'console/project/community/printing/finalize/base.html.twig' %}
+
+{% block tab_delivery 'active' %}
+
+{% block metas %}
+    <meta http-equiv="refresh" content="2" />
+{% endblock %}
+
+{% block tab_page %}
+    <h4 class="mb-3">
+        {{ 'edit.delivery.title'|trans({}, 'project_printing') }}
+    </h4>
+
+    <div class="world-block p-3">
+        <h6>
+            <i class="fal fa-spinner fa-spin mr-2"></i>
+            {{ 'edit.delivery.addressed.processing.title'|trans({}, 'project_printing') }}
+        </h6>
+
+        {{ 'edit.delivery.addressed.processing.desc'|trans({}, 'project_printing') }}
+    </div>
+{% endblock %}

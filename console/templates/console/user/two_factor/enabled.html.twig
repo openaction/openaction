@@ -1,0 +1,38 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% block page_title 'two_factor.enabled.title'|trans({}, 'user') %}
+
+{% block sidebar_2fa 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'two_factor.enabled.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="p-4 bg-light">
+            <div class="mb-3">
+                {{ 'two_factor.enabled.desc'|trans({}, 'user')|raw }}
+            </div>
+
+            <div class="mb-3">
+                {{ 'two_factor.enabled.warning'|trans({}, 'user')|raw }}
+            </div>
+
+            <ul class="mb-3">
+                {% for code in app.user.twoFactorBackupCodes %}
+                    <li class="font-weight-bold">{{ code }}</li>
+                {% endfor %}
+            </ul>
+
+            <a href="{{ path('console_user_2fa_download_backups') }}" class="btn btn-light" target="_blank">
+                <i class="fas fa-download"></i>
+                {{ 'two_factor.enabled.download'|trans({}, 'user') }}
+            </a>
+
+            <a href="{{ path('console_user_2fa') }}" class="btn btn-link">
+                {{ 'two_factor.enabled.skip'|trans({}, 'user') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

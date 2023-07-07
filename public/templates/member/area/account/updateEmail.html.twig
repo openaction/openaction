@@ -1,0 +1,32 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title 'membership.account.update_email.title'|trans %}
+
+{% block membership_area_content %}
+    {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+    {{ form_errors(form) }}
+
+    {% if saved %}
+        <div class="text-center text-success mb-4">
+            {{ 'membership.account.update_email.success'|trans }}
+        </div>
+    {% endif %}
+
+    <p class="text-muted">
+        {{ 'membership.account.update_email.desc'|trans }}
+    </p>
+
+    {{ form_row(form.email, {'label': 'membership.account.update_email.field'|trans}) }}
+
+    <div class="mt-5 text-center">
+        <button type="submit" class="btn btn-primary mr-2">
+            {{ 'membership.account.update_email.submit'|trans }}
+        </button>
+
+        <a href="{{ path('membership_area_account') }}" class="btn btn-outline-primary">
+            {{ 'membership.account.update_email.cancel'|trans }}
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

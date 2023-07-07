@@ -1,0 +1,13 @@
+body,
+html,
+.body {
+    background: #e3e8ee !important;
+}
+
+.header {
+    background: #e3e8ee;
+}
+
+.logo {
+    height: 80px;
+}

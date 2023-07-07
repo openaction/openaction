@@ -1,0 +1,40 @@
+{% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
+
+{% block header %}
+    <a id="logo" href="{{ path('openapi_ui') }}">
+        <img src="{{ asset('res/logo/logo-dark.svg') }}" alt="Citipo" />
+    </a>
+{% endblock header %}
+
+{% block swagger_initialization %}
+    <script type="text/javascript">
+        window.onload = loadSwaggerUI({
+            defaultModelRendering: ['model', 'example'],
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            margin: 0;
+        }
+
+        header {
+            display: none;
+        }
+
+        #swagger-ui.api-platform .information-container.wrapper {
+            padding-top: 20px !important;
+        }
+
+        #swagger-ui.api-platform .info .title span {
+            display: none;
+        }
+
+        .swagger-ui .opblock-tag-section {
+            margin-bottom: 25px;
+        }
+    </style>
+{% endblock stylesheets %}

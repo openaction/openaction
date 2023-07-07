@@ -1,0 +1,52 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'terminology.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_appearance', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'terminology.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'terminology.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.posts, {'label': 'terminology.posts'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.events, {'label': 'terminology.events'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.trombinoscope, {'label': 'terminology.trombinoscope'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.manifesto, {'label': 'terminology.manifesto'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.newsletter, {'label': 'terminology.newsletter'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.acceptPrivacy, {'label': 'terminology.acceptPrivacy'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.socialNetworks, {'label': 'terminology.socialNetworks'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.membershipRegister, {'label': 'terminology.membershipRegister'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.membershipLogin, {'label': 'terminology.membershipLogin'|trans({}, 'project_appearance')}) }}
+                    {{ form_row(form.membershipArea, {'label': 'terminology.membershipArea'|trans({}, 'project_appearance')}) }}
+
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'save'|trans({}, 'project_appearance') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

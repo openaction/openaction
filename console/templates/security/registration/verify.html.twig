@@ -1,0 +1,42 @@
+{% extends 'security/registration/base.html.twig' %}
+
+{% block body_class 'full-height' %}
+
+{% block page_title 'registration.verify.title'|trans({}, 'security') %}
+
+{% block content %}
+    <div class="p-4 mt-5 pt-5">
+        <div class="world-alert alert alert-bg-success mb-5">
+            <div class="row no-gutters">
+                <div class="col-auto pr-3">
+                    <i class="far fa-check"></i>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'registration.verify.title'|trans({}, 'security') }}
+                        </strong>
+                    </div>
+
+                    {{ 'registration.verify.desc'|trans({}, 'security') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-muted mb-2">
+            <small>
+                {{ 'registration.verify.resend.desc'|trans({}, 'security') }}<br />
+                <a href="{{ path('security_registration_resend', {'uuid': registration.uuid}) }}" class="text-muted font-weight-bold">
+                    {{ 'registration.verify.resend.link'|trans({}, 'security') }}
+                </a>
+            </small>
+        </div>
+
+        <div class="text-center text-muted mb-2">
+            <small>
+                {{ 'registration.verify.resend.contact_us'|trans({}, 'security') }}<br />
+                <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" class="text-muted font-weight-bold">{{ 'contact_email'|trans({}, 'global') }}</a>
+            </small>
+        </div>
+    </div>
+{% endblock %}

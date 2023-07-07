@@ -1,0 +1,178 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'order.title'|trans({}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <div class="print-order-label">
+                {{ 'label_reference'|trans({}, 'project_printing') }}
+            </div>
+            <h4 class="mb-0 posts-title" title="{{ order.uuid }}">
+                {{ order.reference }}
+            </h4>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {% if order.subrogatedOrder %}
+                        <div class="alert alert-success">
+                            <strong>{{ 'edit.subgrodation.title'|trans({}, 'project_printing') }}</strong>
+                            <br />
+                            {{ 'edit.subgrodation.message'|trans({}, 'project_printing') }}
+                            <br />
+                            <strong>
+                                <a href="https://citipo.com/print-subrogation-doc" target="_blank">
+                                    {{ 'edit.subgrodation.link'|trans({}, 'project_printing') }}
+                                </a>
+                            </strong>
+                        </div>
+                    {% endif %}
+
+                    {% set totalAmount = 0 %}
+
+                    <div class="world-block">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th class="text-center">Quantité</th>
+                                <th class="text-center">Prix HT</th>
+                                <th class="text-center">TVA</th>
+                                <th class="text-center">Total TTC</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for line in orderLines %}
+                                {% set totalAmount = totalAmount + line.totalAmountIncludingTaxes %}
+
+                                <tr>
+                                    <td>
+                                        {{ line.name }}
+                                        <br />
+                                        <div class="text-muted">{{ line.description|raw }}</div>
+                                    </td>
+                                    <td class="text-center">
+                                        {{ line.quantity|format_number }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ line.totalAmountExcludingTaxes|format_currency('EUR') }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ line.vatRate|format_number }} %
+                                    </td>
+                                    <td class="text-center">
+                                        {{ line.totalAmountIncludingTaxes|format_currency('EUR') }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-center">
+                                    <h5 class="mt-2 mb-0">
+                                        {{ totalAmount|format_currency('EUR') }}
+                                    </h5>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div class="text-uppercase text-muted mt-5 mb-2">
+                        {{ 'details.form.details.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    {{ form_row(form.billingOrganization, {
+                        'label': 'details.form.details.name.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.name.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.billingEmail, {
+                        'label': 'details.form.details.email.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.email.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'details.form.address.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    {{ form_row(form.billingStreetLine1, {
+                        'label': 'details.form.address.streetLine1'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.billingStreetLine2, {
+                        'label': 'details.form.address.streetLine2'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{ form_row(form.billingPostalCode, {
+                                'label': 'details.form.address.postalCode'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.billingCity, {
+                                'label': 'details.form.address.city'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(form.billingCountry, {
+                                'label': 'details.form.address.country'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'details.form.recipient.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form_row(form.recipientFirstName, {
+                                'label': 'details.form.recipient.firstName.label'|trans({}, 'organization_billing'),
+                                'help': 'details.form.recipient.firstName.help'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.recipientLastName, {
+                                'label': 'details.form.recipient.lastName.label'|trans({}, 'organization_billing'),
+                                'help': 'details.form.recipient.lastName.help'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.recipientEmail, {
+                        'label': 'details.form.recipient.email.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.recipient.email.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {% if order.subrogatedOrder %}
+                                {{ 'order.order'|trans({}, 'project_printing') }}
+                            {% else %}
+                                {{ 'order.continue'|trans({}, 'project_printing') }}
+                            {% endif %}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

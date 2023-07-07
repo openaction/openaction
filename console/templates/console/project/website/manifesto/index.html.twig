@@ -1,0 +1,208 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_manifesto') %}
+
+{% block sidebar_manifesto 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title border-0">
+            <div class="row align-items-center">
+                <div class="col-lg-9 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'index.title'|trans({}, 'project_manifesto') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'index.help'|trans({}, 'project_manifesto') }}
+                    </div>
+                </div>
+                <div class="col-lg-3 text-lg-right">
+                    <a href="{{ csrf_path('console_website_manifesto_topic_create', { 'projectUuid': current_project.uuid }) }}"
+                       class="btn btn-primary manifesto-list-action-create">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.topic.create'|trans({}, 'project_manifesto') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white">
+            {% if topics|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.no_result'|trans({}, 'project_manifesto') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_website_manifesto_topic_create', {'projectUuid': current_project.uuid}) }}"
+                           class="btn btn-lg btn-primary manifesto-list-action-create">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.no_result_create'|trans({}, 'project_manifesto') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div data-controller="sortable"
+                     data-endpoint="{{ path('console_website_manifesto_sort_topics', {'projectUuid': current_project.uuid}) }}">
+
+                    <div data-sortable-target="element" class="world-list">
+                        {% for topic in topics %}
+                            <div class="world-list-row border-0" id="topic-{{ topic.id }}" data-id="{{ topic.id }}" data-uuid="{{ topic.uuid }}">
+                                <div class="p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-auto">
+                                            <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                        </div>
+
+                                        <div class="col-lg-auto d-none d-lg-block">
+                                            <div class="world-list-image">
+                                                <img src="{{ cdn_image_url(topic.image, asset('res/images/default-manifesto.jpg')) }}" alt="{{ topic.title }}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg">
+                                            <h4 class="mb-1 topics-title">
+                                                <a href="{{ path('console_website_manifesto_topic_edit', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                                   style="color: #{{ topic.color }} !important">
+                                                    {{ topic.title }}
+                                                </a>
+                                            </h4>
+
+                                            <div class="mb-2">
+                                                {% if topic.publishedAt and topic.publishedAt >= date() %}
+                                                    <div class="world-badge world-badge-info mr-2">
+                                                        {{ 'index.scheduled'|trans({}, 'project_manifesto') }}
+                                                    </div>
+                                                    <small class="font-italic text-muted">
+                                                        {{ 'index.scheduled_for'|trans({'%datetime%': topic.publishedAt|format_datetime('medium', 'short')}, 'project_manifesto') }}
+                                                    </small>
+                                                {% elseif topic.publishedAt and topic.publishedAt < date() %}
+                                                    <div class="world-badge world-badge-success mr-2">
+                                                        {{ 'index.published'|trans({}, 'project_manifesto') }}
+                                                    </div>
+                                                    <small class="font-italic text-muted">
+                                                        {{ 'index.published_at'|trans({'%datetime%': topic.publishedAt|format_datetime('medium', 'short')}, 'project_manifesto') }}
+                                                    </small>
+                                                {% else %}
+                                                    <div class="world-badge world-badge-warning">
+                                                        {{ 'index.draft'|trans({}, 'project_manifesto') }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-auto">
+                                            <a href="{{ path('console_website_manifesto_view', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-2 manifesto-list-action-view" target="_blank">
+                                                <i class="fas fa-search mr-1"></i>
+                                                {% if topic.isPublished %}
+                                                    {{ 'index.view'|trans({}, 'project_manifesto') }}
+                                                {% else %}
+                                                    {{ 'index.preview'|trans({}, 'project_manifesto') }}
+                                                {% endif %}
+                                            </a>
+
+                                            <a href="{{ path('console_website_manifesto_topic_edit', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-2 manifesto-list-action-edit">
+                                                <i class="fad fa-edit mr-1"></i>
+                                                {{ 'index.topic.edit'|trans({}, 'project_manifesto') }}
+                                            </a>
+
+                                            <a href="{{ csrf_path('console_website_manifesto_topic_duplicate', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-2 manifesto-list-action-duplicate">
+                                                <i class="fad fa-copy mr-1"></i>
+                                                {{ 'index.topic.duplicate'|trans({}, 'project_manifesto') }}
+                                            </a>
+
+                                            {% if is_granted('website_manifesto_manage_published', current_project) %}
+                                                <a href="{{ path('console_website_manifesto_topic_move', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0 mr-2 manifesto-list-action-move">
+                                                    <i class="fad fa-share mr-1"></i>
+                                                    {{ 'index.topic.move'|trans({}, 'project_manifesto') }}
+                                                </a>
+                                            {% endif %}
+
+                                            <a href="{{ csrf_path('console_website_manifesto_topic_delete', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               data-controller="delete"
+                                               data-message="{{ 'index.topic.delete_confirm'|trans({'%title%': topic.title}, 'project_manifesto') }}"
+                                               data-target="#topic-{{ topic.id }}"
+                                               class="btn btn-sm btn-outline-danger border-0 manifesto-list-action-delete">
+                                                <i class="fad fa-trash mr-1"></i>
+                                                {{ 'index.topic.delete'|trans({}, 'project_manifesto') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="manifesto-proposals pl-5 pr-3 pt-3 pb-3 mb-5">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-lg-auto">
+                                            <strong>
+                                                {{ 'index.proposal.label'|trans({'%title%': topic.title}, 'project_manifesto') }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="col-lg-auto">
+                                            <a href="{{ csrf_path('console_website_manifesto_proposal_create', {'uuid': topic.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 ml-3">
+                                                {{ 'index.proposal.create'|trans({}, 'project_manifesto') }}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    {% if topic.proposals|length > 0 %}
+                                        <div data-controller="sortable"
+                                             data-endpoint="{{ path('console_website_manifesto_sort_proposals', {'projectUuid': current_project.uuid, 'uuid': topic.uuid}) }}">
+
+                                            <div data-sortable-target="element">
+                                                {% for proposal in topic.proposals %}
+                                                    <div class="row no-gutters align-items-center m-2"
+                                                         data-id="{{ proposal.id }}"
+                                                         id="proposal-{{ proposal.id }}">
+                                                        <div class="col-lg-auto mr-3">
+                                                            <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                                        </div>
+
+                                                        <div class="col-lg-auto mr-3">
+                                                            {{ proposal.title }}
+                                                        </div>
+
+                                                        <div class="col-lg-auto">
+                                                            <a href="{{ path('console_website_manifesto_proposal_edit', {'uuid': proposal.uuid, 'projectUuid': current_project.uuid}) }}"
+                                                               class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                                                {{ 'index.proposal.edit'|trans({}, 'project_manifesto') }}
+                                                            </a>
+
+                                                            <a href="{{ csrf_path('console_website_manifesto_proposal_duplicate', {'uuid': proposal.uuid, 'projectUuid': current_project.uuid}) }}"
+                                                               class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                                                {{ 'index.proposal.duplicate'|trans({}, 'project_manifesto') }}
+                                                            </a>
+
+                                                            <a href="{{ csrf_path('console_website_manifesto_proposal_delete', {'uuid': proposal.uuid, 'projectUuid': current_project.uuid}) }}"
+                                                               data-controller="delete"
+                                                               data-message="{{ 'index.proposal.delete_confirm'|trans({'%title%': proposal.title}, 'project_manifesto') }}"
+                                                               data-target="#proposal-{{ proposal.id }}"
+                                                               class="btn btn-sm btn-outline-danger border-0">
+                                                                {{ 'index.proposal.delete'|trans({}, 'project_manifesto') }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    {% else %}
+                                        <em class="text-muted">
+                                            {{ 'index.proposal.no_result'|trans({}, 'project_manifesto') }}
+                                        </em>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

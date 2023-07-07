@@ -1,0 +1,75 @@
+registration:
+    error_duplicated: 'Cet e-mail est déjà enregistré sur Citipo : peut-être avez-vous déjà un compte ?'
+    success: Votre compte a été créé ! Vous pouvez maintenant créer une organisation et commencer à travailler.
+
+reset:
+    success: 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter directement avec lui.'
+
+login:
+    invalid_credentials: Identifiants invalides
+    invalid_csrf: 'Le formulaire a expiré. Pouvez-vous réessayer ?'
+
+user:
+    password_change_success: Votre mot de passe a bien été modifié.
+    settings_update_success: Vos paramètres ont bien été modifiés.
+
+subscription:
+    not_enough_credits: Votre organisation n'a pas assez de crédits pour effectuer cette action.
+
+team:
+    invite_success: Le collaborateur a bien été ajouté à votre organisation.
+    update_success: Le collaborateur a bien été mis à jour.
+
+configuration:
+    updated_success: La configuration a bien été mise à jour.
+    socials_success: La configuration des réseaux sociaux a bien été mise à jour.
+    appearance_success: La configuration de l'apparence a bien été mise à jour.
+    assets_success: Les ressources du thèmes ont bien été mises à jour.
+    membership_success: La configuration de l'adhésion a été enregistrée avec succès.
+
+contacts:
+    created_success: Le contact a bien été créé.
+    updated_success: Le contact a bien été mis à jour.
+
+export:
+    success: |
+        Vous avez bien demandé un export de votre base de contacts. Cet export vous sera envoyé par email d'ici
+        quelques minutes.
+
+automations:
+    updated_success: Les paramètres de l'automatisation ont bien été mis à jour.
+
+ambiguities:
+    merge_success: Le contact a bien été fusionné.
+    ignore_success: Le contact a bien été ignoré.
+
+emailings:
+    metadata_updated_success: Les paramètres de la campagne ont bien été mis à jour.
+    test_sent_success: Le test de campagne a bien été envoyé.
+    campaign_sent_success: La campagne d'emailing a bien été envoyée.
+
+texting:
+    metadata_updated_success: Les paramètres de la campagne ont bien été mis à jour.
+    test_sent_success: Le test de campagne a bien été envoyé.
+    campaign_sent_success: La campagne SMS a bien été envoyée.
+
+phoning:
+    metadata_updated_success: Les paramètres de la campagne ont bien été mis à jour.
+
+documents:
+    upload_success:
+        single: Votre document a bien été envoyé.
+        plural: Vos documents ont bien été envoyés.
+
+integrations:
+    updated_success: Les intégrations ont bien été mises à jour.
+
+billing:
+    updated_success: Vos informations de facturation ont bien été mises à jour.
+    quote_success: Votre demande de devis a bien été prise en compte. Vous le recevrez par email dans quelques minutes.
+
+printing:
+    updated_success: Les paramètres de la campagne ont bien été mis à jour.
+
+move:
+    success: L'élément a bien été déplacé.

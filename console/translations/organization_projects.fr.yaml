@@ -1,0 +1,79 @@
+list:
+    page_title: Projets
+    help: |
+        Les projets vous aident à organiser votre travail en regroupant tous les outils relatifs
+        à un même sujet en un seul endroit : un site internet, un système d'emailing, etc.
+    search: Rechercher un projet...
+    global_projects:
+        title: 'Projets globaux'
+        desc: |
+            Les projets globaux sont des projets à l'échelle de votre organisation entière.
+            Ils n'ont pas de restriction géographique ou thématique.
+        new: 'Lancer un nouveau projet global'
+    thematic_projects:
+        title: 'Projets thématiques'
+        desc: |
+            Les projets thématiques se concentrent sur des thèmes spécifiques de votre communauté.
+            Leurs modules sont adaptés pour se focaliser sur les contacts associés à ces tags.
+        new: 'Lancer un nouveau projet thématique'
+    local_projects:
+        title: 'Projets locaux'
+        desc: |
+            Les projets locaux se concentrent sur une zone géographique spécifique.
+            Leurs modules sont adaptés pour se focaliser sur la communauté de cette zone.
+        new: 'Lancer un nouveau projet local'
+    no_website: Pas de site internet Citipo
+    members: membres
+    contacts: contacts
+
+create:
+    title: Lancer un projet
+    subtitle: Lancez un projet pour créer et faire grandir une communauté autour de vos actions.
+    batch: Je souhaite créer plusieurs projets à la fois
+    form:
+        name:
+            label: Nom du projet
+            help: |
+                Ce nom est interne : il sera présent dans les menus et les titres de votre interface
+                d'administration. Vous aurez la possibilité de choisir un nom public différent
+                si vous le souhaitez. Maximum 60 caractères.
+        submit: Créer
+    meta_description: 'Découvrez %name% et rejoignez sa communauté.'
+    main_intro_content: Joignons nos forces pour changer les choses !
+    pages:
+        manifesto: Manifeste
+        who_we_are: Qui sommes-nous
+        legalities: Mentions légales
+        privacy_policy: Politique de confidentialité
+        terms_service: Conditions d'utilisation
+    menus:
+        header:
+            home: Accueil
+            manifesto: Manifeste
+            who_we_are: Qui sommes-nous
+            events: Événements
+            posts: Actualités
+            donate: Faire un don
+        footer:
+            home: Accueil
+            manifesto: Manifeste
+            events: Événements
+            posts: Actualités
+            donate: Faire un don
+            who_we_are: Qui sommes-nous
+            legalities: Mentions légales
+            privacy_policy: Politique de confidentialité
+            terms_service: Conditions d'utilisation
+    home_blocks:
+        cta_newsletter: Recevoir la newsletter
+        cta_manifesto: Lire notre manifeste
+
+create_batch:
+    back: Retour
+    title: Créer plusieurs projets à la fois
+    subtitle: Lancez des projets pour créer et faire grandir une communauté autour de vos actions.
+    form:
+        name: Nom du projet
+        adminEmail: Adresse e-mail du responsable (optionel)
+        areas: Type et zones
+        submit: Créer

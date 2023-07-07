@@ -1,0 +1,68 @@
+{% extends 'console/project/community/printing/base.html.twig' %}
+
+{% block page_title 'ordered.title'|trans({'%number%': order.reference}, 'project_printing') %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_printing') }}</span>
+            </a>
+
+            <div class="print-order-label">
+                {{ 'label_reference'|trans({}, 'project_printing') }}
+            </div>
+            <h4 class="mb-0 posts-title" title="{{ order.uuid }}">
+                {{ order.reference }}
+            </h4>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-6">
+                    <h5 class="mb-3 mt-4 text-success">
+                        <i class="fal fa-check mr-1"></i>
+                        {{ 'ordered.message.title'|trans({}, 'project_printing') }}
+                    </h5>
+
+                    {% if order.subrogatedOrder %}
+                        <div class="alert alert-success mb-5">
+                            {{ 'ordered.message.subrogation_success'|trans({}, 'project_printing')|raw }}
+                        </div>
+
+                        <ul>
+                            <li class="mb-4">
+                                {{ 'ordered.message.subrogation_next'|trans({}, 'project_printing')|raw }}
+                            </li>
+                            <li class="mb-5">
+                                {{ 'ordered.message.tip_2nd_round'|trans({}, 'project_printing')|raw }}
+                            </li>
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-success mb-5">
+                            {{ 'ordered.message.standard_success'|trans({}, 'project_printing')|raw }}
+                        </div>
+
+                        <ul>
+                            <li class="mb-4">
+                                {{ 'ordered.message.standard_next'|trans({}, 'project_printing')|raw }}
+                            </li>
+                            <li class="mb-5">
+                                {{ 'ordered.message.tip_2nd_round'|trans({}, 'project_printing')|raw }}
+                            </li>
+                        </ul>
+                    {% endif %}
+
+                    <div class="mb-5">
+                        <a href="{{ path('console_community_printing', {'projectUuid': current_project.uuid}) }}"
+                           class="btn btn-secondary">
+                            {{ 'ordered.back'|trans({}, 'project_printing') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

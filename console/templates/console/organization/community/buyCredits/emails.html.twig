@@ -1,0 +1,163 @@
+{% extends 'console/organization/billing/base.html.twig' %}
+
+{% block page_title 'buy_credits.emails.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_details 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3>
+                {{ 'buy_credits.emails.title'|trans({}, 'organization_community') }}
+            </h3>
+            <div class="text-muted">
+                {{ 'buy_credits.emails.desc'|trans({}, 'organization_community') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div data-controller="community--buy-credits" data-unit-price="{{ unitPrice }}">
+                        {{ form_row(form.amount, {
+                            'label': 'buy_credits.emails.amount.label'|trans({}, 'organization_community'),
+                            'help': 'buy_credits.emails.amount.help'|trans({}, 'organization_community'),
+                            'attr': {
+                                'data-community--buy-credits-target': 'input',
+                                'data-action': 'input->community--buy-credits#refresh',
+                            },
+                        }) }}
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-4 text-right">
+                                {{ 'buy_credits.emails.unit_price'|trans({}, 'organization_community') }}
+                            </div>
+                            <div class="col-lg-5">
+                                <strong>{{ unitPrice|format_number }} €</strong>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-4 text-right">
+                                {{ 'buy_credits.emails.total_before_tax'|trans({}, 'organization_community') }}
+                            </div>
+                            <div class="col-lg-2 font-weight-bold"
+                                 data-community--buy-credits-target="beforeTax">
+                                -
+                            </div>
+                            <div class="col-lg-3 text-muted font-italic">
+                                <span data-community--buy-credits-target="quantity">
+                                    -
+                                </span>
+                                ×
+                                {{ unitPrice|format_number }} €
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-4 text-right">
+                                {{ 'buy_credits.emails.vat_rate'|trans({}, 'organization_community') }}
+                            </div>
+                            <div class="col-lg-2 font-weight-bold"
+                                 data-community--buy-credits-target="vat">
+                                -
+                            </div>
+                            <div class="col-lg-3 text-muted font-italic">
+                                20%
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center h5 mt-3">
+                            <div class="col-lg-4 text-right">
+                                {{ 'buy_credits.emails.total_after_tax'|trans({}, 'organization_community') }}
+                            </div>
+                            <div class="col-lg-5 font-weight-bold"
+                                 data-community--buy-credits-target="afterTax">
+                                -
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-uppercase text-muted mt-5 mb-2">
+                        {{ 'details.form.details.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    {{ form_row(form.billingOrganization, {
+                        'label': 'details.form.details.name.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.name.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.billingEmail, {
+                        'label': 'details.form.details.email.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.email.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'details.form.address.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    {{ form_row(form.billingStreetLine1, {
+                        'label': 'details.form.address.streetLine1'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.billingStreetLine2, {
+                        'label': 'details.form.address.streetLine2'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{ form_row(form.billingPostalCode, {
+                                'label': 'details.form.address.postalCode'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.billingCity, {
+                                'label': 'details.form.address.city'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(form.billingCountry, {
+                                'label': 'details.form.address.country'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'details.form.recipient.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form_row(form.recipientFirstName, {
+                                'label': 'details.form.recipient.firstName.label'|trans({}, 'organization_billing'),
+                                'help': 'details.form.recipient.firstName.help'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.recipientLastName, {
+                                'label': 'details.form.recipient.lastName.label'|trans({}, 'organization_billing'),
+                                'help': 'details.form.recipient.lastName.help'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.recipientEmail, {
+                        'label': 'details.form.recipient.email.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.recipient.email.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'buy_credits.emails.continue'|trans({}, 'organization_community') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

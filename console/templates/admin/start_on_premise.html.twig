@@ -1,0 +1,230 @@
+{% extends ea.templatePath('layout') %}
+
+{% form_theme form with '@EasyAdmin/crud/form_theme.html.twig' only %}
+
+{% block content_title 'New organization' %}
+{% block content_footer_wrapper '' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <h4>
+                Campagne
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="mb-3">
+                        {{ form_row(form.circonscription, {
+                            'label': 'Circonscription',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.candidateName, {
+                            'label': 'Nom du candidat ou de la candidate',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Quel est le prénom et le nom de la personne qui se présente à l'élection ?
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="mb-3">
+                        {{ form_row(form.politicalParty, {
+                            'label': 'Code du parti politique du/de la candidat/e',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Ce code sera utilisé pour organiser la production des commandes d'imprimés.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            {{ form_label(form.subdomain, 'Sous-domaine en avecvous.fr') }}
+                            <div class="form-widget" style="max-width: 400px">
+                                <div class="input-group mb-0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">https://</span>
+                                    </div>
+                                    {{ form_widget(form.subdomain) }}
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.avecvous.fr</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Quelle doit être l'adresse URL de la campagne ?
+                                Même sans site internet, un sous-domaine est obligatoire pour des raisons techniques.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="mb-3">
+                        {{ form_row(form.adminEmail, {
+                            'label': 'Adresse e-mail de l\'administrateur principal de Citipo dans la campagne',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Permière personne à inviter sur Citipo. Elle pourra inviter d'autres personnes.
+                                Nous vous recommandons d'inviter une personne ayant un minimum de connaissances
+                                en informatique.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-4">
+                Packs
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="mb-0">
+                        {{ form_row(form.enableWebsite, {
+                            'label': 'Activer le Pack Site Internet (optionnel)',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Si vous cochez cette option, un site internet sera créé pour le/la candidat(e).
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="border bg-white p-3 pt-0 mt-3">
+                        <div class="mb-0">
+                            {{ form_row(form.enableLocalPosts, {
+                                'label': 'Activer les actualités locales (optionnel)',
+                            }) }}
+
+                            <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                                <small>
+                                    Si vous cochez cette option, le module d'actualités locales sera affiché sur le site Internet.
+                                    Sinon, seules les actualités nationales seront affichées sur le site Internet.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="mb-0">
+                            {{ form_row(form.enableDonation, {
+                                'label': 'Activer le lien de don (optionnel)',
+                            }) }}
+
+                            <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                                <small>
+                                    Si vous cochez cette option, un lien vers le PDF de don sera ajouté en haut du site internet.
+                                    Il faudra que le candidat le configure avec son document PDF de don personnalisé. Si cette
+                                    case n'est pas cochée, le lien ne sera pas ajouté.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            {{ form_row(form.mainImage, {
+                                'label': 'Image principale (optionel)',
+                            }) }}
+
+                            <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                                <small>
+                                    Cette image sera la première image que verront les visiteurs du site Internet. Maximum 10Mo.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="mb-0">
+                        {{ form_row(form.enablePrint, {
+                            'label': 'Activer le Pack Commande d\'imprimés (optionnel)',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Si vous cochez cette option, l'espace de commande d'imprimés sera activé pour la campagne.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mt-4">
+                Facturation
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    {{ form_row(form.billingName, {
+                        'label': 'Nom du mandataire / de l\'association',
+                    }) }}
+                </div>
+                <div class="col-lg-5">
+                    {{ form_row(form.billingEmail, {
+                        'label': 'Adresse email du mandataire / de la comptabilité de l\'association',
+                    }) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10">
+                    {{ form_row(form.billingAddressStreetLine1, {
+                        'label': 'Numéro et nom de rue',
+                    }) }}
+
+                    {{ form_row(form.billingAddressStreetLine2, {
+                        'label': 'Complément d\'adresse',
+                    }) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    {{ form_row(form.billingAddressCity, {
+                        'label': 'Ville',
+                    }) }}
+                </div>
+                <div class="col-lg-3">
+                    {{ form_row(form.billingAddressPostalCode, {
+                        'label': 'Code postal',
+                    }) }}
+                </div>
+                <div class="col-lg-3">
+                    {{ form_row(form.billingAddressCountry, {
+                        'label': 'Pays',
+                    }) }}
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Créer l'organisation
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

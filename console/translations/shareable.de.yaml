@@ -1,0 +1,5 @@
+emailing:
+    index:
+        no_records: 'Es wurden noch keine Kampagnen verschickt'
+    view:
+        copyright: 'Alle Rechte vorbehalten'

@@ -1,0 +1,88 @@
+{% extends 'layout.html.twig' %}
+
+{% block title current_project.metaTitle|default(current_project.name) %}
+
+{% block body_class 'body-home-index' %}
+
+{% block page %}
+    {% set blocksPayload = [] %}
+    {% set newsletterForm = block('newsletter_form') %}
+
+    {% for key, block in current_project.home %}
+        {% if block.type != 'newsletter' or 'website_newsletter' in current_project.tools %}
+            {% set blocksPayload = blocksPayload|merge([
+                {
+                    'type': block.type,
+                    'content': include('home/blocks/'~ block.type ~'.html.twig', {
+                        'key': key,
+                        'block': block,
+                        'newsletterForm': newsletterForm,
+                    })
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% set payload = {
+        'current_url': url(current_route, current_route_params),
+        'current_project': current_project.toArray,
+        'jumbo_image': current_project.mainImage,
+        'jumbo_video': current_project.mainVideo,
+        'jumbo_overlay': current_project.introOverlay,
+        'jumbo_title': current_project.introTitle|default(''),
+        'jumbo_content': current_project.introContent ? current_project.introContent|nl2br : '',
+        'jumbo_position': current_project.introPosition,
+        'blocks': blocksPayload,
+        'default_list_image': asset('res/default.jpg'),
+        'play_icon': asset('res/play.svg'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/home.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block newsletter_form %}
+    <form method="post" action="{{ path('contact_newsletter') }}">
+        <div class="home-blocks-block-newsletter-inputs">
+            <div class="row">
+                <div class="col newsletter-form-firstname">
+                    <div class="form-group">
+                        {{ form_widget(newsletter_form.firstName, {'attr': {'placeholder': 'newsletter.firstname'|trans}}) }}
+                    </div>
+                </div>
+
+                <div class="col newsletter-form-lastname">
+                    <div class="form-group">
+                        {{ form_widget(newsletter_form.lastName, {'attr': {'placeholder': 'newsletter.lastname'|trans}}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(newsletter_form.email, {'attr': {'placeholder': 'newsletter.email'|trans}}) }}
+            </div>
+
+            <div class="form-group newsletter-form-phone">
+                {{ form_widget(newsletter_form.phone, {'attr': {'placeholder': 'newsletter.phone'|trans}}) }}
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend text-body text-sans-serif">
+                    {{ form_widget(newsletter_form.country) }}
+                </div>
+                {{ form_widget(newsletter_form.zipCode, {'attr': {'placeholder': 'newsletter.zipCode'|trans}}) }}
+            </div>
+        </div>
+
+        <div class="home-blocks-block-newsletter-policy">
+            {{ form_row(newsletter_form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
+        </div>
+
+        <div class="home-blocks-block-newsletter-submit">
+            <button type="submit" class="btn btn-light">
+                {{ 'newsletter.submit'|trans }}
+            </button>
+        </div>
+    </form>
+{% endblock %}

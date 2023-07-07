@@ -1,0 +1,27 @@
+<div data-aos="fade-up" data-aos-duration="600">
+    <div class="home-blocks-block home-blocks-block-newsletter box-offset">
+        <div class="row no-gutters">
+            <div class="col-lg">
+                <div class="home-blocks-block-newsletter-form">
+                    <h5 class="home-blocks-block-newsletter-title">
+                        {{ newsletter_title }}
+                    </h5>
+
+                    {{ newsletter_form|raw }}
+                </div>
+            </div>
+            <div class="col-lg home-blocks-block-newsletter-image"
+                 {% if main_image %}style="background-image: url('{{ main_image }}');"{% endif %}>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5 home-blocks-newsletter">
+        <div class="box-offset border-0 bg-primary text-white">
+        </div>
+
+        <div class="form-legalities p-3">
+            {{ legalities }}
+        </div>
+    </div>
+</div>

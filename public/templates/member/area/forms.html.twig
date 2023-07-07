@@ -1,0 +1,62 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title 'membership.forms.title'|trans %}
+
+{% block membership_area_content %}
+    <div class="list-view">
+        <div class="list-items">
+            {% for form in forms %}
+                <div class="list-items-item box-offset">
+                    <a href="{{ path('membership_area_form_view', {'id': form.id, 'slug': form.slug}) }}"
+                       class="streched-link list-items-item-link">
+                        <div class="list-items-item-box">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ form.title }}</span>
+                                    </h5>
+                                    <div class="list-items-item-description">
+                                        {{ (form.description|u.truncate(150, '...')) ~ '' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="list-items-none">
+                    {{ 'base.no_element'|trans }}
+                </div>
+            {% endfor %}
+
+            {% set pagination = forms.meta.pagination.links %}
+            {% set previous = pagination.previous is defined ? path('membership_area_forms', {'p': current_page - 1, 'c': current_category}) : null %}
+            {% set next = pagination.next is defined ? path('membership_area_forms', {'p': current_page + 1, 'c': current_category}) : null %}
+
+            <div class="list-items-pagination">
+                <div class="row">
+                    <div class="col-6">
+                        {% if previous %}
+                            <a href="{{ previous }}" class="btn btn-secondary">
+                                <i class="fal fa-angle-left"></i>
+                                <span class="ml-1">
+                                {{ 'base.pagination.previous'|trans }}
+                            </span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                        {% if next %}
+                            <a href="{{ next }}" class="btn btn-secondary">
+                            <span class="mr-1">
+                                {{ 'base.pagination.next'|trans }}
+                            </span>
+                                <i class="fal fa-angle-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

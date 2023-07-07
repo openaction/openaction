@@ -1,0 +1,54 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'send_all.title'|trans({'%title%': campaign.content}, 'project_texting') %}
+
+{% block sidebar_texting 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_texting', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'send_all.back'|trans({}, 'project_texting') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ 'send_all.title'|trans({}, 'project_texting') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4 py-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    {{ form_start(form) }}
+
+                    <div class="world-block p-4">
+                        <div class="social-sharer-post social-sharer-telegram mb-4">
+                            <div class="social-sharer-telegram-text mb-0">
+                                {{ campaign.content|nl2br }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ 'send_all.confirm'|trans({'%count%': countFiltered}, 'project_texting')|raw }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ 'send_all.send'|trans({}, 'project_texting') }}
+                        </button>
+
+                        <a href="{{ path('console_community_texting', {'projectUuid': current_project.uuid}) }}"
+                           class="btn btn-secondary ml-2">
+                            {{ 'send_all.cancel'|trans({}, 'project_texting') }}
+                        </a>
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

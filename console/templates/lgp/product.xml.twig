@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Infos_Commande_MasterPrint PUBLIC "-//W3C//DTD HTML 4.01//EN" "">
+{% set order = campaign.printingOrder %}
+<Infos_Commande_MasterPrint>
+    <Dossier>
+        <COMMANDE_GLOBALE>{{ order.uuid }}</COMMANDE_GLOBALE>
+        <COMMANDE_ARTICLE>{{ campaign.uuid }}</COMMANDE_ARTICLE>
+        <CODE_TYPE_ARTICLE>{{ prodcode }}</CODE_TYPE_ARTICLE>
+        <PARTI>{{ order.project.organization.printParty }}</PARTI>
+        <NOM_CANDIDAT><![CDATA[{{ order.recipientCandidate }}]]></NOM_CANDIDAT>
+        <PRENOM_CANDIDAT />
+        <DEPARTEMENT_CODE>{{ order.recipientDepartment }}</DEPARTEMENT_CODE>
+        <DEPARTEMENT_LIB><![CDATA[{{ order.recipientDepartmentName }}]]></DEPARTEMENT_LIB>
+        <CIRCONSCRIPTION>{{ order.recipientCirconscription }}</CIRCONSCRIPTION>
+        <RAISONLIV><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressName : order.deliveryMainAddressName }}]]></RAISONLIV>
+        <RAISONLIV2 />
+        <ADRESSLIV1><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressStreet1 : order.deliveryMainAddressStreet1 }}]]></ADRESSLIV1>
+        <ADRESSLIV2><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressStreet2 : order.deliveryMainAddressStreet2 }}]]></ADRESSLIV2>
+        <CPLIV><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressZipCode : order.deliveryMainAddressZipCode }}]]></CPLIV>
+        <VILLELIV><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressCity : order.deliveryMainAddressCity }}]]></VILLELIV>
+        <COPAYSLIV><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressCountry : order.deliveryMainAddressCountry }}]]></COPAYSLIV>
+        <PAYSLIV><![CDATA[{{ campaign.product == 'official_poster' ? order.deliveryPosterAddressCountry : order.deliveryMainAddressCountry }}]]></PAYSLIV>
+        <EMAILLIV><![CDATA[{{ order.recipientEmail }}]]></EMAILLIV>
+        <TELLIV><![CDATA[{{ order.recipientPhone }}]]></TELLIV>
+        <PORTABLELIV><![CDATA[{{ order.recipientPhone }}]]></PORTABLELIV>
+        <REFCOM>LEGISLATIVES 2022</REFCOM>
+        <DTCOM>{{ campaign.createdAt|date('Ymd') }}</DTCOM>
+        <DATEXP>{{ date(campaign.createdAt).modify('+3 days')|date('Ymd') }}</DATEXP>
+        <QTE_ARTICLE>{{ campaign.quantity }}</QTE_ARTICLE>
+        <DESIG_1><![CDATA[{{ prodcode }} {{ campaign.printingOrder.recipientCandidate }}]]></DESIG_1>
+        <FICHIERPDF>source.pdf</FICHIERPDF>
+        <RectoVerso>{{ pages > 1 ? 'RV' : 'R' }}</RectoVerso>
+        <NombreDePages>{{ pages }}</NombreDePages>
+        <HauteurFinale>{{ (size[1] - 10)|number_format(1, '.', '') }}</HauteurFinale>
+        <LargeurFinale>{{ (size[0] - 10)|number_format(1, '.', '') }}</LargeurFinale>
+    </Dossier>
+</Infos_Commande_MasterPrint>

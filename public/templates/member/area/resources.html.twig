@@ -1,0 +1,38 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title 'membership.resources.title'|trans %}
+
+{% block membership_area_content %}
+    <div class="list-view">
+        <div class="list-items">
+            {% for page in pages %}
+                <div class="list-items-item box-offset">
+                    <a href="{{ path('membership_area_resources_page_view', {'id': page.id, 'slug': page.slug}) }}"
+                       class="streched-link list-items-item-link">
+                        <div class="list-items-item-box">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ page.title }}</span>
+                                    </h5>
+
+                                    <div class="list-items-item-description">
+                                        {{ page.description }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="{{ page.image|default(asset('res/default.jpg')) }}"
+                                         class="list-items-item-image" width="1700" height="1080" />
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="list-items-none">
+                    {{ 'base.no_element'|trans }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

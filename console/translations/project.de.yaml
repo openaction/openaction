@@ -1,0 +1,124 @@
+breadcrumb: Projekte
+sidebar:
+    quick_start: Schnellstart
+    statistics: Statistik
+    website:
+        label: Website
+        view: 'Website ansehen'
+        posts: Beiträge
+        pages: Seiten
+        documents: Dokumente
+        trombinoscope: Trombinoskop
+        manifesto: Vorschläge
+    community:
+        label: Gemeinschaft
+        contacts: Kontakte
+        emailing: E-Mail-Kampagnen
+        texting: Text-Kampagnen
+        phoning: 'Telefonische Kampagnen'
+        print: Print-Kampagnen
+        events: Veranstaltungen
+        forms: Formulare
+    socials:
+        label: 'Soziale Netzwerke'
+        accounts: 'Ihre Konten'
+        metas: 'Details teilen'
+        sharers: 'Gemeinsame Nutzung von Tools'
+    stats:
+        label: Analyse
+        website: Verkehrsbericht
+        community: 'Bericht der Gemeinschaft'
+    configuration:
+        label: Konfiguration
+        appearance: Erscheinungsbild
+        menu: 'Menü und Fußzeile'
+        access: Zugangskontrolle
+        legal_details: 'Rechtliche Einzelheiten'
+        settings: Projekt-Einstellungen
+        membership: 'Bereich Mitgliedschaft'
+    developers:
+        label: Entwickler
+        theme: 'Code des Themas'
+        redirections: Umleitungen
+        api: API-Zugang
+quick_start:
+    title: Schnellstart
+    launch:
+        title: 'Starten Sie Ihr Projekt'
+        team:
+            title: 'Laden Sie Ihr Team ein'
+            desc: 'Laden Sie Mitglieder Ihres Teams ein, damit sie die Website aktualisieren und Kontakt zu Ihrer Gemeinschaft aufnehmen.'
+            link: 'Kollaborateure einladen'
+        modules:
+            title: 'Konfigurieren Sie die Module Ihres Projekts'
+            desc: 'Aktivieren Sie nur die Module, die Sie benötigen, um Citipo besser an Ihre Bedürfnisse anzupassen.'
+            link: 'Konfigurieren Sie die Module'
+    website:
+        title: 'Erstellen Sie Ihre Website'
+        appearance:
+            title: 'Aktualisieren Sie Ihr digitales Branding'
+            desc: 'Passen Sie an, wie Ihre Marke weltweit in den Citipo-Produkten erscheint, die Ihre Besucher nutzen.'
+            link: 'Anpassen des Brandings'
+        pages:
+            title: 'Erklären Sie Ihr Projekt'
+            desc: 'Erklären Sie auf Inhaltsseiten, wer Sie sind, Ihr Projekt und Ihre Ideen.'
+            link: 'Inhaltsseiten erstellen'
+        posts:
+            title: 'Halten Sie Ihre Community auf dem Laufenden'
+            desc: 'Erstellen Sie einen chronologischen Newsfeed für Ihr Projekt mit Beiträgen.'
+            link: 'Beiträge und Nachrichten erstellen'
+        socials:
+            title: 'Verbinden Sie Ihre sozialen Netzwerke'
+            desc: 'Schaffen Sie Ihr digitales Ökosystem, indem Sie Ihre sozialen Netzwerke mit Ihrer Website verbinden.'
+            link: 'Soziale Netzwerke konfigurieren'
+    community:
+        title: 'Erweitern Sie Ihre Gemeinschaft'
+        contacts:
+            title: 'Erkunden Sie Ihre Kontaktdatenbank'
+            desc: 'Schaffen Sie eine Gemeinschaft rund um Ihr Projekt, binden Sie sie ein und halten Sie sie aktiv.'
+            link: 'Erkunden Sie Ihre Gemeinschaft'
+        emailing:
+            title: 'E-Mailing-Kampagnen versenden'
+            desc: 'Mobilisieren Sie Ihre Community mit effektiven Massen-E-Mails.'
+            link: 'E-Mailing-Kampagnen erstellen'
+developers:
+    access:
+        title: API-Zugang
+        description:
+            1: "Citipo bietet mehrere APIs für den Zugriff und die Aktualisierung der verschiedenen Bereiche Ihrer Organisation.\n"
+            2: "Citipo authentifiziert Anfragen für die APIs der Website, der Community und des Mitgliedschaftsbereichs mit\nProjekte API-Tokens. Wenn das Token ungültig oder abgelaufen ist oder fehlt, zeigt Citipo einen Fehler an.\n"
+        learn_more: 'Lesen Sie die API-Dokumentation (nur auf Französisch)'
+        subtitle: Projekt-API-Token
+    theme:
+        title: 'Theme-Code bearbeiten'
+        description: "Bearbeiten Sie den Code Ihres Themes für erweiterte Anpassungen (beachten Sie, dass dies Entwicklungskenntnisse erfordert\nund kann bei Missbrauch Ihrer Website schaden).\n"
+        templates: Schablonen
+        assets: Vermögenswerte
+        assets_add: 'Asset hochladen'
+        save: 'Speichern Sie'
+    redirections:
+        back: 'Zurück zu Umleitungen'
+        title: Umleitungen
+        help: 'Erstellen Sie eine personalisierte URL, um Ihre Inhalte besser zu verbreiten.'
+        create: 'Neue Umleitung'
+        no_records: 'Noch keine Umleitung'
+        order: Bestellung
+        source: 'Quelle URL'
+        target: Ziel-URL
+        type: Typ
+        edit: bearbeiten
+        remove: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie die Umleitung "%name%" löschen wollen?'
+        form:
+            create_title: 'Eine Umleitung erstellen'
+            edit_title: 'Eine Umleitung bearbeiten'
+            source:
+                label: 'Quelle URL'
+                help: "Welche URL soll umgeleitet werden? Geben Sie nicht den Domänennamen an\n(z. B. für \"https://example.com/project\" geben Sie \"/project\" ein).\nSie können ein Sternchen (*) verwenden, um \"beliebige Zeichen\" anzugeben. Beachten Sie:\nUmleitungen werden nach allen anderen URLs Ihres Projekts angewendet.\nWenn eine andere URL mit derselben Quelle existiert, wird die Umleitung nicht angewandt.\n"
+            target:
+                label: Ziel-URL
+                help: 'An welche URL sollen Ihre Besucher weitergeleitet werden? Geben Sie die vollständige URL ein.'
+            code:
+                label: Typ
+                help: 'Möchten Sie eine permanente (301) oder temporäre (302) Umleitung verwenden?'
+            save: 'Speichern Sie'

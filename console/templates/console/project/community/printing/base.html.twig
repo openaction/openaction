@@ -1,0 +1,14 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block sidebar_print 'current' %}
+
+{% block module_top %}
+    <div class="alert alert-primary d-inline-block text-center p-2">
+        <strong class="pl-2">
+            Besoin d'aide ?
+        </strong>
+        <a href="{{ console_print_support }}" target="_blank" class="btn btn-secondary ml-3">
+            Cliquez ici pour nous contacter par email ou téléphone
+        </a>
+    </div>
+{% endblock %}

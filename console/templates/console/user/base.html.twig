@@ -1,0 +1,82 @@
+{% extends 'console/base.html.twig' %}
+
+{% block flashes '' %}
+
+{% block page %}
+    <div class="container-fluid px-5 mb-5">
+        <div class="row">
+            <div class="col-12 col-lg-2 world-sidebar">
+                <div class="mb-1">
+                    <span class="world-sidebar-category">{{ app.user.fullName }}</span>
+                </div>
+
+                <a href="{{ path('console_user_account_update') }}"
+                   class="world-sidebar-item {% block sidebar_account '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-user"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.account'|trans({}, 'user') }}
+                    </div>
+                </a>
+
+                <a href="{{ path('console_user_password') }}"
+                   class="world-sidebar-item {% block sidebar_password '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-lock"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.password'|trans({}, 'user') }}
+                    </div>
+                </a>
+
+                <a href="{{ path('console_user_2fa') }}"
+                   class="world-sidebar-item {% block sidebar_2fa '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-mobile-android"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.2fa'|trans({}, 'user') }}
+                    </div>
+                </a>
+
+                <a href="{{ path('console_user_notification_settings') }}"
+                   class="world-sidebar-item {% block sidebar_notifications '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-bell"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.notifications'|trans({}, 'user') }}
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-lg-10">
+                {% block project_flashes %}
+                    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+                        {% for message in messages %}
+                            <div class="world-alert alert alert-bg-{{ type }}">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto pr-3">
+                                        {% if type == 'success' %}
+                                            <i class="far fa-check"></i>
+                                        {% elseif type == 'warning' %}
+                                            <i class="far fa-exclamation-triangle"></i>
+                                        {% elseif type == 'error' %}
+                                            <i class="far fa-times"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {{ message|trans({}, 'flashes') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

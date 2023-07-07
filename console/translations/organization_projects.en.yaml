@@ -1,0 +1,79 @@
+list:
+    page_title: Projects
+    help: |
+        Projects help you organize your work by aggregating all the tools relative
+        to the same topic in one place: a website, an emailing system, ...
+    search: Search for a project ...
+    global_projects:
+        title: 'Global projects'
+        desc: |
+            Global projects are organization-wide projects.
+            They don't have geographical constraints.
+        new: 'Launch a new global project'
+    thematic_projects:
+        title: 'Thematic projects'
+        desc: |
+            Thematic projects are projects focused on specific topics.
+            Their modules are adapted to focus on contacts linked to these tags.
+        new: 'Lancer un nouveau projet thématique'
+    local_projects:
+        title: 'Local projects'
+        desc: |
+            Local projects are projects focused on a specific area.
+            Their modules are adapted to focus on contacts in this area.
+        new: 'Launch a new local project'
+    no_website: No Citipo website
+    members: members
+    contacts: contacts
+
+create:
+    title: Launch a project
+    subtitle: Launch a project to create and grow a community around your actions.
+    batch: I would like to create multiple projects at once
+    form:
+        name:
+            label: Project name
+            help: |
+                This name is internal: it will show up in menus and headings and you will be able to
+                provide a different public name if you want. You will be able to change it
+                later. Maximum 60 characters.
+        submit: Create
+    meta_description: 'Learn more about %name% and join its community.'
+    main_intro_content: Let's join our forces together to make a difference!
+    pages:
+        manifesto: Manifesto
+        who_we_are: Who we are
+        legalities: Legalities
+        privacy_policy: Privacy policy
+        terms_service: Terms of service
+    menus:
+        header:
+            home: Home
+            manifesto: Manifesto
+            who_we_are: Who we are
+            events: Events
+            posts: News
+            donate: Donate
+        footer:
+            home: Home
+            manifesto: Manifesto
+            events: Events
+            posts: News
+            donate: Donate
+            who_we_are: Who we are
+            legalities: Legalities
+            privacy_policy: Privacy policy
+            terms_service: Terms of service
+    home_blocks:
+        cta_newsletter: Receive the newsletter
+        cta_manifesto: Read our manifesto
+
+create_batch:
+    back: Back
+    title: Create multiple projects at once
+    subtitle: Launch projects to create and grow a community around your actions.
+    form:
+        name: Project name
+        adminEmail: Email address of the project manager (optionnal)
+        areas: Type and zones
+        submit: Create

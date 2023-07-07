@@ -1,0 +1,136 @@
+<div class="trombinoscope trombinoscope-person" data-aos="fade-up" data-aos-duration="600">
+    <div class="trombinoscope-person-section">
+        <a href="{{ trombinoscope_url }}" data-turbo="optional">
+            {{ trombinoscope_title }}
+        </a>
+    </div>
+
+    <h1 class="trombinoscope-person-name">
+        {{ person.fullName }}
+    </h1>
+
+    <div class="trombinoscope-person-social-sharers">
+        {{ social_sharers|raw }}
+    </div>
+
+    <div class="trombinoscope-person-nav">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-6 mb-2">
+                {% if person.previous %}
+                    <a href="{{ person.previous.url }}"
+                       class="d-inline-block px-4 py-3"
+                       data-turbo="optional"
+                       style="background: {{ background_color }}; color: {{ foreground_color }}">
+                        ⟵ {{ person.previous.fullName }}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-6 mb-2 text-right">
+                {% if person.next %}
+                    <a href="{{ person.next.url }}"
+                       class="d-inline-block px-4 py-3"
+                       data-turbo="optional"
+                       style="background: {{ background_color }}; color: {{ foreground_color }}">
+                        {{ person.next.fullName }} ⟶
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="trombinoscope-person-bio">
+        <div class="row">
+            <div class="col-lg-4">
+                {% if person.image %}
+                    <img src="{{ person.image }}" class="trombinoscope-person-bio-image" width="800" height="800" />
+                {% endif %}
+
+                <h3 class="trombinoscope-person-bio-name">
+                    {{ person.fullName }}
+                </h3>
+
+                <div class="trombinoscope-person-bio-role">
+                    {{ person.role }}
+                </div>
+
+                {% if person.socialEmail
+                    or person.socialFacebook
+                    or person.socialTwitter
+                    or person.socialInstagram
+                    or person.socialLinkedIn
+                    or person.socialYoutube
+                    or person.socialMedium
+                    or person.socialTelegram %}
+
+                    <div class="trombinoscope-person-bio-label">
+                        {{ contact.title }} {{ person.fullName }}
+                    </div>
+
+                    <div class="trombinoscope-person-bio-social-accounts social-sharers">
+                        {% if person.socialEmail %}
+                            <a href="mailto:{{ person.socialEmail }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.mail }}">
+                                <i class="far fa-envelope"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialFacebook %}
+                            <a href="{{ person.socialFacebook }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.facebook }}">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialTwitter %}
+                            <a href="{{ person.socialTwitter }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.twitter }}">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialInstagram %}
+                            <a href="{{ person.socialInstagram }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.instagram }}">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialLinkedIn %}
+                            <a href="{{ person.socialLinkedIn }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.linkedin }}">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialYoutube %}
+                            <a href="{{ person.socialYoutube }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.youtube }}">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialMedium %}
+                            <a href="{{ person.socialMedium }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.medium }}">
+                                <i class="fab fa-medium"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if person.socialTelegram %}
+                            <a href="https://t.me/{{ person.socialTelegram }}" target="_blank" rel="noreferrer noopener"
+                               title="{{ contact.telegram }}">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-8">
+                <div class="trombinoscope-person-bio-content user-content">
+                    {{ person.content|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

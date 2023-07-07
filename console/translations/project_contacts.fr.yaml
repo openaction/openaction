@@ -1,0 +1,118 @@
+list:
+    page_title: Votre communauté
+    title: Votre communauté
+    desc: 'Gérez tous les contacts de votre projet : inscrits à la newsletter, membres, ...'
+
+view:
+    back: Retour à la liste
+    delete: Supprimer
+    delete_message: Voulez-vous vraiment supprimer le contact "%email%" ?
+    edit: Modifier les informations
+    profile:
+        label: Profil
+        area: 'Localisation :'
+        date: 'Date :'
+        tags: 'Tags :'
+        status:
+            label: 'Type :'
+            member: Membre
+            contact: Contact
+        newsletter:
+            label: 'Newsletter :'
+            subscribed: Inscrit
+            unsubscribed: Désinscrit
+        sms:
+            label: 'SMS :'
+            subscribed: Inscrit
+            unsubscribed: Désinscrit
+        calls:
+            label: 'Appels :'
+            subscribed: Acceptés
+            unsubscribed: Refusés
+        email: Email
+        additional_emails: Emails additionels
+        name: Nom complet
+        birthdate: Date de naissance
+        gender: Genre
+        company: Poste et entreprise
+        address: Adresse postale
+        phone: Téléphone (personnel)
+        workPhone: Téléphone (professionnel)
+        socials: Réseaux sociaux
+    history:
+        label: Historique des interactions
+        help: Interactions que votre organisation a eu avec ce contact.
+        none: Aucune interaction n'a eu lieu avec ce contact via Citipo pour le moment.
+        joined:
+            label: A rejoint votre communauté
+        emailing:
+            label: 'A reçu un email:'
+            openedAt: Ouvert le
+            neverOpened: Jamais ouvert
+            clickedAt: Cliqué le
+            neverClicked: Jamais cliqué
+            openCampaignReport: Voir le rapport de campagne
+        texting:
+            label: 'A reçu un SMS:'
+        form_answer:
+            label: 'A répondu à un questionnaire:'
+            openAnswer: Voir la réponse
+            openForm: Voir le questionnaire
+
+edit:
+    back: Retour à la fiche contact
+    page_title: Mettre à jour un contact
+    title: Mettre à jour un contact
+    submit: Enregistrer
+    delete: Supprimer
+    delete_message: Voulez-vous vraiment supprimer le contact "%email%" ?
+
+form:
+    email: Email
+    additionalEmails: Adresses email additionnelles
+    picture:
+        label: Photo
+        help: Laissez de champ vide pour ne pas changer la photo.
+    profile:
+        label: Profil
+        formalTitle: Civilité
+        firstName: Prénom
+        middleName: Deuxième prénom
+        lastName: Nom
+        birthdate: Date de naissance
+        gender: Genre
+        company: Entreprise
+        jobTitle: Poste
+    tags:
+        label: Tags
+        help: |
+            Les tags vous aident à catégoriser les contacts en segments pour mieux
+            les cibler lors de vos campagnes de communication par la suite.
+    address:
+        label: Adresse postale
+        help: |
+            Vous ne pouvez pas modifier le pays et le code postal car ces données sont
+            utilisées pour associer ce contact au projet.
+        help_admin: Utilisez l'onglet Communauté en haut de page pour modifier la localisation de ce contact.
+        help_collaborator: Demandez à l'administrateur de votre organisation d'effectuer cette modification si nécessaire.
+        streetAddress: Adresse
+        zipCode: Code postal
+        city: Ville
+        country: Pays
+    contact:
+        label: Informations
+        phone: 'Téléphone personnel (avec le préfixe international : +33 pour la France)'
+        workPhone: 'Téléphone professionnel (avec le préfixe international : +33 pour la France)'
+    socials:
+        label: Réseaux sociaux
+        facebook: URL du profil Facebook
+        twitter: URL du profil Twitter
+        linkedIn: URL du profil LinkedIn
+        telegram: Nom d'utilisateur Telegram
+        whatsapp: Numéro de téléphone Whatsapp
+    metadata:
+        comment: Note interne
+        commentHelp: |
+            Vous pouvez indiquer dans cette note interne tout ce qui vous semblerait utile
+            que vos collaborateurs sachent. Cette note ne sera jamais partagée avec le contact.
+            Ne stockez pas d'informations sensibles dans ce champ.

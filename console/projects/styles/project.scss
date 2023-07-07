@@ -1,0 +1,143 @@
+@import './variables';
+
+// Bootstrap
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/print';
+
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/images';
+@import '~bootstrap/scss/code';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/tables';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/input-group';
+@import '~bootstrap/scss/custom-forms';
+@import '~bootstrap/scss/pagination';
+
+@import '~bootstrap/scss/utilities/align';
+@import '~bootstrap/scss/utilities/borders';
+@import '~bootstrap/scss/utilities/embed';
+@import '~bootstrap/scss/utilities/background';
+@import '~bootstrap/scss/utilities/clearfix';
+@import '~bootstrap/scss/utilities/display';
+@import '~bootstrap/scss/utilities/flex';
+@import '~bootstrap/scss/utilities/float';
+@import '~bootstrap/scss/utilities/screenreaders';
+@import '~bootstrap/scss/utilities/spacing';
+@import '~bootstrap/scss/utilities/stretched-link';
+@import '~bootstrap/scss/utilities/text';
+
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/list-group';
+
+// Swup
+.swup-progress-bar {
+    height: 4px;
+    background-color: $secondary;
+}
+
+// Symfony Forms
+.form-error-icon {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+// Global style
+html,
+body {
+    height: 100%;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+a,
+a:active,
+a:hover,
+a:focus {
+    outline: none;
+}
+
+.text-serif {
+    font-family: $font-family-serif;
+}
+
+.text-sans-serif {
+    font-family: $font-family-sans-serif;
+}
+
+.form-legalities {
+    font-size: 10px;
+    line-height: 12px;
+    color: $text-muted;
+}
+
+.social-sharers a {
+    opacity: 0.75;
+    display: inline-block;
+    padding: 5px;
+    margin: 0 10px;
+    font-size: 18px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.box-offset {
+    position: relative;
+    margin: 8px 0 0 8px;
+    background: #fff;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -99;
+        background: #e7eaec;
+        margin: -8px 0 0 -8px;
+    }
+}
+
+.col-form-label {
+    padding-top: 0;
+}
+
+label.required::after {
+    content: ' *';
+    opacity: 0.75;
+}
+.no-required-marker label.required::after {
+    content: '';
+}
+
+// Default modules styles
+@import 'modules/header';
+@import 'modules/footer';
+@import 'modules/home';
+@import 'modules/list';
+@import 'modules/content';
+@import 'modules/user-content';
+@import 'modules/forms';
+@import 'modules/event';
+@import 'modules/manifesto';
+@import 'modules/trombinoscope';
+@import 'modules/membership';
+@import 'modules/phoning';
+@import 'modules/gdpr';

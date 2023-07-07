@@ -1,0 +1,139 @@
+.trombinoscope {
+    @include make-container();
+    max-width: 1140px;
+    margin-top: 48px;
+
+    &-persons {
+        &-title {
+            margin: 0 0 10px 0;
+            font-size: 38px;
+            text-align: center;
+        }
+
+        &-social-sharers {
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        &-grid {
+            text-align: center;
+
+            &-item {
+                display: inline-block;
+                position: relative;
+                width: 180px;
+                height: 180px;
+                background-size: cover;
+                background-position: 50% 50%;
+                margin: 10px;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: linear-gradient(20deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+                }
+
+                &:hover {
+                    &::before {
+                        background: linear-gradient(20deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+                    }
+                }
+
+                &-position {
+                    position: absolute;
+                    z-index: 2;
+                    top: 10px;
+                    left: 10px;
+                    background: $primary;
+                    color: #fff;
+                    font-weight: $font-weight-bold;
+                    padding: 3px 7px;
+                    font-size: 1.1em;
+                }
+
+                &-name {
+                    position: absolute;
+                    z-index: 2;
+                    bottom: 10px;
+                    left: 10px;
+                    right: 10px;
+                    color: #fff;
+                    text-transform: uppercase;
+                    text-align: left;
+                    font-family: $headings-font-family;
+                    font-weight: $headings-font-weight;
+                    font-size: $font-size-base;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    &-person {
+        &-section {
+            margin: 0;
+            font-size: 20px;
+            padding-bottom: 16px;
+            text-align: center;
+        }
+
+        &-name {
+            margin: 0 0 10px 0;
+            font-size: 38px;
+            text-align: center;
+        }
+
+        &-social-sharers {
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        &-nav {
+            margin-bottom: 18px;
+        }
+
+        &-bio {
+            border: 1px solid #dee2e6;
+            padding: 24px;
+            text-align: center;
+
+            &-image {
+                width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            &-name {
+                margin-bottom: 10px;
+            }
+
+            &-role {
+                color: $text-muted;
+                margin-bottom: 40px;
+            }
+
+            &-label {
+                font-size: 12px;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-family: $font-family-sans-serif;
+                color: $text-muted;
+                margin-bottom: 10px;
+            }
+
+            &-social-accounts {
+                margin-bottom: 20px;
+            }
+
+            &-content {
+                text-align: left;
+            }
+        }
+    }
+}

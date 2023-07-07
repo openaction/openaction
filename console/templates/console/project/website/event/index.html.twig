@@ -1,0 +1,177 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_events') %}
+
+{% block sidebar_events 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'index.title'|trans({}, 'project_events') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'index.help'|trans({}, 'project_events') }}
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    <a href="{{ path('console_website_events_categories', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-secondary mr-2 events-list-action-categories">
+                        <i class="fad fa-cogs mr-1"></i>
+                        {{ 'index.edit_categories'|trans({}, 'project_events') }}
+                    </a>
+
+                    <a href="{{ path('console_website_event_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary events-list-action-create">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_events') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if events|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.no_result'|trans({}, 'project_events') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_website_event_create', {'projectUuid': project.uuid}) }}"
+                           class="btn btn-lg btn-primary events-list-action-create">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.no_result_create'|trans({}, 'project_events') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% if categories != '[]' %}
+                        <div class="row form-group justify-content-end mb-0">
+                            <div class="mt-3 mr-4 col-3"
+                                data-controller="category-chooser"
+                                data-categories="{{ categories }}"
+                                data-selected="{{ current_category ?? 0 }}"
+                                data-endpoint="{{ path('console_website_events', {'projectUuid': project.uuid}) }}"
+                            >
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% for event in events %}
+                        <div class="world-list-row p-4" id="event-{{ event.uuid }}" data-id="{{ event.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-auto d-none d-lg-block">
+                                    <div class="world-list-image">
+                                        <img src="{{ cdn_image_url(event.image) }}" alt="{{ event.title }}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg">
+                                    <h4 class="mb-0 posts-title">
+                                        <a href="{{ path('console_website_event_edit', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}">
+                                            {{ event.title }}
+                                        </a>
+                                    </h4>
+
+                                    <div class="mb-2 text-muted">
+                                        {% if event.beginAt is not null %}
+                                            {{ 'index.begin_at'|trans({'%datetime%': event.beginAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                        {% else %}
+                                            {{ 'index.no_begin_date'|trans({}, 'project_events') }}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="mb-2">
+                                        {% if event.publishedAt and event.publishedAt >= date() %}
+                                            <div class="world-badge world-badge-info mr-2">
+                                                {{ 'index.scheduled'|trans({}, 'project_events') }}
+                                            </div>
+                                            <small class="font-italic text-muted">
+                                                {{ 'index.scheduled_for'|trans({'%datetime%': event.publishedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                            </small>
+                                        {% elseif event.publishedAt and event.publishedAt < date() %}
+                                            <div class="world-badge world-badge-success mr-2">
+                                                {{ 'index.published'|trans({}, 'project_events') }}
+                                            </div>
+                                            <small class="font-italic text-muted">
+                                                {{ 'index.published_at'|trans({'%datetime%': event.publishedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                            </small>
+                                        {% else %}
+                                            <div class="world-badge world-badge-warning">
+                                                {{ 'index.draft'|trans({}, 'project_events') }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="text-muted">
+                                        <small>
+                                            <i class="fad fa-chart-area mr-1"></i>
+                                            {{ event.pageViews }}
+                                            {{ 'index.visits'|trans({}, 'project_events') }}
+
+                                            <span class="mx-1">|</span>
+
+                                            {{ 'index.last_modified'|trans({'%datetime%': event.updatedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-auto">
+                                    <a href="{{ path('console_website_event_view', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-view" target="_blank">
+                                        <i class="fas fa-search mr-1"></i>
+                                        {% if event.isPublished %}
+                                            {{ 'index.view'|trans({}, 'project_events') }}
+                                        {% else %}
+                                            {{ 'index.preview'|trans({}, 'project_events') }}
+                                        {% endif %}
+                                    </a>
+
+                                    <a href="{{ path('console_website_event_edit', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-edit">
+                                        <i class="fad fa-edit mr-1"></i>
+                                        {{ 'index.edit'|trans({}, 'project_events') }}
+                                    </a>
+
+                                    <a href="{{ csrf_path('console_website_event_duplicate', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-duplicate">
+                                        <i class="fad fa-copy mr-1"></i>
+                                        {{ 'index.duplicate'|trans({}, 'project_events') }}
+                                    </a>
+
+                                    {% if is_granted('website_events_manage_published', current_project) %}
+                                        <a href="{{ path('console_website_event_move', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-move">
+                                            <i class="fad fa-share mr-1"></i>
+                                            {{ 'index.move'|trans({}, 'project_events') }}
+                                        </a>
+                                    {% endif %}
+
+                                    <a href="{{ csrf_path('console_website_event_delete', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': event.title}, 'project_events') }}"
+                                       data-target="#event-{{ event.uuid }}"
+                                       class="btn btn-sm btn-outline-danger border-0 events-list-action-delete">
+                                        <i class="fad fa-trash mr-1"></i>
+                                        {{ 'index.delete'|trans({}, 'project_events') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="p-3">
+                    {{ pagination(events, current_page, 20) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

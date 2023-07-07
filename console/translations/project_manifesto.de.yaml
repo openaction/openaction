@@ -1,0 +1,59 @@
+index:
+    title: Vorschläge
+    help: "Ihre Ideen als eine Liste von Vorschlägen anzeigen, die nach Themen geordnet sind und nach der Wahl,\neinen Fortschrittsstatus mit diesen Vorschlägen verknüpfen, um Ihre Aktionen anzuzeigen.\n"
+    no_result: 'Ihr Projekt enthält im Moment keinen Vorschlag.'
+    no_result_create: 'Erstellen Sie ein erstes Thema'
+    topic:
+        create: 'Neues Thema'
+        edit: bearbeiten
+        duplicate: 'Duplizieren Sie'
+        move: Verschieben
+        delete: Löschen
+        delete_confirm: 'Sind Sie sicher, dass Sie das Thema "%title%" löschen wollen?'
+    proposal:
+        label: 'Vorschläge zum Thema "%title%'
+        no_result: 'Noch keine Vorschläge für dieses Thema'
+        create: 'Neuer Vorschlag'
+        edit: bearbeiten
+        duplicate: 'Duplizieren Sie'
+        delete: Löschen
+        delete_confirm: 'Sind Sie sicher, dass Sie den Vorschlag "%title%" löschen wollen?'
+    view: Siehe
+    preview: Vorschau
+    draft: Entwurf
+    scheduled: Geplant
+    scheduled_for: 'für %datetime%'
+    published: Veröffentlicht
+    published_at: 'am %datetime%'
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+create:
+    topic:
+        title: '(Unbenanntes Thema)'
+    proposal:
+        title: '(Unbenannter Vorschlag)'
+edit:
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+    save: 'Speichern Sie'
+    topic:
+        title: 'Thema "%title%" bearbeiten'
+        form:
+            title:
+                label: Titel
+                help: 'Titel des Themas (wird in der Liste und in sozialen Netzwerken angezeigt, wenn es geteilt wird).'
+            image:
+                label: Hauptbild
+                help: 'Hauptbild des Themas (wird in der Liste und in sozialen Netzwerken angezeigt, wenn es geteilt wird).'
+            color:
+                label: Farbe
+                help: 'Farbe der Anzeige dieses Themas (wird in der Liste verwendet).'
+            description:
+                label: Beschreibung
+                help: "Halten Sie diese Beschreibung kurz (ein paar Sätze), damit sie in den sozialen Netzwerken besser angezeigt wird.\nSie können den Inhalt des Themas in Vorschlägen detailliert beschreiben.\n"
+    proposal:
+        title: 'Vorschlag "%title%" bearbeiten'
+move:
+    title: 'Thema "%title%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie dieses Thema verschieben?'
+    submit: Verschieben

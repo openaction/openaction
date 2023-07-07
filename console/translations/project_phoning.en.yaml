@@ -1,0 +1,72 @@
+index:
+    title: Phone campaigns
+    create: New phone campaign
+    drafts:
+        title: Draft campaigns
+        no_records: No draft campaigns
+        no_result_create: New campaign
+        to: To all your contacts
+        to_members: To all your members
+        to_areas: To contacts from %areas%
+        to_tags: To contacts with tags %tags%
+        to_contacts: To %contacts% specific contacts
+        to_areas_tags: To contacts from %areas% and with tags %tags%
+        edit: Update details
+        delete: Delete
+        delete_confirm: 'Are you sure you want to delete the campaign "%subject%"?'
+        status:
+            start: Start now
+            start_confirm: |
+                Are you sure you want to start the campaign "%subject%"?
+                You won't be able to update the targeted contacts after launch
+                (you will still be able to update the form).
+
+    list:
+        name: Name
+        progress: Progress
+        contacts_called: called contacts
+        preview: View on the website
+        edit_form: Update form
+        duplicate: Duplicate
+
+    active:
+        title: Active campaigns
+        no_records: No active campaigns
+        stop: Stop
+        stop_confirm: |
+            Are you sure you want to stop the campaign "%subject%"?
+            You won't be able to launch it again.
+
+    finished:
+        title: Finished campaigns
+        no_records: No finished campaigns
+
+create:
+    name: (Untitled campaigns)
+
+metadata:
+    back: Back to the list of campaigns
+    title: Edit campaign "%title%"
+    submit: Save
+
+    details:
+        title: Details
+        desc: General campaign details
+        name:
+            label: Name
+        endAfter:
+            label: Duration
+            help: When should this campaign be automatically stopped?
+            choice:
+                3: 3 hours
+                6: 6 hours
+                12: 12 hours
+                24: 1 day
+                48: 2 days
+                72: 3 days
+                168: 1 week
+                720: 30 days
+
+    to:
+        title: Recipients
+        desc: Which contacts should be called during this campaign?

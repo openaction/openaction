@@ -1,0 +1,110 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title formData.title %}
+
+{% block body_class 'body-forms-view' %}
+
+{% block meta_canonical url('form_view', {'id': formData.id, 'slug': formData.slug}) %}
+{% block meta_description formData.description|default('') %}
+
+{% block page %}
+    <div data-controller="citipo-contentview"
+         data-citipo-contentview-type-value="form"
+         data-citipo-contentview-id-value="{{ formData.id }}"></div>
+
+    {% set social_sharers = include('_include/social_sharers.html.twig', {
+        'route': 'form_view',
+        'params': {'id': formData.id, 'slug': formData.slug}
+    }) %}
+
+    {% set payload = {
+        'current_url': url('form_view', {'id': formData.id, 'slug': formData.slug}),
+        'current_project': current_project.toArray,
+        'enable_embed_consent': enable_embed_consent,
+        'title': formData.title,
+        'section_id': 'forms',
+        'social_sharers': social_sharers,
+        'previewing_text': formData.phoningCampaignId ? 'forms.phoning_campaign'|trans : null,
+        'content': block('form_content'),
+        'titleLabel': 'base.embed-consent.title'|trans,
+        'descriptionLabel': 'base.embed-consent.description'|trans,
+        'acceptLabel': 'base.embed-consent.accept'|trans,
+        'externalLabel': 'base.embed-consent.external'|trans,
+        'cancelLabel': 'base.embed-consent.cancel'|trans,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="user-form user-form-{{ formData.id }}">
+        {% if success %}
+            <div class="user-form-success">
+                <span>{{ 'forms.success'|trans }}</span>
+            </div>
+        {% endif %}
+
+        {% if formData.description %}
+            <div class="user-form-description">
+                {{ formData.description|nl2br }}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+        {{ form_errors(form) }}
+
+        {% for key, block in formData.blocks %}
+            <div class="user-form-field user-form-field-{{ block.type }}">
+                {% if 'header' == block.type %}
+                    <h4 class="m-0">
+                        {{ block.content|nl2br }}
+                    </h4>
+
+                {% elseif 'paragraph' == block.type %}
+                    <div class="user-content m-0">
+                        {{ block.content|nl2br }}
+                    </div>
+
+                {% elseif 'html' == block.type %}
+                    <div class="user-content m-0">
+                        {{ block.content|apply_embed_consent|raw }}
+                    </div>
+
+                {% elseif 'textarea' == block.type %}
+                    {{ form_row(form['field'~key], {'attr': {'rows': 5}}) }}
+
+                {% elseif 'rating' == block.type %}
+                    {{ form_row(form['field'~key], {
+                        'attr': {'class': 'form-rating'},
+                    }) }}
+
+                {% elseif 'newsletter' == block.type %}
+                    {{ form_row(form['field'~key], {'label': 'forms.newsletter'|trans}) }}
+
+                {% else %}
+                    {{ form_row(form['field'~key]) }}
+
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="user-form-field">
+            {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
+        </div>
+
+        <div class="user-form-submit">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ 'forms.submit'|trans }}
+            </button>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+
+        <div class="form-legalities user-form-legalities">
+            {{ 'base.form_legalities'|trans }}
+        </div>
+    </div>
+{% endblock %}
