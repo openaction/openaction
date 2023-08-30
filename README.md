@@ -91,10 +91,12 @@ docker-compose exec console bin/console app:search:index-crm
 docker-compose exec console bin/console app:proxy:refresh-domains-cache -n
 ```
 
-Once done, you can access the Console on the container console (depending on your setup, either 
-on the port linked to the console container or on the console domain if you use a proxy like traefik).
+Once done, you can access the Console on the container console
+(for example, http://localhost if you use the default docker-compose.override.yaml file).
 
-The default base username/password is:
+You can also access the default public website on the container public (http://localhost:9000).
+
+The default Console username/password is:
 
 ```
 titouan.galopin@citipo.com
