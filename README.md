@@ -91,6 +91,16 @@ docker-compose exec console bin/console app:search:index-crm
 docker-compose exec console bin/console app:proxy:refresh-domains-cache -n
 ```
 
+Once done, you can access the Console on the container console (depending on your setup, either 
+on the port linked to the console container or on the console domain if you use a proxy like traefik).
+
+The default base username/password is:
+
+```
+titouan.galopin@citipo.com
+password
+```
+
 ### 3. Configure bash/zsh aliases (optional)
 
 You can configure aliases to ease development using this setup (in your `.bashrc` file):
