@@ -1,0 +1,44 @@
+{% macro pagination(subjects, current_page, items_per_page, total_count = null, stimulus_target = null, large = false) %}
+    {% set current_route = app.request.attributes.get('_route') %}
+    {% set current_route_params = app.request.attributes.get('_route_params')|merge(app.request.query.all()) %}
+    {% set total_count = total_count|default(subjects|length) %}
+    {% set total_pages = (total_count / items_per_page)|round(0, 'ceil') %}
+
+    {% if total_pages > 1 %}
+        <ul class="pagination {{ large ? '' : 'pagination-sm' }} justify-content-end mb-0" {{ stimulus_target|default('') }}>
+            {% if current_page > 1 %}
+                <li class="page-item">
+                    <a href="{{ path(current_route, current_route_params|merge({'p': current_page - 1})) }}" class="page-link">
+                        <i class="fal fa-angle-double-left"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for page in (max(current_page - 3, 1))..current_page %}
+                <li class="page-item {{ page == current_page ? 'active' }}">
+                    <a href="{{ path(current_route, current_route_params|merge({'p': page})) }}" class="page-link">
+                        {{ page }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if current_page != total_pages %}
+                {% for page in (current_page + 1)..(min(current_page + 3, total_pages)) %}
+                    <li class="page-item {{ page == current_page ? 'active' }}">
+                        <a href="{{ path(current_route, current_route_params|merge({'p': page})) }}" class="page-link">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+
+            {% if current_page < total_pages %}
+                <li class="page-item">
+                    <a href="{{ path(current_route, current_route_params|merge({'p': current_page + 1})) }}" class="page-link">
+                        <i class="fal fa-angle-double-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endmacro %}

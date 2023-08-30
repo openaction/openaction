@@ -1,0 +1,125 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'list.page_title'|trans({}, 'organization_team') %}
+
+{% block content %}
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-8 col-xl-6">
+            <div class="text-center mt-5">
+                <h4 class="text-center mb-2">
+                    {{ 'list.page_title'|trans({}, 'organization_team') }}
+                </h4>
+
+                <div class="text-muted mb-2">
+                    {{ 'list.description'|trans({}, 'organization_team') }}
+                </div>
+
+                <a href="{{ path('console_organization_team_invite_member', {'organizationUuid': organization.uuid}) }}" class="btn btn-link">
+                    <i class="fal fa-plus"></i>
+                    {{ 'list.invite'|trans({}, 'organization_team') }}
+                </a>
+
+                {% if pendingInvites > 0 %}
+                    <p>
+                        <a href="{{ path('console_organization_team_pending_invites', {'organizationUuid': organization.uuid}) }}" class="btn btn-link">
+                            <i class="fal fa-clock"></i>
+                            {{ ('list.pending.' ~ (pendingInvites == 1 ? 'single' : 'plural'))|trans({'%pending%': pendingInvites}, 'organization_team') }}
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        {% for current in team.administrators %}
+            <div class="col-md-6 col-lg-3 mb-3">
+                <a
+                    class="projects-item world-box text-dark p-3 lift administrator"
+                    href="{{ path('console_organization_team_permissions', {
+                        'organizationUuid': organization.uuid,
+                        'uuid': current.uuid
+                    }) }}"
+                >
+                    <h5 class="mb-1">
+                        {{ current.member.fullName }}
+                    </h5>
+
+                    <div class="text-muted mb-2">
+                        {{ current.member.email }}
+                    </div>
+
+                    <div class="d-flex align-items-center text-muted mb-1">
+                        <div class="projects-item-icon mr-1">
+                            <i class="fad fa-user-tag"></i>
+                        </div>
+                        {{ 'list.label.administrator'|trans({}, 'organization_team') }}
+                    </div>
+
+                    <div class="d-flex align-items-center text-muted">
+                        <div class="projects-item-icon mr-1">
+                            <i class="fad fa-cubes"></i>
+                        </div>
+                        <em>{{ 'list.label.full_access'|trans({}, 'organization_team') }}</em>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row justify-content-center">
+        {% for membership in team.collaborators %}
+            <div class="col-md-6 col-lg-3 mb-3">
+                <a
+                    class="projects-item world-box text-dark p-3 lift collaborator"
+                    href="{{ path('console_organization_team_permissions', {
+                        'organizationUuid': organization.uuid,
+                        'uuid': membership.uuid
+                    }) }}"
+                >
+                    <h5 class="mb-1">
+                        {{ membership.member.fullName }}
+                    </h5>
+
+                    <div class="text-muted mb-2">
+                        {{ membership.member.email }}
+                    </div>
+
+                    <div class="d-flex align-items-center text-muted mb-1">
+                        <div class="projects-item-icon mr-1">
+                            <i class="fad fa-user-tag"></i>
+                        </div>
+                        {{ 'list.label.collaborator'|trans({}, 'organization_team') }}
+                    </div>
+
+                    {% set displayed = [] %}
+                    {% set moreCount = 0 %}
+                    {% set i = 0 %}
+
+                    {% set accessibleProjects = current_organization.filterAccessibleProjects(current_organization.projects, membership) %}
+                    {% for project in accessibleProjects %}
+                        {% set i = i + 1 %}
+
+                        {% if i <= 2 %}
+                            {% set displayed = displayed|merge([project.name]) %}
+                        {% else %}
+                            {% set moreCount = moreCount + 1 %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="d-flex align-items-center text-muted">
+                        <div class="projects-item-icon mr-1">
+                            <i class="fad fa-cubes"></i>
+                        </div>
+                        <em>
+                            {{ displayed|join(', ') }}
+                            {% if moreCount > 0 %}
+                                {{ 'list.more_count'|trans({'%count%': moreCount}, 'organization_team') }}
+                            {% endif %}
+                        </em>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

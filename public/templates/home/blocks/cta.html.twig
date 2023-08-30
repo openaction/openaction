@@ -1,0 +1,10 @@
+{% set payload = {
+    'current_project': current_project.toArray,
+    'force_embed_consent': force_embed_consent,
+    'primary': block.config.primary,
+    'secondary': block.config.secondary,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-calls-to-action.html.twig' with payload %}
+{% endsandbox %}

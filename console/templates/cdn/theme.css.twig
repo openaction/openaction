@@ -1,0 +1,84 @@
+{% autoescape false %}
+
+{% set active = {
+    'primary': project.appearancePrimary|darken(0.2),
+    'secondary': project.appearanceSecondary|darken(0.2),
+    'third': project.appearanceThird|darken(0.2)
+} %}
+
+{% set background = {
+    'primary': project.appearancePrimary|opacity(0.15),
+    'secondary': project.appearanceSecondary|opacity(0.15),
+    'third': project.appearanceThird|opacity(0.15)
+} %}
+
+{#
+ # Expose CSS variables for themes, including project assets
+ #}
+:root {
+    --primary: #{{ project.appearancePrimary }};
+    --primary-active: #{{ active.primary }};
+    --primary-bg: #{{ background.primary }};
+
+    --secondary: #{{ project.appearanceSecondary }};
+    --secondary-active: #{{ active.secondary }};
+    --secondary-bg: #{{ background.secondary }};
+
+    --third: #{{ project.appearanceThird }};
+    --third-active: #{{ active.third }};
+    --third-bg: #{{ background.third }};
+
+    --font-title: '{{ project.websiteFontTitle }}';
+    --font-text: '{{ project.websiteFontText }}';
+
+{% if project.websiteMainImage %}
+    --main-image: url('{{ cdn_image_url(project.websiteMainImage) }}');
+{% endif %}
+
+    {# Assets #}
+{% for name, url in themeAssets %}
+    --{{ (name|slug).lower }}: url('{{ url }}');
+{% endfor %}
+
+{% for name, url in projectAssets %}
+    --{{ (name|slug).lower }}: url('{{ url }}');
+{% endfor %}
+}
+
+{#
+ # Replace the base CSS colors by the project colors, including the
+ # hover/active variants for buttons and forms.
+ #
+ # In Bootstrap: $hover-background: darken($background, 7.5%), $hover-border: darken($border, 10%)
+ #}
+{{ baseCss|replace({
+    '707269': project.appearancePrimary,
+    '5c5e57': active.primary,
+    '565751': active.primary,
+    '#edeeec': background.primary,
+
+    '736563': project.appearanceSecondary,
+    '5e5351': active.secondary,
+    '584d4b': active.secondary,
+    '#ece9e9': background.secondary,
+
+    '746869': project.appearanceThird,
+    '605657': active.third,
+    '595051': active.third,
+    '#eeeded': background.third,
+
+    '[FontFamilyTitle]': project.websiteFontTitle,
+    '[FontFamilyText]': project.websiteFontText,
+}) }}
+
+{#
+ # Include the project theme CSS
+ #}
+{{ project.websiteTheme.templates.style }}
+
+{#
+ # Include the project custom CSS
+ #}
+{{ project.websiteCustomCss }}
+
+{% endautoescape %}

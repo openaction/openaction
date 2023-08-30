@@ -1,0 +1,81 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'details.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_settings 'current' %}
+
+{% block content %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_settings', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_settings') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'details.title'|trans({}, 'project_settings') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-11 col-lg-10">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div class="row mt-4">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <strong>
+                                {{ form_label(form.name, 'details.name.label'|trans({}, 'project_settings')) }}
+                            </strong>
+
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control-lg'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="p-1 mb-4 text-muted">
+                        {{ 'details.name.help'|trans({}, 'project_settings') }}
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <strong>
+                                {{ form_label(form.locale, 'details.locale.label'|trans({}, 'project_settings')) }}
+                            </strong>
+
+                            {{ form_errors(form.locale) }}
+                            {{ form_widget(form.locale) }}
+                        </div>
+                    </div>
+
+                    <div class="p-1 mb-4 text-muted">
+                        {{ 'details.locale.help'|trans({}, 'project_settings') }}
+                    </div>
+
+                    {{ form_errors(form.type) }}
+
+                    <div data-controller="project--update-details"
+                         class="organization-manage-project-details mb-5">
+                        <div class="d-none">
+                            {{ form_widget(form.type, {'attr': {'data-project--update-details-target': 'type'}}) }}
+                            {{ form_widget(form.areasIds, {'attr': {'data-project--update-details-target': 'areas'}}) }}
+                            {{ form_widget(form.tags, {'attr': {'data-project--update-details-target': 'tags'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {{ 'details.submit'|trans({}, 'project_settings') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

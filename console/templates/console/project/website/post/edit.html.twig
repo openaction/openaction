@@ -1,0 +1,87 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title'|trans({'%title%': post.title}, 'project_posts') %}
+
+{% block sidebar_posts 'current' %}
+
+{% do expose('endpoints', {
+    'content': path('console_website_post_update_content', {'projectUuid': post.project.uuid, 'uuid': post.uuid}),
+    'metadata': path('console_website_post_update_metadata', {'projectUuid': post.project.uuid, 'uuid': post.uuid}),
+    'image': path('console_website_post_update_image', {'projectUuid': post.project.uuid, 'uuid': post.uuid}),
+    'shareUrl': domain_share_url(post.project, 'post', post.uuid|toBase62, post.slug),
+}) %}
+
+{% set categoryIds = post.categories|map(p => p.id) %}
+
+{% do expose('post_metadata', {
+    'description': post.description,
+    'quote': post.quote,
+    'video': post.video,
+    'publishedAt': post.publishedAt ? post.publishedAt.format('Y-m-d\\TH:i:sP') : null,
+    'image': post.image ? cdn_image_url(post.image) : post.image,
+    'categories': categories,
+    'categoryIds': categoryIds,
+    'onlyForMembers': post.onlyForMembers,
+}) %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_posts', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_posts') }}</span>
+                    </a>
+
+                    <a href="{{ path('console_website_post_view', { 'projectUuid': current_project.uuid, 'uuid': post.uuid }) }}"
+                       class="btn btn-outline-primary btn-sm border-0 ml-2" target="_blank">
+                        <i class="fas fa-eye mr-1"></i>
+                        {{ 'edit.view'|trans({}, 'project_posts') }}
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="post--edit"
+                         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
+                        <div class="d-none">
+                            {{ form_widget(form.title, {'attr': {'data-post--edit-target': 'title'}}) }}
+                            {{ form_widget(form.content, {'attr': {'data-post--edit-target': 'content'}}) }}
+                            {{ form_widget(form.quote, {'attr': {'data-post--edit-target': 'quote'}}) }}
+                            {{ form_widget(form.description, {'attr': {'data-post--edit-target': 'description'}}) }}
+                            {{ form_widget(form.video, {'attr': {'data-post--edit-target': 'video'}}) }}
+                            {{ form_widget(form.publishedAt, {'attr': {'data-post--edit-target': 'publishedAt'}}) }}
+                            {{ form_widget(form.categories, {'attr': {'data-post--edit-target': 'categories'}}) }}
+                            {{ form_widget(form.onlyForMembers, {'attr': {'data-post--edit-target': 'onlyForMembers'}}) }}
+                            {{ form_widget(image_form.file, {'attr': {'data-post--edit-target': 'image'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="text-center">
+                <input type="text" class="editor-title" value="{{ post.title }}" id="post-title" />
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-upload-url="{{ path('console_website_post_upload_image', {'projectUuid': current_project.uuid, 'uuid': post.uuid}) }}"
+                     id="post-editor">{{ post.content|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

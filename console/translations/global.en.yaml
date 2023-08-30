@@ -1,0 +1,526 @@
+platform: Citipo
+legal_name: CPGT SAS
+contact_us: Contact us
+contact_email: contact@citipo.com
+
+meta:
+    description: 'Your first supporter: the platform to grow your digital community'
+
+pagination:
+    previous: Previous
+    next: Next
+
+clipboard:
+    copy: Copy
+    copied: Copied!
+
+gender:
+    male: Male
+    female: Female
+    transgender: Transgender
+    non_binary: Non-binary
+    other: Other
+
+console:
+    title: Console
+
+    header:
+        soon_expires:
+            desc: 'Your subscription is going to expire on %date% (in %days% days).'
+            ask_citipo: 'Contact us to continue using Citipo after this date:'
+
+        trialing:
+            desc: 'Your organization''s trial ends on %date%.'
+            ask_citipo: 'Contact us to continue using Citipo:'
+
+        menu:
+            projects: Projects
+            team: Team
+            contacts: Organization
+            integrations: Integrations
+            doc: Documentation
+            help: Support
+            whats_new: What's new?
+
+        organization:
+            email_credits: emails credits
+            buy_email_credits: Buy emails credits
+            text_credits: texts credits
+            buy_text_credits: Buy texts credits
+            billing_details: Billing details
+            billing_history: Invoices history
+            switch: Switch organization
+            create: Create an organization
+
+        user:
+            account: Account
+            password: Password
+            2fa: Two-factor authentication
+            notifications: Notifications
+            partner: Partner area
+            logout: Log out
+
+        launch_project: Launch a project
+
+tools:
+    label: 'Tools:'
+    youtube_generator: 'YouTube thumbnail generator'
+
+status:
+    saving: Saving...
+    saved: Saved
+    error: An error occured
+
+content_editor:
+    defaults:
+        text: This is a new Text block. Change the text.
+        title: Heading
+    merge_tags:
+        id: Contact identifier
+        email: Contact email
+        phone: Contact phone number
+        formaltitle: Contact formal title
+        firstname: Contact first name
+        lastname: Contact last name
+        fullname: Contact full name
+        gender: Contact gender
+        nationality: Contact nationality
+        company: Contact company
+        jobtitle: Contact job title
+        streetline1: Contact postal address
+        streetline2: Contact postal address (line 2)
+        zipcode: Contact ZIP code
+        city: Contact city
+        country: Contact country
+
+crm:
+    search_field:
+        placeholder: Search...
+        mode_simple: Simple mode
+        mode_advanced: Advanced mode
+        enter_query: Enter a query...
+        run_query: Run
+    list:
+        location: Location
+        createdAt: Date
+        status: Status
+        no_results:
+            title: No result
+            description: |
+                Your search did not match any contact. Try to search for something different, or create a new contact.
+        load_more: Load more
+        sort_by:
+            label: Sort by
+            asc: ascending
+            desc: descending
+            date: Date
+            first_name: First name
+            last_name: Last name
+            email: Email address
+    facets:
+        tags: Tags
+        projects: Projects
+        status: Status
+        country: Country
+        province: Province/State
+        district: District/County
+        include: Include this filter
+        exclude: Exclude this filter
+        cancel: Cancel
+        value: Search ...
+    actions:
+        nb_hits: contacts
+        clear: Clear
+        apply_label: 'For these contacts:'
+        export: Export
+        exportQuestion: 'Export %nbHits% contacts to the XLSX format'
+        exportConfirm: Export
+        exportCancel: Close
+        exportStarting: Starting the export ...
+        exportInProgress: Export file creation in progress...
+        exportSuccess: 'The export was created successfully.'
+        exportDownload: Download the XLSX file
+        addTag: Add tag
+        addTagQuestion: 'Add a tag on %nbHits% contacts'
+        addTagLabel: Select a tag
+        addTagNoResults: No tag found
+        addTagConfirm: Add the tag
+        addTagCancel: Close
+        addTagStarting: Preparing ...
+        addTagInProgress: Adding of the tag in progress ...
+        addTagSuccess: |
+            The tag has been successfully added to the contacts. The change can take a few more 
+            minutes to be reflected on all concerned contacts.
+        removeTag: Remove tag
+        removeTagQuestion: 'Remove a tag from %nbHits% contacts'
+        removeTagLabel: Select a tag
+        removeTagNoResults: No tag found
+        removeTagConfirm: Remove the tag
+        removeTagCancel: Close
+        removeTagStarting: Preparing ...
+        removeTagInProgress: Removing of the tag in progress ...
+        removeTagSuccess: |
+            The tag has been successfully removed from the contacts. The change can take a few more 
+            minutes to be reflected on all concerned contacts.
+        remove: Remove contacts
+        removeQuestion: 'Remove %nbHits% contacts'
+        removeConfirm: Remove the contacts
+        removeCancel: Close
+        removeStarting: Preparing ...
+        removeInProgress: Removing of the contacts in progress ...
+        removeSuccess: |
+            The contacts were successfully removed. The change can take a few more 
+            minutes to be reflected on all concerned contacts.
+    item:
+        status:
+            c: Contact
+            m: Member
+            u: Unsubscribed
+        actions:
+            view: View profile
+            edit: Edit contact
+    tags:
+        none: No tag
+        placeholder: Search a tag ...
+        no_result: No result
+    profile:
+        history:
+            title: Interactions history
+            description: Interactions your organization has with this contact
+        newsletter: Email campaigns
+        sms: Text campaigns
+        calls: Calls campaigns
+        birthdate: Birthdate
+        address: Postal address
+        phone: Phone number (personal)
+        work: Work
+        socials: Social networks
+        projects: Projects
+
+products:
+    # Plans
+    plan_essential: Plan Essentiel
+    plan_standard: Plan Standard
+    plan_premium: Plan Premium
+    plan_organization: Plan Organisation
+
+    plan_legislatives: Pack Législatives
+    plan_website: Pack Site internet de campagne
+    plan_avecvous: Pack Avec Vous
+
+    # Credits
+    email_credit: Crédit email
+    text_credit: Crédit SMS
+
+    # Extra products
+    domain_name: Nom de domaine personnalisé
+    custom_service: Accompagnement personnalisé
+    gsuite_campaign_account: Compte Google GSuite
+
+    # Print
+    official_poster: Affiche officielle
+    official_poster_150: Affiche officielle (x150)
+    official_poster_300: Affiche officielle (x300)
+    official_poster_450: Affiche officielle (x450)
+    official_banner: Bandeau d'affiche
+    official_banner_150: Bandeau d'affiche (x150)
+    official_banner_300: Bandeau d'affiche (x300)
+    official_banner_450: Bandeau d'affiche (x450)
+    official_pledge: Profession de foi
+    official_pledge_50000: Profession de foi (x50 000)
+    official_pledge_75000: Profession de foi (x75 000)
+    official_pledge_100000: Profession de foi (x100 000)
+    official_pledge_125000: Profession de foi (x125 000)
+    official_pledge_150000: Profession de foi (x150 000)
+    official_ballot: Bulletins de vote
+    official_ballot_100000: Bulletins de vote (x100 000)
+    official_ballot_150000: Bulletins de vote (x150 000)
+    official_ballot_200000: Bulletins de vote (x200 000)
+    official_ballot_250000: Bulletins de vote (x250 000)
+    official_ballot_300000: Bulletins de vote (x300 000)
+    campaign_flyer: Tract A5
+    campaign_flyer_5000: Tract A5 (x5 000)
+    campaign_flyer_10000: Tract A5 (x10 000)
+    campaign_flyer_25000: Tract A5 (x25 000)
+    campaign_flyer_50000: Tract A5 (x50 000)
+    campaign_large_flyer: Tract A4
+    campaign_large_flyer_5000: Tract A4 (x5 000)
+    campaign_large_flyer_10000: Tract A4 (x10 000)
+    campaign_large_flyer_25000: Tract A4 (x25 000)
+    campaign_large_flyer_50000: Tract A4 (x50 000)
+    campaign_door: Accroche-Porte
+    campaign_door_1000: Accroche-Porte (x1 000)
+    campaign_door_3000: Accroche-Porte (x3 000)
+    campaign_door_5000: Accroche-Porte (x5 000)
+    campaign_booklet_4: Livret 4 pages
+    campaign_booklet_4_5000: Livret 4 pages (x5 000)
+    campaign_booklet_4_10000: Livret 4 pages (x10 000)
+    campaign_booklet_4_25000: Livret 4 pages (x25 000)
+    campaign_booklet_4_50000: Livret 4 pages (x50 000)
+    campaign_booklet_8: Livret 8 pages
+    campaign_booklet_8_5000: Livret 8 pages (x5 000)
+    campaign_booklet_8_10000: Livret 8 pages (x10 000)
+    campaign_booklet_8_25000: Livret 8 pages (x25 000)
+    campaign_booklet_8_50000: Livret 8 pages (x50 000)
+    campaign_letter: Lettre A4
+    campaign_letter_5000: Lettre A4 (x5 000)
+    campaign_letter_10000: Lettre A4 (x10 000)
+    campaign_letter_25000: Lettre A4 (x25 000)
+    campaign_letter_50000: Lettre A4 (x50 000)
+    campaign_poster: Affiche de campagne
+    campaign_poster_150: Affiche de campagne (x150)
+    campaign_poster_300: Affiche de campagne (x300)
+    campaign_poster_450: Affiche de campagne (x450)
+    campaign_card: Carte postale
+    campaign_card_5000: Carte postale (x5 000)
+    campaign_card_10000: Carte postale (x10 000)
+    campaign_card_25000: Carte postale (x25 000)
+    campaign_card_50000: Carte postale (x50 000)
+    enveloping: Mise sous pli
+    delivery: Livraison
+    sending: Affranchissement
+
+products_help:
+    # Plans
+    plan_essential: |
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Partages sociaux<br />
+        - Intégrations sociales<br />
+        <br />
+        Base de contacts :<br />
+        - Base centrale de vos contacts/sympathisants<br />
+        - Import / Export Excel<br />
+        - Contacts illimités<br />
+        - Géolocalisation des contacts<br />
+        <br />
+        Campagnes :<br />
+        - Module Emailings (1500 crédits/mois inclus)<br />
+        - Module SMS (crédits non inclus, nous contacter)<br />
+        <br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_standard: |
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Intégrations sociales<br />
+        <br />
+        Base de contacts :<br />
+        - Base centrale de vos contacts/sympathisants<br />
+        - Import / Export Excel<br />
+        - Contacts illimités<br />
+        - Géolocalisation des contacts<br />
+        <br />
+        Campagnes :<br />
+        - Module Emailings (1500 crédits/mois inclus)<br />
+        - Module SMS (crédits non inclus, nous contacter)<br />
+        - Ciblage par tag / zone géographique<br />
+        <br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_premium: |
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Module Événements<br />
+        - Module Consultations<br />
+        - Intégrations sociales<br />
+        - Rapport de trafic et de communauté<br />
+        <br />
+        Base de contacts :<br />
+        - Base centrale de vos contacts/sympathisants<br />
+        - Import / Export Excel<br />
+        - Contacts illimités<br />
+        - Géolocalisation des contacts<br />
+        - Historique par contact<br />
+        - Intégration avec Qomon<br />
+        - Intégration avec Telegram<br />
+        <br />
+        Campagnes :<br />
+        - Module Emailings (3000 crédits/mois inclus)<br />
+        - Module SMS (crédits non inclus, nous contacter)<br />
+        - Ciblage par tag / zone géographique<br />
+        - Statistiques d'ouvertures et de clic<br />
+        - Automatisations email<br />
+        <br />
+        Accès API pour développeurs<br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_organization: |
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Module Événements<br />
+        - Module Consultations<br />
+        - Intégrations sociales<br />
+        - Rapport de trafic et de communauté<br />
+        <br />    
+        Base de contacts :<br />
+        - Base centrale de vos contacts/sympathisants<br />
+        - Import / Export Excel<br />
+        - Contacts illimités<br />
+        - Géolocalisation des contacts<br />
+        - Historique par contact<br />
+        - Intégration avec Qomon<br />
+        - Intégration avec Telegram<br />
+        - Espace membre<br />
+        <br />
+        Campagnes :<br />
+        - Module Emailings (5000 crédits/mois inclus)<br />
+        - Module SMS (crédits non inclus, nous contacter)<br />
+        - Ciblage par tag / zone géographique<br />
+        - Statistiques d'ouvertures et de clic<br />
+        - Automatisations email<br />
+        <br />
+        Accès API pour développeurs<br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_legislatives: |
+        Accès pour la durée de la campagne<br />
+        <br />
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Module Événements<br />
+        - Module Consultations<br />
+        - Intégrations sociales<br />
+        - Rapport de trafic et de communauté<br />
+        <br />
+        Base de contacts :<br />
+        - Base centrale de vos contacts/sympathisants<br />
+        - Import / Export Excel<br />
+        - Contacts illimités<br />
+        - Géolocalisation des contacts<br />
+        - Historique par contact<br />
+        - Intégration avec Quorum<br />
+        <br />
+        Campagnes :<br />
+        - Module Emailings<br /> 
+        - Module SMS (crédits non inclus, nous contacter)<br />
+        - Ciblage par tag / zone géographique<br />
+        - Statistiques d'ouvertures et de clic<br />
+        - Automatisations email<br />
+        <br />
+        1 projet principal et 5 sous-projets inclus<br />
+        <br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_website: |
+        Accès pour la durée de la campagne<br />
+        <br />
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Module Événements<br />
+        - Module Consultations<br />
+        - Intégrations sociales<br />
+        - Rapport de trafic<br />
+        <br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    plan_avecvous: |
+        Accès pour la durée de la campagne<br />
+        <br />
+        Site internet :<br />
+        - Module Pages de contenu<br />
+        - Module Actualités<br />
+        - Module Newsletter<br />
+        - Module Documents<br />
+        - Module Trombinoscope<br />
+        - Module Manifesto<br />
+        - Partages sociaux<br />
+        - Module Événements<br />
+        - Module Consultations<br />
+        - Intégrations sociales<br />
+        - Rapport de trafic<br />
+        <br />
+        Collaborateurs illimités, 100% conforme RGPD, hébergement en Europe
+
+    # Credits
+    email_credit: Crédit utilisable dans le cadre de campagnes emails
+    text_credit: Crédit utilisable dans le cadre de campagnes SMS
+
+    # Extra products
+    domain_name: Achat et configuration d'un nom de domaine personnalisé pour le projet
+    custom_service: Accompagnement personnalisé par nos équipes
+    gsuite_campaign_account: |
+        Achat et configuration d'un compte Google Gsuite (emails, documents, agenda, ...) 
+        pour la totalité de la durée de la campagne.
+
+    # Print
+    campaign_flyer: |
+        158mm x 220mm, 2 pages<br />
+        Papier 1/2 mat recyclé 70g<br />
+        Impression quadri recto verso
+    campaign_large_flyer: |
+        220mm x 307mm, 2 pages<br />
+        Papier 1/2 mat recyclé 70g<br />
+        Impression quadri recto verso
+    campaign_door: |
+        70mm x 220mm, 2 pages<br />
+        Papier 1/2 mat 200g<br />
+        Impression quadri recto verso
+    campaign_booklet_4: |
+        158mm x 220mm, 4 pages<br />
+        Papier 1/2 mat recyclé 70g<br />
+        Impression quadri recto verso
+    campaign_booklet_8: |
+        158mm x 220mm, 8 pages<br />
+        Papier 1/2 mat recyclé 70g<br />
+        Impression quadri recto verso
+    campaign_letter: |
+        220mm x 307mm, 1 page<br />
+        Impression quadri recto
+    campaign_poster: |
+        604mm x 851mm, 1 page<br />
+        Papier 1/2 mat 115g<br />
+        Impression quadri recto seul
+    campaign_card: |
+        158mm x 115mm, 2 pages<br />
+        Papier 1/2 mat 200g<br />
+        Impression quadri recto verso
+    official_poster: |
+        604mm x 851mm, 1 page<br />
+        Papier offset 80g<br />
+        Impression quadri recto seul
+    official_banner: |
+        430mm x 307mm, 1 page<br />
+        Papier 1/2 mat 90g<br />
+        Impression quadri recto seul
+    official_pledge: |
+        220mm x 307mm, 2 pages<br />
+        Papier 1/2 mat recyclé 70g<br />
+        Impression quadri recto verso
+    official_ballot: |
+        158mm x 115mm, 1 page
+    enveloping: Mise sous pli des documents
+    delivery: 'Livraison colis/palette - Poids : %weight% kg'
+    sending: Affranchissement pour addressage

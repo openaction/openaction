@@ -1,0 +1,66 @@
+{% extends 'security/registration/base.html.twig' %}
+
+{% block page_title 'registration.activate.title'|trans({}, 'security') %}
+
+{% block content %}
+    <div class="p-4 mt-4">
+        {{ form_start(form) }}
+
+        <h2 class="mb-3">
+            {{ 'registration.activate.title'|trans({}, 'security') }}
+        </h2>
+
+        <h5 class="mb-5 font-weight-light">
+            {{ 'registration.activate.desc'|trans({'%email%': registration.email}, 'security') }}
+        </h5>
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger border-0 text-center">
+                {{ message|trans({}, 'flashes') }}
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-xl-6 mb-3">
+                {{ form_row(form.firstName, {
+                    'attr': {'class': 'form-control-lg'},
+                    'label': 'registration.activate.form.firstName'|trans({}, 'security')
+                }) }}
+            </div>
+            <div class="col-xl-6 mb-3">
+                {{ form_row(form.lastName, {
+                    'attr': {'class': 'form-control-lg'},
+                    'label': 'registration.activate.form.lastName'|trans({}, 'security')
+                }) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 mb-3">
+                {{ form_row(form.password.first, {
+                    'attr': {'class': 'form-control-lg'},
+                    'label': 'registration.activate.form.password'|trans({}, 'security')
+                }) }}
+            </div>
+            <div class="col-xl-6 mb-3">
+                {{ form_row(form.password.second, {
+                    'attr': {'class': 'form-control-lg'},
+                    'label': 'registration.activate.form.repeatPassword'|trans({}, 'security')
+                }) }}
+            </div>
+        </div>
+
+        <div class="custom-control custom-checkbox mb-5">
+            {{ form_row(form.agreeTerms, {
+                'label_attr': {'class': 'checkbox-custom'},
+                'label': 'registration.activate.form.agreeTerms'|trans({}, 'security')
+            }) }}
+        </div>
+
+        <button type="submit" class="btn btn-block btn-primary btn-lg">
+            {{ 'registration.activate.form.submit'|trans({}, 'security') }}
+        </button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,103 @@
+<div class="list">
+    <div class="list-view">
+        <div class="list-items">
+            <h1 class="list-title" data-aos="fade-up" data-aos-duration="600">
+                {{ section_name }}
+            </h1>
+
+            {% for item in items %}
+                <div data-aos="fade-up" data-aos-duration="600">
+                    <div class="zoom-hover">
+                        <div class="list-items-item box-offset">
+                            <a href="{{ item.url }}" class="streched-link list-items-item-link" data-turbo="optional">
+                                <div class="list-items-item-box">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-7 mb-3 mb-md-0">
+                                            <h5 class="list-items-item-title">
+                                                <span>{{ item.title }}</span>
+                                            </h5>
+
+                                            <div class="list-items-item-description">
+                                                {% if item.date %}
+                                                    <div class="list-items-item-date">
+                                                        {{ item.date }}
+                                                    </div>
+                                                {% endif %}
+
+                                                {{ item.description }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            {% if item.video|default(null) and item.video[0] == 'youtube' %}
+                                                <div class="list-items-item-video"
+                                                     style="background-image: url('https://i1.ytimg.com/vi/{{ item.video[1] }}/hqdefault.jpg')">
+                                                    <div class="list-items-item-video-icon"
+                                                         style="background: url('{{ play_icon }}') 50% 50% no-repeat transparent">
+                                                        <div class="list-items-item-video-inner" style="width: 1110px; height: 705px"></div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <img src="{{ item.image|default(default_list_image) }}"
+                                                     class="list-items-item-image" width="1700" height="1080" />
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="list-items-none" data-aos="fade-up" data-aos-duration="600">
+                    {{ no_items_message }}
+                </div>
+            {% endfor %}
+
+            <div class="list-items-pagination" data-aos="fade-up" data-aos-duration="600">
+                <div class="row">
+                    <div class="col-6">
+                        {% if previous %}
+                            <a href="{{ previous }}" class="btn btn-secondary" data-turbo="optional">
+                                <i class="fal fa-angle-left"></i>
+                                <span class="ml-1">
+                                    {{ 'base.pagination.previous'|trans }}
+                                </span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                        {% if next %}
+                            <a href="{{ next }}" class="btn btn-secondary" data-turbo="optional">
+                                <span class="mr-1">
+                                    {{ 'base.pagination.next'|trans }}
+                                </span>
+                                <i class="fal fa-angle-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if categories|default([])|length > 0 %}
+            <div data-aos="fade-up" data-aos-duration="600">
+                <div class="list-categories">
+                    <h4 class="list-categories-title">
+                        {{ 'base.categories'|trans }}
+                    </h4>
+
+                    <div class="list-categories-items">
+                        {% for category in categories %}
+                            <div class="list-categories-item">
+                                <a href="{{ category.url }}" data-turbo="optional"
+                                   class="list-categories-item-link {{ category.isActive ? 'list-categories-item-link-active' }}">
+                                    {{ category.name }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

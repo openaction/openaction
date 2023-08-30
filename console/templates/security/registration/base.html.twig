@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body_class 'full-height' %}
+
+{% block body %}
+    <div class="d-lg-flex flex-lg-column full-height">
+        <div class="d-lg-flex flex-lg-grow-1">
+            <div class="col-12 col-lg-6 bg-primary">
+                <div class="d-flex flex-column full-height justify-content-center">
+                    <div class="p-4">
+                        <a href="https://citipo.com/{{ app.request.locale }}">
+                            <img src="{{ asset('res/logo/logo-white.svg') }}" class="security-registration-logo"
+                                 alt="{{ 'platform'|trans({}, 'global') }}" />
+                        </a>
+
+                        <h2 class="security-registration-title">
+                            {{ 'registration.signup.title'|trans({}, 'security') }}
+                        </h2>
+
+                        <h4 class="security-registration-desc">
+                            {{ 'registration.signup.desc'|trans({}, 'security') }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-column full-height justify-content-center">
+                    {% block content '' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

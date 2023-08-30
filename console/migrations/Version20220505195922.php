@@ -1,0 +1,154 @@
+<?php
+
+namespace Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20220505195922 extends AbstractMigration
+{
+    public function up(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE analytics_community_contact_creations ALTER id SET DEFAULT nextval(\'analytics_community_contact_creations_id_seq\')');
+        $this->addSql('ALTER TABLE analytics_website_events ALTER id SET DEFAULT nextval(\'analytics_website_events_id_seq\')');
+        $this->addSql('ALTER TABLE analytics_website_page_views ALTER id SET DEFAULT nextval(\'analytics_website_page_views_id_seq\')');
+        $this->addSql('ALTER TABLE analytics_website_sessions ALTER id SET DEFAULT nextval(\'analytics_website_sessions_id_seq\')');
+        $this->addSql('ALTER TABLE announcements ALTER id SET DEFAULT nextval(\'announcements_id_seq\')');
+        $this->addSql('CREATE INDEX area_type_treeroot_name_idx ON areas (type, tree_root, name)');
+        $this->addSql('ALTER TABLE billing_orders ALTER id SET DEFAULT nextval(\'billing_orders_id_seq\')');
+        $this->addSql('ALTER TABLE billing_quotes ALTER id SET DEFAULT nextval(\'billing_quotes_id_seq\')');
+        $this->addSql('ALTER TABLE community_ambiguities ALTER id SET DEFAULT nextval(\'community_ambiguities_id_seq\')');
+        $this->addSql('ALTER TABLE community_contacts ALTER id SET DEFAULT nextval(\'community_contacts_id_seq\')');
+        $this->addSql('CREATE INDEX community_contacts_email_organization_idx ON community_contacts (email, organization_id)');
+        $this->addSql('ALTER TABLE community_contacts_updates ALTER id SET DEFAULT nextval(\'community_contacts_updates_id_seq\')');
+        $this->addSql('ALTER TABLE community_email_automations ALTER id SET DEFAULT nextval(\'community_email_automations_id_seq\')');
+        $this->addSql('ALTER TABLE community_email_automations_messages ALTER id SET DEFAULT nextval(\'community_email_automations_messages_id_seq\')');
+        $this->addSql('ALTER TABLE community_emailing_campaigns ALTER id SET DEFAULT nextval(\'community_emailing_campaigns_id_seq\')');
+        $this->addSql('ALTER TABLE community_emailing_campaigns_messages ALTER id SET DEFAULT nextval(\'community_emailing_campaigns_messages_id_seq\')');
+        $this->addSql('ALTER TABLE community_emailing_campaigns_messages_logs ALTER id SET DEFAULT nextval(\'community_emailing_campaigns_messages_logs_id_seq\')');
+        $this->addSql('ALTER TABLE community_imports ALTER id SET DEFAULT nextval(\'community_imports_id_seq\')');
+        $this->addSql('ALTER TABLE community_imports_lines ALTER id SET DEFAULT nextval(\'community_imports_lines_id_seq\')');
+        $this->addSql('ALTER TABLE community_phoning_campaigns ALTER id SET DEFAULT nextval(\'community_phoning_campaigns_id_seq\')');
+        $this->addSql('ALTER TABLE community_phoning_campaigns_calls ALTER id SET DEFAULT nextval(\'community_phoning_campaigns_calls_id_seq\')');
+        $this->addSql('ALTER TABLE community_phoning_campaigns_targets ALTER id SET DEFAULT nextval(\'community_phoning_campaigns_targets_id_seq\')');
+        $this->addSql('ALTER TABLE community_printing_campaigns ALTER id SET DEFAULT nextval(\'community_printing_campaigns_id_seq\')');
+        $this->addSql('ALTER TABLE community_printing_campaigns_common_scans ALTER id SET DEFAULT nextval(\'community_printing_campaigns_common_scans_id_seq\')');
+        $this->addSql('ALTER TABLE community_printing_campaigns_unique_documents ALTER id SET DEFAULT nextval(\'community_printing_campaigns_unique_documents_id_seq\')');
+        $this->addSql('ALTER TABLE community_printing_campaigns_unique_scans ALTER id SET DEFAULT nextval(\'community_printing_campaigns_unique_scans_id_seq\')');
+        $this->addSql('ALTER TABLE community_printing_orders ALTER id SET DEFAULT nextval(\'community_printing_orders_id_seq\')');
+        $this->addSql('ALTER TABLE community_tags ALTER id SET DEFAULT nextval(\'community_tags_id_seq\')');
+        $this->addSql('CREATE INDEX community_tags_name_organization_idx ON community_tags (name, organization_id)');
+        $this->addSql('ALTER TABLE community_texting_campaigns ALTER id SET DEFAULT nextval(\'community_texting_campaigns_id_seq\')');
+        $this->addSql('ALTER TABLE community_texting_campaigns_messages ALTER id SET DEFAULT nextval(\'community_texting_campaigns_messages_id_seq\')');
+        $this->addSql('ALTER TABLE domains ALTER id SET DEFAULT nextval(\'domains_id_seq\')');
+        $this->addSql('ALTER TABLE integrations_integromat_webhooks ALTER id SET DEFAULT nextval(\'integrations_integromat_webhooks_id_seq\')');
+        $this->addSql('ALTER TABLE integrations_revue_accounts ALTER id SET DEFAULT nextval(\'integrations_revue_accounts_id_seq\')');
+        $this->addSql('ALTER TABLE integrations_telegram_apps ALTER id SET DEFAULT nextval(\'integrations_telegram_apps_id_seq\')');
+        $this->addSql('ALTER TABLE integrations_telegram_apps_authorizations ALTER id SET DEFAULT nextval(\'integrations_telegram_apps_authorizations_id_seq\')');
+        $this->addSql('ALTER TABLE organizations ALTER id SET DEFAULT nextval(\'organizations_id_seq\')');
+        $this->addSql('ALTER TABLE organizations_main_tags ALTER id SET DEFAULT nextval(\'organizations_main_tags_id_seq\')');
+        $this->addSql('ALTER TABLE organizations_members ALTER id SET DEFAULT nextval(\'organizations_members_id_seq\')');
+        $this->addSql('ALTER TABLE projects ALTER id SET DEFAULT nextval(\'projects_id_seq\')');
+        $this->addSql('ALTER TABLE projects_assets ALTER id SET DEFAULT nextval(\'projects_assets_id_seq\')');
+        $this->addSql('ALTER TABLE registrations ALTER id SET DEFAULT nextval(\'registrations_id_seq\')');
+        $this->addSql('ALTER TABLE subscriptions_logs ALTER id SET DEFAULT nextval(\'subscriptions_logs_id_seq\')');
+        $this->addSql('ALTER TABLE uploads ALTER id SET DEFAULT nextval(\'uploads_id_seq\')');
+        $this->addSql('ALTER TABLE users ALTER id SET DEFAULT nextval(\'users_id_seq\')');
+        $this->addSql('ALTER TABLE users_visits ALTER id SET DEFAULT nextval(\'users_visits_id_seq\')');
+        $this->addSql('ALTER TABLE website_documents ALTER id SET DEFAULT nextval(\'website_documents_id_seq\')');
+        $this->addSql('ALTER TABLE website_events ALTER id SET DEFAULT nextval(\'website_events_id_seq\')');
+        $this->addSql('ALTER TABLE website_events_categories ALTER id SET DEFAULT nextval(\'website_events_categories_id_seq\')');
+        $this->addSql('ALTER TABLE website_forms ALTER id SET DEFAULT nextval(\'website_forms_id_seq\')');
+        $this->addSql('ALTER TABLE website_forms_answers ALTER id SET DEFAULT nextval(\'website_forms_answers_id_seq\')');
+        $this->addSql('ALTER TABLE website_forms_blocks ALTER id SET DEFAULT nextval(\'website_forms_blocks_id_seq\')');
+        $this->addSql('ALTER TABLE website_manifestos_proposals ALTER id SET DEFAULT nextval(\'website_manifestos_proposals_id_seq\')');
+        $this->addSql('ALTER TABLE website_manifestos_topics ALTER id SET DEFAULT nextval(\'website_manifestos_topics_id_seq\')');
+        $this->addSql('ALTER TABLE website_menu_items ALTER id SET DEFAULT nextval(\'website_menu_items_id_seq\')');
+        $this->addSql('ALTER TABLE website_page_blocks ALTER id SET DEFAULT nextval(\'website_page_blocks_id_seq\')');
+        $this->addSql('ALTER TABLE website_pages ALTER id SET DEFAULT nextval(\'website_pages_id_seq\')');
+        $this->addSql('ALTER TABLE website_pages_categories ALTER id SET DEFAULT nextval(\'website_pages_categories_id_seq\')');
+        $this->addSql('ALTER TABLE website_posts ALTER id SET DEFAULT nextval(\'website_posts_id_seq\')');
+        $this->addSql('ALTER TABLE website_posts_categories ALTER id SET DEFAULT nextval(\'website_posts_categories_id_seq\')');
+        $this->addSql('ALTER TABLE website_redirections ALTER id SET DEFAULT nextval(\'website_redirections_id_seq\')');
+        $this->addSql('ALTER TABLE website_themes ALTER id SET DEFAULT nextval(\'website_themes_id_seq\')');
+        $this->addSql('ALTER TABLE website_themes_assets ALTER id SET DEFAULT nextval(\'website_themes_assets_id_seq\')');
+        $this->addSql('ALTER TABLE website_trombinoscope_categories ALTER id SET DEFAULT nextval(\'website_trombinoscope_categories_id_seq\')');
+        $this->addSql('ALTER TABLE website_trombinoscope_persons ALTER id SET DEFAULT nextval(\'website_trombinoscope_persons_id_seq\')');
+        $this->addSql('CREATE INDEX area_name_idx ON areas (name)');
+        $this->addSql('CREATE INDEX area_code_idx ON areas (code)');
+        $this->addSql('CREATE INDEX area_name_type_idx ON areas (name, type)');
+        $this->addSql('CREATE INDEX import_line_processed_idx ON community_imports_lines (processed_at)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('ALTER TABLE organizations_members ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE subscriptions_logs ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE uploads ALTER id DROP DEFAULT');
+        $this->addSql('DROP INDEX area_type_treeroot_name_idx');
+        $this->addSql('ALTER TABLE website_posts_categories ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_pages_categories ALTER id DROP DEFAULT');
+        $this->addSql('DROP INDEX community_tags_name_organization_idx');
+        $this->addSql('ALTER TABLE community_tags ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE domains ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_emailing_campaigns_messages ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_documents ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE registrations ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_emailing_campaigns ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_pages ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_posts ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE users ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE projects ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_events ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_events_categories ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_menu_items ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_page_blocks ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE announcements ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE users_visits ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_email_automations_messages ALTER id DROP DEFAULT');
+        $this->addSql('DROP INDEX community_contacts_email_organization_idx');
+        $this->addSql('ALTER TABLE community_contacts ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_trombinoscope_persons ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_email_automations ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_forms_answers ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_forms_blocks ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_ambiguities ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_imports ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_imports_lines ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_forms ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE analytics_website_page_views ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_emailing_campaigns_messages_logs ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_manifestos_proposals ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_manifestos_topics ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_trombinoscope_categories ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE analytics_website_sessions ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_redirections ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE analytics_community_contact_creations ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE integrations_telegram_apps ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE integrations_telegram_apps_authorizations ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE projects_assets ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_texting_campaigns ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_texting_campaigns_messages ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE integrations_integromat_webhooks ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE organizations ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE integrations_revue_accounts ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_phoning_campaigns_targets ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_phoning_campaigns_calls ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_phoning_campaigns ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_themes ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE website_themes_assets ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_contacts_updates ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE billing_orders ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE organizations_main_tags ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE analytics_website_events ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_printing_campaigns_common_scans ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_printing_campaigns_unique_documents ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_printing_campaigns_unique_scans ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_printing_campaigns ALTER id DROP DEFAULT');
+        $this->addSql('ALTER TABLE community_printing_orders ALTER id DROP DEFAULT');
+        $this->addSql('DROP INDEX area_name_idx');
+        $this->addSql('DROP INDEX area_code_idx');
+        $this->addSql('DROP INDEX area_name_type_idx');
+        $this->addSql('DROP INDEX import_line_processed_idx');
+    }
+}

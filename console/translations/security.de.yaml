@@ -1,0 +1,59 @@
+registration:
+    signup:
+        title: 'Erstellen Sie Ihr kostenloses Citipo-Konto'
+        desc: 'Starten Sie Ihre Bewegung in wenigen Minuten'
+        form:
+            email:
+                label: 'Ihre berufliche E-Mail Adresse'
+                help: 'Wir senden Ihnen eine E-Mail zur Aktivierung Ihres Kontos.'
+            submit: 'Registrieren Sie sich'
+            cancel: 'Zurück zur Startseite'
+        terms: "Indem Sie Citipo abonnieren, erklären Sie sich mit unseren\n<a href=\"https://citipo.com/fr/pages/7HVg4wRMI0ZPKEN2QsSIKw/conditions-d-utilisation\" target=\"_blank\">Geschäftsbedingungen</a>\nund mit unseren\n<a href=\"https://citipo.com/fr/pages/3tPVudZJMyuNwaZJrNJwm9/politique-de-donnees-personnelles\" target=\"_blank\">Datenschutzbestimmungen</a>.\n"
+    verify:
+        title: 'Konto erstellt'
+        desc: "Ihr Konto wurde erfolgreich erstellt.\nWir haben Ihnen eine E-Mail geschickt, um die Konfiguration Ihres Profils fortzusetzen, überprüfen Sie Ihren Posteingang!\n"
+        resend:
+            desc: 'Wenn Sie die E-Mail nach einigen Minuten Wartezeit immer noch nicht erhalten haben, können Sie um eine erneute Zusendung bitten:'
+            link: 'Senden Sie die E-Mail erneut'
+            contact_us: 'Sollte das Problem weiterhin bestehen, können Sie uns unter folgender Adresse erreichen'
+    activate:
+        title: 'Schließen Sie Ihr Konto ab'
+        desc: 'Ihr Profil ist fast fertig: noch ein paar Angaben und Sie sind bereit, Citipo zu nutzen!'
+        form:
+            firstName: 'Ihr Vorname'
+            lastName: 'Ihr Nachname'
+            password: 'Wählen Sie ein Passwort'
+            repeatPassword: 'Bestätigen Sie dieses Passwort'
+            agreeTerms: 'Ich stimme den Datenschutzbestimmungen und den Nutzungsbedingungen zu.'
+            submit: Fertigstellen
+login:
+    title: Einloggen
+    welcome: 'Willkommen zurück!'
+    email: 'E-Mail Adresse'
+    password: Passwort
+    remember_me: 'Eingeloggt bleiben'
+    forgotten_password: 'Haben Sie Ihr Passwort vergessen?'
+    submit: Einloggen
+    register: 'Noch kein Konto? Melden Sie sich kostenlos an!'
+    two_factor:
+        title: Zwei-Faktor-Authentifizierung
+        desc: 'Geben Sie den von Ihrer Authentifizierungsanwendung (Google Authenticator oder Authy) bereitgestellten Code ein.'
+        login: Einloggen
+        cancel: Abbrechen
+forgot_password:
+    request:
+        title: 'Haben Sie Ihr Passwort vergessen?'
+        desc: 'Machen Sie sich keine Sorgen. Es ist ganz einfach, Ihr Passwort zurückzusetzen. Teilen Sie uns einfach die E-Mail-Adresse mit, mit der Sie sich auf Citipo registriert haben.'
+        label: 'Ihre berufliche E-Mail Adresse'
+        submit: 'Senden Sie'
+        back: 'Zurück zum Einloggen'
+    sent:
+        title: 'Prüfen Sie Ihren Posteingang'
+        desc: 'Prüfen Sie Ihren Posteingang, wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt.'
+        back: 'Zurück zum Einloggen'
+    reset:
+        title: 'Mein Passwort zurücksetzen'
+        desc: 'Wunderbar! Sie können jetzt Ihr Passwort auf ein anderes zurücksetzen, damit Sie sich wieder anmelden können.'
+        new_password: 'Neues Passwort'
+        confirm_password: 'Bestätigen Sie das neue Passwort'
+        submit: Update

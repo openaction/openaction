@@ -1,0 +1,211 @@
+{% apply inky_to_html|inline_css %}
+    <title>{{ campaign.subject }}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <style>
+        {% if campaign.unlayerEnabled %}
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            font-family: "Open Sans", Segoe UI, Source Sans Pro, Calibri, Candara, Arial, sans-serif;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+        .footer a {
+            color: #999;
+        }
+        {% else %}
+            {{ include('emails/community/style/foundation.css.twig') }}
+            {{ include('emails/community/style/content.css.twig') }}
+
+            {{ include('emails/community/style/custom.css.twig', {
+                primary: project.appearancePrimary|default('000000'),
+                secondary: project.appearanceSecondary|default('000000'),
+                third: project.appearanceThird|default('000000'),
+            })|raw }}
+        {% endif %}
+
+        {#
+        # Include the project custom CSS
+        #}
+        {{ project.emailingCustomCss|raw }}
+    </style>
+
+    {% if campaign.preview %}
+        <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
+            {{ campaign.preview }}
+        </span>
+    {% endif %}
+
+    {% if campaign.unlayerEnabled %}
+        {{ campaign.content|raw }}
+
+        <div class="footer">
+            <p class="text-center">
+                <span class="footer-copyrights">
+                    © {{ 'now'|date('Y') }} {{ 'community.footer.copyright'|trans({}, 'emails', project.websiteLocale) }}
+                </span>
+                <br />
+                {{ project.legalGdprName }} {{ project.legalGdprAddress }}
+            </p>
+
+            <div class="footer-legalities">
+                {% set projectId = project.id %}
+
+                {% set payload = {
+                    'project_locale': project.websiteLocale,
+                    'organization_name': organization.name,
+                    'contact_email': project.legalGdprEmail|default('contact@' ~ project.rootDomain.name),
+                    'website_enabled': project.isModuleEnabled('website'),
+                    'website_url': domain_url(project, '/'),
+                    'gdpr_manage_url': preview ? '#' : domain_redirect_url(project, 'manage-gdpr', '-contact-id-'),
+                } %}
+
+                {% sandbox %}
+                    {% include ('@project/'~projectId~'/emailing_legalities.html.twig') with payload %}
+                {% endsandbox %}
+            </div>
+        </div>
+    {% else %}
+        <table class="body">
+            <tr>
+                <td>
+                    <container>
+                        <spacer size="32"></spacer>
+
+                        <div class="organization-logo">
+                            {% if not project.appearanceLogoDark %}
+                                <h1 class="text-center">
+                                    {{ organization.name }}
+                                </h1>
+                            {% elseif is_granted('website_see_module', project) %}
+                                <a href="{{ domain_url(project, '/') }}" target="_blank">
+                                    <center>
+                                        <img src="{{ cdn_image_url(project.appearanceLogoDark) }}" class="logo" alt="{{ organization.name }}" />
+                                    </center>
+                                </a>
+                            {% else %}
+                                <center>
+                                    <img src="{{ cdn_image_url(project.appearanceLogoDark) }}"
+                                         class="logo" alt="{{ organization.name }}" />
+                                </center>
+                            {% endif %}
+                        </div>
+
+                        <spacer size="32"></spacer>
+
+                        {{ campaign.content|raw }}
+
+                        <spacer size="48"></spacer>
+                    </container>
+
+                    <container class="footer">
+                        <row>
+                            <columns>
+                                <spacer size="32"></spacer>
+
+                                <center>
+                                    <menu>
+                                        {% if project.socialFacebook %}
+                                            <item>
+                                                <a href="{{ project.socialFacebook }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/facebook.png') }}"
+                                                         class="social-link social-link-facebook" alt="Facebook" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialTwitter %}
+                                            <item>
+                                                <a href="{{ project.socialTwitter }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/twitter.png') }}"
+                                                         class="social-link social-link-twitter" alt="Twitter" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialInstagram %}
+                                            <item>
+                                                <a href="{{ project.socialInstagram }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/instagram.png') }}"
+                                                         class="social-link social-link-instagram" alt="Instagram" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialLinkedIn %}
+                                            <item>
+                                                <a href="{{ project.socialLinkedIn }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/linkedin.png') }}"
+                                                         class="social-link social-link-linkedin" alt="LinkedIn" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialYoutube %}
+                                            <item>
+                                                <a href="{{ project.socialYoutube }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/youtube.png') }}"
+                                                         class="social-link social-link-youtube" alt="Youtube" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialMedium %}
+                                            <item>
+                                                <a href="{{ project.socialMedium }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/medium.png') }}"
+                                                         class="social-link social-link-medium" alt="Medium" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+
+                                        {% if project.socialTelegram %}
+                                            <item>
+                                                <a href="https://t.me/{{ project.socialTelegram }}" target="_blank">
+                                                    <img src="{{ url('root_url') ~ asset('emails/socials/telegram.png') }}"
+                                                         class="social-link social-link-telegram" alt="Telegram" />
+                                                </a>
+                                            </item>
+                                        {% endif %}
+                                    </menu>
+                                </center>
+
+                                <spacer size="16"></spacer>
+
+                                <p class="text-center">
+                                    <span class="footer-copyrights">
+                                        © {{ 'now'|date('Y') }} {{ 'community.footer.copyright'|trans({}, 'emails', project.websiteLocale) }}
+                                    </span>
+                                    <br />
+                                    {{ project.legalGdprName }} {{ project.legalGdprAddress }}
+                                </p>
+
+                                <div class="footer-legalities">
+                                    {% set projectId = project.id %}
+
+                                    {% set payload = {
+                                        'project_locale': project.websiteLocale,
+                                        'organization_name': organization.name,
+                                        'contact_email': project.legalGdprEmail|default('contact@' ~ project.rootDomain.name),
+                                        'website_enabled': project.isModuleEnabled('website'),
+                                        'website_url': domain_url(project, '/'),
+                                        'gdpr_manage_url': preview ? '#' : domain_redirect_url(project, 'manage-gdpr', '-contact-id-'),
+                                    } %}
+
+                                    {% sandbox %}
+                                        {% include ('@project/'~projectId~'/emailing_legalities.html.twig') with payload %}
+                                    {% endsandbox %}
+                                </div>
+
+                                <spacer size="32"></spacer>
+                            </columns>
+                        </row>
+                    </container>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endapply %}

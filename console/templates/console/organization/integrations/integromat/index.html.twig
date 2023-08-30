@@ -1,0 +1,86 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title ('index.'~section~'.'~integration~'.title')|trans({}, 'organization_integrations') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_organization_integrations', {'organizationUuid': current_organization.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'organization_integrations') }}</span>
+            </a>
+
+            <h3 class="mt-2">
+                {{ ('index.'~section~'.'~integration~'.title')|trans({}, 'organization_integrations') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ ('index.'~section~'.'~integration~'.help')|trans({}, 'organization_integrations') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-6">
+                    <div class="integrations-connection text-center mb-4">
+                        <img src="{{ asset('res/icon/icon.png') }}" class="mx-2" />
+                        <img src="{{ asset('integrations/'~integration~'.png') }}" class="mx-2" />
+                    </div>
+
+                    <div class="mb-3">
+                        {{ 'integromat.description.1'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ 'integromat.description.2'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ 'integromat.description.3'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ 'integromat.description.4'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <div class="mb-4">
+                        <a href="https://citipo.com/doc-integromat" class="btn btn-primary mr-2"
+                           target="_blank" rel="noreferrer noopener">
+                            {{ 'integromat.learn_more'|trans({}, 'organization_integrations') }}
+                        </a>
+
+                        <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" class="btn btn-secondary"
+                           target="_blank" rel="noreferrer noopener">
+                            {{ 'integromat.contact_us'|trans({}, 'organization_integrations') }}
+                        </a>
+                    </div>
+
+                    <div class="world-block p-4 mb-4">
+                        <div class="text-uppercase text-muted font-weight-normal mb-3">
+                            {{ 'integromat.subtitle'|trans({}, 'organization_integrations') }}
+                        </div>
+
+                        <div class="input-group mb-3"
+                             data-controller="stimulus-clipboard"
+                             data-stimulus-clipboard-success-content="{{ 'clipboard.copied'|trans({}, 'global') }}">
+
+                            <input type="text" class="form-control" data-token
+                                   data-stimulus-clipboard-target="source"
+                                   value="{{ current_organization.apiToken }}" />
+
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button"
+                                        data-action="stimulus-clipboard#copy"
+                                        data-stimulus-clipboard-target="button">
+                                    {{ 'clipboard.copy'|trans({}, 'global') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

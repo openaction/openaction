@@ -1,0 +1,138 @@
+back: 'Zurück zu den Einstellungen'
+save: 'Speichern Sie'
+index:
+    title: Projekt-Einstellungen
+    details:
+        label: 'Details zum Projekt'
+        desc: 'Aktualisieren Sie die Projektdetails wie den Namen oder den Schwerpunktbereich.'
+        link: 'Projektdetails aktualisieren'
+    modules:
+        label: 'Module und Werkzeuge'
+        desc: 'Aktivieren Sie nur die Tools, die Sie verwenden, um Ihr Projekt besser an Ihre Strategie anzupassen.'
+        link: 'Aktivieren/Deaktivieren von Modulen und Tools'
+    domain:
+        label: Domänenname
+        desc: "Konfigurieren Sie den Domänennamen, den Sie für Ihre Website oder zur Verbesserung der\nZustellbarkeit Ihrer E-Mail-Kampagnen zu verbessern.\n"
+        link: 'Konfigurieren Sie den Domänennamen'
+    duplicate:
+        label: 'Duplizieren Sie dieses Projekt'
+        desc: 'Erstellen Sie eine Kopie dieses Projekts mit der gleichen Website und Konfiguration.'
+        link: 'Projekt duplizieren'
+    move:
+        label: 'Dieses Projekt verschieben'
+        desc: 'Verschieben Sie dieses Projekt in eine andere Organisation.'
+        link: 'Projekt verschieben'
+    remove:
+        label: 'Dieses Projekt löschen'
+        desc: 'Dieses Projekt und alle damit verbundenen Daten löschen. Es wird kein Kontakt gelöscht.'
+        link: 'Dieses Projekt löschen'
+        confirm: "Sind Sie absolut sicher, dass Sie dieses Projekt entfernen möchten?\nDiese Aktion kann nicht rückgängig gemacht werden. Damit wird das Projekt\ndas Projekt %name%, seine Website und alle seine Inhalte.\nIhre Kontakte werden dabei nicht gelöscht.\n"
+domain:
+    title: Domänenname
+    current_domain: 'Ihr Projekt verwendet derzeit den folgenden Domänennamen:'
+    change_it: "Die Änderung erfordert einen gewissen technischen Aufwand unsererseits.\nWenn Sie sie ändern möchten, kontaktieren Sie uns:\n"
+    contact_us: Kontakt
+details:
+    title: 'Details zum Projekt'
+    name:
+        label: 'Name des Projekts'
+        help: 'Dieser Name ist intern: er wird in Menüs und Überschriften angezeigt. Maximal 60 Zeichen.'
+    locale:
+        label: Projektsprache
+        help: 'In welcher Sprache sollen die Projektwebsite und die E-Mails angezeigt werden?'
+    submit: 'Speichern Sie'
+modules:
+    title: 'Projektmodule und Werkzeuge'
+    submit: 'Speichern Sie'
+move:
+    title: 'Projekt "%title%" verschieben'
+    to: 'In welcher Organisation möchten Sie dieses Projekt durchführen?'
+    submit: Verschieben
+legalities:
+    title: 'Rechtliche Einzelheiten'
+    help: 'Konfigurieren Sie rechtliche Details in Bezug auf Website-Gesetze, E-Mail-Gesetze und GDPR.'
+    missing: "Es fehlen Ihre rechtlichen Angaben. Sie sollten sie vor dem Start Ihres Projekts angeben\nProjekt zur Verfügung stellen, um die Einhaltung der Gesetze für Websites und E-Mails zu gewährleisten.\n"
+    form:
+        general:
+            title: 'Allgemeine Angaben'
+            help: "Das französische Recht (wie auch das Recht der meisten EU-Länder) schreibt vor, dass bestimmte Angaben\nauf Websites angezeigt werden müssen, damit die Besucher wissen, wer sie veröffentlicht.\n"
+            name:
+                label: 'Vollständiger offizieller Name Ihrer Organisation'
+                help: "Wenn das in Ihrer Situation nicht klar ist, verwenden Sie den Namen der Organisation/Person\ndie von der Veröffentlichung dieser Website/dieser E-Mail-Kampagnen profitiert.\n"
+            address:
+                label: 'Postanschrift Ihrer Organisation'
+                help: "Wo genau befindet sich der Hauptsitz Ihrer Organisation?\nDiese Adresse wird von Besuchern verwendet, die Ihre Organisation aus rechtlichen Gründen kontaktieren wollen.\naus rechtlichen Gründen.\n"
+            publisherName:
+                label: 'Vollständiger Name des Direktors der Veröffentlichung'
+                help: "Der Veröffentlichungsleiter ist die natürliche Person, die für den Inhalt\ndie auf der Website veröffentlicht werden. Es kann sich nicht um eine moralische Person handeln.\n"
+            publisherRole:
+                label: 'Rolle des Publikationsleiters'
+                help: 'Was ist die Rolle des Publikationsleiters in Ihrer Organisation?'
+        gdpr:
+            title: 'Details zur Allgemeinen Datenschutzverordnung'
+            help: "Die GDPR ist eine EU-Verordnung über Datenschutz und Privatsphäre.\nSie gibt Ihren Besuchern Rechte darüber, wie Sie ihre Daten verarbeiten\nDaten verarbeiten und was Sie über sie speichern dürfen. Um diese Rechte ausüben zu können\nRechte auszuüben, müssen die Besucher wissen, an wen sie sich in Ihrer Organisation wenden können.\nDie folgenden Angaben sind daher für Besucher gedacht, die\nihre GDPR-Rechte ausüben wollen. Wahrscheinlich sollten Sie die Kontaktinformationen\nIhrer Rechtsabteilung oder Ihres Datenschutzbeauftragten angeben.\n"
+            email:
+                label: 'E-Mail-Adresse Ihres rechtlichen Ansprechpartners'
+membership:
+    back: 'Zurück zur Konfiguration des Mitgliedschaftsbereichs'
+    index:
+        title: 'Konfiguration des Mitgliedschaftsbereichs'
+        help: "Der Mitgliederbereich ist ein Bereich, der den Mitgliedern Ihrer Gemeinschaft vorbehalten ist (Personen, die ein\nein Konto auf Ihrer Website erstellt haben).\n<br />\nJeder Inhalt, den Sie auf Citipo erstellen, kann so konfiguriert werden, dass er nur für Mitglieder zugänglich ist.\n"
+        blocks:
+            homepage:
+                title: Hauptseite
+                desc: 'Aktualisieren Sie den Inhalt der Hauptseite des Mitgliedschaftsbereichs, die allen Mitgliedern angezeigt wird, wenn sie sich anmelden.'
+                link: 'Konfigurieren Sie die Hauptseite'
+            form:
+                title: 'Daten der Mitglieder'
+                desc: 'Wählen Sie, welche Daten Ihre Mitglieder bei der Anmeldung und bei der Aktualisierung ihres Kontos abfragen sollen.'
+                link: 'Konfigurieren Sie die Mitgliederdaten'
+            custom:
+                title: 'Benutzerdefinierte Fragen'
+                desc: 'Fügen Sie benutzerdefinierte Fragen zu den Formularen für die Registrierung und das Mitgliederkonto hinzu.'
+                link: 'Benutzerdefinierte Fragen konfigurieren'
+    form:
+        title: 'Daten der Mitglieder'
+        desc: 'Wählen Sie, welche Daten Ihre Mitglieder bei der Anmeldung und bei der Aktualisierung ihres Kontos abfragen sollen.'
+        label:
+            introduction:
+                title: Einführung
+                desc: 'Dieser Text wird oben auf dem Anmeldeformular für die Mitgliedschaft angezeigt, bevor sich Personen anmelden.'
+            fields:
+                title: Felder
+                desc: "Für jedes Formularfeld können Sie wählen, ob es bei der Registrierung erforderlich ist, ob Sie es bei der\nRegistrierung abzufragen, erst nach der Registrierung im Bereich Mitgliedskonto\n(optional) oder überhaupt nicht abgefragt werden.\n"
+            unmapped: 'Dieses Feld wird von Citipo benötigt.'
+            email: 'E-Mail Adresse'
+            password: Passwort
+            profileFormalTitle: 'Formeller Titel'
+            profileFirstName: Vornamen
+            profileMiddleName: 'Mittlerer Name'
+            profileLastName: Nachname
+            profileBirthdate: Geburtsdatum
+            profileGender: Geschlecht
+            profileNationality: Nationalität
+            profileCompany: 'Unternehmen / Organisation'
+            profileJobTitle: Berufsbezeichnung
+            contactPhone: 'Persönliche Rufnummer'
+            contactWorkPhone: 'Telefonnummer im Büro'
+            socialFacebook: 'URL des Facebook-Profils'
+            socialTwitter: 'URL des Twitter-Kontos'
+            socialLinkedIn: 'URL des LinkedIn-Profils'
+            socialTelegram: Telegramm-Benutzername
+            socialWhatsapp: WhatsApp-Telefonnummer
+            addressStreetLine1: 'Straße und Hausnummer, Zeile 1'
+            addressStreetLine2: 'Straße und Hausnummer, Zeile 2'
+            addressZipCode: Postleitzahl
+            addressCity: 'Name der Stadt'
+            addressCountry: Land
+            settingsReceiveNewsletters: 'Ich abonniere den Newsletter'
+            settingsReceiveSms: 'Ich akzeptiere den Empfang von Textnachrichten'
+            settingsReceiveCalls: 'Ich akzeptiere den Empfang von Anrufen'
+        rule:
+            required: 'Frage bei der Registrierung (erforderlich)'
+            optional: 'Bei der Anmeldung fragen (fakultativ)'
+            update: 'Nur bei Kontoaktualisierung fragen (optional)'
+            ignore: 'Fragen Sie nicht'
+    homepage:
+        title: Hauptseite
+        desc: 'Aktualisieren Sie den Inhalt der Hauptseite des Mitgliedschaftsbereichs, die allen Mitgliedern angezeigt wird, wenn sie sich anmelden.'

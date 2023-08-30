@@ -1,0 +1,119 @@
+{% extends 'console/partner/base.html.twig' %}
+
+{% block page_title 'theme.title'|trans({}, 'partner') %}
+
+{% block sidebar_themes 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-white">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-9">
+                    <h3>
+                        {{ 'theme.title'|trans({}, 'partner') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'theme.desc'|trans({}, 'partner') }}
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 text-lg-right">
+                    <a href="https://github.com/apps/{{ github_app_slug }}" class="btn btn-primary">
+                        {{ 'theme.configure'|trans({}, 'partner') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            {% if websiteThemes|length > 0 %}
+                <div class="mt-4">
+                    {% for websiteTheme in websiteThemes %}
+                        <div class="world-block p-4 mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2">
+                                    <div class="border">
+                                        <img src="{{ cdn_image_url(websiteTheme.thumbnail) }}" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5 class="mb-0">
+                                        {% if websiteTheme.repositoryFullName %}
+                                            {{ websiteTheme.repositoryFullName }}
+                                        {% else %}
+                                            <em>Archived theme</em>
+                                        {% endif %}
+                                    </h5>
+
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            {% if websiteTheme.forOrganizations|length > 0 %}
+                                                {{ 'theme.usable_orgas'|trans({}, 'partner') }}
+                                                {{ websiteTheme.forOrganizationsNames|join(', ') }}
+                                            {% else %}
+                                                {{ 'theme.usable_everyone'|trans({}, 'partner') }}
+                                            {% endif %}
+                                            -
+                                            <a href="{{ path('console_partner_themes_configure', {'uuid': websiteTheme.uuid}) }}">
+                                                {{ 'theme.usable_configure'|trans({}, 'partner') }}
+                                            </a>
+                                        </small>
+                                    </div>
+
+                                    <div>
+                                        <strong>{{ websiteTheme.name.en|default('Unnamed') }}</strong>
+                                        <br />
+                                        {{ websiteTheme.description.en|default('') }}
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 text-muted text-right">
+                                    <div class="mb-1">
+                                        {% if websiteTheme.isUpdating %}
+                                            <a href="#" disabled="disabled" class="btn disabled btn-primary btn-sm mr-2">
+                                                <i class="fal fa-spinner fa-spin mr-1"></i>
+                                                {{ 'theme.syncing'|trans({}, 'partner') }}
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ csrf_path('console_partner_themes_sync', {'uuid': websiteTheme.uuid}) }}"
+                                               class="btn btn-primary btn-sm mr-2">
+                                                {{ 'theme.sync'|trans({}, 'partner') }}
+                                            </a>
+                                        {% endif %}
+
+                                        <a href="https://github.com/{{ websiteTheme.repositoryFullName }}"
+                                           class="btn btn-secondary btn-sm" target="_blank">
+                                            {{ 'theme.github'|trans({}, 'partner') }}
+                                        </a>
+                                    </div>
+
+                                    <small>
+                                        {{ 'theme.last_synced'|trans({}, 'partner') }}
+                                        {{ websiteTheme.updatedAt|format_datetime('medium', 'short') }}
+                                        <br />
+                                        {% if websiteTheme.updateError %}
+                                            <div class="text-danger">
+                                                <i class="fal fa-times mr-1"></i>
+                                                {{ websiteTheme.updateError }}
+                                            </div>
+                                        {% else %}
+                                            <div class="text-success">
+                                                <i class="fal fa-check mr-1"></i>
+                                                Successfully updated
+                                            </div>
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="my-4 text-center text-muted">
+                    {{ 'theme.none'|trans({}, 'partner') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

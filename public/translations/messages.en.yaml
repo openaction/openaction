@@ -1,0 +1,250 @@
+base:
+    form_legalities: |
+        You have a right of access, rectification, erasure and portability
+        of your data as well as a right of opposition and a right to limit the
+        processing of data concerning you. You can exercise your rights by
+        contacting us at the address available in the Privacy Policy.
+    pagination:
+        previous: Previous
+        next: Next
+    show_all: Show all
+    categories: Categories
+    no_element: No element yet.
+    formal_title:
+        madam: Madam
+        sir: Sir
+    gender:
+        male: Male
+        female: Female
+        transgender: Transgender
+        non_binary: Non-binary
+        other: Other
+    embed-consent:
+        title: External content
+        description: |
+            This embedded content is hosted by an external service. By displaying this content,
+            you consent to %host% storing cookies on your browser.
+        accept: Display the content
+        external: Open
+        cancel: Do not play these contents
+
+home:
+    blocks:
+        socials:
+            title: Social networks
+
+posts:
+    not_published: This post isn't published yet. You are previewing it as an administrator.
+
+events:
+    more: More
+    show_all: Show all
+    begin_at: Start on
+    address: Address
+    online: Online event
+    no_element: No element yet.
+    not_published: This event isn't published yet. You are previewing it as an administrator.
+
+newsletter:
+    email: Your email address *
+    firstname: Your first name
+    lastname: Your last name
+    phone: Your phone number
+    country: Country
+    zipCode: ZIP code
+    submit: Subscribe
+    success: You successfully subscribed to the newsletter.
+
+legalities:
+    title: Legalities
+    editor: Editor
+    publisher: Publication director
+    development:
+        title: Development
+        text: Powered by the platform
+    hosting:
+        title: Hosting provider
+        data: Data are stored in Francfort, Germany.
+        technical: 'Technical service:'
+
+gdpr:
+    title: Manage my preferences
+    success: Preferences were successfully saved.
+    all_projects: Configure my general settings
+    per_projects: Configure my settings per topic
+    newsletter: I accept to receive emails.
+    sms: I accept to receive text messages.
+    calls: I accept to be called by phone.
+    submit: Update
+
+share:
+    facebook: Share on Facebook
+    twitter: Share on Twitter
+    linkedin: Share on LinkedIn
+    telegram: Share on Telegram
+    whatsapp: Share on Whatsapp
+    email: Share by e-mail
+
+socials:
+    rss: RSS feed
+    facebook: Find us on Facebook
+    twitter: Find us on Twitter
+    instagram: Find us on Instagram
+    linkedin: Find us on LinkedIn
+    youtube: Find us on Youtube
+    medium: Find us on Medium
+    telegram: Find us on Telegram
+    snapchat: Find us on Snapchat
+
+forms:
+    phoning_campaign: |
+        This form is associated to a phone campaign. You are previewing it as an administrator
+        but it won't be accessible other than in the campaign context.
+    no_value: No answer
+    submit: Submit
+    never_passwords: Never send passwords via this form.
+    newsletter: I accept to receive emails.
+    success: The form has been successfully sent.
+    money_amount_custom: 'Or enter a custom amount:'
+
+trombinoscope:
+    no_element: No information yet
+    contact_person: Contact
+    contact_by_mail: Contact by mail
+    socials:
+        find_on:
+            facebook: Follow on Facebook
+            twitter: Follow on Twitter
+            instagram: Follow on Instagram
+            linkedin: Follow on LinkedIn
+            youtube: Follow on Youtube
+            medium: Follow on Medium
+            telegram: Follow on Telegram
+
+membership:
+    menu:
+        connected: Logged in
+        account: My account
+        logout: Log out
+    login:
+        register_success: Your account has been successfully created. You can now log in.
+        reset_success: Your password has been successfully reset. You can now log in.
+        update_email_success: Your email address has been successfully updated. You can now log in.
+        email: Email address
+        password: Password
+        submit: Login
+        reset: I forgot my password
+        join_question: Not yet registered?
+    reset:
+        title: I forgot my password
+        email: Email address
+        submit: Reset my password
+    reset_verify:
+        title: Check your inbox
+        message: |
+            A confirmation email has been sent to you.
+            Click on the link it contains to finalize the reset of your password.
+    reset_update:
+        title: Update your password
+        password_first: New password
+        password_second: Confirmation
+        submit: Reset my password
+    form:
+        submit: Save
+        submit_join: Send
+        sections:
+            account: Your account
+            details: Your identity
+            contact: Your contact details
+            address: Your address
+            notifications: Your notifications
+        account:
+            update_email: Update my email address
+            unregister: Unsubscribe
+        fields:
+            # Required
+            email: Email address
+            password_first: Password
+            password_second: Password confirmation
+            profileFirstName: First name
+            profileMiddleName: Other first name(s)
+            profileLastName: Last name
+            acceptPolicy: I agree to the Privacy Policy and Terms of Service.
+
+            # Optional/Disabled
+            profileFormalTitle: Formal title
+            profileBirthdate: Birthdate
+            profileGender: Gender
+            profileNationality: Nationality
+            profileJobTitle: Job title
+            profileCompany: Employer
+            contactPhone: Personal phone number
+            contactWorkPhone: Professional phone number
+            socialFacebook: Facebook account URL
+            socialTwitter: Twitter username
+            socialLinkedIn: LinkedIn account URL
+            socialTelegram: Telegram username
+            socialWhatsapp: WhatsApp phone number
+            addressStreetLine1: Postal address
+            addressStreetLine2: Additional address
+            addressZipCode: ZIP code
+            addressCity: City
+            addressCountry: Country
+            settingsReceiveNewsletters: I agree to be contacted by e-mail as part of my account.
+            settingsReceiveSms: I agree to be contacted by text as part of my account.
+            settingsReceiveCalls: I agree to be contacted by phone as part of my account.
+        choices:
+            profileFormalTitle:
+                mr: Mr.
+                ms: Ms.
+            profileGender:
+                male: Male
+                female: Female
+                transgender: Transgender
+                non_binary: Non-binary
+                other: Other
+    join_verify:
+        title: Check your inbox
+        message: |
+            A confirmation email has been sent to you.
+            Click on the link it contains to finalize your account.
+    account:
+        title: My account
+        update_email:
+            title: Update my email address
+            desc: A confirmation email will be sent to you to confirm the update.
+            field: New email address
+            submit: Save
+            cancel: Cancel
+            success: |
+                Your request was accepted. A confirmation email has been sent to you.
+                Click on the link it contains to finalize the update.
+        unregister:
+            title: Unsubscribe
+            desc: Are you sure you want to unsubscribe? A confirmation email will be sent to you to confirm the unsubscription.
+            submit: Save
+            cancel: Cancel
+            success: |
+                Your request was accepted. A confirmation email has been sent to you.
+                Click on the link it contains to finalize the unsubscription.
+    resources:
+        title: Resources
+    posts:
+        title: News
+    events:
+        title: Events
+    forms:
+        title: Forms
+
+phoning:
+    start: Start a new call
+    finished: The phoning campaign is finished as everyone targeted has been called.
+    calling: I started the call
+    details:
+        title: You are calling ...
+        failed_invalid: The call failed
+        failed_no_answer: They didn't answer
+        failed_no_call: They don't want to be called again
+        failed_unregister: They wish to unregister
+        failed_call_later: They wish to be called again later
+        accepted: They accept to answer questions

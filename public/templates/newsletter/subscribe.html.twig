@@ -1,0 +1,83 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.newsletter %}
+
+{% block body_class 'body-newsletter-subscribe' %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'title': current_project.terminology.newsletter,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="user-form newsletter-form">
+        {% if success %}
+            <div class="user-form-success">
+                <span>{{ 'newsletter.success'|trans }}</span>
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+
+        <div class="newsletter-form-firstname">
+            {{ form_row(form.firstName, {
+                'label': false,
+                'attr': {'placeholder': 'newsletter.firstname'|trans}
+            }) }}
+        </div>
+
+        <div class="newsletter-form-lastname">
+            {{ form_row(form.lastName, {
+                'label': false,
+                'attr': {'placeholder': 'newsletter.lastname'|trans}
+            }) }}
+        </div>
+
+        {{ form_row(form.email, {
+            'label': false,
+            'attr': {'placeholder': 'newsletter.email'|trans}
+        }) }}
+
+        <div class="newsletter-form-phone">
+            {{ form_row(form.phone, {
+                'label': false,
+                'attr': {'placeholder': 'newsletter.phone'|trans}
+            }) }}
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend text-body text-sans-serif">
+                    {{ form_widget(form.country) }}
+                </div>
+                {{ form_widget(form.zipCode, {'attr': {'placeholder': 'newsletter.zipCode'|trans}}) }}
+            </div>
+        </div>
+
+        {{ form_errors(form.country) }}
+        {{ form_errors(form.zipCode) }}
+
+        {{ form_row(form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
+
+        <div class="user-form-submit">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ 'newsletter.submit'|trans }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+
+        <div class="form-legalities user-form-legalities">
+            {{ 'base.form_legalities'|trans }}
+        </div>
+    </div>
+{% endblock %}

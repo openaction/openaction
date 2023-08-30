@@ -1,0 +1,8 @@
+/* Animate on hover */
+.zoom-hover {
+    transition: transform .2s;
+}
+
+.zoom-hover:hover {
+    transform: scale(1.025);
+}

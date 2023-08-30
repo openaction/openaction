@@ -1,0 +1,74 @@
+{% extends 'console/base.html.twig' %}
+
+{% block flashes '' %}
+
+{% block page %}
+    <div class="container-fluid px-5 mb-5">
+        <div class="row">
+            <div class="col-12 col-lg-2 world-sidebar">
+                <div class="mb-1">
+                    <span class="world-sidebar-category">
+                        {{ 'sidebar.area'|trans({}, 'partner') }}
+                    </span>
+                </div>
+
+                <a href="{{ path('console_partner_dashboard') }}"
+                   class="world-sidebar-item {% block sidebar_dashboard '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-chart-area"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.dashboard'|trans({}, 'partner') }}
+                    </div>
+                </a>
+
+                <a href="{{ path('console_partner_menu') }}"
+                   class="world-sidebar-item {% block sidebar_menu '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-list"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.menu'|trans({}, 'partner') }}
+                    </div>
+                </a>
+
+                <a href="{{ path('console_partner_themes_manage') }}"
+                   class="world-sidebar-item {% block sidebar_themes '' %}">
+                    <div class="world-sidebar-item-icon">
+                        <i class="fad fa-palette"></i>
+                    </div>
+                    <div class="world-sidebar-item-label">
+                        {{ 'sidebar.theme'|trans({}, 'partner') }}
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-lg-10">
+                {% block project_flashes %}
+                    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+                        {% for message in messages %}
+                            <div class="world-alert alert alert-bg-{{ type }}">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto pr-3">
+                                        {% if type == 'success' %}
+                                            <i class="far fa-check"></i>
+                                        {% elseif type == 'warning' %}
+                                            <i class="far fa-exclamation-triangle"></i>
+                                        {% elseif type == 'error' %}
+                                            <i class="far fa-times"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {{ message|trans({}, 'flashes') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

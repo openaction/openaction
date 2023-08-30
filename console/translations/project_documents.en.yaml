@@ -1,0 +1,17 @@
+index:
+    upload:
+        title: Upload a new document
+
+    list:
+        title: Documents
+        no_records: Your project does not contain any document for now.
+        no_records_desc: |
+            Upload a document above to create a publically accessible URL
+            for this document with your website's domain name.
+        name: Name
+        date: Date
+        view: View
+        copy_url: Copy public URL
+        download: Download
+        delete: Delete
+        remove_confirm: Are you sure you want to delete the document "%name%"?

@@ -1,0 +1,139 @@
+index:
+    title: Events
+    help: Create events to engage your community
+    edit_categories: Edit categories
+    create: New event
+    no_result: Your project does not contain any event for now.
+    no_result_create: Create the first event
+    begin_at: Begin on %datetime%
+    no_begin_date: No start date defined
+    draft: Draft
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    last_modified: Last edited on %datetime%
+    visits: visits
+    view: View
+    preview: Preview
+    edit: Edit
+    duplicate: Duplicate
+    move: Move
+    delete: Delete
+    remove_confirm: Are you sure you want to delete the event "%name%"?
+
+create:
+    title: Create an event
+    back: Back to the list
+
+    form:
+        title:
+            label: Event name
+            help: Name of the event (displayed in the website and on social networks when shared)
+        details: Date and location
+        beginAt:
+            label: Start date and time of the event
+            help: This start date will be used to help attendees mark the event in their agenda
+        address:
+            label: Postal address of the event
+            help: Keep empty if the event is going to be online
+        content:
+            label: Description of the event
+            help: |
+                Keep this description short (a few sentences) to help social networks display
+                the most important parts of the event. You can use a post in addition if you wish
+                to announce the event in a more detailed manner.
+        hasForm:
+            label: Create a registration form for this event automatically
+            help: |
+                When checked, a registration form will be automatically created and associated to this event.
+                You will be able to update it in the Forms module.
+        button:
+            title: Custom Call to action button
+            help: |
+                The Call to action is a highly visible button designed to get your visitors to do
+                an action relative to this event (register, attend online, open on Facebook, ...).
+                You can add a custom Call to action on your event (if it is not linked to a registration form)
+                by providing a button label and a target URL. Keep the button label empty to disable the button.
+        buttonText:
+            label: Button label
+            help: 'Ex: Register, Watch the live stream, ...'
+        buttonUrl:
+            label: Target URL
+            help: URL to open on click on the Call to action button
+        submit: Save
+
+    registerButton: Register
+    formBlocks:
+        title: 'Register to %title%'
+        first_name: 'First name'
+        last_name: 'Last name'
+        email: 'Email'
+        zip_code: 'Zip code'
+        city: 'City'
+        country: 'Country'
+
+edit:
+    title: Edit event "%title%"
+    back: Back to the list
+    view: View on the website
+
+    form:
+        title:
+            label: Event title
+            help: Title of the event (displayed in the list and on social networks when shared)
+        details: Date and location
+        beginAt:
+            label: Start date and time of the event
+            help: This start date will be used to help attendees mark the event in their agenda
+        address:
+            label: Postal address of the event
+            help: Keep empty if the event is going to be online
+        content:
+            label: Description of the event
+            help: |
+                Keep this description short (a few sentences) to help social networks display
+                the most important parts of the event. You can use a post in addition if you wish
+                to announce the event in a more detailed manner.
+        button:
+            title: Call to action
+            help: |
+                The Call to action is a highly visible button designed to get your visitors to do
+                an action relative to this event (register, attend online, open on Facebook, ...).
+                You can add such Call to action on your event page by providing a button label and a
+                target URL. Keep the button label empty to disable the button.
+        buttonText:
+            label: Button label
+            help: 'Ex: Register, Watch the live stream, ...'
+        buttonUrl:
+            label: Target URL
+            help: URL to open on click on the Call to action button
+        submit: Save
+
+move:
+    title: Move event "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this event?
+    submit: Move
+
+categories:
+    index:
+        back: Back to events
+        title: Events categories
+        order: Order
+        name: Name
+        number: Events
+        created: Creation date
+        edit: Edit
+        create: New category
+        no_records: Your project does not contain any event category for now.
+        no_records_desc: Categories help you organize your content so that it's easier for your visitor to explore.
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

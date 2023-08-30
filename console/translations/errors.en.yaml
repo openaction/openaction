@@ -1,0 +1,9 @@
+404:
+    title: Page not found
+    help: The page you requested could not be found.
+    back: Back to the Console
+
+500:
+    title: An error occured
+    help: We have been alerted and we will have a look.
+    back: Back to the Console

@@ -1,0 +1,50 @@
+framework:
+    workflows:
+        domain_configuration:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'configurationStatus'
+            supports:
+                - App\Entity\Domain
+            initial_marking: cloudflare_pending
+            places:
+                - cloudflare_pending
+                - cloudflare_created
+                - cloudflare_provisioned
+                - cloudflare_ready
+                - sendgrid_domain_pending
+                - sendgrid_domain_created
+                - sendgrid_branded_link_pending
+                - sendgrid_branded_link_created
+                - sendgrid_provisioned
+                - sendgrid_ready
+                - postmark_pending
+                - postmark_ready
+            transitions:
+                cloudflare_create:
+                    from: cloudflare_pending
+                    to: cloudflare_created
+                cloudflare_provision:
+                    from: cloudflare_created
+                    to: cloudflare_provisioned
+                cloudflare_active:
+                    from: cloudflare_provisioned
+                    to: [cloudflare_ready, sendgrid_domain_pending, sendgrid_branded_link_pending, postmark_pending]
+                sendgrid_domain_create:
+                    from: sendgrid_domain_pending
+                    to: sendgrid_domain_created
+                sendgrid_branded_link_create:
+                    from: sendgrid_branded_link_pending
+                    to: sendgrid_branded_link_created
+                sendgrid_provision:
+                    from: [sendgrid_domain_created, sendgrid_branded_link_created]
+                    to: sendgrid_provisioned
+                sendgrid_active:
+                    from: sendgrid_provisioned
+                    to: sendgrid_ready
+                postmark_configure:
+                    from: postmark_pending
+                    to: postmark_ready

@@ -1,0 +1,99 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'homepage.cta.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back_homepage'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'homepage.cta.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'homepage.cta.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 p-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-11">
+                    {{ form_start(form) }}
+
+                    <div class="row">
+                        <div class="col-12 col-xl-6 mb-4">
+                            <div>
+                                {{ 'homepage.cta.form.primary.label'|trans({}, 'project_appearance') }}
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="form-text text-muted">
+                                    {{ 'homepage.cta.form.primary.help'|trans({}, 'project_appearance') }}
+                                </small>
+                            </div>
+
+                            <div class="bg-white border border-muted pt-3 pr-3 pl-3 pb-0">
+                                {{ form_row(form.primary.label, {
+                                    'label': false,
+                                    'help': 'homepage.cta.form.button.label'|trans({}, 'project_appearance')
+                                }) }}
+
+                                {{ form_row(form.primary.target, {
+                                    'label': false,
+                                    'help': 'homepage.cta.form.button.url'|trans({}, 'project_appearance')
+                                }) }}
+
+                                {{ form_row(form.primary.openNewTab, {
+                                    'label': 'homepage.cta.form.button.newTab'|trans({}, 'project_appearance')
+                                }) }}
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-xl-6 mb-4">
+                            <div>
+                                {{ 'homepage.cta.form.secondary.label'|trans({}, 'project_appearance') }}
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="form-text text-muted">
+                                    {{ 'homepage.cta.form.secondary.help'|trans({}, 'project_appearance') }}
+                                </small>
+                            </div>
+
+                            <div class="bg-white border border-muted pt-3 pr-3 pl-3 pb-0">
+                                {{ form_row(form.secondary.label, {
+                                    'label': false,
+                                    'help': 'homepage.cta.form.button.label'|trans({}, 'project_appearance')
+                                }) }}
+
+                                {{ form_row(form.secondary.target, {
+                                    'label': false,
+                                    'help': 'homepage.cta.form.button.url'|trans({}, 'project_appearance')
+                                }) }}
+
+                                {{ form_row(form.secondary.openNewTab, {
+                                    'label': 'homepage.cta.form.button.newTab'|trans({}, 'project_appearance')
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {{ 'save'|trans({}, 'project_appearance') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

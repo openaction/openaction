@@ -1,0 +1,59 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_4_layout.html.twig']
+    paths:
+        '%kernel.project_dir%/public/emails': emails
+    globals:
+        sentry_public_dsn: '%env(SENTRY_PUBLIC_DSN)%'
+        mollie_orga_id: '%env(MOLLIE_ORGA_ID)%'
+        unlayer_project_id: '%env(UNLAYER_PROJECT_ID)%'
+        github_app_slug: '%env(GITHUB_APP_SLUG)%'
+        is_on_premise: '%is_on_premise%'
+        console_user_css: '%env(APP_CONSOLE_USER_CSS)%'
+        console_admin_css: '%env(APP_CONSOLE_ADMIN_CSS)%'
+        console_logo: '%env(APP_CONSOLE_LOGO)%'
+        console_name: '%env(APP_CONSOLE_NAME)%'
+        console_legal_name: '%env(APP_CONSOLE_LEGAL_NAME)%'
+        console_email: '%env(APP_CONSOLE_EMAIL)%'
+        meilisearch_endpoint: '%env(MEILISEARCH_ENDPOINT)%'
+
+when@test:
+    twig:
+        strict_variables: true
+
+services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    Twig\Extra\CssInliner\CssInlinerExtension: ~
+    Twig\Extra\Inky\InkyExtension: ~
+    Twig\Extra\Intl\IntlExtension: ~
+    Twig\Extra\String\StringExtension: ~
+
+    #
+    # Twig sandbox
+    #
+    Twig\Extension\SandboxExtension: ~
+
+    Twig\Sandbox\SecurityPolicyInterface:
+        class: 'Twig\Sandbox\SecurityPolicy'
+        arguments:
+            $allowedTags: ['if', 'for', 'set', 'block']
+            $allowedFunctions:
+                - attribute
+                - stimulus_controller
+                - stimulus_target
+                - stimulus_action
+            $allowedFilters:
+                - raw
+                - length
+                - default
+                - trans
+                - escape
+                - slice
+                - format_date
+                - format_datetime
+                - round
+                - merge

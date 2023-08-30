@@ -1,0 +1,318 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title contact %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-auto flex-grow-1 mb-3 mb-lg-0">
+                    <a href="{{ path('console_community_contacts', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'view.back'|trans({}, 'project_contacts') }}</span>
+                    </a>
+
+                    <h3 class="mt-2 mb-0">
+                        {{ contact }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <div class="d-flex justify-content-end">
+                        {% if is_granted('community_contacts_update', current_project) %}
+                            <a href="{{ csrf_path('console_community_contacts_edit', {'projectUuid': current_project.uuid, 'uuid': contact.uuid}) }}"
+                               class="btn btn-secondary mr-3">
+                                <i class="fad fa-pencil mr-1"></i>
+                                {{ 'view.edit'|trans({}, 'project_contacts') }}
+                            </a>
+                        {% endif %}
+
+                        {% if is_granted('community_contacts_delete', current_project) %}
+                            <a href="{{ csrf_path('console_community_contacts_delete', {'projectUuid': current_project.uuid, 'uuid': contact.uuid}) }}"
+                               class="btn btn-secondary text-danger mr-3"
+                               data-controller="delete"
+                               data-message="{{ 'view.delete_message'|trans({'%email%': contact.email}, 'project_contacts') }}"
+                               data-target-url="{{ path('console_community_contacts', {'projectUuid': current_project.uuid}) }}">
+                                <i class="fad fa-trash mr-1"></i>
+                                {{ 'view.delete'|trans({}, 'project_contacts') }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row">
+                <div class="col-12 col-lg-4 mb-4">
+
+                    <div class="world-block p-3">
+                        <h5 class="mb-4">
+                            {{ 'view.profile.label'|trans({}, 'project_contacts') }}
+                        </h5>
+
+                        <div class="mb-4">
+                            {% if contact.picture %}
+                                {% set pictureUrl = cdn_url(contact.picture) %}
+
+                                <a href="{{ pictureUrl }}" target="_blank">
+                                    <img src="{{ pictureUrl }}" class="community-view-picture" />
+                                </a>
+                            {% else %}
+                                <img src="https://www.gravatar.com/avatar/{{ contact.emailHash }}?d=mp&s=800" class="community-view-picture" />
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="world-badge {{ contact.isMember ? 'world-badge-success' }}">
+                                {{ 'view.profile.status.label'|trans({}, 'project_contacts') }}
+                                <strong class="ml-1">
+                                    {{ ('view.profile.status.' ~ (contact.isMember ? 'member' : 'contact'))|trans({}, 'project_contacts') }}
+                                </strong>
+                            </span>
+                        </div>
+
+                        <div class="row no-gutters font-size-sm mb-4 text-muted">
+                            <div class="col-1 text-center">
+                                <i class="fal fa-clock mr-1"></i>
+                            </div>
+                            <div class="col-11">
+                                {{ 'view.profile.date'|trans({}, 'project_contacts') }}
+                                <strong>
+                                    {{ contact.createdAt|format_datetime('short', 'short') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters font-size-sm mb-2 text-{{ contact.settingsReceiveNewsletters ? 'success' : 'muted' }}">
+                            <div class="col-1 text-center">
+                                <i class="fal fa-bell mr-1"></i>
+                            </div>
+                            <div class="col-11">
+                                {{ 'view.profile.newsletter.label'|trans({}, 'project_contacts') }}
+                                <strong class="ml-1">
+                                    {{ ('view.profile.newsletter.' ~ (contact.settingsReceiveNewsletters ? 'subscribed' : 'unsubscribed'))|trans({}, 'project_contacts') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters font-size-sm mb-2 text-{{ contact.settingsReceiveSms ? 'success' : 'muted' }}">
+                            <div class="col-1 text-center">
+                                <i class="fal fa-comment-alt-lines mr-1"></i>
+                            </div>
+                            <div class="col-11">
+                                {{ 'view.profile.sms.label'|trans({}, 'project_contacts') }}
+                                <strong class="ml-1">
+                                    {{ ('view.profile.sms.' ~ (contact.settingsReceiveSms ? 'subscribed' : 'unsubscribed'))|trans({}, 'project_contacts') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters font-size-sm mb-4 text-{{ contact.settingsReceiveCalls ? 'success' : 'muted' }}">
+                            <div class="col-1 text-center">
+                                <i class="fal fa-phone mr-1"></i>
+                            </div>
+                            <div class="col-11">
+                                {{ 'view.profile.calls.label'|trans({}, 'project_contacts') }}
+                                <strong class="ml-1">
+                                    {{ ('view.profile.calls.' ~ (contact.settingsReceiveCalls ? 'subscribed' : 'unsubscribed'))|trans({}, 'project_contacts') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        {% if contact.area %}
+                            <div class="row no-gutters font-size-sm mb-2 text-muted">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-map-marker-alt mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'view.profile.area'|trans({}, 'project_contacts') }}
+                                    <strong class="ml-1">
+                                        {{ contact.area.name }}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.metadataTagsList %}
+                            <div class="row no-gutters font-size-sm text-muted">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-tags mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'view.profile.tags'|trans({}, 'project_contacts') }}
+                                    <strong class="ml-1">
+                                        {{ contact.metadataTagsList }}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-4 mb-2">
+                            <div>
+                                <small class="text-muted">
+                                    {{ 'view.profile.email'|trans({}, 'project_contacts') }}
+                                </small>
+                            </div>
+                            <a href="mailto:{{ contact.email }}" target="_blank">
+                                {{ contact.email }}
+                            </a>
+                        </div>
+
+                        {% if contact.contactAdditionalEmails %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.additional_emails'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {% for email in contact.contactAdditionalEmails %}
+                                    <a href="mailto:{{ email }}" target="_blank">
+                                        {{ email }}
+                                    </a>
+                                    <br />
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileFirstName and contact.profileLastName %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.name'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.completeFullName }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.jobReference %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.company'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.jobReference }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileBirthdate %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.birthdate'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.profileBirthdate|format_date }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileGender %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.gender'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ ('gender.' ~ contact.profileGender)|trans({}, 'global') }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.postalAddress %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.address'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.postalAddress|nl2br }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.contactPhone %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.phone'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.contactPhone }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.contactWorkPhone %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'view.profile.workPhone'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+                                {{ contact.contactWorkPhone }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.socialFacebook
+                            or contact.socialTwitter
+                            or contact.socialLinkedIn
+                            or contact.socialTelegram
+                            or contact.socialWhatsapp %}
+                            <div class="mb-2">
+                                <div class="mb-1">
+                                    <small class="text-muted">
+                                        {{ 'view.profile.socials'|trans({}, 'project_contacts') }}
+                                    </small>
+                                </div>
+
+                                {% set socials = {
+                                    'Facebook': { 'icon': 'fab fa-facebook', 'url': contact.socialFacebook },
+                                    'Twitter': { 'icon': 'fab fa-twitter', 'url': contact.socialTwitter },
+                                    'LinkedIn': { 'icon': 'fab fa-linkedin', 'url': contact.socialLinkedIn },
+                                    'Telegram': { 'icon': 'fab fa-telegram-plane', 'url': contact.socialTelegram ? ('https://t.me/' ~ contact.socialTelegram) : null },
+                                    'Whatsapp': { 'icon': 'fab fa-whatsapp', 'url': contact.socialWhatsapp ? 'https://wa.me/' ~ contact.socialWhatsapp : null },
+                                } %}
+
+                                {% for name, item in socials %}
+                                    {% if item.url %}
+                                        <a href="{{ item.url }}"
+                                           class="btn btn-secondary btn-sm mr-2 mb-2"
+                                           target="_blank" rel="noopener noreferrer">
+                                            <i class="{{ item.icon }} mr-1"></i>
+                                            {{ name }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-8 mb-4">
+
+                    <div class="world-block mb-5">
+                        <div class="p-3">
+                            <h5 class="mb-2">
+                                {{ 'view.history.label'|trans({}, 'project_contacts') }}
+                            </h5>
+
+                            <div class="text-muted">
+                                {{ 'view.history.help'|trans({}, 'project_contacts') }}
+                            </div>
+                        </div>
+
+                        <div class="border-top border-muted py-3">
+                            {{ include('console/project/community/contacts/history.html.twig', {
+                                'project': current_project,
+                                'contact': contact,
+                                'history': history,
+                            }) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

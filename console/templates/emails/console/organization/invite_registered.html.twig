@@ -1,0 +1,23 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.invite.title'|trans({}, 'emails', locale|default('en')) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.invite.desc'|trans({
+            '%author%': author_name,
+            '%organization%': organization_name,
+        }, 'emails', locale|default('en'))|raw }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand"
+            href="{{ url('console_organization_projects', {'organizationUuid': organization_uuid}) }}">
+        {{ 'transactional.invite.link'|trans({}, 'emails', locale|default('en')) }}
+    </button>
+{% endblock %}

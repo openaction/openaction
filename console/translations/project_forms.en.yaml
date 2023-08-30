@@ -1,0 +1,50 @@
+index:
+    title: Forms
+    help: Collect and organize information from the visitors of your website.
+    create: New form
+    no_result: Your project does not contain any form for now.
+    no_result_create: Create a form
+    edit: Edit
+    duplicate: Duplicate
+    move: Move
+    move_cant_answers: You can't move this form as it contains answers from your contacts.
+    delete: Delete
+    view: View
+    results: '%count% answer(s)'
+    created_at: Created on %datetime%
+    last_modified: Last edited on %datetime%
+    visits: visits
+    remove_confirm: Are you sure you want to delete the form "%name%"?
+
+create:
+    title: '(Untitled form)'
+    question_email: E-mail address
+
+edit:
+    title: Edit form "%title%"
+    back: Back to the list
+    view: View on the website
+    results: '%count% answer(s)'
+
+move:
+    title: Move form "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this form?
+    submit: Move
+
+results:
+    back: Back to forms
+    export: Export the answers
+    title: Form "%title%" results
+    no_result: Your form does not contain any results for now.
+    view: View
+    delete: Delete
+    contact: Contact
+    no_contact: No linked contact
+    created_at: Date
+    remove_confirm: Are you sure you want to delete this answer?
+
+results_view:
+    back: Back to the results
+    by: Proposed by
+    download: Download file

@@ -1,0 +1,155 @@
+{% extends ea.templatePath('layout') %}
+
+{% form_theme form with '@EasyAdmin/crud/form_theme.html.twig' only %}
+
+{% block content_title 'New organization' %}
+{% block content_footer_wrapper '' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <h4>
+                Organisation
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="mb-3">
+                        {{ form_row(form.region, {
+                            'label': 'Région',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="mb-3">
+                        {{ form_row(form.adminEmail, {
+                            'label': 'Adresse e-mail de l\'administrateur principal',
+                        }) }}
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Permière personne à inviter sur la plateforme. Elle pourra inviter d'autres personnes.
+                                Nous vous recommandons d'inviter une personne ayant un minimum de connaissances
+                                en informatique.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>
+                Site internet
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.websiteName, {
+                            'label': 'Nom du site internet',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            {{ form_label(form.subdomain, 'Sous-domaine du site internet') }}
+                            <div class="form-widget" style="max-width: 400px">
+                                <div class="input-group mb-0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">https://</span>
+                                    </div>
+                                    {{ form_widget(form.subdomain) }}
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.eelv.fr</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.websiteDescription, {
+                            'label': 'Description du site internet',
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.mainImage, {
+                            'label': 'Image principale',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.favicon, {
+                            'label': 'Icône',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.shareImage, {
+                            'label': 'Image de partage',
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            <h4>
+                Réseaux sociaux
+            </h4>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.facebook) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.twitter) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.instagram) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.linkedIn) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.youtube) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.medium) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.telegram) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_row(form.snapchat) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Créer l'organisation
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

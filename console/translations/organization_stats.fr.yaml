@@ -1,0 +1,22 @@
+demo:
+    title: Statistiques
+    website_traffic: Trafic du site internet
+    contacts: Contacts
+
+annotations:
+    emailing_sent: 'La campagne email "%label%" a été envoyée'
+    post_published: 'L''actualité "%label%" a été publiée'
+    event_published: 'L''événement "%label%" a été publié'
+    event_began: 'L''événement "%label%" a démarré'
+    form_created: 'Le questionnaire "%label%" a été créé'
+
+index:
+    title: Statistiques
+    contacts:
+        title: Nouveaux contacts
+        help: Nombre de nouveaux contacts enregistrés dans votre base de contacts par jour.
+    sessions:
+        title: Trafic sur le site internet
+        help: |
+            Nombre de sessions sur votre site internet par jour. Une session est une série de visites réalisées par
+            une même personne sur une période de 30 minutes.

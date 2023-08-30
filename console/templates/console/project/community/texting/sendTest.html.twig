@@ -1,0 +1,45 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'send_test.title'|trans({'%title%': campaign.content}, 'project_texting') %}
+
+{% block sidebar_texting 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_texting', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'send_test.back'|trans({}, 'project_texting') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ 'send_test.title'|trans({'%title%': campaign.content}, 'project_texting') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4 py-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    <div class="social-sharer-post social-sharer-telegram mb-4">
+                        <div class="social-sharer-telegram-text mb-0">
+                            {{ campaign.content|nl2br }}
+                        </div>
+                    </div>
+
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.phone, {'label': 'send_test.recipients'|trans({}, 'project_texting')}) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'send_test.send'|trans({}, 'project_texting') }}
+                    </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

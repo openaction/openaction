@@ -1,0 +1,98 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'automation.content.title'|trans({'%name%': automation.name}, 'organization_community') %}
+
+{% block sidebar_automation 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3" style="min-width: 1024px;">
+        <div class="world-box-status border-0">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_organization_community_automation', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'automation.back'|trans({}, 'organization_community') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div id="automation-editor-status"></div>
+
+                        <div class="ml-3">
+                            <a href="{{ path('console_organization_community_automation_preview', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}) }}"
+                               class="btn btn-secondary btn-sm" target="_blank">
+                                <i class="far fa-eye"></i>
+                                <span>{{ 'automation.content.preview'|trans({}, 'organization_community') }}</span>
+                            </a>
+
+                            <a href="{{ path('console_organization_community_automation_metadata', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}) }}"
+                               class="btn btn-secondary btn-sm ml-1" target="_blank">
+                                <i class="fad fa-cogs"></i>
+                                <span>{{ 'automation.content.metadata'|trans({}, 'organization_community') }}</span>
+                            </a>
+
+                            {% if not automation.enabled %}
+                                <a href="{{ csrf_path('console_organization_community_automation_enable', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid }) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'automation.content.enable_confirm'|trans({'%name%': automation.name}, 'organization_community') }}"
+                                   data-delete-label="{{ 'automation.content.enable_label'|trans({}, 'organization_community') }}"
+                                   data-target-url="{{ path('console_organization_community_automation', {'organizationUuid': current_organization.uuid}) }}"
+                                   class="btn btn-sm btn-primary ml-1">
+                                    <i class="fas fa-bell mr-1"></i>
+                                    {{ 'automation.content.enable'|trans({}, 'organization_community') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="world-box-title pt-2 bg-light">
+            {{ 'automation.content.title'|trans({'%name%': automation.name}, 'organization_community') }}
+        </h3>
+
+        <div {{ react_component('Organization/Community/EmailAutomationEditor', {
+            projectId: unlayer_project_id,
+            design: automation.unlayerDesign,
+            saveUrl: path('console_organization_community_automation_content_update', {'organizationUuid': automation.organization.uuid, 'uuid': automation.uuid}),
+            uploadUrl: path('console_organization_community_automation_content_upload_images', {'organizationUuid': current_organization.uuid, 'uuid': automation.uuid}),
+            statusNode: '#automation-editor-status',
+            statusLabels: {
+                saving: 'status.saving'|trans({}, 'global'),
+                saved: 'status.saved'|trans({}, 'global'),
+                error: 'status.error'|trans({}, 'global'),
+            },
+            appearance: {
+                fontTitle: null,
+                fontText: null,
+                colorPrimary: null,
+                colorSecondary: null,
+                colorThird: null,
+            },
+            labels: {
+                defaultText: 'content_editor.defaults.text'|trans({}, 'global'),
+                defaultTitle: 'content_editor.defaults.title'|trans({}, 'global'),
+            },
+            mergeTags: {
+                id: { value: '-contact-id-', name: 'content_editor.merge_tags.id'|trans({}, 'global') },
+                email: { value: '-contact-email-', name: 'content_editor.merge_tags.email'|trans({}, 'global') },
+                phone: { value: '-contact-phone-', name: 'content_editor.merge_tags.phone'|trans({}, 'global') },
+                formaltitle: { value: '-contact-formaltitle-','name': 'content_editor.merge_tags.formaltitle'|trans({}, 'global') },
+                firstname: { value: '-contact-firstname-', name: 'content_editor.merge_tags.firstname'|trans({}, 'global') },
+                lastname: { value: '-contact-lastname-', name: 'content_editor.merge_tags.lastname'|trans({}, 'global') },
+                fullname: { value: '-contact-fullname-', name: 'content_editor.merge_tags.fullname'|trans({}, 'global') },
+                gender: { value: '-contact-gender-', name: 'content_editor.merge_tags.gender'|trans({}, 'global') },
+                nationality: { value: '-contact-nationality-', name: 'content_editor.merge_tags.nationality'|trans({}, 'global') },
+                company: { value: '-contact-company-', name: 'content_editor.merge_tags.company'|trans({}, 'global') },
+                jobtitle: { value: '-contact-jobtitle-','name': 'content_editor.merge_tags.jobtitle'|trans({}, 'global') },
+                streetline1: { value: '-contact-streetline1-','name': 'content_editor.merge_tags.streetline1'|trans({}, 'global') },
+                streetline2: { value: '-contact-streetline2-','name': 'content_editor.merge_tags.streetline2'|trans({}, 'global') },
+                zipcode: { value: '-contact-zipcode-', name: 'content_editor.merge_tags.zipcode'|trans({}, 'global') },
+                city: { value: '-contact-city-', name: 'content_editor.merge_tags.city'|trans({}, 'global') },
+                country: { value: '-contact-country-', name: 'content_editor.merge_tags.country'|trans({}, 'global') },
+            },
+        }) }} class="unlayer-editor" id="automation-editor"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.page_title'|trans({}, 'project_contacts') %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+
+    {{ form_start(form) }}
+
+        <div class="world-box">
+            <div class="world-box-title">
+                <div class="row align-items-center">
+                    <div class="col-lg-auto flex-grow-1 mb-3 mb-lg-0">
+                        <a href="{{ path('console_community_contacts_view', {'projectUuid': current_project.uuid, 'uuid': contact.uuid}) }}"
+                           class="btn btn-outline-primary btn-sm border-0">
+                            <i class="fal fa-angle-left"></i>
+                            <span>{{ 'edit.back'|trans({}, 'project_contacts') }}</span>
+                        </a>
+
+                        <h3 class="mt-2 mb-0">
+                            {{ 'edit.title'|trans({}, 'project_contacts') }}
+                        </h3>
+                    </div>
+                    <div class="col-lg-auto text-lg-right">
+                        <div class="d-inline-flex">
+                            {% if is_granted('community_contacts_delete', current_project) %}
+                                <a href="{{ csrf_path('console_community_contacts_delete', {'projectUuid': current_project.uuid, 'uuid': contact.uuid}) }}"
+                                   class="btn btn-secondary text-danger mr-3"
+                                   data-controller="delete"
+                                   data-message="{{ 'edit.delete_message'|trans({'%email%': contact.email}, 'project_contacts') }}"
+                                   data-target-url="{{ path('console_community_contacts', {'projectUuid': current_project.uuid}) }}">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    {{ 'edit.delete'|trans({}, 'project_contacts') }}
+                                </a>
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-primary">
+                                {{ 'edit.submit'|trans({}, 'project_contacts') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-3 p-lg-4">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        {{ form_errors(form) }}
+
+                        {{ form_row(form.email, {'label': 'form.email'|trans({}, 'project_contacts')}) }}
+
+                        <div class="row">
+                            <div class="col-lg-11 col-xl-9">
+                                <div class="text-uppercase text-muted mt-4 mb-2">
+                                    {{ 'form.additionalEmails'|trans({}, 'project_contacts') }}
+                                </div>
+
+                                <div data-controller="community--additional-emails"
+                                     data-prototype="{{ form_widget(form.additionalEmails.vars.prototype)|e('html_attr') }}"
+                                     data-index="{{ form.additionalEmails|length > 0 ? form.additionalEmails|last.vars.name + 1 : 0 }}">
+                                    <div data-community--additional-emails-target="rows">
+                                        {% for field in form.additionalEmails %}
+                                            <div>
+                                                <div class="row no-gutters align-items-center mb-2">
+                                                    <div class="col-10">
+                                                        {{ form_widget(field, {'label': false}) }}
+                                                    </div>
+                                                    <div class="col-2 pl-3">
+                                                        <button type="button" class="btn btn-secondary btn-block text-danger"
+                                                                data-action="community--additional-emails#removeRow">
+                                                            <i class="fal fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        {# Mark field as displayed #}
+                                        {% do field_name(form.additionalEmails) %}
+                                    </div>
+
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-2 pr-3">
+                                            <button type="button" class="btn btn-secondary btn-block text-primary"
+                                                    data-action="community--additional-emails#addRow">
+                                                <i class="fal fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-10"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">
+                            {{ 'form.picture.label'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        <div class="text-muted mb-3">
+                            {{ 'form.picture.help'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-lg-1 text-center">
+                                {% if contact and contact.picture %}
+                                    <img src="{{ cdn_url(contact.picture) }}" class="community-view-picture-sm" />
+                                {% else %}
+                                    <img src="https://www.gravatar.com/avatar/{{ contact.emailHash|default('invalid') }}?d=mp&s=800" class="community-view-picture-sm" />
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                {{ form_widget(form.picture) }}
+                                {{ form_errors(form.picture) }}
+                            </div>
+                        </div>
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">
+                            {{ 'form.profile.label'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-2">
+                                {{ form_row(form.profileFormalTitle, {'label': 'form.profile.formalTitle'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.profileFirstName, {'label': 'form.profile.firstName'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.profileMiddleName, {'label': 'form.profile.middleName'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.profileLastName, {'label': 'form.profile.lastName'|trans({}, 'project_contacts')}) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-4">
+                                {{ form_row(form.profileBirthdate, {'label': 'contacts.form.profile.birthdate'|trans({}, 'organization_community')}) }}
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                {{ form_row(form.profileGender, {'label': 'contacts.form.profile.gender'|trans({}, 'organization_community')}) }}
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                {{ form_row(form.profileNationality, {'label': 'contacts.form.profile.nationality'|trans({}, 'organization_community')}) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                {{ form_row(form.profileCompany, {'label': 'form.profile.company'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                {{ form_row(form.profileJobTitle, {'label': 'form.profile.jobTitle'|trans({}, 'project_contacts')}) }}
+                            </div>
+                        </div>
+
+                        {% if form.metadataTags is defined %}
+                            <div class="text-uppercase text-muted mt-4 mb-2">
+                                {{ 'form.tags.label'|trans({}, 'project_contacts') }}
+                            </div>
+
+                            <div class="text-muted mb-3">
+                                {{ 'form.tags.help'|trans({}, 'project_contacts') }}
+                            </div>
+
+                            <div data-controller="community--tags" style="height: 45px;" data-allow-add="{{ is_granted('community_contacts_tag_add', current_project) ? 1 : 0 }}">
+                                {{ form_row(form.metadataTags, {'label': false, 'attr': {'data-community--tags-target': 'input'}}) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="text-uppercase text-muted mt-4 mb-3">
+                            {{ 'form.address.label'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        {{ form_row(form.addressStreetLine1, {'label': 'form.address.streetAddress'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.addressStreetLine2, {'label': false}) }}
+
+                        <div class="row">
+                            <div class="col-12 col-lg-4">
+                                <div class="form-group">
+                                    <label>{{ 'form.address.zipCode'|trans({}, 'project_contacts') }}</label>
+                                    <input type="text" disabled="disabled" class="form-control" value="{{ contact.addressZipCode }}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                {{ form_row(form.addressCity, {'label': 'form.address.city'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="form-group">
+                                    <label>{{ 'form.address.country'|trans({}, 'project_contacts') }}</label>
+                                    <input type="text" disabled="disabled" class="form-control" value="{{ contact.addressCountry ? contact.addressCountry.name : '' }}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-muted mb-1">
+                            {{ 'form.address.help'|trans({}, 'project_contacts') }}
+                            {% if is_granted('organization_community_manage', current_organization) %}
+                                {{ 'form.address.help_admin'|trans({}, 'project_contacts') }}
+                            {% else %}
+                                {{ 'form.address.help_collaborator'|trans({}, 'project_contacts') }}
+                            {% endif %}
+                        </div>
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">
+                            {{ 'form.contact.label'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                {{ form_row(form.contactPhone, {'label': 'form.contact.phone'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                {{ form_row(form.contactWorkPhone, {'label': 'form.contact.workPhone'|trans({}, 'project_contacts')}) }}
+                            </div>
+                        </div>
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">
+                            {{ 'form.socials.label'|trans({}, 'project_contacts') }}
+                        </div>
+
+                        {{ form_row(form.socialFacebook, {'label': 'form.socials.facebook'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialTwitter, {'label': 'form.socials.twitter'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialLinkedIn, {'label': 'form.socials.linkedIn'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialTelegram, {'label': 'form.socials.telegram'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialWhatsapp, {'label': 'form.socials.whatsapp'|trans({}, 'project_contacts')}) }}
+
+                        <div class="mt-4">
+                            {{ form_row(form.metadataComment, {
+                                'label': 'form.metadata.comment'|trans({}, 'project_contacts'),
+                                'help': 'form.metadata.commentHelp'|trans({}, 'project_contacts'),
+                            }) }}
+                        </div>
+
+                        <div class="text-center mt-4 mb-4">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                {{ 'edit.submit'|trans({}, 'project_contacts') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}

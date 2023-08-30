@@ -1,0 +1,148 @@
+<header class="header">
+    <div class="header-layer">
+        <div class="header-view" data-controller="mobile-menu">
+            <div class="row align-items-center">
+
+                {# Logo #}
+                <div class="col-9 col-lg-auto">
+                    <a href="{{ homepage_url }}" data-turbo="optional">
+                        {% if current_project.logoDark %}
+                            <img src="{{ current_project.logoDark }}"
+                                 class="header-logo header-logo-dark" />
+
+                            <img src="{{ current_project.logoWhite|default(current_project.logoDark) }}"
+                                 class="header-logo header-logo-white" />
+                        {% else %}
+                            <h1 class="header-title">
+                                {{ current_project.metaTitle|default(current_project.name) }}
+                            </h1>
+                        {% endif %}
+                    </a>
+                </div>
+
+                {# Mobile menu button #}
+                <div class="d-block d-lg-none col-3 text-right">
+                    <button type="button" class="btn btn-link header-mobile-button"
+                            data-mobile-menu-target="button">
+                        <svg aria-hidden="true" focusable="false" role="img"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                            <path fill="currentColor"
+                                  d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                {# Desktop menu #}
+                <div class="d-none d-lg-block col-lg-auto ml-lg-auto text-right">
+                    <nav class="menu">
+                        <ul class="header-menu"
+                            data-controller="menu"
+                            data-cookie="{{ membership.cookie_name }}">
+                            {% for item in current_project.header %}
+                                <li>
+                                    <div class="header-menu-label">
+                                        <a href="{{ item.url }}" data-turbo="optional"
+                                           {% if item.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                                            {{ item.label }}
+                                        </a>
+
+                                        {% if item.children|length > 0 %}
+                                            <i class="fal fa-angle-down"></i>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if item.children|length > 0 %}
+                                        <div class="header-menu-submenu">
+                                            <ul>
+                                                {% for child in item.children %}
+                                                    <li>
+                                                        <a href="{{ child.url }}" data-turbo="optional"
+                                                           {% if child.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                                                            {{ child.label }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+
+                            {% if 'members_area_account' in current_project.tools %}
+                                <li data-target="menu.anonymous">
+                                    <div class="header-menu-label">
+                                        <a href="{{ membership.login_url }}" data-turbo="optional">
+                                            {{ current_project.terminology.membershipLogin }}
+                                        </a>
+                                    </div>
+                                </li>
+
+                                <li class="mb-2 mb-lg-0" style="display: none" data-target="menu.loggedin">
+                                    <div class="header-menu-label">
+                                        <a href="{{ membership.area_url }}" data-turbo="optional">
+                                            <span data-target="menu.fullname">{{ current_project.terminology.membershipLogin }}</span>
+                                        </a>
+                                        <i class="fal fa-angle-down"></i>
+                                    </div>
+
+                                    <div class="header-menu-submenu text-left">
+                                        <ul>
+                                            <li>
+                                                <a href="{{ membership.area_url }}" data-turbo="optional">
+                                                    {{ current_project.terminology.membershipArea }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ membership.account_url }}" data-turbo="optional">
+                                                    {{ membership.account_label }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ membership.logout_url }}" data-turbo="optional">
+                                                    {{ membership.logout_label }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                {# Mobile menu #}
+                <div class="d-lg-none col-12" style="display: none;"
+                     data-mobile-menu-target="menu">
+                    <nav class="menu">
+                        <ul class="header-mobile">
+                            {% for item in current_project.header %}
+                                <li>
+                                    <a href="{{ item.url }}" data-turbo="optional"
+                                       {% if item.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                                        {{ item.label }}
+                                    </a>
+
+                                    {% if item.children|length > 0 %}
+                                        <div class="header-mobile-submenu">
+                                            <ul>
+                                                {% for child in item.children %}
+                                                    <li>
+                                                        <a href="{{ child.url }}" data-turbo="optional"
+                                                           {% if child.openNewTab %}target="_blank"
+                                                           rel="noopener noreferrer"{% endif %}>
+                                                            {{ child.label }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

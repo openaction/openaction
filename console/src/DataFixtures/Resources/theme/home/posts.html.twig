@@ -1,0 +1,52 @@
+<div data-aos="fade-up" data-aos-duration="600">
+    <div class="home-blocks-block home-blocks-block-posts">
+        <h3 class="home-blocks-block-title">
+            {{ posts_title }}
+        </h3>
+
+        {% if posts|length > 0 %}
+            <div class="home-blocks-block-posts-row">
+                {% for key, post in posts %}
+                    <div class="zoom-hover">
+                        <div class="home-blocks-block-posts-item home-blocks-block-posts-item-{{ key }} home-blocks-block-posts-row-{{ (key / 3)|round(0, 'floor') }} box-offset">
+                            <div class="home-blocks-block-posts-item-thumbnail">
+                                {% if post.videoImage|default(null) %}
+                                    <div class="list-items-item-video"
+                                         style="background-image: url('{{ post.videoImage }}')">
+                                        <div class="list-items-item-video-icon"
+                                             style="background: url('{{ play_image }}') 50% 50% no-repeat transparent">
+                                            <div class="list-items-item-video-inner" style="width: 1110px; height: 705px"></div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <img src="{{ post.image|default(default_image) }}"
+                                         class="list-items-item-image" width="1700" height="1080" />
+                                {% endif %}
+                            </div>
+
+                            <div class="home-blocks-block-posts-item-text">
+                                <a href="{{ post.url }}" data-turbo="optional" class="stretched-link list-items-item-link">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ post.title }}</span>
+                                    </h5>
+                                </a>
+
+                                <div class="list-items-item-description">
+                                    <div class="list-items-item-date">
+                                        {{ post.publishedAt }}
+                                    </div>
+
+                                    {{ post.description }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted">
+                {{ no_elements }}
+            </div>
+        {% endif %}
+    </div>
+</div>

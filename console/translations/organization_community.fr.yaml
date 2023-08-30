@@ -1,0 +1,440 @@
+breadcrumb: Organisation
+title: Votre communauté
+
+sidebar:
+    community:
+        label: Communauté
+        contacts: Contacts
+        import: Importer des contacts
+        export: Exporter les contacts
+        ambiguities: Contacts dupliqués
+    configuration:
+        label: Configuration
+        tags: Tags
+        main_tags: Tags principaux
+        automation: Automatisations
+
+contacts:
+    back: Retour à la liste
+
+    list:
+        page_title: Votre communauté
+        title: Contacts
+        desc: 'Cette liste agrège les contacts de tous vos projets : membres, inscrits à la newsletter, ...'
+        configure: Configuration
+        create: Nouveau contact
+
+        facets:
+            tags: Tags
+            projects: Projets
+            status: Statut
+            country: Pays
+            province: Région
+            district: Département
+
+    view:
+        delete: Supprimer
+        delete_message: Voulez-vous vraiment supprimer le contact "%email%" ?
+        edit: Modifier les informations
+        profile:
+            label: Profil
+            area: 'Localisation :'
+            date: 'Date :'
+            tags: 'Tags :'
+            status:
+                label: 'Type :'
+                member: Membre
+                contact: Contact
+            newsletter:
+                label: 'Newsletter :'
+                subscribed: Inscrit
+                unsubscribed: Désinscrit
+            sms:
+                label: 'SMS :'
+                subscribed: Inscrit
+                unsubscribed: Désinscrit
+            calls:
+                label: 'Appels :'
+                subscribed: Acceptés
+                unsubscribed: Refusés
+            subscriptions:
+                all:
+                    label: Tous les projets
+            email: Email
+            additional_emails: Emails additionels
+            name: Nom complet
+            birthdate: Date de naissance
+            gender: Genre
+            nationality: Nationalité
+            company: Poste et entreprise
+            address: Adresse postale
+            phone: Téléphone (personnel)
+            workPhone: Téléphone (professionnel)
+            socials: Réseaux sociaux
+        history:
+            label: Historique des interactions
+            help: Interactions que votre organisation a eu avec ce contact.
+            joined:
+                label: A rejoint votre communauté
+            emailing:
+                label: 'A reçu un email:'
+                openedAt: Ouvert le
+                neverOpened: Jamais ouvert
+                clickedAt: Cliqué le
+                neverClicked: Jamais cliqué
+                openCampaignReport: Voir le rapport de campagne
+            texting:
+                label: 'A reçu un SMS:'
+            form_answer:
+                label: 'A répondu à un questionnaire:'
+                openAnswer: Voir la réponse
+                openForm: Voir le questionnaire
+        customFields:
+            label: Champs personnalisés (réservé aux utilisateurs techniques)
+            help: |
+                Les champs personnalisés sont des données additionelles stockées par votre site internet
+                sur vos contacts.
+
+    create:
+        page_title: Créer un nouveau contact
+        title: Créer un nouveau contact
+        desc: |
+            Un contact est une personne ayant interagit avec votre organisation. Une fois créé, vous et vos
+            collaborateurs pourront envoyer des campagnes d'emailing à ce contact.
+        submit: Créer
+
+    edit:
+        page_title: Mettre à jour un contact
+        title: Mettre à jour un contact
+        submit: Enregistrer
+        delete: Supprimer
+        delete_message: Voulez-vous vraiment supprimer le contact "%email%" ?
+
+    form:
+        email: Adresse email
+        additionalEmails: Adresses email additionnelles
+        picture:
+            label: Photo
+            help: Laissez de champ vide pour ne pas changer la photo.
+        profile:
+            label: Profil
+            formalTitle: Civilité
+            firstName: Prénom
+            middleName: Deuxième prénom
+            lastName: Nom
+            birthdate: Date de naissance
+            gender: Genre
+            nationality: Nationalité
+            company: Entreprise
+            jobTitle: Poste
+        tags:
+            label: Tags
+            help: |
+                Les tags vous aident à catégoriser les contacts en segments pour mieux
+                les cibler lors de vos campagnes de communication par la suite.
+        contact:
+            label: Informations
+            phone:
+                label: 'Téléphone personnel'
+                help: 'Avec le préfixe international (+33 pour la France)'
+            workPhone:
+                label: 'Téléphone professionnel'
+                help: 'Avec le préfixe international (+33 pour la France)'
+        address:
+            label: Adresse postale
+            help: Cette adresse postale sera utilisée pour associer ce contact à un ou plusieurs projets locaux si applicable.
+            streetAddress: Adresse
+            zipCode: Code postal
+            city: Ville
+            country: Pays
+        socials:
+            label: Réseaux sociaux
+            facebook: URL du profil Facebook
+            twitter: URL du profil Twitter
+            linkedIn: URL du profil LinkedIn
+            telegram: Nom d'utilisateur Telegram
+            whatsapp: Numéro de téléphone Whatsapp
+        metadata:
+            label: Inscription aux communications
+            all_projects: Préférences générales
+            all_projects_help: |
+                Un contact inscrit au niveau général recevra toutes vos communications, peu importe le projet.
+            per_projects: Préférences par projet
+            per_projects_help: |
+                Lorsqu'un contact est désinscrit au niveau général, il peut s'inscrire à des communications 
+                spécifiques par projet. Il ne peut s'inscrire qu'aux communications des projets dont il fait 
+                partie.
+            receiveNewsletter: Inscrit(e) à la newsletter
+            receiveSms: Accepte les SMS
+            receiveCalls: Accepte d'être appelé(e) par téléphone
+            comment: Note interne
+            commentHelp: |
+                Vous pouvez indiquer dans cette note interne tout ce qui vous semblerait utile
+                que vos collaborateurs sachent. Cette note ne sera jamais partagée avec le contact.
+                Ne stockez pas d'informations sensibles dans ce champ.
+
+    import:
+        page_title: Importer un fichier de contacts
+        upload:
+            title: Importer un fichier de contacts
+            note: |
+                <strong>Attention :</strong> la première ligne de votre fichier sera considérée comme une 
+                ligne d'entête et ne sera pas importée. Si votre fichier n'a pas de ligne d'entête, veuillez
+                en ajouter une avant de l'importer.
+            file:
+                label: Fichier
+                help: Envoyez un fichier Excel (XLSX) ou LibreOffice (ODS) contenant votre liste de contacts.
+                error: Une erreur s'est produite lors de l'envoi du fichier. Pouvez-vous réessayer ?
+        columns:
+            title: Associer les colonnes aux informations de contacts
+            columns:
+                label: Colonnes
+                help: '%count% colonnes ont été détectées. Associez-les aux informations de contacts que vous souhaitez stocker.'
+            default_label: 'Colonne %i%'
+            types:
+                ignored: Ignorer cette colonne
+                email: Email
+                profileFormalTitle: Civilité
+                profileFirstName: Prénom
+                profileMiddleName: Deuxième prénom
+                profileLastName: Nom
+                profileBirthdate: Date de naissance
+                profileGender: Genre
+                profileCompany: Entreprise
+                profileJobTitle: Poste
+                contactPhone: Téléphone personnel
+                contactWorkPhone: Téléphone professionnel
+                socialFacebook: URL du profil Facebook
+                socialTwitter: URL du profil Twitter
+                socialLinkedIn: URL du profil LinkedIn
+                socialTelegram: Nom d'utilisateur Telegram
+                socialWhatsapp: Numéro de téléphone Whatsapp
+                addressStreetLine1: Adresse (ligne 1)
+                addressStreetLine2: Adresse (ligne 2)
+                addressZipCode: Code postal
+                addressCity: Ville
+                addressCountry: Pays
+                settingsReceiveNewsletters: Inscrit(e) à la newsletter
+                settingsReceiveSms: Accepte les SMS
+                settingsReceiveCalls: Accepte les appels
+                metadataComment: Note interne
+                metadataTagsList: Tags séparés par des virgules
+                metadataTag: Tag unique
+            area:
+                label: Zone par défaut
+                help: |
+                    Si un contact ne peut pas être localisé avec son adresse postale, à quelle zone doit-il
+                    être associé par défaut ? Si vous laissez de champ vide, les contacts ne pouvant pas être
+                    localisés ne seront accessibles que depuis vos projets globaux.
+            submit: Démarrer l'import
+        progress:
+            title: Importer un fichier de contacts
+            processing:
+                title: Importation des contacts ...
+                desc: Les contacts sont en train d'être constitués, localisés et importés dans votre organisation.
+            finished:
+                title: C'est terminé !
+                desc: Votre fichier a bien été importé.
+                back: Retour aux contacts
+
+configure:
+    main_tags:
+        title: Tags principaux
+        help: |
+            Les tags principaux sont des tags assignables à vos contacts directement depuis la liste de contacts.
+            Ce sont les tags qui vous importent le plus pour suivre votre communauté (organiser vos processus,
+            intégrer vos nouveaux membres, ...).
+        tags:
+            label: Tags principaux
+            help: |
+                Vous pouvez ajouter jusqu'à 8 tags principaux. Pour ajouter un tag, créez le dans la section Tags
+                dans le menu sur la gauche de votre écran.
+        is_progress:
+            label: Est-ce que ces tags principaux représentent une progression ?
+            help: |
+                Si vous utilisez les tags principaux comme un statut évolutif de vos contacts, activer cette option
+                vous assurera que les marqueurs sont cohérents (ajouter un tag ajoutera automatiquement tous les
+                précédents au contact).
+        save: Enregistrer
+
+    tags:
+        index:
+            title: Tags
+            help: |
+                Les tags sont des étiquettes que vous pouvez ajouter sur vos contacts afin de leur envoyer
+                des emailings ciblés. Par exemple : VIP, Écologie, Étudiant, ...
+            create: Nouveau tag
+            no_records: Votre organisation ne dispose d'aucun tag pour le moment.
+            no_records_desc: Les tags vous aident à cibler votre audience plus précisément.
+            no_records_create: Créer un premier tag
+            columns:
+                name: Nom
+                contacts: Contacts
+                created: Date de création
+            view_contacts: Voir les contacts
+            export_contacts: Exporter les contacts
+            edit: Modifier
+            remove: Supprimer
+            remove_confirm: Êtes-vous sûr de vouloir supprimer le tag "%name%" ?
+
+        form:
+            title_create: Nouveau tag
+            title_edit: Modifier le tag
+            back: Retour à la liste
+            name: Nom
+            save: Sauvegarder
+
+automation:
+    back: Retour aux automatisations
+
+    index:
+        title: Automatisations email
+        help: |
+            Les automatisations vous permettent d'envoyer automatiquement des emails aux membres
+            de votre communauté lorsque certains choses spécifiques se produisent (un contact vient
+            de s'inscrire, vient de créer un compte membre, etc.).
+        disabled: Automatisations inactives
+        create: Nouvelle automatisation
+        no_records: Pas d'automatisation pour le moment
+        no_result_create: Créer une automatisation
+        trigger:
+            new_contact: Exécutée quand un contact est créé
+            new_form_answer: Exécutée quand une réponse à un questionnaire est envoyée
+        edit_details: Modifier les paramètres
+        edit_content: Modifier le contenu
+        disable: Désactiver
+        disable_label: Oui, désactiver
+        disable_confirm: |
+            Voulez-vous vraiment désactiver l'automatisation "%name%" ? Une fois désactivée,
+            cette automatisation ne sera plus exécutée.
+        preview: Prévisualiser
+
+    disabled:
+        title: Automatisations inactives
+        no_records: Pas d'automatisation inactive pour le moment
+        enable: Activer
+        enable_label: Oui, activer
+        enable_confirm: |
+            Voulez-vous vraiment activer l'automatisation "%name%" ? Une fois activée,
+            cette automatisation sera exécutée dès que nécessaire.
+
+    create:
+        name: '(Automatisation sans nom)'
+        subject: '(Message sans sujet)'
+        fromName: '%user% de %organization%'
+
+        template:
+            back: Retour
+            title: Créer une automation email
+            desc: Choisissez un modèle à utiliser pour créer votre automation email.
+            choose: Choisir ce modèle
+
+            automation:
+                1.empty: Modèle vide
+                2.welcome: Bienvenue
+                3.thanks: Remerciement
+
+    metadata:
+        title: Modifier l'automatisation "%name%"
+        submit: Enregistrer
+
+        automation:
+            title: Paramètres
+            name:
+                label: Nom
+                help: Ce nom n'est pas utilisé par Citipo. Il vous aide à vous rappeler l'objectif de cette automatisation.
+            trigger:
+                label: Quand cette automatisation doit-elle être exécutée ?
+                contact_created: Lorsqu'un contact est créé
+                form_answered: Lorsqu'une réponse à un questionnaire est envoyée
+                form_filter: Pour quel questionnaire cette automatisation doit-elle être exécutée ?
+                form_filter_placeholder: Exécuter pour tous les questionnaires de l'organisation
+
+        subject:
+            title: Sujet
+            desc: Sujet de l'email envoyé par cette automatisation.
+            subject:
+                label: Sujet
+                help:
+                    main: 'Les bons sujets donnent une raison d''ouvrir votre email. Quelques conseils :'
+                    1:
+                        strong: L'espace est limité
+                        muted: Nous conseillons de ne pas utiliser plus de 60 caractères
+                    2:
+                        strong: Simple à comprendre
+                        muted: Les sujets avec moins de 9 mots tendent à mieux fonctionner
+                    3:
+                        strong: Peu de ponctuation
+                        muted: Les sujets sobres transmettent vos idées plus efficacement
+            preview:
+                label: Texte de prévisualisation
+                help: Certaines boites de réception affichent ce test de prévisualisation à côté du sujet. (Optionnel)
+
+        from:
+            title: Émetteur
+            desc: Qui est l'émetteur de l'email de cette automatisation ?
+            email:
+                label: Adresse email
+                help: |
+                    Assurez-vous que le domaine de cette adresse email est bien configuré
+                    avec Citipo. Si vous n'en êtes pas sûr, contactez-nous à contact@citipo.com.
+            name: Nom
+
+        to:
+            title: Destinataire
+            toEmailType:
+                label: À qui cette automatisation doit-elle envoyer des emails ?
+                everyone: Aux contacts concernés par l'automatisation
+                specific: À une adresse email spécifique
+            toEmail: Quelle adresse email spécifique ?
+            typeFilter:
+                label: Pour quels contacts cette automatisation doit-elle être exécutée ?
+                everyone: Tous les contacts
+                contact: Uniquement les contacts qui ne sont pas membres
+                member: Uniquement les membres
+
+    content:
+        preview: Prévisualiser
+        metadata: Modifier les paramètres
+        enable: Activer cette automatisation
+        enable_label: Oui, activer
+        enable_confirm: |
+            Voulez-vous vraiment activer l'automatisation "%name%" ? Une fois activée,
+            cette automatisation sera exécutée dès que nécessaire.
+        title: Modifier l'automatisation "%name%"
+
+ambiguities:
+    index:
+        title: Contacts dupliqués
+        desc: Citipo détecte les contacts qui pourrait être des doublons et vous permet des les fusionner pour nettoyer votre base.
+        no_records: Nous n'avons détecté aucun doublon pour le moment
+        merge: Fusionner (en gardant %email% comme email principal)
+        ignore: Cette détection est un faux positif
+        ignore_rollback: Annuler le faux positif
+        new: Profil récent
+        old: Ancien profil
+
+buy_credits:
+    emails:
+        title: Acheter des crédits emails
+        desc: Les crédits emails sont utilisés pour envoyer vos campagnes emails.
+        amount:
+            label: Nombre de crédits à acheter
+            help: Minimum 1000, maximum 50 000. Pour en acheter plus (à un tarif plus avantageux), contactez-nous (contact@citipo.com).
+        unit_price: 'Tarif par crédit :'
+        total_before_tax: 'Total HT :'
+        vat_rate: 'TVA :'
+        total_after_tax: 'Total TTC :'
+        continue: Payer
+
+    texts:
+        title: Acheter des crédits SMS
+        desc: Les crédits SMS sont utilisés pour envoyer vos campagnes SMS.
+        amount:
+            label: Nombre de crédits à acheter
+            help: Minimum 100, maximum 10 000. Pour en acheter plus (à un tarif plus avantageux), contactez-nous (contact@citipo.com).
+        unit_price: 'Tarif par crédit :'
+        total_before_tax: 'Total HT :'
+        vat_rate: 'TVA :'
+        total_after_tax: 'Total TTC :'
+        continue: Payer

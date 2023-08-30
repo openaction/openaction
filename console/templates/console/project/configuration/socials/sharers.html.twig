@@ -1,0 +1,59 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'sharers.title'|trans({}, 'project_socials') %}
+
+{% block sidebar_socials_sharers 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'sharers.title'|trans({}, 'project_socials') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'sharers.help'|trans({}, 'project_socials') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div class="mb-3">
+                        <strong>
+                            {{ 'sharers.label'|trans({}, 'project_socials') }}
+                        </strong>
+                    </div>
+
+                    <div class="mb-2">
+                        {% for social in form.sharers %}
+                            {{ form_row(social, {
+                                'label': ('sharers.' ~ social.vars.value)|trans({}, 'project_socials'),
+                                'label_attr': {'class': 'switch-custom'}
+                            }) }}
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-4">
+                        <small class="form-text text-muted">
+                            {{ 'sharers.label_help'|trans({}, 'project_socials') }}
+                        </small>
+                    </div>
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'sharers.submit'|trans({}, 'project_socials') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

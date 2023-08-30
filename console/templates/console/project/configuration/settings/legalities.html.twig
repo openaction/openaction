@@ -1,0 +1,87 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'legalities.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_legal_details 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'legalities.title'|trans({}, 'project_settings') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'legalities.help'|trans({}, 'project_settings') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+
+                    {% if
+                        not current_project.legalGdprName
+                        or not current_project.legalGdprAddress
+                        or not current_project.legalPublisherName
+                        or not current_project.legalPublisherRole
+                        or not current_project.legalGdprEmail
+                    %}
+                        <div class="alert alert-danger border-0 mb-4">
+                            {{ 'legalities.missing'|trans({}, 'project_settings') }}
+                        </div>
+                    {% endif %}
+
+                    <h5>
+                        {{ 'legalities.form.general.title'|trans({}, 'project_settings') }}
+                    </h5>
+
+                    <div class="text-muted mb-3">
+                        {{ 'legalities.form.general.help'|trans({}, 'project_settings') }}
+                    </div>
+
+                    {{ form_row(form.legalGdprName, {
+                        'label': 'legalities.form.general.name.label'|trans({}, 'project_settings'),
+                        'help': 'legalities.form.general.name.help'|trans({}, 'project_settings'),
+                    }) }}
+
+                    {{ form_row(form.legalGdprAddress, {
+                        'label': 'legalities.form.general.address.label'|trans({}, 'project_settings'),
+                        'help': 'legalities.form.general.address.help'|trans({}, 'project_settings'),
+                    }) }}
+
+                    {{ form_row(form.legalPublisherName, {
+                        'label': 'legalities.form.general.publisherName.label'|trans({}, 'project_settings'),
+                        'help': 'legalities.form.general.publisherName.help'|trans({}, 'project_settings'),
+                    }) }}
+
+                    {{ form_row(form.legalPublisherRole, {
+                        'label': 'legalities.form.general.publisherRole.label'|trans({}, 'project_settings'),
+                        'help': 'legalities.form.general.publisherRole.help'|trans({}, 'project_settings'),
+                    }) }}
+
+                    <h5 class="mt-5">
+                        {{ 'legalities.form.gdpr.title'|trans({}, 'project_settings') }}
+                    </h5>
+
+                    <div class="text-muted mb-3">
+                        {{ 'legalities.form.gdpr.help'|trans({}, 'project_settings') }}
+                    </div>
+
+                    {{ form_row(form.legalGdprEmail, {
+                        'label': 'legalities.form.gdpr.email.label'|trans({}, 'project_settings'),
+                    }) }}
+
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'save'|trans({}, 'project_settings') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

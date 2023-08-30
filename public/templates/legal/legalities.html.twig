@@ -1,0 +1,81 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title 'legalities.title'|trans %}
+
+{% block body_class 'body-pages-view' %}
+
+{% block page %}
+    {% set social_sharers = include('_include/social_sharers.html.twig', {'route': 'legalities'}) %}
+
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'title': 'legalities.title'|trans,
+        'social_sharers': social_sharers,
+        'content': block('page_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block page_content %}
+    <div class="user-content">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <h3 class="mb-1">
+                    {{ 'legalities.editor'|trans }}
+                </h3>
+
+                <p class="mt-0">
+                    {{ current_project.legal.name }}<br />
+                    <a href="mailto:{{ current_project.legal.email }}" target="_blank">
+                        {{ current_project.legal.email }}
+                    </a>
+                    <br />
+                    {{ current_project.legal.address }}
+                </p>
+
+                <h3 class="mt-4 mb-1">
+                    {{ 'legalities.publisher'|trans }}
+                </h3>
+
+                <p class="mt-0">
+                    {{ current_project.legal.publisherName }}<br />
+                    {{ current_project.legal.publisherRole }}
+                </p>
+
+                <h3 class="mt-4 mb-1">
+                    {{ 'legalities.development.title'|trans }}
+                </h3>
+
+                <p class="mt-0">
+                    {{ 'legalities.development.text'|trans }}
+                    <a href="https://citipo.com/fr" target="_blank">
+                        Citipo
+                    </a>
+                </p>
+
+                <h3 class="mt-4 mb-1">
+                    {{ 'legalities.hosting.title'|trans }}
+                </h3>
+
+                <p class="mt-0">
+                    <a href="https://citipo.com/fr" target="_blank">
+                        Citipo (https://citipo.com)
+                    </a>
+                    <br />
+                    CPGT SAS<br />
+                    49 Rue de Ponthieu<br />
+                    75008 Paris, France<br /><br />
+                    {{ 'legalities.hosting.technical'|trans }}
+                    <a href="mailto:contact@citipo.com" target="_blank">contact@citipo.com</a> |
+                    +33 1 47 30 19 97<br /><br />
+                    {{ 'legalities.hosting.data'|trans|raw }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block content %}
+    <div class="world-box p-2">
+        <div class="upgrade-banner">
+            <div class="row align-items-center">
+                <div class="col-lg-7 mb-3 mb-lg-0">
+                    <h2 class="upgrade-banner-title">
+                        {{ 'upgrade.title'|trans({}, 'organization') }}
+                    </h2>
+
+                    <div class="upgrade-banner-desc">
+                        {{ 'upgrade.desc'|trans({
+                            '%plan%': ('upgrade.plans.'~current_organization.subscriptionPlan)|trans({}, 'organization')
+                        }, 'organization') }}
+                    </div>
+                </div>
+                <div class="col-lg-5 text-lg-right">
+                    <a href="https://citipo.com/{{ app.request.locale }}/pricing" target="_blank" class="btn btn-secondary mr-2">
+                        {{ 'upgrade.pricing'|trans({}, 'organization') }}
+                    </a>
+                    <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary">
+                        {{ 'upgrade.contact_us'|trans({}, 'organization') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="upgrade-feature my-4">
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <img src="{{ asset('res/features/'~feature~'.png') }}" class="upgrade-feature-screen" />
+                </div>
+                <div class="col-lg-8">
+                    <h3 class="upgrade-feature-title">
+                        {{ ('upgrade.features.'~feature~'.title')|trans({}, 'organization')|raw }}
+                    </h3>
+
+                    <div class="upgrade-feature-desc">
+                        {{ ('upgrade.features.'~feature~'.desc')|trans({}, 'organization')|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

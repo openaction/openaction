@@ -1,0 +1,52 @@
+index:
+    title: Pages de contenu
+    help: Expliquez qui vous êtes, quel est votre projet et quelles sont vos idées avec les pages de contenu.
+    edit_categories: Modifier les catégories
+    create: Nouvelle page
+    no_result: Aucune page pour le moment
+    no_result_create: Créer une première page
+    edit: Modifier
+    duplicate: Dupliquer
+    move: Déplacer
+    view: Voir sur le site
+    created_at: Créé le %datetime%
+    last_modified: Dernière modification le %datetime%
+    visits: visites
+    remove: Supprimer
+    remove_confirm: Êtes-vous sûr de vouloir supprimer la page "%name%" ?
+
+create:
+    title: '(Page sans nom)'
+
+edit:
+    title: Modifier la page "%title%"
+    back: Retour à la liste
+    view: Voir sur le site
+
+move:
+    title: Déplacer la page "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer cette page ?
+    submit: Déplacer
+
+categories:
+    index:
+        back: Retour aux pages
+        title: Catégories de pages
+        create: Nouvelle catégorie
+        no_records: Aucune catégorie de page pour le moment
+        no_records_desc: Les catégories aident vos visiteurs à découvrir vos pages de contenu plus efficacement.
+        order: Ordre
+        name: Nom
+        number: Pages
+        created: Date de création
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Êtes-vous sûr de vouloir supprimer la catégorie "%name%" ?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier une catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Enregistrer

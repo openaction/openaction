@@ -1,0 +1,72 @@
+{% extends 'console/base.html.twig' %}
+
+{% block flashes '' %}
+
+{% block page %}
+    <div class="container-fluid px-5 mb-5">
+        <div class="mt-4 mb-4">
+            <h5 class="font-weight-normal">
+                <span class="text-muted">{{ 'breadcrumb'|trans({}, 'organization_billing') }}</span>
+                <i class="fal fa-angle-right text-muted mr-1 ml-1"></i>
+                {{ 'title'|trans({}, 'organization_billing') }}
+            </h5>
+        </div>
+
+        <div class="row">
+            <div class="col-12 world-sidebar">
+                <div class="mb-3">
+                    <span class="world-sidebar-category">
+                        {{ current_organization.name }}
+                    </span>
+
+                    <a href="{{ path('console_organization_billing_details', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item {% block sidebar_details '' %}">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-address-card"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.details'|trans({}, 'organization_billing') }}
+                        </div>
+                    </a>
+
+                    <a href="{{ path('console_organization_billing_history', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item {% block sidebar_history '' %}">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-history"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.history'|trans({}, 'organization_billing') }}
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-10">
+                {% block community_flashes %}
+                    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+                        {% for message in messages %}
+                            <div class="world-alert alert alert-bg-{{ type }}">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto pr-3">
+                                        {% if type == 'success' %}
+                                            <i class="far fa-check"></i>
+                                        {% elseif type == 'warning' %}
+                                            <i class="far fa-exclamation-triangle"></i>
+                                        {% elseif type == 'error' %}
+                                            <i class="far fa-times"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {{ message|trans({}, 'flashes') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

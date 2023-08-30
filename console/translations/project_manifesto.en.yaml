@@ -1,0 +1,66 @@
+index:
+    title: Proposals
+    help: |
+        Display your ideas as a list of proposals organized by topics and once elected,
+        associate a progress status to these proposals to show your actions.
+    no_result: Your project does not contain any proposal for now.
+    no_result_create: Create a first topic
+    topic:
+        create: New topic
+        edit: Edit
+        duplicate: Duplicate
+        move: Move
+        delete: Delete
+        delete_confirm: Are you sure you want to delete the topic "%title%"?
+    proposal:
+        label: Proposals on the topic "%title%
+        no_result: No proposals for this topic yet
+        create: New proposal
+        edit: Edit
+        duplicate: Duplicate
+        delete: Delete
+        delete_confirm: Are you sure you want to delete the proposal "%title%"?
+    view: View
+    preview: Preview
+    draft: Draft
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    last_modified: Last edited on %datetime%
+
+create:
+    topic:
+        title: '(Untitled topic)'
+    proposal:
+        title: '(Untitled proposal)'
+
+edit:
+    back: Back to the list
+    view: View on the website
+    save: Save
+    topic:
+        title: Edit topic "%title%"
+        form:
+            title:
+                label: Title
+                help: Topic title (displayed in the list and on social networks when shared).
+            image:
+                label: Main image
+                help: Topic main image (displayed in the list and on social networks when shared).
+            color:
+                label: Color
+                help: Display color of this topic (used in the list).
+            description:
+                label: Description
+                help: |
+                    Keep this description short (a few sentences) to improve social networks display.
+                    You will be able to detail the topic content in proposals.
+    proposal:
+        title: Edit proposal "%title%"
+
+move:
+    title: Move topic "%title%"
+    back: Back to the list
+    to: Into which project would you like to move this topic?
+    submit: Move

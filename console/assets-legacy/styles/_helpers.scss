@@ -1,0 +1,12 @@
+@import './variables';
+
+.helper {
+    &-max-length {
+        font-size: 12px;
+        text-align: right;
+    }
+
+    &-credit-card-preview {
+        height: 183px;
+    }
+}

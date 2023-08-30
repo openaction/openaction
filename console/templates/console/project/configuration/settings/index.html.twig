@@ -1,0 +1,160 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_settings 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'index.title'|trans({}, 'project_settings') }}
+        </h3>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center mt-5">
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-map-marked-alt"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.details.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.details.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ path('console_configuration_settings_details', {'projectUuid': current_project.uuid}) }}">
+                                <strong>
+                                    {{ 'index.details.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-cubes"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.modules.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.modules.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ path('console_configuration_settings_modules', {'projectUuid': current_project.uuid}) }}">
+                                <strong>
+                                    {{ 'index.modules.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-server"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.domain.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.domain.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ path('console_configuration_settings_domain', {'projectUuid': current_project.uuid}) }}">
+                                <strong>
+                                    {{ 'index.domain.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-copy"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.duplicate.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.duplicate.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ csrf_path('console_configuration_settings_duplicate', {'projectUuid': current_project.uuid}) }}">
+                                <strong>
+                                    {{ 'index.duplicate.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-share"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.move.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.move.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ path('console_configuration_settings_move', {'projectUuid': current_project.uuid}) }}">
+                                <strong>
+                                    {{ 'index.move.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-5">
+                    <div class="world-card">
+                        <div class="world-card-icon">
+                            <i class="fad fa-trash"></i>
+                        </div>
+                        <div class="world-card-content">
+                            <h5>
+                                {{ 'index.remove.label'|trans({}, 'project_settings') }}
+                            </h5>
+
+                            <div class="mb-2">
+                                {{ 'index.remove.desc'|trans({}, 'project_settings') }}
+                            </div>
+
+                            <a href="{{ csrf_path('console_configuration_settings_remove', {'projectUuid': current_project.uuid}) }}"
+                               data-controller="delete" class="text-danger"
+                               data-message="{{ 'index.remove.confirm'|trans({'%name%': current_project.name}, 'project_settings') }}"
+                               data-target-url="{{ path('console_organization_projects', {'organizationUuid': current_organization.uuid}) }}">
+                                <strong>
+                                    {{ 'index.remove.link'|trans({}, 'project_settings') }}
+                                </strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-5 mb-4"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

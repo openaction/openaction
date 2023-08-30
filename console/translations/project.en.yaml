@@ -1,0 +1,149 @@
+breadcrumb: Projects
+
+sidebar:
+    quick_start: Quick start
+    statistics: Statistics
+
+    website:
+        label: Website
+        view: View website
+        posts: Posts
+        pages: Pages
+        documents: Documents
+        trombinoscope: Trombinoscope
+        manifesto: Proposals
+
+    community:
+        label: Community
+        contacts: Contacts
+        emailing: Email campaigns
+        texting: Text campaigns
+        phoning: Phone campaigns
+        print: Print campaigns
+        events: Events
+        forms: Forms
+
+    socials:
+        label: Social networks
+        accounts: Your accounts
+        metas: Sharing details
+        sharers: Sharing tools
+
+    stats:
+        label: Analysis
+        website: Traffic report
+        community: Community report
+
+    configuration:
+        label: Configuration
+        appearance: Appearance
+        menu: Menu and footer
+        access: Access control
+        legal_details: Legal details
+        settings: Project settings
+        membership: Membership area
+
+    developers:
+        label: Developers
+        theme: Theme code
+        redirections: Redirections
+        api: API access
+
+quick_start:
+    title: Quick start
+
+    launch:
+        title: Launch your project
+        team:
+            title: Invite your team
+            desc: Invite members of your team to let them update the website and contact your community.
+            link: Invite collaborators
+        modules:
+            title: Configure your project's modules
+            desc: Enable only the modules you need to better adapt Citipo to your needs.
+            link: Configure the modules
+
+    website:
+        title: Create your website
+        appearance:
+            title: Update your digital branding
+            desc: Customize how your brand appears globally across the Citipo products your visitors use.
+            link: Customize the branding
+        pages:
+            title: Explain your project
+            desc: Explain who you are, your project, and your ideas with content pages.
+            link: Create content pages
+        posts:
+            title: Keep your community up-to-date
+            desc: Create a chronological news feed for your project with posts.
+            link: Create posts and news
+        socials:
+            title: Connect your social networks
+            desc: Create your digital ecosystem by connecting your social networks to your website.
+            link: Configure social networks
+
+    community:
+        title: Grow your community
+        contacts:
+            title: Explore your contacts database
+            desc: Create a community around your project, onboard them to keep them active.
+            link: Explore your community
+        emailing:
+            title: Send emailing campaigns
+            desc: Mobilize your community with effective mass emailing.
+            link: Create emailing campaigns
+
+developers:
+    access:
+        title: API access
+        description:
+            1: |
+                Citipo provides multiple API to access and update the various sections of your organization.
+            2: |
+                Citipo authenticates requests on the Website, Community and Membership area APIs using
+                projects API tokens. If the token is invalid, expired or missing, Citipo will display an error.
+        learn_more: Read the API documentation (French only)
+        subtitle: Project API token
+
+    theme:
+        title: Edit theme code
+        description: |
+            Edit the code of your theme for advanced customization (note this requires development skills
+            and may harm your website if misused).
+        templates: Templates
+        assets: Assets
+        assets_add: Upload asset
+        save: Save
+
+    redirections:
+        back: Back to redirections
+        title: Redirections
+        help: Create personalized URL to better share your content.
+        create: New redirection
+        no_records: No redirection yet
+        order: Order
+        source: Source URL
+        target: Target URL
+        type: Type
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the redirection "%name%"?
+
+        form:
+            create_title: Create a redirection
+            edit_title: Edit a redirection
+            source:
+                label: Source URL
+                help: |
+                    What URL should be redirected? Don't indicate the domain name
+                    (for instance for "https://example.com/project", put "/project").
+                    You can use an asterisk (*) to indicate "any character". Note:
+                    redirections are applied after all the other URLs from your project.
+                    If another URL exist with the same source, the redirection won't be applied.
+            target:
+                label: Target URL
+                help: To which URL should your visitors be redirected ? Put the full URL.
+            code:
+                label: Type
+                help: Do you want to use a permanent (301) or temporary (302) redirection?
+            save: Save

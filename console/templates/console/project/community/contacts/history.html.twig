@@ -1,0 +1,140 @@
+{% if project.isFeatureInPlan('feature_community_contacts_history') %}
+
+    {% if not history|length %}
+        <div class="mt-5 mb-5 text-muted text-center">
+            {{ 'view.history.none'|trans({}, 'project_contacts') }}
+        </div>
+    {% else %}
+        <div class="history">
+            <div class="history-view-future"></div>
+
+            <div class="history-view">
+                {% for item in history %}
+                    <div class="history-item">
+                        <div class="history-item-dot"></div>
+
+                        <div class="history-item-content">
+                            <div class="history-item-date">
+                                {% if item.type == 'emailing' %}
+                                    <i class="fas fa-envelope mr-1"></i>
+                                {% elseif item.type == 'texting' %}
+                                    <i class="fas fa-comment-alt-lines mr-1"></i>
+                                {% elseif item.type == 'form_answer' %}
+                                    <i class="fas fa-file-edit mr-1"></i>
+                                {% endif %}
+
+                                {{ item.date|format_datetime('medium', 'short') }}
+                            </div>
+
+                            <div class="history-item-description">
+                                {% if item.type == 'emailing' %}
+                                    {{ 'view.history.emailing.label'|trans({}, 'project_contacts') }}
+                                    <em>{{ item.entity.campaign.subject|u.truncate(100) }}</em>
+                                {% elseif item.type == 'texting' %}
+                                    {{ 'view.history.texting.label'|trans({}, 'project_contacts') }}
+                                    <em>{{ item.entity.campaign.content|u.truncate(100) }}</em>
+                                {% elseif item.type == 'form_answer' %}
+                                    {{ 'view.history.form_answer.label'|trans({}, 'project_contacts') }}
+                                    <em>{{ item.entity.form.title|u.truncate(100) }}</em>
+                                {% endif %}
+                            </div>
+
+                            <div class="history-item-actions">
+                                {% if item.type == 'emailing' %}
+
+                                    <div class="history-item-actions-metadata">
+                                        {% if item.entity.openedAt %}
+                                            <span class="text-success">
+                                                        {{ 'view.history.emailing.openedAt'|trans({}, 'project_contacts') }}
+                                                {{ item.entity.openedAt|format_datetime('short', 'short') }}
+                                                    </span>
+                                        {% else %}
+                                            {{ 'view.history.emailing.neverOpened'|trans({}, 'project_contacts') }}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="history-item-actions-metadata">
+                                        {% if item.entity.clickedAt %}
+                                            <span class="text-success">
+                                                        {{ 'view.history.emailing.clickedAt'|trans({}, 'project_contacts') }}
+                                                {{ item.entity.clickedAt|format_datetime('short', 'short') }}
+                                                    </span>
+                                        {% else %}
+                                            {{ 'view.history.emailing.neverClicked'|trans({}, 'project_contacts') }}
+                                        {% endif %}
+                                    </div>
+
+                                    <a href="{{ path('console_community_emailing_stats_report', {
+                                        'projectUuid': item.entity.campaign.project.uuid,
+                                        'uuid': item.entity.campaign.uuid,
+                                    }) }}">
+                                        {{ 'view.history.emailing.openCampaignReport'|trans({}, 'project_contacts') }}
+                                    </a>
+
+                                {% elseif item.type == 'form_answer' %}
+
+                                    <a href="{{ path('console_website_forms_results_view', {
+                                        'projectUuid': item.entity.form.project.uuid,
+                                        'uuid': item.entity.uuid,
+                                    }) }}">
+                                        {{ 'view.history.form_answer.openAnswer'|trans({}, 'project_contacts') }}
+                                    </a>
+
+                                    <a href="{{ path('console_website_forms_edit', {
+                                        'projectUuid': item.entity.form.project.uuid,
+                                        'uuid': item.entity.form.uuid,
+                                    }) }}">
+                                        {{ 'view.history.form_answer.openForm'|trans({}, 'project_contacts') }}
+                                    </a>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="history-item">
+                    <div class="history-item-dot"></div>
+
+                    <div class="history-item-content">
+                        <div class="history-item-date">
+                            <i class="fas fa-users mr-1"></i>
+                            {{ contact.createdAt|format_datetime('medium', 'short') }}
+                        </div>
+
+                        <div class="history-item-description">
+                            {{ 'view.history.joined.label'|trans({}, 'project_contacts') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="upgrade-feature text-center my-5">
+        <h3 class="upgrade-feature-title">
+            {{ 'upgrade.features.feature_community_contacts_history.title'|trans({}, 'organization')|raw }}
+        </h3>
+
+        <div class="upgrade-feature-desc">
+            {{ 'upgrade.features.feature_community_contacts_history.desc'|trans({}, 'organization')|raw }}
+        </div>
+
+        <h2 class="upgrade-banner-title mt-5">
+            {{ 'upgrade.title'|trans({}, 'organization') }}
+        </h2>
+
+        <div class="upgrade-banner-desc mb-3">
+            {{ 'upgrade.desc'|trans({
+                '%plan%': ('upgrade.plans.'~current_organization.subscriptionPlan)|trans({}, 'organization')
+            }, 'organization') }}
+        </div>
+
+        <a href="https://citipo.com/{{ app.request.locale }}/pricing" target="_blank" class="btn btn-secondary mr-2">
+            {{ 'upgrade.pricing'|trans({}, 'organization') }}
+        </a>
+        <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary">
+            {{ 'upgrade.contact_us'|trans({}, 'organization') }}
+        </a>
+    </div>
+{% endif %}

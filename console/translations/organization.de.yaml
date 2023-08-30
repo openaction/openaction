@@ -1,0 +1,80 @@
+create:
+    page_title: 'Erstellen Sie eine Organisation'
+    title: 'Erzählen Sie uns mehr über Ihre Organisation'
+    subtitle: 'Erstellen Sie dann Ihre ersten Projekte und laden Sie Ihr Team ein!'
+    form:
+        name:
+            label: 'Name der Organisation'
+            help: "Dieser wird in Menüs und Überschriften angezeigt. Normalerweise ist es der Name (oder enthält den Namen)\nIhres Unternehmens oder Ihrer Vereinigung. Sie können ihn später ändern. Maximal 60 Zeichen.\n"
+        button: Weiter
+no_orga:
+    title: 'Sie sind mit keiner Organisation auf Citipo verbunden.'
+    launch: "Citipo vereint alle Funktionen, von denen wir wissen, dass sie am wichtigsten sind:\nWebsite, Kontaktdatenbank, E-Mailings und Textnachrichten, partizipative Demokratie,\nTeamverwaltung, ...\n"
+    learn_more: 'Erfahren Sie mehr über Citipo:'
+    ask_citipo: 'Kontaktieren Sie uns, um Citipo weiterhin zu nutzen:'
+expired:
+    title: 'Ihr Citipo-Abonnement ist abgelaufen.'
+    end_date: 'Das Abonnement Ihrer Organisation ist ausgelaufen. Es endete offiziell am %date%.'
+    data: 'Wenn Sie sich nicht anmelden, werden die Daten Ihrer Organisation nach 90 Tagen gelöscht.'
+    ask_citipo: 'Kontaktieren Sie uns, um Ihr Abonnement zu verlängern und Citipo weiterhin zu nutzen:'
+not_enough_slots:
+    title: 'Jetzt aktualisieren, um ein neues Projekt zu erstellen'
+    desc: '<strong>%Slots% der %slots% Projekt-Slots</strong> der %Organisation% werden verwendet.'
+    upgrade: 'Um ein neues Projekt zu erstellen, müssen Sie Ihr Abonnement aktualisieren.'
+    ask_citipo: 'Kontaktieren Sie uns, um Ihr Abonnement zu erweitern und ein neues Projekt zu erstellen:'
+upgrade:
+    title: 'Jetzt upgraden'
+    desc: 'Ihr Unternehmen verwendet den %plan%-Plan, der diese Funktion nicht enthält.'
+    pricing: 'Entdecken Sie unsere Pläne'
+    contact_us: 'Kontaktieren Sie uns für ein Upgrade'
+    plans:
+        essential: Wesentlich
+        standard: Standard
+        premium: Prämie
+        organization: Organisation
+    features:
+        generic:
+            title: 'Entdecken Sie alle Funktionen von Citipo auf <a href="https://citipo.com/en">citipo.com</a>.'
+            desc: 'Citipo ist in der Lage, Sie bei jedem Schritt Ihrer Projekte zu unterstützen.'
+        website_pages:
+            title: 'Veröffentlichen Sie ansprechende Seiten, um neue Kontakte zu gewinnen'
+            desc: 'Unser Content Editor ermöglicht es Ihnen, Ihre Ideen zu beschreiben, ohne dass technische Kenntnisse erforderlich sind.'
+        website_posts:
+            title: 'Veröffentlichen Sie fesselnde Nachrichten, um neue Kontakte zu gewinnen'
+            desc: 'Unser Content-Editor ermöglicht es Ihnen, Ihre Nachrichten zu beschreiben, ohne dass technische Kenntnisse erforderlich sind.'
+        website_events:
+            title: 'Organisieren Sie eine physische oder virtuelle Veranstaltung, um Ihre Gemeinschaft zu mobilisieren'
+            desc: 'Zeigen Sie sie in wenigen Minuten auf Ihrer Website.'
+        website_forms:
+            title: 'Bereichern Sie Ihre Datenbank mit den anpassbaren Umfragen'
+            desc: 'Aufbau einer hochwertigen Kontaktdatenbank zur besseren Mobilisierung.'
+        website_documents:
+            title: 'Teilen Sie Ihre Dokumente über Ihre Website'
+            desc: 'Verwenden Sie den Domänennamen Ihrer Website, um öffentliche Dokumente einfach zu teilen.'
+        website_trombinoscope:
+            title: 'Zeigen Sie Ihr Team (Kandidaten, gewählte Vertreter, Aktivisten, ...)'
+            desc: 'Zeigen Sie eine Liste von Personen und deren Fotos auf Ihrer Website an.'
+        website_manifesto:
+            title: 'Erläutern Sie Ihre Ideen und Vorschläge'
+            desc: 'Zeigen Sie eine Liste von Vorschlägen an, die nach Themen geordnet sind, und ordnen Sie diesen Vorschlägen nach der Wahl einen Fortschrittsstatus zu, um Ihre Aktionen zu zeigen.'
+        feature_website_social_sharers:
+            title: 'Nutzen Sie die Sharing-Tools, um Ihre sozialen Netzwerke zu erweitern'
+            desc: 'Konfigurieren Sie Ihre sozialen Konten und die Links zu sozialen Netzwerken, um die Wirkung Ihrer Kommunikation in sozialen Netzwerken zu erhöhen.'
+        feature_community_emailing_tags:
+            title: 'Fügen Sie Ihren Kontakten Tags hinzu, um Ihre Kommunikation besser zu steuern.'
+            desc: 'Tags für Rollen, Themen, Status, Interessen, ... hinzufügen'
+        feature_community_contacts_flags:
+            title: 'Organisieren Sie Ihre Prozesse und nehmen Sie Ihre neuen Kontakte auf'
+            desc: 'Die wichtigsten Tags sind kleine Daten, die mit Ihren Kontakten verbunden sind und Ihnen helfen, deren Entwicklung in Ihren internen Prozessen zu überwachen.'
+        feature_community_automations:
+            title: 'Automatisieren Sie Ihre Interaktionen, um Ihre Unterstützer besser einzubinden'
+            desc: 'Senden Sie automatisch E-Mails an Ihre Kontakte, wenn diese bestimmte Aktionen durchführen.'
+        feature_community_contacts_history:
+            title: 'Führen Sie ein detailliertes Protokoll der Interaktionen'
+            desc: 'Führen Sie eine detaillierte Historie der Interaktionen mit Ihren Kontakten, um sie besser in Ihre Gemeinschaft zu integrieren.'
+        feature_api:
+            title: 'Implementierung eines vollständig benutzerdefinierten Designs oder Entwicklung benutzerdefinierter Integrationen'
+            desc: "Durch den Zugriff auf die Citipo API für Ihre Projekte können Sie das Aussehen der\nWebsites, die von Citipo betrieben werden, anzupassen und Citipo besser in Ihre Projekte zu integrieren.\n"
+        feature_statistics:
+            title: 'Messen Sie die Auswirkungen Ihrer Aktionen, um zu entscheiden, welche Sie wiederholen möchten.'
+            desc: "Citipo-Statistiken helfen Ihnen zu verstehen, welche Aktionen (Veranstaltungen, Blogbeiträge, E-Mailings, Umfragen, ...)\nden größten Einfluss auf Ihre Community hatten, und helfen Ihnen bei der Entscheidung, welche Aktionen Sie wiederholen sollten.\n"

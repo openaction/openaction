@@ -1,0 +1,131 @@
+transactional:
+    greetings: Cordialement,<br />L'équipe Citipo
+    footer: |
+        Vous recevez cet email car vous être enregistré sur Citipo.
+        Si vous souhaitez arrêter de recevoir des e-mails de notre part, contactez-nous à
+
+    registration:
+        verify:
+            subject: '[Citipo] Vous y êtes presque !'
+            title: Vous y êtes presque !
+            desc: 'Cliquez sur le bouton ci-dessous pour finaliser votre inscription :'
+            link: Finaliser mon inscription
+
+        welcome:
+            subject: '[Citipo] Bienvenue sur Citipo!'
+            title: Bienvenue sur Citipo
+            intro: 'Bonjour %name%,'
+            thanks: Merci pour votre inscription sur Citipo!
+            cta: 'Vous pouvez dès maintenant créer un site internet et commencer à faire grandir votre communauté Citipo :'
+            link: Commencer à utiliser Citipo
+            feedback: 'Si vous avez des questions, idées ou remarques, n''hésitez pas à répondre à cet email directement, nous serons ravis d''échanger avec vous !'
+
+    forgot_password:
+        request:
+            subject: '[Citipo] Réinitialiser mon mot de passe'
+            title: Réinitialiser mon mot de passe
+            desc: |
+                Quelqu'un (probablement vous !) a demandé à réinitialiser le mot de passe de votre compte Citipo.
+                Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :
+            link: Réinitialiser mon mot de passe
+            ignore: |
+                Si vous n'avez pas demandé la réinitialisation du mot de passe de votre compte, vous pouvez ignorez
+                cet email et votre mot de passe restera le même.
+
+        updated:
+            subject: '[Citipo] Votre mot de passe a été mis à jour'
+            title: Votre mot de passe a été mis à jour
+            desc: |
+                Si vous n'êtes pas à l'origine de la modification de votre mot de passe, prenez contact avec
+                l'équipe Citipo pour que nous puissions vous aider à sécuriser votre compte :
+
+    invite:
+        subject: '[Citipo] %author% vous attend sur Citipo'
+        title: Rejoignez votre équipe sur Citipo
+        desc: |
+            <strong>%author%</strong> vient de vous inviter à rejoindre l'organisation <strong>%organization%</strong>
+            sur Citipo. Cliquer sur le lien ci-dessous pour commencer à collaborer avec votre équipe dès maintenant :
+        link: Rejoindre mon équipe
+
+    notification:
+        footer: |
+            Ce message est une notification liée à votre compte. Vous pouvez configurer vos notifications
+            dans les paramètres de votre compte.
+
+        new_project:
+            subject: '[Citipo] Un nouveau projet vient d''être créé dans votre organisation'
+            title: Un nouveau projet a été créé dans votre organisation
+            desc: |
+                Le projet <strong>%project%</strong> a été créé
+                dans l'organisation <strong>%organization%</strong>.
+            error: Si vous pensez que ce projet a été créé par erreur, vous pouvez le supprimer depuis le tableau de bord de Citipo.
+
+        new_invoice:
+            subject: '[Citipo] Facture %number% pour %organization%'
+            title: Une nouvelle facture est disponible pour votre organisation
+            desc: |
+                Vous trouverez ci-joint votre dernière facture pour votre organisation %organization%.
+                Cette facture a déjà été payée, aucun paiement supplémentaire n'est nécessaire.
+
+        new_quote:
+            subject: '[Citipo] Devis %number% pour %organization%'
+            title: Un nouveau devis est disponible pour votre organisation
+            desc: |
+                Vous trouverez ci-joint le devis pour votre organisation %organization%.
+
+        subscription_expiration:
+            subject_early: '[IMPORTANT] L''abonnement de %organization% se termine dans %days_left% jours'
+            subject_late: '[IMPORTANT] Votre site Citipo va être désactivé'
+            title: L'abonnement de %organization% se termine dans %days_left% jours
+            desc: |
+                L'abonnement de votre organisation %organization% se termine dans %days_left% jours.
+                Dès que l'abonnement aura expiré, votre site internet sera inaccessible et vous n'aurez plus
+                accès aux fonctionnalités de Citipo.
+            ask_us: Contactez-nous dès maintenant pour renouveler votre souscription
+
+        export:
+            subject: '[Citipo] Export terminé pour %organization%'
+            title: L'export des contacts est terminé
+            desc: |
+                L'export que vous avez demandé a bien été réalisé. Vous pouvez le téléchager en cliquant sur le bouton
+                ci-dessous :
+            button: Télécharger l'export
+
+community:
+    register:
+        subject: Confirmez votre adresse e-mail
+        title: Confirmez votre adresse e-mail
+        desc: 'Cliquez sur le lien ci-dessous pour confirmer votre adresse e-mail :'
+        link: Confirmer mon adresse e-mail
+
+    reset:
+        subject: Confirmez votre demande de modification de mot de passe
+        title: Confirmez votre demande de modification de mot de passe
+        desc: 'Cliquez sur le lien ci-dessous pour confirmer votre demande de modification de mot de passe :'
+        link: Confirmer ma demande
+
+    update_email:
+        subject: Confirmez votre demande de modification d'email
+        title: Confirmez votre demande de modification d'email
+        desc: 'Cliquez sur le lien ci-dessous pour confirmer votre demande de modification d''email :'
+        link: Confirmer ma demande
+
+    unregister:
+        subject: Confirmez votre désinscription
+        title: Confirmez votre désinscription
+        desc: 'Cliquez sur le lien ci-dessous pour confirmer votre désinscription :'
+        link: Confirmer ma désinscription
+
+    footer:
+        copyright: Tous droits réservés
+        legalities: |
+            Vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement des données à caractère personnel
+            vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données à caractère personnel.
+            Vous pouvez exercer vos droits en nous contactant par email à %email%.
+        policy: |
+            Vous pouvez également lire l'intégralité de notre politique de protection des données personnelles
+            sur notre site internet :
+        unsubscribe:
+            label: 'Vous recevez cet email car vous êtes abonné à %name%.'
+            link: Se désabonner ou mettre à jour mes préférences.
+        automation: Vous recevez cet email automatique en tant que contact de %name%.

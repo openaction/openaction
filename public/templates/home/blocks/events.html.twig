@@ -1,0 +1,30 @@
+{% set events = [] %}
+
+{% for event in block.events %}
+    {% set itemCategories = {} %}
+    {% for category in event.categories %}
+        {% set itemCategories = itemCategories|merge({ (category.name): path('event_list', {'c': category.id}) }) %}
+    {% endfor %}
+
+    {% set event = event|merge({
+        url: path('event_view', {'id': event.id, 'slug': event.slug}),
+        beginAt: event.begin_at|format_datetime('medium', 'short'),
+        categories: itemCategories,
+    }) %}
+
+    {% set events = events|merge([event]) %}
+{% endfor %}
+
+{% set payload = {
+    'current_project': current_project.toArray,
+    'force_embed_consent': force_embed_consent,
+    'events_title': current_project.terminology.events,
+    'events': events,
+    'play_image': asset('res/play.svg'),
+    'default_image': asset('res/default.jpg'),
+    'no_elements': 'base.no_element'|trans,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-events.html.twig' with payload %}
+{% endsandbox %}

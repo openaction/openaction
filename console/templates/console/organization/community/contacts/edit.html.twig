@@ -1,0 +1,80 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'contacts.edit.page_title'|trans({}, 'organization_community') %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+
+    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+        {% for message in messages %}
+            <div class="world-alert alert alert-bg-{{ type }}">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-auto pr-3">
+                        {% if type == 'success' %}
+                            <i class="far fa-check"></i>
+                        {% elseif type == 'warning' %}
+                            <i class="far fa-exclamation-triangle"></i>
+                        {% elseif type == 'error' %}
+                            <i class="far fa-times"></i>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        {{ message|trans({}, 'flashes') }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form) }}
+
+        <div class="world-box">
+            <div class="world-box-title">
+                <div class="row align-items-center">
+                    <div class="col-lg-auto flex-grow-1 mb-3 mb-lg-0">
+                        <a href="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}"
+                           class="btn btn-outline-primary btn-sm border-0">
+                            <i class="fal fa-angle-left"></i>
+                            <span>{{ 'contacts.back'|trans({}, 'organization_community') }}</span>
+                        </a>
+
+                        <h3 class="mt-2 mb-0">
+                            {{ 'contacts.edit.title'|trans({}, 'organization_community') }}
+                        </h3>
+                    </div>
+                    <div class="col-lg-auto text-lg-right">
+                        <div class="d-inline-flex">
+                            <a href="{{ csrf_path('console_organization_community_contacts_delete', {'organizationUuid': current_organization.uuid, 'uuid': contact.uuid}) }}"
+                               class="btn btn-secondary text-danger mr-3"
+                               data-controller="delete"
+                               data-message="{{ 'contacts.edit.delete_message'|trans({'%email%': contact.email}, 'organization_community') }}"
+                               data-target-url="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}">
+                                <i class="fad fa-trash mr-1"></i>
+                                {{ 'contacts.edit.delete'|trans({}, 'organization_community') }}
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                {{ 'contacts.edit.submit'|trans({}, 'organization_community') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-3 p-lg-4">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        {{ include('console/organization/community/contacts/_form.html.twig', {
+                            form: form,
+                            contact: contact,
+                            submit: 'contacts.edit.submit'|trans({}, 'organization_community'),
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}

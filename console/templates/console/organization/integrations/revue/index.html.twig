@@ -1,0 +1,76 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'revue.index.page_title'|trans({}, 'organization_integrations') %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title bg-white">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-9">
+                    <a href="{{ path('console_organization_integrations', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'back'|trans({}, 'organization_integrations') }}</span>
+                    </a>
+
+                    <h3 class="mt-2">
+                        {{ 'revue.index.page_title'|trans({}, 'organization_integrations') }}
+                    </h3>
+
+                    <div class="text-muted mb-2">
+                        {{ 'revue.index.help'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <a href="https://citipo.com/doc-twitter-revue" class="btn btn-secondary" target="_blank">
+                        {{ 'revue.read_doc'|trans({}, 'organization_integrations') }}
+                    </a>
+                </div>
+                <div class="col-12 col-lg-3 text-lg-right">
+                    <a href="{{ path('console_organization_integrations_revue_connect', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-primary">
+                        {{ 'revue.index.register'|trans({}, 'organization_integrations') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            {% if accounts|length > 0 %}
+                <div class="mt-4">
+                    {% for account in accounts %}
+                        <div class="world-block p-4 mb-4" id="account-{{ account.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                    <h5 class="mb-0">
+                                        {{ account.label }}
+                                    </h5>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="text-right">
+                                        <a href="{{ path('console_organization_integrations_revue_edit', {'uuid': account.uuid, 'organizationUuid': current_organization.uuid}) }}"
+                                           class="btn btn-secondary mr-2">
+                                            {{ 'revue.index.edit'|trans({}, 'organization_integrations') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_organization_integrations_revue_delete', {'uuid': account.uuid, 'organizationUuid': current_organization.uuid}) }}"
+                                           class="btn btn-danger"
+                                           data-controller="delete"
+                                           data-message="{{ 'revue.index.delete_confirm'|trans({'%label%': account.label}, 'organization_integrations') }}"
+                                           data-target="#account-{{ account.uuid }}">
+                                            {{ 'revue.index.delete'|trans({}, 'organization_integrations') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="my-4 text-center text-muted">
+                    {{ 'revue.index.none'|trans({}, 'organization_integrations') }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

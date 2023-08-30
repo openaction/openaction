@@ -1,0 +1,115 @@
+index:
+    title: Veranstaltungen
+    help: 'Erstellen Sie Veranstaltungen, um Ihre Gemeinschaft einzubinden'
+    edit_categories: 'Kategorien bearbeiten'
+    create: 'Neue Veranstaltung'
+    no_result: 'Ihr Projekt enthält im Moment kein Ereignis.'
+    no_result_create: 'Erstellen Sie das erste Ereignis'
+    begin_at: 'Beginn am %datetime%'
+    no_begin_date: 'Kein Startdatum definiert'
+    draft: Entwurf
+    scheduled: Geplant
+    scheduled_for: 'für %datetime%'
+    published: Veröffentlicht
+    published_at: 'am %datetime%'
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+    visits: besucht
+    view: Siehe
+    preview: Vorschau
+    edit: bearbeiten
+    duplicate: 'Duplizieren Sie'
+    move: Verschieben
+    delete: Löschen
+    remove_confirm: 'Sind Sie sicher, dass Sie das Ereignis "%name%" löschen wollen?'
+create:
+    title: 'Ein Ereignis erstellen'
+    back: 'Zurück zur Liste'
+    form:
+        title:
+            label: 'Name der Veranstaltung'
+            help: 'Name der Veranstaltung (wird auf der Website und in sozialen Netzwerken angezeigt, wenn sie geteilt wird)'
+        details: 'Datum und Ort'
+        beginAt:
+            label: 'Datum und Uhrzeit des Beginns der Veranstaltung'
+            help: 'Dieses Anfangsdatum wird den Teilnehmern helfen, die Veranstaltung in ihrem Kalender zu markieren.'
+        address:
+            label: 'Postanschrift der Veranstaltung'
+            help: 'Leer bleiben, wenn die Veranstaltung online stattfindet'
+        content:
+            label: 'Beschreibung der Veranstaltung'
+            help: "Halten Sie diese Beschreibung kurz (ein paar Sätze), damit die sozialen Netzwerke\ndie wichtigsten Teile der Veranstaltung anzuzeigen. Sie können zusätzlich einen Beitrag verwenden, wenn Sie\num die Veranstaltung ausführlicher anzukündigen.\n"
+        hasForm:
+            label: 'Erstellen Sie automatisch ein Anmeldeformular für diese Veranstaltung'
+            help: "Wenn diese Option aktiviert ist, wird automatisch ein Anmeldeformular erstellt und mit dieser Veranstaltung verknüpft.\nSie können es im Modul \"Formulare\" aktualisieren.\n"
+        button:
+            title: 'Benutzerdefinierte Schaltfläche "Aufruf zum Handeln'
+            help: "Der Aufruf zum Handeln ist eine gut sichtbare Schaltfläche, die Ihre Besucher dazu bringen soll\neine Aktion im Zusammenhang mit dieser Veranstaltung zu veranlassen (registrieren, online teilnehmen, auf Facebook öffnen, ...).\nSie können eine benutzerdefinierte Handlungsaufforderung zu Ihrer Veranstaltung hinzufügen (wenn sie nicht mit einem Anmeldeformular verknüpft ist)\nindem Sie eine Schaltflächenbeschriftung und eine Ziel-URL angeben. Lassen Sie die Schaltflächenbeschriftung leer, um die Schaltfläche zu deaktivieren.\n"
+        buttonText:
+            label: 'Etikett der Schaltfläche'
+            help: 'Beispiel: Registrieren, Live-Stream ansehen, ...'
+        buttonUrl:
+            label: Ziel-URL
+            help: 'URL, die bei einem Klick auf die Schaltfläche Aufruf zum Handeln geöffnet wird'
+        submit: 'Speichern Sie'
+    registerButton: Register
+    formBlocks:
+        title: 'Anmelden bei %title%'
+        first_name: Vornamen
+        last_name: Nachname
+        email: E-Mail
+        zip_code: Postleitzahl
+        city: Stadt
+        country: Land
+edit:
+    title: 'Ereignis "%title%" bearbeiten'
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+    form:
+        title:
+            label: 'Titel der Veranstaltung'
+            help: 'Titel der Veranstaltung (wird in der Liste und in den sozialen Netzwerken angezeigt, wenn sie geteilt wird)'
+        details: 'Datum und Ort'
+        beginAt:
+            label: 'Datum und Uhrzeit des Beginns der Veranstaltung'
+            help: 'Dieses Anfangsdatum wird den Teilnehmern helfen, die Veranstaltung in ihrem Kalender zu markieren.'
+        address:
+            label: 'Postanschrift der Veranstaltung'
+            help: 'Leer bleiben, wenn die Veranstaltung online stattfindet'
+        content:
+            label: 'Beschreibung der Veranstaltung'
+            help: "Halten Sie diese Beschreibung kurz (ein paar Sätze), damit die sozialen Netzwerke\ndie wichtigsten Teile der Veranstaltung anzuzeigen. Sie können zusätzlich einen Beitrag verwenden, wenn Sie\num die Veranstaltung ausführlicher anzukündigen.\n"
+        button:
+            title: 'Aufruf zum Handeln'
+            help: "Der Aufruf zum Handeln ist eine gut sichtbare Schaltfläche, die Ihre Besucher dazu bringen soll\neine Aktion im Zusammenhang mit dieser Veranstaltung zu veranlassen (sich anmelden, online teilnehmen, auf Facebook öffnen, ...).\nSie können einen solchen Aufruf zu einer Aktion auf Ihrer Veranstaltungsseite einfügen, indem Sie eine Schaltflächenbeschriftung und eine\nZiel-URL. Lassen Sie den Button-Label leer, um den Button zu deaktivieren.\n"
+        buttonText:
+            label: 'Etikett der Schaltfläche'
+            help: 'Beispiel: Registrieren, Live-Stream ansehen, ...'
+        buttonUrl:
+            label: Ziel-URL
+            help: 'URL, die bei einem Klick auf die Schaltfläche Aufruf zum Handeln geöffnet wird'
+        submit: 'Speichern Sie'
+move:
+    title: 'Ereignis "%title%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie diese Veranstaltung verlegen?'
+    submit: Verschieben
+categories:
+    index:
+        back: 'Zurück zu Veranstaltungen'
+        title: 'Kategorien von Veranstaltungen'
+        order: Bestellung
+        name: Name
+        number: Veranstaltungen
+        created: 'Datum der Erstellung'
+        edit: bearbeiten
+        create: 'Neue Kategorie'
+        no_records: 'Ihr Projekt enthält im Moment keine Ereigniskategorie.'
+        no_records_desc: 'Kategorien helfen Ihnen, Ihre Inhalte so zu organisieren, dass sie für Ihre Besucher leichter zu finden sind.'
+        remove: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie die Kategorie "%name%" löschen wollen?'
+    form:
+        title_create: 'Neue Kategorie'
+        title_edit: 'Eine Kategorie bearbeiten'
+        back: 'Zurück zur Liste'
+        name: Name
+        save: 'Speichern Sie'

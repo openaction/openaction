@@ -1,0 +1,109 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.list.title'|trans({}, 'project_documents') %}
+
+{% block sidebar_documents 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'index.upload.title'|trans({}, 'project_documents') }}
+        </h3>
+
+        <div class="bg-light documents-uploader p-2">
+            <div data-controller="document--upload"
+                 data-input-file="document[file]"
+                 data-endpoint="{{ path('console_website_document_create', {'projectUuid': project.uuid}) }}"
+                 class="uppy-reloading inactive">
+                <div class="uppy-reloading-loader">
+                    <i class="far fa-circle-notch fa-spin"></i>
+                </div>
+
+                <div class="uppy-reloading-dashboard" data-document--upload-target="drag"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'index.list.title'|trans({}, 'project_documents') }}
+        </h3>
+        <div class="bg-light">
+            {% if documents|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-3">
+                            {{ 'index.list.no_records'|trans({}, 'project_documents') }}
+                        </h4>
+
+                        <div class="text-muted">
+                            {{ 'index.list.no_records_desc'|trans({}, 'project_documents') }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'index.list.name'|trans({}, 'project_documents') }}
+                        </th>
+                        <th scope="col" class="world-table-date">
+                            {{ 'index.list.date'|trans({}, 'project_documents') }}
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for document in documents %}
+                        <tr id="document-{{ document.uuid }}" data-document="{{ document.uuid }}">
+                            <td>
+                                {{ document.name }}
+                            </td>
+                            <td class="world-table-date">
+                                {{ document.createdAt|format_datetime('medium', 'short') }}
+                            </td>
+                            <td class="world-table-actions-documents">
+                                <a href="{{ domain_url(current_project, '/document/'~(document.uuid|toBase62)~'/'~document.name) }}"
+                                   target="_blank" class="btn btn-sm btn-outline-primary border-0">
+                                    <i class="fas fa-search mr-1"></i>
+                                    {{ 'index.list.view'|trans({}, 'project_documents') }}
+                                </a>
+                                <button
+                                   class="btn btn-sm btn-outline-primary border-0"
+                                   data-controller="copy"
+                                   data-copy="{{ domain_url(current_project, '/document/'~(document.uuid|toBase62)~'/'~document.name) }}">
+                                    <i class="fad fa-copy mr-1"></i>
+                                    {{ 'index.list.copy_url'|trans({}, 'project_documents') }}
+                                </button>
+
+                                <a href="{{ path('console_website_document_download', {'uuid': document.uuid, 'projectUuid': project.uuid}) }}"
+                                   target="_blank" class="btn btn-sm btn-outline-primary border-0">
+                                    <i class="fad fa-cloud-download mr-1"></i>
+                                    {{ 'index.list.download'|trans({}, 'project_documents') }}
+                                </a>
+
+                                <a href="{{ csrf_path('console_website_document_delete', {'uuid': document.uuid, 'projectUuid': project.uuid}) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'index.list.remove_confirm'|trans({'%name%': document.name}, 'project_documents') }}"
+                                   data-target="#document-{{ document.uuid }}"
+                                   class="btn btn-sm btn-outline-danger border-0">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    {{ 'index.list.delete'|trans({}, 'project_documents') }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="p-3">
+                    {{ pagination(documents, current_page, 30) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,425 @@
+﻿body, table.body, h1, h2, h3, h4, h5, h6, p, td, th, a {
+  font-family: sans-serif;
+  font-weight: 300;
+  line-height: 1.7; }
+   
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 12px 0; line-height: 1.3; font-weight: 600; }
+  
+h1 {
+  font-size: 40px; }
+h2 {
+  font-size: 30px; }
+h3 {
+  font-size: 26px; }
+h4 {
+  font-size: 24px; }
+h5 {
+  font-size: 20px; }
+h6 {
+  font-size: 18px; }
+
+
+hr {border:none;border-top: rgba(0, 0, 0, 0.18) 1px solid;margin: 30px 0 25px;padding: 5px;}   
+pre {
+    font-family: courier;
+    font-size: 1rem; 
+    line-height: 2;
+    white-space: pre-wrap;
+}
+
+/*table td {padding:12px;}*/
+
+.height-20 {height:20px}
+.height-40 {height:40px}
+.height-60 {height:60px}
+.height-80 {height:80px}
+.height-100 {height:100px}
+.height-120 {height:120px}
+.height-140 {height:140px}
+.height-160 {height:160px}
+.height-180 {height:180px}
+.height-200 {height:200px}
+.height-220 {height:220px}
+.height-240 {height:240px}
+.height-260 {height:260px}
+.height-280 {height:280px}
+.height-300 {height:300px}
+@media (max-width: 640px) {
+    .height-20 {height:20px}
+    .height-40 {height:40px}
+    .height-60 {height:40px}
+    .height-80 {height:40px}
+    .height-100 {height:40px}
+    .height-120 {height:40px}
+    .height-140 {height:40px}
+    .height-160 {height:40px}
+    .height-180 {height:40px}
+    .height-200 {height:40px}
+    .height-220 {height:40px}
+    .height-240 {height:40px}
+    .height-260 {height:40px}
+    .height-280 {height:40px}
+    .height-300 {height:40px}
+}
+
+.size-12 {font-size:12px !important}
+.size-14 {font-size:14px !important}
+.size-16 {font-size:16px !important}
+.size-18 {font-size:18px !important}
+.size-21 {font-size:21px !important}
+.size-24 {font-size:24px !important}
+.size-28 {font-size:28px !important}
+.size-32 {font-size:32px !important}
+.size-35 {font-size:35px !important}
+.size-38 {font-size:38px !important}
+.size-42 {font-size:42px !important}
+.size-46 {font-size:46px !important}
+.size-48 {font-size:48px !important}
+.size-50 {font-size:50px !important}
+.size-54 {font-size:54px !important}
+.size-60 {font-size:60px !important}
+.size-64 {font-size:64px !important}
+.size-68 {font-size:68px !important}
+.size-72 {font-size:72px !important}
+.size-76 {font-size:76px !important}
+.size-80 {font-size:80px !important}
+.size-84 {font-size:84px !important}
+.size-88 {font-size:88px !important}
+.size-92 {font-size:92px !important}
+.size-96 {font-size:96px !important}
+.size-100 {font-size:100px !important}
+.size-104 {font-size:104px !important}
+.size-108 {font-size:108px !important}
+.size-112 {font-size:112px !important}
+.size-116 {font-size:116px !important}
+.size-120 {font-size:120px !important}
+.size-124 {font-size:124px !important}
+.size-128 {font-size:128px !important}
+.size-132 {font-size:132px !important}
+.size-136 {font-size:136px !important}
+.size-140 {font-size:140px !important}
+.size-144 {font-size:144px !important}
+.size-148 {font-size:148px !important}
+.size-152 {font-size:152px !important}
+.size-156 {font-size:156px !important}
+.size-160 {font-size:160px !important}
+.size-164 {font-size:164px !important}
+.size-168 {font-size:168px !important}
+.size-172 {font-size:172px !important}
+.size-176 {font-size:176px !important}
+.size-180 {font-size:180px !important}
+.size-184 {font-size:184px !important}
+.size-188 {font-size:188px !important}
+.size-192 {font-size:192px !important}
+.size-196 {font-size:196px !important}
+.size-200 {font-size:200px !important}
+.size-204 {font-size:204px !important}
+.size-208 {font-size:208px !important}
+.size-212 {font-size:212px !important}
+.size-216 {font-size:216px !important}
+.size-220 {font-size:220px !important}
+
+@media all and (max-width: 1024px) {
+    .size-12 {font-size:12px !important}
+    .size-14 {font-size:14px !important}
+    .size-16 {font-size:16px !important}
+    .size-18 {font-size:18px !important}
+    .size-21 {font-size:21px !important}
+    .size-24 {font-size:24px !important}
+    .size-28 {font-size:28px !important}
+    .size-32 {font-size:32px !important}
+    .size-35 {font-size:35px !important}
+    .size-38 {font-size:38px !important}
+    .size-42 {font-size:42px !important}
+    .size-46 {font-size:46px !important}
+    .size-48 {font-size:48px !important}
+    .size-50 {font-size:50px !important}
+    .size-54 {font-size:54px !important}
+    .size-60 {font-size:60px !important}
+    .size-64 {font-size:64px !important}
+    .size-68 {font-size:68px !important}
+    .size-72 {font-size:72px !important}
+    .size-76 {font-size:73px !important}
+    .size-80 {font-size:74px !important}
+    .size-84 {font-size:75px !important}
+    .size-88 {font-size:76px !important}
+    .size-92 {font-size:77px !important}
+    .size-96 {font-size:78px !important}
+    .size-100 {font-size:79px !important}
+    .size-104 {font-size:80px !important}
+    .size-108 {font-size:81px !important}
+    .size-112 {font-size:82px !important}
+    .size-116 {font-size:84px !important}
+    .size-120 {font-size:85px !important}
+    .size-124 {font-size:86px !important}
+    .size-128 {font-size:87px !important}
+    .size-132 {font-size:88px !important}
+    .size-136 {font-size:89px !important}
+    .size-140 {font-size:90px !important}
+    .size-144 {font-size:91px !important}
+    .size-148 {font-size:92px !important}
+    .size-152 {font-size:93px !important}
+    .size-156 {font-size:94px !important}
+    .size-160 {font-size:95px !important}
+    .size-164 {font-size:96px !important}
+    .size-168 {font-size:97px !important}
+    .size-172 {font-size:98px !important}
+    .size-176 {font-size:99px !important}
+    .size-180 {font-size:100px !important}
+    .size-184 {font-size:111px !important}
+    .size-188 {font-size:112px !important}
+    .size-192 {font-size:113px !important}
+    .size-196 {font-size:114px !important}
+    .size-200 {font-size:115px !important}
+    .size-204 {font-size:116px !important}
+    .size-208 {font-size:117px !important}
+    .size-212 {font-size:118px !important}
+    .size-216 {font-size:119px !important}
+    .size-220 {font-size:120px !important}    
+}
+
+@media all and (max-width: 640px) {
+    .size-12 {font-size:12px !important}
+    .size-14 {font-size:14px !important}
+    .size-16 {font-size:16px !important}
+    .size-18 {font-size:18px !important}
+    .size-21 {font-size:21px !important}
+    .size-24 {font-size:22px !important}
+    .size-28 {font-size:24px !important}
+    .size-32 {font-size:26px !important}
+    .size-35 {font-size:28px !important}    
+    .size-38 {font-size:30px !important}
+    .size-42 {font-size:32px !important}
+    .size-46 {font-size:34px !important}
+    .size-48 {font-size:36px !important}
+    .size-50 {font-size:36px !important}
+    .size-54 {font-size:36px !important}
+    .size-60 {font-size:36px !important}
+    .size-64 {font-size:36px !important}
+    .size-68 {font-size:36px !important}
+    .size-72 {font-size:36px !important}
+    .size-76 {font-size:36px !important}
+    .size-80 {font-size:36px !important}
+    .size-84 {font-size:36px !important}
+    .size-88 {font-size:36px !important}
+    .size-92 {font-size:36px !important}
+    .size-96 {font-size:36px !important}
+    .size-100 {font-size:36px !important}
+    .size-104 {font-size:36px !important}
+    .size-108 {font-size:36px !important}
+    .size-112 {font-size:36px !important}
+    .size-116 {font-size:36px !important}
+    .size-120 {font-size:36px !important}
+    .size-124 {font-size:36px !important}
+    .size-128 {font-size:36px !important}
+    .size-132 {font-size:36px !important}        
+    .size-136 {font-size:36px !important}
+    .size-140 {font-size:36px !important}
+    .size-144 {font-size:36px !important}
+    .size-148 {font-size:36px !important}
+    .size-152 {font-size:36px !important}
+    .size-156 {font-size:36px !important}
+    .size-160 {font-size:36px !important}
+    .size-164 {font-size:36px !important}
+    .size-168 {font-size:36px !important}
+    .size-172 {font-size:36px !important}
+    .size-176 {font-size:36px !important}
+    .size-180 {font-size:36px !important}
+    .size-184 {font-size:36px !important}
+    .size-188 {font-size:36px !important}
+    .size-192 {font-size:36px !important}
+    .size-196 {font-size:36px !important}
+    .size-200 {font-size:36px !important}
+    .size-204 {font-size:36px !important}
+    .size-208 {font-size:36px !important}
+    .size-212 {font-size:36px !important}
+    .size-216 {font-size:36px !important}
+    .size-220 {font-size:36px !important}
+}
+
+/* If text wrapped with span-style during editing, don't apply the fix here (See line59) */
+.size-12 span {font-size:12px !important}
+.size-14 span {font-size:14px !important}
+.size-16 span {font-size:16px !important}
+.size-18 span {font-size:18px !important}
+.size-21 span {font-size:21px !important}
+.size-24 span {font-size:24px !important}
+.size-28 span {font-size:28px !important}
+.size-32 span {font-size:32px !important}
+.size-35 span {font-size:35px !important}
+.size-38 span {font-size:38px !important}
+.size-42 span {font-size:42px !important}
+.size-46 span {font-size:46px !important}
+.size-48 span {font-size:48px !important}
+.size-50 span {font-size:50px !important}
+.size-54 span {font-size:54px !important}
+.size-60 span {font-size:60px !important}
+.size-64 span {font-size:64px !important}
+.size-68 span {font-size:68px !important}
+.size-72 span {font-size:72px !important}
+.size-76 span {font-size:76px !important}
+.size-80 span {font-size:80px !important}
+.size-84 span {font-size:84px !important}
+.size-88 span {font-size:88px !important}
+.size-92 span {font-size:92px !important}
+.size-96 span {font-size:96px !important}
+.size-100 span {font-size:100px !important}
+.size-104 span {font-size:104px !important}
+.size-108 span {font-size:108px !important}
+.size-112 span {font-size:112px !important}
+.size-116 span {font-size:116px !important}
+.size-120 span {font-size:120px !important}
+.size-124 span {font-size:124px !important}
+.size-128 span {font-size:128px !important}
+.size-132 span {font-size:132px !important}
+.size-136 span {font-size:136px !important}
+.size-140 span {font-size:140px !important}
+.size-144 span {font-size:144px !important}
+.size-148 span {font-size:148px !important}
+.size-152 span {font-size:152px !important}
+.size-156 span {font-size:156px !important}
+.size-160 span {font-size:160px !important}
+.size-164 span {font-size:164px !important}
+.size-168 span {font-size:168px !important}
+.size-172 span {font-size:172px !important}
+.size-176 span {font-size:176px !important}
+.size-180 span {font-size:180px !important}
+.size-184 span {font-size:184px !important}
+.size-188 span {font-size:188px !important}
+.size-192 span {font-size:192px !important}
+.size-196 span {font-size:196px !important}
+.size-200 span {font-size:200px !important}
+.size-204 span {font-size:204px !important}
+.size-208 span {font-size:208px !important}
+.size-212 span {font-size:212px !important}
+.size-216 span {font-size:216px !important}
+.size-220 span {font-size:220px !important}
+
+@media all and (max-width: 1024px) {
+    .size-12 span {font-size:12px !important}
+    .size-14 span {font-size:14px !important}
+    .size-16 span {font-size:16px !important}
+    .size-18 span {font-size:18px !important}
+    .size-21 span {font-size:21px !important}
+    .size-24 span {font-size:24px !important}
+    .size-28 span {font-size:28px !important}
+    .size-32 span {font-size:32px !important}
+    .size-35 span {font-size:35px !important}
+    .size-38 span {font-size:38px !important}
+    .size-42 span {font-size:42px !important}
+    .size-46 span {font-size:46px !important}
+    .size-48 span {font-size:48px !important}
+    .size-50 span {font-size:50px !important}
+    .size-54 span {font-size:54px !important}
+    .size-60 span {font-size:60px !important}
+    .size-64 span {font-size:64px !important}
+    .size-68 span {font-size:68px !important}
+    .size-72 span {font-size:72px !important}
+    .size-76 span {font-size:73px !important}
+    .size-80 span {font-size:74px !important}
+    .size-84 span {font-size:75px !important}
+    .size-88 span {font-size:76px !important}
+    .size-92 span {font-size:77px !important}
+    .size-96 span {font-size:78px !important}
+    .size-100 span {font-size:79px !important}
+    .size-104 span {font-size:80px !important}
+    .size-108 span {font-size:81px !important}
+    .size-112 span {font-size:82px !important}
+    .size-116 span {font-size:84px !important}
+    .size-120 span {font-size:85px !important}
+    .size-124 span {font-size:86px !important}
+    .size-128 span {font-size:87px !important}
+    .size-132 span {font-size:88px !important}
+    .size-136 span {font-size:89px !important}
+    .size-140 span {font-size:90px !important}
+    .size-144 span {font-size:91px !important}
+    .size-148 span {font-size:92px !important}
+    .size-152 span {font-size:93px !important}
+    .size-156 span {font-size:94px !important}
+    .size-160 span {font-size:95px !important}
+    .size-164 span {font-size:96px !important}
+    .size-168 span {font-size:97px !important}
+    .size-172 span {font-size:98px !important}
+    .size-176 span {font-size:99px !important}
+    .size-180 span {font-size:100px !important}
+    .size-184 span {font-size:111px !important}
+    .size-188 span {font-size:112px !important}
+    .size-192 span {font-size:113px !important}
+    .size-196 span {font-size:114px !important}
+    .size-200 span {font-size:115px !important}
+    .size-204 span {font-size:116px !important}
+    .size-208 span {font-size:117px !important}
+    .size-212 span {font-size:118px !important}
+    .size-216 span {font-size:119px !important}
+    .size-220 span {font-size:120px !important}    
+}
+
+@media all and (max-width: 640px) {
+    .size-12 span {font-size:12px !important}
+    .size-14 span {font-size:14px !important}
+    .size-16 span {font-size:16px !important}
+    .size-18 span {font-size:18px !important}
+    .size-21 span {font-size:21px !important}
+    .size-24 span {font-size:22px !important}
+    .size-28 span {font-size:24px !important}
+    .size-32 span {font-size:26px !important}
+    .size-35 span {font-size:28px !important}    
+    .size-38 span {font-size:30px !important}
+    .size-42 span {font-size:32px !important}
+    .size-46 span {font-size:34px !important}
+    .size-48 span {font-size:36px !important}
+    .size-50 span {font-size:36px !important}
+    .size-54 span {font-size:36px !important}
+    .size-60 span {font-size:36px !important}
+    .size-64 span {font-size:36px !important}
+    .size-68 span {font-size:36px !important}
+    .size-72 span {font-size:36px !important}
+    .size-76 span {font-size:36px !important}
+    .size-80 span {font-size:36px !important}
+    .size-84 span {font-size:36px !important}
+    .size-88 span {font-size:36px !important}
+    .size-92 span {font-size:36px !important}
+    .size-96 span {font-size:36px !important}
+    .size-100 span {font-size:36px !important}
+    .size-104 span {font-size:36px !important}
+    .size-108 span {font-size:36px !important}
+    .size-112 span {font-size:36px !important}
+    .size-116 span {font-size:36px !important}
+    .size-120 span {font-size:36px !important}
+    .size-124 span {font-size:36px !important}
+    .size-128 span {font-size:36px !important}
+    .size-132 span {font-size:36px !important}        
+    .size-136 span {font-size:36px !important}
+    .size-140 span {font-size:36px !important}
+    .size-144 span {font-size:36px !important}
+    .size-148 span {font-size:36px !important}
+    .size-152 span {font-size:36px !important}
+    .size-156 span {font-size:36px !important}
+    .size-160 span {font-size:36px !important}
+    .size-164 span {font-size:36px !important}
+    .size-168 span {font-size:36px !important}
+    .size-172 span {font-size:36px !important}
+    .size-176 span {font-size:36px !important}
+    .size-180 span {font-size:36px !important}
+    .size-184 span {font-size:36px !important}
+    .size-188 span {font-size:36px !important}
+    .size-192 span {font-size:36px !important}
+    .size-196 span {font-size:36px !important}
+    .size-200 span {font-size:36px !important}
+    .size-204 span {font-size:36px !important}
+    .size-208 span {font-size:36px !important}
+    .size-212 span {font-size:36px !important}
+    .size-216 span {font-size:36px !important}
+    .size-220 span {font-size:36px !important} 
+}
+
+@media all and (max-width: 1024px) {
+    .margin-left-1024-reset {margin-left:0px !important;}
+    .margin-right-1024-reset {margin-right:0px !important;}
+}

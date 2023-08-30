@@ -1,0 +1,26 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.notification.new_project.title'|trans({}, 'emails', locale|default('en')) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.notification.new_project.desc'|trans({
+            '%project%': project_name,
+            '%organization%': organization_name,
+        }, 'emails', locale|default('en'))|raw }}
+    </p>
+
+    <p>
+        {{ 'transactional.notification.new_project.error'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.notification.footer'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+{% endblock %}

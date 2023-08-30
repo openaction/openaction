@@ -1,0 +1,54 @@
+sidebar:
+    account: Konto
+    password: Passwort
+    2fa: Zwei-Faktor-Authentifizierung
+    notifications: Benachrichtigungen
+account:
+    title: Konto
+    firstName: Vornamen
+    lastName: Nachname
+    locale: 'Sprache des Verwaltungsbereichs'
+    submit: Update
+update_password:
+    title: 'Mein Passwort ändern'
+    old_password: 'Aktuelles Passwort'
+    new_password: 'Wählen Sie ein neues Passwort'
+    repeat_new_password: 'Bestätigen Sie das neue Passwort'
+    submit: 'Ändern Sie'
+notification_settings:
+    title: Benachrichtigungen
+    event:
+        label: 'Ich möchte eine Benachrichtigung per E-Mail erhalten, wenn:'
+        project_created: 'Ein Projekt wird in einer Organisation erstellt, in der ich Administrator bin.'
+        newsletter_sent: 'Eine E-Mail-Kampagne wird an eine Organisation gesendet, in der ich Administrator bin.'
+        low_credits: 'Eine Organisation, in der ich Administrator bin, erreicht niedrige Kredite'
+        feature_added: 'Citipo wird um eine neue Funktion erweitert'
+    submit: Update
+confirm_password:
+    title: 'Bestätigen Sie Ihr Passwort'
+    desc: 'Sie müssen Ihr aktuelles Passwort bestätigen, um diese Aktion durchführen zu können.'
+    label: 'Aktuelles Passwort'
+    submit: Weiter
+two_factor:
+    status:
+        title: Zwei-Faktor-Authentifizierung
+        desc: "Machen Sie Ihr Konto mit einem zweiten Authentifizierungsschritt besonders sicher.\nSie ist völlig kostenlos und erhöht die Sicherheit Ihres Kontos erheblich,\nWir empfehlen allen Citipo-Nutzern, sie zu aktivieren.\n"
+        disabled:
+            label: 'Die Zwei-Faktor-Authentifizierung ist in Ihrem Konto noch nicht aktiviert.'
+            enable: 'Aktivieren Sie die Zwei-Faktor-Authentifizierung'
+        enabled:
+            label: 'Die Zwei-Faktor-Authentifizierung ist für Ihr Konto aktiviert.'
+            disable: 'Zwei-Faktor-Authentifizierung deaktivieren'
+            disable_confirm: "Wenn Sie die Zwei-Faktor-Authentifizierung deaktivieren, verringert sich die Sicherheit Ihres Kontos.\nSind Sie sicher, dass Sie sie deaktivieren möchten?\n"
+    enable:
+        title: 'Zwei-Faktor-Authentifizierung hinzufügen'
+        desc: "Download.\n<a href=\"https://support.google.com/accounts/answer/1066447?hl=en\" target=\"_blank\">Google Authenticator App</a>\noder <a href=\"https://authy.com/download/\" target=\"_blank\">Authy app</a>,\nfügen Sie ein neues Konto hinzu, und scannen Sie dann diesen Barcode, um Ihr Konto einzurichten:\n"
+        manual_code: 'Sie können den folgenden Code auch manuell in Ihre bevorzugte Anwendung einfügen:'
+        enter_code: 'Geben Sie anschließend den in der Anwendung angezeigten Code hier ein:'
+        submit: 'Aktivieren Sie'
+    enabled:
+        title: 'Die Zwei-Faktor-Authentifizierung wurde aktiviert'
+        desc: "Die Zwei-Faktor-Authentifizierung wurde erfolgreich für Ihr Konto aktiviert. Wenn Sie sich das nächste Mal\nWenn Sie sich das nächste Mal bei Citipo anmelden, werden Sie nach dem Code gefragt, den Sie von Ihrer mobilen Anwendung erhalten haben.\n"
+        warning: "Um zu vermeiden, dass Sie aus Ihrem Konto ausgesperrt werden, sollten Sie folgende Codes herunterladen und an einem\ndie folgenden Codes herunterladen und sicher aufbewahren. Sollten Sie den Zugang zu Ihrem Telefon verlieren, können Sie sich mit\nzum Einloggen verwenden:\n"
+        download: 'Diese Codes herunterladen'
+        skip: Weiter

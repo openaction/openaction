@@ -1,0 +1,36 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'not_enough_slots.title'|trans({}, 'organization') %}
+
+{% block content %}
+    <div class="pb-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="text-center mt-5 pt-5 mb-4">
+                    <h4 class="text-center mb-4">
+                        {{ 'not_enough_slots.title'|trans({}, 'organization') }}
+                    </h4>
+
+                    <div class="text-muted mb-2">
+                        {{ 'not_enough_slots.desc'|trans({
+                            '%slots%': current_organization.projectsSlots,
+                            '%organization%': current_organization.name,
+                        }, 'organization')|raw }}
+                    </div>
+
+                    <div class="text-muted mb-5">
+                        {{ 'not_enough_slots.upgrade'|trans({}, 'organization') }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ 'not_enough_slots.ask_citipo'|trans({}, 'organization') }}
+                    </div>
+
+                    <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary">
+                        {{ 'contact_email'|trans({}, 'global') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

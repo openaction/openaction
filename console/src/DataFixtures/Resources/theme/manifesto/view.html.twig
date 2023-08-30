@@ -1,0 +1,63 @@
+<div class="manifesto manifesto-topic" data-aos="fade-up" data-aos-duration="600">
+    <div class="manifesto-topic-section">
+        <a href="{{ manifesto_url }}" data-turbo="optional">
+            {{ manifesto_title }}
+        </a>
+    </div>
+
+    <div class="manifesto-topic-nav">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-6 mb-2">
+                {% if topic.previous %}
+                    <a href="{{ topic.previous.url }}"
+                       class="d-inline-block px-4 py-3"
+                       data-turbo="optional"
+                       style="background-color: {{ topic.previous.backgroundColor }}; color: #{{ topic.previous.color }};">
+                        ⟵ {{ topic.previous.title }}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-6 mb-2 text-right">
+                {% if topic.next %}
+                    <a href="{{ topic.next.url }}"
+                       class="d-inline-block px-4 py-3"
+                       data-turbo="optional"
+                       style="background-color: {{ topic.next.backgroundColor }}; color: #{{ topic.next.color }};">
+                        {{ topic.next.title }} ⟶
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="manifesto-topic-header"
+         style="background-image: url('{{ topic.image|default(default_image) }}')">
+        <div class="manifesto-topic-header-overlay">
+            <div>
+                <h1 class="manifesto-topic-header-title">
+                    {{ topic.title }}
+                </h1>
+
+                <div class="manifesto-topic-header-social-sharers">
+                    {{ social_sharers|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="manifesto-topic-proposals"
+         style="background-color: {{ topic.backgroundColor }}; color: #{{ topic.color }};">
+        {% for key, proposal in topic.proposals %}
+            <div class="manifesto-topic-proposal">
+                <h3 class="manifesto-topic-proposal-title">
+                    <span class="manifesto-topic-proposal-number">{{ key + 1 }}.</span>
+                    {{ proposal.title }}
+                </h3>
+
+                <div class="manifesto-topic-proposal-content user-content py-2 px-0 px-lg-5 mb-5">
+                    {{ proposal.content|raw }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

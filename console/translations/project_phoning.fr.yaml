@@ -1,0 +1,70 @@
+index:
+    title: Campagnes d'appels
+    create: Nouvelle campagne d'appels
+    drafts:
+        title: Campagnes brouillons
+        no_records: Aucune campagne brouillon
+        no_result_create: Créer une campagne
+        to: Vers tous vos contacts
+        to_members: Vers tous vos membres
+        to_areas: Vers tous les contacts dans la zone %areas%
+        to_tags: Vers tous les contacts ayant les tags %tags%
+        to_contacts: Vers %contacts% contacts spécifiques
+        to_areas_tags: Vers les contacts dans la zone %areas% et ayant les tags %tags%
+        edit: Modifier les paramètres
+        delete: Supprimer
+        delete_confirm: 'Voulez-vous vraiment supprimer la campagne "%subject%" ?'
+        status:
+            start: Démarrer maintenant
+            start_confirm: |
+                Voulez-vous vraiment démarrer la campagne "%subject%" ?
+                Vous ne pourrez plus modifier les contacts à appeler une fois qu'elle sera lancée
+                (vous pourrez toujours modifier le questionnaire).
+
+    list:
+        name: Nom
+        progress: Progression
+        contacts_called: contacts appelés
+        edit_form: Modifier le questionnaire
+        preview: Voir sur le site
+        duplicate: Dupliquer
+
+    active:
+        title: Campagnes actives
+        no_records: Aucune campagne active
+        stop: Stopper
+        stop_confirm: 'Voulez-vous vraiment stopper la campagne "%subject%" ? Vous ne pourrez pas la relancer.'
+
+    finished:
+        title: Campagnes terminées
+        no_records: Aucune campagne terminée
+
+create:
+    name: (Campagne sans nom)
+
+metadata:
+    back: Retour à la liste
+    title: Modifier la campagne "%title%"
+    submit: Enregistrer
+
+    details:
+        title: Paramètres
+        desc: Paramètres généraux de la campagne
+        name:
+            label: Nom
+        endAfter:
+            label: Durée
+            help: Après combien de temps cette campagne d'appels doit-elle se terminer automatiquement ?
+            choice:
+                3: 3 heures
+                6: 6 heures
+                12: 12 heures
+                24: 1 jour
+                48: 2 jours
+                72: 3 jours
+                168: 1 semaine
+                720: 30 jours
+
+    to:
+        title: Destinataires
+        desc: Quels contacts doivent être appelés dans le cadre de cette campagne ?

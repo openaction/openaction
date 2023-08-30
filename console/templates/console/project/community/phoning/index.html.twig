@@ -1,0 +1,313 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_phoning') %}
+
+{% block sidebar_phoning 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-0">
+                        {{ 'index.drafts.title'|trans({}, 'project_phoning') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ csrf_path('console_community_phoning_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_phoning') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if campaigns_drafts|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.drafts.no_records'|trans({}, 'project_phoning') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_community_phoning_create', { 'projectUuid': project.uuid }) }}"
+                           class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.drafts.no_result_create'|trans({}, 'project_phoning') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for draft in campaigns_drafts %}
+                        <div class="world-list-row p-4" id="campaign-{{ draft.uuid }}" data-campaign="{{ draft.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-9">
+                                    <h4 class="mb-1 posts-title">
+                                        {{ draft.name }}
+                                    </h4>
+
+                                    <div class="text-muted">
+                                        {% set to = 'to' %}
+                                        {% set toParams = {} %}
+
+                                        {% if draft.onlyForMembers %}
+                                            {% set to = to ~ '_members' %}
+                                        {% endif %}
+
+                                        {% if draft.areasFilter|length > 0 %}
+                                            {% set to = to ~ '_areas' %}
+                                            {% set toParams = toParams|merge({'%areas%': draft.areasFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.tagsFilter|length > 0 %}
+                                            {% set to = to ~ '_tags' %}
+                                            {% set toParams = toParams|merge({'%tags%': draft.tagsFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.contactsFilter is not null %}
+                                            {% set to = to ~ '_contacts' %}
+                                            {% set toParams = toParams|merge({'%contacts%': draft.contactsFilter|length}) %}
+                                        {% endif %}
+
+                                        {{ ('index.drafts.' ~ to)|trans(toParams, 'project_phoning') }}
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a href="{{ path('console_community_phoning_metadata', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="fad fa-cogs mr-1"></i>
+                                            {{ 'index.drafts.edit'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ path('console_website_forms_edit', { 'projectUuid': project.uuid, 'uuid': draft.form.uuid, 'from': 'phoning' }) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2"
+                                           target="_blank">
+                                            <i class="fad fa-tasks mr-1"></i>
+                                            {{ 'index.list.edit_form'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_phoning_duplicate', {'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="fad fa-copy mr-1"></i>
+                                            {{ 'index.list.duplicate'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_phoning_delete', { 'projectUuid': project.uuid, 'uuid': draft.uuid }) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.drafts.delete_confirm'|trans({'%subject%': draft.name}, 'project_phoning') }}"
+                                           data-target="#campaign-{{ draft.uuid }}"
+                                           class="btn btn-sm btn-outline-danger border-0">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.drafts.delete'|trans({}, 'project_phoning') }}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 text-right">
+                                    <a href="{{ csrf_path('console_community_phoning_start', { 'projectUuid': project.uuid, 'uuid': draft.uuid }) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'index.drafts.status.start_confirm'|trans({'%subject%': draft.name}, 'project_phoning') }}"
+                                       data-target-url="{{ path('console_community_phoning', { 'projectUuid': project.uuid }) }}"
+                                       class="btn btn-sm btn-secondary">
+                                        <i class="fad fa-play mr-1"></i>
+                                        {{ 'index.drafts.status.start'|trans({}, 'project_phoning') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-0">
+                        {{ 'index.active.title'|trans({}, 'project_phoning') }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        {% if is_granted('community_phoning_manage_active', current_project) %}
+            <div class="bg-light">
+                {% if campaigns_active|length == 0 %}
+                    <div class="text-center p-5">
+                        <div class="my-4">
+                            <h4 class="mb-3">
+                                {{ 'index.active.no_records'|trans({}, 'project_phoning') }}
+                            </h4>
+                        </div>
+                    </div>
+                {% else %}
+                    <table class="world-table table">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                {{ 'index.list.name'|trans({}, 'project_phoning') }}
+                            </th>
+                            {% if is_granted('community_phoning_stats', current_project) %}
+                                <th scope="col" class="text-center">
+                                    {{ 'index.list.progress'|trans({}, 'project_phoning') }}
+                                </th>
+                            {% endif %}
+                            <th scope="col" class="text-center"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for active in campaigns_active %}
+                            <tr id="campaign-{{ active.uuid }}">
+                                <td class="world-table-actions-documents text-left">
+                                    <div class="font-weight-bold">
+                                        {{ active.name }}
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ active.startAt|format_datetime('medium', 'short') }}
+                                        - {{ active.endAt|format_datetime('medium', 'short') }}
+                                    </div>
+                                </td>
+                                {% if is_granted('community_phoning_stats', current_project) %}
+                                    <td class="world-table-actions-lg text-center text-muted">
+                                        {% if not active.resolvedAt %}
+                                            <i class="fal fa-circle-notch fa-spin"></i>
+                                        {% else %}
+                                            {% set progress = campaigns_active_progress[active.id] %}
+
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: {{ progress.progress }}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ progress.progress }}%</div>
+                                            </div>
+
+                                            <small>
+                                                {{ progress.done }} / {{ progress.total }}
+                                                {{ 'index.list.contacts_called'|trans({}, 'project_phoning') }}
+                                            </small>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td class="text-muted">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ path('console_community_phoning_view', {'uuid': active.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2" target="_blank">
+                                            <i class="fas fa-search mr-1"></i>
+                                            {{ 'index.list.preview'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ path('console_website_forms_edit', { 'projectUuid': project.uuid, 'uuid': active.form.uuid, 'from': 'phoning' }) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2" target="_blank">
+                                            <i class="fad fa-tasks mr-1"></i>
+                                            {{ 'index.list.edit_form'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_phoning_stop', { 'projectUuid': project.uuid, 'uuid': active.uuid }) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.active.stop_confirm'|trans({'%subject%': active.name}, 'project_phoning') }}"
+                                           data-target-url="{{ path('console_community_phoning', { 'projectUuid': project.uuid }) }}"
+                                           class="btn btn-sm btn-outline-danger border-0 mr-2">
+                                            <i class="fad fa-stop mr-1"></i>
+                                            {{ 'index.active.stop'|trans({}, 'project_phoning') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_phoning_duplicate', {'projectUuid': project.uuid, 'uuid': active.uuid}) }}"
+                                           class="btn btn-secondary btn-sm mr-1">
+                                            {{ 'index.list.duplicate'|trans({}, 'project_phoning') }}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    {% if is_granted('community_phoning_stats', current_project) %}
+        <div class="world-box mb-3">
+            <div class="world-box-title">
+                <div class="row align-items-center">
+                    <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                        <h3 class="mb-0">
+                            {{ 'index.finished.title'|trans({}, 'project_phoning') }}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light">
+                {% if campaigns_finished|length == 0 %}
+                    <div class="text-center p-5">
+                        <div class="my-4">
+                            <h4 class="mb-3">
+                                {{ 'index.finished.no_records'|trans({}, 'project_phoning') }}
+                            </h4>
+                        </div>
+                    </div>
+                {% else %}
+                    <table class="world-table table">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                {{ 'index.list.name'|trans({}, 'project_phoning') }}
+                            </th>
+                            {% if is_granted('community_phoning_stats', current_project) %}
+                                <th scope="col" class="text-center">
+                                    {{ 'index.list.progress'|trans({}, 'project_phoning') }}
+                                </th>
+                            {% endif %}
+                            <th scope="col" class="text-center"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for finished in campaigns_finished %}
+                            <tr id="campaign-{{ finished.uuid }}">
+                                <td class="world-table-actions-documents text-left">
+                                    <div class="font-weight-bold">
+                                        {{ finished.name }}
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ finished.startAt|format_datetime('medium', 'short') }}
+                                        - {{ finished.endAt|format_datetime('medium', 'short') }}
+                                    </div>
+                                </td>
+                                {% if is_granted('community_phoning_stats', current_project) %}
+                                    <td class="world-table-actions-lg text-center text-muted">
+                                        {% set progress = campaigns_finished_progress[finished.id]|default({ done: 0, total: 0, progress: 0 }) %}
+
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ progress.progress }}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ progress.progress }}%</div>
+                                        </div>
+
+                                        <small>
+                                            {{ progress.done }} / {{ progress.total }}
+                                            {{ 'index.list.contacts_called'|trans({}, 'project_phoning') }}
+                                        </small>
+                                    </td>
+                                {% endif %}
+                                <td class="text-right text-muted">
+                                    <a href="{{ csrf_path('console_community_phoning_duplicate', {'projectUuid': project.uuid, 'uuid': finished.uuid}) }}"
+                                       class="btn btn-secondary btn-sm mr-1">
+                                        {{ 'index.list.duplicate'|trans({}, 'project_phoning') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="p-3">
+                        {{ pagination(campaigns_finished, current_page, items_per_page) }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

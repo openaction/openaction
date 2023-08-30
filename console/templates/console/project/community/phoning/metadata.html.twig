@@ -1,0 +1,86 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'metadata.title'|trans({'%title%': campaign.name}, 'project_phoning') %}
+
+{% block sidebar_phoning 'current' %}
+
+{% block content %}
+    {% do expose('project_areas', current_project.areasIds) %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+    {% do expose('filter_preview_url', path('console_community_phoning_filter_preview', {'projectUuid': campaign.project.uuid, 'uuid': campaign.uuid})) %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_community_phoning', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'metadata.back'|trans({}, 'project_phoning') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <button type="submit" class="btn btn-sm btn-primary">
+                        {{ 'metadata.submit'|trans({}, 'project_phoning') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'metadata.details.title'|trans({}, 'project_phoning') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            {{ form_row(form.name, {
+                'label': 'metadata.details.name.label'|trans({}, 'project_phoning'),
+                'attr': {'class': 'form-control-lg'},
+            }) }}
+
+            {{ form_row(form.endAfter, {
+                'label': 'metadata.details.endAfter.label'|trans({}, 'project_phoning'),
+                'help': 'metadata.details.endAfter.help'|trans({}, 'project_phoning'),
+            }) }}
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'metadata.to.title'|trans({}, 'project_phoning') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="text-muted mb-3">
+                {{ 'metadata.to.desc'|trans({}, 'project_phoning') }}
+            </div>
+
+            <div data-controller="phoning--metadata"
+                 data-tags="{{ current_project.isFeatureInPlan('feature_community_phoning_tags') ? '1' : '0' }}"
+                 data-areas="{{ current_project.isFeatureInPlan('feature_community_phoning_areas') ? '1' : '0' }}"
+                 data-specific="{{ current_project.isFeatureInPlan('feature_community_phoning_specific') ? '1' : '0' }}"
+                 data-members="{{ current_project.isFeatureInPlan('feature_community_phoning_members') ? '1' : '0' }}">
+                <div class="d-none">
+                    {{ form_widget(form.tagsFilter, {'attr': {'data-phoning--metadata-target': 'tagsInput'}}) }}
+                    {{ form_widget(form.tagsFilterType, {'attr': {'data-phoning--metadata-target': 'tagsTypeInput'}}) }}
+                    {{ form_widget(form.areasFilterIds, {'attr': {'data-phoning--metadata-target': 'areasInput'}}) }}
+                    {{ form_widget(form.contactsFilter, {'attr': {'data-phoning--metadata-target': 'contactsInput'}}) }}
+                    {{ form_widget(form.onlyForMembers, {'attr': {'data-phoning--metadata-target': 'onlyForMembersInput'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-lg btn-primary">
+            {{ 'metadata.submit'|trans({}, 'project_phoning') }}
+        </button>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,40 @@
+services:
+    digitalocean_spaces_client:
+        class: 'AsyncAws\S3\S3Client'
+        arguments:
+            -
+                endpoint: '%env(DIGITALOCEAN_SPACES_ENDPOINT)%'
+                accessKeyId: '%env(DIGITALOCEAN_SPACES_ID)%'
+                accessKeySecret: '%env(DIGITALOCEAN_SPACES_SECRET)%'
+
+flysystem:
+    storages:
+        #
+        # CDN
+        #
+        cdn.storage.memory:
+            adapter: 'memory'
+
+        cdn.storage.digitalocean:
+            adapter: 'asyncaws'
+            options:
+                client: 'digitalocean_spaces_client'
+                bucket: '%env(DIGITALOCEAN_SPACES_BUCKET)%'
+
+        cdn.storage.local:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/cdn'
+
+        cdn.storage:
+            adapter: 'lazy'
+            options:
+                source: '%env(APP_CDN_STORAGE)%'
+
+        #
+        # Screenshots
+        #
+        tools.screenshots.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/storage/screenshots'

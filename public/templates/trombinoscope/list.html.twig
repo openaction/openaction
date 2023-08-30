@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.trombinoscope %}
+
+{% block body_class 'body-trombinoscope-list' %}
+
+{% block page %}
+    {% set trombinoscopePayload = [] %}
+
+    {% for person in trombinoscope %}
+        {% set personPayload = person.toArray()|merge({
+            url: path('trombinoscope_view', {'id': person.id, 'slug': person.slug}),
+        }) %}
+
+        {% set trombinoscopePayload = trombinoscopePayload|merge([personPayload]) %}
+    {% endfor %}
+
+    {% set payload = {
+        'current_url': url(current_route, current_route_params),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'trombinoscope_title': current_project.terminology.trombinoscope,
+        'social_sharers': include('_include/social_sharers.html.twig', {'route': 'trombinoscope_list'}),
+        'trombinoscope': trombinoscopePayload,
+        'no_elements': 'base.no_element'|trans,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/trombinoscope-list.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+

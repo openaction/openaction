@@ -1,0 +1,373 @@
+breadcrumb: Organisation
+title: 'Ihre Gemeinschaft'
+sidebar:
+    community:
+        label: Gemeinschaft
+        contacts: Kontakte
+        import: 'Kontakte importieren'
+        export: 'Kontakte exportieren'
+        ambiguities: 'Duplizierte Kontakte'
+    configuration:
+        label: Konfiguration
+        tags: Tags
+        main_tags: 'Wichtigste Tags'
+        automation: Automatisierungen
+contacts:
+    back: 'Zurück zur Liste'
+    list:
+        page_title: 'Ihre Gemeinschaft'
+        title: Kontakte
+        desc: 'Diese Liste fasst alle Kontakte aus allen Ihren Projekten an einem Ort zusammen: Mitglieder, Newsletter-Abonnenten, ...'
+        configure: Konfiguration
+        create: 'Neuer Kontakt'
+        facets:
+            tags: Tags
+            projects: Projekte
+            status: Status
+            country: Land
+            province: Region/Staat
+            district: Abteilung/Landkreis
+    view:
+        delete: Löschen
+        delete_message: 'Sind Sie sicher, dass Sie den Kontakt "%email%" löschen möchten?'
+        edit: 'Details aktualisieren'
+        profile:
+            label: Profil
+            area: 'Standort:'
+            date: 'Datum:'
+            tags: 'Tags:'
+            status:
+                label: 'Art:'
+                member: Mitglied
+                contact: Kontakt
+            newsletter:
+                label: 'Newsletter:'
+                subscribed: Abonniert
+                unsubscribed: Abbestellt
+            sms:
+                label: 'SMS-Kampagnen:'
+                subscribed: Abonniert
+                unsubscribed: Abbestellt
+            calls:
+                label: 'Telefonanrufe:'
+                subscribed: Angenommen
+                unsubscribed: Verweigert
+            subscriptions:
+                all:
+                    label: 'Alle Projekte'
+            email: 'E-Mail Adresse'
+            additional_emails: 'Zusätzliche E-Mail-Adressen'
+            name: 'Vollständiger Name'
+            birthdate: Geburtsdatum
+            gender: Geschlecht
+            nationality: Nationalität
+            company: 'Beruf und Unternehmen'
+            address: Postanschrift
+            phone: 'Telefonnummer (persönlich)'
+            workPhone: 'Telefonnummer (Arbeit)'
+            socials: 'Soziale Netzwerke'
+        history:
+            label: 'Interaktionen Geschichte'
+            help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'
+            joined:
+                label: 'Beitritt zu Ihrer Gemeinschaft'
+            emailing:
+                label: 'Ich habe eine E-Mail erhalten:'
+                openedAt: 'Eröffnet am'
+                neverOpened: 'Nie geöffnet'
+                clickedAt: 'Geklickt auf'
+                neverClicked: 'Nie geklickt'
+                openCampaignReport: 'Bericht über die Kampagne ansehen'
+            texting:
+                label: 'Ich habe eine SMS erhalten:'
+            form_answer:
+                label: 'Hat ein Formular beantwortet:'
+                openAnswer: 'Sehen Sie die Antwort'
+                openForm: 'Das Formular anzeigen'
+        customFields:
+            label: 'Benutzerdefinierte Felder (für technische Benutzer)'
+            help: "Benutzerdefinierte Felder sind technische Datenfelder, die von Ihrer Website verwendet werden, um\nzusätzliche Informationen zu Ihren Kontakten zu speichern.\n"
+    create:
+        page_title: 'Einen neuen Kontakt erstellen'
+        title: 'Einen neuen Kontakt erstellen'
+        desc: "Ein Kontakt ist eine Person, mit der Ihre Organisation eine Interaktion hatte. Einmal erstellt, können Sie und Ihre\nMitarbeiter in der Lage sein, E-Mail-Kampagnen an diesen Kontakt zu senden.\n"
+        submit: erstellen.
+    edit:
+        page_title: 'Einen Kontakt aktualisieren'
+        title: 'Einen Kontakt aktualisieren'
+        submit: 'Speichern Sie'
+        delete: Löschen
+        delete_message: 'Sind Sie sicher, dass Sie den Kontakt "%email%" löschen möchten?'
+    form:
+        email: 'E-Mail Adresse'
+        additionalEmails: 'Zusätzliche E-Mail-Adressen'
+        picture:
+            label: Bild
+            help: 'Lassen Sie dieses Feld leer, um das aktuelle Profilbild beizubehalten.'
+        profile:
+            label: Profil
+            formalTitle: Titel
+            firstName: Vornamen
+            middleName: 'Mittlerer Name'
+            lastName: Nachname
+            birthdate: Geburtsdatum
+            gender: Geschlecht
+            nationality: Nationalität
+            company: Unternehmen
+            jobTitle: Berufsbezeichnung
+        tags:
+            label: Tags
+            help: "Tags helfen Ihnen, Kontakte in Segmente zu kategorisieren, um sie\nin späteren Kommunikationskampagnen besser ansprechen zu können.\n"
+        contact:
+            label: Kontaktangaben
+            phone:
+                label: 'Persönliches Telefon'
+                help: 'Mit internationaler Vorwahl (+33 für Frankreich)'
+            workPhone:
+                label: 'Telefon Arbeit'
+                help: 'Mit internationaler Vorwahl (+33 für Frankreich)'
+        address:
+            label: Postanschrift
+            help: 'Diese Postanschrift wird verwendet, um diesen Kontakt nach Möglichkeit einem lokalen Projekt zuzuordnen.'
+            streetAddress: 'Straße und Hausnummer'
+            zipCode: Postleitzahl
+            city: Stadt
+            country: Land
+        socials:
+            label: 'Soziale Netzwerke'
+            facebook: 'URL des Facebook-Profils'
+            twitter: 'URL des Twitter-Profils'
+            linkedIn: 'URL des LinkedIn-Profils'
+            telegram: Telegramm-Kontoname
+            whatsapp: Whatsapp-Telefonnummer
+        metadata:
+            label: 'Abonnement für Mitteilungen'
+            all_projects: 'Globale Einstellungen'
+            all_projects_help: "Ein Kontakt, der sich auf der allgemeinen Ebene angemeldet hat, erhält alle Ihre Mitteilungen,\nunabhängig vom jeweiligen Projekt.\n"
+            per_projects: 'Einstellungen nach Projekt'
+            per_projects_help: "Wenn ein Kontakt auf der allgemeinen Ebene abgemeldet ist, kann er projektspezifische\nMitteilungen abonnieren. Sie können nur Mitteilungen von den Projekten abonnieren, an denen sie beteiligt sind.\n"
+            receiveNewsletter: 'Abonnieren Sie den Newsletter'
+            receiveSms: 'Abonniert für SMS-Kampagnen'
+            receiveCalls: 'Akzeptieren Sie einen telefonischen Anruf'
+            comment: 'Interne Notiz'
+            commentHelp: "Sie können hier jede beliebige Notiz speichern, die Sie Ihren Mitarbeitern in Zukunft zur Verfügung stellen möchten.\nDiese Notiz wird niemals an den Kontakt weitergegeben.\nSpeichern Sie keine sensiblen Informationen in diesem Feld.\n"
+    import:
+        page_title: 'Importieren einer Datei mit Kontakten'
+        upload:
+            title: 'Importieren einer Datei mit Kontakten'
+            note: "<strong>Hinweis:</strong> Die erste Zeile Ihrer Datei wird als Kopfzeile betrachtet und\nwird nicht importiert. Wenn Sie keine Kopfzeile in Ihrer Datei haben, fügen Sie bitte eine ein\nbevor Sie sie importieren.\n"
+            file:
+                label: Datei
+                help: 'Laden Sie eine Excel- (XLSX) oder LibreOffice-Datei (ODS) mit Ihrer Kontaktliste hoch.'
+                error: 'Beim Hochladen der Datei ist ein Fehler aufgetreten. Können Sie es noch einmal versuchen?'
+        columns:
+            title: 'Spalten den Kontaktinformationen zuordnen'
+            columns:
+                label: Rubriken
+                help: 'Es wurden %count% Spalten gefunden. Ordnen Sie diese den Kontaktinformationen zu, die Sie speichern möchten.'
+            default_label: 'Spalte %i%'
+            types:
+                ignored: 'Diese Spalte ignorieren'
+                email: 'E-Mail Adresse'
+                profileFormalTitle: Titel
+                profileFirstName: Vornamen
+                profileMiddleName: 'Mittlerer Name'
+                profileLastName: Nachname
+                profileBirthdate: Geburtsdatum
+                profileGender: Geschlecht
+                profileCompany: Unternehmen
+                profileJobTitle: Berufsbezeichnung
+                contactPhone: 'Persönliches Telefon'
+                contactWorkPhone: 'Telefon Arbeit'
+                socialFacebook: 'URL des Facebook-Profils'
+                socialTwitter: 'URL des Twitter-Kontos'
+                socialLinkedIn: 'URL des LinkedIn-Profils'
+                socialTelegram: Telegramm-Benutzername
+                socialWhatsapp: Whatsapp-Telefonnummer
+                addressStreetLine1: 'Straße und Hausnummer Zeile 1'
+                addressStreetLine2: 'Straße und Hausnummer Zeile 2'
+                addressZipCode: Postleitzahl
+                addressCity: 'Name der Stadt'
+                addressCountry: Land
+                settingsReceiveNewsletters: 'Abonnieren Sie den Newsletter'
+                settingsReceiveSms: 'Texte akzeptieren'
+                settingsReceiveCalls: 'Anrufe annehmen'
+                metadataComment: Kommentar
+                metadataTagsList: 'Tags durch Kommas getrennt'
+                metadataTag: 'Einzelner Tag'
+            area:
+                label: Standardbereich
+                help: "Wenn ein Kontakt nicht über seine Postanschrift gefunden werden kann, welchem Bereich soll er dann zugeordnet werden?\nWenn Sie dieses Feld leer lassen, sind Kontakte, die nicht gefunden werden können, nur\nvon globalen Projekten aus zugänglich.\n"
+            submit: 'Starten Sie den Import'
+        progress:
+            title: 'Importieren einer Datei mit Kontakten'
+            processing:
+                title: 'Bearbeitung von Kontakten ...'
+                desc: "Ihre Datei wurde geparst und die Kontakte werden verarbeitet, lokalisiert und in Ihr Unternehmen\nin Ihre Organisation importiert.\n"
+            finished:
+                title: Erledigt!
+                desc: 'Ihre Datei wurde erfolgreich importiert.'
+                back: 'Zurück zu den Kontakten'
+configure:
+    main_tags:
+        title: 'Wichtigste Tags'
+        help: "Haupt-Tags sind Tags, die Sie Ihren Kontakten direkt aus der Kontaktliste zuweisen können. Diese Tags\nsind in der Regel die wichtigsten, um Ihre Gemeinschaft zu überwachen (neue Mitglieder an Bord holen,\nOrganisieren Sie Ihre Bewegung, ...).\n"
+        tags:
+            label: 'Wichtigste Tags'
+            help: 'Sie können bis zu 8 Haupt-Tags hinzufügen. Um ein Tag zu erstellen, gehen Sie in den Abschnitt Tags in der linken Seitenleiste.'
+        is_progress:
+            label: 'Sind diese Hauptmerkmale ein Indikator für die Progression?'
+            help: "Wenn Sie Haupt-Tags als Evolutionsstatus für jeden Kontakt verwenden, wird durch die Aktivierung dieser Option\nsicherstellen, dass die Haupt-Tags konsistent sind (wenn Sie einen Tag aktivieren, werden die vorherigen automatisch aktiviert).\n"
+        save: 'Speichern Sie'
+    tags:
+        index:
+            title: Tags
+            help: 'Tags sind Etiketten, die Sie Ihren Kontakten hinzufügen können, um ihnen gezielte E-Mails zu senden.'
+            create: 'Neuer Tag'
+            no_records: 'Ihre Organisation enthält im Moment noch keinen Tag.'
+            no_records_desc: 'Mithilfe von Tags können Sie Ihr Publikum genauer ansprechen.'
+            no_records_create: 'Erstellen eines ersten Tags'
+            columns:
+                name: Name
+                contacts: Kontakte
+                created: 'Datum der Erstellung'
+            view_contacts: 'Kontakte ansehen'
+            export_contacts: 'Kontakte exportieren'
+            edit: bearbeiten
+            remove: Löschen
+            remove_confirm: 'Sind Sie sicher, dass Sie den Tag "%name%" löschen wollen?'
+        form:
+            title_create: 'Neuer Tag'
+            title_edit: 'Ein Tag bearbeiten'
+            back: 'Zurück zur Liste'
+            name: Name
+            save: 'Speichern Sie'
+automation:
+    back: 'Zurück zur Liste'
+    index:
+        title: E-Mail-Automatisierungen
+        help: "Automatisierungen ermöglichen es Ihnen, automatisch E-Mails an Mitglieder Ihrer Community zu senden, wenn\nbestimmte Dinge passieren (sie haben gerade Ihren Newsletter abonniert, sie haben ein Mitgliedskonto\nKonto erstellt, ...)\n"
+        disabled: 'Deaktivierte Automatisierungen'
+        create: 'Neue Automatisierung'
+        no_records: 'Zurzeit gibt es keine Automatisierung'
+        no_result_create: 'Erstellen Sie eine Automatisierung'
+        trigger:
+            new_contact: 'Wird ausgeführt, wenn ein Kontakt erstellt wird'
+            new_form_answer: 'Wird ausgeführt, wenn ein Formular beantwortet wird'
+        edit_details: 'Details aktualisieren'
+        edit_content: 'Inhalt aktualisieren'
+        disable: 'Deaktivieren Sie'
+        disable_label: 'Ja, deaktivieren'
+        disable_confirm: "Sind Sie sicher, dass Sie die Automatisierung \"%name%\" deaktivieren wollen? Wenn deaktiviert,\nwird diese Automatisierung nicht mehr ausgeführt.\n"
+        preview: Vorschau
+    disabled:
+        title: 'Deaktivierte Automatisierungen'
+        no_records: 'Zurzeit gibt es keine deaktivierte Automatisierung'
+        enable: 'Zurück aktivieren'
+        enable_label: 'Ja, Rücken aktivieren'
+        enable_confirm: "Sind Sie sicher, dass Sie die Automatisierung \"%name%\" aktivieren wollen? Wenn sie aktiviert ist,\nwird diese Automatisierung bei Bedarf ausgeführt.\n"
+    create:
+        name: '(Unbenannte Automatisierung)'
+        subject: '(Unbenannte Nachricht)'
+        fromName: '%Benutzer% von %Organisation%'
+        template:
+            back: Zurück
+            title: 'Erstellen Sie eine E-Mail-Automatisierung'
+            desc: 'Wählen Sie eine Vorlage aus, die Sie für die Erstellung Ihrer E-Mail-Automatisierung verwenden möchten.'
+            choose: 'Wählen Sie diese Vorlage'
+            automation:
+                1.empty: 'Leere Vorlage'
+                2.welcome: Willkommen
+                3.thanks: Dankeschön
+    metadata:
+        title: 'Automatisierung "%name%" bearbeiten'
+        submit: 'Details speichern'
+        automation:
+            title: Einzelheiten
+            name:
+                label: Name
+                help: 'Dieser Name wird von Citipo nicht verwendet. Er kann Ihnen helfen, sich daran zu erinnern, was diese Automatisierung bewirken soll.'
+            trigger:
+                label: 'Wann soll diese Automatisierung durchgeführt werden?'
+                contact_created: 'Wird ausgeführt, wenn ein Kontakt erstellt wird'
+                form_answered: 'Wird ausgeführt, wenn ein Formular beantwortet wird'
+                form_filter: 'Für welches Formular soll diese Automatisierung ausgeführt werden?'
+                form_filter_placeholder: 'Für alle Formen der Organisation ausführen'
+        subject:
+            title: Thema
+            desc: 'Wie lautet die Betreffzeile für diese Automatisierung?'
+            subject:
+                label: Thema
+                help:
+                    main: 'Gute Betreffzeilen geben einen Grund, Ihre E-Mail zu öffnen. Hier sind ein paar Tipps:'
+                    1:
+                        strong: 'Der Platz ist begrenzt'
+                        muted: 'Wir empfehlen, nicht mehr als 60 Zeichen zu verwenden.'
+                    2:
+                        strong: 'Leicht zu verstehen'
+                        muted: 'Probanden mit weniger als 9 Wörtern schneiden tendenziell besser ab'
+                    3:
+                        strong: 'Nicht zu viel Interpunktion'
+                        muted: 'Einfache Betreffzeilen bringen Ihr Anliegen besser rüber'
+            preview:
+                label: Textvorschau
+                help: 'Die Vorschau wird in einigen Posteingängen als E-Mail-Vorschau angezeigt. (Optional)'
+        from:
+            title: Von
+            desc: 'Wer ist der Absender der von dieser Automatisierung gesendeten E-Mail?'
+            email:
+                label: 'E-Mail Adresse'
+                help: "Stellen Sie sicher, dass die Domäne dieser Adresse bei Citipo richtig konfiguriert ist.\nWenn Sie sich nicht sicher sind, kontaktieren Sie uns unter contact@citipo.com.\n"
+            name: Name
+        to:
+            title: An
+            toEmailType:
+                label: 'An wen soll diese Automatisierung E-Mails senden?'
+                everyone: 'An alle von den Filtern betroffenen Kontakte'
+                specific: 'An eine bestimmte E-Mail Adresse'
+            toEmail: 'Welche spezifische E-Mail-Adresse?'
+            typeFilter:
+                label: 'Für welche Kontakte soll diese Automatisierung durchgeführt werden?'
+                everyone: 'Ausführen für alle Kontakte'
+                contact: 'Nur für Kontakte von Nicht-Mitgliedern ausführen'
+                member: 'Ausführen nur für Mitglieder'
+    content:
+        preview: Vorschau
+        metadata: 'Details aktualisieren'
+        enable: 'Aktivieren Sie diese Automatisierung'
+        enable_label: 'Ja, aktivieren'
+        enable_confirm: "Sind Sie sicher, dass Sie die Automatisierung \"%name%\" aktivieren wollen? Wenn sie aktiviert ist,\nwird diese Automatisierung bei Bedarf ausgeführt.\n"
+        title: 'Automatisierung "%name%" bearbeiten'
+ambiguities:
+    index:
+        title: 'Duplizierte Kontakte'
+        desc: 'Citipo erkennt potenzielle Kontakt-Duplikate und hilft Ihnen, diese zusammenzuführen, um Ihre Datenbank zu bereinigen.'
+        no_records: 'Wir haben vorerst kein Kontaktduplikat entdeckt.'
+        merge: 'Zusammenführen (mit %email% als Haupt-E-Mail)'
+        ignore: 'Diese Entdeckung ist ein falsches Positiv'
+        ignore_rollback: 'Falsches Duplikat abbrechen'
+        new: 'Aktuelles Profil'
+        old: 'Altes Profil'
+buy_credits:
+    emails:
+        title: 'E-Mail-Guthaben kaufen'
+        desc: 'E-Mail-Guthaben werden für den Versand Ihrer E-Mail-Kampagnen verwendet.'
+        amount:
+            label: 'Anzahl der zu kaufenden Credits'
+            help: 'Minimum 1000, Maximum 500 000. Um mehr zu kaufen (zu einem niedrigeren Preis), kontaktieren Sie uns (contact@citipo.com).'
+        unit_price: 'Preis pro Kredit:'
+        total_before_tax: 'Gesamtbetrag vor Steuern:'
+        vat_rate: 'MEHRWERTSTEUER:'
+        total_after_tax: 'Gesamtbetrag einschließlich Steuern:'
+        continue: Bezahlen
+    texts:
+        title: 'Textguthaben kaufen'
+        desc: 'Textguthaben werden für den Versand Ihrer Textkampagnen verwendet.'
+        amount:
+            label: 'Anzahl der zu kaufenden Credits'
+            help: 'Mindestens 100, höchstens 10 000. Um mehr zu kaufen (zu einem niedrigeren Preis), kontaktieren Sie uns (contact@citipo.com).'
+        unit_price: 'Preis für 100 Textkredite:'
+        total_before_tax: 'Gesamtbetrag vor Steuern:'
+        vat_rate: 'MEHRWERTSTEUER:'
+        total_after_tax: 'Gesamtbetrag einschließlich Steuern:'
+        continue: Bezahlen

@@ -1,0 +1,394 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title contact %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-auto flex-grow-1 mb-3 mb-lg-0">
+                    <a href="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'contacts.back'|trans({}, 'organization_community') }}</span>
+                    </a>
+
+                    <h3 class="mt-2 mb-0">
+                        {{ contact }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ path('console_organization_community_contacts_edit', {'organizationUuid': current_organization.uuid, 'uuid': contact.uuid}) }}"
+                           class="btn btn-secondary mr-3">
+                            <i class="fad fa-pencil mr-1"></i>
+                            {{ 'contacts.view.edit'|trans({}, 'organization_community') }}
+                        </a>
+
+                        <a href="{{ csrf_path('console_organization_community_contacts_delete', {'organizationUuid': current_organization.uuid, 'uuid': contact.uuid}) }}"
+                           class="btn btn-secondary text-danger mr-3"
+                           data-controller="delete"
+                           data-message="{{ 'contacts.edit.delete_message'|trans({'%email%': contact.email}, 'organization_community') }}"
+                           data-target-url="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}">
+                            <i class="fad fa-trash mr-1"></i>
+                            {{ 'contacts.view.delete'|trans({}, 'organization_community') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row">
+                <div class="col-12 col-lg-4 mb-4">
+
+                    <div class="world-block p-3">
+                        <h5 class="mb-3">
+                            {{ 'contacts.view.profile.label'|trans({}, 'organization_community') }}
+                        </h5>
+
+                        <div class="mb-4">
+                            {% if contact.picture %}
+                                {% set pictureUrl = cdn_url(contact.picture) %}
+
+                                <a href="{{ pictureUrl }}" target="_blank">
+                                    <img src="{{ pictureUrl }}" class="community-view-picture" />
+                                </a>
+                            {% else %}
+                                <img src="https://www.gravatar.com/avatar/{{ contact.emailHash }}?d=mp&s=800" class="community-view-picture" />
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="world-badge {{ contact.isMember ? 'world-badge-success' }}">
+                                {{ 'contacts.view.profile.status.label'|trans({}, 'organization_community') }}
+                                <strong class="ml-1">
+                                    {{ ('contacts.view.profile.status.' ~ (contact.isMember ? 'member' : 'contact'))|trans({}, 'organization_community') }}
+                                </strong>
+                            </span>
+                        </div>
+
+                        <div class="row no-gutters font-size-sm mb-4 text-muted">
+                            <div class="col-1 text-center">
+                                <i class="fal fa-clock mr-1"></i>
+                            </div>
+                            <div class="col-11">
+                                {{ 'contacts.view.profile.date'|trans({}, 'organization_community') }}
+                                <strong>
+                                    {{ contact.createdAt|format_datetime('short', 'short') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        {% if contact.settingsReceiveNewsletters or contact.settingsReceiveSms or contact.settingsReceiveCalls %}
+                            <h6>
+                                {{ 'contacts.view.profile.subscriptions.all.label'|trans({}, 'organization_community') }}
+                            </h6>
+
+                            <div class="row no-gutters font-size-sm mb-2 text-{{ contact.settingsReceiveNewsletters ? 'success' : 'muted' }}">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-bell mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'contacts.view.profile.newsletter.label'|trans({}, 'organization_community') }}
+                                    <strong class="ml-1">
+                                        {{ ('contacts.view.profile.newsletter.' ~ (contact.settingsReceiveNewsletters ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <div class="row no-gutters font-size-sm mb-2 text-{{ contact.settingsReceiveSms ? 'success' : 'muted' }}">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-comment-alt-lines mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'contacts.view.profile.sms.label'|trans({}, 'organization_community') }}
+                                    <strong class="ml-1">
+                                        {{ ('contacts.view.profile.sms.' ~ (contact.settingsReceiveSms ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <div class="row no-gutters font-size-sm mb-4 text-{{ contact.settingsReceiveCalls ? 'success' : 'muted' }}">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-phone mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'contacts.view.profile.calls.label'|trans({}, 'organization_community') }}
+                                    <strong class="ml-1">
+                                        {{ ('contacts.view.profile.calls.' ~ (contact.settingsReceiveCalls ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if not contact.settingsReceiveNewsletters or not contact.settingsReceiveSms or not contact.settingsReceiveCalls %}
+                            {% for projectSetting in contact.settingsByProject  %}
+                                <h6>{{ projectSetting.projectName }}</h6>
+                                <div class="row no-gutters font-size-sm mb-2 text-{{ projectSetting.settingsReceiveNewsletters ? 'success' : 'muted' }}">
+                                    <div class="col-1 text-center">
+                                        <i class="fal fa-bell mr-1"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        {{ 'contacts.view.profile.newsletter.label'|trans({}, 'organization_community') }}
+                                        <strong class="ml-1">
+                                            {{ ('contacts.view.profile.newsletter.' ~ (projectSetting.settingsReceiveNewsletters ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters font-size-sm mb-2 text-{{ projectSetting.settingsReceiveSms ? 'success' : 'muted' }}">
+                                    <div class="col-1 text-center">
+                                        <i class="fal fa-comment-alt-lines mr-1"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        {{ 'contacts.view.profile.sms.label'|trans({}, 'organization_community') }}
+                                        <strong class="ml-1">
+                                            {{ ('contacts.view.profile.sms.' ~ (projectSetting.settingsReceiveSms ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="row no-gutters font-size-sm mb-4 text-{{ projectSetting.settingsReceiveCalls ? 'success' : 'muted' }}">
+                                    <div class="col-1 text-center">
+                                        <i class="fal fa-phone mr-1"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        {{ 'contacts.view.profile.calls.label'|trans({}, 'organization_community') }}
+                                        <strong class="ml-1">
+                                            {{ ('contacts.view.profile.calls.' ~ (projectSetting.settingsReceiveCalls ? 'subscribed' : 'unsubscribed'))|trans({}, 'organization_community') }}
+                                        </strong>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% if contact.area %}
+                            <div class="row no-gutters font-size-sm mb-2 text-muted">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-map-marker-alt mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'contacts.view.profile.area'|trans({}, 'organization_community') }}
+                                    <strong class="ml-1">
+                                        {{ contact.area.name }}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.metadataTagsList %}
+                            <div class="row no-gutters font-size-sm text-muted">
+                                <div class="col-1 text-center">
+                                    <i class="fal fa-tags mr-1"></i>
+                                </div>
+                                <div class="col-11">
+                                    {{ 'contacts.view.profile.tags'|trans({}, 'organization_community') }}
+                                    <strong class="ml-1">
+                                        {{ contact.metadataTagsList }}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-4 mb-2">
+                            <div>
+                                <small class="text-muted">
+                                    {{ 'contacts.view.profile.email'|trans({}, 'organization_community') }}
+                                </small>
+                            </div>
+                            <a href="mailto:{{ contact.email }}" target="_blank">
+                                {{ contact.email }}
+                            </a>
+                        </div>
+
+                        {% if contact.contactAdditionalEmails %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.additional_emails'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {% for email in contact.contactAdditionalEmails %}
+                                    <a href="mailto:{{ email }}" target="_blank">
+                                        {{ email }}
+                                    </a>
+                                    <br />
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.fullName %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.name'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.completeFullName }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileNationality %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.nationality'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.profileNationality|country_name }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.jobReference %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.company'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.jobReference }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileBirthdate %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.birthdate'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.profileBirthdate|format_date }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.profileGender %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.gender'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ ('gender.' ~ contact.profileGender)|trans({}, 'global') }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.postalAddress %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.address'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.postalAddress|nl2br }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.contactPhone %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.phone'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.contactPhone }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.contactWorkPhone %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.workPhone'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                {{ contact.contactWorkPhone }}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.socialFacebook
+                            or contact.socialTwitter
+                            or contact.socialLinkedIn
+                            or contact.socialTelegram
+                            or contact.socialWhatsapp %}
+                            <div class="mb-2">
+                                <div class="mb-1">
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.socials'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+
+                                {% set socials = {
+                                    'Facebook': { 'icon': 'fab fa-facebook', 'url': contact.socialFacebook },
+                                    'Twitter': { 'icon': 'fab fa-twitter', 'url': contact.socialTwitter },
+                                    'LinkedIn': { 'icon': 'fab fa-linkedin', 'url': contact.socialLinkedIn },
+                                    'Telegram': { 'icon': 'fab fa-telegram-plane', 'url': contact.socialTelegram ? ('https://t.me/' ~ contact.socialTelegram) : null },
+                                    'Whatsapp': { 'icon': 'fab fa-whatsapp', 'url': contact.socialWhatsapp ? 'https://wa.me/' ~ contact.socialWhatsapp : null },
+                                } %}
+
+                                {% for name, item in socials %}
+                                    {% if item.url %}
+                                        <a href="{{ item.url }}"
+                                           class="btn btn-secondary btn-sm mr-2 mb-2"
+                                           target="_blank" rel="noopener noreferrer">
+                                            <i class="{{ item.icon }} mr-1"></i>
+                                            {{ name }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-2 text-center">
+                        <small class="text-muted">
+                            ID: {{ contact.uuid|toBase62 }}
+                        </small>
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div class="world-block mb-5">
+                        <div class="p-3">
+                            <h5 class="mb-2">
+                                {{ 'contacts.view.history.label'|trans({}, 'organization_community') }}
+                            </h5>
+
+                            <div class="text-muted">
+                                {{ 'contacts.view.history.help'|trans({}, 'organization_community') }}
+                            </div>
+                        </div>
+
+                        <div class="border-top border-muted py-3">
+                            {{ include('console/organization/community/contacts/history.html.twig', {
+                                'organization': current_organization,
+                                'contact': contact,
+                                'history': history,
+                            }) }}
+                        </div>
+                    </div>
+
+                    {% if contact.metadataCustomFields %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">
+                                    {{ 'contacts.view.customFields.label'|trans({}, 'organization_community') }}
+                                </h5>
+
+                                <div class="text-muted">
+                                    {{ 'contacts.view.customFields.help'|trans({}, 'organization_community') }}
+                                </div>
+                            </div>
+
+                            <div class="border-top border-muted p-3">
+                                <pre class="mb-0">{{ contact.metadataCustomFields|json_encode(128) }}</pre>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

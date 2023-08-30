@@ -1,0 +1,56 @@
+breadcrumb: Organisation
+title: Rechnungsstellung
+sidebar:
+    details: 'Angaben zur Rechnungsstellung'
+    history: 'Geschichte der Rechnungen'
+details:
+    title: 'Angaben zur Rechnungsstellung'
+    desc: 'Angaben, die zur Erstellung und Übermittlung Ihrer Bestellungen und Rechnungen verwendet werden.'
+    form:
+        details:
+            title: 'Angaben zur Rechnungsstellung'
+            name:
+                label: 'Name der Organisation *'
+                help: 'Der Name, der auf Ihren Rechnungen für Ihre Organisation angezeigt wird. Maximal 50 Zeichen.'
+            email:
+                label: 'E-Mail für die Rechnungsstellung'
+                help: 'Die E-Mail, an die Angebote und Rechnungen gesendet werden sollen, wenn sie ausgestellt werden.'
+        address:
+            title: Rechnungsadresse
+            streetLine1: 'Straße und Hausnummer *'
+            streetLine2: 'Zusätzliche Zeile für die Straßenanschrift (optional)'
+            postalCode: 'Postleitzahl *'
+            city: 'Stadt *'
+            country: 'Land *'
+        recipient:
+            title: 'Person, die die Überweisung vornimmt'
+            firstName:
+                label: 'Vorname der Person, die die Überweisung tätigt'
+                help: 'Wird auf der Rechnung als Empfänger angezeigt.'
+            lastName:
+                label: 'Nachname der Person, die die Überweisung tätigt'
+                help: 'Wird auf der Rechnung als Empfänger angezeigt.'
+            email:
+                label: 'E-Mail-Adresse der Person, die die Überweisung tätigt'
+                help: 'Die Person, die die Überweisung vornimmt, erhält die Zahlungsinformationen per E-Mail an diese Adresse.'
+        submit: 'Speichern Sie'
+history:
+    title: 'Geschichte der Rechnungen'
+    desc: 'Liste aller bisherigen Rechnungen für Ihr Konto.'
+    table:
+        order: Bestellung
+        number: Rechnungsnummer
+        amount: Betrag
+        date: Datum
+        download: Herunterladen
+        generating: 'Das Rechnungs-PDF wird generiert...'
+        no_result: 'Im Moment keine Rechnung'
+order:
+    title: 'Bestellung %Nummer%'
+    desc: 'Ihre Bestellung wurde erfolgreich bearbeitet'
+    message:
+        title: 'Ihre Bestellung wurde bearbeitet'
+        1: 'Wir warten jetzt darauf, dass unser Zahlungsabwickler die Gelder erhält, um den Vorgang abzuschließen.'
+        2: 'Wenn Sie die Zahlung nicht bereits veranlasst haben, haben Sie die Zahlungsanweisungen per E-Mail erhalten.'
+        3: 'Beachten Sie, dass es einige Tage dauern kann, bis die Zahlung bestätigt wird.'
+    back: 'Zurück zur Organisation'

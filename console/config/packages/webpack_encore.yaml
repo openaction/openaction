@@ -1,0 +1,9 @@
+webpack_encore:
+    output_path: '%kernel.project_dir%/public/build'
+    script_attributes:
+        defer: true
+
+when@prod:
+    webpack_encore:
+        # Cache the entrypoints.json (rebuild Symfony's cache when entrypoints.json changes)
+        cache: true

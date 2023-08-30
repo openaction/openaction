@@ -1,0 +1,17 @@
+index:
+    upload:
+        title: Envoyer un nouveau document
+
+    list:
+        title: Documents
+        no_records: Votre projet ne contient pas de document pour le moment.
+        no_records_desc: |
+            Envoyez ci-dessus un document pour lui créer une URL accessible publiquement
+            utilisant nom de domaine de votre site.
+        name: Nom
+        date: Date
+        view: Voir
+        copy_url: Copier l'URL publique
+        download: Télécharger
+        delete: Supprimer
+        remove_confirm: Voulez-vous vraiment supprimer le document "%name%" ?

@@ -1,0 +1,78 @@
+sidebar:
+    account: Compte
+    password: Mot de passe
+    2fa: Authentification à 2 facteurs
+    notifications: Notifications
+
+account:
+    title: Compte
+    firstName: Prénom
+    lastName: Nom
+    locale: Langue de l'interface d'administration
+    submit: Mettre à jour
+
+update_password:
+    title: Changer mon mot de passe
+    old_password: Mot de passe actuel
+    new_password: Nouveau mot de passe
+    repeat_new_password: Confirmez le nouveau mot de passe
+    submit: Modifier
+
+notification_settings:
+    title: Notifications
+    event:
+        label: 'Je souhaite être notifié(e) par email quand :'
+        project_created: Un projet est créé dans une organisation dont je suis l'administrateur
+        newsletter_sent: Une campagne d'emailing est envoyée dans une organisation dont je suis l'administrateur
+        low_credits: Une organisation dont je suis administrateur atteint un niveau faible de crédits
+        feature_added: De nouvelles fonctionnalités sont ajoutées à Citipo
+    submit: Mettre à jour
+
+confirm_password:
+    title: Confirmez votre mot de passe
+    desc: Vous devez confirmer votre mot de passe pour effectuer cette action.
+    label: Mot de passe actuel
+    submit: Continuer
+
+two_factor:
+    status:
+        title: Authentification à 2 facteurs
+        desc: |
+            Sécurisez votre compte gratuitement grâce à l'authentification à 2 facteurs.
+            Une fois active, vous devrez entrer un code de quelques chiffres fourni par
+            votre téléphone, en plus de votre mot de passe, pour vous connecter.
+            Cette étape supplémentaire améliore significativement la sécurité de votre
+            compte, nous recommandons donc tous les utilisateurs de Citipo de l'activer.
+        disabled:
+            label: L'authentification à 2 facteurs n'est pas active sur votre compte.
+            enable: Activer l'authentification à 2 facteurs
+        enabled:
+            label: L'authentification à 2 facteurs est active sur votre compte.
+            disable: Désactiver l'authentification à 2 facteurs
+            disable_confirm: |
+                Désactiver l'authentification à 2 facteurs diminuera la sécurité de votre compte.
+                Souhaitez-vous réellement la désactiver ?
+
+    enable:
+        title: Activer l'authentification à 2 facteurs
+        desc: |
+            Téléchargez
+            <a href="https://support.google.com/accounts/answer/1066447?hl=en" target="_blank">Google Authenticator</a>
+            ou <a href="https://authy.com/download/" target="_blank">Authy</a> sur votre téléphone,
+            puis ajoutez un nouveau compte sur l'application en scannant ce QR code :
+        manual_code: 'Vous pouvez aussi ajouter le code suivant manuellement à votre application :'
+        enter_code: 'Une fois effectué, entrez le code fourni par votre application ici :'
+        submit: Activer
+
+    enabled:
+        title: L'authentification à 2 facteurs a bien été activée
+        desc: |
+            L'authentification à 2 facteurs a bien été activée sur votre compte.
+            La prochaine fois que vous vous connecterez à Citipo, vous devrez entrer un code de quelques
+            chiffres fourni par l'application sur votre téléphone, en plus de votre mot de passe.
+        warning: |
+            Afin d'éviter d'être bloqué en dehors de votre compte Citipo, nous vous conseillons de
+            télécharger les codes suivants et de les garder dans un emplacement sécurisé. Si vous perdez
+            l'accès à votre téléphone, vous pourrez utiliser ces codes pour vous connecter :
+        download: Télécharger les codes
+        skip: Continuer

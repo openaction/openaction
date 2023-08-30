@@ -1,0 +1,54 @@
+code_invalid: Invalid authentication code.
+
+console:
+    user:
+        two_factor:
+            invalid_code: Invalid authentication code %code%.
+        password:
+            error:
+                new_equal_to_old: Your new password must be different from your current password.
+
+    organization:
+        subscription:
+            missing_required_slots: |
+                Your organization currently has %current_count% projects. You need to remove
+                some of them before you can decrease the number of projects slots of
+                your subscription below %current_count%.
+
+        manage_project:
+            missing_area: At least one area is required for a local project.
+            missing_tag: At least one tag is required for a thematic project.
+            missing_module: You need to enable at least one module.
+            missing_tool: You need to enable at least one module's tool.
+
+        team:
+            empty_permissions: You need to choose at least one permission.
+
+        community:
+            email_not_equal: You need to provide a different email from your current one.
+            minimal_data_required: You need to provide at least a last name, an email address or a phone number.
+
+    project:
+        emailing:
+            email_invalid: This sender's email address is invalid.
+            reply_to_invalid: This reply-to email address is invalid.
+
+        settings:
+            socials:
+                invalid_url: This value is not a valid URL (http and https only).
+                invalid_length: This value is too long. It should have {{ limit }} characters or less.
+                invalid_email: This value is not a valid email.
+                invalid_facebook: This link doesn't seem to be a Facebook one.
+                invalid_instagram: This link doesn't seem to be an Instagram one.
+                invalid_twitter: This link doesn't seem to be a Twitter one.
+                invalid_youtube: This link doesn't seem to be a valid Youtube one.
+                invalid_linkedin: This link doesn't seem to be a valid LinkedIn one.
+                invalid_medium: This link doesn't seem to be a valid Medium one.
+                invalid_telegram: This Telegram username is not valid.
+                invalid_snapchat: This Snapchat username is not valid.
+        appearance:
+            homepage:
+                socials:
+                    invalid_length: This value is too long. It should have {{ limit }} characters or less.
+                    invalid_facebook: This link doesn't seem to be a Facebook one.
+                    invalid_twitter: This link doesn't seem to be a Twitter one.

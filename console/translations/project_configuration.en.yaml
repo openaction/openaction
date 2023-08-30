@@ -1,0 +1,43 @@
+save: Save
+
+access:
+    title: Website access control
+    help: Configure a password on your website to prepare it before releasing it.
+    form:
+        user: Username
+        pass: Password
+        help: Keep the values empty to disable access control.
+
+menu:
+    back: Back to the menus
+    title: Menu and footer
+    help: Change the website navigation menu and footer links.
+    header_title: Header menu
+    header_help: |
+        You should put the 3-4 most important pages of your website in the header menu.
+        Avoid adding more so that visitors can focus on the core content of your website.
+    footer_title: Footer menu
+    footer_help: |
+        The footer is a good place to put a more exhaustive list of your website's pages, so
+        that visitors can find anything they are looking for and search engines can index
+        your content efficiently.
+    target: 'Target:'
+    create: New item
+    no_records: No item for now
+    remove_confirm: Are you sure you want to delete the item "%name%"?
+
+    form:
+        create_title: Add a new menu item
+        edit_title: Edit a menu item
+        parent:
+            label: Parent item
+            help: Choose a parent item to create a submenu for this parent
+        label:
+            label: Link label
+            help: Text displayed in the menu item
+        url:
+            label: Link target
+            help: URL that should be opened on click on the menu item
+        newTab:
+            label: Should this link be opened in a new tab?
+            help: You should open links in new tabs if the links target external websites

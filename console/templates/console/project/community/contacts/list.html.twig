@@ -1,0 +1,131 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'list.page_title'|trans({}, 'project_contacts') %}
+
+{% block sidebar_contacts 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title border-0">
+            <h3>
+                {{ 'list.title'|trans({}, 'project_contacts') }}
+            </h3>
+            <div class="text-muted">
+                {{ 'list.desc'|trans({}, 'project_contacts') }}
+            </div>
+        </div>
+
+        <div class="crm" {{ react_component('Project/Community/ContactsList', {
+            'isReadOnly': is_read_only,
+            'search': {
+                'endpoint': meilisearch_endpoint,
+                'index': current_organization.crmIndexName,
+                'token': organization_member.getCrmTenantToken,
+                'project': current_project.uuid ~ '',
+            },
+            'batch': {
+                'addTag': path('console_community_contacts_batch_add_tag', {'projectUuid': current_project.uuid}),
+                'removeTag': path('console_community_contacts_batch_remove_tag', {'projectUuid': current_project.uuid}),
+            },
+            'tags': {
+                'endpoint': path('console_api_tags_search', {'o': current_organization.uuid}),
+                'updateEndpoint': path('console_community_contacts_update_tags', {'projectUuid': current_project.uuid, 'uuid': '-uuid-'}),
+            },
+            'tagsNamesRegistry': organization_tags_names,
+            'links': {
+                'view': path('console_community_contacts_view', {'projectUuid': current_project.uuid, 'uuid': '-uuid-'}),
+                'edit': path('console_community_contacts_edit', {'projectUuid': current_project.uuid, 'uuid': '-uuid-'}),
+                'history': path('console_community_contacts_history', {'projectUuid': current_project.uuid, 'uuid': '-uuid-'}),
+            },
+            'searchFieldLabels': {
+                'placeholder': 'crm.search_field.placeholder'|trans({}, 'global'),
+                'modeSimple': 'crm.search_field.mode_simple'|trans({}, 'global'),
+                'modeAdvanced': 'crm.search_field.mode_advanced'|trans({}, 'global'),
+                'enterQuery': 'crm.search_field.enter_query'|trans({}, 'global'),
+            },
+            'listLabels': {
+                'location': 'crm.list.location'|trans({}, 'global'),
+                'createdAt': 'crm.list.createdAt'|trans({}, 'global'),
+                'status': 'crm.list.status'|trans({}, 'global'),
+                'noResultsTitle': 'crm.list.no_results.title'|trans({}, 'global'),
+                'noResultsDescription': 'crm.list.no_results.description'|trans({}, 'global'),
+                'loadMore': 'crm.list.load_more'|trans({}, 'global'),
+                'sortBy': 'crm.list.sort_by.label'|trans({}, 'global'),
+                'sortByAsc': 'crm.list.sort_by.asc'|trans({}, 'global'),
+                'sortByDesc': 'crm.list.sort_by.desc'|trans({}, 'global'),
+                'sortByDate': 'crm.list.sort_by.date'|trans({}, 'global'),
+                'sortByFirstName': 'crm.list.sort_by.first_name'|trans({}, 'global'),
+                'sortByLastName': 'crm.list.sort_by.last_name'|trans({}, 'global'),
+                'sortByEmail': 'crm.list.sort_by.email'|trans({}, 'global'),
+            },
+            'facetsLabels': {
+                'tags_names': 'crm.facets.tags'|trans({}, 'global'),
+                'status': 'crm.facets.status'|trans({}, 'global'),
+                'area_country_code': 'crm.facets.country'|trans({}, 'global'),
+                'area_province_name': 'crm.facets.province'|trans({}, 'global'),
+                'area_district_name': 'crm.facets.district'|trans({}, 'global'),
+                'includeFilter': 'crm.facets.include'|trans({}, 'global'),
+                'excludeFilter': 'crm.facets.exclude'|trans({}, 'global'),
+                'cancelFilter': 'crm.facets.cancel'|trans({}, 'global'),
+                'valueSearch': 'crm.facets.value'|trans({}, 'global'),
+            },
+            'actionsLabels': {
+                'nbHits': 'crm.actions.nb_hits'|trans({}, 'global'),
+                'clear': 'crm.actions.clear'|trans({}, 'global'),
+                'applyLabel': 'crm.actions.apply_label'|trans({}, 'global'),
+                'addTag': 'crm.actions.addTag'|trans({}, 'global'),
+                'addTagQuestion': 'crm.actions.addTagQuestion'|trans({}, 'global'),
+                'addTagLabel': 'crm.actions.addTagLabel'|trans({}, 'global'),
+                'addTagNoResults': 'crm.actions.addTagNoResults'|trans({}, 'global'),
+                'addTagConfirm': 'crm.actions.addTagConfirm'|trans({}, 'global'),
+                'addTagCancel': 'crm.actions.addTagCancel'|trans({}, 'global'),
+                'addTagStarting': 'crm.actions.addTagStarting'|trans({}, 'global'),
+                'addTagInProgress': 'crm.actions.addTagInProgress'|trans({}, 'global'),
+                'addTagSuccess': 'crm.actions.addTagSuccess'|trans({}, 'global'),
+                'removeTag': 'crm.actions.removeTag'|trans({}, 'global'),
+                'removeTagQuestion': 'crm.actions.removeTagQuestion'|trans({}, 'global'),
+                'removeTagLabel': 'crm.actions.removeTagLabel'|trans({}, 'global'),
+                'removeTagNoResults': 'crm.actions.removeTagNoResults'|trans({}, 'global'),
+                'removeTagConfirm': 'crm.actions.removeTagConfirm'|trans({}, 'global'),
+                'removeTagCancel': 'crm.actions.removeTagCancel'|trans({}, 'global'),
+                'removeTagStarting': 'crm.actions.removeTagStarting'|trans({}, 'global'),
+                'removeTagInProgress': 'crm.actions.removeTagInProgress'|trans({}, 'global'),
+                'removeTagSuccess': 'crm.actions.removeTagSuccess'|trans({}, 'global'),
+            },
+            'itemLabels': {
+                'status': {
+                    'c': 'crm.item.status.c'|trans({}, 'global'),
+                    'm': 'crm.item.status.m'|trans({}, 'global'),
+                    'u': 'crm.item.status.u'|trans({}, 'global'),
+                },
+                'actions': {
+                    'view': 'crm.item.actions.view'|trans({}, 'global'),
+                    'edit': 'crm.item.actions.edit'|trans({}, 'global'),
+                },
+            },
+            'tagsLabels': {
+                'noTags': 'crm.tags.none'|trans({}, 'global'),
+                'placeholder': 'crm.tags.placeholder'|trans({}, 'global'),
+                'noTagsFound': 'crm.tags.no_result'|trans({}, 'global'),
+            },
+            'profileLabels': {
+                'historyTitle': 'crm.profile.history.title'|trans({}, 'global'),
+                'historyDescription': 'crm.profile.history.description'|trans({}, 'global'),
+                'newsletter': 'crm.profile.newsletter'|trans({}, 'global'),
+                'sms': 'crm.profile.sms'|trans({}, 'global'),
+                'calls': 'crm.profile.calls'|trans({}, 'global'),
+                'birthdate': 'crm.profile.birthdate'|trans({}, 'global'),
+                'address': 'crm.profile.address'|trans({}, 'global'),
+                'phone': 'crm.profile.phone'|trans({}, 'global'),
+                'work': 'crm.profile.work'|trans({}, 'global'),
+                'socials': 'crm.profile.socials'|trans({}, 'global'),
+            },
+        }) }}>
+            <div class="py-5 text-center">
+                <div class="h2 my-5">
+                    <i class="fal fa-circle-notch fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

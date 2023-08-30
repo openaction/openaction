@@ -1,0 +1,83 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'membership.index.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_membership 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'membership.index.title'|trans({}, 'project_settings') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'membership.index.help'|trans({}, 'project_settings')|raw }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+
+                    <section class="mb-4 mt-4">
+                        <div class="px-lg-3">
+                            <div class="row">
+                                <div class="col-lg-6 mb-5">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-file-alt"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'membership.index.blocks.homepage.title'|trans({}, 'project_settings') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'membership.index.blocks.homepage.desc'|trans({}, 'project_settings') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_membership_homepage', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'membership.index.blocks.homepage.link'|trans({}, 'project_settings') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mb-5">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-keyboard"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'membership.index.blocks.form.title'|trans({}, 'project_settings') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'membership.index.blocks.form.desc'|trans({}, 'project_settings') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_membership_form', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'membership.index.blocks.form.link'|trans({}, 'project_settings') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

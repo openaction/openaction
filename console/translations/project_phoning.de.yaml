@@ -1,0 +1,60 @@
+index:
+    title: 'Telefonische Kampagnen'
+    create: 'Neue Telefonkampagne'
+    drafts:
+        title: 'Entwürfe von Kampagnen'
+        no_records: 'Keine Entwurfskampagnen'
+        no_result_create: 'Neue Kampagne'
+        to: 'An alle Ihre Kontakte'
+        to_members: 'An alle Ihre Mitglieder'
+        to_areas: 'An Kontakte aus %areas%'
+        to_tags: 'An Kontakte mit Tags %tags%'
+        to_contacts: 'An %contacts% bestimmte Kontakte'
+        to_areas_tags: 'An Kontakte aus %areas% und mit Tags %tags%'
+        edit: 'Details aktualisieren'
+        delete: Löschen
+        delete_confirm: 'Sind Sie sicher, dass Sie die Kampagne "%subject%" löschen wollen?'
+        status:
+            start: 'Jetzt anfangen'
+            start_confirm: "Sind Sie sicher, dass Sie die Kampagne \"%subject%\" starten wollen?\nNach dem Start können Sie die Zielkontakte nicht mehr aktualisieren\n(das Formular können Sie aber weiterhin aktualisieren).\n"
+    list:
+        name: Name
+        progress: Fortschritt
+        contacts_called: 'genannte Kontakte'
+        preview: 'Ansicht auf der Website'
+        edit_form: 'Formular aktualisieren'
+        duplicate: 'Duplizieren Sie'
+    active:
+        title: 'Aktive Kampagnen'
+        no_records: 'Keine aktiven Kampagnen'
+        stop: Stopp
+        stop_confirm: "Sind Sie sicher, dass Sie die Kampagne \"%subject%\" beenden wollen?\nSie werden sie nicht mehr starten können.\n"
+    finished:
+        title: 'Beendete Kampagnen'
+        no_records: 'Keine abgeschlossenen Kampagnen'
+create:
+    name: '(Unbenannte Kampagnen)'
+metadata:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Kampagne "%title%" bearbeiten'
+    submit: 'Speichern Sie'
+    details:
+        title: Einzelheiten
+        desc: 'Allgemeine Angaben zur Kampagne'
+        name:
+            label: Name
+        endAfter:
+            label: Dauer
+            help: 'Wann sollte diese Kampagne automatisch beendet werden?'
+            choice:
+                3: '3 Stunden'
+                6: '6 Stunden'
+                12: '12 Stunden'
+                24: '1 Tag'
+                48: '2 Tage'
+                72: '3 Tage'
+                168: '1 Woche'
+                720: '30 Tage'
+    to:
+        title: Empfänger
+        desc: 'Welche Kontakte sollten während dieser Kampagne angerufen werden?'

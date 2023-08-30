@@ -1,0 +1,73 @@
+registration:
+    error_duplicated: 'This email already exists on Citipo: perhaps do you already have an account?'
+    success: Your account has been created! Let's create a first organization for you to work with.
+
+reset:
+    success: 'Your password was successfully updated. You can now log in with it.'
+
+login:
+    invalid_credentials: Invalid credentials
+    invalid_csrf: 'The form expired. Could you please retry?'
+
+user:
+    password_change_success: Your password was successfully changed.
+    settings_update_success: Your settings were successfully changed.
+
+subscription:
+    not_enough_credits: Your organization does not have enough credits to execute this action.
+
+team:
+    invite_success: The collaborator was successfully added to your organization.
+    update_success: The collaborator was successfully updated.
+
+configuration:
+    updated_success: Configuration was successfully saved.
+    socials_success: Social networks configuration was successfully saved.
+    appearance_success: Appearance configuration was successfully saved.
+    assets_success: Theme assets were successfully updated.
+    membership_success: Membership configuration was successfully saved.
+
+contacts:
+    created_success: The contact has been successfully created.
+    updated_success: The contact has been successfully updated.
+
+export:
+    success: You successfully requested a contacts database export. This export will be sent to you by email in a few minutes.
+
+automations:
+    updated_success: The automation details were successfully saved.
+
+ambiguities:
+    merge_success: The contact has been successfully merged.
+    ignore_success: The contact has been successfully ignored.
+
+emailings:
+    metadata_updated_success: The campaign details were successfully saved.
+    test_sent_success: The emailing campaign test has been sent.
+    campaign_sent_success: The emailing campaign has been successfully sent.
+
+texting:
+    metadata_updated_success: The campaign details were successfully saved.
+    test_sent_success: The texting campaign test has been sent.
+    campaign_sent_success: The texting campaign has been successfully sent.
+
+phoning:
+    metadata_updated_success: The campaign details were successfully saved.
+
+documents:
+    upload_success:
+        single: Your document was successfully uploaded.
+        plural: Your documents were successfully uploaded.
+
+integrations:
+    updated_success: Integrations were successfully saved.
+
+billing:
+    updated_success: Your billing details were successfully updated.
+    quote_success: Your quotation request has been handled successfully. You will receive it by email in a few minutes.
+
+printing:
+    updated_success: The campaign details were successfully saved.
+
+move:
+    success: The element was moved successfully.

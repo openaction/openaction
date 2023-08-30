@@ -1,0 +1,84 @@
+<footer class="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-auto footer-top-logo">
+                    <a href="{{ homepage_url }}" data-turbo="optional">
+                        {% if current_project.logoDark %}
+                            <img src="{{ current_project.logoDark }}" class="footer-top-logo-image" />
+                        {% else %}
+                            <h1 class="footer-top-logo-text">
+                                {{ current_project.metaTitle|default(current_project.name) }}
+                            </h1>
+                        {% endif %}
+                    </a>
+                </div>
+
+                <div class="col-lg-auto footer-top-socials">
+                    <a href="{{ socials.rss_url }}" target="_blank" rel="noopener noreferrer"
+                       title="{{ socials.rss_label }}" class="footer-top-socials-rss">
+                        <span class="sr-only">{{ socials.rss_label }}</span>
+                        <i class="fa fa-rss-square"></i>
+                    </a>
+
+                    {% set platforms = {
+                        'facebook': { 'icon': 'fab fa-facebook', 'label': socials.facebook_label },
+                        'twitter': { 'icon': 'fab fa-twitter', 'label': socials.twitter_label },
+                        'instagram': { 'icon': 'fab fa-instagram', 'label': socials.instagram_label },
+                        'linkedin': { 'icon': 'fab fa-linkedin', 'label': socials.linkedin_label },
+                        'youtube': { 'icon': 'fab fa-youtube', 'label': socials.youtube_label },
+                        'medium': { 'icon': 'fab fa-medium-m', 'label': socials.medium_label },
+                        'telegram': { 'icon': 'fab fa-telegram-plane', 'label': socials.telegram_label },
+                        'snapchat': { 'icon': 'fab fa-snapchat-ghost', 'label': socials.snapchat_label },
+                    } %}
+
+                    {% for platform, config in platforms %}
+                        {% set url = attribute(current_project.socials, platform) %}
+
+                        {% if url %}
+                            {% if platform == 'telegram' %}
+                                {% set url = 'https://t.me/' ~ url %}
+                            {% elseif platform == 'snapchat' %}
+                                {% set url = 'https://www.snapchat.com/add/' ~ url %}
+                            {% endif %}
+
+                            <a href="{{ url }}" target="_blank" rel="noopener noreferrer"
+                               title="{{ config.label }}" class="footer-top-socials-{{ platform }}">
+                                <span class="sr-only">{{ config.label }}</span>
+                                <i class="{{ config.icon }}"></i>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-menu">
+        <div class="container">
+            <div class="row justify-content-center">
+                {% for item in current_project.footer %}
+                    <div class="col-12 col-md-4 col-lg-2 footer-menu-column">
+                        <a href="{{ item.url }}" class="footer-menu-column-title" data-turbo="optional"
+                           {% if item.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                            {{ item.label }}
+                        </a>
+
+                        {% if item.children|length > 0 %}
+                            <div class="mt-3">
+                                {% for child in item.children %}
+                                    <div class="mb-1">
+                                        <a href="{{ child.url }}" class="footer-menu-column-child" data-turbo="optional"
+                                           {% if child.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                                            {{ child.label }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</footer>

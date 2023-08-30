@@ -1,0 +1,16 @@
+{% extends 'member/phoning/base.html.twig' %}
+
+{% block phoning_content %}
+    <div class="text-center">
+        {% if finished %}
+            <div class="user-form-success">
+                {{ 'phoning.finished'|trans }}
+            </div>
+        {% endif %}
+
+        <a href="{{ path('membership_phoning_resolve_target', {'id': campaign.id}) }}"
+           class="btn btn-outline-primary" data-turbo="true">
+            {{ 'phoning.start'|trans }}
+        </a>
+    </div>
+{% endblock %}

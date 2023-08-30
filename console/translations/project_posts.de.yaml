@@ -1,0 +1,52 @@
+index:
+    title: Beiträge
+    help: 'Erstellen Sie einen chronologischen News-Feed, um Ihre Community mit Beiträgen auf dem Laufenden zu halten.'
+    edit_categories: 'Kategorien bearbeiten'
+    create: 'Neue Stelle'
+    no_result: 'Ihr Projekt enthält im Moment keine Beiträge.'
+    no_result_create: 'Einen Beitrag erstellen'
+    edit: bearbeiten
+    duplicate: 'Duplizieren Sie'
+    move: Verschieben
+    delete: Löschen
+    view: Siehe
+    preview: Vorschau
+    draft: Entwurf
+    scheduled: Geplant
+    scheduled_for: 'für %datetime%'
+    published: Veröffentlicht
+    published_at: 'am %datetime%'
+    visits: besucht
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+    remove_confirm: 'Sind Sie sicher, dass Sie den Beitrag "%name%" löschen wollen?'
+create:
+    title: '(Unbenannter Beitrag)'
+edit:
+    title: 'Beitrag "%title%" bearbeiten'
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+move:
+    title: 'Beitrag "%title%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie diesen Beitrag verschieben?'
+    submit: Verschieben
+categories:
+    index:
+        back: 'Zurück zu den Beiträgen'
+        title: Beitragskategorien
+        create: 'Neue Kategorie'
+        no_records: 'Ihr Projekt enthält im Moment keine Beitragskategorie.'
+        no_records_desc: 'Kategorien helfen Ihnen, Ihre Inhalte so zu organisieren, dass sie für Ihre Besucher leichter zu finden sind.'
+        order: Bestellung
+        name: Name
+        number: Beiträge
+        created: 'Datum der Erstellung'
+        edit: bearbeiten
+        remove: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie die Kategorie "%name%" löschen wollen?'
+    form:
+        title_create: 'Neue Kategorie'
+        title_edit: 'Eine Kategorie bearbeiten'
+        back: 'Zurück zur Liste'
+        name: Name
+        save: 'Speichern Sie'

@@ -1,0 +1,210 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'community.title'|trans({}, 'project_stats') %}
+
+{% block sidebar_stats_community 'current' %}
+
+{% block head_javascripts %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw==" crossorigin="anonymous" />
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {
+            packages: ['corechart', 'geochart'],
+            mapsApiKey: 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '{{ 'community.growth.date'|trans({}, 'project_stats') }}');
+            data.addColumn('number', '{{ 'community.growth.new_contacts'|trans({}, 'project_stats') }}');
+            data.addColumn('number', '{{ 'community.growth.new_members'|trans({}, 'project_stats') }}');
+            data.addRows(JSON.parse('{{ dashboard.growth|json_encode|e('js') }}'));
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart-growth'));
+            chart.draw(data, {
+                hAxes: [{ textStyle: { fontSize: 12, color: '#999' } }],
+                legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#999' } },
+                colors: ['#24acfc', '#00c5e5'],
+                chartArea: { width: '90%', height: '80%', top: 20 }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-light">
+            <h3>
+                {{ 'community.title'|trans({}, 'project_stats') }}
+            </h3>
+
+            <div class="text-muted">
+                <span class="mr-2">
+                    {{ 'community.periods.label'|trans({}, 'project_stats') }}
+                </span>
+
+                {% for period in periods %}
+                    {% if current_period == period %}
+                        <span class="font-weight-bold text-dark mr-2">
+                            {{ ('community.periods.'~period)|trans({}, 'project_stats') }}
+                        </span>
+                    {% else %}
+                        <a href="{{ path('console_stats_community', {'projectUuid': current_project.uuid, 'period': period}) }}"
+                           class="mr-2">
+                            {{ ('community.periods.'~period)|trans({}, 'project_stats') }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="p-4">
+
+            <div class="stats-report">
+                <div class="row justify-content-center mt-3 mb-5">
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'community.totals.contacts'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="contacts" class="mb-0">
+                            {{ dashboard.totals.contacts|format_number }}
+                        </h1>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'community.totals.members'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="members" class="mb-0">
+                            {{ dashboard.totals.members|format_number }}
+                        </h1>
+
+                        {% if dashboard.totals.contacts > 0 %}
+                            <small class="text-muted">
+                                {{ (((dashboard.totals.members / dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                {{ 'community.totals.members_percentage'|trans({}, 'project_stats') }}
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'community.totals.newsletter_subscribers'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="newsletter_subscribers" class="mb-0">
+                            {{ dashboard.totals.newsletter_subscribers|format_number }}
+                        </h1>
+
+                        {% if dashboard.totals.contacts > 0 %}
+                            <small class="text-muted">
+                                {{ (((dashboard.totals.newsletter_subscribers / dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                {{ 'community.totals.newsletter_subscribers_percentage'|trans({}, 'project_stats') }}
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mr-1">
+                            <small class="text-muted text-uppercase">
+                                {{ 'community.totals.sms_subscribers'|trans({}, 'project_stats') }}
+                            </small>
+                        </div>
+
+                        <h1 data-total="sms_subscribers" class="mb-0">
+                            {{ dashboard.totals.sms_subscribers|format_number }}
+                        </h1>
+
+                        {% if dashboard.totals.contacts > 0 %}
+                            <small class="text-muted">
+                                {{ (((dashboard.totals.sms_subscribers / dashboard.totals.contacts)|round(3)) * 100)|format_number }}
+                                {{ 'community.totals.sms_subscribers_percentage'|trans({}, 'project_stats') }}
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h3>
+                        {{ 'community.growth.label'|trans({}, 'project_stats') }}
+                    </h3>
+
+                    <div id="chart-growth" class="chart-lg"></div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row">
+                        {% if dashboard.tags %}
+                            <div class="col-lg-6">
+                                <h3>
+                                    {{ 'community.tags.label'|trans({}, 'project_stats') }}
+                                </h3>
+
+                                <div class="p-2">
+                                    <div class="chart-table">
+                                        {% for tag, count in dashboard.tags %}
+                                            <div class="chart-table-row">
+                                                <div class="chart-table-row-value">
+                                                    {{ count|format_number }}
+                                                </div>
+
+                                                <div class="chart-table-row-label">
+                                                    <abbr title="{{ tag }}">
+                                                        {{ tag|u.truncate(60, '…') }}
+                                                    </abbr>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if dashboard.countries %}
+                            <div class="col-lg-6">
+                                <h3>
+                                    {{ 'community.countries.label'|trans({}, 'project_stats') }}
+                                </h3>
+
+                                <div class="p-2">
+                                    <div class="chart-percentage">
+                                        {% for country, percentage in dashboard.countries %}
+                                            <div class="chart-percentage-row">
+                                                <div class="chart-percentage-row-label">
+                                                    <span class="flag-icon flag-icon-{{ country }}"
+                                                          title="{{ country|upper|country_name }}"></span>
+                                                </div>
+
+                                                <div class="chart-percentage-row-value">
+                                                    <div class="chart-percentage-row-value-hover">
+                                                        <span class="chart-percentage-row-value-hover-percentage">
+                                                            {{ percentage|format_number }}%
+                                                        </span>
+                                                        <span class="chart-percentage-row-value-hover-absolute">
+                                                            {{ country|upper }} :
+                                                            {{ dashboard.countriesRaw[country]|format_number }}
+                                                            {{ 'traffic.percentages.absolute'|trans({}, 'project_stats') }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="chart-percentage-row-value-bar"
+                                                         style="width: {{ percentage }}%;"></div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'categories.form.title_create'|trans({}, 'project_posts') %}
+
+{% block sidebar_posts 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            <a href="{{ path('console_website_posts_categories', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'categories.form.back'|trans({}, 'project_posts') }}</span>
+            </a>
+
+            <br />
+
+            {{ 'categories.form.title_create'|trans({}, 'project_posts') }}
+        </h3>
+
+        <div class="bg-light">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.name, {'label': 'categories.form.name'|trans({}, 'project_posts')}) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'categories.form.save'|trans({}, 'project_posts') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

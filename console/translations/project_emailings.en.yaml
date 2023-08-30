@@ -1,0 +1,126 @@
+index:
+    title: Emailing campaigns
+    create: New emailing campaign
+    drafts:
+        title: Emailing campaigns
+        no_records: There are no campaign drafts for now
+        no_result_create: Create a campaign
+        draft: Draft
+        from: From %from%
+        to: To all your contacts
+        to_areas: To contacts from %areas%
+        to_tags: To contacts with tags %tags%
+        to_contacts: To %contacts% specific contacts
+        to_areas_tags: To contacts from %areas% and with tags %tags%
+        edit_details: Update details
+        edit_content: Update content
+        delete: Delete
+        delete_confirm: 'Are you sure you want to delete the campaign "%subject%"?'
+        preview: Preview
+        send_test: Send a test
+        send_all: Send to everyone
+
+    sent:
+        title: Sent campaigns
+        shareable_history: Open shareable emailing history
+        no_records: No campaigns have been sent yet
+        subject: Subject
+        stats: Statistics
+        view: View content
+        report: Openings
+        duplicate: Duplicate
+
+create:
+    subject: '(Untitled campaign)'
+    fromName: '%user% from %organization%'
+
+    template:
+        back: Back
+        title: Create an email campaign
+        desc: Choose a template to use to create your email campaign.
+        choose: Choose this template
+
+        emailing:
+            1.empty: Empty template
+            2.newsletter: Newsletter
+            3.event: Event
+            4.thanks: Thank you
+            5.fundraising: Fundraising
+            6.vote: Call to vote
+
+metadata:
+    back: Back to the list of campaigns
+    title: Edit campaign "%title%"
+    submit: Save details
+
+    from:
+        title: From
+        desc: Who is sending this campaign?
+        email: Email address
+        name: Name
+
+    reply:
+        title: Reply-to (optional)
+        desc: Who should receive the replies? (if empty, the From email address and name will be used)
+        email: Email address
+        name: Name
+
+    to:
+        title: To
+        desc: Who are you sending this campaign to?
+
+    subject:
+        title: Subject
+        desc: What's the subject line for this campaign?
+        subject:
+            label: Subject
+            help:
+                main: 'Great subjects give a reason to open your email. Here are a few tips:'
+                1:
+                    strong: Space is limited
+                    muted: We suggest not using more than 60 characters
+                2:
+                    strong: Easy to understand
+                    muted: Subjects with fewer than 9 words tend to perform better
+                3:
+                    strong: Not too much punctuation
+                    muted: Simple subject lines get your point across better
+        preview:
+            label: Preview text
+            help: The preview is displayed as an email preview in some inboxes. (Optional)
+
+content:
+    back: Back to the list of campaigns
+    preview: Preview the email
+    metadata: Update campaign details
+    send: Send a test
+    title: Edit campaign "%title%"
+
+send_test:
+    back: Back to the list of campaigns
+    title: Send a preview of "%title%"
+    recipients:
+        label: To who would you like to send this test?
+        help: 5 emails maximum, separated by commas.
+    send: Send the preview
+
+send_all:
+    back: Back to the list of campaigns
+    title: Send the campaign "%title%"
+    confirm: |
+        You're about to send the campaign to <strong>%count% subscribers</strong>.
+        <br />
+        <br />
+        Sending this campaign will use <strong>%count% credits</strong> from your organization.
+        <br />
+        <br />
+        Are you sure you are ready to send it?
+        Once sent, you won't be able to update it anymore.
+    send: Send the campaign
+    cancel: Cancel
+
+stats:
+    report:
+        back: Back to the list of campaigns
+        title: Emailing report of "%subject%"
+        export: Export

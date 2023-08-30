@@ -1,0 +1,261 @@
+label_reference: 'N° de commande'
+back: Rückkehr
+index:
+    title: Panier
+    create: 'Nouvelle commande'
+    doc: 'Lire la documentation'
+    quote: 'Einen Zuschlag erhalten'
+    subrogation: 'Einen Forderungsübergang verlangen'
+    drafts:
+        no_records: 'Keine Befehle in Ihrem Konto'
+        no_result_create: 'Nouvelle commande'
+        delete: Supprimer
+        delete_confirm: 'Möchten Sie den Befehl %uuid% wirklich unterdrücken?'
+        delete_product_confirm: 'Möchten Sie dieses Produkt wirklich unterstützen?'
+        configure: Modifikator
+        add_product: 'Ein Produkt zuweisen'
+        buy: 'Finalisieren und bezahlen'
+        not_ready: 'Unzulängliches Kommando'
+    ordered:
+        title: 'Durchgeführte Befehle'
+        no_records: 'Kein Befehl ausgeführt'
+        ordered_at: 'Commandé le'
+        id: Kommando
+        content: Produkte
+        status: Statut
+        price: 'Preis TTC'
+        order_status:
+            payment_pending: 'En attente de paiement'
+            bat_pending: 'En attente de validation des Bons à Tirer'
+            printing: 'In Produktion befindlich'
+            delivering: 'Im laufenden Betrieb'
+            delivered: Livré
+        campaign_status:
+            bat_pending: 'En cours de génération du Bon à Tirer'
+            bat_received: 'En attente de validation du Bon à Tirer'
+            bat_validated: 'En attente de paiement'
+            printing: 'In Produktion befindlich'
+            delivering: 'Im laufenden Betrieb'
+            delivered: Livré
+        actions:
+            pay: Zahler
+            bat_generating: 'BVT im Wandel der Zeit'
+            bat_validated: 'Akzeptierte BVT'
+            validate: 'Prüfen Sie die BAT'
+            cancel: 'Befehl annullieren'
+            cancel_confirm: 'Möchten Sie den Befehl %uuid% wirklich löschen? Diese Aktion ist nicht umkehrbar.'
+        details: 'Details zum Befehl'
+        invoice: 'Fakturierung abrufen'
+create:
+    title: "Nouvelle campagne d'imprimés"
+    help: "Concevez une campagne d'imprimés selon vos besoins, commandez-la et recevez-la chez vous ou envoyez-la à\nune liste d'adresse prédéfinie.\n"
+    label: 'Welche Art von Unterstützung benötigen Sie?'
+    label_help: "Ajoutez un premier produit à votre commande. Vous pourrez ensuite ajouter d'autres produits à celle-ci\npour les recevoir au même moment.\n"
+    official_products: 'Produkte im offiziellen Wahlformat der französischen Wahlen'
+    official_products_disabled: "Eine Bestellung darf nicht gleichzeitig offizielle Produkte und Kampagnenprodukte enthalten.\n<br />\nDieses Kommando enthält bereits ein oder mehrere Aktionsprodukte. Erstellen Sie einen neuen Befehl, um\ncommander des produits officiels.\n"
+    official_products_help: "Ausgaben, die für die Rückerstattung der Propaganda gemäß Artikel R39 in Betracht kommen.\n<br />\nL'imprimeur peut prendre en charge directement l'avance de ces frais si vous remplissez\nune demande de subrogation. Contactez notre équipe pour en savoir plus : 01 58 42 42 00 ou legislatives@prenant.fr.\n"
+    official_products_oneclick_title: 'Kompletter Propaganda-Bausatz für die Öffentlichkeitsarbeit'
+    official_products_oneclick_help: "Commandez en un clic tous les documents électoraux légaux : affiches officielles, bandeaux d'affiche,\nGlaubensbekenntnisse und Wahlbenachrichtigungen. Sie werden in der gleichen Zeit in den Präfekturen veröffentlicht.\n"
+    official_products_oneclick_button: 'Commander le kit "Propagande officielle"'
+    campaign_products: 'Nicht-amtliche Wahlwerbungsprodukte'
+    campaign_products_disabled: "Eine Bestellung darf nicht gleichzeitig offizielle Produkte und Kampagnenprodukte enthalten.\n<br />\nDieses Kommando enthält bereits ein oder mehrere offizielle Produkte. Erstellen Sie einen neuen Befehl, um\ncommander des produits de campagne.\n"
+    submit: 'In die Liste aufnehmen'
+edit:
+    finalize: 'Finalisieren und bezahlen'
+    finalize_subrogation: 'Den Befehl abschließen'
+    not_ready: 'Unzulängliches Kommando'
+    save: Anmeldung
+    required: 'Diese Informationen sind obligatorisch'
+    tabs:
+        delivery: 'Étape 1 : Optionen für die Beschaffung'
+        recipient: 'Étape 2 : Ihre Informationen'
+    subgrodation:
+        title: "Cette commande entre dans le cadre de votre subrogation : vous n'avez pas besoin d'avancer les\nfrais d'impression de celle-ci.\n"
+        message: "Sie sind dennoch für die Zahlung verantwortlich: Wenn Sie nach den Wahlen nicht unter die\nn'entrez pas dans les critères de la subrogation, vous serez tenu de payer la commande.\n"
+        link: 'Mehr über den Forderungsübergang erfahren'
+    content:
+        title: 'Senden Sie Ihren Inhalt zu'
+        reconfigure_title: 'Überprüfen Sie Ihren Inhalt zur Korrektur'
+        desc: 'Um Ihr Dokument zu imprimieren, müssen Sie uns die entsprechenden Dateien mit den zu imprimierenden Elementen zukommen lassen.'
+        file:
+            field:
+                label: 'Änderung der PDF-Datei'
+                none: 'Im Moment gibt es keine PDF-Datei'
+                view: 'Sehen Sie sich das zugesandte PDF-Dokument an'
+                help: "<strong>\n    Votre fichier doit mesurer précisément %width%mm de largeur et %height%mm de hauteur\n    um einen Mindestabstand von 5 mm auf allen Seiten des Endformats einzuhalten.\n    Seuls les fichiers au format PDF sont acceptés.\n</strong>\n<div class=\"text-muted\">\n    Le fichier doit faire maximum 10Go et doit contenir autant de pages que de faces imprimées.\n    Es muss im CMJN-Format kodiert sein, damit die Farben beim Druck korrekt wiedergegeben werden können.\n</div>\n"
+            format:
+                title: 'Format à respecter'
+                desc: 'Um ein angemessenes Ergebnis zu erzielen, ist es wichtig, einige Empfehlungen zu befolgen:'
+                contact: "<strong>\n    Un doute ou une question sur le format à adopter ?\n</strong>\n<div class=\"mt-1\">\n    <a href=\"https://citipo.com/print-support\" target=\"_blank\" class=\"btn btn-secondary\">\n        Cliquez ici pour nous contacter par email ou téléphone\n    </a>\n</div>\n"
+    delivery:
+        title: 'Optionen für den Versand'
+        help: 'Une question sur quelles options de livraison choisir ? Contactez-nous : 01 58 42 42 00 ou legislatives@prenant.fr.'
+        addressed:
+            label: 'Möchten Sie eine E-Mail an eine Adresse schicken?'
+            help: "Eine adressierte Postwurfsendung ist eine Postwurfsendung von Nominierungsdokumenten an eine Liste von\nbereits identifizierten Empfängern.\n"
+            title: 'Angeschriebener Brief'
+            data:
+                none: 'Im Moment ist keine Adresse konfiguriert. Envoyez un fichier ci-dessous pour en ajouter.'
+                count: 'erfasste Adressen'
+            addressList:
+                label: 'Einen neuen Adressendatensatz übermitteln'
+                help: "Damit werden alle aktuellen Adressen durch die Adressen des zugesandten Dokuments ersetzt. Die Datei\nmuss im Excel-Format vorliegen. Sie können die Spalten dieser Datei mit den Adressdaten verknüpfen\n(Name, Vorname, Adresse, Postleitzahl, Ort und Land).\n"
+                tips:
+                    title: Ratschläge
+                    1: "Eine adressierte Nachricht ist zwar einfacher, hat aber einen höheren Durchsatz. Utilisez un\nenvoi adressé pour avoir le plus d'impact, par exemple lors des derniers jours de la campagne.\n"
+                    2: "Eine adressierte Sendung muss zwingend in den Briefkasten gelegt werden, damit Sie sie Ihren Empfängern zukommen lassen können.\n"
+                    3: "Sie verfügen nicht über Adressen von Wählern? Vous pouvez demander à accéder à la liste\nder Wählerliste Ihrer Gemeinde. Si besoin, nous pouvons aussi vous mettre en relation avec\nnos partenaires spécialisés, contactez-nous : 01 58 42 42 00 ou legislatives@prenant.fr.\n"
+            columns:
+                label: Colonnes
+                help: '%count% colonnes ont été détectées. Associez-les aux informations des destinataires.'
+                default_label: 'Kolonne %i%'
+                types:
+                    ignored: 'Diese Kolonne ignorieren'
+                    formalTitle: Civilité
+                    firstName: Prénom
+                    lastName: 'Name der Familie'
+                    street1: 'Nummer und Name der Straße'
+                    street2: "Complément d'adresse"
+                    zipCode: 'Code postalisch'
+                    city: Ville
+                    country: Bezahlt
+                submit: Anmeldung
+            processing:
+                title: 'Fichier en cours de traitement'
+                desc: 'Ihre Datei wird gerade bearbeitet, um die Adressen zu extrahieren.'
+        unaddressed:
+            title: 'Imprimés sans adresse'
+            help: "Ein \"imprimé sans adresse\" ist ein Dokument, das ohne Namen und Adresse verteilt wird, z.B.\nim Rahmen von Geländeeinsätzen (Tractage, Boitage usw.) oder bei Verteilungskampagnen\ntoutes boites.\n"
+            quantities:
+                title: Mengenangaben
+                help: 'Für jedes Dokument, in welcher Menge möchten Sie es erhalten?'
+            withEnveloping:
+                label: 'Möchten Sie jedes Dokument in einen weißen Umschlag stecken?'
+                help: "Der Abdruck kann automatisch nach dem Druck erfolgen. Si vous choisissez\nOption wählen, werden die Dokumente von Mediapost in einem weißen Briefumschlag im\nFormat C5, ohne Adresse. Die Wählerinnen und Wähler können ein Dokument, das in einem Briefumschlag versandt wird, besser verstehen.\ndans une enveloppe.\n"
+            useMediapost:
+                label: 'Haben Sie vor, einen Vertrieb für alle Artikel im Rahmen des Mediapost-Vertrags durchzuführen?'
+                help: "Eine Verteilung Ihrer Dokumente in alle Postfächer eines bestimmten Gebiets\nkann von einem spezialisierten Zusteller wie Mediapost (La Poste) durchgeführt werden. Si cette\ncase est cochée, nous demanderons à notre imprimeur de rediriger votre commande vers les\néquipes de Mediapost.\n"
+            address:
+                official_title: 'Versand (imprimés officiels)'
+                campaign_title: 'Versand (Kampagnendrucke)'
+                mediapost:
+                    title: 'Vertrieb Mediapost'
+                    tip:
+                        1: "Um eine Verteilung aller Artikel mit Mediapost zu organisieren, wenden Sie sich bitte an den Berater\nLaPoste de référence de votre secteur\n"
+                        2: "puis indiquez l'adresse du dépot Mediapost ci-dessous."
+                    download_managers: 'siehe die Liste der Berater'
+                prefecture:
+                    title: 'Adresse der Präfektur'
+                    help: "Die offizielle Propaganda muss in die Präfektur geschickt werden, damit sie in Ihrem Bezirk verteilt werden kann.\nKreis verteilt wird. Indiquez ici l'adresse de livraison qu'elle vous a fournie. Contactez-la\nsi nécessaire : l'adresse de livraison est souvent différente de l'adresse officielle de la\npréfecture.\n"
+                individual:
+                    title: Lieferanschrift
+                    help: "Nach dem Druck werden die Dokumente per Camion an die von Ihnen gewählte Adresse geliefert.\nmit Heu auf einer Palette. L'adresse peut être l'adresse d'un particulier, d'une préfecture,\nd'une association de campagne, d'un parti, ...\n"
+                name: 'Nom de la personne ou de l''organisation recevant la livraison <span class="text-danger">*</span>'
+                street1: 'Hausnummer und Straße <span class="text-danger">*</span>'
+                street2: "Complément d'adresse (nom, étage, porte, interphone, ..., optionel)"
+                zipCode: 'Code postalisch <span class="text-danger">*</span>'
+                city: 'Ville <span class="text-danger">*</span>'
+                country: 'Zahlt <span class="text-danger">*</span>'
+                instructions: 'Besondere Hinweise zur Abholung (Code, Gegensprechanlage, Etage, ...)'
+            posterAddress:
+                title: 'Adresse für den Versand der offiziellen Broschüren/Bänder'
+                help: "Ihr Befehl enthält die offiziellen Dokumente. Im Gegensatz zum Rest der Propaganda\nmüssen diese Mitteilungen von Ihrer Kampagne entgegengenommen werden, damit sie von Ihren\ndurch Ihre Mitarbeiter. An welche Adresse möchten Sie sie senden?\n"
+                name: 'Nom de la personne ou de l''organisation recevant la livraison <span class="text-danger">*</span>'
+                street1: 'Hausnummer und Straße <span class="text-danger">*</span>'
+                street2: "Complément d'adresse (nom, étage, porte, interphone, ..., optionel)"
+                zipCode: 'Code postalisch <span class="text-danger">*</span>'
+                city: 'Ville <span class="text-danger">*</span>'
+                country: 'Zahlt <span class="text-danger">*</span>'
+                instructions: 'Besondere Hinweise zur Abholung (Code, Gegensprechanlage, Etage, ...)'
+    recipient:
+        title: 'Ihre Informationen'
+        help: 'Wir informieren Sie über die Entwicklung Ihres Auftrags und dessen Umsetzung anhand dieser Informationen.'
+        circonscription: 'Dans quel circonscription se déroule votre campagne ? <span class="text-danger">*</span>'
+        candidate: 'Quel est le nom complet du candidat de votre campagne ? <span class="text-danger">*</span>'
+        firstName: 'Votre prénom <span class="text-danger">*</span>'
+        lastName: 'Votre nom <span class="text-danger">*</span>'
+        email:
+            label: 'Votre adresse email <span class="text-danger">*</span>'
+            help: 'Über welche E-Mail-Adresse können wir Sie über den Status Ihres Auftrags informieren?'
+        phone:
+            label: 'Votre numéro de téléphone <span class="text-danger">*</span>'
+            help: "À quel numéro de téléphone pouvons-nous vous tenir informé du statut de votre commande ?\nNous ne vous contacterons par téléphone qu'en cas d'urgence.\n"
+view:
+    title: 'Details zum Befehl'
+    price:
+        title: 'Preis TTC'
+    payment:
+        title: Paiement
+        paid: Payée
+        not_paid: 'En attente de paiement'
+        pay: Zahler
+        invoice: 'Fakturierung abrufen'
+    bat:
+        title: 'Bon à tirer'
+        validated: 'Alle Bons à tirer ont été acceptés.'
+        not_validated: 'Einige Bons à tirer doivent encore être acceptés.'
+    delivery:
+        title: Livraison
+        mediapost: "Versand über die Sammelstelle Mediapost. Vous devez avoir signé un contrat avec Mediapost\nunterzeichnet haben, damit die Verteilung ordnungsgemäß erfolgen kann. Si vous ne l'avez pas encore fait,\nprenez contact avec le conseiller La Poste de référence de votre secteur :\n"
+        mediapost_download: 'siehe die Liste der Berater'
+        unaddressed: 'Adresse der Zustellung :'
+        addressed: 'Distribution à %count% Adressen par affranchissement La Poste.'
+        poster: 'Adresse für die Zustellung der Nachrichten :'
+    recipient:
+        title: 'Ihre Informationen'
+    help:
+        title: 'Brauchen Sie Hilfe? Eine Frage?'
+        desc: "Nous sommes à votre disposition :\n<ul>\n    <li>\n        pour les questions de production ou livraison, contactez-nous par téléphone\n        au 01 58 42 42 00 ou par email à legislatives@prenant.fr ;\n    </li>\n    <li>\n        Für alle anderen Fragen wenden Sie sich bitte an die Supportabteilung unter 01 76 44 07 97 oder\n        par email à legislatives@avecvous.fr ;\n    </li>\n</ul>\n"
+bat:
+    title: 'Prüfen Sie den Bon à tirer'
+    help: "Auf Ihren Befehl hin haben wir ein Bon À Tirer erstellt: ein Referenzdokument, das für den Abdruck verwendet werden soll.\nl'impression. Bevor wir mit der Produktion beginnen, benötigen wir Ihre abschließende Validierung.\n"
+    errors_title: 'Bei der Überprüfung Ihrer Datei wurden einige Fehler festgestellt'
+    blocking_errors: "Ces erreurs ont empêché le bon traitement de votre commande.\nVeuillez les résoudre et envoyer un nouveau fichier PDF :\n"
+    non_blocking_errors: "Diese Fehler sind nicht unbedingt notwendig: Wir haben automatisch eine Korrektur in Ihre Datei eingefügt.\nfür Ihre Datei. Wenn Sie nach diesen Korrekturen mit dem unten stehenden Bon À Tirer zufrieden sind, können Sie ihn zur\nlancer la production. Wenn Sie nicht zufrieden sind, beheben Sie die Fehler und senden Sie eine neue\nfichier PDF :\n"
+    download: 'Prüfung des Bon À Tirer (PDF)'
+    accept_help: "Une fois que vous avez examiné ce Bon À Tirer et qu'il vous convient en terme de coupe et de qualité,\nkönnen Sie ihn annehmen, um die Produktion zu starten.\n"
+    accept: 'Bon à tirer annehmen'
+    accept_warning: 'Achtung: Nach der Annahme wird die Produktion gestartet und kann nicht mehr annulliert werden.'
+    refuse_help: "Wenn Ihnen diese Datei nicht zusagt oder ein Fehler unterlaufen ist, können Sie Ihre Datei korrigieren\nPDF korrigieren und wiederherstellen.\n"
+    refuse: 'Verweigerung und Übermittlung eines neuen PDF-Formulars'
+    error_refuse_help: "Bei der Überprüfung Ihrer Datei ist ein Fehler aufgetreten: Sie kann nicht für Ihren Befehl verwendet werden.\nvotre commande. Korrigieren Sie Ihre PDF-Datei und lesen Sie sie erneut.\n"
+    error_refuse: 'Eine neue PDF-Datei bereitstellen'
+    question: 'Bei allen Fragen zu Ihrem Bon à tirer wenden Sie sich bitte an uns unter 01 58 42 42 00 oder legislatives@prenant.fr.'
+order:
+    title: 'Den Befehl abschließen'
+    continue: Weiter
+    order: Kommandant
+ordered:
+    title: 'Kommando %Nummer%'
+    desc: 'Nous avons bien reçu votre commande.'
+    message:
+        title: 'Wir haben Ihr Kommando gut aufgenommen.'
+        subrogation_success: "<p>\n    Vous avez réalisé cette commande dans le cadre de votre subrogation : vous n'avez\n    pas eu besoin d'avancer les frais d'impression de celle-ci.\n</p>\n<p>\n    Vous êtes cependant toujours responsable de son paiement : si à la suite des élections, vous n'entrez\n    pas dans les critères de la subrogation, vous serez tenu de payer la commande.\n</p>\n<strong>\n    <a href=\"https://citipo.com/print-subrogation-doc\" target=\"_blank\">\n        En savoir plus sur la subrogation\n    </a>\n</strong>\n"
+        subrogation_next: "<strong class=\"text-danger\">Attention : votre commande n'est pas encore terminée</strong>\n<br />\n<div class=\"text-muted\">\n    In den nächsten Stunden erhalten Sie die Bons à Tirer (BAT) im PDF-Format. Ces documents de\n    référence seront utilisés pour l'impression.\n    <br />\n    <strong>Vous devrez accepter ces Bons à Tirer pour que nous lancions l'impression de votre commande.</strong>\n</div>\n"
+        standard_success: "<strong>Achtung : nous ne pourrons pas lancer l'impression sans avoir reçu votre paiement.</strong>\n<br />\nVous avez reçu nos informations de virement par e-mail : nous vous invitons à initier ce virement\ndès maintenant.\n"
+        standard_next: "<strong class=\"text-danger\">Attention : votre commande n'est pas encore terminée</strong>\n<br />\n<div class=\"text-muted\">\n    In den nächsten Stunden erhalten Sie die Bons à Tirer (BAT) im PDF-Format. Ces documents de\n    référence seront utilisés pour l'impression.\n    <br />\n    <strong>Vous devrez accepter ces Bons à Tirer pour que nous lancions l'impression de votre commande.</strong>\n</div>\n"
+        tip_2nd_round: "<strong>Vous ne pourrez plus commander après le lundi 13 juin à 23h59</strong>\n<br />\n<div class=\"text-muted\">\n    Étant donné le peu de temps entre les deux tours, nous vous invitons à commander\n    vos documents du second tour (bulletins de vote, professions de foi, ...) le plus rapidement\n    après le 1er tour.<br />\n    La plateforme ne sera plus à partir du lundi 13 juin à 23h59.\n</div>\n"
+    back: 'Rückkehr zu den Kommandos'
+quote:
+    type:
+        title: 'Einen Zuschlag erhalten'
+        question: 'Welche Art von Devis-Produkten möchten Sie erhalten?'
+        official:
+            label: 'Offizielles Propagandamaterial'
+            help: "Die offizielle Propaganda entspricht den Produkten im offiziellen Format der französischen Wahlen, die\ndie von den Präfekturen verteilt werden. Diese Ausgaben sind gemäß Artikel R39 erstattungsfähig.\nde l'article R39. L'imprimeur peut prendre en charge directement l'avance de ces frais si vous\nremplissez une demande de subrogation. Contactez notre équipe pour en savoir plus : 01 58 42 42 00\nou legislatives@prenant.fr.\n"
+            button: 'Eine Gebühr für eine amtliche Werbung zu erhalten'
+        campaign:
+            label: 'Nicht-offizielle Propaganda'
+            help: "Die nicht-offizielle Propaganda entspricht den Produkten, die direkt von Ihren Teams verwendet werden\nwährend der Kampagne, z. B. bei Veranstaltungen, Geländeaktionen, Pfortenaktionen, ...\nDiese Ausgaben sind nicht erstattungsfähig im Sinne von Artikel R39.\n"
+            button: 'Eine Gebühr für eine nicht amtliche Propaganda zu erhalten'
+    form:
+        quantities: 'Welche Menge von jedem Produkt möchten Sie bestellen?'
+        delivery: Lieferanschrift
+        billing: 'Adresse der Fakturierung'
+        submit: Devisenerhebung
+products_formats:
+    legalities_rcs: "<strong>Assurez-vous d'avoir indiqué le nom et RCS de l'imprimeur (obligatoire)</strong>\n<div class=\"text-muted\">\n    Tous les documents que vous créez doivent impérativement comporter le nom et le\n    RCS de l'imprimeur, dans le cas présent :<br />\n    <strong>Conseil Impression Dispatch - 808 588 214 R.C.S. Créteil</strong>.\n</div>\n"
+    legalities_dont_throw: "<strong>Assurez-vous d'avoir indiqué la mention \" Ne pas jeter sur la voie publique \" (obligatoire)</strong>\n<div class=\"text-muted\">\n    Tous les documents que vous créez doivent impérativement comporter la mention\n    \" Ne pas jeter sur la voie publique \" (article L. 541-10-1 du Code de l'Environnement).\n</div>\n"
+    legalities_credits: "<strong>Assurez-vous d'avoir indiqué les crédits des photos (obligatoire)</strong>\n<div class=\"text-muted\">\n    Le crédit des photos utilisées doit être indiqué (si vous n'avez pas réalisé les photos vous-même).\n</div>\n"
+    bleeding_edge: "<strong class=\"text-danger\">Le fichier doit impérativement disposer d'un fond perdu de 5mm</strong>\n<div class=\"text-muted\">\n    Un fond perdu non-vide (c'est-à-dire contenant votre image) de 5mm est strictement requis autour\n    de tout votre document. Diese Unterlage wird verwendet, um Ihre Dokumente in ein endgültiges Format umzuwandeln\n    sans obtenir de blandes blanches.\n</div>\n<div>\n    <strong class=\"text-danger\">\n        Achtung: Ein schlecht ausgeführter Fond perdu kann dazu führen, dass Ihre Dokumente nicht konform sind.\n        <br />Assurez-vous d'avoir bien suivi notre documentation sur le sujet avant de réaliser votre commande.\n    </strong>\n    <div class=\"mt-1\">\n        <a href=\"https://citipo.com/print-edges\" target=\"_blank\" class=\"btn btn-secondary\">\n            Lire la documentation\n        </a>\n    </div>\n</div>\n"
+    receive_bat: "<strong>Vous recevrez un Bon À Tirer (BAT) pour validation avant impression.</strong>\n<div class=\"text-muted\">\n    Vous pourrez donc vérifier que votre impression est conforme à vos attente.\n</div>\n"

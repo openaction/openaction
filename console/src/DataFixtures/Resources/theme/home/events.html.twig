@@ -1,0 +1,40 @@
+<div data-aos="fade-up" data-aos-duration="600">
+    <div class="home-blocks-block home-blocks-block-posts">
+        <h3 class="home-blocks-block-title">
+            {{ events_title }}
+        </h3>
+
+        {% if events|length > 0 %}
+            <div class="home-blocks-block-posts-row">
+                {% for key, event in events %}
+                    <div class="zoom-hover">
+                        <div class="home-blocks-block-posts-item home-blocks-block-posts-item-{{ key }} home-blocks-block-posts-row-{{ (key / 3)|round(0, 'floor') }} box-offset">
+                            <div class="home-blocks-block-posts-item-thumbnail">
+                                <img src="{{ event.image|default(default_image) }}"
+                                     class="list-items-item-image" width="1700" height="1080" />
+                            </div>
+
+                            <div class="home-blocks-block-posts-item-text">
+                                <a href="{{ event.url }}" data-turbo="optional" class="stretched-link list-items-item-link">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ event.title }}</span>
+                                    </h5>
+                                </a>
+
+                                <div class="list-items-item-description">
+                                    <div class="list-items-item-date">
+                                        {{ event.beginAt }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted">
+                {{ no_elements }}
+            </div>
+        {% endif %}
+    </div>
+</div>

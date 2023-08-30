@@ -1,0 +1,11 @@
+# Expose your documentation as JSON swagger compliant
+openapi_json:
+    path: /openapi.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }
+
+# Expose the documentation UI
+openapi_ui:
+    path: /openapi
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }

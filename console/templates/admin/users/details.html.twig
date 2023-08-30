@@ -1,0 +1,20 @@
+<div style="min-width: 250px; max-width: 250px">
+    <div>
+        <strong>
+            {{ entity.instance.fullName }}
+        </strong>
+    </div>
+    <div class="mb-2">
+        <a href="mailto:{{ entity.instance.email }}" style="font-size: 12px;">
+            {{ entity.instance.email }}
+        </a>
+    </div>
+    <div>
+        {% for orga in entity.instance.organizations %}
+            <a href="{{ path('easyadmin', {'entity': 'Organization', 'action': 'search', 'query': orga.id ~ ' ' ~ orga.name}) }}"
+               style="display: inline-block; color: #4c5367; background: #e5e5e5; font-size: 12px; padding: 2px 4px; margin: 0 2px 2px 0;">
+                {{ orga.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

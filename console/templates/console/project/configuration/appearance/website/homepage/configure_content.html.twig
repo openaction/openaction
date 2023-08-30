@@ -1,0 +1,50 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'homepage.content.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% do expose('endpoint', path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id})) %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'back_homepage'|trans({}, 'project_appearance') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="appearance--custom-content">
+                        <div class="d-none">
+                            {{ form_widget(form.content, {'attr': {'data-appearance--custom-content-target': 'content'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-upload-url="{{ path('console_configuration_appearance_website_homepage_block_upload', {'projectUuid': current_project.uuid}) }}"
+                     id="customcontent-editor">{{ block.config.content|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

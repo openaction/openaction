@@ -1,0 +1,59 @@
+<div style="min-width: 350px;">
+    <div style="display: flex;">
+        <div style="flex-basis: 0; flex-grow: 1.25; text-align: left; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Cloudflare
+            </div>
+            <div style="font-size: 11px;">
+                <div>
+                    {% if entity.instance.configurationStatus['cloudflare_pending'] is defined %}
+                        <span style="color: #ec486b">Creating</span>
+                    {% elseif entity.instance.configurationStatus['cloudflare_created'] is defined %}
+                        <span style="color: #ec486b">Provisionning</span>
+                    {% elseif entity.instance.configurationStatus['cloudflare_provisioned'] is defined %}
+                        <span style="color: #ec486b">Waiting for NS</span>
+                    {% elseif entity.instance.configurationStatus['cloudflare_ready'] is defined %}
+                        <span style="color: #44ae8f">Ready</span>
+                    {% endif %}
+                </div>
+
+                <div style="color: #444">
+                    {% if entity.instance.configurationStatus['cloudflare_ready'] is not defined %}
+                        {% for ns in entity.instance.cloudflareConfig.nameservers %}
+                            {{ ns }}<br/>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div style="flex-basis: 0; flex-grow: 1; text-align: left; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Sendgrid
+            </div>
+            <div style="font-size: 11px;">
+                {% if entity.instance.configurationStatus['cloudflare_ready'] is not defined %}
+                    <span style="color: #999">Waiting for CF</span>
+                {% elseif entity.instance.configurationStatus['sendgrid_pending'] is defined %}
+                    <span style="color: #ec486b">Provisionning</span>
+                {% elseif entity.instance.configurationStatus['sendgrid_ready'] is defined %}
+                    <span style="color: #44ae8f">Ready</span>
+                {% endif %}
+            </div>
+        </div>
+        <div style="flex-basis: 0; flex-grow: 1; text-align: left; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Postmark
+            </div>
+            <div style="font-size: 11px;">
+                {% if entity.instance.configurationStatus['cloudflare_ready'] is not defined %}
+                    <span style="color: #999">Waiting for CF</span>
+                {% elseif entity.instance.configurationStatus['postmark_pending'] is defined %}
+                    <span style="color: #ec486b">Provisionning</span>
+                {% elseif entity.instance.configurationStatus['postmark_ready'] is defined %}
+                    <span style="color: #44ae8f">Ready</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+

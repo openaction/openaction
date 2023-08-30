@@ -1,0 +1,134 @@
+{% extends 'emails/community/organization_base.html.twig' %}
+
+{% block metas %}
+    <title>{{ 'community.register.title'|trans({}, 'emails', project.websiteLocale) }}</title>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ include('emails/community/style/custom.css.twig', {
+        primary: project.appearancePrimary|default('000000'),
+        secondary: project.appearanceSecondary|default('000000'),
+        third: project.appearanceThird|default('000000'),
+    })|raw }}
+{% endblock %}
+
+{% block header %}
+    {% if not project.appearanceLogoDark %}
+        <h1 class="text-center">
+            {{ project.organization.name }}
+        </h1>
+    {% elseif is_granted('website_see_module', project) %}
+        <a href="{{ domain_url(project, '/') }}" target="_blank">
+            <center>
+                <img src="{{ cdn_image_url(project.appearanceLogoDark) }}" class="logo" alt="{{ project.organization.name }}" />
+            </center>
+        </a>
+    {% else %}
+        <center>
+            <img src="{{ cdn_image_url(project.appearanceLogoDark) }}"
+                 class="logo" alt="{{ project.organization.name }}" />
+        </center>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h4>
+        {{ 'community.register.title'|trans({}, 'emails', project.websiteLocale) }}
+    </h4>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'community.register.desc'|trans({}, 'emails', project.websiteLocale) }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand"
+            href="{{ domain_redirect_url(project, 'register-confirm', reference) }}">
+        {{ 'community.register.link'|trans({}, 'emails', project.websiteLocale) }}
+    </button>
+{% endblock %}
+
+{% block footer %}
+    <center>
+        <menu>
+            {% if project.socialFacebook %}
+                <item>
+                    <a href="{{ project.socialFacebook }}" target="_blank">
+                        <img src="cid:social-facebook" class="social-link" alt="Facebook" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialTwitter %}
+                <item>
+                    <a href="{{ project.socialTwitter }}" target="_blank">
+                        <img src="cid:social-twitter" class="social-link" alt="Twitter" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialInstagram %}
+                <item>
+                    <a href="{{ project.socialInstagram }}" target="_blank">
+                        <img src="cid:social-instagram" class="social-link" alt="Instagram" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialLinkedIn %}
+                <item>
+                    <a href="{{ project.socialLinkedIn }}" target="_blank">
+                        <img src="cid:social-linkedin" class="social-link" alt="LinkedIn" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialYoutube %}
+                <item>
+                    <a href="{{ project.socialTwitter }}" target="_blank">
+                        <img src="cid:social-youtube" class="social-link" alt="Youtube" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialMedium %}
+                <item>
+                    <a href="{{ project.socialMedium }}" target="_blank">
+                        <img src="cid:social-medium" class="social-link" alt="Medium" />
+                    </a>
+                </item>
+            {% endif %}
+
+            {% if project.socialTelegram %}
+                <item>
+                    <a href="https://t.me/{{ project.socialTelegram }}" target="_blank">
+                        <img src="cid:social-telegram" class="social-link" alt="Telegram" />
+                    </a>
+                </item>
+            {% endif %}
+        </menu>
+    </center>
+
+    <spacer size="16"></spacer>
+
+    <p class="text-center">
+        © {{ 'now'|date('Y') }} {{ 'community.footer.copyright'|trans({}, 'emails', project.websiteLocale) }}
+        <br />
+        {{ project.legalGdprName }} {{ project.legalGdprAddress }}
+    </p>
+
+    <p class="text-center">
+        {{ 'community.footer.legalities'|trans({ '%email%': project.legalGdprEmail|default('contact@' ~ project.rootDomain.name) }, 'emails', project.websiteLocale) }}
+
+        {% if project.isModuleEnabled('website') %}
+            <br />
+            <br />
+            {{ 'community.footer.policy'|trans({}, 'emails', project.websiteLocale) }}
+            <a href="{{ domain_url(project, '/') }}" target="_blank">
+                {{ domain_url(project, '/') }}
+            </a>
+        {% endif %}
+    </p>
+{% endblock %}

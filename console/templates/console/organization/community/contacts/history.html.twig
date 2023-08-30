@@ -1,0 +1,133 @@
+{% if organization.isFeatureInPlan('feature_community_contacts_history') %}
+    <div class="history">
+        <div class="history-view-future"></div>
+
+        <div class="history-view">
+            {% for item in history %}
+                <div class="history-item">
+                    <div class="history-item-dot"></div>
+
+                    <div class="history-item-content">
+                        <div class="history-item-date">
+                            {% if item.type == 'emailing' %}
+                                <i class="fas fa-envelope mr-1"></i>
+                            {% elseif item.type == 'texting' %}
+                                <i class="fas fa-comment-alt-lines mr-1"></i>
+                            {% elseif item.type == 'form_answer' %}
+                                <i class="fas fa-file-edit mr-1"></i>
+                            {% endif %}
+
+                            {{ item.date|format_datetime('medium', 'short') }}
+                        </div>
+
+                        <div class="history-item-description">
+                            {% if item.type == 'emailing' %}
+                                {{ 'contacts.view.history.emailing.label'|trans({}, 'organization_community') }}
+                                <em>{{ item.entity.campaign.subject|u.truncate(100) }}</em>
+                            {% elseif item.type == 'texting' %}
+                                {{ 'contacts.view.history.texting.label'|trans({}, 'organization_community') }}
+                                <em>{{ item.entity.campaign.content|u.truncate(100) }}</em>
+                            {% elseif item.type == 'form_answer' %}
+                                {{ 'contacts.view.history.form_answer.label'|trans({}, 'organization_community') }}
+                                <em>{{ item.entity.form.title|u.truncate(100) }}</em>
+                            {% endif %}
+                        </div>
+
+                        <div class="history-item-actions">
+                            {% if item.type == 'emailing' %}
+
+                                <div class="history-item-actions-metadata">
+                                    {% if item.entity.openedAt %}
+                                        <span class="text-success">
+                                            {{ 'contacts.view.history.emailing.openedAt'|trans({}, 'organization_community') }}
+                                            {{ item.entity.openedAt|format_datetime('short', 'short') }}
+                                        </span>
+                                    {% else %}
+                                        {{ 'contacts.view.history.emailing.neverOpened'|trans({}, 'organization_community') }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="history-item-actions-metadata">
+                                    {% if item.entity.clickedAt %}
+                                        <span class="text-success">
+                                            {{ 'contacts.view.history.emailing.clickedAt'|trans({}, 'organization_community') }}
+                                            {{ item.entity.clickedAt|format_datetime('short', 'short') }}
+                                        </span>
+                                    {% else %}
+                                        {{ 'contacts.view.history.emailing.neverClicked'|trans({}, 'organization_community') }}
+                                    {% endif %}
+                                </div>
+
+                                <a href="{{ path('console_community_emailing_stats_report', {
+                                    'projectUuid': item.entity.campaign.project.uuid,
+                                    'uuid': item.entity.campaign.uuid,
+                                }) }}">
+                                    {{ 'contacts.view.history.emailing.openCampaignReport'|trans({}, 'organization_community') }}
+                                </a>
+
+                            {% elseif item.type == 'form_answer' %}
+
+                                <a href="{{ path('console_website_forms_results_view', {
+                                    'projectUuid': item.entity.form.project.uuid,
+                                    'uuid': item.entity.uuid,
+                                }) }}">
+                                    {{ 'contacts.view.history.form_answer.openAnswer'|trans({}, 'organization_community') }}
+                                </a>
+
+                                <a href="{{ path('console_website_forms_edit', {
+                                    'projectUuid': item.entity.form.project.uuid,
+                                    'uuid': item.entity.form.uuid,
+                                }) }}">
+                                    {{ 'contacts.view.history.form_answer.openForm'|trans({}, 'organization_community') }}
+                                </a>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="history-item">
+                <div class="history-item-dot"></div>
+
+                <div class="history-item-content">
+                    <div class="history-item-date">
+                        <i class="fas fa-users mr-1"></i>
+                        {{ contact.createdAt|format_datetime('medium', 'short') }}
+                    </div>
+
+                    <div class="history-item-description">
+                        {{ 'contacts.view.history.joined.label'|trans({}, 'organization_community') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="upgrade-feature text-center my-5">
+        <h3 class="upgrade-feature-title">
+            {{ 'upgrade.features.feature_community_contacts_history.title'|trans({}, 'organization')|raw }}
+        </h3>
+
+        <div class="upgrade-feature-desc">
+            {{ 'upgrade.features.feature_community_contacts_history.desc'|trans({}, 'organization')|raw }}
+        </div>
+
+        <h2 class="upgrade-banner-title mt-5">
+            {{ 'upgrade.title'|trans({}, 'organization') }}
+        </h2>
+
+        <div class="upgrade-banner-desc mb-3">
+            {{ 'upgrade.desc'|trans({
+                '%plan%': ('upgrade.plans.'~organization.subscriptionPlan)|trans({}, 'organization')
+            }, 'organization') }}
+        </div>
+
+        <a href="https://citipo.com/{{ app.request.locale }}/pricing" target="_blank" class="btn btn-secondary mr-2">
+            {{ 'upgrade.pricing'|trans({}, 'organization') }}
+        </a>
+        <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary">
+            {{ 'upgrade.contact_us'|trans({}, 'organization') }}
+        </a>
+    </div>
+{% endif %}

@@ -1,0 +1,41 @@
+sidebar:
+    area: Partenaire
+    dashboard: Tableau de bord
+    menu: Menu personnalisé
+    theme: Thèmes personnalisés
+
+dashboard:
+    title: Tableau de bord partenaire
+    projects: projets
+    contacts: contacts
+
+menu:
+    title: Menu personnalisé
+    help: |
+        En tant que partenaire officiel de Citipo, vous pouvez afficher un menu personnalisé sur la
+        Console des clients que vous accompagnez. Ce menu sera affiché dans tous les projets de toutes
+        les organisations de vos clients.
+    form:
+        icon: Icône de l'item de menu
+        label: Libellé de l'item de menu
+        url: URL cible de l'item de menu
+        save: Enregistrer
+
+theme:
+    title: Thèmes personnalisés
+    desc: Associez votre compte GitHub à Citipo pour créer des thèmes personnalisés pour vous ou vos clients.
+    configure: Ajouter / Supprimer des thèmes
+    none: Aucun thème personnalisé pour le moment
+    usable_everyone: Utilisable par toutes vos organisations
+    usable_orgas: Utilisable par
+    usable_configure: Configurer
+    syncing: Synchronisation
+    sync: Synchroniser
+    last_synced: Dernière synchronisation le
+    github: Ouvrir sur GitHub
+    linking:
+        title: Synchronisation GitHub
+        desc: Vos repositories GitHub sont en train d'être synchronisés une première fois
+    back: Retour aux thèmes
+    for_organizations: Quelles organisations doivent avoir accès à ce thème ?
+    save: Enregistrer

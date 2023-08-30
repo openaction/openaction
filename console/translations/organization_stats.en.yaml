@@ -1,0 +1,22 @@
+demo:
+    title: Statistics
+    website_traffic: Website traffic
+    contacts: Contacts
+
+annotations:
+    emailing_sent: 'The emailing "%label%" was sent'
+    post_published: 'The post "%label%" was published'
+    event_published: 'The event "%label%" was published'
+    event_began: 'The event "%label%" began'
+    form_created: 'The survey "%label%" was created'
+
+index:
+    title: Statistics
+    contacts:
+        title: New contacts
+        help: Number of new contacts registered in your contacts database per day.
+    sessions:
+        title: Website traffic
+        help: |
+            Number of sessions on your website per day. A session is a series of visits by a single person
+            in a 30 minutes period.

@@ -1,0 +1,96 @@
+create:
+    page_title: Créer une organisation
+    title: Dites-nous en plus sur votre organisation
+    subtitle: Puis créez votre premier projet et invitez votre équipe !
+    form:
+        name:
+            label: Nom de votre organisation
+            help: |
+                Ce nom apparaitra dans les menus et les titres. Il est ou contient souvent le nom de votre
+                mouvement, association ou entreprise. Vous pourrez le changer plus tard. Maximum 60 caractères.
+        button: Continuer
+
+no_orga:
+    title: Vous n'appartenez à aucune organisation sur Citipo.
+    launch: |
+        Citipo réunit toutes les fonctionnalités que nous savons être les plus importantes pour
+        réussir votre campagne : site internet, base de contact, emailing et SMS, démocratie
+        participative, gestion d’équipe, ...
+    learn_more: 'En découvrir plus sur Citipo :'
+    ask_citipo: 'Contactez-nous pour continuer à utiliser Citipo :'
+
+expired:
+    title: Votre souscription à Citipo a exipré.
+    end_date: La souscription de votre organisation s'est terminée le %date%.
+    data: Si vous ne souscrivez pas à Citipo, les données de votre organisation seront supprimées dans 90 jours.
+    ask_citipo: 'Contactez-nous pour continuer à utiliser Citipo :'
+
+not_enough_slots:
+    title: Mettre à niveau pour créer un nouveau projet
+    desc: '<strong>%slots% / %slots% projets</strong> de %organization% sont utilisés.'
+    upgrade: 'Pour créer un nouveau projet, vous devez mettre à niveau votre organisation.'
+    ask_citipo: 'Contactez-nous pour mettre à niveau votre souscription et créer un nouveau projet :'
+
+upgrade:
+    title: Mettez à niveau
+    desc: Votre organisation utilise le plan %plan% qui n'inclus pas cette fonctionnalité.
+    pricing: Découvrir nos tarifs
+    contact_us: Contactez-nous pour mettre à niveau
+    plans:
+        essential: Essentiel
+        standard: Standard
+        premium: Premium
+        organization: Organisation
+    features:
+        generic:
+            title: Découvrez toutes les fonctionnalités de Citipo sur <a href="https://citipo.com/fr">citipo.com</a>.
+            desc: Citipo est capable de vous accompagner dans toutes les étapes de votre projet.
+        website_pages:
+            title: Publiez des pages captivantes pour acquérir de nouveaux contacts
+            desc: Notre éditeur de contenu vous permet de décrire vos idées sans connaissances techniques requises.
+        website_posts:
+            title: Publiez des actualités captivantes pour acquérir de nouveaux contacts
+            desc: Notre éditeur de contenu vous permet de décrire vos actualités sans connaissances techniques requises.
+        website_events:
+            title: Orgnisez des événements physiques ou virtuels pour mobiliser votre communauté
+            desc: Mettez les en avant sur votre site internet en quelques minutes.
+        website_forms:
+            title: Enrichissez votre base grâce aux questionnaires personnalisés
+            desc: Constituez une base de contacts de qualité pour mieux mobiliser.
+        website_documents:
+            title: Partagez vos documents via votre site internet
+            desc: Utilisez l'adresse de votre site internet pour partager des documents publics aisément.
+        website_trombinoscope:
+            title: Mettez en avant votre équipe (candidats, élus, citoyens, ...)
+            desc: Affichez une liste de personnes et leur photographie sur votre site internet.
+        website_manifesto:
+            title: Détaillez vos idées et vos propositions
+            desc: |
+                Affichez une liste de propositions organisées par sujets puis une fois élu(e), associez à ces
+                propositions une progression et un statut pour mettre en avant votre action.
+        feature_website_social_sharers:
+            title: Utilisez les outils de partage pour amplifier vos réseaux sociaux
+            desc: Configurez vos comptes sociaux et les liens de partage publics pour augmenter l'impact de vos communications sur les réseaux sociaux.
+        feature_community_emailing_tags:
+            title: Associez vos contacts à des tags pour mieux cibler vos communications
+            desc: Ajoutez des tags par rôle, par thématique, par statut, ...
+        feature_community_contacts_flags:
+            title: Organisez vos processus et intégrez vos nouveaux contacts
+            desc: Les tags principaux sont des données associées à vos contacts qui vous aident à suivre leur évolution dans vos processus internes.
+        feature_community_automations:
+            title: Automatisez vos interactions pour mieux engager vos sympathisants
+            desc: Envoyez des emails automatiquements à vos contacts lorsqu'il viennent d'effectuer une action.
+        feature_community_contacts_history:
+            title: Gardez un historique des interactions
+            desc: Gardez un historique détaillé des interactions avec vos contacts pour les accompagner efficacement.
+        feature_api:
+            title: Créez un design entièrement personnalisé ou développez votre propre intégrations
+            desc: |
+                Grâce à l'accès API de Citipo, vous pourrez développer un design entièrement personnalisé pour vos
+                sites propulsés par Citipo et vous pourrez intégrer Citipo au coeur de vos projets.
+        feature_statistics:
+            title: Mesurez l'impact de vos actions pour choisir lesquelles réitérer
+            desc: |
+                Les statistiques de Citipo vous permettent de comprendre en quelques minutes quelles actions
+                (événements, articles de blog, newsletters, questionnaires, ...) ont eu le plus d'impact sur
+                votre communauté, vous permettant ainsi de décider quelles actions réitérer en toute confiance.

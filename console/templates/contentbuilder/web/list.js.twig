@@ -1,0 +1,57 @@
+{% set snippets = [
+    {
+        name: 'basic',
+        id: '120',
+        blocks: [
+            'text-cols', 'image-left', 'image-right', 'image-cols', 'image-cols-text',
+            'image-cols-3', 'image-cols-3-text', 'image-gallery', 'number-cols',
+            'element-video', 'element-map', 'element-code',
+        ]
+    }
+] %}
+
+{% set payload = [] %}
+{% for category in snippets %}
+    {% for block in category.blocks %}
+        {% set payload = payload|merge([
+            {
+                category: category.id,
+                thumbnail: 'preview/' ~ category.name ~ '/' ~ block ~ '.png',
+                html: include('contentbuilder/web/' ~ category.name ~ '/' ~ block ~ '.html.twig')|replace({ "\n": '', '  ': '' }),
+            }
+        ]) %}
+    {% endfor %}
+{% endfor %}
+
+/* v2 */
+function _tabs(n) {
+    var html = '';
+    for (var i = 1; i <= n; i++) {
+        html += '\t';
+    }
+    return '\n' + html;
+}
+
+// source: https: //stackoverflow.com/questions/2255689/how-to-get-the-file-path-of-the-currently-executing-javascript-code
+function _path() {
+    var scripts = document.querySelectorAll('script[src]');
+    var currentScript = scripts[scripts.length - 1].src;
+    var currentScriptChunks = currentScript.split('/');
+    var currentScriptFile = currentScriptChunks[currentScriptChunks.length - 1];
+    return currentScript.replace(currentScriptFile, '');
+}
+var _snippets_path = _path();
+
+var data_basic = {
+    'snippets': {{ payload|json_encode|raw }},
+};
+
+if(!(window.Glide||parent.Glide)){
+    for (let i = 0; i < data_basic.snippets.length; i++) {
+        if (data_basic.snippets[i].glide) {
+            data_basic.snippets.splice(i, 1);
+            break;
+        }
+    }
+}
+

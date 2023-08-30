@@ -1,0 +1,105 @@
+{% set current_route = app.request.attributes.get('_route') %}
+{% set current_route_params = app.request.attributes.get('_route_params') %}
+
+{% do expose('locale', app.request.locale) %}
+{% do expose('user', app.user ? app.user.uuid.toRfc4122 : null) %}
+{% do expose('token', get_global_csrf_token()) %}
+{% do expose('token_refresh_url', path('console_api_csrf_token_refresh')) %}
+{% do expose('current_url', current_route ? path(current_route, current_route_params) : '/') %}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <base href="{{ app.request.getSchemeAndHttpHost() }}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>{% block title %}{% block page_title '' %} | {{ 'platform'|trans({}, 'global') }}{% endblock %}</title>
+
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin" />
+
+    <link type="text/css" href="https://cloud.typography.com/7721118/7470832/css/fonts.css" rel="stylesheet">
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    {% block base_stylesheets %}
+        {{ encore_entry_link_tags('lib') }}
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('new-app') }}
+        <link href="{{ asset('fa/css/all.min.css') }}" rel="stylesheet">
+    {% endblock %}
+
+    {% block stylesheets '' %}
+
+    {% block organization_stylesheet '' %}
+
+    <link rel="canonical" href="{% block meta_canonical current_route ? url(current_route, current_route_params) : '' %}" />
+    <meta name="description" content="{% block meta_description 'meta.description'|trans({}, 'global') %}" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#0077cc">
+    <meta name="theme-color" content="#0077cc">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ 'platform'|trans({}, 'global') }}" />
+    <meta property="og:url" content="{{ block('meta_canonical') }}" />
+    <meta property="og:title" content="{{ block('title') }}" />
+    <meta property="og:description" content="{{ block('meta_description') }}" />
+    <meta property="og:image" content="{% block meta_image (url('root_url')|trim('/')) ~ asset('res/sharer.png') %}" />
+    <meta property="og:image:width" content="{% block meta_image_width 2400 %}" />
+    <meta property="og:image:height" content="{% block meta_image_height 1260 %}" />
+    {% block metas '' %}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ block('title') }}" />
+    <meta name="twitter:description" content="{{ block('meta_description') }}" />
+    <meta name="twitter:image" content="{{ block('meta_image') }}" />
+
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "url": "{{ block('meta_canonical') }}",
+            "name": "{{ 'platform'|trans({}, 'global') }}",
+            "logo": "{{ (url('root_url')|trim('/')) ~ asset('res/logo/logo-dark.svg') }}",
+            "description": "{{ block('meta_description') }}"
+        }
+    </script>
+
+    <script src="https://editor.unlayer.com/embed.js"></script>
+    {% block head_javascripts '' %}
+
+    {% block base_javascripts %}
+        {{ encore_entry_script_tags('new-app') }}
+        {{ encore_entry_script_tags('bundle') }}
+    {% endblock %}
+
+    {% block javascripts '' %}
+</head>
+<body class="{% block body_class '' %}"
+      data-sentry-dsn="{{ sentry_public_dsn }}"
+      data-route="{{ current_route }}"
+      data-unlayer-project-id="{{ unlayer_project_id }}"
+      {% block body_data '' %}>
+    {% block modal '' %}
+
+    {% block body '' %}
+
+    <script type="application/json" id="exposed-data">{{ get_exposed_data()|json_encode|raw }}</script>
+
+    {# CSRF token #}
+    {% set csrfToken = get_global_csrf_token() %}
+
+    <div
+        {# CSRF token used by functional tests #}
+        data-csrf-token="{{ csrfToken }}"
+
+        {# Refresh mechanism in JS to avoid CSRF expiration in long-living pages #}
+        {{ stimulus_controller('csrf', {'token': csrfToken, 'refreshUrl': path('console_api_csrf_token_refresh')}) }}
+    ></div>
+</body>
+</html>

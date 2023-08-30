@@ -1,0 +1,60 @@
+breadcrumb: Organisation
+title: Facturation
+
+sidebar:
+    details: Détails
+    history: Historique
+
+details:
+    title: Détails de facturation
+    desc: Détails utilisés pour générer et envoyer les factures de votre organisation.
+    form:
+        details:
+            title: Détails de facturation
+            name:
+                label: Nom de l'organisation *
+                help: Nom affiché sur les factures de votre organisation. Maximum 50 caractères.
+            email:
+                label: Email de facturation
+                help: L'adresse email à laquelle envoyer les devis et factures de votre organisation.
+        address:
+            title: Adresse de facturation
+            streetLine1: Adresse *
+            streetLine2: Complément d'adresse (optionnel)
+            postalCode: Code postal *
+            city: Ville *
+            country: Pays *
+        recipient:
+            title: Personne qui effectuera le virement
+            firstName:
+                label: Prénom de la personne qui effectuera le virement
+                help: Affiché sur la facture en tant que destinataire.
+            lastName:
+                label: Nom de la personne qui effectuera le virement
+                help: Affiché sur la facture en tant que destinataire.
+            email:
+                label: Adresse email de la personne qui effectuera le virement
+                help: La personne recevra les informations de paiement par email à cette adresse.
+        submit: Enregistrer
+
+history:
+    title: Historique de facturation
+    desc: Liste des factures passées de votre organisation.
+    table:
+        order: Commande
+        number: Numéro de facture
+        amount: Montant
+        date: Date
+        download: Télécharger
+        generating: La facture PDF est en cours de génération ...
+        no_result: Aucune facture pour le moment
+
+order:
+    title: 'Commande %number%'
+    desc: Votre commande a bien été traitée
+    message:
+        title: Votre commande a été traitée
+        1: Nous attendons désormais que notre intermédiaire de paiement recoive les fonds avant de la finaliser.
+        2: Si vous n'avez pas encore initié le paiement, vous avez reçu les informations pour réaliser celui-ci par email.
+        3: Notez que le paiement en lui-même peut prendre quelques jours pour être entièrement confirmé.
+    back: Retour à l'organisation

@@ -1,0 +1,42 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'send_test.title'|trans({'%title%': campaign.subject}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'send_test.back'|trans({}, 'project_emailings') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ 'send_test.title'|trans({'%title%': campaign.subject}, 'project_emailings') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4 py-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.emails, {
+                        'label': 'send_test.recipients.label'|trans({}, 'project_emailings'),
+                        'help': 'send_test.recipients.help'|trans({}, 'project_emailings'),
+                    }) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'send_test.send'|trans({}, 'project_emailings') }}
+                    </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

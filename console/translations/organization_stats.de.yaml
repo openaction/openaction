@@ -1,0 +1,18 @@
+demo:
+    title: Statistik
+    website_traffic: Website-Verkehr
+    contacts: Kontakte
+annotations:
+    emailing_sent: 'Das E-Mailing "%label%" wurde gesendet'
+    post_published: 'Der Beitrag "%label%" wurde veröffentlicht'
+    event_published: 'Das Ereignis "%label%" wurde veröffentlicht'
+    event_began: 'Das Ereignis "%label%" begann'
+    form_created: 'Die Umfrage "%label%" wurde erstellt'
+index:
+    title: Statistik
+    contacts:
+        title: 'Neue Kontakte'
+        help: 'Anzahl der neuen Kontakte, die pro Tag in Ihrer Kontaktdatenbank registriert werden.'
+    sessions:
+        title: Website-Verkehr
+        help: "Anzahl der Sitzungen auf Ihrer Website pro Tag. Eine Sitzung ist eine Reihe von Besuchen durch eine einzelne Person\ninnerhalb eines Zeitraums von 30 Minuten.\n"

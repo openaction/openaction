@@ -1,0 +1,67 @@
+index:
+    title: Propositions
+    help: |
+        Expliquez vos idées sous forme de liste de propositions organisées par thématique, puis
+        une fois élu(e), associez une progression et un statut à chaque proposition pour
+        montrer votre action.
+    no_result: Votre projet ne contient pas encore de propositions.
+    no_result_create: Créer une première thématique
+    topic:
+        create: Nouvelle thématique
+        edit: Modifier
+        duplicate: Dupliquer
+        move: Déplacer
+        delete: Supprimer
+        delete_confirm: Souhaitez-vous vraiment supprimer la thématique "%title%" ?
+    proposal:
+        label: Propositions dans la thématique "%title%
+        no_result: Aucune proposition dans cette thématique pour le moment
+        create: Nouvelle proposition
+        edit: Modifier
+        duplicate: Dupliquer
+        delete: Supprimer
+        delete_confirm: Souhaitez-vous vraiment supprimer la proposition "%title%" ?
+    view: Voir sur le site
+    preview: Prévisualiser
+    draft: Brouillon
+    scheduled: Planifié
+    scheduled_for: pour le %datetime%
+    published: Publié
+    published_at: le %datetime%
+    last_modified: Dernière modification le %datetime%
+
+create:
+    topic:
+        title: '(Thématique sans titre)'
+    proposal:
+        title: '(Proposition sans titre)'
+
+edit:
+    back: Retour à la liste
+    view: Voir sur le site
+    save: Enregistrer
+    topic:
+        title: Modifier la thématique "%title%"
+        form:
+            title:
+                label: Titre
+                help: Titre de la thématique (affiché sur la liste et sur les réseaux sociaux lors du partage).
+            image:
+                label: Image principale
+                help: Image principale de la thématique (affichée sur la liste et sur les réseaux sociaux lors du partage).
+            color:
+                label: Couleur
+                help: Couleur d'affichage de la thématique, (utilisée sur la liste).
+            description:
+                label: Description
+                help: |
+                    La description doit être courte (quelques phrases) pour être facilement lue et partagée
+                    sur les réseaux sociaux. Vous pourrez détailler le contenu de la thématique dans les propositions.
+    proposal:
+        title: Modifier la proposition "%title%"
+
+move:
+    title: Déplacer la thématique "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer cette thématique ?
+    submit: Déplacer

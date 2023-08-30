@@ -1,0 +1,118 @@
+list:
+    page_title: Your community
+    title: Your community
+    desc: 'Manage all the contacts of your project in one place: members, newsletter subscribers, ...'
+
+view:
+    back: Back to the list
+    delete: Delete
+    delete_message: Are you sure you want to delete the contact "%email%"?
+    edit: Update details
+    profile:
+        label: Profile
+        area: 'Location:'
+        date: 'Date:'
+        tags: 'Tags:'
+        status:
+            label: 'Type:'
+            member: Member
+            contact: Contact
+        newsletter:
+            label: 'Newsletter:'
+            subscribed: Subscribed
+            unsubscribed: Unsubscribed
+        sms:
+            label: 'SMS campaigns:'
+            subscribed: Subscribed
+            unsubscribed: Unsubscribed
+        calls:
+            label: 'Phone calls:'
+            subscribed: Accepted
+            unsubscribed: Refused
+        email: Email address
+        additional_emails: Additional email addresses
+        name: Full name
+        birthdate: Birthdate
+        gender: Gender
+        company: Job and company
+        address: Postal address
+        phone: Phone number (personal)
+        workPhone: Phone number (work)
+        socials: Social networks
+    history:
+        label: Interactions history
+        help: Interactions your organization had with this contact.
+        none: No interaction happened with this contact via Citipo yet.
+        joined:
+            label: Joined your community
+        emailing:
+            label: 'Received an email:'
+            openedAt: Opened on
+            neverOpened: Never opened
+            clickedAt: Clicked on
+            neverClicked: Never clicked
+            openCampaignReport: View the campaign report
+        texting:
+            label: 'Received a text:'
+        form_answer:
+            label: 'Answered a form:'
+            openAnswer: View the answer
+            openForm: View the form
+
+edit:
+    page_title: Update a contact
+    title: Update a contact
+    back: Back to the details
+    submit: Save
+    delete: Delete
+    delete_message: Are you sure you want to delete the contact "%email%"?
+
+form:
+    email: Email address
+    additionalEmails: Additional email addresses
+    picture:
+        label: Picture
+        help: Leave this field empty to keep the current profile picture.
+    profile:
+        label: Profile
+        formalTitle: Title
+        firstName: First name
+        middleName: Middle name
+        lastName: Last name
+        birthdate: Birthdate
+        gender: Gender
+        company: Company
+        jobTitle: Job title
+    tags:
+        label: Tags
+        help: |
+            Tags help you categorize contacts in segments to better target
+            them in communication campaigns afterward.
+    address:
+        label: Postal address
+        help: |
+            You cannot update the zip code and the country because they are used to associate
+            the contact to your project.
+        help_admin: Use the Community tab in the top navigation to update the contact location.
+        help_collaborator: Ask your administrator to update these for you if you need to.
+        streetAddress: Street address
+        zipCode: Zipcode
+        city: City
+        country: Country
+    contact:
+        label: Contact details
+        phone: Phone (with international prefix)
+        workPhone: Work phone (with international prefix)
+    socials:
+        label: Social networks
+        facebook: Facebook profile URL
+        twitter: Twitter profile URL
+        linkedIn: LinkedIn profile URL
+        telegram: Telegram account name
+        whatsapp: Whatsapp account name
+    metadata:
+        comment: Internal note
+        commentHelp: |
+            You can save here any note you want to help your collaborators in the future.
+            This note will never be shared with the contact.
+            Do not store sensitive information in this field.

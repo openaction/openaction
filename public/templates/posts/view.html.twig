@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title post.title %}
+
+{% block body_class 'body-posts-view' %}
+
+{% block meta_canonical url('post_view', {'id': post.id, 'slug': post.slug}) %}
+{% block meta_image post.sharer|default(current_project.sharer|default('')) %}
+{% block meta_description post.description|default('') %}
+
+{% block page %}
+    <div data-controller="citipo-contentview"
+         data-citipo-contentview-type-value="post"
+         data-citipo-contentview-id-value="{{ post.id }}"></div>
+
+    {% set social_sharers = include('_include/social_sharers.html.twig', {
+        'route': 'post_view',
+        'params': {'id': post.id, 'slug': post.slug}
+    }) %}
+
+    {% set categories = {} %}
+    {% for category in post.categories %}
+        {% set categories = categories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
+    {% endfor %}
+
+    {% set more = [] %}
+    {% for other in post.more[0:3] %}
+        {% set otherCategories = {} %}
+        {% for category in other.categories %}
+            {% set otherCategories = categories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
+        {% endfor %}
+
+        {% set more = more|merge([
+            {
+                title: other.title,
+                url: path('post_view', {'id': other.id, 'slug': other.slug}),
+                description: other.description,
+                image: other.image,
+                video: other.video ? other.video|split(':') : null,
+                date: other.published_at|format_date('medium'),
+                categories: categories,
+            }
+        ]) %}
+    {% endfor %}
+
+    {% set payload = {
+        'current_url': url('post_view', {'id': post.id, 'slug': post.slug}),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'default_list_image': asset('res/default.jpg'),
+        'play_icon': asset('res/play.svg'),
+
+        'section_id': 'posts',
+        'section_name': current_project.terminology.posts,
+        'section_url': path('post_list'),
+
+        'title': post.title,
+        'description': post.description|default(''),
+        'date': post.published_at ? post.published_at|format_date('medium') : null,
+        'categories': categories,
+        'social_sharers': social_sharers,
+        'video': post.video ? post.video|split(':') : null,
+        'image': post.image,
+        'previewing_text': not post.published_at ? 'posts.not_published'|trans : null,
+        'content': '<div class="user-content">'~ post.content|apply_embed_consent ~'</div>',
+        'more': more,
+        'titleLabel': 'base.embed-consent.title'|trans,
+        'descriptionLabel': 'base.embed-consent.description'|trans,
+        'acceptLabel': 'base.embed-consent.accept'|trans,
+        'externalLabel': 'base.embed-consent.external'|trans,
+        'cancelLabel': 'base.embed-consent.cancel'|trans,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}

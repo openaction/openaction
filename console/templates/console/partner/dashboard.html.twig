@@ -1,0 +1,42 @@
+{% extends 'console/partner/base.html.twig' %}
+
+{% block page_title 'dashboard.title'|trans({}, 'partner') %}
+
+{% block sidebar_dashboard 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title bg-white">
+            <h3 class="mb-0">
+                {{ 'dashboard.title'|trans({}, 'partner') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            {% for item in dashboard.items %}
+                <div class="world-block p-3 mb-3">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h5 class="mb-0">
+                                <a href="{{ path('console_organization_projects', {'organizationUuid': item.organization.uuid}) }}"
+                                   class="stretched-link">
+                                    {{ item.organization.name }}
+                                </a>
+                            </h5>
+                        </div>
+
+                        <div class="col-lg-2 text-muted text-center">
+                            {{ item.projectsCount }}
+                            {{ 'dashboard.projects'|trans({}, 'partner') }}
+                        </div>
+
+                        <div class="col-lg-2 text-muted text-center">
+                            {{ item.contactsCount }}
+                            {{ 'dashboard.contacts'|trans({}, 'partner') }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'metadata.title'|trans({'%title%': campaign.subject}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% block content %}
+    {% do expose('project_areas', current_project.areasIds) %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+    {% do expose('filter_preview_url', path('console_community_emailing_filter_preview', {'projectUuid': campaign.project.uuid, 'uuid': campaign.uuid})) %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'metadata.back'|trans({}, 'project_emailings') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <button type="submit" class="btn btn-sm btn-primary">
+                        {{ 'metadata.submit'|trans({}, 'project_emailings') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'metadata.subject.title'|trans({}, 'project_emailings') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="text-muted mb-3">
+                        {{ 'metadata.subject.desc'|trans({}, 'project_emailings') }}
+                    </div>
+
+                    {{ form_row(form.subject, {
+                        'label': 'metadata.subject.subject.label'|trans({}, 'project_emailings'),
+                        'attr': {'class': 'form-control-lg'},
+                    }) }}
+
+                    {{ form_row(form.preview, {
+                        'label': 'metadata.subject.preview.label'|trans({}, 'project_emailings'),
+                        'help': 'metadata.subject.preview.help'|trans({}, 'project_emailings'),
+                    }) }}
+                </div>
+
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="text-muted mb-2">
+                        <em>
+                            {{ 'metadata.subject.subject.help.main'|trans({}, 'project_emailings') }}
+                        </em>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'metadata.subject.subject.help.1.strong'|trans({}, 'project_emailings') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'metadata.subject.subject.help.1.muted'|trans({}, 'project_emailings') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'metadata.subject.subject.help.2.strong'|trans({}, 'project_emailings') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'metadata.subject.subject.help.2.muted'|trans({}, 'project_emailings') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'metadata.subject.subject.help.3.strong'|trans({}, 'project_emailings') }}
+                        </strong>
+                        <br />
+                        <small class="text-muted">
+                            {{ 'metadata.subject.subject.help.3.muted'|trans({}, 'project_emailings') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'metadata.from.title'|trans({}, 'project_emailings') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="text-muted mb-3">
+                {{ 'metadata.from.desc'|trans({}, 'project_emailings') }}
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    {{ form_label(form.fromEmail, 'metadata.from.email'|trans({}, 'project_emailings')) }}
+                    <div class="input-group mb-3">
+                        {{ form_widget(form.fromEmail) }}
+                        <div class="input-group-append">
+                            <span class="input-group-text">@{{ project.emailingDomain.name }}</span>
+                        </div>
+                    </div>
+                    {{ form_errors(form.fromEmail) }}
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    {{ form_row(form.fromName, {'label': 'metadata.from.name'|trans({}, 'project_emailings')}) }}
+                </div>
+            </div>
+
+            <strong>
+                {{ 'metadata.reply.title'|trans({}, 'project_emailings') }}
+            </strong>
+
+            <div class="text-muted mt-2 mb-2">
+                {{ 'metadata.reply.desc'|trans({}, 'project_emailings') }}
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    {{ form_row(form.replyToEmail, {'label': 'metadata.reply.email'|trans({}, 'project_emailings')}) }}
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    {{ form_row(form.replyToName, {'label': 'metadata.reply.name'|trans({}, 'project_emailings')}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'metadata.to.title'|trans({}, 'project_emailings') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="text-muted mb-3">
+                {{ 'metadata.to.desc'|trans({}, 'project_emailings') }}
+            </div>
+
+            <div data-controller="emailing--metadata"
+                 data-tags="{{ current_project.isFeatureInPlan('feature_community_emailing_tags') ? '1' : '0' }}"
+                 data-areas="{{ current_project.isFeatureInPlan('feature_community_emailing_areas') ? '1' : '0' }}"
+                 data-specific="{{ current_project.isFeatureInPlan('feature_community_emailing_specific') ? '1' : '0' }}"
+                 data-members="{{ current_project.isFeatureInPlan('feature_community_emailing_members') ? '1' : '0' }}">
+                <div class="d-none">
+                    {{ form_widget(form.tagsFilter, {'attr': {'data-emailing--metadata-target': 'tagsInput'}}) }}
+                    {{ form_widget(form.tagsFilterType, {'attr': {'data-emailing--metadata-target': 'tagsTypeInput'}}) }}
+                    {{ form_widget(form.areasFilterIds, {'attr': {'data-emailing--metadata-target': 'areasInput'}}) }}
+                    {{ form_widget(form.contactsFilter, {'attr': {'data-emailing--metadata-target': 'contactsInput'}}) }}
+                    {{ form_widget(form.onlyForMembers, {'attr': {'data-emailing--metadata-target': 'onlyForMembersInput'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-lg btn-primary">
+            {{ 'metadata.submit'|trans({}, 'project_emailings') }}
+        </button>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

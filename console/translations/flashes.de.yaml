@@ -1,0 +1,55 @@
+registration:
+    error_duplicated: 'Diese E-Mail existiert bereits auf Citipo: haben Sie vielleicht schon ein Konto?'
+    success: 'Ihr Konto wurde erstellt! Lassen Sie uns eine erste Organisation erstellen, mit der Sie arbeiten können.'
+reset:
+    success: 'Ihr Passwort wurde erfolgreich aktualisiert. Sie können sich jetzt damit anmelden.'
+login:
+    invalid_credentials: 'Ungültige Berechtigungsnachweise'
+    invalid_csrf: 'Das Formular ist abgelaufen. Könnten Sie es bitte erneut versuchen?'
+user:
+    password_change_success: 'Ihr Passwort wurde erfolgreich geändert.'
+    settings_update_success: 'Ihre Einstellungen wurden erfolgreich geändert.'
+subscription:
+    not_enough_credits: 'Ihre Organisation verfügt nicht über genügend Mittel, um diese Aktion durchzuführen.'
+team:
+    invite_success: 'Der Mitwirkende wurde erfolgreich zu Ihrer Organisation hinzugefügt.'
+    update_success: 'Der Beteiligte wurde erfolgreich aktualisiert.'
+configuration:
+    updated_success: 'Die Konfiguration wurde erfolgreich gespeichert.'
+    socials_success: 'Die Konfiguration der sozialen Netzwerke wurde erfolgreich gespeichert.'
+    appearance_success: 'Die Konfiguration des Erscheinungsbildes wurde erfolgreich gespeichert.'
+    assets_success: 'Die Themen-Assets wurden erfolgreich aktualisiert.'
+    membership_success: 'Die Mitgliedschaftskonfiguration wurde erfolgreich gespeichert.'
+contacts:
+    created_success: 'Der Kontakt wurde erfolgreich erstellt.'
+    updated_success: 'Der Kontakt wurde erfolgreich aktualisiert.'
+export:
+    success: 'Sie haben erfolgreich einen Export der Kontaktdatenbank angefordert. Dieser Export wird Ihnen in wenigen Minuten per E-Mail zugesandt.'
+automations:
+    updated_success: 'Die Automatisierungsdaten wurden erfolgreich gespeichert.'
+ambiguities:
+    merge_success: 'Der Kontakt wurde erfolgreich zusammengeführt.'
+    ignore_success: 'Der Kontakt wurde erfolgreich ignoriert.'
+emailings:
+    metadata_updated_success: 'Die Details der Kampagne wurden erfolgreich gespeichert.'
+    test_sent_success: 'Der Test der E-Mail-Kampagne wurde versandt.'
+    campaign_sent_success: 'Die E-Mail-Kampagne wurde erfolgreich versendet.'
+texting:
+    metadata_updated_success: 'Die Details der Kampagne wurden erfolgreich gespeichert.'
+    test_sent_success: 'Der Test der SMS-Kampagne wurde versandt.'
+    campaign_sent_success: 'Die SMS-Kampagne wurde erfolgreich versendet.'
+phoning:
+    metadata_updated_success: 'Die Details der Kampagne wurden erfolgreich gespeichert.'
+documents:
+    upload_success:
+        single: 'Ihr Dokument wurde erfolgreich hochgeladen.'
+        plural: 'Ihre Dokumente wurden erfolgreich hochgeladen.'
+integrations:
+    updated_success: 'Die Integrationen wurden erfolgreich gespeichert.'
+billing:
+    updated_success: 'Ihre Rechnungsdaten wurden erfolgreich aktualisiert.'
+    quote_success: 'Ihre Angebotsanfrage wurde erfolgreich bearbeitet. Sie werden es in wenigen Minuten per E-Mail erhalten.'
+printing:
+    updated_success: 'Die Details der Kampagne wurden erfolgreich gespeichert.'
+move:
+    success: 'Das Element wurde erfolgreich verschoben.'

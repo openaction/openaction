@@ -1,0 +1,52 @@
+index:
+    title: Trombinoskop
+    help: 'Erstellen Sie eine Liste von Personen und deren Fotos (Kandidaten, gewählte Vertreter, Persönlichkeiten Ihrer Organisation, ...) auf Ihrer Website.'
+    edit_categories: 'Kategorien bearbeiten'
+    create: 'Eine Person hinzufügen'
+    no_result: 'Ihr Posaunenchor enthält im Moment keine Personen.'
+    no_result_create: 'Hinzufügen einer ersten Person'
+    edit: bearbeiten
+    duplicate: 'Duplizieren Sie'
+    move: Verschieben
+    delete: Löschen
+    view: Siehe
+    preview: Vorschau
+    draft: Entwurf
+    scheduled: Geplant
+    scheduled_for: 'für %datetime%'
+    published: Veröffentlicht
+    published_at: 'am %datetime%'
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+    visits: besucht
+    remove_confirm: 'Sind Sie sicher, dass Sie die Person "%name%" entfernen möchten?'
+create:
+    title: '(Unbenannte Person)'
+edit:
+    title: 'Bearbeiten Sie "%name%"'
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+move:
+    title: 'Person "%Titel%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie diese trombinoscope Person einsetzen?'
+    submit: Verschieben
+categories:
+    index:
+        back: 'Zurück zum Trombinoskop'
+        title: Trombinoskop-Kategorien
+        create: 'Neue Kategorie'
+        no_records: 'Ihr Projekt enthält im Moment noch keine Kategorie Trombinoskop.'
+        no_records_desc: 'Kategorien helfen Ihnen, Ihr Team zu organisieren, z. B. nach Geografie oder nach Thema.'
+        order: Bestellung
+        name: Name
+        number: Personen
+        created: 'Datum der Erstellung'
+        edit: bearbeiten
+        remove: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie die Kategorie "%name%" löschen wollen?'
+    form:
+        title_create: 'Neue Kategorie'
+        title_edit: 'Eine Kategorie bearbeiten'
+        back: 'Zurück zur Liste'
+        name: Name
+        save: 'Speichern Sie'

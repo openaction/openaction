@@ -1,0 +1,141 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_forms') %}
+
+{% block sidebar_forms 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'index.title'|trans({}, 'project_forms') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'index.help'|trans({}, 'project_forms') }}
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    <a href="{{ csrf_path('console_website_forms_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary forms-list-action-create">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_forms') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if forms|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.no_result'|trans({}, 'project_forms') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_website_forms_create', {'projectUuid': project.uuid}) }}"
+                           class="btn btn-lg btn-primary forms-list-action-create">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.no_result_create'|trans({}, 'project_forms') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for form in forms %}
+                        <div class="world-list-row p-4" id="form-{{ form.id }}" data-id="{{ form.id }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg">
+                                    <h4 class="mb-1 pages-title">
+                                        <a href="{{ path('console_website_forms_edit', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}">
+                                            {{ form.title }}
+                                        </a>
+                                    </h4>
+
+                                    <div class="mb-2">
+                                        <small class="font-italic text-muted">
+                                            {{ 'index.created_at'|trans({'%datetime%': form.createdAt|format_datetime('medium', 'short')}, 'project_forms') }}
+                                        </small>
+                                    </div>
+
+                                    <div class="text-muted">
+                                        <small>
+                                            <i class="fad fa-chart-area mr-1"></i>
+                                            {{ form.pageViews }}
+                                            {{ 'index.visits'|trans({}, 'project_forms') }}
+
+                                            <span class="mx-1">|</span>
+
+                                            {{ 'index.last_modified'|trans({'%datetime%': form.updatedAt|format_datetime('medium', 'short')}, 'project_forms') }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-auto">
+                                    {% if is_granted('website_forms_access_results', current_project) %}
+                                        <a href="{{ path('console_website_forms_results', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm forms-list-action-results {{ form.answers|length > 0 ? 'btn-outline-primary' : 'btn-link text-muted' }} border-0 mr-2">
+                                            <i class="fas fa-clipboard-check mr-1"></i>
+                                            {{ 'edit.results'|trans({'%count%': form.answers|length}, 'project_forms') }}
+                                        </a>
+                                    {% endif %}
+
+                                    <a href="{{ path('console_website_forms_view', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-view" target="_blank">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        {{ 'index.view'|trans({}, 'project_forms') }}
+                                    </a>
+
+                                    <a href="{{ path('console_website_forms_edit', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-edit">
+                                        <i class="fad fa-edit mr-1"></i>
+                                        {{ 'index.edit'|trans({}, 'project_forms') }}
+                                    </a>
+
+                                    <a href="{{ csrf_path('console_website_forms_duplicate', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-duplicate">
+                                        <i class="fad fa-copy mr-1"></i>
+                                        {{ 'index.duplicate'|trans({}, 'project_forms') }}
+                                    </a>
+
+                                    {% if is_granted('website_forms_manage', current_project) %}
+                                        {% if form.answers|length > 0 %}
+                                            <button title="{{ 'index.move_cant_answers'|trans({}, 'project_forms') }}"
+                                                    disabled class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
+                                                <i class="fad fa-share mr-1"></i>
+                                                {{ 'index.move'|trans({}, 'project_forms') }}
+                                            </button>
+                                        {% else %}
+                                            <a href="{{ path('console_website_forms_move', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
+                                                <i class="fad fa-share mr-1"></i>
+                                                {{ 'index.move'|trans({}, 'project_forms') }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <a href="{{ csrf_path('console_website_forms_delete', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': form.title}, 'project_forms') }}"
+                                       data-target="#form-{{ form.id }}"
+                                       class="btn btn-sm btn-outline-danger border-0 forms-list-action-delete">
+                                        <i class="fad fa-trash mr-1"></i>
+                                        {{ 'index.delete'|trans({}, 'project_forms') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="p-3">
+                    {{ pagination(forms, current_page, 10) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

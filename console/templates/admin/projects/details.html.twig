@@ -1,0 +1,15 @@
+<div style="min-width: 250px">
+    <div>
+        <strong style="margin-right: 10px">
+            {{ entity.instance.name }}
+        </strong>
+        <a href="https://{{ entity.instance.fullDomain }}" target="_blank" style="font-size: 12px;">
+            {{ entity.instance.fullDomain }}
+        </a>
+    </div>
+    <div>
+        <a href="{{ path('admin_project_add_myself', {'id': entity.instance.id}) }}" style="font-size: 12px;">
+            Open in Console
+        </a>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+{% extends 'console/base.html.twig' %}
+
+{% block page_title 'telegram.authorize.page_title'|trans({}, 'organization_integrations') %}
+
+{% block page %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+                <div class="world-box p-5">
+                    <div class="text-center mb-4">
+                        <img src="{{ pictureUrl }}" class="integrations-authorize-image" />
+                    </div>
+
+                    <div class="mb-4">
+                        {{ 'telegram.authorize.description'|trans({
+                            '%username%': telegramApp.botUsername|e('html'),
+                            '%organisation%': telegramApp.organization.name|e('html'),
+                        }, 'organization_integrations')|raw }}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ 'telegram.authorize.question'|trans({}, 'organization_integrations') }}
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{{ csrf_path('console_organization_integrations_telegram_accept', {'uuid': telegramApp.uuid}) }}"
+                           class="btn btn-lg btn-primary mx-3 mb-3">
+                            {{ 'telegram.authorize.yes'|trans({}, 'organization_integrations') }}
+                        </a>
+
+                        <a href="{{ path('homepage_redirect') }}" class="btn btn-lg  btn-secondary mx-3 mb-3">
+                            {{ 'telegram.authorize.no'|trans({}, 'organization_integrations') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

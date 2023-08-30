@@ -1,0 +1,59 @@
+{% extends 'security/base.html.twig' %}
+
+{% block page_title 'login.two_factor.title'|trans({}, 'security') %}
+
+{% block box %}
+    <div class="p-4">
+        <h4 class="mb-3 text-center">{{ 'login.two_factor.title'|trans({}, 'security') }}</h4>
+
+        {% if authenticationError %}
+            <div class="alert alert-danger border-0 text-center">
+                {{ authenticationError|trans(authenticationErrorData, 'validators') }}
+            </div>
+        {% endif %}
+
+        <div class="mb-4 text-muted text-center">
+            {{ 'login.two_factor.desc'|trans({}, 'security') }}
+        </div>
+
+        <form method="post" action="{{ path('2fa_login_check') }}">
+            <div class="mb-4">
+                <input
+                    id="_auth_code"
+                    maxlength="6"
+                    type="text"
+                    class="form-control form-control-lg"
+                    name="{{ authCodeParameterName }}"
+                    autocomplete="one-time-code"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autofocus
+                    required
+                />
+            </div>
+
+            <div class="mb-4">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="_trusted" id="_trusted" checked tabindex="3" />
+                    <label class="custom-control-label" for="_trusted">{{ 'trusted'|trans({}, 'SchebTwoFactorBundle') }}</label>
+                </div>
+            </div>
+
+            {% if isCsrfProtectionEnabled %}
+                <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+            {% endif %}
+
+            <div class="text-center mt-3 mb-3">
+                <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">
+                    {{ 'login.two_factor.login'|trans({}, 'security') }}
+                </button>
+            </div>
+
+            <div class="text-center mb-3">
+                <a href="{{ logoutPath }}" class="btn btn-link">
+                    {{ 'login.two_factor.cancel'|trans({}, 'security') }}
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

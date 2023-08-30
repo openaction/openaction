@@ -1,0 +1,270 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block sidebar_quick_start 'current' %}
+
+{% block content %}
+    {% if app.request.locale == 'fr' %}
+        <div data-controller="joyride--project"></div>
+    {% endif %}
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'quick_start.title'|trans({}, 'project') }}
+        </h3>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+
+                    {% if is_granted('organization_team_manage', current_organization)
+                        or is_granted('organization_project_manage', current_organization) %}
+                        <section class="mb-4 mt-4">
+                            <div class="text-uppercase text-muted font-weight-normal mb-3">
+                                {{ 'quick_start.launch.title'|trans({}, 'project') }}
+                            </div>
+
+                            <div class="row">
+                                {% if is_granted('organization_team_manage', current_organization) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-user-friends"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.launch.team.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.launch.team.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_organization_team', {'organizationUuid': current_organization.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.launch.team.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if is_granted('organization_project_manage', current_organization) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-cogs"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.launch.modules.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.launch.modules.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_configuration_settings_modules', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.launch.modules.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </section>
+                    {% endif %}
+
+                    {% if is_granted('website_see_module', current_project) %}
+                        <section class="mb-4">
+                            <div class="text-uppercase text-muted font-weight-normal mb-3">
+                                {{ 'quick_start.website.title'|trans({}, 'project') }}
+                            </div>
+
+                            <div class="row">
+                                {% if is_granted('project_config_appearance', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-palette"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.website.appearance.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.website.appearance.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_configuration_appearance', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.website.appearance.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if is_granted('website_pages_manage', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-file-alt"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.website.pages.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.website.pages.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_website_pages', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.website.pages.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if is_granted('website_posts_manage_drafts', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-newspaper"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.website.posts.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.website.posts.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_website_posts', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.website.posts.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if is_granted('project_config_socials', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-share-alt"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.website.socials.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.website.socials.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_configuration_social_networks_accounts', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.website.socials.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </section>
+                    {% endif %}
+
+                    {% if is_granted('community_see_module', current_project) %}
+                        <section class="mb-4">
+                            <div class="text-uppercase text-muted font-weight-normal mb-3">
+                                {{ 'quick_start.community.title'|trans({}, 'project') }}
+                            </div>
+
+                            <div class="row">
+                                {% if is_granted('community_contacts_view', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-database"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.community.contacts.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.community.contacts.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_community_contacts', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.community.contacts.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if is_granted('community_emailing_manage_drafts', current_project) %}
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="world-card">
+                                            <div class="world-card-icon">
+                                                <i class="fad fa-paper-plane"></i>
+                                            </div>
+                                            <div class="world-card-content">
+                                                <h5>
+                                                    {{ 'quick_start.community.emailing.title'|trans({}, 'project') }}
+                                                </h5>
+
+                                                <div>
+                                                    {{ 'quick_start.community.emailing.desc'|trans({}, 'project') }}
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}">
+                                                        <strong>
+                                                            {{ 'quick_start.community.emailing.link'|trans({}, 'project') }}
+                                                        </strong>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </section>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

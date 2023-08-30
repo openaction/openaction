@@ -1,0 +1,19 @@
+<div data-aos="fade-up" data-aos-duration="600">
+    <div class="home-blocks-block home-blocks-block-cta">
+        {% if primary.label %}
+            <a href="{{ primary.target }}"
+               class="home-blocks-block-cta-button home-blocks-block-cta-primary" data-turbo="optional"
+               {% if primary.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {{ primary.label }}
+            </a>
+        {% endif %}
+
+        {% if secondary.label %}
+            <a href="{{ secondary.target }}"
+               class="home-blocks-block-cta-button home-blocks-block-cta-secondary" data-turbo="optional"
+               {% if secondary.openNewTab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {{ secondary.label }}
+            </a>
+        {% endif %}
+    </div>
+</div>

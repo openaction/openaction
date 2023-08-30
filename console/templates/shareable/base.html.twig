@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="{{ project.websiteLocale }}">
+<head>
+    <base href="{{ app.request.getSchemeAndHttpHost() }}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>{{ project.metaTitle|default(project.name) }}</title>
+
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin" />
+    <meta name="robots" content="noindex" />
+
+    {{ encore_entry_link_tags('lib') }}
+    {{ encore_entry_link_tags('app') }}
+    <link href="{{ asset('fa/css/all.min.css') }}" rel="stylesheet">
+</head>
+<body class="shareable">
+    <div class="container">
+        {% block page '' %}
+    </div>
+
+    <script async defer src="https://a2.citipo.com/latest.js"></script>
+    <noscript><img src="https://a2.citipo.com/noscript.gif" alt=""/></noscript>
+</body>
+</html>

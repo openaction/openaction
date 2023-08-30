@@ -1,0 +1,267 @@
+@import './variables';
+
+/*
+ * Bootstrap
+ */
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/print';
+
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/images';
+@import '~bootstrap/scss/code';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/tables';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/input-group';
+@import '~bootstrap/scss/custom-forms';
+@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/pagination';
+@import '~bootstrap/scss/progress';
+@import '~bootstrap/scss/modal';
+@import '~bootstrap/scss/nav';
+
+@import '~bootstrap/scss/utilities/align';
+@import '~bootstrap/scss/utilities/borders';
+@import '~bootstrap/scss/utilities/background';
+@import '~bootstrap/scss/utilities/clearfix';
+@import '~bootstrap/scss/utilities/display';
+@import '~bootstrap/scss/utilities/flex';
+@import '~bootstrap/scss/utilities/float';
+@import '~bootstrap/scss/utilities/position';
+@import '~bootstrap/scss/utilities/screenreaders';
+@import '~bootstrap/scss/utilities/spacing';
+@import '~bootstrap/scss/utilities/stretched-link';
+@import '~bootstrap/scss/utilities/text';
+
+@import '~bootstrap/scss/dropdown';
+@import '~bootstrap/scss/badge';
+@import '~bootstrap/scss/close';
+@import '~bootstrap/scss/tooltip';
+@import '~bootstrap/scss/card';
+@import '~bootstrap/scss/list-group';
+
+/*
+ * Turbolinks
+ */
+.turbolinks-progress-bar {
+    height: 2px;
+    background-color: $primary;
+}
+
+/*
+ * Uppy
+ */
+@import './uppy';
+
+/*
+ * ReactTags
+ */
+@import './tags';
+
+/*
+ * ReactCropper
+ */
+@import '~cropperjs/dist/cropper.css';
+
+/*
+ * agGrid
+ */
+@import '~ag-grid-community/dist/styles/ag-grid.css';
+@import '~ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+.ag-root-wrapper {
+    border: 0 !important;
+}
+
+.ag-header {
+    background: #fff !important;
+}
+
+.ag-standard-button {
+    padding: 4px 6px !important;
+    color: #212529 !important;
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 1px 1px 0,
+        rgba(60, 66, 87, 0.16) 0 0 0 1px, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0,
+        rgba(60, 66, 87, 0.12) 0 2px 5px 0 !important;
+}
+
+.ag-header-cell,
+.ag-header-group-cell {
+    justify-content: center;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.ag-header-cell-label,
+.ag-header-group-cell-label {
+    justify-content: center;
+    font-size: 11px;
+    color: #999;
+    font-weight: normal;
+}
+
+.ag-header-row:not(:first-child) .ag-header-cell,
+.ag-header-row:not(:first-child) .ag-header-group-cell.ag-header-group-cell-with-group {
+    border-top: 0 !important;
+}
+
+.ag-floating-filter-body,
+.ag-floating-filter-input,
+.ag-header-cell-menu-button {
+    display: none !important;
+}
+
+.ag-floating-filter-button {
+    margin-left: 0 !important;
+}
+
+.ag-cell {
+    line-height: 58px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.ag-theme-alpine .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected),
+.ag-theme-alpine .ag-ltr .ag-cell-range-single-cell,
+.ag-theme-alpine .ag-ltr .ag-cell-range-single-cell.ag-cell-range-handle,
+.ag-theme-alpine .ag-rtl .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected),
+.ag-theme-alpine .ag-rtl .ag-cell-range-single-cell,
+.ag-theme-alpine .ag-rtl .ag-cell-range-single-cell.ag-cell-range-handle {
+    border: 1px solid transparent !important;
+}
+
+/*
+ * CodeMirror
+ */
+.CodeMirror {
+    border: 1px solid #e5e5e5;
+}
+
+/*
+ * Symfony Forms
+ */
+.form-error-icon {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/*
+ * Theme
+ */
+
+html,
+.full-height {
+    height: 100%;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    background: #e3e8ee;
+}
+
+img {
+    max-width: 100%;
+}
+
+blockquote {
+    margin: 0 0 1.5em;
+    padding: 0 1.5em;
+    border-left: $primary 3px solid;
+}
+
+th {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.btn {
+    i {
+        margin-right: 3px;
+    }
+
+    &-primary {
+        box-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 1px 1px 0,
+            $primary 0 0 0 1px, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(60, 66, 87, 0.12) 0 2px 5px 0;
+    }
+
+    &-secondary,
+    &-light {
+        box-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 1px 1px 0,
+            rgba(60, 66, 87, 0.16) 0 0 0 1px, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0,
+            rgba(60, 66, 87, 0.12) 0 2px 5px 0;
+    }
+
+    &-loading {
+        &-icon {
+            display: none !important;
+        }
+
+        &.disabled .btn-loading-icon,
+        &:disabled .btn-loading-icon {
+            display: inline-block !important;
+        }
+    }
+}
+
+.lift {
+    transition: transform 0.25s ease;
+
+    &:focus,
+    &:hover {
+        transform: translate3d(0, -3px, 0);
+    }
+}
+
+.alert {
+    &-bg-success {
+        color: $success;
+    }
+
+    &-bg-warning {
+        color: $warning;
+    }
+
+    &-bg-info {
+        color: $info;
+    }
+
+    &-bg-error {
+        color: $error;
+    }
+}
+
+.modal {
+    &-content {
+        box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.12), 0 3px 6px 0 rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+    }
+
+    &-header {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    &-body {
+        background: $light;
+    }
+
+    &-footer {
+        border-top: 1px solid #e5e5e5;
+    }
+}
+
+.font-size-sm {
+    font-size: $font-size-sm;
+}

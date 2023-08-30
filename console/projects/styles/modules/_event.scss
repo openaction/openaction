@@ -1,0 +1,19 @@
+.user-event {
+    @include make-container();
+    max-width: 750px;
+    border: 1px solid $secondary;
+    padding: 30px;
+
+    &-block {
+        margin-bottom: 35px;
+    }
+
+    &-label {
+        margin-bottom: 5px;
+        color: $primary;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: $font-family-sans-serif;
+        font-size: 12px;
+    }
+}

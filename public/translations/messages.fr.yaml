@@ -1,0 +1,253 @@
+base:
+    form_legalities: |
+        Les champs marqués d'une étoile (*) sont obligatoires, les autres sont optionnels.
+        Vous disposez d'un droit d'accès, de rectification, d’effacement et de portabilité
+        de vos données ainsi que d’un droit d'opposition et d'un droit de limitation du
+        traitement des données vous concernant. Vous pouvez exercer vos droits en nous
+        contactant à l'adresse disponible dans la Politique de protection des données.
+    pagination:
+        previous: Page précédente
+        next: Page suivante
+    show_all: Tout afficher
+    categories: Catégories
+    no_element: Aucun élément pour le moment.
+    formal_title:
+        madam: Madame
+        sir: Monsieur
+    gender:
+        male: Homme
+        female: Femme
+        transgender: Transgenre
+        non_binary: Non binaire
+        other: Autre
+    embed-consent:
+        title: Contenu externe
+        description: |
+            Ce contenu intégré est hébergé par un service externe. En affichant ce contenu,
+            vous consentez à ce que %host% enregistre des cookies sur votre navigateur.
+        accept: Afficher le contenu
+        external: Ouvrir
+        cancel: Ne plus charger ces contenus
+
+home:
+    blocks:
+        socials:
+            title: Réseaux sociaux
+
+posts:
+    not_published: Cette actualité n'est pas publiée. Vous la prévisualisez actuellement en tant qu'administrateur.
+
+events:
+    more: Plus
+    show_all: Tout afficher
+    begin_at: Commence le
+    address: Adresse
+    online: Événement virtuel
+    no_element: Aucun élément pour le moment.
+    not_published: Cet événement n'est pas publié. Vous le prévisualisez actuellement en tant qu'administrateur.
+
+newsletter:
+    email: Votre adresse e-mail *
+    phone: Votre numéro de téléphone
+    firstname: Votre prénom
+    lastname: Votre nom
+    country: Pays
+    zipCode: Votre code postal
+    submit: Je m'inscris
+    success: Vous avez bien été inscrit à la newsletter.
+
+legalities:
+    title: Mentions légales
+    editor: Éditeur
+    publisher: Directeur de la publication
+    development:
+        title: Développement
+        text: Propulsé par la plateforme
+    hosting:
+        title: Hébergeur
+        data: Les données sont hébergées à Francfort, Allemagne.
+        technical: 'Service technique :'
+
+gdpr:
+    title: Gérer mes préférences
+    success: Les préférences ont bien été sauvegardées.
+    all_projects: Gérer mes préférences générales
+    per_projects: Gérer mes préférences par sujet
+    newsletter: J'accepte de recevoir des emails.
+    sms: J'accepte de recevoir des SMS.
+    calls: J'accepte de recevoir des appels téléphoniques.
+    submit: Mettre à jour
+
+share:
+    facebook: Partager sur Facebook
+    twitter: Partager sur Twitter
+    linkedin: Partager sur LinkedIn
+    telegram: Partager sur Telegram
+    whatsapp: Partager sur Whatsapp
+    email: Partager par e-mail
+
+socials:
+    rss: Flux RSS
+    facebook: Nous retrouver sur Facebook
+    twitter: Nous retrouver sur Twitter
+    instagram: Nous retrouver sur Instagram
+    linkedin: Nous retrouver sur LinkedIn
+    youtube: Nous retrouver sur Youtube
+    medium: Nous retrouver sur Medium
+    telegram: Nous retrouver sur Telegram
+    snapchat: Nous retrouver sur Snapchat
+
+forms:
+    phoning_campaign: |
+        Ce questionnaire est associé à une campagne d'appels. Vous le prévisualisez actuellement
+        en tant qu'administrateur mais il ne sera accessible que dans le cadre de la campagne d'appels.
+    no_value: Aucune réponse
+    submit: Envoyer
+    never_passwords: N'envoyez jamais de mots de passe via ce formulaire.
+    newsletter: J'accepte de recevoir des emails.
+    success: Le formulaire a bien été envoyé.
+    money_amount_custom: 'Ou entrez un montant personnalisé :'
+
+trombinoscope:
+    no_element: Aucune information pour le moment
+    contact_person: Contactez
+    contact_by_mail: Contacter par e-mail
+    socials:
+        find_on:
+            facebook: Retrouver sur Facebook
+            twitter: Retrouver sur Twitter
+            instagram: Retrouver sur Instagram
+            linkedin: Retrouver sur LinkedIn
+            youtube: Retrouver sur Youtube
+            medium: Retrouver sur Medium
+            telegram: Retrouver sur Telegram
+
+membership:
+    menu:
+        connected: Connecté(e)
+        account: Mon compte
+        logout: Déconnexion
+    login:
+        register_success: Votre compte a bien été créé. Vous pouvez dès à présent vous connecter.
+        reset_success: Votre mot de passe a bien été réinitialisé. Vous pouvez dès à présent vous connecter.
+        update_email_success: Votre adresse email a bien été modifiée. Vous pouvez dès à présent vous connecter.
+        email: Adresse e-mail
+        password: Mot de passe
+        submit: Se connecter
+        reset: J'ai oublié mon mot de passe
+        join_question: Pas encore inscrit(e) ?
+    reset:
+        title: J'ai oublié mon mot de passe
+        email: Adresse email
+        submit: Réinitialiser mon mot de passe
+    reset_verify:
+        title: Vérifiez votre boite de réception
+        message: |
+            Un e-mail de confirmation vous a été envoyé.
+            Cliquez sur le bouton qu'il contient pour finaliser la réinitialisation de votre mot de passe.
+    reset_update:
+        title: Modifiez votre mot de passe
+        password_first: Nouveau mot de passe
+        password_second: Confirmation
+        submit: Réinitialiser mon mot de passe
+    form:
+        submit: Enregistrer
+        submit_join: Envoyer
+        sections:
+            account: Votre compte
+            details: Votre identité
+            contact: Vos informations de contact
+            address: Votre addresse
+            notifications: Vos notifications
+        account:
+            update_email: Modifier mon adresse email
+            unregister: Me désinscrire
+        fields:
+            # Required
+            email: Adresse e-mail
+            password_first: Mot de passe
+            password_second: Confirmation du mot de passe
+            profileFirstName: Prénom
+            profileMiddleName: Autres prénoms
+            profileLastName: Nom
+            acceptPolicy: J'accepte les Conditions d'utilisation et la Politique de protection des données.
+
+            # Optional/Disabled
+            profileFormalTitle: Civilité
+            profileBirthdate: Date de naissance
+            profileGender: Genre
+            profileNationality: Nationalité
+            profileJobTitle: Métier
+            profileCompany: Employeur
+            contactPhone: Téléphone personnel
+            contactWorkPhone: Téléphone professionel
+            socialFacebook: URL de votre compte Facebook
+            socialTwitter: Nom d'utilisateur Twitter
+            socialLinkedIn: URL de votre compte LinkedIn
+            socialTelegram: Nom d'utilisateur Telegram
+            socialWhatsapp: Numéro de téléphone WhatsApp
+            addressStreetLine1: Adresse postale
+            addressStreetLine2: Complément d'adresse
+            addressZipCode: Code postal
+            addressCity: Ville
+            addressCountry: Pays
+            settingsReceiveNewsletters: J'accepte d'être contacté(e) par e-mail dans le cadre de mon compte.
+            settingsReceiveSms: J'accepte d'être contacté(e) par SMS dans le cadre de mon compte.
+            settingsReceiveCalls: J'accepte d'être contacté(e) par téléphone dans le cadre de mon compte.
+        choices:
+            profileFormalTitle:
+                mr: M.
+                ms: Mme.
+            profileGender:
+                male: Homme
+                female: Femme
+                transgender: Transgenre
+                non_binary: Non binaire
+                other: Autre
+    join_verify:
+        title: Vérifiez votre boite de réception
+        message: |
+            Un e-mail de confirmation vous a été envoyé.
+            Cliquez sur le bouton qu'il contient pour finaliser la création de votre compte.
+    account:
+        title: Mon compte
+        update_email:
+            title: Modifier mon adresse email
+            desc: Un email de confirmation sera envoyé à votre ancienne adresse email pour confirmer le changement.
+            field: Nouvelle adresse email
+            submit: Enregistrer
+            cancel: Annuler
+            success: |
+                Votre demande a bien été prise en compte. Un e-mail de confirmation a été envoyé à votre
+                ancienne adresse email. Cliquez sur le bouton qu'il contient pour finaliser la modification.
+        unregister:
+            title: Me désinscrire
+            desc: |
+                Souhaitez-vous vraiment vous désinscrire ? Un email de confirmation sera envoyé à
+                votre adresse email pour confirmer votre désinscription.
+            submit: Me désinscrire
+            cancel: Annuler
+            success: |
+                Votre demande a bien été prise en compte. Un e-mail de confirmation a été envoyé à votre
+                adresse email. Cliquez sur le bouton qu'il contient pour finaliser votre désinscription.
+    resources:
+        title: Ressources
+    posts:
+        title: Actualités
+    events:
+        title: Événements
+    forms:
+        title: Questionnaires
+
+phoning:
+    start: Démarrer un nouvel appel
+    finished: La campagne d'appels est terminée car toutes les personnes ciblées ont été contactées.
+    calling: J'ai lancé l'appel
+    details:
+        title: Vous êtes en train d'appeler ...
+        failed_invalid: L'appel a échoué
+        failed_no_answer: N'a pas décroché
+        failed_no_call: Ne souhaite pas être appelé
+        failed_unregister: Souhaite désadhérer
+        failed_call_later: Souhaite être rappelé plus tard
+        accepted: Accepte de répondre aux questions

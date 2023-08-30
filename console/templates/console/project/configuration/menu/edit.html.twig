@@ -1,0 +1,56 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'menu.form.edit_title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_menu 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            <a href="{{ path('console_configuration_menu', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'menu.back'|trans({}, 'project_configuration') }}</span>
+            </a>
+
+            <br />
+
+            {{ 'menu.form.edit_title'|trans({}, 'project_configuration') }}
+        </h3>
+
+        <div class="bg-light">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.label, {
+                        'label': 'menu.form.label.label'|trans({}, 'project_configuration'),
+                        'help': 'menu.form.label.help'|trans({}, 'project_configuration'),
+                    }) }}
+
+                    {{ form_row(form.url, {
+                        'label': 'menu.form.url.label'|trans({}, 'project_configuration'),
+                        'help': 'menu.form.url.help'|trans({}, 'project_configuration'),
+                    }) }}
+
+                    {{ form_row(form.parent, {
+                        'label': 'menu.form.parent.label'|trans({}, 'project_configuration'),
+                        'help': 'menu.form.parent.help'|trans({}, 'project_configuration'),
+                    }) }}
+
+                    {{ form_row(form.openNewTab, {
+                        'label_attr': {'class': 'checkbox-custom'},
+                        'label': 'menu.form.newTab.label'|trans({}, 'project_configuration'),
+                        'help': 'menu.form.newTab.help'|trans({}, 'project_configuration'),
+                    }) }}
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'save'|trans({}, 'project_configuration') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'no_orga.title'|trans({}, 'organization') %}
+
+{% block content %}
+    <div class="pb-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="text-center mt-5 pt-5 mb-4">
+                    <h4 class="text-center mb-4">
+                        {{ 'no_orga.title'|trans({}, 'organization') }}
+                    </h4>
+
+                    <div class="text-muted mb-5">
+                        {{ 'no_orga.launch'|trans({}, 'organization') }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ 'no_orga.learn_more'|trans({}, 'organization') }}
+                    </div>
+
+                    <div class="mb-4">
+                        <a href="https://citipo.com" class="btn btn-primary" target="_blank">
+                            https://citipo.com
+                        </a>
+                    </div>
+
+                    <div class="mb-2">
+                        {{ 'no_orga.ask_citipo'|trans({}, 'organization') }}
+                    </div>
+
+                    <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}"
+                       class="btn btn-primary">
+                        {{ 'contact_email'|trans({}, 'global') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

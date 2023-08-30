@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.manifesto %}
+
+{% block body_class 'body-manifesto-list' %}
+
+{% block page %}
+    {% set manifestoPayload = [] %}
+
+    {% for topic in manifesto %}
+        {% set topicPayload = topic.toArray()|merge({
+            url: path('manifesto_view', {'id': topic.id, 'slug': topic.slug}),
+            backgroundColor: hex2rgba(topic.color, 0.1),
+        }) %}
+
+        {% set manifestoPayload = manifestoPayload|merge([topicPayload]) %}
+    {% endfor %}
+
+    {% set payload = {
+        'current_url': url(current_route, current_route_params),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'manifesto_title': current_project.terminology.manifesto,
+        'section_id': 'manifesto',
+        'section_name': current_project.terminology.manifesto,
+        'social_sharers': include('_include/social_sharers.html.twig', {'route': 'manifesto_list'}),
+        'manifesto': manifestoPayload,
+        'no_elements': 'base.no_element'|trans,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/manifesto-list.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+

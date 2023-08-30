@@ -1,0 +1,39 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'domain.title'|trans({}, 'project_settings') %}
+
+{% block sidebar_settings 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_settings', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_settings') }}</span>
+            </a>
+
+            <h3 class="mb-0">
+                {{ 'domain.title'|trans({}, 'project_settings') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="mb-4">
+                <div class="mb-1">
+                    {{ 'domain.current_domain'|trans({}, 'project_settings') }}
+                </div>
+
+                <code class="h6 text-info">{{ current_project.fullDomain }}</code>
+            </div>
+
+            <div class="mb-2">
+                {{ 'domain.change_it'|trans({}, 'project_settings') }}
+            </div>
+
+            <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary">
+                {{ 'domain.contact_us'|trans({}, 'project_settings') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

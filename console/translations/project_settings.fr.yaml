@@ -1,0 +1,197 @@
+back: Retour à la configuration
+save: Sauvegarder
+
+index:
+    title: Configuration du projet
+    details:
+        label: Détails du projet
+        desc: Modifier les détails du projet comme son nom ou sa zone géographique.
+        link: Modifier les détails
+    modules:
+        label: Modules et outils
+        desc: N'activez que les outils que vous utilisez pour rendre l'interface de Citipo plus efficace pour votre usage.
+        link: Activer/désactiver les outils
+    domain:
+        label: Nom de domaine
+        desc: |
+            Configurez le nom de domaine de votre projet, utilisé par votre site internet
+            et vos campagnes d'emailing.
+        link: Configurer le nom de domaine
+    duplicate:
+        label: Dupliquer ce projet
+        desc: Créez une copie de ce projet avec le meême site internet et la même configuration.
+        link: Dupliquer ce projet
+    move:
+        label: Déplacer ce projet
+        desc: Déplacer ce projet dans une autre organisation.
+        link: Déplacer ce projet
+    remove:
+        label: Supprimer ce projet
+        desc: Supprimer ce projet et toutes les données associées. Aucun contact ne sera supprimé.
+        link: Supprimer ce projet
+        confirm: |
+            Êtes-vous absolument certain de vouloir supprimer ce projet ?
+            Vous ne pourrez pas retourner en arrière. Cela supprimera de manière
+            permanente toutes les données du projet %name%, incluant son site internet,
+            ses campagnes d'emailing et son contenu. Aucun contact ne sera supprimé.
+
+domain:
+    title: Nom de domaine
+    current_domain: 'Votre projet utilise actuellement le nom de domaine suivant :'
+    change_it: |
+        Changer ce nom de domaine demande de la configuration technique par les équipes de Citipo.
+        Si vous souhaitez le changer, contactez-nous :
+    contact_us: 'Nous contacter'
+
+details:
+    title: Détails du projet
+    name:
+        label: Nom du projet
+        help: |
+            Ce nom est interne : il sera présent dans les menus et les titres de votre interface
+            d'administration. Maximum 60 caractères.
+    locale:
+        label: Langue du projet
+        help: 'Dans quelle langue souhaitez-vous afficher le site et les emailings de ce projet ?'
+    submit: Enregistrer
+
+modules:
+    title: Modules et outils
+    submit: Enregistrer
+
+move:
+    title: Déplacer le projet "%title%"
+    to: Dans quelle organisation souhaitez-vous déplacer ce projet ?
+    submit: Déplacer
+
+legalities:
+    title: Informations légales
+    help: Configurer les informations légales relatives aux lois des sites internet, des campagnes d'emailing et de RGPD.
+    missing: |
+        Vos informations légales sont incomplètes. Vous devriez les compléter avant de lancer
+        votre projet pour vous assurer de suivre les lois sur les sites internet et les campagnes d'emailing.
+    form:
+        general:
+            title: Informations générales
+            help: |
+                La loi française (et celle de nombreux pays européens) requiert que certaines
+                informations soient affichées sur les sites internet pour permettre aux visiteurs
+                de savoir qui les publient.
+            name:
+                label: Nom complet officiel de votre organisation
+                help: |
+                    Si vous n'êtes pas certain de quel nom utiliser, utilisez le nom de l'organisation
+                    ou de la personne qui bénéficie du fait que le site existe.
+            address:
+                label: Adresse postale de votre organisation
+                help: |
+                    Où se situent les locaux de votre organisation, précisément ? Cette adresse
+                    devra pouvoir être utilisée par vos visiteurs pour vous contacter pour des raisons
+                    légales.
+            publisherName:
+                label: Nom complet du directeur de la publication
+                help: |
+                    Le directeur de la publication est une personne physique responsable du contenu du
+                    site internet. Il ne peut pas être une personne morale.
+            publisherRole:
+                label: Rôle du directeur de la publication
+                help: Quel est le rôle du directeur de la publication au sein de votre organisation ?
+        gdpr:
+            title: Informations liées au Règlement Général sur la Protection des Données (RGPD)
+            help: |
+                Le RGPD est une réglementation de l'UE relative à la protection des données personnelles
+                et au droit à la vie privée. Il créé certains droits pour vos visiteurs à propos de la façon
+                dont vous manipulez leurs données. Afin d'exercer ces droits, vos visiteurs doivent savoir
+                qui contacter dans votre organisation. Vous devriez probablement indiquer ici le point de
+                contact de votre Délégué à la Protection des Données (DPD ou DPO en anglais).
+            email:
+                label: Adresse email de votre contact légal
+
+membership:
+    back: Retour à la configuration de l'Espace membre
+
+    index:
+        title: Configuration de l'Espace membre
+        help: |
+            L'Espace membre est une zone réservée aux membres de votre communauté (personnes ayant créé un
+            compte sur votre site internet).
+            <br />
+            Chaque contenu que vous créez sur Citipo peut être configuré pour que seuls vos membres y aient accès.
+        blocks:
+            homepage:
+                title: Page principale
+                desc: |
+                    Modifiez le contenu de la page principale de l'Espace membre, affichée à tous les
+                    membres au moment de leur connexion.
+                link: Configurer la page principale
+            form:
+                title: Données des membres
+                desc: |
+                    Choisissez quelles données demander à vos membres au moment de leur inscription et
+                    lors de la mise à jour de leur compte.
+                link: Configurer les données des membres
+            custom:
+                title: Questions personnalisées
+                desc: |
+                    Ajoutez des questions supplémentaires aux formulaires d'inscription et de mise à jour
+                    des comptes membres.
+                link: Configurer les questions personnalisées
+
+    form:
+        title: Données des membres
+        desc: |
+            Choisissez quelles données demander à vos membres au moment de leur inscription et
+            lors de la mise à jour de leur compte.
+        label:
+            introduction:
+                title: Introduction
+                desc: |
+                    Ce texte sera affiché juste au dessus du formulaire d'inscription, avant que les visiteurs
+                    ne s'inscrivent.
+
+            fields:
+                title: Champs
+                desc: |
+                    Pour chaque champ de formulaire, vous pouvez choisir de le demander à l'inscription
+                    (requis ou optionnel), de ne le demander que lors de la modification du compte, ou
+                    de ne pas le demander.
+
+            unmapped: Ce champ est requis par Citipo.
+
+            email: Adresse e-mail
+            password: Mot de passe
+            profileFormalTitle: Civilité
+            profileFirstName: Prénom
+            profileMiddleName: Deuxième prénom
+            profileLastName: Nom
+            profileBirthdate: Date de naissance
+            profileGender: Genre
+            profileNationality: Nationalité
+            profileCompany: Entreprise
+            profileJobTitle: Poste
+            contactPhone: Téléphone personnel
+            contactWorkPhone: Téléphone professionnel
+            socialFacebook: URL du profil Facebook
+            socialTwitter: URL du profil Twitter
+            socialLinkedIn: URL du profil LinkedIn
+            socialTelegram: Nom d'utilisateur Telegram
+            socialWhatsapp: Numéro de téléphone Whatsapp
+            addressStreetLine1: Adresse (ligne 1)
+            addressStreetLine2: Adresse (ligne 2)
+            addressZipCode: Code postal
+            addressCity: Ville
+            addressCountry: Pays
+            settingsReceiveNewsletters: Je m'inscrit à la newsletter
+            settingsReceiveSms: Je m'inscrit aux SMS
+            settingsReceiveCalls: J'accepte les appels
+        rule:
+            required: Demander à l'inscription (requis)
+            optional: Demandez à l'inscription (optionnel)
+            update: Demander uniquement à la mise à jour du compte (optionnel)
+            ignore: Ne pas demander
+
+    homepage:
+        title: Page principale
+        desc: |
+            Modifiez le contenu de la page principale de l'Espace membre, affichée à tous les
+            membres au moment de leur connexion.

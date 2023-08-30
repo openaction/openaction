@@ -1,0 +1,75 @@
+{% extends 'console/organization/billing/base.html.twig' %}
+
+{% block page_title 'details.title'|trans({}, 'organization_billing') %}
+
+{% block sidebar_details 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3>
+                {{ 'details.title'|trans({}, 'organization_billing') }}
+            </h3>
+            <div class="text-muted">
+                {{ 'details.desc'|trans({}, 'organization_billing') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.name, {
+                        'label': 'details.form.details.name.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.name.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.email, {
+                        'label': 'details.form.details.email.label'|trans({}, 'organization_billing'),
+                        'help': 'details.form.details.email.help'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="text-uppercase text-muted mt-4 mb-2">
+                        {{ 'details.form.address.title'|trans({}, 'organization_billing') }}
+                    </div>
+
+                    {{ form_row(form.streetLine1, {
+                        'label': 'details.form.address.streetLine1'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    {{ form_row(form.streetLine2, {
+                        'label': 'details.form.address.streetLine2'|trans({}, 'organization_billing'),
+                    }) }}
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{ form_row(form.postalCode, {
+                                'label': 'details.form.address.postalCode'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.city, {
+                                'label': 'details.form.address.city'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(form.country, {
+                                'label': 'details.form.address.country'|trans({}, 'organization_billing'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'details.form.submit'|trans({}, 'organization_billing') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

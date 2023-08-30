@@ -1,0 +1,19 @@
+{% extends 'security/base.html.twig' %}
+
+{% block page_title 'forgot_password.sent.title'|trans({}, 'security') %}
+
+{% block box %}
+    <div class="p-4">
+        <h4 class="mb-4 text-center">{{ 'forgot_password.sent.title'|trans({}, 'security') }}</h4>
+
+        <div class="alert alert-bg-success text-center mb-3">
+            {{ 'forgot_password.sent.desc'|trans({}, 'security') }}
+        </div>
+
+        <div class="text-center mb-3">
+            <a href="{{ path('security_login') }}" class="btn btn-link">
+                {{ 'forgot_password.sent.back'|trans({}, 'security') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body_class 'full-height' %}
+
+{% block body %}
+    <div class="security">
+        <div class="security-box">
+            <div class="mt-5 mb-5 text-center">
+                <a href="https://citipo.com/{{ app.request.locale }}">
+                    <img src="{{ console_logo|default(asset('res/logo/logo-dark.svg')) }}"
+                         class="security-logo" alt="{{ console_name|default('platform'|trans({}, 'global')) }}" />
+                </a>
+            </div>
+
+            <div class="world-box">
+                {% block box '' %}
+            </div>
+
+            <div class="mt-5 pt-5 text-center">
+                <small class="text-muted">
+                    <a href="mailto:{{ console_email|default('contact_email'|trans({}, 'global')) }}"
+                       class="text-muted">{{ 'contact_us'|trans({}, 'global') }}</a>
+                    |
+                    {{ 'now'|date('Y') }} © {{ console_legal_name|default('legal_name'|trans({}, 'global')) }}
+                </small>
+            </div>
+        </div>
+    </div>
+{% endblock %}

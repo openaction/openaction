@@ -1,0 +1,12 @@
+{% set payload = {
+    'current_project': current_project.toArray,
+    'force_embed_consent': force_embed_consent,
+    'newsletter_title': current_project.terminology.newsletter,
+    'newsletter_form': newsletterForm,
+    'main_image': current_project.mainImage,
+    'legalities': 'base.form_legalities'|trans,
+} %}
+
+{% sandbox %}
+    {% include '@theme/home-newsletter.html.twig' with payload %}
+{% endsandbox %}

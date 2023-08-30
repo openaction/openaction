@@ -1,0 +1,132 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'index.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'index.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+
+                    <section class="mb-4 mt-4">
+                        <div class="px-lg-3">
+                            <div class="row">
+                                <div class="col-lg-6 mb-5">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-palette"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'index.theme.title'|trans({}, 'project_appearance') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'index.theme.desc'|trans({}, 'project_appearance') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_appearance_website_theme', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'index.theme.link'|trans({}, 'project_appearance') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mb-5">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-images"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'index.logos.title'|trans({}, 'project_appearance') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'index.logos.desc'|trans({}, 'project_appearance') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_appearance_logos', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'index.logos.link'|trans({}, 'project_appearance') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mb-4">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-text"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'index.terminology.title'|trans({}, 'project_appearance') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'index.terminology.desc'|trans({}, 'project_appearance') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_appearance_terminology', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'index.terminology.link'|trans({}, 'project_appearance') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mb-4">
+                                    <div class="world-card">
+                                        <div class="world-card-icon">
+                                            <i class="fad fa-th"></i>
+                                        </div>
+                                        <div class="world-card-content">
+                                            <h5>
+                                                {{ 'index.homepage.title'|trans({}, 'project_appearance') }}
+                                            </h5>
+
+                                            <div>
+                                                {{ 'index.homepage.desc'|trans({}, 'project_appearance') }}
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a href="{{ path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid}) }}">
+                                                    <strong>
+                                                        {{ 'index.homepage.link'|trans({}, 'project_appearance') }}
+                                                    </strong>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

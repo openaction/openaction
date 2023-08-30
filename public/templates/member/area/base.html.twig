@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block page %}
+    <div class="membership">
+        <div class="membership-view">
+            <h1 class="membership-title">
+                {{ current_project.terminology.membershipArea }}
+            </h1>
+
+            <div class="membership-page">
+                <div class="row no-gutters">
+                    <div class="col-lg-2 membership-page-menu pt-2 pb-5">
+                        <a href="{{ path('membership_area_dashboard') }}" class="d-block py-2">
+                            {{ current_project.terminology.membershipArea }}
+                        </a>
+
+                        {% if 'members_area_resources' in current_project.tools %}
+                            <a href="{{ path('membership_area_resources') }}" class="d-block py-2">
+                                {{ 'membership.resources.title'|trans }}
+                            </a>
+                        {% endif %}
+
+                        {% if 'members_area_posts' in current_project.tools %}
+                            <a href="{{ path('membership_area_posts') }}" class="d-block py-2">
+                                {{ 'membership.posts.title'|trans }}
+                            </a>
+                        {% endif %}
+
+                        {% if 'members_area_events' in current_project.tools %}
+                            <a href="{{ path('membership_area_events') }}" class="d-block py-2">
+                                {{ 'membership.events.title'|trans }}
+                            </a>
+                        {% endif %}
+
+                        {% if 'members_area_forms' in current_project.tools %}
+                            <a href="{{ path('membership_area_forms') }}" class="d-block py-2">
+                                {{ 'membership.forms.title'|trans }}
+                            </a>
+                        {% endif %}
+
+                        <a href="{{ path('membership_area_account') }}" class="d-block py-2">
+                            {{ 'membership.account.title'|trans }}
+                        </a>
+
+                        <a href="{{ path('membership_logout') }}" class="d-block py-2">
+                            {{ 'membership.menu.logout'|trans }}
+                        </a>
+                    </div>
+                    <div class="col-lg-10 membership-page-content">
+                        <div class="p-4">
+                            {% block membership_area_page_title %}
+                                <h4 class="mb-4">
+                                    {{ block('page_title') }}
+                                </h4>
+                            {% endblock %}
+
+                            {% block membership_area_content '' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

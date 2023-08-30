@@ -1,0 +1,43 @@
+<div class="social-sharers">
+    {% if current_project.socialSharers.facebook %}
+        <a href="{{ facebook_url(route, params|default({})) }}"
+           title="{{ 'share.facebook'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+    {% endif %}
+
+    {% if current_project.socialSharers.twitter %}
+        <a href="{{ twitter_url(route, params|default({})) }}"
+           title="{{ 'share.twitter'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fab fa-twitter"></i>
+        </a>
+    {% endif %}
+
+    {% if current_project.socialSharers.linkedin %}
+        <a href="{{ linkedin_url(route, params|default({})) }}"
+           title="{{ 'share.linkedin'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+    {% endif %}
+
+    {% if current_project.socialSharers.telegram %}
+        <a href="{{ telegram_url(route, params|default({})) }}"
+           title="{{ 'share.telegram'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+    {% endif %}
+
+    {% if current_project.socialSharers.whatsapp %}
+        <a href="{{ whatsapp_url(route, params|default({})) }}"
+           title="{{ 'share.whatsapp'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    {% endif %}
+
+    {% if current_project.socialSharers.email %}
+        <a href="{{ mail_url(route, params|default({})) }}"
+           title="{{ 'share.email'|trans }}" target="_blank" rel="noreferrer noopener">
+            <i class="fas fa-envelope"></i>
+        </a>
+    {% endif %}
+</div>

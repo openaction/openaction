@@ -1,0 +1,5 @@
+<strong>{{ entity.instance.action.type }}</strong>
+{% for key, value in entity.instance.action.payload %}
+    <br />
+    <small style="color: #999">{{ key }} = {{ value }}</small>
+{% endfor %}

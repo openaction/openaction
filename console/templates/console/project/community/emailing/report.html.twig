@@ -1,0 +1,41 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'stats.report.title'|trans({'%subject%': campaign.subject}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'stats.report.back'|trans({}, 'project_emailings') }}</span>
+                    </a>
+
+                    <h3 class="mt-2 mb-0">
+                        {{ 'stats.report.title'|trans({'%subject%': campaign.subject}, 'project_emailings') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ path('console_community_emailing_stats_report_export', { 'projectUuid': current_project.uuid, 'uuid': campaign.uuid }) }}"
+                       class="btn btn-secondary mr-2">
+                        <i class="fad fa-cloud-download mr-1"></i>
+                        {{ 'stats.report.export'|trans({'%subject%': campaign.subject}, 'project_emailings') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div data-controller="emailing--report"
+             data-endpoint="{{ path('console_community_emailing_stats_report_search', {'projectUuid': current_project.uuid, 'uuid': campaign.uuid}) }}">
+            <div class="py-5 text-center">
+                <div class="h2 my-5">
+                    <i class="fal fa-circle-notch fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

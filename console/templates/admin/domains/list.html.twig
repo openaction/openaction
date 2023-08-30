@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block global_actions %}
+    {{ parent() }}
+
+    <a href="{{ ea_url().setRoute('admin_domains_add') }}" class="btn btn-primary">
+        Register domain
+    </a>
+{% endblock %}

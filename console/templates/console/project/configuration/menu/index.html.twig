@@ -1,0 +1,235 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'menu.title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_menu 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'menu.title'|trans({}, 'project_configuration') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'menu.help'|trans({}, 'project_configuration') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row">
+                <div class="col-12 col-lg-6 mb-5">
+                    <h5 class="mb-2">
+                        {{ 'menu.header_title'|trans({}, 'project_configuration') }}
+                    </h5>
+
+                    <div class="text-muted mb-4">
+                        {{ 'menu.header_help'|trans({}, 'project_configuration') }}
+                    </div>
+
+                    <div class="text-right mb-4">
+                        <a href="{{ path('console_configuration_menu_create', {'projectUuid': current_project.uuid, 'position': 'header'}) }}"
+                           class="btn btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'menu.create'|trans({}, 'project_configuration') }}
+                        </a>
+                    </div>
+
+                    <hr />
+
+                    {% if header|length == 0 %}
+                        <div class="text-muted text-center my-4">
+                            {{ 'menu.no_records'|trans({}, 'project_configuration') }}
+                        </div>
+                    {% else %}
+                        <div data-controller="sortable"
+                             data-endpoint="{{ path('console_configuration_menu_sort', {'projectUuid': current_project.uuid, 'position': 'header'}) }}">
+
+                            <ul data-sortable-target="element" class="world-list p-0 m-0">
+                                {% for item in header %}
+                                    <li id="item-{{ item.id }}" data-id="{{ item.id }}" class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="p-3">
+                                                <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                {{ item.label }}
+                                                <br />
+                                                <small class="text-muted">
+                                                    {{ 'menu.target'|trans({}, 'project_configuration') }}
+                                                    {{ item.url|u.truncate(20) }}
+                                                </small>
+                                            </div>
+                                            <div>
+                                                <a href="{{ path('console_configuration_menu_edit', { 'id': item.id, 'projectUuid': current_project.uuid }) }}"
+                                                   class="btn btn-sm btn-secondary border-0 mr-1">
+                                                    <i class="fad fa-edit ml-1"></i>
+                                                </a>
+
+                                                <a href="{{ csrf_path('console_configuration_menu_delete', { 'id': item.id, 'projectUuid': current_project.uuid }) }}"
+                                                   data-controller="delete"
+                                                   data-message="{{ 'menu.remove_confirm'|trans({'%name%': item.label}, 'project_configuration') }}"
+                                                   data-target="#item-{{ item.id }}"
+                                                   class="btn btn-sm btn-outline-danger border-0">
+                                                    <i class="fad fa-trash ml-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {% if item.children|length > 0 %}
+                                            <div data-controller="sortable"
+                                                 data-endpoint="{{ path('console_configuration_menu_sort', {'projectUuid': current_project.uuid, 'position': 'header'}) }}">
+
+                                                <ul data-sortable-target="element" class="world-list p-0 ml-4">
+                                                    {% for child in item.children %}
+                                                        <li id="child-{{ child.id }}" data-id="{{ child.id }}" class="mb-2">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="p-3">
+                                                                    <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    {{ child.label }}
+                                                                    <br />
+                                                                    <small class="text-muted">
+                                                                        {{ 'menu.target'|trans({}, 'project_configuration') }}
+                                                                        {{ child.url|u.truncate(20) }}
+                                                                    </small>
+                                                                </div>
+                                                                <div>
+                                                                    <a href="{{ path('console_configuration_menu_edit', { 'id': child.id, 'projectUuid': current_project.uuid }) }}"
+                                                                       class="btn btn-sm btn-secondary border-0 mr-1">
+                                                                        <i class="fad fa-edit ml-1"></i>
+                                                                    </a>
+
+                                                                    <a href="{{ csrf_path('console_configuration_menu_delete', { 'id': child.id, 'projectUuid': current_project.uuid }) }}"
+                                                                       data-controller="delete"
+                                                                       data-message="{{ 'menu.remove_confirm'|trans({'%name%': child.label}, 'project_configuration') }}"
+                                                                       data-target="#child-{{ child.id }}"
+                                                                       class="btn btn-sm btn-outline-danger border-0">
+                                                                        <i class="fad fa-trash ml-1"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+
+                                            </div>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-6 mb-5">
+                    <h5 class="mb-2">
+                        {{ 'menu.footer_title'|trans({}, 'project_configuration') }}
+                    </h5>
+
+                    <div class="text-muted mb-4">
+                        {{ 'menu.footer_help'|trans({}, 'project_configuration') }}
+                    </div>
+
+                    <div class="text-right mb-4">
+                        <a href="{{ path('console_configuration_menu_create', {'projectUuid': current_project.uuid, 'position': 'footer'}) }}"
+                           class="btn btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'menu.create'|trans({}, 'project_configuration') }}
+                        </a>
+                    </div>
+
+                    <hr />
+
+                    {% if footer|length == 0 %}
+                        <div class="text-muted text-center my-4">
+                            {{ 'menu.no_records'|trans({}, 'project_configuration') }}
+                        </div>
+                    {% else %}
+                        <div data-controller="sortable"
+                             data-endpoint="{{ path('console_configuration_menu_sort', {'projectUuid': current_project.uuid, 'position': 'footer'}) }}">
+
+                            <ul data-sortable-target="element" class="world-list p-0 m-0">
+                                {% for item in footer %}
+                                    <li id="item-{{ item.id }}" data-id="{{ item.id }}" class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="p-3">
+                                                <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                {{ item.label }}
+                                                <br />
+                                                <small class="text-muted">
+                                                    {{ 'menu.target'|trans({}, 'project_configuration') }}
+                                                    {{ item.url|u.truncate(20) }}
+                                                </small>
+                                            </div>
+                                            <div>
+                                                <a href="{{ path('console_configuration_menu_edit', { 'id': item.id, 'projectUuid': current_project.uuid }) }}"
+                                                   class="btn btn-sm btn-secondary border-0 mr-1">
+                                                    <i class="fad fa-edit ml-1"></i>
+                                                </a>
+
+                                                <a href="{{ csrf_path('console_configuration_menu_delete', { 'id': item.id, 'projectUuid': current_project.uuid }) }}"
+                                                   data-controller="delete"
+                                                   data-message="{{ 'menu.remove_confirm'|trans({'%name%': item.label}, 'project_configuration') }}"
+                                                   data-target="#item-{{ item.id }}"
+                                                   class="btn btn-sm btn-outline-danger border-0">
+                                                    <i class="fad fa-trash ml-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {% if item.children|length > 0 %}
+                                            <div data-controller="sortable"
+                                                 data-endpoint="{{ path('console_configuration_menu_sort', {'projectUuid': current_project.uuid, 'position': 'footer'}) }}">
+
+                                                <ul data-sortable-target="element" class="world-list p-0 ml-4">
+                                                    {% for child in item.children %}
+                                                        <li id="item-{{ child.id }}" data-id="{{ child.id }}" class="mb-2">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="p-3">
+                                                                    <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    {{ child.label }}
+                                                                    <br />
+                                                                    <small class="text-muted">
+                                                                        {{ 'menu.target'|trans({}, 'project_configuration') }}
+                                                                        {{ child.url|u.truncate(20) }}
+                                                                    </small>
+                                                                </div>
+                                                                <div>
+                                                                    <a href="{{ path('console_configuration_menu_edit', { 'id': child.id, 'projectUuid': current_project.uuid }) }}"
+                                                                       class="btn btn-sm btn-secondary border-0 mr-1">
+                                                                        <i class="fad fa-edit ml-1"></i>
+                                                                    </a>
+
+                                                                    <a href="{{ csrf_path('console_configuration_menu_delete', { 'id': child.id, 'projectUuid': current_project.uuid }) }}"
+                                                                       data-controller="delete"
+                                                                       data-message="{{ 'menu.remove_confirm'|trans({'%name%': child.label}, 'project_configuration') }}"
+                                                                       data-target="#child-{{ child.id }}"
+                                                                       class="btn btn-sm btn-outline-danger border-0">
+                                                                        <i class="fad fa-trash ml-1"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+
+                                            </div>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

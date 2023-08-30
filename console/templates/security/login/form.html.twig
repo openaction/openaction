@@ -1,0 +1,69 @@
+{% extends 'security/base.html.twig' %}
+
+{% block page_title 'login.title'|trans({}, 'security') %}
+
+{% block box %}
+    <form method="post">
+        <div class="p-4">
+            <h4 class="mb-5 text-center">{{ 'login.welcome'|trans({}, 'security') }}</h4>
+
+            {% if error %}
+                <div class="alert alert-danger border-0 text-center">
+                    {{ error.messageKey|trans(error.messageData, 'flashes') }}
+                </div>
+            {% endif %}
+
+            {% if reset_success %}
+                <div class="alert alert-success border-0 text-center">
+                    {{ 'reset.success'|trans({}, 'flashes') }}
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <label for="email" class="font-weight-bold">
+                    {{ 'login.email'|trans({}, 'security') }}
+                </label>
+
+                <input type="email" name="email" class="form-control form-control-lg" id="email"
+                       value="{{ last_username }}" required autofocus tabindex="1" />
+            </div>
+
+            <div class="mb-4">
+                <div class="row">
+                    <div class="col">
+                        <label for="password" class="font-weight-bold">
+                            {{ 'login.password'|trans({}, 'security') }}
+                        </label>
+                    </div>
+                    <div class="col text-right">
+                        <a href="{{ path('security_forgot_password_request') }}">
+                            {{ 'login.forgotten_password'|trans({}, 'security') }}
+                        </a>
+                    </div>
+                </div>
+                <input type="password" name="password" class="form-control form-control-lg" id="password"
+                       required tabindex="2" />
+            </div>
+
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="_remember_me" id="_remember_me" checked tabindex="3" />
+                <label class="custom-control-label" for="_remember_me">{{ 'login.remember_me'|trans({}, 'security') }}</label>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+            <div class="text-center mt-5 mb-3">
+                <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">
+                    {{ 'login.submit'|trans({}, 'security') }}
+                </button>
+            </div>
+
+            {# TODO: enable when public #}
+            <div class="text-center mb-3 d-none">
+                <a href="{{ path('security_register') }}" class="btn btn-link">
+                    {{ 'login.register'|trans({}, 'security') }}
+                </a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

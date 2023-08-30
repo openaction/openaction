@@ -1,0 +1,99 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'results.title'|trans({'%title%': form.title}, 'project_forms') %}
+
+{% block sidebar_forms 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <a href="{{ path('console_website_forms', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0 mb-2">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'results.back'|trans({}, 'project_forms') }}</span>
+                    </a>
+
+                    <h3 class="mb-0">
+                        {{ 'results.title'|trans({'%title%': form.title}, 'project_forms') }}
+                    </h3>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    <a href="{{ path('console_website_forms_export', { 'projectUuid': current_project.uuid, 'uuid': form.uuid }) }}"
+                       class="btn btn-secondary mr-2">
+                        <i class="fad fa-cloud-download mr-1"></i>
+                        {{ 'results.export'|trans({}, 'project_forms') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if answers|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-0">
+                            {{ 'results.no_result'|trans({}, 'project_forms') }}
+                        </h4>
+                    </div>
+                </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'results.contact'|trans({}, 'project_forms') }}
+                        </th>
+                        <th scope="col">
+                            {{ 'results.created_at'|trans({}, 'project_forms') }}
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody data-sortable-target="element">
+                    {% for answer in answers %}
+                        <tr id="answer-{{ answer.uuid }}">
+                            <td>
+                                {% if answer.contact %}
+                                    <a href="{{ path('console_community_contacts_view', {'projectUuid': current_project.uuid, 'uuid': answer.contact.uuid}) }}">
+                                        {{ answer.contact.email }}
+                                    </a>
+                                {% else %}
+                                    <em class="text-muted">{{ 'results.no_contact'|trans({}, 'project_forms') }}</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ answer.createdAt|format_datetime('medium', 'short') }}
+                            </td>
+                            <td class="world-table-actions">
+                                <a href="{{ path('console_website_forms_results_view', { 'uuid': answer.uuid, 'projectUuid': current_project.uuid }) }}"
+                                   class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                    <i class="fas fa-eye mr-1"></i>
+                                    <span>{{ 'results.view'|trans({}, 'project_forms') }}</span>
+                                </a>
+
+                                <a href="{{ csrf_path('console_website_forms_results_delete', { 'uuid': answer.uuid, 'projectUuid': current_project.uuid }) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'results.remove_confirm'|trans({}, 'project_forms') }}"
+                                   data-target="#answer-{{ answer.uuid }}"
+                                   class="btn btn-sm btn-outline-danger border-0">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    <span>{{ 'results.delete'|trans({}, 'project_forms') }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="p-3">
+                    {{ pagination(answers, current_page, 10) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

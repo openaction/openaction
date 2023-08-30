@@ -1,0 +1,50 @@
+index:
+    title: Questionnaires
+    help: Collecter et organiser les informations des visiteurs sur votre site.
+    create: Nouveau questionnaire
+    no_result: Votre projet ne contient aucun questionnaire pour le moment.
+    no_result_create: Créer un premier questionnaire
+    edit: Editer
+    duplicate: Dupliquer
+    move: Déplacer
+    move_cant_answers: Vous ne pouvez pas déplacer ce questionnaire car il contient des réponses de vos contacts.
+    delete: Supprimer
+    view: Voir
+    results: '%count% réponse(s)'
+    created_at: Créer à %datetime%
+    last_modified: Dernière modification à %datetime%
+    visits: visites
+    remove_confirm: Êtes-vous sûr de vouloir supprimer le questionnaire "%name%" ?
+
+create:
+    title: '(Questionnaire sans titre)'
+    question_email: Adresse e-mail
+
+edit:
+    title: Editer le questionnaire "%title%"
+    back: Retour à la liste
+    view: Voir sur le site
+    results: '%count% réponse(s)'
+
+move:
+    title: Déplacer le questionnaire "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer ce questionnaire ?
+    submit: Déplacer
+
+results:
+    back: Retour aux questionnaires
+    export: Exporter les réponses
+    title: Résultats du questionnaire "%title%"
+    no_result: Votre questionnaire n’a reçu aucune réponse pour le moment.
+    view: Voir
+    delete: Supprimer
+    contact: Contact
+    no_contact: Aucun contact lié
+    created_at: Date
+    remove_confirm: Êtes-vous sûr de vouloir supprimer la réponse ?
+
+results_view:
+    back: Retour aux résultats
+    by: Proposé par
+    download: Télécharger le fichier

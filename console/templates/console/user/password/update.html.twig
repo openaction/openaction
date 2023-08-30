@@ -1,0 +1,45 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% block page_title 'update_password.title'|trans({}, 'user') %}
+
+{% block sidebar_password 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'update_password.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="px-4 py-5 bg-light">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-11 col-lg-10 col-xl-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.oldPassword, {
+                        'attr': {'class': 'form-control-lg'},
+                        'label': 'update_password.old_password'|trans({}, 'user')
+                    }) }}
+
+                    {{ form_row(form.newPassword.first, {
+                        'attr': {'class': 'form-control-lg'},
+                        'label': 'update_password.new_password'|trans({}, 'user')
+                    }) }}
+
+                    {{ form_row(form.newPassword.second, {
+                        'attr': {'class': 'form-control-lg'},
+                        'label': 'update_password.repeat_new_password'|trans({}, 'user')
+                    }) }}
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">
+                            {{ 'update_password.submit'|trans({}, 'user') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

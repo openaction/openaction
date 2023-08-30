@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=1000, user-scalable=yes, initial-scale=0.7">
+    <meta name="referrer" content="origin" />
+
+    <title>Facture {{ invoice.invoiceNumber }} | {{ company.name }}</title>
+
+    <style>
+        {{ include('billing/_includes/normalize.css.twig') }}
+        {{ include('billing/_includes/invoice.css.twig') }}
+    </style>
+</head>
+<body class="A4">
+    <section class="sheet padding-10mm">
+        <div class="invoice-head">
+            <div class="invoice-head-logo">
+                {{ include('billing/_includes/logo-'~company.code~'.html.twig') }}
+            </div>
+            <div class="invoice-head-address">
+                {{ company.addressName }}<br />
+                {{ company.addressStreet }}<br />
+                {{ company.addressCity }}<br />
+                Email : <a href="mailto:{{ company.email }}" target="_blank">{{ company.email }}</a>
+            </div>
+            <div class="invoice-head-details">
+                <div>
+                    <span class="invoice-head-details-label">N° TVA</span>
+                    {{ company.vatNumber }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">Forme</span>
+                    {{ company.structure }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">Siret</span>
+                    {{ company.siret }}
+                </div>
+                <div>
+                    <span class="invoice-head-details-label">RCS</span>
+                    {{ company.rcs }}
+                </div>
+            </div>
+        </div>
+
+        <div class="invoice-intro">
+            <div class="invoice-details">
+                <h1 class="invoice-number">
+                    Facture {{ invoice.invoiceNumber }}
+                </h1>
+
+                <div>
+                    <span class="invoice-details-label">Date</span>
+                    {{ invoice.paidAt|format_date }}
+                </div>
+                <div>
+                    <span class="invoice-details-label">Statut</span>
+                    {% if invoice.paidAt %}
+                        Payée
+                    {% else %}
+                        A payer
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="invoice-recipient">
+                {{ invoice.organization.billingName }}<br />
+                {{ invoice.organization.billingAddressStreetLine1 }}<br />
+                {% if invoice.organization.billingAddressStreetLine2 %}
+                    {{ invoice.organization.billingAddressStreetLine2 }}<br />
+                {% endif %}
+                {{ invoice.organization.billingAddressPostalCode }}
+                {{ invoice.organization.billingAddressCity }}
+                {{ invoice.organization.billingAddressCountry }}<br />
+                Email : <a href="mailto:{{ invoice.organization.billingEmail }}" target="_blank">{{ invoice.organization.billingEmail }}</a>
+            </div>
+        </div>
+
+        <div class="invoice-lines-head">
+            <div class="invoice-lines-product">
+                Produit
+            </div>
+            <div class="invoice-lines-quantity">
+                Quantité
+            </div>
+            <div class="invoice-lines-price">
+                Total HT
+            </div>
+            <div class="invoice-lines-price">
+                TVA
+            </div>
+            <div class="invoice-lines-price">
+                Total TTC
+            </div>
+        </div>
+
+        {% set totalExclTax = 0 %}
+        {% set total = 0 %}
+
+        {% for line in invoice.lines %}
+            {% set totalExclTax = totalExclTax + line.totalAmountExcludingTaxes %}
+            {% set total = total + line.totalAmountIncludingTaxes %}
+
+            <div class="invoice-lines-line">
+                <div class="invoice-lines-product">
+                    <strong>
+                        {{ line.name }}
+                    </strong>
+                    <br />
+                    <div class="invoice-lines-product-description">
+                        {{ line.description|nl2br|raw }}
+                    </div>
+                </div>
+                <div class="invoice-lines-quantity">
+                    {{ line.quantity|format_number({}, 'decimal', 'default', 'fr') }}
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalAmountExcludingTaxes|format_currency('eur', {}, 'fr') }}
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalVatAmount|format_currency('eur', {}, 'fr') }}
+                    <br />
+                    <span class="invoice-lines-product-description">{{ line.vatRate|format_number({ fraction_digit: 1 }, 'decimal', 'default', 'fr') }} %</span>
+                </div>
+                <div class="invoice-lines-price">
+                    {{ line.totalAmountIncludingTaxes|format_currency('eur', {}, 'fr') }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="invoice-total">
+            <div class="invoice-total-view">
+                <div class="invoice-total-after-tax">
+                    <span class="invoice-total-label">Total HT</span>
+                    {{ totalExclTax|format_currency('eur', {}, 'fr') }}
+                </div>
+                <div class="invoice-total-after-tax">
+                    <span class="invoice-total-label">Total TTC</span>
+                    {{ total|format_currency('eur', {}, 'fr') }}
+                </div>
+                {% if invoice.paidAt %}
+                    <div>
+                        <span class="invoice-total-label">Reste à payer</span>
+                        0 €
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <footer class="invoice-footer">
+            <div class="invoice-footer-legalities">
+                En cas de retard de paiement, il sera appliqué des pénalités et intérêts de retard
+                suivant le taux minimum légal en vigueur, par mois de retard. En outre, une indemnité
+                forfaitaire pour frais de recouvrement de 40€ sera due.
+            </div>
+        </footer>
+    </section>
+</body>
+</html>

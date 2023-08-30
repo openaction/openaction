@@ -1,0 +1,48 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'send_all.title'|trans({'%title%': campaign.subject}, 'project_emailings') %}
+
+{% block sidebar_emailing 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'send_all.back'|trans({}, 'project_emailings') }}</span>
+            </a>
+
+            <h3 class="mt-2 mb-0">
+                {{ 'send_all.title'|trans({'%title%': campaign.subject}, 'project_emailings') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4 py-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    {{ form_start(form) }}
+
+                    <div class="world-block p-4">
+                        <div class="mb-4">
+                            {{ 'send_all.confirm'|trans({'%count%': countFiltered}, 'project_emailings')|raw }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ 'send_all.send'|trans({}, 'project_emailings') }}
+                        </button>
+
+                        <a href="{{ path('console_community_emailing', {'projectUuid': current_project.uuid}) }}"
+                           class="btn btn-secondary ml-2">
+                            {{ 'send_all.cancel'|trans({}, 'project_emailings') }}
+                        </a>
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

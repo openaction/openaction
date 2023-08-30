@@ -1,0 +1,164 @@
+{% extends 'console/base.html.twig' %}
+
+{% block flashes '' %}
+
+{% block page %}
+    <div class="container-fluid px-5 mb-5">
+        <div class="mt-4 mb-4">
+            <h5 class="font-weight-normal">
+                <span class="text-muted">{{ 'breadcrumb'|trans({}, 'organization_community') }}</span>
+                <i class="fal fa-angle-right text-muted mr-1 ml-1"></i>
+                {{ 'title'|trans({}, 'organization_community') }}
+            </h5>
+        </div>
+
+        <div class="row">
+            <div class="col-12 world-sidebar">
+                <div class="mb-3">
+                    <span class="world-sidebar-category">
+                        {{ 'sidebar.community.label'|trans({}, 'organization_community') }}
+                    </span>
+
+                    <a href="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item {% block sidebar_contacts '' %}">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-database"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.community.contacts'|trans({}, 'organization_community') }}
+                        </div>
+                    </a>
+
+                    <a href="{{ path('console_organization_community_contacts_import', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item {% block sidebar_import '' %}">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-cloud-upload"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.community.import'|trans({}, 'organization_community') }}
+                        </div>
+                    </a>
+
+                    <a href="{{ csrf_path('console_organization_community_contacts_export', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-cloud-download"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.community.export'|trans({}, 'organization_community') }}
+                        </div>
+                    </a>
+
+                    <a href="{{ path('console_organization_community_ambiguities', {'organizationUuid': current_organization.uuid}) }}"
+                       class="world-sidebar-item {% block sidebar_ambiguities '' %}">
+                        <div class="world-sidebar-item-icon">
+                            <i class="fad fa-clone"></i>
+                        </div>
+                        <div class="world-sidebar-item-label">
+                            {{ 'sidebar.community.ambiguities'|trans({}, 'organization_community') }}
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mb-3">
+                    <span class="world-sidebar-category">
+                        {{ 'sidebar.configuration.label'|trans({}, 'organization_community') }}
+                    </span>
+
+                    {% if current_organization.isFeatureInPlan('feature_community_emailing_tags') %}
+                        <a href="{{ path('console_organization_community_configure_tags', {'organizationUuid': current_organization.uuid}) }}"
+                           class="world-sidebar-item {% block sidebar_tags '' %}">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-tags"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.tags'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('console_organization_upgrade', {'organizationUuid': current_organization.uuid, 'feature': 'feature_community_emailing_tags'}) }}"
+                           class="world-sidebar-item world-sidebar-item-disabled">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-tags"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.tags'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% endif %}
+
+                    {% if current_organization.isFeatureInPlan('feature_community_contacts_flags') %}
+                        <a href="{{ path('console_organization_community_configure_main_tags', {'organizationUuid': current_organization.uuid}) }}"
+                           class="world-sidebar-item {% block sidebar_main_tags '' %}">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-flag-alt"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.main_tags'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('console_organization_upgrade', {'organizationUuid': current_organization.uuid, 'feature': 'feature_community_contacts_flags'}) }}"
+                           class="world-sidebar-item world-sidebar-item-disabled">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-flag-alt"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.main_tags'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% endif %}
+
+                    {% if current_organization.isFeatureInPlan('feature_community_automations') %}
+                        <a href="{{ path('console_organization_community_automation', {'organizationUuid': current_organization.uuid}) }}"
+                           class="world-sidebar-item {% block sidebar_automation '' %}">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-play"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.automation'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('console_organization_upgrade', {'organizationUuid': current_organization.uuid, 'feature': 'feature_community_automations'}) }}"
+                           class="world-sidebar-item world-sidebar-item-disabled">
+                            <div class="world-sidebar-item-icon">
+                                <i class="fad fa-play"></i>
+                            </div>
+                            <div class="world-sidebar-item-label">
+                                {{ 'sidebar.configuration.automation'|trans({}, 'organization_community') }}
+                            </div>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-10">
+                {% block community_flashes %}
+                    {% for type, messages in app.flashes(['success', 'warning', 'error']) %}
+                        {% for message in messages %}
+                            <div class="world-alert alert alert-bg-{{ type }}">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto pr-3">
+                                        {% if type == 'success' %}
+                                            <i class="far fa-check"></i>
+                                        {% elseif type == 'warning' %}
+                                            <i class="far fa-exclamation-triangle"></i>
+                                        {% elseif type == 'error' %}
+                                            <i class="far fa-times"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {{ message|trans({}, 'flashes') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content '' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

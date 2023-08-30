@@ -1,0 +1,49 @@
+<div style="min-width: 350px;">
+    <div style="display: flex;">
+        <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Projects
+            </div>
+            <div>
+                {{ entity.instance.projects|length }}
+                <small style="color: #999">/ {{ entity.instance.projectsSlots }}</small>
+            </div>
+        </div>
+
+        <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Emails credits
+            </div>
+            <div>
+                {{ entity.instance.creditsBalance|format_number }}
+            </div>
+        </div>
+
+        <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Texts credits
+            </div>
+            <div>
+                {{ entity.instance.textsCreditsBalance|format_number }}
+            </div>
+        </div>
+
+        <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Users
+            </div>
+            <div>
+                {{ entity.instance.members|length }}
+            </div>
+        </div>
+
+        <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+            <div style="font-size: 11px; color: #999">
+                Contacts
+            </div>
+            <div>
+                {{ entity.instance.contacts|length }}
+            </div>
+        </div>
+    </div>
+</div>

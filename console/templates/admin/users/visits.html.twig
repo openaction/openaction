@@ -1,0 +1,23 @@
+<div style="min-width: 250px; margin: 0 10px;">
+    <div style="font-size: 11px; color: #999; margin-bottom: 3px; text-align: center">
+        Last visit:
+        {% if entity.instance.lastVisitDate %}
+            <span style="color: #333">{{ entity.instance.lastVisitDate|date('d/m') }}</span>
+        {% else %}
+            never
+        {% endif %}
+    </div>
+
+    <div style="display: flex;">
+        {% for date, pageViews in entity.instance.lastWeekPageViews %}
+            <div style="flex-basis: 0; flex-grow: 1; text-align: center; margin-right: 0;">
+                <div style="font-size: 11px; text-transform: uppercase; color: #999">
+                    {{ date|date('d/m') }}
+                </div>
+                <div>
+                    {{ pageViews }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

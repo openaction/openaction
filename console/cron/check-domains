@@ -1,0 +1,5 @@
+#!/bin/sh
+
+php /app/bin/console app:proxy:check-cloudflare
+php /app/bin/console app:proxy:check-sendgrid
+php /app/bin/console app:proxy:check-postmark

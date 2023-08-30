@@ -1,0 +1,43 @@
+{% extends 'console/user/base.html.twig' %}
+
+{% block page_title 'two_factor.status.title'|trans({}, 'user') %}
+
+{% block sidebar_2fa 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'two_factor.status.title'|trans({}, 'user') }}
+        </h3>
+
+        <div class="p-4 p-lg-5 bg-light">
+            <div class="mb-4">
+                {{ 'two_factor.status.desc'|trans({}, 'user') }}
+            </div>
+
+            {% if not app.user.twoFactorEnabled %}
+                <div class="text-danger mb-2">
+                    <i class="fal fa-times mr-1"></i>
+                    {{ 'two_factor.status.disabled.label'|trans({}, 'user') }}
+                </div>
+
+                <a href="{{ path('console_user_2fa_confirm_password') }}"
+                   class="btn btn-primary">
+                    {{ 'two_factor.status.disabled.enable'|trans({}, 'user') }}
+                </a>
+            {% else %}
+                <div class="text-success mb-2">
+                    <i class="fal fa-check mr-1"></i>
+                    {{ 'two_factor.status.enabled.label'|trans({}, 'user') }}
+                </div>
+
+                <a href="{{ csrf_path('console_user_2fa_disable') }}"
+                   class="btn btn-danger"
+                   data-controller="delete"
+                   data-message="{{ 'two_factor.status.enabled.disable_confirm'|trans({}, 'user') }}">
+                    {{ 'two_factor.status.enabled.disable'|trans({}, 'user') }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

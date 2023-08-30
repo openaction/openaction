@@ -1,0 +1,1186 @@
+{
+    "delete_confirm": {
+        "title": "Are you sure?",
+        "yes": "Yes, continue",
+        "no": "No, cancel",
+        "error": "An error occured. Can you retry? If the problem persists, try to reload the page or contact us."
+    },
+    "status_view": {
+        "saving": "Saving...",
+        "saved": "Saved",
+        "error": "An error occured"
+    },
+    "published_at_view": {
+        "draft": "Draft",
+        "published": "Published",
+        "scheduled": "Scheduled"
+    },
+    "pagination": {
+        "previous": "Previous",
+        "next": "Next"
+    },
+    "category-chooser": {
+        "all_categories": "All categories"
+    },
+    "publication_editor": {
+        "document_status": {
+            "draft": "This content is currently a draft",
+            "published": "This content has been published",
+            "scheduled": "This content is scheduled to be published"
+        },
+        "publish": {
+            "title": "Publish now",
+            "description": "Publishing this content now will make it public immediatly.",
+            "button": "Publish"
+        },
+        "unpublish": {
+            "title": "Unpublish",
+            "description": "Unpublishing this content will remove it from your website and set it back to draft.",
+            "button": "Unpublish now"
+        },
+        "schedule": {
+            "title": "Schedule publishing",
+            "description": "Scheduling this content will make it automatically public on the scheduled date.",
+            "date_placeholder": "Scheduled date",
+            "date_help": "Use the format DD/MM/YYYY HH:MM (for instance, use 01/12/2020 14:30 for the 1st of December 2020, 2:30 PM)",
+            "button": "Schedule"
+        },
+        "cancel_schedule": {
+            "title": "Cancel the scheduled publishing",
+            "description": "Cancelling the scheduled publish will set your content as draft again.",
+            "button": "Cancel"
+        }
+    },
+    "area_selector": {
+        "add": {
+            "label": "Add an area",
+            "country": "Country",
+            "whole": "The whole area",
+            "apply": "Add area",
+            "already_included": "This area is already included in configured areas, you don't need to add it again."
+        },
+        "configured": {
+            "label": "Configured areas",
+            "no_areas": "No areas configured yet.",
+            "delete": "Remove"
+        }
+    },
+    "organization": {
+        "create-project": {
+            "area": {
+                "label": "Project type",
+                "help": "What type of project do you want to create?",
+                "global": {
+                    "label": "Global",
+                    "help": "Global projects are organization-wide projects. They don't have geographical constraints and they concern all your contacts."
+                },
+                "local": {
+                    "label": "Local",
+                    "help": "Local projects are projects focused on specific areas. By configuring project areas, you will be able to target visitors, contacts and members located in these areas.",
+                    "configure": "Configure area",
+                    "modal": {
+                        "title": "Configure local project areas",
+                        "description": "By configuring project areas, you will be able to target your visitors, contacts and members located in these areas.",
+                        "save": "Save"
+                    }
+                },
+                "thematic": {
+                    "label": "Thematic",
+                    "help": "Thematic projects are projects focused on specific topics. By configuring project tags, you will be able to target visitors, contacts and members associated to these tags.",
+                    "configure": "Configure tags",
+                    "modal": {
+                        "title": "Configure thematic project tags",
+                        "description": "By configuring project tags, you will be able to target visitors, contacts and members associated to these tags.",
+                        "save": "Save"
+                    }
+                }
+            },
+            "modules-chooser": {
+                "label": "Modules",
+                "help": "Which features do you want to enable on this project?",
+                "modules": {
+                    "website": "Website",
+                    "community": "Community",
+                    "members_area": "Members area"
+                },
+                "tools": {
+                    "website_pages": {
+                        "label": "Content pages",
+                        "help": "Explain your ideas and your actions."
+                    },
+                    "website_posts": {
+                        "label": "Posts",
+                        "help": "Communicate about the latest news of your initiative."
+                    },
+                    "website_documents": {
+                        "label": "Documents",
+                        "help": "Upload and share documents using your website's URL."
+                    },
+                    "website_events": {
+                        "label": "Events",
+                        "help": "Organize public or internal events."
+                    },
+                    "website_forms": {
+                        "label": "Forms",
+                        "help": "Collect and organize information from your visitors."
+                    },
+                    "website_newsletter": {
+                        "label": "Newsletter form",
+                        "help": "Display a form on your website to register to your newsletter."
+                    },
+                    "website_trombinoscope": {
+                        "label": "Trombinoscope",
+                        "help": "Show a list of persons and their photos on your website."
+                    },
+                    "website_manifesto": {
+                        "label": "Manifesto",
+                        "help": "Display your proposals organized by topics and once elected, associate status to these proposals to show your actions."
+                    },
+                    "community_contacts": {
+                        "label": "Contacts",
+                        "help": "Explore and manage your community."
+                    },
+                    "community_emailing": {
+                        "label": "Email campaigns",
+                        "help": "Send targeted email campaigns to your audience."
+                    },
+                    "community_texting": {
+                        "label": "Text campaigns",
+                        "help": "Send targeted text campaigns to your audience."
+                    },
+                    "community_phoning": {
+                        "label": "Phone campaigns",
+                        "help": "Send and monitor phoning campaigns to your audience."
+                    },
+                    "community_printing": {
+                        "label": "Print campaigns",
+                        "help": "Launch and monitor print campaigns to your audience."
+                    },
+                    "members_area_account": {
+                        "label": "User account",
+                        "help": "Allow your members to log into an area to update their details. You should only enable this tool on your organization's main website."
+                    },
+                    "members_area_resources": {
+                        "label": "Exclusive resources",
+                        "help": "Share exclusive content and documents with your members."
+                    },
+                    "members_area_posts": {
+                        "label": "Exclusive posts",
+                        "help": "Write posts reserved to your members."
+                    },
+                    "members_area_events": {
+                        "label": "Exclusive events",
+                        "help": "Promote events reserved to your members."
+                    },
+                    "members_area_forms": {
+                        "label": "Exclusive forms",
+                        "help": "Promote forms reserved to your members."
+                    }
+                }
+            }
+        }
+    },
+    "post": {
+        "edit": {
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "update_metadata": "Update details",
+            "social_share": "Share",
+            "metadata_modal": {
+                "title": "Update post details",
+                "image": {
+                    "label": "Main image",
+                    "placeholder": "Send an image",
+                    "uploading": "Uploading...",
+                    "help": "Ideal: 1700px in width, 1080px in height, maximum 10Mb"
+                },
+                "video": {
+                    "label": "Main video (YouTube or Facebook)",
+                    "placeholder": "Example: https://youtube.com/watch?v=Q4qrRlYhYuj",
+                    "help": "If provided, this video will replace the main image."
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this post"
+                },
+                "onlyForMembers": {
+                    "label": "Restrict this post to members",
+                    "help": "If enabled, only logged-in members will be able to see this post."
+                },
+                "description": {
+                    "label": "Description",
+                    "help": "The description is used on Google and social media under the page title. Maximum 150 characters."
+                },
+                "quote": {
+                    "label": "Quote",
+                    "help": "Brief description about this Post. Maximum 100 characters."
+                },
+                "close": "Close"
+            },
+            "publish_modal": {
+                "title": "Publication"
+            },
+            "social_share_modal": {
+                "title": "Share this post on social networks",
+                "close": "Close"
+            }
+        }
+    },
+    "page": {
+        "edit": {
+            "update_metadata": "Update details",
+            "social_share": "Share",
+            "metadata_modal": {
+                "title": "Update page details",
+                "image": {
+                    "label": "Main image",
+                    "placeholder": "Send an image",
+                    "uploading": "Uploading...",
+                    "help": "Ideal: 1700px in width, 1080px in height, maximum 10Mb"
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this page"
+                },
+                "onlyForMembers": {
+                    "label": "Restrict this page to members",
+                    "help": "If enabled, only logged-in members will be able to see this page."
+                },
+                "description": {
+                    "label": "Description",
+                    "help": "The description is used on Google and social media under the page title. Maximum 150 characters."
+                },
+                "close": "Close"
+            },
+            "social_share_modal": {
+                "title": "Share this page on social networks",
+                "close": "Close"
+            }
+        }
+    },
+    "event": {
+        "edit": {
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "update_metadata": "Update details",
+            "social_share": "Share",
+            "metadata_modal": {
+                "title": "Update event details",
+                "image": {
+                    "label": "Event image",
+                    "placeholder": "Send an image",
+                    "uploading": "Uploading...",
+                    "help": "Ideal: 1700px in width, 1080px in height, maximum 10mb"
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this event"
+                },
+                "onlyForMembers": {
+                    "label": "Restrict this event to members",
+                    "help": "If enabled, only logged-in members will be able to see this event."
+                },
+                "close": "Close"
+            },
+            "publish_modal": {
+                "title": "Publication"
+            },
+            "social_share_modal": {
+                "title": "Share this event on social networks",
+                "close": "Close"
+            }
+        }
+    },
+    "trombinoscope": {
+        "edit": {
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "update_metadata": "Update details",
+            "metadata_modal": {
+                "title": "Update person details",
+                "image": {
+                    "label": "Main image",
+                    "placeholder": "Send an image",
+                    "uploading": "Uploading...",
+                    "help": "Ideal: 1000px in width, 1000px in height, maximum 10Mb"
+                },
+                "role": {
+                    "label": "Role",
+                    "help": "Role of this person in your campaign, movement, organization, ... Maximum 250 characters."
+                },
+                "socials": {
+                    "label": "Social links",
+                    "help": "Links to the social networks of this person.",
+                    "socialEmail": "Email address",
+                    "socialFacebook": "Facebook URL",
+                    "socialTwitter": "Twitter URL",
+                    "socialInstagram": "Instagram URL",
+                    "socialLinkedIn": "LinkedIn URL",
+                    "socialYoutube": "Youtube URL",
+                    "socialMedium": "Medium URL",
+                    "socialTelegram": "Telegram username"
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this person"
+                },
+                "close": "Close"
+            },
+            "publish_modal": {
+                "title": "Publication"
+            }
+        }
+    },
+    "manifesto": {
+        "topic": {
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "social_share": "Share",
+            "image": {
+                "label": "Topic image",
+                "placeholder": "Send an image",
+                "uploading": "Uploading..."
+            },
+            "publish_modal": {
+                "title": "Publication"
+            },
+            "social_share_modal": {
+                "title": "Share this topic on social networks",
+                "close": "Close"
+            }
+        },
+        "proposal": {
+            "update_metadata": "Configure progression",
+            "metadata_modal": {
+                "title": "Configure proposal progression",
+                "help": "Link your actions as an elected official to your campaign proposals.",
+                "status": {
+                    "label": "What is the status of this proposal?",
+                    "choices": {
+                        "todo": "To do",
+                        "in_progress": "In progress",
+                        "done": "Done"
+                    }
+                },
+                "statusDescription": {
+                    "label": "Description of the current status",
+                    "help": "Explain in a few words what is the status of this proposal."
+                },
+                "statusCtaText": {
+                    "label": "Button text (optional)",
+                    "help": "If you wish to add a button next to this status, configure its text here."
+                },
+                "statusCtaUrl": {
+                    "label": "Button target URL (optional)",
+                    "help": "If you wish to add a button next to this status, configure its target URL here."
+                },
+                "close": "Close"
+            }
+        }
+    },
+    "form": {
+        "proposeNewsletter": "Propose to subscribe to the newsletter at the end of the form?",
+        "onlyForMembers": "Restrict this form to members",
+        "question": "Question ...",
+        "untitled": "Untitled",
+        "list_hidden_tags": "List of the tags to add on send, separated by commas",
+        "paragraph": "Paragraph",
+        "required": "Required?",
+        "add_choice": "Add a choice",
+        "add_block": "Add a block",
+        "confirm": "Confirm",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "cancel": "Cancel",
+        "money_amount_custom": "Visitors will also be able to enter a custom amount.",
+        "redirectUrl": "Redirection URL after form submission",
+        "redirectUrlHelp": "Keep empty to not redirect after the form submission",
+        "typesGroups": {
+            "fields": {
+                "label": "Collect data",
+                "help": "Use fields to ask questions and collect data from your visitors."
+            },
+            "automatic_fields": {
+                "label": "Update automatically your contacts data",
+                "help": "Use automatic fields to update your contacts data when the form is sent and if an email is provided. No contact will be created or updated if you don't ask for the email."
+            },
+            "tags_fields": {
+                "label": "Associate tags automatically to your contacts",
+                "help": "Use tags fields to associate tags to your contacts when the form is sent."
+            },
+            "custom_content": {
+                "label": "Insert custom content",
+                "help": "Insert custom content to give a structure to your form."
+            }
+        },
+        "types": {
+            "text": "Short answer",
+            "textarea": "Long answer",
+            "select": "Dropdown",
+            "radio": "Choices",
+            "rating": "Rating",
+            "checkbox": "Checkboxes",
+            "date": "Date",
+            "time": "Time",
+            "file": "File",
+            "money_amount": "Money amount",
+            "confirmation": "Confirmation",
+
+            "email": "Email",
+            "formal_title": "Formal title",
+            "firstname": "First name",
+            "middlename": "Middle name",
+            "lastname": "Last name",
+            "birthdate": "Birthdate",
+            "gender": "Gender",
+            "nationality": "Nationality",
+            "phone": "Phone",
+            "work_phone": "Work phone",
+            "social_facebook": "Facebook profile URL",
+            "social_twitter": "Twitter username",
+            "social_linkedin": "LinkedIn profile URL",
+            "social_telegram": "Telegram phone number",
+            "social_whatsapp": "Whatsapp phone number",
+            "street_address": "Street address",
+            "street_address_2": "Street address (line 2)",
+            "zip_code": "Zip code",
+            "city": "Ville",
+            "country": "Country",
+            "company": "Company",
+            "job_title": "Job title",
+            "picture": "Profile picture",
+
+            "tag_radio": "Add a tag depending on the answer to a single choice",
+            "tag_checkbox": "Add multiple tags depending on the answer to a multiple choice",
+            "tag_hidden": "Automatically add tags when an answer is sent",
+
+            "header": "Heading",
+            "paragraph": "Paragraph",
+            "html": "Custom HTML"
+        }
+    },
+    "emailing": {
+        "filter_preview": "Targeted contacts:",
+        "none": {
+            "label": "Send to all contacts",
+            "help": "Your campaign will be sent to all your contacts."
+        },
+        "member": {
+            "label": "Send to all members",
+            "help": "Your campaign will be sent to all your members."
+        },
+        "area": {
+            "label": "Send to contacts located in specific areas",
+            "help": "Your campaign will be sent only to contacts in configured areas.",
+            "configure": "Configure areas",
+            "modal": {
+                "title": "Configure campaign areas",
+                "description": "By configuring the campaign areas, you will send the campaign only to contacts located in these areas.",
+                "save": "Save"
+            }
+        },
+        "tag": {
+            "label": "Send to contacts with specific tags",
+            "help": "Your campaign will be sent only to contacts with configured tags.",
+            "configure": "Configure tags",
+            "types": {
+                "or": "Send to contacts who have at least one of the selected tags",
+                "and": "Send to contacts who have all the selected tags"
+            },
+            "modal": {
+                "title": "Configure campaign tags",
+                "description": "By configuring the campaign tags, you will send the campaign only to contacts with these tags.",
+                "save": "Save"
+            }
+        },
+        "contact": {
+            "label": "Send to specific contacts",
+            "help": "Your campaign will be sent only to the contacts of your choosing.",
+            "configure": "Configure specific contacts",
+            "modal": {
+                "title": "Configure specific contacts",
+                "description": "By configuring specific contacts, you will send the campaign only to those contacts. You can select up to 100 existing contacts.",
+                "save": "Save",
+                "placeholder": "One email address per line :\nemail1@example.com\nemail2@example.com\n..."
+            }
+        },
+        "stats": {
+            "sending": "Sending...",
+            "sent": "Sent",
+            "opened": "Opened",
+            "clicked": "Clicked"
+        },
+        "report": {
+            "columns": {
+                "contact": "Contact",
+                "firstName": "First name",
+                "lastName": "Last name",
+                "opens": "Openings",
+                "clicks": "Clicks"
+            },
+            "type": {
+                "member": "Member",
+                "contact": "Contact"
+            },
+            "settings": {
+                "subscribed": "Subscribed",
+                "unsubscribed": "Unsubscribed"
+            },
+            "filter": {
+                "member": "Only members",
+                "contact": "Only non-members",
+                "checked": "Checked",
+                "unchecked": "Unchecked"
+            }
+        }
+    },
+    "texting": {
+        "filter_preview": "Targeted contacts:",
+        "none": {
+            "label": "Send to all contacts",
+            "help": "Your campaign will be sent to all your contacts."
+        },
+        "member": {
+            "label": "Send to all members",
+            "help": "Your campaign will be sent to all your members."
+        },
+        "area": {
+            "label": "Send to contacts located in specific areas",
+            "help": "Your campaign will be sent only to contacts in configured areas.",
+            "configure": "Configure areas",
+            "modal": {
+                "title": "Configure campaign areas",
+                "description": "By configuring the campaign areas, you will send the campaign only to contacts located in these areas.",
+                "save": "Save"
+            }
+        },
+        "tag": {
+            "label": "Send to contacts with specific tags",
+            "help": "Your campaign will be sent only to contacts with configured tags.",
+            "configure": "Configure tags",
+            "types": {
+                "or": "Send to contacts who have at least one of the selected tags",
+                "and": "Send to contacts who have all the selected tags"
+            },
+            "modal": {
+                "title": "Configure campaign tags",
+                "description": "By configuring the campaign tags, you will send the campaign only to contacts with these tags.",
+                "save": "Save"
+            }
+        },
+        "contact": {
+            "label": "Send to specific contacts",
+            "help": "Your campaign will be sent only to the contacts of your choosing.",
+            "configure": "Configure specific contacts",
+            "modal": {
+                "title": "Configure specific contacts",
+                "description": "By configuring specific contacts, you will send the campaign only to those contacts. You can select up to 100 existing contacts.",
+                "save": "Save",
+                "placeholder": "One international phone number per line :\n+33757592064\n+33757592579\n..."
+            }
+        },
+        "stats": {
+            "sending": "Sending...",
+            "sent": "Sent"
+        }
+    },
+    "community": {
+        "list": {
+            "columns": {
+                "contact": "Contact",
+                "firstName": "First name",
+                "lastName": "Last name",
+                "createdAt": "Date",
+                "tags": "Tags"
+            },
+            "type": {
+                "member": "Member",
+                "contact": "Contact"
+            },
+            "settings": {
+                "subscribed": "Subscribed",
+                "unsubscribed": "Unsubscribed"
+            },
+            "filter": {
+                "member": "Only members",
+                "contact": "Only non-members",
+                "checked": "Checked",
+                "unchecked": "Unchecked"
+            }
+        },
+        "texting": {
+            "gsm_invalid": "Text invalid to send SMS"
+        }
+    },
+    "social_sharer": {
+        "menu": {
+            "facebook": "Share on Facebook",
+            "twitter": "Share on Twitter",
+            "linkedin": "Share on LinkedIn",
+            "telegram": "Share on Telegram",
+            "whatsapp": "Share on Whatsapp"
+        },
+        "finalize": {
+            "facebook": "Finalize on Facebook",
+            "twitter": "Finalize on Twitter",
+            "linkedin": "Finalize on LinkedIn",
+            "telegram": "Finalize on Telegram",
+            "whatsapp": "Finalize on Whatsapp"
+        }
+    },
+    "charts": {
+        "labels": {
+            "date": "Date",
+            "total": "Total"
+        }
+    },
+    "aggrid": {
+        "selectAll": "(Select All)",
+        "selectAllSearchResults": "(Select All Search Results)",
+        "searchOoo": "Search...",
+        "blanks": "(Blanks)",
+        "noMatches": "No matches",
+        "filterOoo": "Filter...",
+        "equals": "Equals",
+        "notEqual": "Not equal",
+        "empty": "Choose One",
+        "lessThan": "Less than",
+        "greaterThan": "Greater than",
+        "lessThanOrEqual": "Less than or equal",
+        "greaterThanOrEqual": "Greater than or equal",
+        "inRange": "In range",
+        "inRangeStart": "to",
+        "inRangeEnd": "from",
+        "contains": "Contains",
+        "notContains": "Not contains",
+        "startsWith": "Starts with",
+        "endsWith": "Ends with",
+        "dateFormatOoo": "yyyy-mm-dd",
+        "andCondition": "AND",
+        "orCondition": "OR",
+        "applyFilter": "Apply",
+        "resetFilter": "Reset",
+        "clearFilter": "Clear",
+        "cancelFilter": "Cancel",
+        "textFilter": "Text Filter",
+        "numberFilter": "Number Filter",
+        "dateFilter": "Date Filter",
+        "setFilter": "Set Filter",
+        "columns": "Columns",
+        "filters": "Filters",
+        "pivotMode": "Pivot Mode",
+        "groups": "Row Groups",
+        "rowGroupColumnsEmptyMessage": "Drag here to set row groups",
+        "values": "Values",
+        "valueColumnsEmptyMessage": "Drag here to aggregate",
+        "pivots": "Column Labels",
+        "pivotColumnsEmptyMessage": "Drag here to set column labels",
+        "group": "Group",
+        "loadingOoo": "Loading...",
+        "noRowsToShow": "No Rows To Show",
+        "enabled": "Enabled",
+        "pinColumn": "Pin Column",
+        "pinLeft": "Pin Left",
+        "pinRight": "Pin Right",
+        "noPin": "No Pin",
+        "valueAggregation": "Value Aggregation",
+        "autosizeThiscolumn": "Autosize This Column",
+        "autosizeAllColumns": "Autosize All Columns",
+        "groupBy": "Group by",
+        "ungroupBy": "Un-Group by",
+        "resetColumns": "Reset Columns",
+        "expandAll": "Expand All",
+        "collapseAll": "Close All",
+        "copy": "Copy",
+        "ctrlC": "Ctrl+C",
+        "copyWithHeaders": "Copy With Headers",
+        "paste": "Paste",
+        "ctrlV": "Ctrl+V",
+        "export": "Export",
+        "csvExport": "CSV Export",
+        "excelExport": "Excel Export (.xlsx)",
+        "excelXmlExport": "Excel Export (.xml)",
+        "sum": "Sum",
+        "min": "Min",
+        "max": "Max",
+        "none": "None",
+        "count": "Count",
+        "avg": "Average",
+        "filteredRows": "Filtered",
+        "selectedRows": "Selected",
+        "totalRows": "Total Rows",
+        "totalAndFilteredRows": "Rows",
+        "more": "More",
+        "to": "to",
+        "of": "of",
+        "page": "Page",
+        "nextPage": "Next Page",
+        "lastPage": "Last Page",
+        "firstPage": "First Page",
+        "previousPage": "Previous Page",
+        "pivotChartAndPivotMode": "Pivot Chart & Pivot Mode",
+        "pivotChart": "Pivot Chart",
+        "chartRange": "Chart Range",
+        "columnChart": "Column",
+        "groupedColumn": "Grouped",
+        "stackedColumn": "Stacked",
+        "normalizedColumn": "100% Stacked",
+        "barChart": "Bar",
+        "groupedBar": "Grouped",
+        "stackedBar": "Stacked",
+        "normalizedBar": "100% Stacked",
+        "pieChart": "Pie",
+        "pie": "Pie",
+        "doughnut": "Doughnut",
+        "line": "Line",
+        "xyChart": "X Y (Scatter)",
+        "scatter": "Scatter",
+        "bubble": "Bubble",
+        "areaChart": "Area",
+        "area": "Area",
+        "stackedArea": "Stacked",
+        "normalizedArea": "100% Stacked",
+        "histogramChart": "Histogram",
+        "pivotChartTitle": "Pivot Chart",
+        "rangeChartTitle": "Range Chart",
+        "settings": "Settings",
+        "data": "Data",
+        "format": "Format",
+        "categories": "Categories",
+        "defaultCategory": "(None)",
+        "series": "Series",
+        "xyValues": "X Y Values",
+        "paired": "Paired Mode",
+        "axis": "Axis",
+        "navigator": "Navigator",
+        "color": "Color",
+        "thickness": "Thickness",
+        "xType": "X Type",
+        "automatic": "Automatic",
+        "category": "Category",
+        "number": "Number",
+        "time": "Time",
+        "xRotation": "X Rotation",
+        "yRotation": "Y Rotation",
+        "ticks": "Ticks",
+        "width": "Width",
+        "height": "Height",
+        "length": "Length",
+        "padding": "Padding",
+        "spacing": "Spacing",
+        "chart": "Chart",
+        "title": "Title",
+        "titlePlaceholder": "Chart title - double click to edit",
+        "background": "Background",
+        "font": "Font",
+        "top": "Top",
+        "right": "Right",
+        "bottom": "Bottom",
+        "left": "Left",
+        "labels": "Labels",
+        "size": "Size",
+        "minSize": "Minimum Size",
+        "maxSize": "Maximum Size",
+        "legend": "Legend",
+        "position": "Position",
+        "markerSize": "Marker Size",
+        "markerStroke": "Marker Stroke",
+        "markerPadding": "Marker Padding",
+        "itemSpacing": "Item Spacing",
+        "itemPaddingX": "Item Padding X",
+        "itemPaddingY": "Item Padding Y",
+        "layoutHorizontalSpacing": "Horizontal Spacing",
+        "layoutVerticalSpacing": "Vertical Spacing",
+        "strokeWidth": "Stroke Width",
+        "offset": "Offset",
+        "offsets": "Offsets",
+        "tooltips": "Tooltips",
+        "callout": "Callout",
+        "markers": "Markers",
+        "shadow": "Shadow",
+        "blur": "Blur",
+        "xOffset": "X Offset",
+        "yOffset": "Y Offset",
+        "lineWidth": "Line Width",
+        "normal": "Normal",
+        "bold": "Bold",
+        "italic": "Italic",
+        "boldItalic": "Bold Italic",
+        "predefined": "Predefined",
+        "fillOpacity": "Fill Opacity",
+        "strokeOpacity": "Line Opacity",
+        "histogramBinCount": "Bin count",
+        "columnGroup": "Column",
+        "barGroup": "Bar",
+        "pieGroup": "Pie",
+        "lineGroup": "Line",
+        "scatterGroup": "X Y (Scatter)",
+        "areaGroup": "Area",
+        "histogramGroup": "Histogram",
+        "groupedColumnTooltip": "Grouped",
+        "stackedColumnTooltip": "Stacked",
+        "normalizedColumnTooltip": "100% Stacked",
+        "groupedBarTooltip": "Grouped",
+        "stackedBarTooltip": "Stacked",
+        "normalizedBarTooltip": "100% Stacked",
+        "pieTooltip": "Pie",
+        "doughnutTooltip": "Doughnut",
+        "lineTooltip": "Line",
+        "groupedAreaTooltip": "Area",
+        "stackedAreaTooltip": "Stacked",
+        "normalizedAreaTooltip": "100% Stacked",
+        "scatterTooltip": "Scatter",
+        "bubbleTooltip": "Bubble",
+        "histogramTooltip": "Histogram",
+        "noDataToChart": "No data available to be charted.",
+        "pivotChartRequiresPivotMode": "Pivot Chart requires Pivot Mode enabled."
+    },
+    "contentbuilder": {
+        "Bold": "Bold",
+        "Italic": "Italic",
+        "Hyperlink": "Hyperlink",
+        "Align": "Align",
+        "Paragraph": "Paragraph",
+        "Color": "Color",
+        "Formatting": "Formatting",
+        "List": "List",
+        "Text Settings": "Text Settings",
+        "Icon": "Icon",
+        "Clean": "Clean",
+        "Font": "Font",
+        "Previous": "Previous",
+        "Next": "Next",
+        "More": "More",
+        "Move Up": "Move Up",
+        "Move Down": "Move Down",
+        "Move Left": "Move Left",
+        "Move Right": "Move Right",
+        "Delete": "Delete",
+        "Add": "Add",
+        "Move": "Move",
+        "Duplicate": "Duplicate",
+        "Decrease": "Decrease",
+        "Increase": "Increase",
+        "HTML": "HTML",
+        "Headline": "Headline",
+        "Image": "Image",
+        "Heading 1": "Heading 1",
+        "Heading 2": "Heading 2",
+        "Heading 3": "Heading 3",
+        "Quote": "Quote",
+        "Preformatted": "Preformatted",
+        "Table": "Table",
+        "Spacer": "Spacer",
+        "Horizontal Line": "Horizontal Line",
+        "More...": "More...",
+        "Enlarge": "Enlarge",
+        "Ok": "Ok",
+        "Align Left": "Align Left",
+        "Align Center": "Align Center",
+        "Align Right": "Align Right",
+        "Align Full": "Align Full",
+        "Bullets": "Bullets",
+        "Numbering": "Numbering",
+        "Indent": "Indent",
+        "Outdent": "Outdent",
+        "Heading 4": "Heading 4",
+        "Underline": "Underline",
+        "Strikethrough": "Strikethrough",
+        "Superscript": "Superscript",
+        "Subscript": "Subscript",
+        "Uppercase": "Uppercase",
+        "Clear": "Clear",
+        "Choose..": "Choose..",
+        "Forecolor": "Forecolor",
+        "Backcolor": "Backcolor",
+        "Apply": "Apply",
+        "Cancel": "Cancel",
+        "Change Image": "Change Image",
+        "Link": "Link",
+        "Edit": "Edit",
+        "Source": "Source",
+        "Settings": "Settings",
+        "Change Icon": "Change Icon",
+        "Edit Table": "Edit Table",
+        "Select": "Select",
+        "Open New Window": "Open New Window",
+        "Text": "Text",
+        "Title": "Title",
+        "Free": "Free",
+        "Style": "Style",
+        "Layout": "Layout",
+        "Background": "Background",
+        "Select Color": "Select Color",
+        "Text Color": "Text Color",
+        "Border Thickness": "Border Thickness",
+        "Border Color": "Border Color",
+        "Apply To": "Apply To",
+        "Current Row": "Current Row",
+        "Current Column": "Current Column",
+        "Even Rows": "Even Rows",
+        "Odd Rows": "Odd Rows",
+        "Current Cell": "Current Cell",
+        "Insert Row": "Insert Row",
+        "Above": "Above",
+        "Below": "Below",
+        "Row": "Row",
+        "Column": "Column",
+        "Merge": "Merge",
+        "Merge Cell": "Merge Cell",
+        "css": "css",
+        "Class": "Class",
+        "Box": "Box",
+        "Spacing": "Spacing",
+        "Border": "Border",
+        "Corners": "Corners",
+        "Shadow": "Shadow",
+        "Display": "Display",
+        "Position": "Position",
+        "Effects": "Effects",
+        "Attributes": "Attributes",
+        "Animation": "Animation",
+        "Background Color": "Background Color",
+        "Gradient": "Gradient",
+        "Dimension": "Dimension",
+        "Responsive Positioning": "Responsive Positioning",
+        "Reset margin left on small screen": "Reset margin left on small screen",
+        "Reset margin right on small screen": "Reset margin right on small screen",
+        "Individual Sides": "Individual Sides",
+        "Select Font": "Select Font",
+        "Animate": "Animate",
+        "Delay": "Delay",
+        "Duration": "Duration",
+        "Animate Once": "Animate Once",
+        "Test": "Test",
+        "TEST": "TEST",
+        "Custom": "Custom",
+        "Custom Code (Javascript Allowed)": "Custom Code (Javascript Allowed)",
+        "Module Settings": "Module Settings",
+        "Drag and drop an image or click to browse.": "Drag and drop an image or click to browse.",
+        "Are you sure you want to delete this block?": "Are you sure you want to delete this block?",
+        "Back": "Back",
+        "Or Specify Image Source": "Or Specify Image Source",
+        "Preferences": "Preferences",
+        "Hide element tool": "Hide element tool",
+        "Hide column tool": "Hide column tool",
+        "Line": "Line",
+        "Hide column HTML editor": "Hide column HTML editor",
+        "Hide row HTML editor": "Hide row HTML editor",
+        "Hide row move (up/down) buttons": "Hide row move (up/down) buttons",
+        "HTML syntax highlighting": "HTML syntax highlighting",
+        "Scrollable Editing Toolbar": "Scrollable Editing Toolbar",
+        "Toolbar position": "Toolbar position",
+        "Top": "Top",
+        "Left": "Left",
+        "Right": "Right",
+        "Toolbar visibility": "Toolbar visibility",
+        "Auto": "Auto",
+        "Always Visible": "Always Visible",
+        "Paste result": "Paste result",
+        "HTML (without styles)": "HTML (without styles)",
+        "HTML (with styles)": "HTML (with styles)",
+        "Text only": "Text only",
+        "Add Snippet": "Add Snippet",
+        "Grid Tool": "Grid Tool",
+        "Element Tool": "Element Tool",
+        "Builder Mode": "Builder Mode",
+        "Default": "Default",
+        "Minimal": "Minimal",
+        "Hide outline": "Hide outline",
+        "Hide element highlight": "Hide element highlight",
+        "Row tool position": "Row tool position",
+        "Add (+) button placement": "Add (+) button placement",
+        "Between Blocks (left)": "Between Blocks (left)",
+        "Between Blocks (center)": "Between Blocks (center)",
+        "Outline Mode": "Outline Mode",
+        "Row & column": "Row & column",
+        "Row only": "Row only",
+        "Draggable blocks without handle": "Draggable blocks without handle",
+        "Animated drag to sort": "Animated drag to sort",
+        "Open snippets sidebar on start": "Open snippets sidebar on start",
+        "Scrollable toolbar (top only)": "Scrollable toolbar (top only)",
+        "Please select a block": "Please select a block",
+        "Open snippet sidebar on start": "Open snippet sidebar on start",
+        "Hide snippet handle": "Hide snippet handle",
+        "Undo": "Undo",
+        "Redo": "Redo",
+        "Empty": "Empty",
+        "+ Click to add content": "+ Click to add content",
+        "B": "B",
+        "W": "W",
+        "Outline Style": "Outline Style",
+        "Colored": "Colored",
+        "Gray": "Gray",
+        "Hide Outline": "Hide Outline",
+        "Hide Column Tool": "Hide Column Tool",
+        "Row Tool Position": "Row Tool Position",
+        "Tool Style": "Tool Style",
+        "Hide Snippet (+) Tool": "Hide Snippet (+) Tool",
+        "Tool Outline": "Tool Outline",
+        "Button": "Button",
+        "Button Editor": "Button Editor",
+        "Edit Button": "Edit Button",
+        "Grid Editor": "Grid Editor",
+        "Outline": "Outline",
+        "Font Size": "Font Size",
+        "Line Spacing": "Line Spacing",
+        "Letter Spacing": "Letter Spacing",
+        "Close": "Close",
+        "Search & Replace": "Search & Replace",
+        "Word Count": "Word Count",
+        "Add to Left": "Add to Left",
+        "Add to Right": "Add to Right",
+        "Border Top Color": "Border Top Color",
+        "Border Bottom Color": "Border Bottom Color",
+        "Border Left Color": "Border Left Color",
+        "Border Right Color": "Border Right Color",
+        "Snippets sidebar visibility": "Snippets sidebar visibility",
+        "You have reached the maximum number of columns": "You have reached the maximum number of columns"
+    },
+    "uppy": {
+        "addBulkFilesFailed": {
+            "0": "Failed to add %{smart_count} file due to an internal error",
+            "1": "Failed to add %{smart_count} files due to internal errors"
+        },
+        "addMore": "Add more",
+        "addMoreFiles": "Add more files",
+        "addingMoreFiles": "Adding more files",
+        "allowAccessDescription": "In order to take pictures or record video with your camera, please allow camera access for this site.",
+        "allowAccessTitle": "Please allow access to your camera",
+        "authenticateWith": "Connect to %{pluginName}",
+        "authenticateWithTitle": "Please authenticate with %{pluginName} to select files",
+        "back": "Back",
+        "browse": "browse",
+        "cancel": "Cancel",
+        "cancelUpload": "Cancel upload",
+        "chooseFiles": "Choose files",
+        "closeModal": "Close Modal",
+        "companionAuthError": "Authorization required",
+        "companionError": "Connection with Companion failed",
+        "companionUnauthorizeHint": "To unauthorize to your %{provider} account, please go to %{url}",
+        "complete": "Complete",
+        "connectedToInternet": "Connected to the Internet",
+        "copyLink": "Copy link",
+        "copyLinkToClipboardFallback": "Copy the URL below",
+        "copyLinkToClipboardSuccess": "Link copied to clipboard",
+        "creatingAssembly": "Preparing upload...",
+        "creatingAssemblyFailed": "Transloadit: Could not create Assembly",
+        "dashboardTitle": "File Uploader",
+        "dashboardWindowTitle": "File Uploader Window (Press escape to close)",
+        "dataUploadedOfTotal": "%{complete} of %{total}",
+        "done": "Done",
+        "dropHereOr": "Drop files here or %{browse}",
+        "dropHint": "Drop your files here",
+        "dropPaste": "Drop files here, paste or %{browse}",
+        "dropPasteImport": "Drop files here, paste, %{browse} or import from",
+        "edit": "Edit",
+        "editFile": "Edit file",
+        "editing": "Editing %{file}",
+        "emptyFolderAdded": "No files were added from empty folder",
+        "encoding": "Encoding...",
+        "enterCorrectUrl": "Incorrect URL: Please make sure you are entering a direct link to a file",
+        "enterUrlToImport": "Enter URL to import a file",
+        "exceedsSize": "This file exceeds maximum allowed size of",
+        "failedToFetch": "Companion failed to fetch this URL, please make sure it’s correct",
+        "failedToUpload": "Failed to upload %{file}",
+        "fileSource": "File source: %{name}",
+        "filesUploadedOfTotal": {
+            "0": "%{complete} of %{smart_count} file uploaded",
+            "1": "%{complete} of %{smart_count} files uploaded",
+            "2": "%{complete} of %{smart_count} files uploaded"
+        },
+        "filter": "Filter",
+        "finishEditingFile": "Finish editing file",
+        "folderAdded": {
+            "0": "Added %{smart_count} file from %{folder}",
+            "1": "Added %{smart_count} files from %{folder}",
+            "2": "Added %{smart_count} files from %{folder}"
+        },
+        "generatingThumbnails": "Generating thumbnails...",
+        "import": "Import",
+        "importFrom": "Import from %{name}",
+        "link": "Link",
+        "loading": "Loading...",
+        "logOut": "Log out",
+        "myDevice": "My Device",
+        "noDuplicates": "Cannot add the duplicate file '%{fileName}', it already exists",
+        "noFilesFound": "You have no files or folders here",
+        "noInternetConnection": "No Internet connection",
+        "noNewAlreadyUploading": "Cannot add new files: already uploading",
+        "openFolderNamed": "Open folder %{name}",
+        "pause": "Pause",
+        "pauseUpload": "Pause upload",
+        "paused": "Paused",
+        "poweredBy": "Powered by",
+        "preparingUpload": "Preparing upload...",
+        "processingXFiles": {
+            "0": "Processing %{smart_count} file",
+            "1": "Processing %{smart_count} files",
+            "2": "Processing %{smart_count} files"
+        },
+        "recordingLength": "Recording length %{recording_length}",
+        "removeFile": "Remove file",
+        "resetFilter": "Reset filter",
+        "resume": "Resume",
+        "resumeUpload": "Resume upload",
+        "retry": "Retry",
+        "retryUpload": "Retry upload",
+        "saveChanges": "Save changes",
+        "selectAllFilesFromFolderNamed": "Select all files from folder %{name}",
+        "selectFileNamed": "Select file %{name}",
+        "selectX": {
+            "0": "Select %{smart_count}",
+            "1": "Select %{smart_count}",
+            "2": "Select %{smart_count}"
+        },
+        "smile": "Smile!",
+        "startRecording": "Begin video recording",
+        "stopRecording": "Stop video recording",
+        "takePicture": "Take a picture",
+        "timedOut": "Upload stalled for %{seconds} seconds, aborting.",
+        "unselectAllFilesFromFolderNamed": "Unselect all files from folder %{name}",
+        "unselectFileNamed": "Unselect file %{name}",
+        "upload": "Upload",
+        "uploadComplete": "Upload complete",
+        "uploadFailed": "Upload failed",
+        "uploadPaused": "Upload paused",
+        "uploadXFiles": {
+            "0": "Upload %{smart_count} file",
+            "1": "Upload %{smart_count} files",
+            "2": "Upload %{smart_count} files"
+        },
+        "uploadXNewFiles": {
+            "0": "Upload +%{smart_count} file",
+            "1": "Upload +%{smart_count} files",
+            "2": "Upload +%{smart_count} files"
+        },
+        "uploading": "Uploading",
+        "uploadingXFiles": {
+            "0": "Uploading %{smart_count} file",
+            "1": "Uploading %{smart_count} files",
+            "2": "Uploading %{smart_count} files"
+        },
+        "xFilesSelected": {
+            "0": "%{smart_count} file selected",
+            "1": "%{smart_count} files selected",
+            "2": "%{smart_count} files selected"
+        },
+        "xMoreFilesAdded": {
+            "0": "%{smart_count} more file added",
+            "1": "%{smart_count} more files added",
+            "2": "%{smart_count} more files added"
+        },
+        "xTimeLeft": "%{time} left",
+        "youCanOnlyUploadFileTypes": "You can only upload: %{types}",
+        "youCanOnlyUploadX": {
+            "0": "You can only upload %{smart_count} file",
+            "1": "You can only upload %{smart_count} files",
+            "2": "You can only upload %{smart_count} files"
+        },
+        "youHaveToAtLeastSelectX": {
+            "0": "You have to select at least %{smart_count} file",
+            "1": "You have to select at least %{smart_count} files",
+            "2": "You have to select at least %{smart_count} files"
+        }
+    }
+}

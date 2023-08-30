@@ -1,0 +1,61 @@
+index:
+    title: Texting-Kampagnen
+    create: 'Neue Texting-Kampagne'
+    drafts:
+        title: Texting-Kampagnen
+        no_records: 'Zurzeit gibt es keine Kampagnenentwürfe'
+        no_result_create: 'Eine Kampagne erstellen'
+        draft: Entwurf
+        to: 'An alle Ihre Kontakte'
+        to_areas: 'An Kontakte aus %areas%'
+        to_tags: 'An Kontakte mit Tags %tags%'
+        to_contacts: 'An %contacts% bestimmte Kontakte'
+        to_areas_tags: 'An Kontakte aus %areas% und mit Tags %tags%'
+        edit: Update
+        delete: Löschen
+        delete_confirm: 'Sind Sie sicher, dass Sie die Kampagne "%subject%" löschen wollen?'
+        send_test: 'Einen Test senden'
+        send_all: 'An alle senden'
+    sent:
+        title: 'Gesendete Kampagnen'
+        no_records: 'Es wurden noch keine Kampagnen verschickt'
+        content: Inhalt
+        stats: Statistik
+        stats_sent: Gesendet
+        date: 'Gesendet am'
+        duplicate: 'Duplizieren Sie'
+create:
+    content: '(Leere Textnachricht)'
+edit:
+    back: 'Zurück zur Liste'
+    title: 'Kampagne bearbeiten'
+    content:
+        title: 'Inhalt der Textnachricht'
+        preview: Vorschau
+        label: 'Welche Textnachricht würden Sie gerne an Ihre Gemeinschaft senden?'
+        help:
+            main: 'Unsere Tipps:'
+            1:
+                strong: 'Der Platz ist begrenzt'
+                muted: 'Eine Textnachricht kann nicht mehr als 140 Zeichen enthalten.'
+            2:
+                strong: 'Leicht zu verstehen'
+                muted: 'Einfache und umsetzbare Textnachrichten funktionieren besser.'
+            3:
+                strong: 'Nicht viel Punktierung'
+                muted: 'Nüchterne Textnachrichten vermitteln Ihre Botschaft besser.'
+    submit: 'Speichern Sie'
+    to:
+        title: An
+        desc: 'An wen senden Sie diese Kampagne?'
+send_test:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Eine Vorschau senden'
+    recipients: 'An welche Telefonnummer möchten Sie diesen Test senden?'
+    send: 'Senden Sie die Vorschau'
+send_all:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Senden Sie die Kampagne'
+    confirm: "Sie sind dabei, die Kampagne an <strong>%count% Abonnenten</strong> zu senden.\n<br />\n<br />\nDer Versand dieser Kampagne verbraucht <strong>%count% Credits</strong> von Ihrer Organisation.\n<br />\n<br />\nSind Sie sicher, dass Sie die Kampagne senden können?\nNach dem Versenden können Sie sie nicht mehr aktualisieren.\n"
+    send: 'Senden Sie die Kampagne'
+    cancel: Abbrechen

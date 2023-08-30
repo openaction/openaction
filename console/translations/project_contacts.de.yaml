@@ -1,0 +1,108 @@
+list:
+    page_title: 'Ihre Gemeinschaft'
+    title: 'Ihre Gemeinschaft'
+    desc: 'Verwalten Sie alle Kontakte Ihres Projekts an einem Ort: Mitglieder, Newsletter-Abonnenten, ...'
+view:
+    back: 'Zurück zur Liste'
+    delete: Löschen
+    delete_message: 'Sind Sie sicher, dass Sie den Kontakt "%email%" löschen möchten?'
+    edit: 'Details aktualisieren'
+    profile:
+        label: Profil
+        area: 'Standort:'
+        date: 'Datum:'
+        tags: 'Tags:'
+        status:
+            label: 'Art:'
+            member: Mitglied
+            contact: Kontakt
+        newsletter:
+            label: 'Newsletter:'
+            subscribed: Abonniert
+            unsubscribed: Abbestellt
+        sms:
+            label: 'SMS-Kampagnen:'
+            subscribed: Abonniert
+            unsubscribed: Abbestellt
+        calls:
+            label: 'Telefonanrufe:'
+            subscribed: Angenommen
+            unsubscribed: Verweigert
+        email: 'E-Mail Adresse'
+        additional_emails: 'Zusätzliche E-Mail-Adressen'
+        name: 'Vollständiger Name'
+        birthdate: Geburtsdatum
+        gender: Geschlecht
+        company: 'Beruf und Unternehmen'
+        address: Postanschrift
+        phone: 'Telefonnummer (persönlich)'
+        workPhone: 'Telefonnummer (Arbeit)'
+        socials: 'Soziale Netzwerke'
+    history:
+        label: 'Interaktionen Geschichte'
+        help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'
+        none: 'Es gab noch keine Interaktion mit diesem Kontakt über Citipo.'
+        joined:
+            label: 'Beitritt zu Ihrer Gemeinschaft'
+        emailing:
+            label: 'Ich habe eine E-Mail erhalten:'
+            openedAt: 'Eröffnet am'
+            neverOpened: 'Nie geöffnet'
+            clickedAt: 'Geklickt auf'
+            neverClicked: 'Nie geklickt'
+            openCampaignReport: 'Bericht über die Kampagne ansehen'
+        texting:
+            label: 'Ich habe eine SMS erhalten:'
+        form_answer:
+            label: 'Hat ein Formular beantwortet:'
+            openAnswer: 'Sehen Sie die Antwort'
+            openForm: 'Das Formular anzeigen'
+edit:
+    page_title: 'Einen Kontakt aktualisieren'
+    title: 'Einen Kontakt aktualisieren'
+    back: 'Zurück zu den Details'
+    submit: 'Speichern Sie'
+    delete: Löschen
+    delete_message: 'Sind Sie sicher, dass Sie den Kontakt "%email%" löschen möchten?'
+form:
+    email: 'E-Mail Adresse'
+    additionalEmails: 'Zusätzliche E-Mail-Adressen'
+    picture:
+        label: Bild
+        help: 'Lassen Sie dieses Feld leer, um das aktuelle Profilbild beizubehalten.'
+    profile:
+        label: Profil
+        formalTitle: Titel
+        firstName: Vornamen
+        middleName: 'Mittlerer Name'
+        lastName: Nachname
+        birthdate: Geburtsdatum
+        gender: Geschlecht
+        company: Unternehmen
+        jobTitle: Berufsbezeichnung
+    tags:
+        label: Tags
+        help: "Mithilfe von Tags können Sie Kontakte in Segmente einteilen, um sie\nin späteren Kommunikationskampagnen besser ansprechen zu können.\n"
+    address:
+        label: Postanschrift
+        help: "Sie können die Postleitzahl und das Land nicht aktualisieren, da sie verwendet werden, um den\nden Kontakt mit Ihrem Projekt zu verknüpfen.\n"
+        help_admin: 'Verwenden Sie die Registerkarte Gemeinschaft in der oberen Navigation, um den Kontaktstandort zu aktualisieren.'
+        help_collaborator: 'Bitten Sie Ihren Administrator, diese für Sie zu aktualisieren, falls dies erforderlich ist.'
+        streetAddress: 'Straße und Hausnummer'
+        zipCode: Postleitzahl
+        city: Stadt
+        country: Land
+    contact:
+        label: Kontaktangaben
+        phone: 'Telefon (mit internationaler Vorwahl)'
+        workPhone: 'Arbeitstelefon (mit internationaler Vorwahl)'
+    socials:
+        label: 'Soziale Netzwerke'
+        facebook: 'URL des Facebook-Profils'
+        twitter: 'URL des Twitter-Profils'
+        linkedIn: 'URL des LinkedIn-Profils'
+        telegram: Telegramm-Kontoname
+        whatsapp: 'Name des Whatsapp-Kontos'
+    metadata:
+        comment: 'Interne Notiz'
+        commentHelp: "Sie können hier jede beliebige Notiz speichern, die Sie Ihren Mitarbeitern in Zukunft zur Verfügung stellen möchten.\nDiese Notiz wird niemals an den Kontakt weitergegeben.\nSpeichern Sie keine sensiblen Informationen in diesem Feld.\n"

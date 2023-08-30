@@ -1,0 +1,12 @@
+.uploadcare-field {
+    display: none;
+}
+
+.user-form-field-file label {
+    display: block;
+}
+
+.uploadcare--widget__text {
+    margin-left: 10px;
+    margin-right: 10px;
+}

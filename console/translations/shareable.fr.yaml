@@ -1,0 +1,6 @@
+emailing:
+    index:
+        no_records: Aucune campagne n'a été envoyée pour le moment
+
+    view:
+        copyright: Tous droits réservés

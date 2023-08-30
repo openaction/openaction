@@ -1,0 +1,114 @@
+{% extends ea.templatePath('layout') %}
+
+{% form_theme form with '@EasyAdmin/crud/form_theme.html.twig' only %}
+
+{% block body_class 'ea-edit' %}
+
+{% block content_title 'New order' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {{ form_row(form.organization, {'attr': {'data-ea-widget': 'ea-autocomplete'}}) }}
+
+            <div class="row">
+                <div class="col-lg-4">
+                    {{ form_row(form.recipientFirstName, {'label': 'Recipient first name'}) }}
+                </div>
+                <div class="col-lg-4">
+                    {{ form_row(form.recipientLastName, {'label': 'Recipient last name'}) }}
+                </div>
+                <div class="col-lg-4">
+                    {{ form_row(form.recipientLocale, {'label': 'Recipient locale'}) }}
+                </div>
+            </div>
+
+            {{ form_row(form.recipientEmail, {'label': 'Recipient email'}) }}
+
+            <table class="table">
+                <tr>
+                    <th>Product</th>
+                    <th>VAT rate</th>
+                    <th>Amount excl taxes</th>
+                    <th>Quantity</th>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <h6 class="mb-0">
+                            Line 1
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_widget(form.line1_title) }}
+                        {{ form_errors(form.line1_title) }}
+                        <br />
+                        {{ form_widget(form.line1_text) }}
+                        {{ form_errors(form.line1_text) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line1_vat_rate) }}
+                        {{ form_errors(form.line1_vat_rate) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line1_amount) }}
+                        {{ form_errors(form.line1_amount) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line1_quantity) }}
+                        {{ form_errors(form.line1_quantity) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <h6 class="mb-0">
+                            Line 2
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_widget(form.line2_title) }}
+                        {{ form_errors(form.line2_title) }}
+                        <br />
+                        {{ form_widget(form.line2_text) }}
+                        {{ form_errors(form.line2_text) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line2_vat_rate) }}
+                        {{ form_errors(form.line2_vat_rate) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line2_amount) }}
+                        {{ form_errors(form.line2_amount) }}
+                    </td>
+                    <td>
+                        {{ form_widget(form.line2_quantity) }}
+                        {{ form_errors(form.line2_quantity) }}
+                    </td>
+                </tr>
+            </table>
+
+            {{ form_row(form.reduction, {'label': 'Reduction rate (in %)'}) }}
+
+            <div class="d-none">
+                {{ form_row(form.enableMolliePaymentLink, {'label': 'Create a payment link with Mollie?'}) }}
+            </div>
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Create order
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

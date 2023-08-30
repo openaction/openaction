@@ -1,0 +1,137 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title'|trans({}, 'project_texting') %}
+
+{% block sidebar_texting 'current' %}
+
+{% block content %}
+    {% do expose('project_areas', current_project.areasIds) %}
+    {% do expose('tags_url', path('console_api_tags_search', {'o': current_organization.uuid ~ '', 'p': ''})) %}
+    {% do expose('filter_preview_url', path('console_community_texting_filter_preview', {'projectUuid': campaign.project.uuid, 'uuid': campaign.uuid})) %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_community_texting', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_texting') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <button type="submit" class="btn btn-sm btn-primary">
+                        {{ 'edit.submit'|trans({}, 'project_texting') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'edit.content.title'|trans({}, 'project_texting') }}
+        </h3>
+
+        <div class="bg-light p-3" data-controller="texting--preview">
+            <div class="row">
+                <div class="col-lg-4">
+                    {{ form_row(form.content, {
+                        'label': 'edit.content.label'|trans({}, 'project_texting'),
+                        'attr': {'data-texting--preview-target': 'input'},
+                    }) }}
+                </div>
+
+                <div class="col-lg-4">
+                    {{ 'edit.content.preview'|trans({}, 'project_texting') }}
+
+                    <div class="social-sharer-post social-sharer-telegram mt-2">
+                        <div class="social-sharer-telegram-text mb-0" data-texting--preview-target="preview">
+                            {{ campaign.content|nl2br }}
+                        </div>
+                    </div>
+
+                    <div class="mt-2 text-muted text-right">
+                        <small data-texting--preview-target="length">{{ campaign.content|length }} / 160</small>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 d-none d-lg-block">
+                    <div class="text-muted mb-2">
+                        <em>
+                            {{ 'edit.content.help.main'|trans({}, 'project_texting') }}
+                        </em>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'edit.content.help.1.strong'|trans({}, 'project_texting') }}
+                        </strong>
+                        <br/>
+                        <small class="text-muted">
+                            {{ 'edit.content.help.1.muted'|trans({}, 'project_texting') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'edit.content.help.2.strong'|trans({}, 'project_texting') }}
+                        </strong>
+                        <br/>
+                        <small class="text-muted">
+                            {{ 'edit.content.help.2.muted'|trans({}, 'project_texting') }}
+                        </small>
+                    </div>
+
+                    <div class="p-2">
+                        <strong>
+                            {{ 'edit.content.help.3.strong'|trans({}, 'project_texting') }}
+                        </strong>
+                        <br/>
+                        <small class="text-muted">
+                            {{ 'edit.content.help.3.muted'|trans({}, 'project_texting') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            {{ 'edit.to.title'|trans({}, 'project_texting') }}
+        </h3>
+
+        <div class="bg-light p-3">
+            <div class="text-muted mb-3">
+                {{ 'edit.to.desc'|trans({}, 'project_texting') }}
+            </div>
+
+            <div data-controller="texting--metadata"
+                 data-tags="{{ current_project.isFeatureInPlan('feature_community_texting_tags') ? '1' : '0' }}"
+                 data-areas="{{ current_project.isFeatureInPlan('feature_community_texting_areas') ? '1' : '0' }}"
+                 data-specific="{{ current_project.isFeatureInPlan('feature_community_texting_specific') ? '1' : '0' }}"
+                 data-members="{{ current_project.isFeatureInPlan('feature_community_texting_members') ? '1' : '0' }}">
+                <div class="d-none">
+                    {{ form_widget(form.tagsFilter, {'attr': {'data-texting--metadata-target': 'tagsInput'}}) }}
+                    {{ form_widget(form.tagsFilterType, {'attr': {'data-texting--metadata-target': 'tagsTypeInput'}}) }}
+                    {{ form_widget(form.areasFilterIds, {'attr': {'data-texting--metadata-target': 'areasInput'}}) }}
+                    {{ form_widget(form.contactsFilter, {'attr': {'data-texting--metadata-target': 'contactsInput'}}) }}
+                    {{ form_widget(form.onlyForMembers, {'attr': {'data-texting--metadata-target': 'onlyForMembersInput'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" id="campaign--texting-submit" class="btn btn-lg btn-primary">
+            {{ 'edit.submit'|trans({}, 'project_texting') }}
+        </button>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

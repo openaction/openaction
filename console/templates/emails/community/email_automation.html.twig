@@ -1,0 +1,77 @@
+{% apply inky_to_html|inline_css %}
+    <title>{{ automation.subject }}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <style>
+        {% if automation.unlayerEnabled %}
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            font-family: "Open Sans", Segoe UI, Source Sans Pro, Calibri, Candara, Arial, sans-serif;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+        {% else %}
+            {{ include('emails/community/style/foundation.css.twig') }}
+            {{ include('emails/community/style/content.css.twig') }}
+        {% endif %}
+    </style>
+
+    {% if automation.preview %}
+        <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
+            {{ automation.preview }}
+        </span>
+    {% endif %}
+
+    {% if automation.unlayerEnabled %}
+        {{ automation.content|raw }}
+
+        <div class="footer">
+            <p class="text-center">
+                © {{ 'now'|date('Y') }} {{ 'community.footer.copyright'|trans({}, 'emails') }}
+                <br />
+                {{ organization.name }}
+            </p>
+
+            <p class="text-center">
+                {{ 'community.footer.automation'|trans({ '%name%': organization.name }, 'emails') }}
+            </p>
+        </div>
+    {% else %}
+        <table class="body">
+            <tr>
+                <td>
+                    <container>
+                        <spacer size="32"></spacer>
+
+                        {{ automation.content|raw }}
+
+                        <spacer size="48"></spacer>
+                    </container>
+
+                    <container class="footer">
+                        <row>
+                            <columns>
+                                <spacer size="32"></spacer>
+
+                                <p class="text-center">
+                                    © {{ 'now'|date('Y') }} {{ 'community.footer.copyright'|trans({}, 'emails') }}
+                                    <br />
+                                    {{ organization.name }}
+                                </p>
+
+                                <p class="text-center">
+                                    {{ 'community.footer.automation'|trans({ '%name%': organization.name }, 'emails') }}
+                                </p>
+
+                                <spacer size="32"></spacer>
+                            </columns>
+                        </row>
+                    </container>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endapply %}

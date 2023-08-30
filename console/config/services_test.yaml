@@ -1,0 +1,40 @@
+parameters:
+    analytics_database_url: '%env(resolve:DATABASE_URL)%'
+
+services:
+    _defaults:
+        autowire: true
+        public: true
+
+    #
+    # Security
+    #
+    Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface:
+        class: 'App\Tests\Stubs\TotpAuthenticatorStub'
+
+    #
+    # Bridges
+    #
+    App\Bridge\Cloudflare\CloudflareInterface:
+        class: 'App\Bridge\Cloudflare\MockCloudflare'
+
+    App\Bridge\Sendgrid\SendgridInterface:
+        class: 'App\Bridge\Sendgrid\MockSendgrid'
+
+    App\Bridge\Postmark\PostmarkInterface:
+        class: 'App\Bridge\Postmark\MockPostmark'
+
+    App\Bridge\Twilio\TwilioInterface:
+        class: 'App\Bridge\Twilio\MockTwilio'
+
+    App\Bridge\Revue\RevueInterface:
+        class: 'App\Bridge\Revue\MockRevue'
+
+    App\Bridge\Github\GithubInterface:
+        class: 'App\Bridge\Github\MockGithub'
+
+    App\Bridge\Mollie\MollieInterface:
+        class: 'App\Bridge\Mollie\MockMollie'
+
+    App\Bridge\Uploadcare\UploadcareInterface:
+        class: 'App\Bridge\Uploadcare\MockUploadcare'

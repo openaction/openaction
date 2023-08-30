@@ -1,0 +1,222 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.membershipRegister %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'title': current_project.terminology.membershipRegister,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+{% block form_content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+            {{ form_errors(form) }}
+
+            {% if current_project.membership.introduction %}
+                <div class="mb-5">
+                    {{ current_project.membership.introduction|e('html')|nl2br }}
+                </div>
+            {% endif %}
+
+            <div class="text-uppercase font-size-sm text-muted mb-2">
+                {{ 'membership.form.sections.account'|trans }}
+            </div>
+
+            {{ form_row(form.email, {'label': 'membership.form.fields.email'|trans}) }}
+            {{ form_row(form.password.first, {'label': 'membership.form.fields.password_first'|trans}) }}
+            {{ form_row(form.password.second, {'label': 'membership.form.fields.password_second'|trans}) }}
+
+            <div class="text-uppercase font-size-sm text-muted mt-5 mb-2">
+                {{ 'membership.form.sections.details'|trans }}
+            </div>
+
+            <div class="row">
+                {% if form.profileFormalTitle is defined %}
+                    <div class="col-3">
+                        {{ form_row(form.profileFormalTitle, {'label': 'membership.form.fields.profileFormalTitle'|trans}) }}
+                    </div>
+                {% endif %}
+
+                <div class="col">
+                    {{ form_row(form.profileFirstName, {'label': 'membership.form.fields.profileFirstName'|trans}) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.profileLastName, {'label': 'membership.form.fields.profileLastName'|trans}) }}
+                </div>
+            </div>
+
+            {% if form.profileMiddleName is defined %}
+                {{ form_row(form.profileMiddleName, {'label': 'membership.form.fields.profileMiddleName'|trans}) }}
+            {% endif %}
+
+            <div class="row">
+                {% if form.profileBirthdate is defined %}
+                    <div class="col-6">
+                        {{ form_row(form.profileBirthdate, {'label': 'membership.form.fields.profileBirthdate'|trans}) }}
+                    </div>
+                {% endif %}
+
+                {% if form.profileGender is defined %}
+                    <div class="col-3">
+                        {{ form_row(form.profileGender, {'label': 'membership.form.fields.profileGender'|trans}) }}
+                    </div>
+                {% endif %}
+
+                {% if form.profileNationality is defined %}
+                    <div class="col-3">
+                        {{ form_row(form.profileNationality, {'label': 'membership.form.fields.profileNationality'|trans}) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                {% if form.profileJobTitle is defined %}
+                    <div class="col-6">
+                        {{ form_row(form.profileJobTitle, {'label': 'membership.form.fields.profileJobTitle'|trans}) }}
+                    </div>
+                {% endif %}
+
+                {% if form.profileCompany is defined %}
+                    <div class="col-6">
+                        {{ form_row(form.profileCompany, {'label': 'membership.form.fields.profileCompany'|trans}) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if
+                form.contactPhone is defined
+                or form.contactWorkPhone is defined
+                or form.socialFacebook is defined
+                or form.socialTwitter is defined
+                or form.socialLinkedIn is defined
+                or form.socialTelegram is defined
+                or form.socialWhatsapp is defined
+            %}
+                <div class="text-uppercase font-size-sm text-muted mt-5 mb-2">
+                    {{ 'membership.form.sections.contact'|trans }}
+                </div>
+
+                <div class="row">
+                    {% if form.contactPhone is defined %}
+                        <div class="col-6">
+                            {{ form_row(form.contactPhone, {'label': 'membership.form.fields.contactPhone'|trans}) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.contactWorkPhone is defined %}
+                        <div class="col-6">
+                            {{ form_row(form.contactWorkPhone, {'label': 'membership.form.fields.contactWorkPhone'|trans}) }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if form.socialFacebook is defined %}
+                    {{ form_row(form.socialFacebook, {'label': 'membership.form.fields.socialFacebook'|trans}) }}
+                {% endif %}
+
+                {% if form.socialTwitter is defined %}
+                    {{ form_row(form.socialTwitter, {'label': 'membership.form.fields.socialTwitter'|trans}) }}
+                {% endif %}
+
+                {% if form.socialLinkedIn is defined %}
+                    {{ form_row(form.socialLinkedIn, {'label': 'membership.form.fields.socialLinkedIn'|trans}) }}
+                {% endif %}
+
+                {% if form.socialTelegram is defined %}
+                    {{ form_row(form.socialTelegram, {'label': 'membership.form.fields.socialTelegram'|trans}) }}
+                {% endif %}
+
+                {% if form.socialWhatsapp is defined %}
+                    {{ form_row(form.socialWhatsapp, {'label': 'membership.form.fields.socialWhatsapp'|trans}) }}
+                {% endif %}
+            {% endif %}
+
+            {% if
+                form.addressStreetLine1 is defined
+                or form.addressStreetLine2 is defined
+                or form.addressZipCode is defined
+                or form.addressCity is defined
+                or form.addressCountry is defined
+            %}
+                <div class="text-uppercase font-size-sm text-muted mt-5 mb-2">
+                    {{ 'membership.form.sections.address'|trans }}
+                </div>
+
+                {% if form.addressStreetLine1 is defined %}
+                    {{ form_row(form.addressStreetLine1, {'label': 'membership.form.fields.addressStreetLine1'|trans}) }}
+                {% endif %}
+
+                {% if form.addressStreetLine2 is defined %}
+                    {{ form_row(form.addressStreetLine2, {'label': 'membership.form.fields.addressStreetLine2'|trans}) }}
+                {% endif %}
+
+                <div class="row">
+                    {% if form.addressZipCode is defined %}
+                        <div class="col">
+                            {{ form_row(form.addressZipCode, {'label': 'membership.form.fields.addressZipCode'|trans}) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.addressCity is defined %}
+                        <div class="col">
+                            {{ form_row(form.addressCity, {'label': 'membership.form.fields.addressCity'|trans}) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.addressCountry is defined %}
+                        <div class="col">
+                            {{ form_row(form.addressCountry, {'label': 'membership.form.fields.addressCountry'|trans}) }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if
+                form.settingsReceiveNewsletters is defined
+                or form.settingsReceiveSms is defined
+                or form.settingsReceiveCalls is defined
+            %}
+                <div class="text-uppercase font-size-sm text-muted mt-5 mb-2">
+                    {{ 'membership.form.sections.notifications'|trans }}
+                </div>
+
+                {% if form.settingsReceiveNewsletters is defined %}
+                    {{ form_row(form.settingsReceiveNewsletters, {'label': 'membership.form.fields.settingsReceiveNewsletters'|trans}) }}
+                {% endif %}
+
+                {% if form.settingsReceiveSms is defined %}
+                    {{ form_row(form.settingsReceiveSms, {'label': 'membership.form.fields.settingsReceiveSms'|trans}) }}
+                {% endif %}
+
+                {% if form.settingsReceiveCalls is defined %}
+                    {{ form_row(form.settingsReceiveCalls, {'label': 'membership.form.fields.settingsReceiveCalls'|trans}) }}
+                {% endif %}
+            {% endif %}
+
+            <div class="mt-5">
+                {{ form_row(form.acceptPolicy, {'label': 'membership.form.fields.acceptPolicy'|trans}) }}
+            </div>
+
+            <div class="mt-3 text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'membership.form.submit_join'|trans }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+
+            <div class="form-legalities user-form-legalities">
+                {{ 'base.form_legalities'|trans }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+index:
+    title: Formulare
+    help: 'Sammeln und organisieren Sie Informationen von den Besuchern Ihrer Website.'
+    create: 'Neues Formular'
+    no_result: 'Ihr Projekt enthält im Moment kein Formular.'
+    no_result_create: 'Ein Formular erstellen'
+    edit: bearbeiten
+    duplicate: 'Duplizieren Sie'
+    move: Verschieben
+    move_cant_answers: 'Sie können dieses Formular nicht verschieben, da es Antworten von Ihren Kontakten enthält.'
+    delete: Löschen
+    view: Siehe
+    results: '%count% Antwort(en)'
+    created_at: 'Erstellt am %datetime%'
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+    visits: besucht
+    remove_confirm: 'Sind Sie sicher, dass Sie das Formular "%name%" löschen wollen?'
+create:
+    title: '(Unbenanntes Formular)'
+    question_email: 'E-Mail Adresse'
+edit:
+    title: 'Formular "%title%" bearbeiten'
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+    results: '%count% Antwort(en)'
+move:
+    title: 'Formular "%title%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie dieses Formular verschieben?'
+    submit: Verschieben
+results:
+    back: 'Zurück zu den Formularen'
+    export: 'Exportieren Sie die Antworten'
+    title: 'Formular "%title%" Ergebnisse'
+    no_result: 'Ihr Formular enthält im Moment keine Ergebnisse.'
+    view: Siehe
+    delete: Löschen
+    contact: Kontakt
+    no_contact: 'Kein verknüpfter Kontakt'
+    created_at: Datum
+    remove_confirm: 'Sind Sie sicher, dass Sie diese Antwort löschen möchten?'
+results_view:
+    back: 'Zurück zu den Ergebnissen'
+    by: 'Vorgeschlagen von'
+    download: 'Datei herunterladen'

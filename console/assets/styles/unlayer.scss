@@ -1,0 +1,19 @@
+.unlayer-editor {
+    &,
+    & > div {
+        height: 700px;
+    }
+
+    &-title {
+        font-family: 'Whitney A', 'Whitney B', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue',
+            'Ubuntu', sans-serif;
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        width: 100%;
+        font-size: 2.1rem;
+        font-weight: 700;
+        max-width: 940px;
+        margin: 0;
+        padding: 5px;
+    }
+}

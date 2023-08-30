@@ -1,0 +1,41 @@
+sidebar:
+    area: Partner
+    dashboard: Dashboard
+    menu: Custom menu
+    theme: Custom themes
+
+dashboard:
+    title: Partner dashboard
+    projects: projects
+    contacts: contacts
+
+menu:
+    title: Custom menu
+    help: |
+        As a Citipo official partner, you can display a custom menu on the Console of customers you
+        are accompanying. This custom menu will be displayed on all projects of all your customers
+        organizations.
+    form:
+        icon: Menu item icon
+        label: Menu item label
+        url: Menu item target URL
+        save: Save
+
+theme:
+    title: Custom themes
+    desc: Link your GitHub account to build custom themes for your organizations.
+    configure: Add / Remove themes
+    none: No custom theme for the moment
+    usable_everyone: Usable by all your organizations
+    usable_orgas: Usable by
+    usable_configure: Configure
+    syncing: Synchronizing
+    sync: Synchronize
+    last_synced: Last synchronized on
+    github: Open on GitHub
+    linking:
+        title: Linking GitHub repositories
+        desc: Your GitHub repositories are being synced a first time
+    back: Back to themes
+    for_organizations: Which organizations should have access to this theme?
+    save: Save

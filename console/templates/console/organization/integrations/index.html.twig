@@ -1,0 +1,153 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'index.page_title'|trans({}, 'organization_integrations') %}
+
+{% block content %}
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-8 col-xl-6">
+            <div class="text-center mt-5">
+                <h4 class="text-center mb-2">
+                    {{ 'index.page_title'|trans({}, 'organization_integrations') }}
+                </h4>
+
+                <div class="text-muted mb-2">
+                    {{ 'index.help'|trans({}, 'organization_integrations') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% set sections = {
+        'acquisition': {
+            'twitter_revue': {
+                'integromat': false,
+                'feature': 'feature_integration_revue',
+                'url': 'https://www.getrevue.co',
+                'docUrl': 'https://citipo.com/doc-twitter-revue',
+                'buttonUrl': path('console_organization_integrations_revue', {'organizationUuid': current_organization.uuid}),
+            },
+            'wings': {
+                'integromat': false,
+                'feature': 'feature_integration_wings',
+                'url': 'https://wings.dev',
+                'buttonUrl': path('console_organization_integrations_wings', {'organizationUuid': current_organization.uuid}),
+            },
+            'quorum': {
+                'integromat': false,
+                'feature': 'feature_integration_quorum',
+                'url': 'https://qomon.com',
+                'docUrl': 'https://citipo.com/doc-qomon',
+                'buttonUrl': 'mailto:' ~ ('contact_email'|trans({}, 'global')),
+                'buttonLabel': 'index.acquisition.quorum.link',
+            },
+        },
+        'tools': {
+            'airtable': {'integromat': true, 'url': 'https://www.airtable.com'},
+            'google_sheets': {'integromat': true, 'url': 'https://www.google.fr/intl/fr/sheets/about/'},
+            'excel365': {'integromat': true, 'url': 'https://www.microsoft.com/fr-fr/microsoft-365'},
+            'evernote': {'integromat': true, 'url': 'https://evernote.com/intl/fr'},
+            'trello': {'integromat': true, 'url': 'https://trello.com/fr'},
+            'typeform': {'integromat': true, 'url': 'https://www.typeform.com'},
+        },
+        'synchronization': {
+            'google_contacts': {'integromat': true, 'url': 'https://contacts.google.com'},
+            'campaign_monitor': {'integromat': true, 'url': 'https://www.campaignmonitor.com'},
+            'mailchimp': {'integromat': true, 'url': 'https://mailchimp.com/fr/'},
+            'mailjet': {'integromat': true, 'url': 'https://fr.mailjet.com'},
+            'sendgrid': {'integromat': true, 'url': 'https://sendgrid.com/'},
+            'sendinblue': {'integromat': true, 'url': 'https://fr.sendinblue.com/'},
+            'shopify': {'integromat': true, 'url': 'https://www.shopify.fr/'},
+            'surveymonkey': {'integromat': true, 'url': 'https://fr.surveymonkey.com/'},
+            'wix': {'integromat': true, 'url': 'https://fr.wix.com/'},
+        },
+        'messaging': {
+            'discord': {'integromat': true, 'url': 'https://discord.com/'},
+            'slack': {'integromat': true, 'url': 'https://slack.com/intl/fr-fr/'},
+            'mattermost': {'integromat': true, 'url': 'https://mattermost.com/'},
+            'telegram': {'integromat': true, 'url': 'https://telegram.org/'},
+            'messenger': {'integromat': true, 'url': 'https://www.messenger.com/'},
+        },
+        'events': {
+            'calendly': {'integromat': true, 'url': 'https://calendly.com/fr'},
+            'eventbrite': {'integromat': true, 'url': 'https://www.eventbrite.fr/'},
+            'zoom': {'integromat': true, 'url': 'https://explore.zoom.us/fr/products/meetings/'},
+        },
+        'developers': {
+            'telegram_bots': {
+                'integromat': false,
+                'feature': 'feature_integration_telegram',
+                'url': 'https://core.telegram.org/bots',
+                'docUrl': 'https://citipo.com/doc-telegram',
+                'buttonUrl': path('console_organization_integrations_telegram', {'organizationUuid': current_organization.uuid})
+            },
+            'api': {
+                'integromat': false,
+                'feature': 'feature_api',
+                'url': 'https://citipo.com/doc-api',
+                'docUrl': 'https://citipo.com/doc-api',
+                'buttonUrl': 'https://citipo.com/doc-api',
+                'buttonLabel': 'index.developers.api.link',
+            },
+        },
+    } %}
+
+    {% for section, integrations in sections %}
+        <div class="font-weight-bold text-uppercase">
+            {{ ('index.'~section~'.title')|trans({}, 'organization_integrations') }}
+        </div>
+
+        <div class="text-muted mb-3">
+            {{ ('index.'~section~'.description')|trans({}, 'organization_integrations') }}
+        </div>
+
+        <div class="row mb-5">
+            {% for integration, details in integrations %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="integrations-card">
+                        <div class="integrations-card-title">
+                            <div class="integrations-card-logo">
+                                <img src="{{ asset('integrations/'~integration~'.png') }}" />
+                            </div>
+                            <div class="integrations-card-name">
+                                <a href="{{ details.url }}" target="_blank" rel="noopener noreferrer">
+                                    {{ ('index.'~section~'.'~integration~'.title')|trans({}, 'organization_integrations') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="integrations-card-description">
+                            {{ ('index.'~section~'.'~integration~'.help')|trans({}, 'organization_integrations') }}
+                        </div>
+
+                        <div class="integrations-card-buttons">
+                            {% if current_organization.isFeatureInPlan(details.feature|default('feature_integration_integromat')) %}
+                                {% set link = details.buttonUrl|default(path('console_organization_integrations_integromat', {'organizationUuid': current_organization.uuid, 'section': section, 'integration': integration})) %}
+
+                                <a href="{{ link }}" class="btn btn-sm btn-primary text-white">
+                                    {{ (details.buttonLabel|default('index.configure'))|trans({}, 'organization_integrations') }}
+                                </a>
+
+                                {% if details.docUrl|default(null) %}
+                                    <a href="{{ details.docUrl }}"
+                                       class="btn btn-sm btn-secondary ml-2" target="_blank" rel="noreferrer noopener">
+                                        {{ 'index.read_doc'|trans({}, 'organization_integrations') }}
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <div class="text-warning mb-3">
+                                    {{ 'upgrade.desc'|trans({
+                                        '%plan%': ('upgrade.plans.'~current_organization.subscriptionPlan)|trans({}, 'organization')
+                                    }, 'organization') }}
+                                </div>
+
+                                <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary text-white">
+                                    {{ 'upgrade.contact_us'|trans({}, 'organization') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

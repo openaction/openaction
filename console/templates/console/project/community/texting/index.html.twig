@@ -1,0 +1,200 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_texting') %}
+
+{% block sidebar_texting 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg flex-grow-1 mb-3 mb-lg-0">
+                    <h3 class="mb-0">
+                        {{ 'index.drafts.title'|trans({}, 'project_texting') }}
+                    </h3>
+                </div>
+                <div class="col-lg-auto text-lg-right">
+                    <a href="{{ csrf_path('console_community_texting_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_texting') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if campaigns_drafts|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.drafts.no_records'|trans({}, 'project_texting') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_community_texting_create', { 'projectUuid': project.uuid }) }}"
+                           class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.drafts.no_result_create'|trans({}, 'project_texting') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for draft in campaigns_drafts %}
+                        <div class="world-list-row p-4" id="campaign-{{ draft.uuid }}" data-campaign="{{ draft.uuid }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="social-sharer-post social-sharer-telegram">
+                                        <div class="social-sharer-telegram-text mb-0">
+                                            {{ draft.content|nl2br }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="text-muted">
+                                        {% set to = 'to' %}
+                                        {% set toParams = {} %}
+
+                                        {% if draft.areasFilter|length > 0 %}
+                                            {% set to = to ~ '_areas' %}
+                                            {% set toParams = toParams|merge({'%areas%': draft.areasFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.tagsFilter|length > 0 %}
+                                            {% set to = to ~ '_tags' %}
+                                            {% set toParams = toParams|merge({'%tags%': draft.tagsFilterNames|join(', ')}) %}
+                                        {% endif %}
+
+                                        {% if draft.contactsFilter is not null %}
+                                            {% set to = to ~ '_contacts' %}
+                                            {% set toParams = toParams|merge({'%contacts%': draft.contactsFilter|length}) %}
+                                        {% endif %}
+
+                                        {{ ('index.drafts.' ~ to)|trans(toParams, 'project_texting') }}
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a href="{{ path('console_community_texting_edit', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="fad fa-pencil mr-1"></i>
+                                            {{ 'index.drafts.edit'|trans({}, 'project_texting') }}
+                                        </a>
+
+                                        <a href="{{ csrf_path('console_community_texting_delete', { 'projectUuid': project.uuid, 'uuid': draft.uuid }) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.drafts.delete_confirm'|trans({'%subject%': draft.content}, 'project_texting') }}"
+                                           data-target="#campaign-{{ draft.uuid }}"
+                                           class="btn btn-sm btn-outline-danger border-0">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.drafts.delete'|trans({}, 'project_texting') }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 text-lg-right">
+                                    <a href="{{ path('console_community_texting_send_test', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                        {{ 'index.drafts.send_test'|trans({}, 'project_texting') }}
+                                    </a>
+
+                                    <a href="{{ path('console_community_texting_send_all', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                       class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-paper-plane mr-1"></i>
+                                        {{ 'index.drafts.send_all'|trans({}, 'project_texting') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'index.sent.title'|trans({}, 'project_texting') }}
+            </h3>
+        </div>
+
+        <div class="bg-light">
+            {% if campaigns_sent|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-3">
+                            {{ 'index.sent.no_records'|trans({}, 'project_texting') }}
+                        </h4>
+                    </div>
+                </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'index.sent.content'|trans({}, 'project_texting') }}
+                        </th>
+                        {% if is_granted('community_texting_stats', current_project) %}
+                            <th scope="col" class="world-table-stats text-center">
+                                {{ 'index.sent.stats'|trans({}, 'project_texting') }}
+                            </th>
+                        {% endif %}
+                        <th scope="col" class="text-center">
+                            {{ 'index.sent.date'|trans({}, 'project_texting') }}
+                        </th>
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for sent in campaigns_sent %}
+                        <tr id="campaign-{{ sent.uuid }}">
+                            <td>
+                                <div class="social-sharer-post social-sharer-telegram">
+                                    <div class="social-sharer-telegram-text mb-0">
+                                        {{ sent.content|nl2br }}
+                                    </div>
+                                </div>
+                            </td>
+                            {% if is_granted('community_texting_stats', current_project) %}
+                                <td class="world-table-stats text-muted">
+                                    {% set count = sent.messages|length %}
+
+                                    {% if count %}
+                                        <i class="fad fa-users mr-1"></i>
+                                        {{ count }}
+
+                                        <div>
+                                            <small class="text-uppercase">
+                                                {{ 'index.sent.stats_sent'|trans({}, 'project_texting') }}
+                                            </small>
+                                        </div>
+                                    {% else %}
+                                        <i class="fal fa-circle-notch fa-spin"></i>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                            <td class="world-table-date text-muted text-center">
+                                {{ sent.sentAt|format_datetime('medium', 'short') }}
+                            </td>
+                            <td class="world-table-actions text-muted">
+                                <a href="{{ csrf_path('console_community_texting_create', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                   class="btn btn-secondary btn-sm mr-1">
+                                    {{ 'index.sent.duplicate'|trans({}, 'project_texting') }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="p-3">
+                    {{ pagination(campaigns_sent, current_page, items_per_page) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

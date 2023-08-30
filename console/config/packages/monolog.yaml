@@ -1,0 +1,9 @@
+monolog:
+    channels: ['worker_logging']
+
+    handlers:
+        messenger:
+            type: stream
+            path: '%kernel.logs_dir%/worker.log'
+            level: debug
+            channels: ['worker_logging']

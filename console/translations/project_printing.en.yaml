@@ -1,0 +1,461 @@
+label_reference: N° de commande
+back: Retour
+
+index:
+    title: Panier
+    create: Nouvelle commande
+    doc: Lire la documentation
+    quote: Obtenir un devis
+    subrogation: Demander une subrogation
+
+    drafts:
+        no_records: Aucune commande dans votre panier
+        no_result_create: Nouvelle commande
+        delete: Supprimer
+        delete_confirm: 'Voulez-vous vraiment supprimer la commande %uuid% ?'
+        delete_product_confirm: 'Voulez-vous vraiment supprimer ce produit ?'
+        configure: Modifier
+        add_product: Ajouter un produit
+        buy: Finaliser et payer
+        not_ready: Commande incomplète
+
+    ordered:
+        title: Commandes effectuées
+        no_records: Aucune commande effectuée
+        ordered_at: Commandé le
+        id: Commande
+        content: Produits
+        status: Statut
+        price: Prix TTC
+        order_status:
+            payment_pending: En attente de paiement
+            bat_pending: En attente de validation des Bons à Tirer
+            printing: En cours de production
+            delivering: En cours de livraison
+            delivered: Livré
+        campaign_status:
+            bat_pending: En cours de génération du Bon à Tirer
+            bat_received: En attente de validation du Bon à Tirer
+            bat_validated: En attente de paiement
+            printing: En cours de production
+            delivering: En cours de livraison
+            delivered: Livré
+        actions:
+            pay: Payer
+            bat_generating: BAT en cours de génération
+            bat_validated: BAT accepté
+            validate: Examiner le BAT
+            cancel: Annuler la commande
+            cancel_confirm: 'Voulez-vous vraiment annuler la commande %uuid% ? Cette action est irréversible.'
+        details: Détails de la commande
+        invoice: Télécharger la facture
+
+create:
+    title: Nouvelle campagne d'imprimés
+    help: |
+        Concevez une campagne d'imprimés selon vos besoins, commandez-la et recevez-la chez vous ou envoyez-la à
+        une liste d'adresse prédéfinie.
+    label: Quel type de support souhaitez-vous commander ?
+    label_help: |
+        Ajoutez un premier produit à votre commande. Vous pourrez ensuite ajouter d'autres produits à celle-ci 
+        pour les recevoir au même moment.
+    official_products: Produits au format officiel des élections françaises
+    official_products_disabled: |
+        Une commande ne peut pas contenir à la fois des produits officiels et des produits de campagne.
+        <br />
+        Cette commande contient déjà un ou plusieurs produits de campagne. Créez une nouvelle commande pour
+        commander des produits officiels.
+    official_products_help: |
+        Dépenses éligibles au remboursement de la propagande au titre de l'article R39.
+        <br />
+        L'imprimeur peut prendre en charge directement l'avance de ces frais si vous remplissez 
+        une demande de subrogation. Contactez notre équipe pour en savoir plus : 01 58 42 42 00 ou legislatives@prenant.fr.
+    official_products_oneclick_title: Commander le kit complet de propagande officielle
+    official_products_oneclick_help: |
+        Commandez en un clic tous les documents électoraux légaux : affiches officielles, bandeaux d'affiche,
+        professions de foi et bulletins de vote. Ils seront livrés en même temps en préfecture.
+    official_products_oneclick_button: Commander le kit "Propagande officielle"
+    campaign_products: Produits de propagande électorale non officiels
+    campaign_products_disabled: |
+        Une commande ne peut pas contenir à la fois des produits officiels et des produits de campagne.
+        <br />
+        Cette commande contient déjà un ou plusieurs produits officiels. Créez une nouvelle commande pour
+        commander des produits de campagne.
+    submit: Ajouter au panier
+
+edit:
+    finalize: Finaliser et payer
+    finalize_subrogation: Finaliser la commande
+    not_ready: Commande incomplète
+    save: Enregistrer
+    required: Cette information est obligatoire
+    tabs:
+        delivery: 'Étape 1 : Options de livraison'
+        recipient: 'Étape 2 : Vos informations'
+    subgrodation:
+        title: |
+            Cette commande entre dans le cadre de votre subrogation : vous n'avez pas besoin d'avancer les 
+            frais d'impression de celle-ci.
+        message: |
+            Vous êtes cependant toujours responsable de son paiement : si à la suite des élections, vous
+            n'entrez pas dans les critères de la subrogation, vous serez tenu de payer la commande.
+        link: En savoir plus sur la subrogation
+    content:
+        title: Envoyer votre contenu
+        reconfigure_title: Ré-envoyer votre contenu pour correction
+        desc: Afin d'imprimer votre document, vous devez nous envoyer les fichiers correspondant aux éléments à imprimer.
+        file:
+            field:
+                label: Modifier le fichier PDF
+                none: Pas de fichier PDF pour le moment
+                view: Voir le fichier PDF envoyé
+                help: |
+                    <strong>
+                        Votre fichier doit mesurer précisément %width%mm de largeur et %height%mm de hauteur 
+                        afin d'inclure un fond perdu de 5mm sur tous les côtés du format fini.
+                        Seuls les fichiers au format PDF sont acceptés.
+                    </strong>
+                    <div class="text-muted">
+                        Le fichier doit faire maximum 10Go et doit contenir autant de pages que de faces imprimées.
+                        Il doit être encodé en CMJN pour que les couleurs soient correctement restituées en impression. 
+                    </div>
+            format:
+                title: Format à respecter
+                desc: 'Pour obtenir un résultat approprié, il est important de suivre certaines recommandations :'
+                contact: |
+                    <strong>
+                        Un doute ou une question sur le format à adopter ?
+                    </strong>
+                    <div class="mt-1">
+                        <a href="https://citipo.com/print-support" target="_blank" class="btn btn-secondary">
+                            Cliquez ici pour nous contacter par email ou téléphone
+                        </a>
+                    </div>
+    delivery:
+        title: Options de livraison
+        help: 'Une question sur quelles options de livraison choisir ? Contactez-nous : 01 58 42 42 00 ou legislatives@prenant.fr.'
+        addressed:
+            label: Souhaitez-vous effectuer un envoi adressé ?
+            help: |
+                Une campagne d'envoi adressée est une campagne d'envoi de documents nominatifs vers une liste de 
+                destinataires déjà identifiés.
+            title: Envoi adressé
+            data:
+                none: Aucune adresse configurée pour le moment. Envoyez un fichier ci-dessous pour en ajouter.
+                count: adresses détectées
+            addressList:
+                label: Envoyer un nouveau fichier d'adresses
+                help: |
+                    Cela remplacera toutes les adresses actuelles par les adresses du fichier envoyé. Le fichier
+                    doit être au format Excel. Vous pourrez associer les colonnes de ce fichier aux données d'adresses
+                    (nom, prénom, adresse, code postal, ville et pays).
+                tips:
+                    title: Conseils
+                    1: |
+                        Un envoi adressé est plus onéreux mais a un bien meilleur taux d'ouverture. Utilisez un
+                        envoi adressé pour avoir le plus d'impact, par exemple lors des derniers jours de la campagne.
+                    2: |
+                        Un envoi adressé est obligatoirement mis sous pli, pour pouvoir l'envoyer à vos destinataires.
+                    3: |
+                        Vous ne disposez pas d'adresses d'électeurs ? Vous pouvez demander à accéder à la liste 
+                        électorale de votre commune. Si besoin, nous pouvons aussi vous mettre en relation avec 
+                        nos partenaires spécialisés, contactez-nous : 01 58 42 42 00 ou legislatives@prenant.fr.
+            columns:
+                label: Colonnes
+                help: '%count% colonnes ont été détectées. Associez-les aux informations des destinataires.'
+                default_label: 'Colonne %i%'
+                types:
+                    ignored: Ignorer cette colonne
+                    formalTitle: Civilité
+                    firstName: Prénom
+                    lastName: Nom de famille
+                    street1: Numéro et nom de rue
+                    street2: Complément d'adresse
+                    zipCode: Code postal
+                    city: Ville
+                    country: Pays
+                submit: Enregistrer
+            processing:
+                title: Fichier en cours de traitement
+                desc: Votre fichier est en train d'être traité pour extraire les adresses.
+        unaddressed:
+            title: Imprimés sans adresse
+            help: |
+                Un imprimé sans adresse est un document diffusé sans nom ni adresse, distribués par exemple
+                au cours d'opérations de terrain (tractage, boitage etc) ou lors de campagnes de distributions 
+                toutes boites.
+            quantities:
+                title: Quantités
+                help: Pour chaque document, en quelle quantité souhaitez vous le recevoir ?
+            withEnveloping:
+                label: Souhaitez-vous mettre chaque document sous enveloppe blanche ?
+                help: |
+                    La mise sous pli peut être effectué automatiquement après l'impression. Si vous choisissez
+                    cette option, les documents seront distribués par Mediapost dans des enveloppes blanches au
+                    format C5, sans adresse. Les électeurs sont plus enclins à s'intéresser à un document envoyé
+                    dans une enveloppe.
+            useMediapost:
+                label: Avez-vous prévu d'effectuer une distribution toutes boites sous contrat Mediapost ?
+                help: |
+                    Une distribution de vos documents dans toutes les boites postales d'une zone donnée
+                    peut être réalisé par un routeur spécialisé comme Mediapost (groupe La Poste). Si cette
+                    case est cochée, nous demanderons à notre imprimeur de rediriger votre commande vers les 
+                    équipes de Mediapost.
+            address:
+                official_title: Livraison (imprimés officiels)
+                campaign_title: Livraison (imprimés de campagne)
+                mediapost:
+                    title: Distribution Mediapost
+                    tip:
+                        1: |
+                            Pour organiser une distribution toutes boites avec Mediapost, prenez contact avec le conseiller
+                            LaPoste de référence de votre secteur
+                        2: puis indiquez l'adresse du dépot Mediapost ci-dessous.
+                    download_managers: voir la liste des conseillers
+                prefecture:
+                    title: Adresse de la préfecture
+                    help: |
+                        La propagande officielle doit être envoyée en préfecture pour qu'elle la distribue dans votre
+                        circonscription. Indiquez ici l'adresse de livraison qu'elle vous a fournie. Contactez-la
+                        si nécessaire : l'adresse de livraison est souvent différente de l'adresse officielle de la
+                        préfecture.
+                individual:
+                    title: Adresse de livraison
+                    help: |
+                        Une fois imprimés, les documents seront livrés à l'adresse de votre choix par camion 
+                        avec hayon sur une palette. L'adresse peut être l'adresse d'un particulier, d'une préfecture,
+                        d'une association de campagne, d'un parti, ...
+                name: Nom de la personne ou de l'organisation recevant la livraison <span class="text-danger">*</span>
+                street1: Numéro et rue <span class="text-danger">*</span>
+                street2: Complément d'adresse (nom, étage, porte, interphone, ..., optionel)
+                zipCode: Code postal <span class="text-danger">*</span>
+                city: Ville <span class="text-danger">*</span>
+                country: Pays <span class="text-danger">*</span>
+                instructions: Instructions particulières de livraison (code, interphone, étage, ...)
+            posterAddress:
+                title: Addresse de livraison des affiches/bandeaux officiels
+                help: |
+                    Votre commande inclut des affiches officielles. Contrairement au reste de la propagande 
+                    officielle, ces affiches doivent être reçues par votre campagne pour pouvoir être affichées
+                    par vos équipes. À quelle adresse souhaitez-vous les recevoir ?
+                name: Nom de la personne ou de l'organisation recevant la livraison <span class="text-danger">*</span>
+                street1: Numéro et rue <span class="text-danger">*</span>
+                street2: Complément d'adresse (nom, étage, porte, interphone, ..., optionel)
+                zipCode: Code postal <span class="text-danger">*</span>
+                city: Ville <span class="text-danger">*</span>
+                country: Pays <span class="text-danger">*</span>
+                instructions: Instructions particulières de livraison (code, interphone, étage, ...)
+    recipient:
+        title: Vos informations
+        help: Nous vous informerons de l'évolution de votre commande et de sa livraison grâce à ces informations.
+        circonscription: Dans quel circonscription se déroule votre campagne ? <span class="text-danger">*</span>
+        candidate: Quel est le nom complet du candidat de votre campagne ? <span class="text-danger">*</span>
+        firstName: Votre prénom <span class="text-danger">*</span>
+        lastName: Votre nom <span class="text-danger">*</span>
+        email:
+            label: Votre adresse email <span class="text-danger">*</span>
+            help: À quelle adresse email pouvons-nous vous tenir informé du statut de votre commande ?
+        phone:
+            label: Votre numéro de téléphone <span class="text-danger">*</span>
+            help: |
+                À quel numéro de téléphone pouvons-nous vous tenir informé du statut de votre commande ?
+                Nous ne vous contacterons par téléphone qu'en cas d'urgence.
+
+view:
+    title: Détails de la commande
+    price:
+        title: Prix TTC
+    payment:
+        title: Paiement
+        paid: Payée
+        not_paid: En attente de paiement
+        pay: Payer
+        invoice: Télécharger la facture
+    bat:
+        title: Bon à tirer
+        validated: Tous les Bons à tirer ont été acceptés.
+        not_validated: Certains Bons à tirer doivent encore être acceptés.
+    delivery:
+        title: Livraison
+        mediapost: |
+            Livraison en point de collecte Mediapost. Vous devez avoir signé un contrat avec Mediapost 
+            pour que la distribution soit correctement effectuée. Si vous ne l'avez pas encore fait,
+            prenez contact avec le conseiller La Poste de référence de votre secteur :
+        mediapost_download: voir la liste des conseillers
+        unaddressed: 'Adresse de livraison :'
+        addressed: Distribution à %count% addresses par affranchissement La Poste.
+        poster: 'Adresse de livraison des affiches :'
+    recipient:
+        title: Vos informations
+    help:
+        title: Besoin d'aide ? Une question ?
+        desc: |
+            Nous sommes à votre disposition :
+            <ul>
+                <li>
+                    pour les questions de production ou livraison, contactez-nous par téléphone
+                    au 01 58 42 42 00 ou par email à legislatives@prenant.fr ;
+                </li>
+                <li>
+                    pour toutes autres questions, vous pouvez joindre l'équipe support au 01 76 44 07 97 ou
+                    par email à legislatives@avecvous.fr ;
+                </li>
+            </ul>
+
+bat:
+    title: Examiner le Bon à tirer
+    help: |
+        Suite à votre commande, nous avons généré un Bon À Tirer : un document de référence qui sera utilisé 
+        pour l'impression. Avant de lancer la production, nous avons besoin de votre validation finale.
+    errors_title: Des erreurs ont été détectées lors de la vérification de votre fichier
+    blocking_errors: |
+        Ces erreurs ont empêché le bon traitement de votre commande.
+        Veuillez les résoudre et envoyer un nouveau fichier PDF :
+    non_blocking_errors: |
+        Ces erreurs ne sont pas nécessairement bloquantes : nous avons appliqué automatiquement un correctif
+        à votre fichier. Si le Bon À Tirer ci-dessous vous convient après ces corrections, vous pouvez le valider pour 
+        lancer la production. Si il ne vous convient pas, veuillez résoudre les erreurs et envoyer un nouveau 
+        fichier PDF :
+    download: Examiner le Bon À Tirer (PDF)
+    accept_help: |
+        Une fois que vous avez examiné ce Bon À Tirer et qu'il vous convient en terme de coupe et de qualité,
+        vous pouvez l'accepter pour lancer la production.
+    accept: Accepter le Bon à tirer
+    accept_warning: 'Attention : une fois accepté, la production sera lancée et ne pourra plus être annulée.'
+    refuse_help: |
+        Si ce Bon à tirer ne vous convient pas ou qu'une erreur s'est produite, vous pouvez corriger votre fichier 
+        PDF et le ré-envoyer.
+    refuse: Refuser et envoyer un nouveau fichier PDF
+    error_refuse_help: |
+        Une erreur s'est produite lors de la vérification de votre fichier : il ne peut pas être utilisé pour 
+        votre commande. Vous devez corriger votre fichier PDF et le ré-envoyer.
+    error_refuse: Envoyer un nouveau fichier PDF
+    question: Pour toute question concernant votre Bon à tirer, contactez-nous au 01 58 42 42 00 ou legislatives@prenant.fr.
+
+order:
+    title: Finaliser la commande
+    continue: Continuer
+    order: Commander
+
+ordered:
+    title: 'Commande %number%'
+    desc: Nous avons bien reçu votre commande.
+    message:
+        title: Nous avons bien reçu votre commande
+        subrogation_success: |
+            <p>
+                Vous avez réalisé cette commande dans le cadre de votre subrogation : vous n'avez
+                pas eu besoin d'avancer les frais d'impression de celle-ci.
+            </p>
+            <p>
+                Vous êtes cependant toujours responsable de son paiement : si à la suite des élections, vous n'entrez 
+                pas dans les critères de la subrogation, vous serez tenu de payer la commande.
+            </p>
+            <strong>
+                <a href="https://citipo.com/print-subrogation-doc" target="_blank">
+                    En savoir plus sur la subrogation
+                </a>
+            </strong>
+        subrogation_next: |
+            <strong class="text-danger">Attention : votre commande n'est pas encore terminée</strong>
+            <br />
+            <div class="text-muted">
+                Dans les prochaines heures, vous recevrez des Bons à Tirer (BAT) au format PDF. Ces documents de
+                référence seront utilisés pour l'impression. 
+                <br />
+                <strong>Vous devrez accepter ces Bons à Tirer pour que nous lancions l'impression de votre commande.</strong>
+            </div>
+        standard_success: |
+            <strong>Attention : nous ne pourrons pas lancer l'impression sans avoir reçu votre paiement.</strong>
+            <br />
+            Vous avez reçu nos informations de virement par e-mail : nous vous invitons à initier ce virement 
+            dès maintenant.
+        standard_next: |
+            <strong class="text-danger">Attention : votre commande n'est pas encore terminée</strong>
+            <br />
+            <div class="text-muted">
+                Dans les prochaines heures, vous recevrez des Bons à Tirer (BAT) au format PDF. Ces documents de
+                référence seront utilisés pour l'impression. 
+                <br />
+                <strong>Vous devrez accepter ces Bons à Tirer pour que nous lancions l'impression de votre commande.</strong>
+            </div>
+        tip_2nd_round: |
+            <strong>Vous ne pourrez plus commander après le lundi 13 juin à 23h59</strong>
+            <br />
+            <div class="text-muted">
+                Étant donné le peu de temps entre les deux tours, nous vous invitons à commander
+                vos documents du second tour (bulletins de vote, professions de foi, ...) le plus rapidement 
+                possible après le 1er tour.<br />
+                La plateforme ne sera plus à partir du lundi 13 juin à 23h59.
+            </div>
+    back: Retour aux commandes
+
+quote:
+    type:
+        title: Obtenir un devis
+        question: Quel type de devis produits souhaitez-vous obtenir ?
+        official:
+            label: Propagande officielle
+            help: |
+                La propagande officielle correspond aux produits au format officiel des élections françaises et
+                distribuées par les préfectures. Les dépenses de ce type sont éligibles au remboursement au titre 
+                de l'article R39. L'imprimeur peut prendre en charge directement l'avance de ces frais si vous
+                remplissez une demande de subrogation. Contactez notre équipe pour en savoir plus : 01 58 42 42 00 
+                ou legislatives@prenant.fr.
+            button: Obtenir un devis pour ma propagande officielle
+        campaign:
+            label: Propagande non-officielle
+            help: |
+                La propagande non-officielle correspond aux produits utilisés directement par vos équipes
+                lors de la campagne, par exemple lors d'événements, d'actions de terrain, de porte à porte, ...
+                Ces dépenses ne sont pas éligibles au remboursement au titre de l'article R39.
+            button: Obtenir un devis pour ma propagande non-officielle
+
+    form:
+        quantities: Quelle quantité de chaque produit souhaitez-vous commander ?
+        delivery: Adresse de livraison
+        billing: Adresse de facturation
+        submit: Générer le devis
+
+products_formats:
+    legalities_rcs: |
+        <strong>Assurez-vous d'avoir indiqué le nom et RCS de l'imprimeur (obligatoire)</strong>
+        <div class="text-muted">
+            Tous les documents que vous créez doivent impérativement comporter le nom et le
+            RCS de l'imprimeur, dans le cas présent :<br /> 
+            <strong>Conseil Impression Dispatch - 808 588 214 R.C.S. Créteil</strong>.
+        </div>
+    legalities_dont_throw: |
+        <strong>Assurez-vous d'avoir indiqué la mention « Ne pas jeter sur la voie publique » (obligatoire)</strong>
+        <div class="text-muted">
+            Tous les documents que vous créez doivent impérativement comporter la mention
+            « Ne pas jeter sur la voie publique » (article L. 541-10-1 du Code de l'Environnement).
+        </div>
+    legalities_credits: |
+        <strong>Assurez-vous d'avoir indiqué les crédits des photos (obligatoire)</strong>
+        <div class="text-muted">
+            Le crédit des photos utilisées doit être indiqué (si vous n’avez pas réalisé les photos vous-même).
+        </div>
+    bleeding_edge: |
+        <strong class="text-danger">Le fichier doit impérativement disposer d'un fond perdu de 5mm</strong>
+        <div class="text-muted">
+            Un fond perdu non-vide (c'est-à-dire contenant votre image) de 5mm est strictement requis autour
+            de tout votre document. Ce fond perdu sera utilisé pour découper vos documents au format fini
+            sans obtenir de blandes blanches.
+        </div>
+        <div>
+            <strong class="text-danger">
+                Attention : un fond perdu mal réalisé peut rendre vos documents non conformes.
+                <br />Assurez-vous  d'avoir bien suivi notre documentation sur le sujet avant de réaliser votre commande.
+            </strong>
+            <div class="mt-1">
+                <a href="https://citipo.com/print-edges" target="_blank" class="btn btn-secondary">
+                    Lire la documentation
+                </a>
+            </div>
+        </div>
+    receive_bat: |
+        <strong>Vous recevrez un Bon À Tirer (BAT) pour validation avant impression.</strong>
+        <div class="text-muted">
+            Vous pourrez donc vérifier que votre impression est conforme à vos attente.
+        </div>

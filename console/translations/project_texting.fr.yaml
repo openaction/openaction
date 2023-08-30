@@ -1,0 +1,74 @@
+index:
+    title: Campagnes SMS
+    create: Nouvelle campagne SMS
+    drafts:
+        title: Campagnes SMS
+        no_records: Aucun brouillon
+        no_result_create: Créer une campagne
+        draft: Brouillon
+        to: À tous vos contacts
+        to_areas: À tous les contacts dans la zone %areas%
+        to_tags: À tous les contacts ayant les tags %tags%
+        to_contacts: À %contacts% contacts spécifiques
+        to_areas_tags: Aux contacts dans la zone %areas% et ayant les tags %tags%
+        edit: Modifier
+        delete: Supprimer
+        delete_confirm: 'Voulez-vous vraiment supprimer la campagne "%subject%" ?'
+        send_test: Envoyer un test
+        send_all: Envoyer à tous
+
+    sent:
+        title: Campagnes envoyées
+        no_records: Aucune campagne n'a été envoyée pour le moment
+        content: Contenu
+        stats: Statistiques
+        stats_sent: Envoyés
+        date: Date d'envoi
+        duplicate: Dupliquer
+
+create:
+    content: '(SMS vide)'
+
+edit:
+    back: Retour à la liste
+    title: Modifier la campagne
+    content:
+        title: Contenu du SMS
+        preview: Prévisualisation
+        label: Quel SMS souhaitez-vous envoyer à votre communauté ?
+        help:
+            main: 'Quelques conseils :'
+            1:
+                strong: L'espace est limité
+                muted: Un SMS ne peut contenir que 140 caractères maximum.
+            2:
+                strong: Simple à comprendre
+                muted: Les SMS simples et amenant à l'action fonctionnement mieux.
+            3:
+                strong: Peu de ponctuation
+                muted: Les SMS sobres transmettent vos idées plus efficacement.
+    submit: Enregistrer
+    to:
+        title: Destinataire
+        desc: À qui cette campagne doit-elle être envoyée ?
+
+send_test:
+    back: Retour à la liste
+    title: Envoyer un test
+    recipients: À quel numéro de téléphone souhaitez-vous envoyer ce test ?
+    send: Envoyer le test
+
+send_all:
+    back: Retour à la liste
+    title: Envoyer la campagne SMS
+    confirm: |
+        Vous vous apprêtez à envoyer une campagne SMS à <strong>%count% personnes</strong>.
+        <br />
+        <br />
+        Envoyer cette campagne utilisera <strong>%count% crédits SMS</strong> de votre organisation.
+        <br />
+        <br />
+        Êtes-vous certain(e) d'être prêt(e) à l'envoyer ?
+        Une fois la campagne envoyée, vous ne pourrez plus annuler l'envoi.
+    send: Envoyer la campagne
+    cancel: Annuler

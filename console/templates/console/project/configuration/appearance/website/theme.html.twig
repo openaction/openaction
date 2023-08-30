@@ -1,0 +1,177 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'theme.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_appearance', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'theme.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'theme.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 p-lg-5" data-controller="project--appearance">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-11 col-lg-10">
+
+                    <h5 class="mb-3">
+                        {{ 'theme.structure.label'|trans({}, 'project_appearance') }}
+                    </h5>
+
+                    <div class="row">
+                        {% for theme in themes %}
+                            <div class="col-12 col-md-6 col-lg-4 mb-5 text-center">
+                                <div class="border">
+                                    <img src="{{ cdn_image_url(theme.thumbnail) }}" />
+                                </div>
+
+                                <div class="mt-4">
+                                    <strong>
+                                        {{ form_row(form.theme[theme.id], {
+                                            'label_attr': {'class': 'radio-custom'},
+                                            'label': theme.name[app.request.locale],
+                                            'attr': {'data-project--appearance-target': 'fields'}
+                                        }) }}
+                                    </strong>
+                                </div>
+
+                                <div class="text-muted">
+                                    {{ theme.description[app.request.locale] }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-5">
+                        <h5 class="mb-1">
+                            {{ 'theme.colors.label'|trans({}, 'project_appearance') }}
+                        </h5>
+
+                        <div class="text-muted mb-3">
+                            {{ 'theme.colors.help'|trans({}, 'project_appearance') }}
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-auto mb-4">
+                                {{ form_label(form.appearancePrimary, 'theme.colors.appearancePrimary'|trans({}, 'project_appearance')) }}
+                                {{ form_errors(form.appearancePrimary) }}
+
+                                <div data-controller="color-chooser" data-choices="002851,E91E24,007159,1F5382">
+                                    {{ form_widget(form.appearancePrimary, {'attr': {'data-color-chooser-target': 'input'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-auto mb-4">
+                                {{ form_label(form.appearanceSecondary, 'theme.colors.appearanceSecondary'|trans({}, 'project_appearance')) }}
+                                {{ form_errors(form.appearanceSecondary) }}
+
+                                <div data-controller="color-chooser" data-choices="0F345C,38A434,1EAF14,17B6FF">
+                                    {{ form_widget(form.appearanceSecondary, {'attr': {'data-color-chooser-target': 'input'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-auto mb-4">
+                                {{ form_label(form.appearanceThird, 'theme.colors.appearanceThird'|trans({}, 'project_appearance')) }}
+                                {{ form_errors(form.appearanceThird) }}
+
+                                <div data-controller="color-chooser" data-choices="F34B50,00254C,FFDC2F,FF4988">
+                                    {{ form_widget(form.appearanceThird, {'attr': {'data-color-chooser-target': 'input'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <h5 class="mb-1">
+                            {{ 'theme.fonts.label'|trans({}, 'project_appearance') }}
+                        </h5>
+
+                        <div class="text-muted mb-3">
+                            {{ 'theme.fonts.help'|trans({}, 'project_appearance') }}
+                            <a href="https://fonts.google.com" target="_blank" rel="noreferrer noopener">
+                                https://fonts.google.com
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.fontTitle, {
+                                'label': 'theme.fonts.title.label'|trans({}, 'project_appearance'),
+                                'help': 'theme.fonts.title.help'|trans({}, 'project_appearance'),
+                            }) }}
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.fontText, {
+                                'label': 'theme.fonts.text.label'|trans({}, 'project_appearance'),
+                                'help': 'theme.fonts.text.help'|trans({}, 'project_appearance'),
+                            }) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <h5 class="mb-1">
+                            {{ 'theme.options.label'|trans({}, 'project_appearance') }}
+                        </h5>
+
+                        <div class="text-muted mb-3">
+                            {{ 'theme.options.help'|trans({}, 'project_appearance') }}
+                        </div>
+
+                        <div style="display: none"
+                             data-project--appearance-target="options"
+                             data-theme="classic">
+                            {{ form_row(form.mainIntroPosition, {
+                                'label': 'theme.options.positions.label'|trans({}, 'project_appearance'),
+                                'help': 'theme.options.positions.help'|trans({}, 'project_appearance'),
+                            }) }}
+                        </div>
+
+                        {{ form_row(form.mainIntroOverlay, {
+                            'label_attr': {'class': 'switch-custom'},
+                            'label': 'theme.options.overlay.label'|trans({}, 'project_appearance'),
+                            'help': 'theme.options.overlay.help'|trans({}, 'project_appearance'),
+                        }) }}
+
+                        {{ form_row(form.animateElements, {
+                            'label_attr': {'class': 'switch-custom'},
+                            'label': 'theme.options.animateElements.label'|trans({}, 'project_appearance'),
+                            'help': 'theme.options.animateElements.help'|trans({}, 'project_appearance'),
+                        }) }}
+
+                        {{ form_row(form.animateLinks, {
+                            'label_attr': {'class': 'switch-custom'},
+                            'label': 'theme.options.animateLinks.label'|trans({}, 'project_appearance'),
+                            'help': 'theme.options.animateLinks.help'|trans({}, 'project_appearance'),
+                        }) }}
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {{ 'save'|trans({}, 'project_appearance') }}
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

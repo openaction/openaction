@@ -1,0 +1,76 @@
+traffic:
+    title: Rapport de trafic
+    periods:
+        label: 'Période :'
+        1d: 24h
+        7d: Semaine
+        30d: Mois
+        90d: 3 mois
+        1y: Année
+    totals:
+        users: Visiteurs uniques
+        page_views: Pages vues
+        live: Temps réel
+    traffic:
+        label: 'Évolution du trafic sur le site internet'
+        date: Date
+        page_views: Pages vues
+        users: Visiteurs uniques
+    pages:
+        label: 'Pages visitées'
+    sources:
+        label: 'Sources de trafic'
+    percentages:
+        absolute: visites
+    countries:
+        label: 'Pays'
+    browsers:
+        label: 'Navigateurs'
+    platforms:
+        label: 'Plateformes'
+    utm_tags:
+        title: 'Tags UTM'
+        description: |
+            Les tags UTM sont des informations supplémentaires ajoutées par certains services lorsque des
+            visiteurs cliquent des liens vers votre site sur leur plateforme. Ils peuvent être utilisés pour
+            comprendre l'origine des visites de votre site. Vous pouvez créez vos propres tags UTM pour mesurer
+            l'usage de vos liens en utilisant
+        link: le générateur de tags UTM de Google
+    utm_sources:
+        label: 'Sources UTM'
+    utm_mediums:
+        label: 'Mediums UTM'
+    utm_campaigns:
+        label: 'Campagnes UTM'
+    events:
+        title: 'Événements personnalisés (développeurs)'
+        description: |
+            Lorsque vous développez votre application, vous pouvez émettre des événements personnalisés depuis 
+            votre code pour les stocker dans Citipo et les afficher ici.
+
+community:
+    title: Rapport de communauté
+    periods:
+        label: 'Période :'
+        1d: 24h
+        7d: Semaine
+        30d: Mois
+        90d: 3 mois
+        1y: Année
+    totals:
+        contacts: Contacts
+        members: Membres
+        members_percentage: '% des contacts'
+        newsletter_subscribers: Inscrits à la newsletter
+        newsletter_subscribers_percentage: '% des contacts'
+        sms_subscribers: Inscrits aux SMS
+        sms_subscribers_percentage: '% des contacts'
+    growth:
+        label: 'Évolution de la croissance de la communauté'
+        date: Date
+        new_contacts: Nouveaux contacts
+        new_members: Nouveaux membres
+    tags:
+        label: 'Tags'
+    countries:
+        label: 'Pays'

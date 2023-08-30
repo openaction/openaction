@@ -1,0 +1,30 @@
+{
+    "action": "donation.created",
+    "donation": {
+        "id": "BA4A5GXDvLU4z7kMDQn8",
+        "newsletter": true,
+        "terms": false,
+        "privacyConsent": true,
+        "confirmed": false,
+        "customFields": [],
+        "createdAt": 1661437447329,
+        "constituent": {
+            "id": "4jXj73AKAGsZYP4QVxkA",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "test@citipo.com",
+            "emailVerified": false
+        },
+        "donation": {
+            "id": "Ywgml8w68lcZxl6wG8qB",
+            "title": "S'inscrire",
+            "resourceType": "node.signup",
+            "slug": "donation",
+            "status": "PUBLISHED",
+            "publishedAt": 1660939544000,
+            "updatedAt": 1660939729315,
+            "createdAt": 1660939552097
+        },
+        "projectId": "mmJjM5nKKmIYwyzOkVJp"
+    }
+}

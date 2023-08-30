@@ -1,0 +1,258 @@
+{{ form_errors(form) }}
+
+{{ form_row(form.email, {
+    'label': 'contacts.form.email'|trans({}, 'organization_community'),
+    'attr': {'class': 'form-control-lg'}
+}) }}
+
+<div class="row">
+    <div class="col-lg-11 col-xl-9">
+        <div class="text-uppercase text-muted mt-4 mb-2">
+            {{ 'contacts.form.additionalEmails'|trans({}, 'organization_community') }}
+        </div>
+
+        <div data-controller="community--additional-emails"
+             data-prototype="{{ form_widget(form.additionalEmails.vars.prototype)|e('html_attr') }}"
+             data-index="{{ form.additionalEmails|length > 0 ? form.additionalEmails|last.vars.name + 1 : 0 }}">
+            <div data-community--additional-emails-target="rows">
+                {% for field in form.additionalEmails %}
+                    <div>
+                        <div class="row no-gutters align-items-center mb-2">
+                            <div class="col-10">
+                                {{ form_widget(field, {'label': false}) }}
+                            </div>
+                            <div class="col-2 pl-3">
+                                <button type="button" class="btn btn-secondary btn-block text-danger"
+                                        data-action="community--additional-emails#removeRow">
+                                    <i class="fal fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {# Mark field as displayed #}
+                {% do field_name(form.additionalEmails) %}
+            </div>
+
+            <div class="row no-gutters align-items-center">
+                <div class="col-2 pr-3">
+                    <button type="button" class="btn btn-secondary btn-block text-primary"
+                            data-action="community--additional-emails#addRow">
+                        <i class="fal fa-plus"></i>
+                    </button>
+                </div>
+                <div class="col-10"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-uppercase text-muted mt-4 mb-2">
+    {{ 'contacts.form.picture.label'|trans({}, 'organization_community') }}
+</div>
+
+<div class="text-muted mb-3">
+    {{ 'contacts.form.picture.help'|trans({}, 'organization_community') }}
+</div>
+
+<div class="row align-items-center">
+    <div class="col-lg-1 text-center">
+    {% if contact and contact.picture %}
+        <img src="{{ cdn_url(contact.picture) }}" class="community-view-picture-sm" />
+    {% else %}
+        <img src="https://www.gravatar.com/avatar/{{ contact.emailHash|default('invalid') }}?d=mp&s=800" class="community-view-picture-sm" />
+    {% endif %}
+    </div>
+    <div class="col-lg-6">
+        {{ form_widget(form.picture) }}
+        {{ form_errors(form.picture) }}
+    </div>
+</div>
+
+<div class="text-uppercase text-muted mt-4 mb-2">
+    {{ 'contacts.form.profile.label'|trans({}, 'organization_community') }}
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-2">
+        {{ form_row(form.profileFormalTitle, {'label': 'contacts.form.profile.formalTitle'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.profileFirstName, {'label': 'contacts.form.profile.firstName'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.profileMiddleName, {'label': 'contacts.form.profile.middleName'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.profileLastName, {'label': 'contacts.form.profile.lastName'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.profileBirthdate, {'label': 'contacts.form.profile.birthdate'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.profileGender, {'label': 'contacts.form.profile.gender'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.profileNationality, {'label': 'contacts.form.profile.nationality'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        {{ form_row(form.profileCompany, {'label': 'contacts.form.profile.company'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-6">
+        {{ form_row(form.profileJobTitle, {'label': 'contacts.form.profile.jobTitle'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
+{% if form.metadataTags is defined %}
+    <div class="text-uppercase text-muted mt-4 mb-2">
+        {{ 'contacts.form.tags.label'|trans({}, 'organization_community') }}
+    </div>
+
+    <div class="text-muted mb-3">
+        {{ 'contacts.form.tags.help'|trans({}, 'organization_community') }}
+    </div>
+
+    <div data-controller="community--tags" style="height: 45px;" data-allow-add="1">
+        {{ form_row(form.metadataTags, {'label': false, 'attr': {'data-community--tags-target': 'input'}}) }}
+    </div>
+{% endif %}
+
+<div class="text-uppercase text-muted mt-4 mb-2">
+    {{ 'contacts.form.address.label'|trans({}, 'organization_community') }}
+</div>
+
+<div class="text-muted mb-3">
+    {{ 'contacts.form.address.help'|trans({}, 'organization_community') }}
+</div>
+
+{{ form_row(form.addressStreetLine1, {'label': 'contacts.form.address.streetAddress'|trans({}, 'organization_community')}) }}
+{{ form_row(form.addressStreetLine2, {'label': false}) }}
+
+<div class="row">
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.addressZipCode, {'label': 'contacts.form.address.zipCode'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.addressCity, {'label': 'contacts.form.address.city'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-4">
+        {{ form_row(form.addressCountry, {'label': 'contacts.form.address.country'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
+<div class="text-uppercase text-muted mt-4 mb-2">
+    {{ 'contacts.form.contact.label'|trans({}, 'organization_community') }}
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        {{ form_row(form.contactPhone, {
+            'label': 'contacts.form.contact.phone.label'|trans({}, 'organization_community'),
+            'help': 'contacts.form.contact.phone.help'|trans({}, 'organization_community'),
+        }) }}
+    </div>
+    <div class="col-12 col-lg-6">
+        {{ form_row(form.contactWorkPhone, {
+            'label': 'contacts.form.contact.workPhone.label'|trans({}, 'organization_community'),
+            'help': 'contacts.form.contact.workPhone.help'|trans({}, 'organization_community'),
+        }) }}
+    </div>
+</div>
+
+<div class="text-uppercase text-muted mt-4 mb-2">
+    {{ 'contacts.form.socials.label'|trans({}, 'organization_community') }}
+</div>
+
+{{ form_row(form.socialFacebook, {'label': 'contacts.form.socials.facebook'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialTwitter, {'label': 'contacts.form.socials.twitter'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialLinkedIn, {'label': 'contacts.form.socials.linkedIn'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialTelegram, {'label': 'contacts.form.socials.telegram'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialWhatsapp, {'label': 'contacts.form.socials.whatsapp'|trans({}, 'organization_community')}) }}
+
+<div {{ stimulus_controller('gdpr-settings') }}>
+    <div class="text-uppercase text-muted mt-4 mb-2">
+        {{ 'contacts.form.metadata.label'|trans({}, 'organization_community') }}
+    </div>
+
+    <div class="world-block px-3 pt-3 pb-0 mb-2">
+        <h6>
+            {{ 'contacts.form.metadata.all_projects'|trans({}, 'organization_community') }}
+        </h6>
+
+        <div class="text-muted mb-3">
+            {{ 'contacts.form.metadata.all_projects_help'|trans({}, 'organization_community') }}
+        </div>
+
+        {{ form_row(form.settingsReceiveNewsletters, {
+            'label_attr': {'class': 'checkbox-custom'},
+            'label': 'contacts.form.metadata.receiveNewsletter'|trans({}, 'organization_community'),
+            'attr': {'data-gdpr-settings-target': 'globalNewsletter'},
+        }) }}
+        {{ form_row(form.settingsReceiveSms, {
+            'label_attr': {'class': 'checkbox-custom'},
+            'label': 'contacts.form.metadata.receiveSms'|trans({}, 'organization_community'),
+            'attr': {'data-gdpr-settings-target': 'globalSms'},
+        }) }}
+        {{ form_row(form.settingsReceiveCalls, {
+            'label_attr': {'class': 'checkbox-custom'},
+            'label': 'contacts.form.metadata.receiveCalls'|trans({}, 'organization_community'),
+            'attr': {'data-gdpr-settings-target': 'globalCalls'},
+        }) }}
+    </div>
+
+    <div class="world-block px-3 pt-3 pb-0 mb-2 {{ form.settingsByProject|length <= 1 ? 'd-none' }}">
+        <h6>
+            {{ 'contacts.form.metadata.per_projects'|trans({}, 'organization_community') }}
+        </h6>
+
+        <div class="text-muted mb-3">
+            {{ 'contacts.form.metadata.per_projects_help'|trans({}, 'organization_community') }}
+        </div>
+
+        <div class="row">
+            {% for project in form.settingsByProject %}
+                <div class="col-lg-6 col-xl-4 mb-3">
+                    <div class="mb-2">
+                        <em>{{ project.vars.value.projectName }}</em>
+                    </div>
+
+                    {{ form_row(project.settingsReceiveNewsletters, {
+                        'label_attr': {'class': 'checkbox-custom'},
+                        'label': 'contacts.form.metadata.receiveNewsletter'|trans({}, 'organization_community'),
+                        'attr': {'data-gdpr-settings-target': 'projectNewsletter'},
+                    }) }}
+                    {{ form_row(project.settingsReceiveSms, {
+                        'label_attr': {'class': 'checkbox-custom'},
+                        'label': 'contacts.form.metadata.receiveSms'|trans({}, 'organization_community'),
+                        'attr': {'data-gdpr-settings-target': 'projectSms'},
+                    }) }}
+                    {{ form_row(project.settingsReceiveCalls, {
+                        'label_attr': {'class': 'checkbox-custom'},
+                        'label': 'contacts.form.metadata.receiveCalls'|trans({}, 'organization_community'),
+                        'attr': {'data-gdpr-settings-target': 'projectCalls'},
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    {{ form_row(form.metadataComment, {
+        'label': 'contacts.form.metadata.comment'|trans({}, 'organization_community'),
+        'help': 'contacts.form.metadata.commentHelp'|trans({}, 'organization_community'),
+    }) }}
+</div>
+
+<div class="text-center mt-4 mb-4">
+    <button type="submit" class="btn btn-lg btn-primary">
+        {{ submit }}
+    </button>
+</div>

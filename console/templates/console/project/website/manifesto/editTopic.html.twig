@@ -1,0 +1,103 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.topic.title'|trans({'%title%': topic.title}, 'project_manifesto') %}
+
+{% block sidebar_manifesto 'current' %}
+
+{% do expose('endpoints', {
+    'metadata': path('console_website_manifesto_topic_save', {'projectUuid': topic.project.uuid, 'uuid': topic.uuid}),
+    'image': path('console_website_manifesto_topic_image', {'projectUuid': topic.project.uuid, 'uuid': topic.uuid}),
+    'shareUrl': domain_share_url(topic.project, 'topic', topic.uuid|toBase62, topic.slug),
+}) %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_manifesto', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_manifesto') }}</span>
+                    </a>
+
+                    <a href="{{ path('console_website_manifesto_view', { 'projectUuid': current_project.uuid, 'uuid': topic.uuid }) }}"
+                       class="btn btn-outline-primary btn-sm border-0 ml-2" target="_blank">
+                        <i class="fas fa-eye mr-1"></i>
+                        {{ 'edit.view'|trans({}, 'project_manifesto') }}
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-controller="manifesto--topic-publication"
+                         data-published-at="{{ topic.publishedAt ? topic.publishedAt.format('Y-m-d\\TH:i:sP') : null }}"
+                         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
+                        <div class="d-none">
+                            {{ form_widget(publication_form.publishedAt, {'attr': {'data-manifesto--topic-publication-target': 'input'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.title, {
+                        'label': 'edit.topic.form.title.label'|trans({}, 'project_manifesto'),
+                        'help': 'edit.topic.form.title.help'|trans({}, 'project_manifesto'),
+                        'attr': {'class': 'form-control-lg'},
+                    }) }}
+
+                    <div class="mb-3">
+                        <div class="mb-2">
+                            {{ 'edit.topic.form.image.help'|trans({}, 'project_manifesto') }}
+                        </div>
+
+                        <div data-controller="manifesto--topic-image"
+                             data-image="{{ topic.image ? cdn_image_url(topic.image) : '' }}">
+                            <div class="d-none">
+                                {{ form_widget(image_form.file, {'attr': {
+                                    'data-manifesto--topic-image-target': 'image',
+                                }}) }}
+                            </div>
+                        </div>
+
+                        <small id="manifesto_topic_color_help" class="form-text text-muted">
+                            {{ 'edit.topic.form.image.help'|trans({}, 'project_manifesto') }}
+                        </small>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.color, 'edit.topic.form.color.label'|trans({}, 'project_manifesto')) }}
+                        {{ form_errors(form.color) }}
+
+                        <div data-controller="color-chooser"
+                             data-choices="D7201C,E7692B,FF404C,EC008C,A000D0,3145CD,0373BF,0693E3,117B8B,31A38F,52A09A,409B1A,128B4D,000000">
+                            {{ form_widget(form.color, {'attr': {'data-color-chooser-target': 'input'}}) }}
+                        </div>
+
+                        <small id="manifesto_topic_color_help" class="form-text text-muted">
+                            {{ 'edit.topic.form.color.help'|trans({}, 'project_manifesto') }}
+                        </small>
+                    </div>
+
+                    {{ form_row(form.description, {
+                        'label': 'edit.topic.form.description.label'|trans({}, 'project_manifesto'),
+                        'help': 'edit.topic.form.description.help'|trans({}, 'project_manifesto'),
+                    }) }}
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            {{ 'edit.save'|trans({}, 'project_manifesto') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="trombinoscope trombinoscope-persons" data-aos="fade-up" data-aos-duration="600">
+    <h1 class="trombinoscope-persons-title">
+        {{ trombinoscope_title }}
+    </h1>
+
+    <div class="trombinoscope-persons-social-sharers">
+        {{ social_sharers|raw }}
+    </div>
+
+    <div class="trombinoscope-persons-grid">
+        {% for key, person in trombinoscope %}
+            <a href="{{ person.url }}"
+               data-turbo="optional"
+               class="trombinoscope-persons-grid-item"
+               {% if person.image %}style="background-image: url('{{ person.image }}');"{% endif %}>
+                <h3 class="trombinoscope-persons-grid-item-name">
+                    <strong>
+                        {{ person.fullName }}
+                    </strong>
+                </h3>
+            </a>
+        {% else %}
+            <div class="trombinoscope-persons-grid-none">
+                {{ no_elements }}
+            </div>
+        {% endfor %}
+    </div>
+</div>

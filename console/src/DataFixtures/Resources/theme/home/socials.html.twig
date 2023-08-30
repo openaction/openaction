@@ -1,0 +1,53 @@
+{% if facebook_url or twitter_url %}
+    <div data-aos="fade-up" data-aos-duration="600">
+        <div class="home-blocks-block home-blocks-block-socials">
+            <h3 class="home-blocks-block-title">
+                {{ socials_title }}
+            </h3>
+
+            <div class="row justify-content-center justify-content-lg-start">
+                {% if facebook_url %}
+                    <div class="col-lg-6 home-blocks-block-socials-facebook">
+                        <div class="home-blocks-block-socials-block" {{ stimulus_controller('embed-consent', {
+                            'type': 'facebook-timeline',
+                            'url': facebook_url,
+                            'titleLabel': titleLabel,
+                            'descriptionLabel': descriptionLabel,
+                            'acceptLabel': acceptLabel,
+                            'externalLabel': externalLabel,
+                            'cancelLabel': cancelLabel,
+                        }) }}>
+                            <div class="p-3">
+                                <a href="{{ facebook_url }}" target="_blank" rel="noreferrer noopener">
+                                    <i class="fa fa-external-link mr-1"></i>
+                                    {{ facebook_url }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if twitter_url %}
+                    <div class="col-lg-6 home-blocks-block-socials-twitter">
+                        <div class="home-blocks-block-socials-block" {{ stimulus_controller('embed-consent', {
+                            'type': 'twitter-timeline',
+                            'url': twitter_url,
+                            'titleLabel': titleLabel,
+                            'descriptionLabel': descriptionLabel,
+                            'acceptLabel': acceptLabel,
+                            'externalLabel': externalLabel,
+                            'cancelLabel': cancelLabel,
+                        }) }}>
+                            <div class="p-3">
+                                <a href="{{ twitter_url }}" target="_blank" rel="noreferrer noopener">
+                                    <i class="fa fa-external-link mr-1"></i>
+                                    {{ twitter_url }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,81 @@
+{% extends 'member/area/base.html.twig' %}
+
+{% block page_title 'membership.posts.title'|trans %}
+
+{% block membership_area_content %}
+    <div class="list-view">
+        <div class="list-items">
+            {% for post in posts %}
+                <div class="list-items-item box-offset">
+                    <a href="{{ path('membership_area_post_view', {'id': post.id, 'slug': post.slug}) }}"
+                       class="streched-link list-items-item-link">
+                        <div class="list-items-item-box">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-3 mb-md-0">
+                                    <h5 class="list-items-item-title">
+                                        <span>{{ post.title }}</span>
+                                    </h5>
+
+                                    <div class="list-items-item-description">
+                                        <div class="list-items-item-date">
+                                            {{ post.published_at|format_date('medium') }}
+                                        </div>
+
+                                        {{ post.description }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    {% if post.video|default(null) and post.video[0] == 'youtube' %}
+                                        <div class="list-items-item-video"
+                                             style="background-image: url('https://i1.ytimg.com/vi/{{ post.video[1] }}/hqdefault.jpg')">
+                                            <div class="list-items-item-video-icon"
+                                                 style="background: url('{{ asset('res/play.svg') }}') 50% 50% no-repeat transparent">
+                                                <div class="list-items-item-video-inner" style="width: 1110px; height: 705px"></div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <img src="{{ post.image|default(asset('res/default.jpg')) }}"
+                                             class="list-items-item-image" width="1700" height="1080" />
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="list-items-none">
+                    {{ 'base.no_element'|trans }}
+                </div>
+            {% endfor %}
+
+            {% set pagination = posts.meta.pagination.links %}
+            {% set previous = pagination.previous is defined ? path('membership_area_posts', {'p': current_page - 1, 'c': current_category}) : null %}
+            {% set next = pagination.next is defined ? path('membership_area_posts', {'p': current_page + 1, 'c': current_category}) : null %}
+
+            <div class="list-items-pagination">
+                <div class="row">
+                    <div class="col-6">
+                        {% if previous %}
+                            <a href="{{ previous }}" class="btn btn-secondary">
+                                <i class="fal fa-angle-left"></i>
+                                <span class="ml-1">
+                                {{ 'base.pagination.previous'|trans }}
+                            </span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                        {% if next %}
+                            <a href="{{ next }}" class="btn btn-secondary">
+                            <span class="mr-1">
+                                {{ 'base.pagination.next'|trans }}
+                            </span>
+                                <i class="fal fa-angle-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

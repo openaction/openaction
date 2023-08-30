@@ -1,0 +1,47 @@
+index:
+    title: 'Inhalt der Seiten'
+    help: 'Erklären Sie auf Inhaltsseiten, wer Sie sind, Ihr Projekt und Ihre Ideen.'
+    edit_categories: 'Kategorien bearbeiten'
+    create: 'Neue Seite'
+    no_result: 'Ihr Projekt enthält im Moment keine Seite.'
+    no_result_create: 'Eine Seite erstellen'
+    edit: bearbeiten
+    duplicate: 'Duplizieren Sie'
+    move: Verschieben
+    view: Siehe
+    created_at: 'Erstellt am %datetime%'
+    last_modified: 'Zuletzt bearbeitet am %datetime%'
+    visits: besucht
+    remove: Löschen
+    remove_confirm: 'Sind Sie sicher, dass Sie die Seite "%name%" löschen wollen?'
+create:
+    title: '(Unbenannte Seite)'
+edit:
+    title: 'Seite "%title%" bearbeiten'
+    back: 'Zurück zur Liste'
+    view: 'Ansicht auf der Website'
+move:
+    title: 'Seite "%title%" verschieben'
+    back: 'Zurück zur Liste'
+    to: 'In welches Projekt möchten Sie diese Seite verschieben?'
+    submit: Verschieben
+categories:
+    index:
+        back: 'Zurück zu den Seiten'
+        title: 'Seiten Kategorien'
+        create: 'Neue Kategorie'
+        no_records: 'Ihr Projekt enthält im Moment keine Seite.'
+        no_records_desc: 'Kategorien helfen Ihnen, Ihre Inhalte so zu organisieren, dass sie für Ihre Besucher leichter zu finden sind.'
+        order: Bestellung
+        name: Name
+        number: Seiten
+        created: 'Datum der Erstellung'
+        edit: bearbeiten
+        remove: Löschen
+        remove_confirm: 'Sind Sie sicher, dass Sie die Kategorie "%name%" löschen wollen?'
+    form:
+        title_create: 'Neue Kategorie'
+        title_edit: 'Eine Kategorie bearbeiten'
+        back: 'Zurück zur Liste'
+        name: Name
+        save: 'Speichern Sie'

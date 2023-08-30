@@ -1,0 +1,114 @@
+{% extends 'console/organization/community/base.html.twig' %}
+
+{% block page_title 'configure.tags.index.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_tags 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-10 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'configure.tags.index.title'|trans({}, 'organization_community') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'configure.tags.index.help'|trans({}, 'organization_community') }}
+                    </div>
+                </div>
+
+                <div class="col-lg-2 text-lg-right">
+                    <a href="{{ path('console_organization_community_configure_tags_create', { 'organizationUuid': current_organization.uuid }) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'configure.tags.index.create'|trans({}, 'organization_community') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if tags|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-3">
+                            {{ 'configure.tags.index.no_records'|trans({}, 'organization_community') }}
+                        </h4>
+
+                        <div class="text-muted mb-4">
+                            {{ 'configure.tags.index.no_records_desc'|trans({}, 'organization_community') }}
+                        </div>
+
+                        <a href="{{ path('console_organization_community_configure_tags_create', { 'organizationUuid': current_organization.uuid }) }}"
+                           class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'configure.tags.index.no_records_create'|trans({}, 'organization_community') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <table class="world-table table">
+                    <thead>
+                    <tr>
+                        <th scope="col">
+                            {{ 'configure.tags.index.columns.name'|trans({}, 'organization_community') }}
+                        </th>
+                        <th scope="col" class="world-table-number d-none d-lg-table-cell">
+                            {{ 'configure.tags.index.columns.contacts'|trans({}, 'organization_community') }}
+                        </th>
+                        <th scope="col" class="world-table-date d-none d-lg-table-cell">
+                            {{ 'configure.tags.index.columns.created'|trans({}, 'organization_community') }}
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for tag in tags %}
+                        <tr id="tag-{{ tag.id }}">
+                            <td>
+                                {{ tag.name }}
+                            </td>
+                            <td class="world-table-number d-none d-lg-table-cell">
+                                {{ tag.contacts|length }}
+                            </td>
+                            <td class="world-table-number d-none d-lg-table-cell">
+                                {{ tag.createdAt|format_datetime('medium', 'short') }}
+                            </td>
+                            <td class="text-right">
+                                <a href="{{ path('console_organization_community_contacts', { 'tag': tag.id, 'organizationUuid': current_organization.uuid }) }}"
+                                   class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                    <i class="fad fa-search mr-1"></i>
+                                    <span>{{ 'configure.tags.index.view_contacts'|trans({}, 'organization_community') }}</span>
+                                </a>
+
+                                <a href="{{ csrf_path('console_organization_community_contacts_export', { 'tag': tag.id, 'organizationUuid': current_organization.uuid }) }}"
+                                   class="btn btn-sm btn-outline-primary border-0 mr-2" target="_blank">
+                                    <i class="fad fa-cloud-download mr-1"></i>
+                                    <span>{{ 'configure.tags.index.export_contacts'|trans({}, 'organization_community') }}</span>
+                                </a>
+
+                                <a href="{{ path('console_organization_community_configure_tags_edit', { 'id': tag.id, 'organizationUuid': current_organization.uuid }) }}"
+                                   class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                    <i class="fad fa-edit mr-1"></i>
+                                    <span>{{ 'configure.tags.index.edit'|trans({}, 'organization_community') }}</span>
+                                </a>
+
+                                <a href="{{ csrf_path('console_organization_community_configure_tags_delete', { 'id': tag.id, 'organizationUuid': current_organization.uuid }) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'configure.tags.index.remove_confirm'|trans({'%name%': tag.name}, 'organization_community') }}"
+                                   data-target="#tag-{{ tag.id }}"
+                                   class="btn btn-sm btn-outline-danger border-0">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    <span>{{ 'configure.tags.index.remove'|trans({}, 'organization_community') }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

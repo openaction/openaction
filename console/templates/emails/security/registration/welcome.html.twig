@@ -1,0 +1,33 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %}
+    <h2>
+        {{ 'transactional.registration.welcome.title'|trans({}, 'emails', locale|default('en')) }}
+    </h2>
+
+    <spacer size="16"></spacer>
+
+    <p>
+        {{ 'transactional.registration.welcome.intro'|trans({'%name%': name}, 'emails', locale|default('en')) }}
+    </p>
+
+    <p>
+        {{ 'transactional.registration.welcome.thanks'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+
+    <p>
+        {{ 'transactional.registration.welcome.cta'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+
+    <spacer size="16"></spacer>
+
+    <button class="large expand" href="{{ url('homepage_redirect') }}">
+        {{ 'transactional.registration.welcome.link'|trans({}, 'emails', locale|default('en')) }}
+    </button>
+
+    <spacer size="32"></spacer>
+
+    <p>
+        {{ 'transactional.registration.welcome.feedback'|trans({}, 'emails', locale|default('en')) }}
+    </p>
+{% endblock %}

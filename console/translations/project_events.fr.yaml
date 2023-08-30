@@ -1,0 +1,139 @@
+index:
+    title: Evènements
+    help: Créer des évènements pour mobiliser votre communauté.
+    edit_categories: Editer les catégories
+    create: Nouvel évènement
+    no_result: Votre projet ne contient aucun évènement pour le moment.
+    no_result_create: Créer le premier évènement
+    begin_at: Début à %datetime%
+    no_begin_date: Aucune date de début sélectionnée
+    draft: Brouillon
+    scheduled: Planifié
+    scheduled_for: pour %datetime%
+    published: Publié
+    published_at: à %datetime%
+    last_modified: Dernière modification à %datetime%
+    visits: visites
+    view: Voir
+    preview: Prévisualiser
+    edit: Editer
+    duplicate: Dupliquer
+    move: Déplacer
+    delete: Supprimer
+    remove_confirm: Êtes-vous sûr de vouloir supprimer l'évènement "%name%" ?
+
+create:
+    title: Créer un événement
+    back: Retour à la liste
+
+    form:
+        title:
+            label: Titre de l'évènement
+            help: Titre de l'évènement (affiché sur la liste et sur les réseaux sociaux lors du partage)
+        details: Date et lieu
+        beginAt:
+            label: Date et heure de début de l'évènement
+            help: La date de début sera utilisée pour aider les participants à noter l'évènement dans leur agenda.
+        address:
+            label: Adresse postale de l'évènement
+            help: Conserver le champ libre si l'évènement a lieu en ligne
+        content:
+            label: Description de l'évènement
+            help: |
+                La description doit être courte (quelques phrases) pour être facilement
+                lue et partagée sur les réseaux sociaux. Vous pouvez publier une
+                actualité en plus si vous souhaitez annoncer l'évènement de façon plus détaillée.
+        hasForm:
+            label: Créer un formulaire d'inscription à cet événement automatiquement
+            help: |
+                Si coché, un formulaire d'inscription sera automatiquement créé et associé à cet événement.
+                Vous pourrez personnaliser ce formulaire dans le module Questionnaires.
+        button:
+            title: Bouton Call to action personnalisé
+            help: |
+                Le Call to Action est un bouton très visible proposant au visiteur d'effectuer une action
+                en lien avec l'évènement (s'inscrire, partager sur Facebook, …). Vous pouvez ajouter
+                un Call to Action sur la page de votre évènement en créant un bouton et un URL dédié.
+                Le bouton est désactivé si le champ est laissé libre.
+        buttonText:
+            label: Texte du bouton
+            help: 'Ex : S''inscrire, Regarder l''évènement en ligne, ...'
+        buttonUrl:
+            label: URL cible
+            help: L'URL qui s'ouvre en cliquant sur le bouton
+        submit: Sauvegarder
+
+    registerButton: S'inscrire
+    formBlocks:
+        title: 'S''inscrire à %title%'
+        first_name: 'Prénom'
+        last_name: 'Nom'
+        email: 'Adresse e-mail'
+        zip_code: 'Code postal'
+        city: 'Ville'
+        country: 'Pays'
+
+edit:
+    title: Modifier l'évènement "%title%"
+    back: Retour à la liste
+    view: Voir sur le site
+
+    form:
+        title:
+            label: Titre de l'évènement
+            help: Titre de l'évènement (affiché sur la liste et sur les réseaux sociaux lors du partage)
+        details: Date et lieu
+        beginAt:
+            label: Date et heure de début de l'évènement
+            help: La date de début sera utilisée pour aider les participants à noter l'évènement dans leur agenda.
+        address:
+            label: Adresse postale de l'évènement
+            help: Conserver le champ libre si l'évènement a lieu en ligne
+        content:
+            label: Description de l'évènement
+            help: |
+                La description doit être courte (quelques phrases) pour être facilement
+                lue et partagée sur les réseaux sociaux. Vous pouvez publier une
+                actualité en plus si vous souhaitez annoncer l'évènement de façon plus détaillée.
+        button:
+            title: Call to action
+            help: |
+                Le Call to Action est un bouton très visible proposant au visiteur d'effectuer une action
+                en lien avec l'évènement (s'inscrire, partager sur Facebook, …). Vous pouvez ajouter
+                un Call to Action sur la page de votre évènement en créant un bouton et un URL dédié.
+                Le bouton est désactivé si le champ est laissé libre.
+        buttonText:
+            label: Texte du bouton
+            help: 'Ex : S''inscrire, Regarder l''évènement en ligne, ...'
+        buttonUrl:
+            label: URL cible
+            help: L'URL qui s'ouvre en cliquant sur le bouton
+        submit: Sauvegarder
+
+move:
+    title: Déplacer l'événement "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer cet événement ?
+    submit: Déplacer
+
+categories:
+    index:
+        back: Retour aux évènements
+        title: Catégories d'évènements
+        order: Ordre
+        name: Nom
+        number: Evènements
+        created: Date de création
+        edit: Modifier
+        create: Nouvelle catégorie
+        no_records: Votre projet ne contient aucune catégorie d'évènements pour le moment.
+        no_records_desc: Les catégories vous aident à organiser votre contenu pour faciliter la visite sur le site
+        remove: Supprimer
+        remove_confirm: Êtes-vous sûr de vouloir supprimer la catégorie "%name%" ?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier la catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Sauvegarder

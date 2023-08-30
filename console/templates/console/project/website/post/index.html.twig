@@ -1,0 +1,162 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_posts') %}
+
+{% block sidebar_posts 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'index.title'|trans({}, 'project_posts') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'index.help'|trans({}, 'project_posts') }}
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    <a href="{{ path('console_website_posts_categories', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-secondary mr-2 posts-list-action-categories">
+                        <i class="fad fa-cogs mr-1"></i>
+                        {{ 'index.edit_categories'|trans({}, 'project_posts') }}
+                    </a>
+
+                    <a href="{{ csrf_path('console_website_post_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary posts-list-action-create">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'index.create'|trans({}, 'project_posts') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            {% if posts|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.no_result'|trans({}, 'project_posts') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_website_post_create', {'projectUuid': project.uuid}) }}"
+                           class="btn btn-lg btn-primary posts-list-action-create">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.no_result_create'|trans({}, 'project_posts') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for post in posts %}
+                        <div class="world-list-row p-4" id="post-{{ post.id }}" data-id="{{ post.id }}">
+                            <div class="row align-items-center">
+                                <div class="col-lg-auto d-none d-lg-block">
+                                    <div class="world-list-image">
+                                        <img src="{{ cdn_image_url(post.image) }}" alt="{{ post.title }}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg">
+                                    <h4 class="mb-1 posts-title">
+                                        <a href="{{ path('console_website_post_edit', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}">
+                                            {{ post.title }}
+                                        </a>
+                                    </h4>
+
+                                    <div class="mb-2">
+                                        {% if post.publishedAt and post.publishedAt >= date() %}
+                                            <div class="world-badge world-badge-info mr-2">
+                                                {{ 'index.scheduled'|trans({}, 'project_posts') }}
+                                            </div>
+                                            <small class="font-italic text-muted">
+                                                {{ 'index.scheduled_for'|trans({'%datetime%': post.publishedAt|format_datetime('medium', 'short')}, 'project_posts') }}
+                                            </small>
+                                        {% elseif post.publishedAt and post.publishedAt < date() %}
+                                            <div class="world-badge world-badge-success mr-2">
+                                                {{ 'index.published'|trans({}, 'project_posts') }}
+                                            </div>
+                                            <small class="font-italic text-muted">
+                                                {{ 'index.published_at'|trans({'%datetime%': post.publishedAt|format_datetime('medium', 'short')}, 'project_posts') }}
+                                            </small>
+                                        {% else %}
+                                            <div class="world-badge world-badge-warning">
+                                                {{ 'index.draft'|trans({}, 'project_posts') }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="text-muted">
+                                        <small>
+                                            {% if is_granted('website_access_stats', current_project) %}
+                                                <i class="fad fa-chart-area mr-1"></i>
+                                                {{ post.pageViews }}
+                                                {{ 'index.visits'|trans({}, 'project_posts') }}
+
+                                                <span class="mx-1">|</span>
+                                            {% endif %}
+
+                                            {{ 'index.last_modified'|trans({'%datetime%': post.updatedAt|format_datetime('medium', 'short')}, 'project_posts') }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-auto">
+                                </div>
+
+                                <div class="col-lg-auto">
+                                    <a href="{{ path('console_website_post_view', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 posts-list-action-preview" target="_blank">
+                                        <i class="fas fa-search mr-1"></i>
+                                        {% if post.isPublished %}
+                                            {{ 'index.view'|trans({}, 'project_posts') }}
+                                        {% else %}
+                                            {{ 'index.preview'|trans({}, 'project_posts') }}
+                                        {% endif %}
+                                    </a>
+
+                                    <a href="{{ path('console_website_post_edit', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 posts-list-action-edit">
+                                        <i class="fad fa-edit mr-1"></i>
+                                        {{ 'index.edit'|trans({}, 'project_posts') }}
+                                    </a>
+
+                                    <a href="{{ csrf_path('console_website_post_duplicate', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 posts-list-action-duplicate">
+                                        <i class="fad fa-copy mr-1"></i>
+                                        {{ 'index.duplicate'|trans({}, 'project_posts') }}
+                                    </a>
+
+                                    {% if is_granted('website_posts_manage_published', current_project) %}
+                                        <a href="{{ path('console_website_post_move', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 posts-list-action-move">
+                                            <i class="fad fa-share mr-1"></i>
+                                            {{ 'index.move'|trans({}, 'project_posts') }}
+                                        </a>
+                                    {% endif %}
+
+                                    <a href="{{ csrf_path('console_website_post_delete', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': post.title}, 'project_posts') }}"
+                                       data-target="#post-{{ post.id }}"
+                                       class="btn btn-sm btn-outline-danger border-0 posts-list-action-delete">
+                                        <i class="fad fa-trash mr-1"></i>
+                                        {{ 'index.delete'|trans({}, 'project_posts') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="p-3">
+                    {{ pagination(posts, current_page, 10) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

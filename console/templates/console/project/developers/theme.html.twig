@@ -1,0 +1,123 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'developers.theme.title'|trans({}, 'project') %}
+
+{% block sidebar_theme 'current' %}
+
+{% block head_javascripts %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"
+          integrity="sha512-xIf9AdJauwKIVtrVRZ0i4nHP61Ogx9fSRAkCLecmE2dL/U8ioWpDvFCAy4dcfecN72HHB9+7FfQj3aiO68aaaw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"
+            integrity="sha512-i9pd5Q6ntCp6LwSgAZDzsrsOlE8SN+H5E0T5oumSXWQz5l1Oc4Kb5ZrXASfyjjqtc6Mg6xWbu+ePbbmiEPJlDg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/css/css.min.js"
+            integrity="sha512-YeNG6eTv+q+p/vvx+E5u05IBRurTlv0jfQuvitZMD+oNe9TfrGw+z4MHHxhPlE3X3csemC5YXlzDLMSZrgb34A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"
+            integrity="sha512-9mEZ3vO6zMj0ub2Wypnt8owrHeoJCH22MkzeJ9eD3hca8/Wlqo5pEopI6HloA0F53f/RkRkHs8TyZMxbwVmnFw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/xml/xml.min.js"
+            integrity="sha512-XPih7uxiYsO+igRn/NA2A56REKF3igCp5t0W1yYhddwHsk70rN1bbbMzYkxrvjQ6uk+W3m+qExHIJlFzE6m5eg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="world-box mb-3" data-controller="developer--files">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-9 col-xl-10 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'developers.theme.title'|trans({}, 'project') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'developers.theme.description'|trans({}, 'project') }}
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xl-2 text-lg-right">
+                    <button type="submit" class="btn btn-primary" data-developer--files-target="saveButton">
+                        {{ 'developers.theme.save'|trans({}, 'project') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            <div class="row no-gutters developer-editor">
+                <div class="col-lg-3 col-xl-2 developer-editor-files">
+                    <div class="developer-editor-files-type">
+                        {{ 'developers.theme.templates'|trans({}, 'project') }}
+                    </div>
+
+                    {% for file in files %}
+                        <a href="javascript:void(0)"
+                           class="developer-editor-files-file"
+                           data-developer--files-target="tabs"
+                           data-action="developer--files#onTabClick"
+                           data-id="{{ file.id }}">
+                            <span class="developer-editor-files-section">{{ file.section }}/</span>{{ file.path }}
+                        </a>
+                    {% endfor %}
+
+                    <div class="developer-editor-files-type">
+                        {{ 'developers.theme.assets'|trans({}, 'project') }}
+                    </div>
+
+                    {% for asset in assets %}
+                        <div class="developer-editor-files-asset-item">
+                            <a href="//ca.{{ current_project.rootDomain.name ~ path('cdn_theme_asset', {'pathname': asset.file.pathname}) }}"
+                               target="_blank" class="developer-editor-files-asset-item-link">
+                                {{ asset.name|u.truncate(25, '…') }}
+                            </a>
+
+                            <a href="{{ csrf_path('console_developers_theme_asset_remove', {'projectUuid': current_project.uuid, 'uuid': asset.uuid}) }}"
+                               class="developer-editor-files-asset-item-delete">
+                                <i class="fal fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                    <form method="POST"
+                          name="asset"
+                          enctype="multipart/form-data"
+                          action="{{ path('console_developers_theme_asset_add', {'projectUuid': current_project.uuid}) }}"
+                          data-controller="developer--asset-add">
+
+                        <div class="developer-editor-files-asset-upload">
+                            <input type="file"
+                                   name="{{ field_name(addAssetForm.file) }}"
+                                   class="developer-editor-files-asset-upload-input"
+                                   data-developer--asset-add-target="input" />
+
+                            <i class="fa fa-cloud-upload mr-1"></i>
+                            {{ 'developers.theme.assets_add'|trans({}, 'project') }}
+                        </div>
+
+                        {{ form_rest(addAssetForm) }}
+
+                    </form>
+                </div>
+
+                <div class="col-lg-9 col-xl-10 developer-editor-content">
+                    <form method="post"
+                          name="editor"
+                          action="{{ csrf_path('console_developers_theme_save', {'projectUuid': current_project.uuid}) }}"
+                          data-developer--files-target="form">
+                        {% for file in files %}
+                            <div style="display: none"
+                                 data-developer--files-target="editors"
+                                 data-id="{{ file.id }}">
+
+                                <textarea style="visibility: hidden"
+                                          name="{{ file.id }}"
+                                          data-mode="{{ file.type }}">{{ file.content }}</textarea>
+
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

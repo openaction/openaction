@@ -1,0 +1,65 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'homepage.create.title'|trans({}, 'project_appearance') %}
+
+{% block sidebar_appearance 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <a href="{{ path('console_configuration_appearance_website_homepage', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'back_homepage'|trans({}, 'project_appearance') }}</span>
+            </a>
+
+            <h3>
+                {{ 'homepage.create.title'|trans({}, 'project_appearance') }}
+            </h3>
+
+            <div class="text-muted">
+                {{ 'homepage.create.help'|trans({}, 'project_appearance') }}
+            </div>
+        </div>
+
+        <div class="bg-light p-4 p-lg-5">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="text-center font-weight-bold mb-5">
+                {{ 'homepage.create.label'|trans({}, 'project_appearance') }}
+            </div>
+
+            <div class="row justify-content-center">
+                {% for key, field in form.type %}
+                    <div class="col-12 col-md-6 col-lg-3 text-center mb-5">
+                        <div class="border">
+                            <img src="{{ asset('res/blocks/'~ field.vars.label ~'.jpg') }}" />
+                        </div>
+
+                        <div class="mt-4">
+                            <strong>
+                                {{ form_row(field, {
+                                    'label_attr': {'class': 'radio-custom'},
+                                    'label': ('homepage.' ~ field.vars.label ~ '.title')|trans({}, 'project_appearance')
+                                }) }}
+                            </strong>
+                        </div>
+
+                        <div class="text-muted">
+                            {{ ('homepage.' ~ field.vars.label ~ '.help')|trans({}, 'project_appearance') }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {{ 'homepage.create.submit'|trans({}, 'project_appearance') }}
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

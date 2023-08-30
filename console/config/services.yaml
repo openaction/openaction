@@ -1,0 +1,209 @@
+parameters:
+    demo_user: '%env(APP_DEMO_USER)%'
+    is_on_premise: '%env(bool:APP_ONPREMISE)%'
+    default_plan: '%env(APP_DEFAULT_PLAN)%'
+    default_party: '%env(APP_DEFAULT_PARTY)%'
+    default_partner: '%env(APP_DEFAULT_PARTNER)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $projectDir: '%kernel.project_dir%'
+            $cacheDir: '%kernel.cache_dir%'
+            $translationsDir: '%kernel.project_dir%/translations'
+            $syncCustomersWith: '%env(APP_SYNC_CUSTOMERS_WITH)%'
+            $workerLogger: '@monolog.logger.worker_logging'
+            $isOnPremise: '%is_on_premise%'
+            $defaultPlan: '%default_plan%'
+            $defaultModules: '%env(APP_DEFAULT_MODULES)%'
+            $defaultTools: '%env(APP_DEFAULT_TOOLS)%'
+            $databaseUrl: '%env(DATABASE_URL)%'
+
+    _instanceof:
+        App\Cdn\UploadHandler\UploadedImageHandlerInterface:
+            tags: ['app.cdn_upload_handler']
+
+        App\Website\PageBlock\BlockInterface:
+            tags: ['app.page_block']
+
+        App\Community\Automation\EmailTrigger\EmailTriggerInterface:
+            tags: ['app.email_automation_trigger']
+
+        App\Community\History\ContactHistorySourceInterface:
+            tags: ['app.contact_history_source']
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Util,Kernel.php}'
+
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    #
+    # Bridges
+    #
+    App\Bridge\Sentry\SentryHandler: ~
+
+    App\Bridge\Sentry\SentryListener:
+        arguments:
+            $deploymentId: '%env(APP_DEPLOYMENT_ID)%'
+
+    Monolog\Processor\PsrLogMessageProcessor:
+        tags: ['monolog.processor']
+
+    App\Bridge\Cloudflare\CloudflareInterface:
+        class: 'App\Bridge\Cloudflare\Cloudflare'
+        arguments:
+            $token: '%env(CLOUDFLARE_API_TOKEN)%'
+            $organizationId: '%env(CLOUDFLARE_ORGANIZATION_ID)%'
+            $trialZoneId: '%env(CLOUDFLARE_TRIAL_ZONE_ID)%'
+            $trialCname: '%env(CLOUDFLARE_TRIAL_CNAME)%'
+
+    App\Bridge\Sendgrid\SendgridInterface:
+        class: 'App\Bridge\Sendgrid\Sendgrid'
+        arguments:
+            $apiKey: '%env(SENDGRID_API_KEY)%'
+            $verificationKey: '%env(SENDGRID_VERIFICATION_KEY)%'
+
+    App\Bridge\Postmark\PostmarkInterface:
+        class: 'App\Bridge\Postmark\Postmark'
+        arguments:
+            $accountToken: '%env(POSTMARK_ACCOUNT_TOKEN)%'
+
+    App\Bridge\Twilio\TwilioInterface:
+        class: 'App\Bridge\Twilio\Twilio'
+        arguments:
+            $token: '%env(TWILIO_TOKEN)%'
+            $accountId: '%env(TWILIO_ACCOUNT_ID)%'
+            $defaultFrom: '%env(TWILIO_DEFAULT_FROM)%'
+
+    App\Bridge\Meilisearch\MeilisearchInterface:
+        class: 'App\Bridge\Meilisearch\Meilisearch'
+        arguments:
+            $endpoint: '%env(MEILISEARCH_ENDPOINT)%'
+            $masterKey: '%env(MEILISEARCH_MASTER_KEY)%'
+            $namespace: '%env(APP_NAMESPACE)%'
+
+    App\Bridge\Revue\RevueInterface:
+        class: 'App\Bridge\Revue\Revue'
+
+    App\Bridge\Github\GithubInterface:
+        class: 'App\Bridge\Github\Github'
+        arguments:
+            $appId: '%env(GITHUB_APP_ID)%'
+            $appKey: '%env(file:GITHUB_APP_KEY)%'
+
+    App\Bridge\Mollie\MollieInterface:
+        class: 'App\Bridge\Mollie\Mollie'
+        arguments:
+            $apiKey: '%env(MOLLIE_API_KEY)%'
+
+    App\Bridge\Unlayer\UnlayerInterface:
+        class: 'App\Bridge\Unlayer\Unlayer'
+        arguments:
+            $apiKey: '%env(UNLAYER_API_KEY)%'
+
+    App\Bridge\Uploadcare\UploadcareInterface:
+        class: 'App\Bridge\Uploadcare\Uploadcare'
+        arguments:
+            $publicKey: '%env(UPLOADCARE_PUBLIC_KEY)%'
+            $secretKey: '%env(UPLOADCARE_SECRET_KEY)%'
+
+    #
+    # Assets
+    #
+    App\Twig\ReactExtension:
+        arguments:
+            $stimulusExtension: '@webpack_encore.twig_stimulus_extension'
+
+    #
+    # API
+    #
+    App\Api\OpenApi\ApiTransformerDescriber:
+        tags: ['nelmio_api_doc.model_describer']
+
+    #
+    # Mailer
+    #
+    App\Mailer\PlatformMailer:
+        arguments:
+            $senderEmail: '%env(MAILER_SENDER)%'
+
+    #
+    # CDN
+    #
+    Intervention\Image\ImageManager: ~
+
+    App\Cdn\CdnUploader:
+        arguments:
+            $handlers: !tagged 'app.cdn_upload_handler'
+
+    App\Cdn\CdnRouter:
+        arguments:
+            $baseUrl: '%env(APP_CDN_BASE_URL)%'
+
+    App\Cdn\Listener\RemoveUploadedFileListener:
+        tags:
+            - { name: doctrine.event_listener, entity: App\Entity\Upload, event: preRemove }
+            - { name: doctrine.event_listener, entity: App\Entity\Project, event: preRemove }
+
+    App\Twig\CdnExtension:
+        arguments:
+            $assetExtension: '@twig.extension.assets'
+
+    #
+    # CSRF
+    #
+    App\Twig\CsrfRoutingExtension:
+        arguments:
+            $rootExtension: '@twig.extension.routing'
+
+    #
+    # Proxy
+    #
+    App\Repository\DomainRepository:
+        arguments:
+            $trialsDomainName: '%env(APP_TRIALS_DOMAIN)%'
+
+    #
+    # Themes
+    #
+    App\Theme\GithubThemeEventHandler:
+        arguments:
+            $webhookSecret: '%env(GITHUB_WEBHOOK_SECRET)%'
+
+    #
+    # Website
+    #
+    App\DataManager\ProjectDataManager:
+        arguments:
+            $defaultWebsiteTheme: '%env(APP_DEFAULT_THEME)%'
+
+    App\Website\PageBlockManager:
+        arguments:
+            $blocks: !tagged 'app.page_block'
+
+    #
+    # Community
+    #
+    App\Community\Automation\EmailAutomationDispatcher:
+        arguments:
+            $handlers: !tagged 'app.email_automation_trigger'
+
+    App\Community\MemberAuthenticator:
+        arguments:
+            $secret: '%env(MEMBERS_AUTH_SECRET)%'
+
+    App\Community\History\ContactHistoryBuilder:
+        arguments:
+            $sources: !tagged 'app.contact_history_source'
+
+    #
+    # Billing
+    #
+    App\Billing\Invoice\Generator\PdfGenerator:
+        arguments:
+            $gotenbergEndpoint: '%env(GOTENBERG_ENDPOINT)%'

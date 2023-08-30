@@ -1,0 +1,93 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'developers.redirections.title'|trans({}, 'project') %}
+
+{% block sidebar_redirections 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-xl-9 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'developers.redirections.title'|trans({}, 'project') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'developers.redirections.help'|trans({}, 'project') }}
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xl-3 text-lg-right">
+                    <a href="{{ path('console_developers_redirections_create', { 'projectUuid': current_project.uuid }) }}" class="btn btn-primary">
+                        {{ 'developers.redirections.create'|trans({}, 'project') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            <table class="world-table table"
+                   data-controller="sortable"
+                   data-endpoint="{{ path('console_developers_redirections_sort', { 'projectUuid': current_project.uuid }) }}">
+                <thead>
+                <tr>
+                    <th scope="col" class="world-table-sortable">
+                        {{ 'developers.redirections.order'|trans({}, 'project') }}
+                    </th>
+                    <th scope="col">
+                        {{ 'developers.redirections.source'|trans({}, 'project') }}
+                    </th>
+                    <th scope="col">
+                        {{ 'developers.redirections.target'|trans({}, 'project') }}
+                    </th>
+                    <th scope="col" class="world-table-number d-none d-lg-table-cell">
+                        {{ 'developers.redirections.type'|trans({}, 'project') }}
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+
+                <tbody data-sortable-target="element">
+                {% for redirection in redirections %}
+                    <tr id="redirection-{{ redirection.id }}">
+                        <td data-id="{{ redirection.id }}" class="world-table-sortable">
+                            <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                        </td>
+                        <td>
+                            {{ redirection.source }}
+                        </td>
+                        <td>
+                            {{ redirection.target }}
+                        </td>
+                        <td class="world-table-number d-none d-lg-table-cell">
+                            {{ redirection.code }}
+                        </td>
+                        <td class="world-table-actions">
+                            <a href="{{ path('console_developers_redirections_edit', { 'id': redirection.id, 'projectUuid': current_project.uuid }) }}"
+                               class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                <i class="fad fa-edit mr-1"></i>
+                                <span>{{ 'developers.redirections.edit'|trans({}, 'project') }}</span>
+                            </a>
+
+                            <a href="{{ csrf_path('console_developers_redirections_delete', { 'id': redirection.id, 'projectUuid': current_project.uuid }) }}"
+                               data-controller="delete"
+                               data-message="{{ 'developers.redirections.remove_confirm'|trans({'%name%': redirection}, 'project') }}"
+                               data-target="#redirection-{{ redirection.id }}"
+                               class="btn btn-sm btn-outline-danger border-0">
+                                <i class="fad fa-trash mr-1"></i>
+                                <span>{{ 'developers.redirections.remove'|trans({}, 'project') }}</span>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td class="text-muted text-center py-4" colspan="5">
+                            {{ 'developers.redirections.no_records'|trans({}, 'project') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

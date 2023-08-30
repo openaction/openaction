@@ -1,0 +1,34 @@
+{% extends 'security/base.html.twig' %}
+
+{% block page_title 'forgot_password.request.title'|trans({}, 'security') %}
+
+{% block box %}
+    {{ form_start(form) }}
+        <div class="p-4">
+            <h4 class="mb-3 text-center">{{ 'forgot_password.request.title'|trans({}, 'security') }}</h4>
+
+            <div class="text-muted text-center mb-4">
+                {{ 'forgot_password.request.desc'|trans({}, 'security') }}
+            </div>
+
+            {{ form_errors(form) }}
+
+            {{ form_row(form.email, {
+                'attr': {'class': 'form-control-lg'},
+                'label': 'forgot_password.request.label'|trans({}, 'security')
+            }) }}
+
+            <div class="text-center mt-5 mb-3">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    {{ 'forgot_password.request.submit'|trans({}, 'security') }}
+                </button>
+            </div>
+
+            <div class="text-center mb-3">
+                <a href="{{ path('security_login') }}" class="btn btn-link">
+                    {{ 'forgot_password.request.back'|trans({}, 'security') }}
+                </a>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

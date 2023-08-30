@@ -1,0 +1,47 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        console_endpoint: '%env(APP_CONSOLE_ENDPOINT)%'
+        force_embed_consent: '%env(bool:APP_FORCE_EMBED_CONSENT)%'
+
+services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    Twig\Extra\Intl\IntlExtension: ~
+    Twig\Extra\String\StringExtension: ~
+
+    #
+    # Twig sandbox
+    #
+    Twig\Extension\SandboxExtension: ~
+
+    Twig\Sandbox\SecurityPolicyInterface:
+        class: 'Twig\Sandbox\SecurityPolicy'
+        arguments:
+            $allowedTags: ['if', 'for', 'set', 'block']
+            $allowedFunctions:
+                - attribute
+                - stimulus_controller
+                - stimulus_target
+                - stimulus_action
+                - citipo_theme_asset_url
+                - citipo_project_asset_url
+                - citipo_page
+                - hex2rgba
+            $allowedFilters:
+                - raw
+                - length
+                - default
+                - trans
+                - escape
+                - slice
+                - format_date
+                - format_datetime
+                - round
+                - merge
+                - batch
+                - replace

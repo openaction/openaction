@@ -1,0 +1,187 @@
+back: 'Zurück zu Erscheinungsbild-Optionen'
+back_homepage: 'Zurück zur Homepage-Struktur'
+save: 'Speichern Sie'
+index:
+    title: Erscheinungsbild
+    help: 'Konfigurieren Sie die von Citipo-Produkten verwendeten Darstellungsoptionen.'
+    theme:
+        title: 'Thema und Farben'
+        desc: 'Wählen Sie ein Thema und Farben, die den Anforderungen Ihres Projekts entsprechen.'
+        link: 'Konfigurieren Sie das Thema und die Farben'
+    logos:
+        title: 'Logo und Symbol'
+        desc: 'Laden Sie ein individuelles Logo und Symbol hoch, um Ihre E-Mails und Ihre Website zu personalisieren.'
+        link: 'Konfigurieren Sie das Logo und das Symbol'
+    terminology:
+        title: Terminologie
+        desc: 'Legen Sie den Wortlaut fest, mit dem die wichtigsten Inhalte Ihres Projekts beschrieben werden (Beiträge, Ereignisse, ...).'
+        link: 'Konfigurieren Sie die Terminologie'
+    homepage:
+        title: 'Struktur der Homepage'
+        desc: 'Aktualisieren Sie die Struktur der Homepage, um besser zu zeigen, was für Sie am wichtigsten ist.'
+        link: 'Konfigurieren Sie die Homepage-Struktur'
+logos:
+    title: 'Logo und Symbol'
+    help: 'Laden Sie ein benutzerdefiniertes Logo und ein Symbol hoch, um Ihre E-Mailings und Ihre Website zu personalisieren.'
+    appearanceLogoDark:
+        label: 'Dunkles Logo'
+        help: 'Dunkles Logo auf transparentem Hintergrund. Max 4Mb, wird auf 400x200 verkleinert.'
+    appearanceLogoWhite:
+        label: 'Weißes Logo'
+        help: 'Weißes Logo auf transparentem Hintergrund. Max 4Mb, wird auf 400x200 verkleinert.'
+    appearanceIcon:
+        label: Icon
+        help: 'Icon über einem transparenten Hintergrund. Max 2Mb, wird auf 256x256 verkleinert.'
+terminology:
+    title: Terminologie
+    help: 'Legen Sie den Wortlaut fest, mit dem die wichtigsten Inhalte Ihres Projekts beschrieben werden (Beiträge, Ereignisse, ...).'
+    posts: 'Titel der Rubrik Beiträge'
+    events: 'Titel der Rubrik Ereignisse'
+    trombinoscope: 'Titel der Sektion Trombinoskop'
+    manifesto: 'Titel des Abschnitts "Manifest'
+    newsletter: 'Titel des Anmeldeformulars für den Newsletter'
+    acceptPrivacy: 'Feldetikett für den Antrag auf Genehmigung der Datenschutzrichtlinie'
+    socialNetworks: 'Titel der Integrationen der sozialen Netzwerke'
+    membershipRegister: 'Titel des Anmeldeformulars für die Mitgliedschaft'
+    membershipLogin: 'Titel des Anmeldeformulars für die Mitgliedschaft'
+    membershipArea: 'Titel des Mitgliedschaftsbereichs'
+theme:
+    title: Thema
+    help: 'Wählen und konfigurieren Sie ein Website-Theme, das Ihren Anforderungen entspricht.'
+    structure:
+        label: 'Allgemeine Struktur'
+        choices:
+            campaign:
+                label: Strukturiert
+                help: "Das Hauptbild wird in voller Breite angezeigt. Die Schaltflächen und der Slogan werden darüber angezeigt.\nDas Logo und das Menü sind in einem eigenständigen Banner integriert.\n"
+            classic:
+                label: Kühn
+                help: "Das Hauptbild wird in voller Breite angezeigt und nimmt 85 % der Höhe ein. Das Logo, das Menü,\nSlogan und Schaltflächen werden darüber angezeigt.\n"
+            narrow:
+                label: Effiziente
+                help: "Der Slogan und das Hauptbild werden nebeneinander angezeigt. Die Schaltflächen werden\nüber dem Hauptbild angezeigt, und der Slogan wird in einem eigenen farbigen Feld angezeigt.\n"
+            organization:
+                label: Organisation
+                help: 'Für die Haupt-Website einer Organisation.'
+    options:
+        label: Optionen
+        help: 'Zusätzliche Themenoptionen'
+        positions:
+            label: 'Ausrichtung des Titels'
+            help: 'Wie sollte der Haupttitel ausgerichtet sein?'
+            choices:
+                left: 'Nach links ausrichten'
+                center: Zentrum
+                right: 'Nach rechts ausrichten'
+        overlay:
+            label: 'Das schwarze Overlay über dem Hauptbild anzeigen?'
+            help: 'Wenn diese Funktion deaktiviert ist, achten Sie darauf, dass Ihr Titel über dem Bild noch lesbar ist.'
+        animateElements:
+            label: 'Eine Animation anwenden, wenn Elemente auf der Seite erscheinen?'
+            help: 'Wenn diese Option aktiviert ist, wird eine Animation abgespielt, wenn bestimmte Elemente auf der Seite erscheinen.'
+        animateLinks:
+            label: 'Eine Animation zwischen Seitenwechseln anwenden?'
+            help: 'Wenn diese Option aktiviert ist, wird zwischen dem Laden von Seiten eine Übergangsanimation abgespielt.'
+    colors:
+        label: Farbpalette
+        help: 'Vom Thema verwendete Farben.'
+        appearancePrimary: 'Primäre Farbe'
+        appearanceSecondary: Sekundärfarbe
+        appearanceThird: 'Dritte Farbe'
+    fonts:
+        label: Schriftarten
+        help: "Sie können konfigurieren, welche Schriftarten auf Ihrer Website verwendet werden. Diese Schriftarten stammen von\nGoogle Font, einem Dienst, der kostenlose und quelloffene Schriftarten für Websites anbietet.\nSchauen Sie sich die Website an, um die für Sie passenden Schriftarten zu finden:\n"
+        title:
+            label: Titel
+            help: 'Die Schriftart, die für die Titel der Website verwendet werden soll.'
+        text:
+            label: Inhalt
+            help: 'Die für den Inhalt der Website zu verwendende Schriftart.'
+homepage:
+    title: 'Struktur der Homepage'
+    help: 'Aktualisieren Sie die Struktur der Homepage, um besser zu zeigen, was für Sie am wichtigsten ist.'
+    add_block: 'Einen Block hinzufügen'
+    remove_block: Löschen
+    remove_confirm: 'Sind Sie sicher, dass Sie diesen Block löschen wollen?'
+    header:
+        title: Kopfzeile
+        help: "Die Kopfzeile enthält das Logo und das Menü und ist auf allen Seiten vorhanden.\nSie hilft den Nutzern, sich auf Ihrer Website zurechtzufinden.\n"
+        logo:
+            no_logo: 'Noch kein Logo'
+            link: 'Ändern Sie das Logo'
+        menu:
+            no_menu: 'Noch keine Speisekarte'
+            link: 'Ändern Sie das Menü'
+    intro:
+        title: Einführung
+        help: "Die Einleitung besteht aus einem Hauptbild und einem Einleitungstext. Es sind die wichtigsten\nElemente, die Ihre Besucher sehen werden: Wählen Sie sie mit Bedacht!\n"
+        image:
+            no_image: 'Noch kein Hauptbild'
+            link: 'Ändern Sie das Hauptbild'
+        text:
+            no_text: 'Noch kein Einführungstext'
+            link: 'Ändern Sie den Einleitungstext'
+        form:
+            websiteMainImage:
+                label: Hauptbild
+                help: "Dieses Bild ist das erste Bild, das Ihre Besucher sehen. Sie sollten wahrscheinlich\nein Bild wählen, das Ihr Projekt repräsentiert (ein Foto eines politischen Kandidaten,\nein Bild Ihrer Stadt, ein Foto von Freiwilligen, ...).\n"
+                delete: 'Löschen Sie das Hauptbild'
+            websiteMainVideo:
+                label: Hauptvideo
+                help: "Wenn Sie ein Hauptvideo senden, wird dieses anstelle des Hauptbildes angezeigt,\nHintergrund. Wir empfehlen, das erste Bild des Videos als Hauptbild zu senden,\nso dass das Laden des Videos für Ihre Besucher transparent ist.\nDieses Video darf maximal 5 MB groß sein und muss im MP4-Format vorliegen.\n"
+                delete: 'Löschen Sie das Hauptvideo'
+            websiteMainIntro:
+                label: Einführung
+                title: 'Titel der Einleitung'
+                content: Einleitungstext
+                help: "Die Einleitung wird neben dem Hauptbild angezeigt. Sie können sie verwenden\num Ihr Projekt zu erklären, einen politischen Kandidaten vorzustellen, die Besucher aufzufordern\nIhrer Bewegung beizutreten, ...\n"
+    cta:
+        title: 'Aufruf zum Handeln'
+        help: "Gut sichtbare Schaltflächen zur Hervorhebung der wichtigsten Aktionen, die Sie Ihren Besuchern\ntun sollen. Diese Schlüsselaktionen helfen Ihren Besuchern, Ihre Website zu verstehen.\n"
+        link: 'Ändern Sie die Aufforderung zum Handeln'
+        form:
+            primary:
+                label: 'Primäre Taste'
+                help: "Die Hauptschaltfläche ist die wichtigste Aktion, die Ihre Besucher ausführen sollen.\nBeispiele: \"Erhalten Sie unseren Newsletter\", \"Schließen Sie sich der Bewegung an\", ...\n"
+            secondary:
+                label: 'Sekundäre Taste'
+                help: "Die sekundäre Schaltfläche ist eine alternative Aktion, die Ihre Besucher möglicherweise ausführen möchten.\nBeispiele: \"Lesen Sie unser Manifest\", \"Registrieren Sie sich für eine Veranstaltung\", ...\n"
+            button:
+                label: 'In der Schaltfläche angezeigter Text'
+                url: 'URL, die bei Klick auf den Menüpunkt geöffnet werden soll'
+                newTab: 'Soll dieser Link in einer neuen Registerkarte geöffnet werden?'
+    posts:
+        title: 'Neueste Beiträge'
+        help: 'Liste der zuletzt auf Ihrer Website veröffentlichten Beiträge.'
+        link: 'Konfigurieren Sie die angezeigten Kategorien'
+        form:
+            category:
+                label: 'Welche Kategorie von Beiträgen soll auf der Startseite angezeigt werden (leer lassen, um Beiträge aus allen Kategorien anzuzeigen)?'
+                help: "Sie können eine bestimmte Beitragskategorie auswählen, um sicherzustellen, dass nur Beiträge aus dieser Kategorie\nauf der Startseite angezeigt werden.\n"
+    events:
+        title: 'Kommende Veranstaltungen'
+        help: 'Liste der bevorstehenden Veranstaltungen auf Ihrer Website veröffentlicht.'
+        link: 'Konfigurieren Sie die angezeigten Kategorien'
+        form:
+            category:
+                label: 'Welche Kategorie von Veranstaltungen soll auf der Startseite angezeigt werden (leer lassen, um Veranstaltungen aus allen Kategorien anzuzeigen)?'
+                help: "Sie können eine bestimmte Veranstaltungskategorie auswählen, um sicherzustellen, dass nur Veranstaltungen aus dieser Kategorie\nauf der Startseite angezeigt werden.\n"
+    newsletter:
+        title: Newsletter-Abonnement
+        help: "Formular, mit dem sich Ihre Besucher für Ihren Newsletter anmelden können. Die Abonnenten werden zu Ihrer\nIhrer Community hinzugefügt, so dass Sie sie leicht kontaktieren können.\n"
+    socials:
+        title: 'Integrationen in soziale Netzwerke'
+        link: 'Konfigurieren Sie die sozialen Konten'
+        help: "Zeigen Sie die neuesten Veröffentlichungen von Konten in sozialen Netzwerken direkt auf Ihrer Homepage an.\n"
+        form:
+            facebook: 'Wie lautet die URL der Facebook-Seite, die Sie anzeigen möchten?'
+            twitter: 'Wie lautet die URL des Twitter-Feeds, den Sie anzeigen möchten?'
+    content:
+        title: 'Benutzerdefinierter Inhalt'
+        help: 'Vollständig anpassbarer Inhalt, um alles, was Sie wünschen, auf Ihrer Homepage anzuzeigen.'
+        link: 'Konfigurieren Sie den Inhalt'
+    create:
+        title: 'Einen Homepage-Block hinzufügen'
+        help: 'Homepage-Blöcke werden verwendet, um eine strukturierte Homepage zu erstellen, die Ihren Zielen entspricht.'
+        label: 'Welche Art von Block möchten Sie auf Ihrer Homepage hinzufügen?'
+        submit: erstellen.

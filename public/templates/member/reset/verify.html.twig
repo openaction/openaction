@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title 'membership.reset_verify.title'|trans %}
+
+{% block page %}
+    {% set payload = {
+        'current_url': url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'current_project': current_project.toArray,
+        'title': 'membership.reset_verify.title'|trans,
+        'content': block('form_content'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
+
+
+{% block form_content %}
+    <div class="text-center">
+        {{ 'membership.reset_verify.message'|trans|nl2br }}
+    </div>
+{% endblock %}

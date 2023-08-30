@@ -1,0 +1,87 @@
+security:
+    enable_authenticator_manager: true
+
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+        App\Entity\Community\Contact:
+            algorithm: auto
+
+    providers:
+        app_console_provider:
+            entity:
+                class: 'App\Entity\User'
+                property: email
+
+        app_integrations_api_provider:
+            id: 'App\Security\Provider\IntegrationsApiProvider'
+
+        app_projects_api_provider:
+            entity:
+                class: 'App\Entity\Project'
+                property: apiToken
+
+    role_hierarchy:
+        ROLE_ADMIN:
+            - ROLE_ALLOWED_TO_SWITCH
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        cdn:
+            pattern: ^/(serve|theme)/
+            security: false
+
+        shareable:
+            pattern: ^/shareable/
+            security: false
+
+        webhooks:
+            pattern: ^/webhook/
+            security: false
+
+        integrations_api:
+            pattern: ^/api/integrations
+            stateless: true
+            provider: app_integrations_api_provider
+            custom_authenticators:
+                - 'App\Security\Authenticator\IntegrationsApiAuthenticator'
+
+        projects_api:
+            pattern: ^/api
+            stateless: true
+            provider: app_projects_api_provider
+            custom_authenticators:
+                - 'App\Security\Authenticator\ProjectsApiAuthenticator'
+
+        main:
+            lazy: true
+            switch_user: true
+            provider: app_console_provider
+            two_factor:
+                auth_form_path: 2fa_login
+                check_path: 2fa_login_check
+                trusted_parameter_name: _trusted
+                multi_factor: false
+                prepare_on_login: true
+                prepare_on_access_denied: true
+            custom_authenticators:
+                - 'App\Security\Authenticator\ConsoleAuthenticator'
+            login_throttling: ~
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+            logout:
+                path: security_logout
+                target: security_login
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/integrations, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_PROJECT }
+        - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: ^/console/partner, roles: ROLE_PARTNER }
+        - { path: ^/console, roles: ROLE_USER }

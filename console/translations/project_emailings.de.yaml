@@ -1,0 +1,105 @@
+index:
+    title: E-Mail-Kampagnen
+    create: 'Neue E-Mail-Kampagne'
+    drafts:
+        title: E-Mail-Kampagnen
+        no_records: 'Zurzeit gibt es keine Kampagnenentwürfe'
+        no_result_create: 'Eine Kampagne erstellen'
+        draft: Entwurf
+        from: 'Von %von%'
+        to: 'An alle Ihre Kontakte'
+        to_areas: 'An Kontakte aus %areas%'
+        to_tags: 'An Kontakte mit Tags %tags%'
+        to_contacts: 'An %contacts% bestimmte Kontakte'
+        to_areas_tags: 'An Kontakte aus %areas% und mit Tags %tags%'
+        edit_details: 'Details aktualisieren'
+        edit_content: 'Inhalt aktualisieren'
+        delete: Löschen
+        delete_confirm: 'Sind Sie sicher, dass Sie die Kampagne "%subject%" löschen wollen?'
+        preview: Vorschau
+        send_test: 'Einen Test senden'
+        send_all: 'An alle senden'
+    sent:
+        title: 'Gesendete Kampagnen'
+        shareable_history: 'Freigegebenen E-Mail-Verlauf öffnen'
+        no_records: 'Es wurden noch keine Kampagnen verschickt'
+        subject: Thema
+        stats: Statistik
+        view: 'Inhalt anzeigen'
+        report: 'Offene Stellen'
+        duplicate: 'Duplizieren Sie'
+create:
+    subject: '(Unbenannte Kampagne)'
+    fromName: '%Benutzer% von %Organisation%'
+    template:
+        back: Zurück
+        title: 'Erstellen Sie eine E-Mail-Kampagne'
+        desc: 'Wählen Sie eine Vorlage für die Erstellung Ihrer E-Mail-Kampagne.'
+        choose: 'Wählen Sie diese Vorlage'
+        emailing:
+            1.empty: 'Leere Vorlage'
+            2.newsletter: Newsletter
+            3.event: Veranstaltung
+            4.thanks: Dankeschön
+            5.fundraising: Fundraising
+            6.vote: 'Aufruf zur Abstimmung'
+metadata:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Kampagne "%title%" bearbeiten'
+    submit: 'Details speichern'
+    from:
+        title: Von
+        desc: 'Von wem wird diese Kampagne durchgeführt?'
+        email: 'E-Mail Adresse'
+        name: Name
+    reply:
+        title: 'Antwort an (optional)'
+        desc: 'Wer soll die Antworten erhalten? (wenn leer, werden die E-Mail-Adresse und der Name von verwendet)'
+        email: 'E-Mail Adresse'
+        name: Name
+    to:
+        title: An
+        desc: 'An wen senden Sie diese Kampagne?'
+    subject:
+        title: Thema
+        desc: 'Wie lautet die Betreffzeile für diese Kampagne?'
+        subject:
+            label: Thema
+            help:
+                main: 'Gute Betreffzeilen geben einen Grund, Ihre E-Mail zu öffnen. Hier sind ein paar Tipps:'
+                1:
+                    strong: 'Der Platz ist begrenzt'
+                    muted: 'Wir empfehlen, nicht mehr als 60 Zeichen zu verwenden.'
+                2:
+                    strong: 'Leicht zu verstehen'
+                    muted: 'Probanden mit weniger als 9 Wörtern schneiden tendenziell besser ab'
+                3:
+                    strong: 'Nicht zu viel Interpunktion'
+                    muted: 'Einfache Betreffzeilen bringen Ihr Anliegen besser rüber'
+        preview:
+            label: Textvorschau
+            help: 'Die Vorschau wird in einigen Posteingängen als E-Mail-Vorschau angezeigt. (Optional)'
+content:
+    back: 'Zurück zur Liste der Kampagnen'
+    preview: 'Vorschau der E-Mail'
+    metadata: 'Details der Kampagne aktualisieren'
+    send: 'Einen Test senden'
+    title: 'Kampagne "%title%" bearbeiten'
+send_test:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Eine Vorschau von "%title%" senden'
+    recipients:
+        label: 'An wen möchten Sie diesen Test senden?'
+        help: 'Maximal 5 E-Mails, durch Kommas getrennt.'
+    send: 'Senden Sie die Vorschau'
+send_all:
+    back: 'Zurück zur Liste der Kampagnen'
+    title: 'Senden Sie die Kampagne "%title%".'
+    confirm: "Sie sind dabei, die Kampagne an <strong>%count% Abonnenten</strong> zu senden.\n<br />\n<br />\nDer Versand dieser Kampagne verbraucht <strong>%count% Credits</strong> von Ihrer Organisation.\n<br />\n<br />\nSind Sie sicher, dass Sie die Kampagne senden können?\nNach dem Versenden können Sie sie nicht mehr aktualisieren.\n"
+    send: 'Senden Sie die Kampagne'
+    cancel: Abbrechen
+stats:
+    report:
+        back: 'Zurück zur Liste der Kampagnen'
+        title: 'Bericht über "%subject%" per E-Mail versenden'
+        export: Exportieren

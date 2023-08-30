@@ -1,0 +1,230 @@
+back: Retour aux options d'apparence
+back_homepage: Retour à la structure de la page d'accueil
+save: Sauvegarder
+
+index:
+    title: Apparence
+    help: Configurer l'apparence des outils de Citipo.
+    theme:
+        title: Thème et couleurs
+        desc: Choisir et configurer le thème et les couleurs du site pour correspondre à votre projet.
+        link: Configurer le thème et les couleurs
+    logos:
+        title: Logo et icône
+        desc: Télécharger un logo et une icône pour personnaliser les emailings et le site internet.
+        link: Configurer le logo et les icônes
+    terminology:
+        title: Terminologie
+        desc: Configurer les terms utilisés pour décrire les contenus principaux de votre projet (actualités, événements, ...).
+        link: Configurer la terminologie
+    homepage:
+        title: Structure de la page d'accueil
+        desc: Affichier du contenu personnalisé sur votre page d'accueil pour correspondre au mieux à votre projet.
+        link: Configurer la structure de la page d'accueil
+
+logos:
+    title: Logo et icône
+    help: Télécharger un logo et une icône pour personnaliser les emailings et le site internet.
+    appearanceLogoDark:
+        label: Logo noir
+        help: Logo noir sur fond transparent Max 4Mb, au format 400x200.
+    appearanceLogoWhite:
+        label: Logo blanc
+        help: Logo blanc sur fond transparent Max 4Mb, au format 400x200.
+    appearanceIcon:
+        label: Icône
+        help: Icône sur fond transparent Max 2Mb, au format 256x256.
+
+terminology:
+    title: Terminologie
+    help: Configurer les terms utilisés pour décrire les contenus principaux de votre projet (actualités, événements, ...).
+    posts: Titre de la section Actualités
+    events: Titre de la section Événements
+    trombinoscope: Titre de la section Trombinoscope
+    manifesto: Titre de la section Manifesto
+    newsletter: Titre du formulaire d'inscription à la newsletter
+    acceptPrivacy: Libellé du champ de demande d'accord de la Politique de protection des données
+    socialNetworks: Titre des intégrations sociales
+    membershipRegister: Titre du formulaire d'adhésion
+    membershipLogin: Titre du formulaire de connexion
+    membershipArea: Titre de l'Espace membre
+
+theme:
+    title: Thème et couleurs
+    help: Choisir et configurer le thème et les couleurs du site pour correspondre à votre projet.
+    structure:
+        label: Structure générale
+        choices:
+            campaign:
+                label: Structuré
+                help: |
+                    L'image principale est affichée sur toute la largeur de l'écran. Les boutons et le slogan sont
+                    affichés par dessus. Le logo et le menu sont intégrés dans un bandeau indépendant.
+            classic:
+                label: Audacieuse
+                help: |
+                    L'image principale est affichée en arrière-plan, sur toute la largeur de
+                    l'écran et sur 85% de sa hauteur. Le logo, le menu, le slogan et les
+                    boutons sont affichés par dessus.
+            narrow:
+                label: Efficace
+                help: |
+                    Le slogan et l'image principale sont placés en vis-à-vis. Les boutons sont
+                    affichés par dessus l'image principale et le slogan est affiché sur un
+                    applat de la couleur principale de votre thème.
+            organization:
+                label: Organisation
+                help: Pour le site d'une organisation.
+    options:
+        label: Options
+        help: Options du thème supplémentaire
+        positions:
+            label: Alignement du titre
+            help: Comment souhaitez-vous aligner le mail principal ?
+            choices:
+                left: Aligner sur la gauche
+                center: Centrer
+                right: Aligner sur la droite
+        overlay:
+            label: Ajouter un filtre foncé sur l'image principale ?
+            help: Si le filtre est désactivé, assurez-vous que votre titre soit toujours lisible sur l’image.
+        animateElements:
+            label: Appliquer une animation à l'apparition des éléments des pages ?
+            help: Si activé, une animation sera appliquée lors de l'apparition de certains éléments sur la page.
+        animateLinks:
+            label: Appliquer une animation entre les changements de page ?
+            help: Si activé, une animation de transition sera appliquée entre les pages.
+    colors:
+        label: Palette de couleurs
+        help: Couleurs utilisées par le thème.
+        appearancePrimary: Couleur primaire
+        appearanceSecondary: Couleur secondaire
+        appearanceThird: Couleur tertiaire
+    fonts:
+        label: Police
+        help: |
+            Vous pouvez configurer la police utilisée sur votre site. Les polices proviennent de Google Font,
+            un service fournissant des polices gratuites et open-source pour les sites internet.
+            Visitez leur site pour trouver une police qui vous convienne :
+        title:
+            label: Titres
+            help: Police à utiliser pour le titre du site.
+        text:
+            label: Contenu
+            help: Police à utiliser pour le contenu du site.
+
+homepage:
+    title: Structure de la page d’accueil
+    help: Afficher les modules sur votre page d'accueil qui correspondent le mieux à votre projet
+    add_block: Ajouter un bloc.
+    remove_block: Supprimer
+    remove_confirm: Êtes-vous sûr de vouloir supprimer un bloc ?
+    header:
+        title: Entête
+        help: |
+            L'entête contient le logo et le menu et sera affichée sur toutes les pages
+            Cela facilite la navigation pour les utilisateurs.
+        logo:
+            no_logo: Aucun logo pour le moment
+            link: Changer le logo
+        menu:
+            no_menu: Aucun menu pour le moment
+            link: Changer le menu
+    intro:
+        title: Introduction
+        help: |
+            L'introduction comprend une image principale et un texte d'introduction.
+            C'est l'élément principal que verront les visiteurs : à choisir avec précaution !
+        image:
+            no_image: Aucune image pour le moment
+            link: Changer l’image principale
+        text:
+            no_text: Aucun texte d'introduction pour le moment
+            link: Changer le texte d'introduction
+        form:
+            websiteMainImage:
+                label: Image principale
+                help: |
+                    Cette image sera la première image que verront vos visiteurs. Vous pouvez choisir
+                    une image qui représente votre projet (une photo d'un candidat politique, une image
+                    de votre ville, une photo de militant, ...)
+                delete: Supprimer l'image principale
+            websiteMainVideo:
+                label: Vidéo principale
+                help: |
+                    Si vous envoyez une vidéo principale, celle-ci sera affichée à la place de l'image principale,
+                    en arrière-plan. Nous vous recommandons d'envoyer la première image de cette vidéo en tant qu'image
+                    principale, pour que le chargement de la vidéo soit transparent pour vos utilisateurs.
+                    Cette vidéo doit faire maximum 5Mo et doit être au format MP4.
+                delete: Supprimer la vidéo principale
+            websiteMainIntro:
+                label: Introduction
+                title: Titre de l'introduction
+                content: Texte de l'introduction
+                help: |
+                    L'introduction sera visible à côté de votre image principale.
+                    Vous pouvez l'utiliser pour expliquer votre projet, présenter un candidat politique,
+                    proposer aux visiteurs de rejoindre votre mouvement, ...
+    cta:
+        title: Call to action
+        help: |
+            Des boutons très visibles qui mettent en avant les actions les plus importantes que vous souhaitez proposer
+            aux visiteurs. Ces actions clés aident les visiteurs à comprendre le but de votre projet.
+        link: Changer les call to action
+        form:
+            primary:
+                label: Bouton principal
+                help: |
+                    Le bouton principal est l'action la plus importante que les visiteurs doivent
+                    effectuer. Exemples : "S'inscrire à la newsletter", "Rejoindre le mouvement", ...
+            secondary:
+                label: Bouton secondaire
+                help: |
+                    Le bouton secondaire est une action alternative que les visiteurs peuvent effectuer.
+                    Exemples : "Lire notre programme", "Participer à un évènement", ....
+            button:
+                label: Texte du bouton
+                url: L'URL qui sera ouvert au moment du clic sur l'élément du menu.
+                newTab: Ouvrir le lien dans un nouvel onglet ?
+    posts:
+        title: Dernières actualités
+        help: Liste des dernières actualités publiées sur votre site.
+        link: Configurer les catégories d'actualités
+        form:
+            category:
+                label: Quelles catégories d’actualités doivent être affichées sur la page d’accueil ? Ne rien indiquer pour afficher l’ensemble des actualités de toutes les catégories.
+                help: |
+                    Vous pouvez sélectionner une catégorie spécifique pour afficher uniquement les
+                    actualités de cette catégorie sur la page d’accueil.
+    events:
+        title: Prochains événements
+        help: Liste des prochains événements publiés sur votre site.
+        link: Configurer les catégories d'événements
+        form:
+            category:
+                label: Quelles catégories d’événements doivent être affichées sur la page d’accueil ? Ne rien indiquer pour afficher l’ensemble des événements de toutes les catégories.
+                help: |
+                    Vous pouvez sélectionner une catégorie spécifique pour afficher uniquement les
+                    événements de cette catégorie sur la page d’accueil.
+    newsletter:
+        title: Inscription à la newsletter
+        help: |
+            Formulaire permettant aux visiteurs de s’inscrire à votre newsletter.
+            Les visiteurs inscrits seront intégrés à votre communauté pour pouvoir être recontactés facilement.
+    socials:
+        title: Intégration des réseaux sociaux
+        link: Configurer les comptes de réseaux sociaux
+        help: |
+            Afficher les dernières publications de vos réseaux sociaux directement sur la page d’accueil de votre site.
+        form:
+            facebook: Quel est l’URL de la page Facebook que vous souhaitez afficher ?
+            twitter: Quel est l’URL du compte Twitter que vous souhaitez afficher ?
+    content:
+        title: Contenu personnalisé
+        help: Contenu entièrement personnalisable à afficher sur votre page d’accueil.
+        link: Configurer le contenu
+    create:
+        title: Ajouter un bloc à la page d’accueil
+        help: Les blocs de la page d’accueil sont utilisés pour créer une structure de page complétement personnalisée en accord avec les objectifs de votre projet.
+        label: Quel type de bloc souhaitez-vous ajouter sur votre page d’accueil ?
+        submit: Créer

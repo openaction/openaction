@@ -1,0 +1,59 @@
+index:
+    title: Trombinoscope
+    help: Affichez une liste de personnes et leur photographie (candidats, élus, figures de votre organisation, ...) sur votre site internet.
+    edit_categories: Modifier les catégories
+    create: Ajouter une personne
+    no_result: Votre trombinoscope ne contient personne pour l'instant.
+    no_result_create: Ajouter une première personne
+    edit: Modifier
+    duplicate: Dupliquer
+    move: Déplacer
+    delete: Supprimer
+    view: Voir
+    preview: Prévisualiser
+    draft: Brouillon
+    scheduled: Programmé
+    scheduled_for: pour le %datetime%
+    published: Publié
+    published_at: le %datetime%
+    last_modified: Dernière modification le %datetime%
+    visits: visites
+    remove_confirm: Souhaitez-vous vraiment supprimer la personne "%name%" ?
+
+create:
+    title: '(Personne sans nom)'
+
+edit:
+    title: Modifier "%name%"
+    back: Retour à la liste
+    view: Voir sur le site internet
+
+move:
+    title: Déplacer la personne "%title%"
+    back: Retour à la liste
+    to: Dans quel projet souhaitez-vous déplacer cette personne ?
+    submit: Déplacer
+
+categories:
+    index:
+        back: Retour au trombinoscope
+        title: Catégories du trombinoscope
+        create: Nouvelle catégorie
+        no_records: Aucune catégorie de trombinoscope pour le moment
+        no_records_desc: |
+            Les catégories vous aident à organiser les personnes de votre trombinoscope, par exemple
+            géographiquement ou par thème.
+        order: Ordre
+        name: Nom
+        number: Personnes
+        created: Date de création
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Êtes-vous sûr de vouloir supprimer la catégorie "%name%" ?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier une catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Enregistrer

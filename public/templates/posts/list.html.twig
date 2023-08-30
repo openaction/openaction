@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title current_project.terminology.posts %}
+
+{% block body_class 'body-posts-list' %}
+
+{% block page %}
+    {% set items = [] %}
+    {% for post in posts %}
+        {% set itemCategories = {} %}
+        {% for category in post.categories %}
+            {% set itemCategories = itemCategories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
+        {% endfor %}
+
+        {% set items = items|merge([
+            {
+                'title': post.title,
+                'url': path('post_view', {'id': post.id, 'slug': post.slug}),
+                'description': post.description,
+                'image': post.image,
+                'video': post.video ? post.video|split(':') : null,
+                'date': post.published_at|format_date('medium'),
+                'categories': itemCategories,
+            }
+        ]) %}
+    {% endfor %}
+
+    {% set filters = [
+        {
+            'name': 'base.show_all'|trans,
+            'url': path('post_list'),
+            'isActive': current_category == null
+        }
+    ] %}
+
+    {% for category in categories %}
+        {% set filters = filters|merge([
+            {
+                'name': category.name,
+                'url': path('post_list', {'c': category.id}),
+                'isActive': current_category == category.id
+            }
+        ]) %}
+    {% endfor %}
+
+    {% set pagination = posts.meta.pagination.links %}
+
+    {% set payload = {
+        'current_url': url(current_route, current_route_params),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'default_list_image': asset('res/default.jpg'),
+        'play_icon': asset('res/play.svg'),
+        'section_id': 'posts',
+        'section_name': current_project.terminology.posts,
+        'items': items,
+        'no_items_message': 'base.no_element'|trans,
+        'categories': filters,
+        'previous': pagination.previous is defined ? path('post_list', {'p': current_page - 1, 'c': current_category}) : null,
+        'next': pagination.next is defined ? path('post_list', {'p': current_page + 1, 'c': current_category}) : null,
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/list.html.twig' with payload %}
+    {% endsandbox %}
+{% endblock %}
