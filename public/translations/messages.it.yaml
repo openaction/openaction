@@ -1,0 +1,250 @@
+base:
+    form_legalities: |
+        Hai il diritto di accesso, rettifica, cancellazione e portabilità
+        dei tuoi dati, così come il diritto di opposizione e il diritto di limitare il
+        trattamento dei dati che ti riguardano. Puoi esercitare i tuoi diritti
+        contattandoci all'indirizzo disponibile nella Privacy Policy.
+    pagination:
+        previous: Precedente
+        next: Successivo
+    show_all: Mostra tutto
+    categories: Categorie
+    no_element: Nessun elemento ancora.
+    formal_title:
+        madam: Signora
+        sir: Signore
+    gender:
+        male: Maschio
+        female: Femmina
+        transgender: Transgender
+        non_binary: Non binario
+        other: Altro
+    embed-consent:
+        title: Contenuto esterno
+        description: |
+            Questo contenuto incorporato è ospitato da un servizio esterno. Visualizzando questo contenuto,
+            acconsenti a che %host% memorizzi cookie sul tuo browser.
+        accept: Mostra il contenuto
+        external: Apri
+        cancel: Non riprodurre questi contenuti
+
+home:
+    blocks:
+        socials:
+            title: Reti sociali
+
+posts:
+    not_published: Questo post non è ancora pubblicato. Lo stai visualizzando come amministratore.
+
+events:
+    more: Altro
+    show_all: Mostra tutto
+    begin_at: Inizia il
+    address: Indirizzo
+    online: Evento online
+    no_element: Nessun elemento ancora.
+    not_published: Questo evento non è ancora pubblicato. Lo stai visualizzando come amministratore.
+
+newsletter:
+    email: Il tuo indirizzo email *
+    firstname: Il tuo nome
+    lastname: Il tuo cognome
+    phone: Il tuo numero di telefono
+    country: Paese
+    zipCode: Codice postale
+    submit: Iscriviti
+    success: Ti sei iscritto con successo alla newsletter.
+
+legalities:
+    title: Legalità
+    editor: Editore
+    publisher: Direttore della pubblicazione
+    development:
+        title: Sviluppo
+        text: Alimentato dalla piattaforma
+    hosting:
+        title: Fornitore di hosting
+        data: I dati sono archiviati a Francoforte, Germania.
+        technical: 'Servizio tecnico:'
+
+gdpr:
+    title: Gestisci le mie preferenze
+    success: Le preferenze sono state salvate con successo.
+    all_projects: Configura le mie impostazioni generali
+    per_projects: Configura le mie impostazioni per argomento
+    newsletter: Accetto di ricevere email.
+    sms: Accetto di ricevere messaggi di testo.
+    calls: Accetto di essere chiamato per telefono.
+    submit: Aggiorna
+
+share:
+    facebook: Condividi su Facebook
+    twitter: Condividi su Twitter
+    linkedin: Condividi su LinkedIn
+    telegram: Condividi su Telegram
+    whatsapp: Condividi su Whatsapp
+    email: Condividi tramite e-mail
+
+socials:
+    rss: Feed RSS
+    facebook: Trovaci su Facebook
+    twitter: Trovaci su Twitter
+    instagram: Trovaci su Instagram
+    linkedin: Trovaci su LinkedIn
+    youtube: Trovaci su YouTube
+    medium: Trovaci su Medium
+    telegram: Trovaci su Telegram
+    snapchat: Trovaci su Snapchat
+
+forms:
+    phoning_campaign: |
+        Questo modulo è associato a una campagna telefonica. Lo stai visualizzando come amministratore
+        ma non sarà accessibile se non nel contesto della campagna.
+    no_value: Nessuna risposta
+    submit: Invia
+    never_passwords: Non inviare mai password tramite questo modulo.
+    newsletter: Accetto di ricevere email.
+    success: Il modulo è stato inviato con successo.
+    money_amount_custom: 'O inserisci un importo personalizzato:'
+
+trombinoscope:
+    no_element: Nessuna informazione ancora
+    contact_person: Contatto
+    contact_by_mail: Contatta via email
+    socials:
+        find_on:
+            facebook: Segui su Facebook
+            twitter: Segui su Twitter
+            instagram: Segui su Instagram
+            linkedin: Segui su LinkedIn
+            youtube: Segui su YouTube
+            medium: Segui su Medium
+            telegram: Segui su Telegram
+
+membership:
+    menu:
+        connected: Connesso
+        account: Il mio account
+        logout: Esci
+    login:
+        register_success: Il tuo account è stato creato con successo. Ora puoi accedere.
+        reset_success: La tua password è stata reimpostata con successo. Ora puoi accedere.
+        update_email_success: Il tuo indirizzo email è stato aggiornato con successo. Ora puoi accedere.
+        email: Indirizzo email
+        password: Password
+        submit: Accedi
+        reset: Ho dimenticato la mia password
+        join_question: Non sei ancora registrato?
+    reset:
+        title: Ho dimenticato la mia password
+        email: Indirizzo email
+        submit: Reimposta la mia password
+    reset_verify:
+        title: Controlla la tua casella di posta
+        message: |
+            Ti è stata inviata un'email di conferma.
+            Clicca sul link contenuto per finalizzare il reset della tua password.
+    reset_update:
+        title: Aggiorna la tua password
+        password_first: Nuova password
+        password_second: Conferma
+        submit: Reimposta la mia password
+    form:
+        submit: Salva
+        submit_join: Invia
+        sections:
+            account: Il tuo account
+            details: La tua identità
+            contact: I tuoi dettagli di contatto
+            address: Il tuo indirizzo
+            notifications: Le tue notifiche
+        account:
+            update_email: Aggiorna il mio indirizzo email
+            unregister: Disiscriviti
+        fields:
+            # Required
+            email: Indirizzo email
+            password_first: Password
+            password_second: Conferma password
+            profileFirstName: Nome
+            profileMiddleName: Altri nomi
+            profileLastName: Cognome
+            acceptPolicy: Accetto l'Informativa sulla Privacy e i Termini di Servizio.
+
+            # Optional/Disabled
+            profileFormalTitle: Titolo formale
+            profileBirthdate: Data di nascita
+            profileGender: Genere
+            profileNationality: Nazionalità
+            profileJobTitle: Titolo di lavoro
+            profileCompany: Datore di lavoro
+            contactPhone: Numero di telefono personale
+            contactWorkPhone: Numero di telefono professionale
+            socialFacebook: URL dell'account Facebook
+            socialTwitter: Nome utente Twitter
+            socialLinkedIn: URL dell'account LinkedIn
+            socialTelegram: Nome utente Telegram
+            socialWhatsapp: Numero di telefono WhatsApp
+            addressStreetLine1: Indirizzo postale
+            addressStreetLine2: Indirizzo aggiuntivo
+            addressZipCode: Codice postale
+            addressCity: Città
+            addressCountry: Paese
+            settingsReceiveNewsletters: Accetto di essere contattato via email nell'ambito del mio account.
+            settingsReceiveSms: Accetto di essere contattato via SMS nell'ambito del mio account.
+            settingsReceiveCalls: Accetto di essere contattato telefonicamente nell'ambito del mio account.
+        choices:
+            profileFormalTitle:
+                mr: Sig.
+                ms: Sig.ra
+            profileGender:
+                male: Maschio
+                female: Femmina
+                transgender: Transgender
+                non_binary: Non binario
+                other: Altro
+    join_verify:
+        title: Controlla la tua casella di posta
+        message: |
+            Ti è stata inviata un'email di conferma.
+            Clicca sul link contenuto per finalizzare la tua registrazione.
+    account:
+        title: Il mio account
+        update_email:
+            title: Aggiorna il mio indirizzo email
+            desc: Ti verrà inviata un'email di conferma per confermare l'aggiornamento.
+            field: Nuovo indirizzo email
+            submit: Salva
+            cancel: Annulla
+            success: |
+                La tua richiesta è stata accettata. Ti è stata inviata un'email di conferma.
+                Clicca sul link contenuto per finalizzare l'aggiornamento.
+        unregister:
+            title: Disiscriviti
+            desc: Sei sicuro di volerti disiscrivere? Ti verrà inviata un'email di conferma per confermare la disiscrizione.
+            submit: Salva
+            cancel: Annulla
+            success: |
+                La tua richiesta è stata accettata. Ti è stata inviata un'email di conferma.
+                Clicca sul link contenuto per finalizzare la disiscrizione.
+    resources:
+        title: Risorse
+    posts:
+        title: Notizie
+    events:
+        title: Eventi
+    forms:
+        title: Moduli
+
+phoning:
+    start: Inizia una nuova chiamata
+    finished: La campagna telefonica è finita poiché tutti gli obiettivi sono stati chiamati.
+    calling: Ho iniziato la chiamata
+    details:
+        title: Stai chiamando ...
+        failed_invalid: La chiamata è fallita
+        failed_no_answer: Non hanno risposto
+        failed_no_call: Non vogliono essere chiamati di nuovo
+        failed_unregister: Desiderano disiscriversi
+        failed_call_later: Desiderano essere chiamati di nuovo più tardi
+        accepted: Accettano di rispondere alle domande

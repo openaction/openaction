@@ -14,7 +14,7 @@ class UpdateDetailsData
     public ?string $name = null;
 
     #[Assert\NotBlank]
-    #[Assert\Choice(['en', 'fr', 'pt_BR'])]
+    #[Assert\Choice(['en', 'fr', 'pt_BR', 'nl', 'de', 'it'])]
     public string $locale = 'en';
 
     #[Assert\NotBlank]

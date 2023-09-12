@@ -56,18 +56,30 @@ You can also use a local reverse proxy if you wish.
 ### 2. Start the project and its services
 
 ```
-$ cd path/to/openaction
+cd path/to/openaction
 
 # Start Docker services
-$ docker-compose up -d
+docker-compose up -d
 
-# Build Console assets (Yarn is outside of the containers to ease usage, you should use node 14)
-$ cd console
-$ yarn install
-$ yarn build
-$ cd projects (console/projects)
-$ yarn install
-$ yarn build
+# Build assets (Yarn is outside of the containers to ease usage, you should use node 14)
+cd console
+yarn install
+yarn build
+
+cd projects (console/projects)
+yarn install
+yarn build
+
+cd public
+yarn install
+yarn build
+
+# Install PHP dependencies
+docker-compose exec console composer install
+docker-compose exec public composer install
+
+# Update /etc/hosts to add console as localhost
+127.0.0.1 console
 ```
 
 The project uses several services:

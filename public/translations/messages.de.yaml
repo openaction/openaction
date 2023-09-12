@@ -1,0 +1,250 @@
+base:
+    form_legalities: |
+        Sie haben das Recht auf Zugang, Berichtigung, Löschung und Übertragbarkeit
+        Ihrer Daten sowie ein Widerspruchsrecht und ein Recht auf Einschränkung der
+        Verarbeitung der Sie betreffenden Daten. Sie können Ihre Rechte ausüben,
+        indem Sie uns unter der in der Datenschutzerklärung angegebenen Adresse kontaktieren.
+    pagination:
+        previous: Vorherige
+        next: Nächste
+    show_all: Alle anzeigen
+    categories: Kategorien
+    no_element: Noch kein Element vorhanden.
+    formal_title:
+        madam: Frau
+        sir: Herr
+    gender:
+        male: Männlich
+        female: Weiblich
+        transgender: Transgender
+        non_binary: Nicht-binär
+        other: Andere
+    embed-consent:
+        title: Externer Inhalt
+        description: |
+            Dieser eingebettete Inhalt wird von einem externen Dienst gehostet. Durch die Anzeige dieses Inhalts,
+            stimmen Sie zu, dass %host% Cookies in Ihrem Browser speichert.
+        accept: Inhalt anzeigen
+        external: Öffnen
+        cancel: Diese Inhalte nicht abspielen
+
+home:
+    blocks:
+        socials:
+            title: Soziale Netzwerke
+
+posts:
+    not_published: Dieser Beitrag ist noch nicht veröffentlicht. Sie sehen ihn als Administrator in der Vorschau.
+
+events:
+    more: Mehr
+    show_all: Alle anzeigen
+    begin_at: Beginnt am
+    address: Adresse
+    online: Online-Event
+    no_element: Noch kein Element vorhanden.
+    not_published: Diese Veranstaltung ist noch nicht veröffentlicht. Sie sehen sie als Administrator in der Vorschau.
+
+newsletter:
+    email: Ihre E-Mail-Adresse *
+    firstname: Ihr Vorname
+    lastname: Ihr Nachname
+    phone: Ihre Telefonnummer
+    country: Land
+    zipCode: PLZ
+    submit: Abonnieren
+    success: Sie haben sich erfolgreich für den Newsletter angemeldet.
+
+legalities:
+    title: Rechtliches
+    editor: Herausgeber
+    publisher: Veröffentlichungsleiter
+    development:
+        title: Entwicklung
+        text: Unterstützt von der Plattform
+    hosting:
+        title: Hosting-Anbieter
+        data: Die Daten werden in Frankfurt, Deutschland, gespeichert.
+        technical: 'Technischer Dienst:'
+
+gdpr:
+    title: Meine Einstellungen verwalten
+    success: Einstellungen wurden erfolgreich gespeichert.
+    all_projects: Meine allgemeinen Einstellungen konfigurieren
+    per_projects: Meine Einstellungen pro Thema konfigurieren
+    newsletter: Ich stimme zu, E-Mails zu erhalten.
+    sms: Ich stimme zu, SMS zu erhalten.
+    calls: Ich stimme zu, telefonisch kontaktiert zu werden.
+    submit: Aktualisieren
+
+share:
+    facebook: Auf Facebook teilen
+    twitter: Auf Twitter teilen
+    linkedin: Auf LinkedIn teilen
+    telegram: Auf Telegram teilen
+    whatsapp: Auf Whatsapp teilen
+    email: Per E-Mail teilen
+
+socials:
+    rss: RSS-Feed
+    facebook: Finden Sie uns auf Facebook
+    twitter: Finden Sie uns auf Twitter
+    instagram: Finden Sie uns auf Instagram
+    linkedin: Finden Sie uns auf LinkedIn
+    youtube: Finden Sie uns auf YouTube
+    medium: Finden Sie uns auf Medium
+    telegram: Finden Sie uns auf Telegram
+    snapchat: Finden Sie uns auf Snapchat
+
+forms:
+    phoning_campaign: |
+        Dieses Formular ist mit einer Telefonkampagne verknüpft. Sie sehen es als Administrator in der Vorschau,
+        aber es wird nur im Kontext der Kampagne zugänglich sein.
+    no_value: Keine Antwort
+    submit: Absenden
+    never_passwords: Senden Sie niemals Passwörter über dieses Formular.
+    newsletter: Ich stimme zu, E-Mails zu erhalten.
+    success: Das Formular wurde erfolgreich gesendet.
+    money_amount_custom: 'Oder geben Sie einen individuellen Betrag ein:'
+
+trombinoscope:
+    no_element: Noch keine Informationen vorhanden
+    contact_person: Kontakt
+    contact_by_mail: Per E-Mail kontaktieren
+    socials:
+        find_on:
+            facebook: Auf Facebook folgen
+            twitter: Auf Twitter folgen
+            instagram: Auf Instagram folgen
+            linkedin: Auf LinkedIn folgen
+            youtube: Auf YouTube folgen
+            medium: Auf Medium folgen
+            telegram: Auf Telegram folgen
+
+membership:
+    menu:
+        connected: Angemeldet
+        account: Mein Konto
+        logout: Abmelden
+    login:
+        register_success: Ihr Konto wurde erfolgreich erstellt. Sie können sich jetzt anmelden.
+        reset_success: Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt anmelden.
+        update_email_success: Ihre E-Mail-Adresse wurde erfolgreich aktualisiert. Sie können sich jetzt anmelden.
+        email: E-Mail-Adresse
+        password: Passwort
+        submit: Anmelden
+        reset: Ich habe mein Passwort vergessen
+        join_question: Noch nicht registriert?
+    reset:
+        title: Ich habe mein Passwort vergessen
+        email: E-Mail-Adresse
+        submit: Passwort zurücksetzen
+    reset_verify:
+        title: Überprüfen Sie Ihren Posteingang
+        message: |
+            Eine Bestätigungs-E-Mail wurde Ihnen gesendet.
+            Klicken Sie auf den darin enthaltenen Link, um das Zurücksetzen Ihres Passworts abzuschließen.
+    reset_update:
+        title: Aktualisieren Sie Ihr Passwort
+        password_first: Neues Passwort
+        password_second: Bestätigung
+        submit: Passwort zurücksetzen
+    form:
+        submit: Speichern
+        submit_join: Senden
+        sections:
+            account: Ihr Konto
+            details: Ihre Identität
+            contact: Ihre Kontaktdaten
+            address: Ihre Adresse
+            notifications: Ihre Benachrichtigungen
+        account:
+            update_email: Meine E-Mail-Adresse aktualisieren
+            unregister: Abmelden
+        fields:
+            # Required
+            email: E-Mail-Adresse
+            password_first: Passwort
+            password_second: Passwortbestätigung
+            profileFirstName: Vorname
+            profileMiddleName: Weitere Vornamen
+            profileLastName: Nachname
+            acceptPolicy: Ich stimme der Datenschutzerklärung und den Nutzungsbedingungen zu.
+
+            # Optional/Disabled
+            profileFormalTitle: Formeller Titel
+            profileBirthdate: Geburtsdatum
+            profileGender: Geschlecht
+            profileNationality: Nationalität
+            profileJobTitle: Berufsbezeichnung
+            profileCompany: Arbeitgeber
+            contactPhone: Persönliche Telefonnummer
+            contactWorkPhone: Dienstliche Telefonnummer
+            socialFacebook: Facebook-Konten-URL
+            socialTwitter: Twitter-Benutzername
+            socialLinkedIn: LinkedIn-Konten-URL
+            socialTelegram: Telegram-Benutzername
+            socialWhatsapp: WhatsApp-Telefonnummer
+            addressStreetLine1: Postanschrift
+            addressStreetLine2: Zusätzliche Adresse
+            addressZipCode: Postleitzahl
+            addressCity: Stadt
+            addressCountry: Land
+            settingsReceiveNewsletters: Ich stimme zu, im Rahmen meines Kontos per E-Mail kontaktiert zu werden.
+            settingsReceiveSms: Ich stimme zu, im Rahmen meines Kontos per SMS kontaktiert zu werden.
+            settingsReceiveCalls: Ich stimme zu, im Rahmen meines Kontos telefonisch kontaktiert zu werden.
+        choices:
+            profileFormalTitle:
+                mr: Herr
+                ms: Frau
+            profileGender:
+                male: Männlich
+                female: Weiblich
+                transgender: Transgender
+                non_binary: Nicht-binär
+                other: Andere
+    join_verify:
+        title: Überprüfen Sie Ihren Posteingang
+        message: |
+            Eine Bestätigungsmail wurde Ihnen gesendet.
+            Klicken Sie auf den darin enthaltenen Link, um Ihr Konto zu finalisieren.
+    account:
+        title: Mein Konto
+        update_email:
+            title: Meine E-Mail-Adresse aktualisieren
+            desc: Eine Bestätigungsmail wird Ihnen zur Bestätigung des Updates gesendet.
+            field: Neue E-Mail-Adresse
+            submit: Speichern
+            cancel: Abbrechen
+            success: |
+                Ihre Anfrage wurde angenommen. Eine Bestätigungsmail wurde Ihnen gesendet.
+                Klicken Sie auf den darin enthaltenen Link, um das Update zu finalisieren.
+        unregister:
+            title: Abmelden
+            desc: Sind Sie sicher, dass Sie sich abmelden möchten? Eine Bestätigungsmail wird Ihnen zur Bestätigung der Abmeldung gesendet.
+            submit: Speichern
+            cancel: Abbrechen
+            success: |
+                Ihre Anfrage wurde angenommen. Eine Bestätigungsmail wurde Ihnen gesendet.
+                Klicken Sie auf den darin enthaltenen Link, um die Abmeldung zu finalisieren.
+    resources:
+        title: Ressourcen
+    posts:
+        title: Nachrichten
+    events:
+        title: Veranstaltungen
+    forms:
+        title: Formulare
+
+phoning:
+    start: Einen neuen Anruf starten
+    finished: Die Telefonkampagne ist beendet, da alle anvisierten Personen angerufen wurden.
+    calling: Ich habe den Anruf begonnen
+    details:
+        title: Sie rufen an ...
+        failed_invalid: Der Anruf ist fehlgeschlagen
+        failed_no_answer: Sie haben nicht geantwortet
+        failed_no_call: Sie möchten nicht wieder angerufen werden
+        failed_unregister: Sie möchten sich abmelden
+        failed_call_later: Sie möchten später erneut angerufen werden
+        accepted: Sie stimmen zu, Fragen zu beantworten

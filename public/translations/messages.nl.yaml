@@ -1,0 +1,250 @@
+base:
+    form_legalities: |
+        U hebt het recht op toegang, rectificatie, wissen en overdraagbaarheid
+        van uw gegevens evenals het recht op bezwaar en het recht om de
+        verwerking van gegevens die op u betrekking hebben, te beperken. U kunt uw rechten uitoefenen door
+        contact met ons op te nemen op het adres dat beschikbaar is in het privacybeleid.
+    pagination:
+        previous: Vorige
+        next: Volgende
+    show_all: Toon alles
+    categories: Categorieën
+    no_element: Nog geen element.
+    formal_title:
+        madam: Mevrouw
+        sir: Meneer
+    gender:
+        male: Man
+        female: Vrouw
+        transgender: Transgender
+        non_binary: Non-binair
+        other: Anders
+    embed-consent:
+        title: Externe inhoud
+        description: |
+            Deze ingesloten inhoud wordt gehost door een externe service. Door deze inhoud weer te geven,
+            stemt u ermee in dat %host% cookies opslaat in uw browser.
+        accept: Toon de inhoud
+        external: Open
+        cancel: Speel deze inhoud niet af
+
+home:
+    blocks:
+        socials:
+            title: Sociale netwerken
+
+posts:
+    not_published: Dit bericht is nog niet gepubliceerd. U bekijkt het als beheerder.
+
+events:
+    more: Meer
+    show_all: Toon alles
+    begin_at: Start op
+    address: Adres
+    online: Online evenement
+    no_element: Nog geen element.
+    not_published: Dit evenement is nog niet gepubliceerd. U bekijkt het als beheerder.
+
+newsletter:
+    email: Uw e-mailadres *
+    firstname: Uw voornaam
+    lastname: Uw achternaam
+    phone: Uw telefoonnummer
+    country: Land
+    zipCode: Postcode
+    submit: Abonneren
+    success: U bent succesvol geabonneerd op de nieuwsbrief.
+
+legalities:
+    title: Legaliteiten
+    editor: Redacteur
+    publisher: Publicatiedirecteur
+    development:
+        title: Ontwikkeling
+        text: Mogelijk gemaakt door het platform
+    hosting:
+        title: Hostingprovider
+        data: Gegevens worden opgeslagen in Frankfurt, Duitsland.
+        technical: 'Technische dienst:'
+
+gdpr:
+    title: Beheer mijn voorkeuren
+    success: Voorkeuren zijn succesvol opgeslagen.
+    all_projects: Configureer mijn algemene instellingen
+    per_projects: Configureer mijn instellingen per onderwerp
+    newsletter: Ik ga akkoord met het ontvangen van e-mails.
+    sms: Ik ga akkoord met het ontvangen van sms'jes.
+    calls: Ik ga akkoord om telefonisch benaderd te worden.
+    submit: Bijwerken
+
+share:
+    facebook: Deel op Facebook
+    twitter: Deel op Twitter
+    linkedin: Deel op LinkedIn
+    telegram: Deel op Telegram
+    whatsapp: Deel op Whatsapp
+    email: Deel via e-mail
+
+socials:
+    rss: RSS-feed
+    facebook: Vind ons op Facebook
+    twitter: Vind ons op Twitter
+    instagram: Vind ons op Instagram
+    linkedin: Vind ons op LinkedIn
+    youtube: Vind ons op Youtube
+    medium: Vind ons op Medium
+    telegram: Vind ons op Telegram
+    snapchat: Vind ons op Snapchat
+
+forms:
+    phoning_campaign: |
+        Dit formulier is gekoppeld aan een telefonische campagne. U bekijkt het als beheerder,
+        maar het is alleen toegankelijk in de context van de campagne.
+    no_value: Geen antwoord
+    submit: Verzenden
+    never_passwords: Stuur nooit wachtwoorden via dit formulier.
+    newsletter: Ik ga akkoord met het ontvangen van e-mails.
+    success: Het formulier is succesvol verzonden.
+    money_amount_custom: 'Of voer een aangepast bedrag in:'
+
+trombinoscope:
+    no_element: Nog geen informatie
+    contact_person: Contact
+    contact_by_mail: Contact via e-mail
+    socials:
+        find_on:
+            facebook: Volg op Facebook
+            twitter: Volg op Twitter
+            instagram: Volg op Instagram
+            linkedin: Volg op LinkedIn
+            youtube: Volg op Youtube
+            medium: Volg op Medium
+            telegram: Volg op Telegram
+
+membership:
+    menu:
+        connected: Ingelogd
+        account: Mijn account
+        logout: Uitloggen
+    login:
+        register_success: Uw account is succesvol aangemaakt. U kunt nu inloggen.
+        reset_success: Uw wachtwoord is succesvol gereset. U kunt nu inloggen.
+        update_email_success: Uw e-mailadres is succesvol bijgewerkt. U kunt nu inloggen.
+        email: E-mailadres
+        password: Wachtwoord
+        submit: Inloggen
+        reset: Ik ben mijn wachtwoord vergeten
+        join_question: Nog niet geregistreerd?
+    reset:
+        title: Ik ben mijn wachtwoord vergeten
+        email: E-mailadres
+        submit: Reset mijn wachtwoord
+    reset_verify:
+        title: Controleer uw inbox
+        message: |
+            Er is een bevestigingsmail naar u verzonden.
+            Klik op de link die het bevat om het resetten van uw wachtwoord te voltooien.
+    reset_update:
+        title: Update uw wachtwoord
+        password_first: Nieuw wachtwoord
+        password_second: Bevestiging
+        submit: Reset mijn wachtwoord
+    form:
+        submit: Opslaan
+        submit_join: Verzenden
+        sections:
+            account: Uw account
+            details: Uw identiteit
+            contact: Uw contactgegevens
+            address: Uw adres
+            notifications: Uw meldingen
+        account:
+            update_email: Werk mijn e-mailadres bij
+            unregister: Uitschrijven
+        fields:
+            # Verplicht
+            email: E-mailadres
+            password_first: Wachtwoord
+            password_second: Wachtwoord bevestiging
+            profileFirstName: Voornaam
+            profileMiddleName: Overige voorna(a)m(en)
+            profileLastName: Achternaam
+            acceptPolicy: Ik ga akkoord met het Privacybeleid en de Algemene Voorwaarden.
+
+            # Optioneel/Uitgeschakeld
+            profileFormalTitle: Formele titel
+            profileBirthdate: Geboortedatum
+            profileGender: Geslacht
+            profileNationality: Nationaliteit
+            profileJobTitle: Functietitel
+            profileCompany: Werkgever
+            contactPhone: Persoonlijk telefoonnummer
+            contactWorkPhone: Professioneel telefoonnummer
+            socialFacebook: Facebook-account URL
+            socialTwitter: Twitter gebruikersnaam
+            socialLinkedIn: LinkedIn-account URL
+            socialTelegram: Telegram gebruikersnaam
+            socialWhatsapp: WhatsApp telefoonnummer
+            addressStreetLine1: Postadres
+            addressStreetLine2: Extra adres
+            addressZipCode: Postcode
+            addressCity: Stad
+            addressCountry: Land
+            settingsReceiveNewsletters: Ik ga ermee akkoord om per e-mail gecontacteerd te worden als onderdeel van mijn account.
+            settingsReceiveSms: Ik ga ermee akkoord om per sms gecontacteerd te worden als onderdeel van mijn account.
+            settingsReceiveCalls: Ik ga ermee akkoord om telefonisch gecontacteerd te worden als onderdeel van mijn account.
+        choices:
+            profileFormalTitle:
+                mr: Dhr.
+                ms: Mevr.
+            profileGender:
+                male: Man
+                female: Vrouw
+                transgender: Transgender
+                non_binary: Non-binair
+                other: Anders
+    join_verify:
+        title: Controleer uw inbox
+        message: |
+            Een bevestigingsmail is naar u verzonden.
+            Klik op de link erin om uw account te finaliseren.
+    account:
+        title: Mijn account
+        update_email:
+            title: Werk mijn e-mailadres bij
+            desc: Een bevestigingsmail wordt naar u verzonden om de update te bevestigen.
+            field: Nieuw e-mailadres
+            submit: Opslaan
+            cancel: Annuleren
+            success: |
+                Uw verzoek is geaccepteerd. Een bevestigingsmail is naar u verzonden.
+                Klik op de link erin om de update te voltooien.
+        unregister:
+            title: Uitschrijven
+            desc: Weet u zeker dat u zich wilt uitschrijven? Een bevestigingsmail wordt naar u verzonden om de uitschrijving te bevestigen.
+            submit: Opslaan
+            cancel: Annuleren
+            success: |
+                Uw verzoek is geaccepteerd. Een bevestigingsmail is naar u verzonden.
+                Klik op de link erin om de uitschrijving te voltooien.
+    resources:
+        title: Bronnen
+    posts:
+        title: Nieuws
+    events:
+        title: Evenementen
+    forms:
+        title: Formulieren
+
+phoning:
+    start: Start een nieuw gesprek
+    finished: De belcampagne is afgerond omdat iedereen die getarget was is gebeld.
+    calling: Ik ben begonnen met bellen
+    details:
+        title: U belt ...
+        failed_invalid: Het gesprek is mislukt
+        failed_no_answer: Ze hebben niet geantwoord
+        failed_no_call: Ze willen niet opnieuw gebeld worden
+        failed_unregister: Ze willen zich afmelden
+        failed_call_later: Ze willen later opnieuw gebeld worden
+        accepted: Ze stemmen ermee in om vragen te beantwoorden
