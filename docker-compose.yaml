@@ -2,7 +2,7 @@ version: '3'
 
 services:
     console:
-        image: ghcr.io/openaction/docker-php/docker-php-dev
+        image: ghcr.io/openaction/docker-php/dev
         hostname: console
         volumes:
             - ./console:/app
@@ -11,7 +11,7 @@ services:
             - redis
 
     public:
-        image: ghcr.io/openaction/docker-php/docker-php-dev:latest
+        image: ghcr.io/openaction/docker-php/dev
         volumes:
             - ./public:/app
         depends_on:

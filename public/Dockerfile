@@ -1,4 +1,6 @@
-FROM ghcr.io/citipo/docker-php/docker-php-prod:latest
+FROM ghcr.io/openaction/docker-php/prod
+
+LABEL org.opencontainers.image.source=https://github.com/openaction/openaction
 
 COPY . /app
 

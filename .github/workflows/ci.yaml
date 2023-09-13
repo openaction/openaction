@@ -200,7 +200,7 @@ jobs:
             - name: Build and publish console production image
               uses: elgohr/Publish-Docker-Github-Action@master
               with:
-                  name: openaction/openaction/console-prod
+                  name: ${{ github.repository }}/console
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
                   registry: ghcr.io
@@ -368,7 +368,7 @@ jobs:
             - name: Build and publish public production image
               uses: elgohr/Publish-Docker-Github-Action@master
               with:
-                  name: openaction/openaction/public-prod
+                  name: ${{ github.repository }}/public
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
                   registry: ghcr.io

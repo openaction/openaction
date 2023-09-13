@@ -1,10 +1,12 @@
-FROM ghcr.io/citipo/docker-php/docker-php-prod:latest
+FROM ghcr.io/openaction/docker-php/prod
+
+LABEL org.opencontainers.image.source=https://github.com/openaction/openaction
 
 COPY . /app
 
 ENV APP_ENV=prod \
     APP_DEBUG=0 \
-    DATABASE_URL="pgsql://citipo:citipo@db/citipo?server_version=12" \
+    DATABASE_URL="pgsql://openaction:openaction@db/openaction?server_version=12" \
     MAILER_DSN="smtp://localhost"
 
 RUN mkdir var && \
