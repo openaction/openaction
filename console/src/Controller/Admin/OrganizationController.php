@@ -85,6 +85,7 @@ class OrganizationController extends AbstractCrudController
                 ->setQueryBuilder(static function (QueryBuilder $qb) {
                     $qb->where('entity.isPartner = TRUE');
                 })
+                ->setRequired(false)
                 ->setColumns(6);
 
             yield BooleanField::new('showPreview', 'Show preview features?')
@@ -163,12 +164,6 @@ class OrganizationController extends AbstractCrudController
             yield TextField::new('textingSenderCode', 'Sender code for text messages (uppercase, max 12 characters)')
                 ->onlyOnForms();
         }
-
-        yield BooleanField::new('printSubrogated', 'Enable subrogation for this organization official commands?')
-            ->onlyOnForms();
-
-        yield TextField::new('printParty', 'Name of political party to schedule print production')
-            ->onlyOnForms();
 
         yield FormField::addPanel('Billing')
             ->setIcon('fa fa-file-invoice-dollar')
