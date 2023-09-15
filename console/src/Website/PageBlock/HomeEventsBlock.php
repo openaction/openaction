@@ -21,6 +21,7 @@ class HomeEventsBlock extends AbstractBlock
     {
         return [
             'category' => null,
+            'label' => null,
         ];
     }
 }

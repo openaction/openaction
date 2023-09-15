@@ -189,23 +189,29 @@ homepage:
     posts:
         title: Dernières actualités
         help: Liste des dernières actualités publiées sur votre site.
-        link: Configurer les catégories d'actualités
+        link: Configurer
         form:
             category:
                 label: Quelles catégories d’actualités doivent être affichées sur la page d’accueil ? Ne rien indiquer pour afficher l’ensemble des actualités de toutes les catégories.
                 help: |
                     Vous pouvez sélectionner une catégorie spécifique pour afficher uniquement les
                     actualités de cette catégorie sur la page d’accueil.
+            label:
+                label: Titre de la section
+                help: Laisser vide pour garder le titre par défaut
     events:
         title: Prochains événements
         help: Liste des prochains événements publiés sur votre site.
-        link: Configurer les catégories d'événements
+        link: Configurer
         form:
             category:
                 label: Quelles catégories d’événements doivent être affichées sur la page d’accueil ? Ne rien indiquer pour afficher l’ensemble des événements de toutes les catégories.
                 help: |
                     Vous pouvez sélectionner une catégorie spécifique pour afficher uniquement les
                     événements de cette catégorie sur la page d’accueil.
+            label:
+                label: Titre de la section
+                help: Laisser vide pour garder le titre par défaut
     newsletter:
         title: Inscription à la newsletter
         help: |

@@ -153,19 +153,25 @@ homepage:
     posts:
         title: 'Neueste Beiträge'
         help: 'Liste der zuletzt auf Ihrer Website veröffentlichten Beiträge.'
-        link: 'Konfigurieren Sie die angezeigten Kategorien'
+        link: 'Konfigurieren'
         form:
             category:
                 label: 'Welche Kategorie von Beiträgen soll auf der Startseite angezeigt werden (leer lassen, um Beiträge aus allen Kategorien anzuzeigen)?'
                 help: "Sie können eine bestimmte Beitragskategorie auswählen, um sicherzustellen, dass nur Beiträge aus dieser Kategorie\nauf der Startseite angezeigt werden.\n"
+            label:
+                label: Abschnittsüberschrift
+                help: Lassen Sie es leer, um den standardmäßigen Abschnittstitel beizubehalten
     events:
         title: 'Kommende Veranstaltungen'
         help: 'Liste der bevorstehenden Veranstaltungen auf Ihrer Website veröffentlicht.'
-        link: 'Konfigurieren Sie die angezeigten Kategorien'
+        link: 'Konfigurieren'
         form:
             category:
                 label: 'Welche Kategorie von Veranstaltungen soll auf der Startseite angezeigt werden (leer lassen, um Veranstaltungen aus allen Kategorien anzuzeigen)?'
                 help: "Sie können eine bestimmte Veranstaltungskategorie auswählen, um sicherzustellen, dass nur Veranstaltungen aus dieser Kategorie\nauf der Startseite angezeigt werden.\n"
+            label:
+                label: Abschnittsüberschrift
+                help: Lassen Sie es leer, um den standardmäßigen Abschnittstitel beizubehalten
     newsletter:
         title: Newsletter-Abonnement
         help: "Formular, mit dem sich Ihre Besucher für Ihren Newsletter anmelden können. Die Abonnenten werden zu Ihrer\nIhrer Community hinzugefügt, so dass Sie sie leicht kontaktieren können.\n"

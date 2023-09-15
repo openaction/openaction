@@ -8,6 +8,7 @@ use App\Repository\Website\EventCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,6 +28,9 @@ class ConfigureEventsHomeBlockType extends AbstractType implements DataTransform
                 'required' => false,
                 'class' => EventCategory::class,
                 'query_builder' => $this->createQueryBuilderFactory($options['project']),
+            ])
+            ->add('label', TextType::class, [
+                'required' => false,
             ])
 
             // Used to transform category ID in entity and vice-versa
@@ -50,19 +54,31 @@ class ConfigureEventsHomeBlockType extends AbstractType implements DataTransform
     public function transform($value): array
     {
         if ($value['category'] instanceof EventCategory) {
-            return ['category' => $value['category']];
+            return [
+                'category' => $value['category'],
+                'label' => $value['label'] ?? null,
+            ];
         }
 
         if (is_scalar($value['category'])) {
-            return ['category' => $this->repository->find((int) $value['category'])];
+            return [
+                'category' => $this->repository->find((int) $value['category']),
+                'label' => $value['label'] ?? null,
+            ];
         }
 
-        return ['category' => null];
+        return [
+            'category' => null,
+            'label' => $value['label'] ?? null,
+        ];
     }
 
     public function reverseTransform($value): array
     {
-        return ['category' => $value['category']?->getId()];
+        return [
+            'category' => $value['category']?->getId(),
+            'label' => $value['label'] ?? null,
+        ];
     }
 
     public function configureOptions(OptionsResolver $resolver)

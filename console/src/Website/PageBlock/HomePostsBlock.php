@@ -21,6 +21,7 @@ class HomePostsBlock extends AbstractBlock
     {
         return [
             'category' => null,
+            'label' => null,
         ];
     }
 }

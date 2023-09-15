@@ -25,7 +25,7 @@
 {% set payload = {
     'current_project': current_project.toArray,
     'force_embed_consent': force_embed_consent,
-    'posts_title': current_project.terminology.posts,
+    'posts_title': block.config.label|default(current_project.terminology.posts),
     'posts': posts,
     'play_image': asset('res/play.svg'),
     'default_image': asset('res/default.jpg'),
