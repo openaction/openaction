@@ -212,6 +212,10 @@
                                             </div>
                                         {% elseif block.type == 'posts' %}
                                             <div class="bg-white p-2 mt-3">
+                                                <div class="mb-2 text-muted">
+                                                    {{ block.config.label|default(current_project.appearanceTerminology.posts) }}
+                                                </div>
+
                                                 <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
                                                    class="btn btn-sm btn-outline-primary border-0">
                                                     <i class="fad fa-edit"></i>
@@ -220,6 +224,10 @@
                                             </div>
                                         {% elseif block.type == 'events' %}
                                             <div class="bg-white p-2 mt-3">
+                                                <div class="mb-2 text-muted">
+                                                    {{ block.config.label|default(current_project.appearanceTerminology.events) }}
+                                                </div>
+
                                                 <a href="{{ path('console_configuration_appearance_website_homepage_block_configure', {'projectUuid': current_project.uuid, 'id': block.id}) }}"
                                                    class="btn btn-sm btn-outline-primary border-0">
                                                     <i class="fad fa-edit"></i>

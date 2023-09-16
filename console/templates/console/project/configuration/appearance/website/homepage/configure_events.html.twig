@@ -27,10 +27,17 @@
                 <div class="col-12 col-lg-9 col-xl-6">
                     {{ form_start(form) }}
 
-                    <div class="mb-5">
+                    <div class="mb-3">
                         {{ form_row(form.category, {
                             'label': 'homepage.events.form.category.label'|trans({}, 'project_appearance'),
                             'help': 'homepage.events.form.category.help'|trans({}, 'project_appearance'),
+                        }) }}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_row(form.label, {
+                            'label': 'homepage.posts.form.label.label'|trans({}, 'project_appearance'),
+                            'help': 'homepage.posts.form.label.help'|trans({}, 'project_appearance'),
                         }) }}
                     </div>
 

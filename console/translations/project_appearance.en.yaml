@@ -187,23 +187,29 @@ homepage:
     posts:
         title: Latest posts
         help: List of the latest posts published on your website.
-        link: Configure the displayed categories
+        link: Configure
         form:
             category:
                 label: Which category of posts should be displayed on the homepage (keep empty to display posts from all categories)?
                 help: |
                     You can select a specific post category to ensure only posts from this category
                     will be displayed on the homepage.
+            label:
+                label: Section title
+                help: Keep empty to keep the default section title
     events:
         title: Upcoming events
         help: List of the upcoming events published on your website.
-        link: Configure the displayed categories
+        link: Configure
         form:
             category:
                 label: Which category of events should be displayed on the homepage (keep empty to display events from all categories)?
                 help: |
                     You can select a specific event category to ensure only events from this category
                     will be displayed on the homepage.
+            label:
+                label: Section title
+                help: Keep empty to keep the default section title
     newsletter:
         title: Newsletter subscription
         help: |

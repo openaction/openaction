@@ -63,7 +63,7 @@ class ConfigureControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/configuration/appearance/website/homepage');
         $this->assertResponseIsSuccessful();
 
-        $crawler = $client->click($crawler->filter('div:contains("Latest posts") a:contains("Configure the displayed categories")')->link());
+        $crawler = $client->click($crawler->filter('div:contains("Latest posts") a:contains("Configure")')->link());
         $this->assertResponseIsSuccessful();
 
         $button = $crawler->selectButton('Save');
@@ -93,7 +93,7 @@ class ConfigureControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/configuration/appearance/website/homepage');
         $this->assertResponseIsSuccessful();
 
-        $crawler = $client->click($crawler->filter('#block-3 a:contains("Configure the displayed categories")')->link());
+        $crawler = $client->click($crawler->filter('#block-3 a:contains("Configure")')->link());
         $this->assertResponseIsSuccessful();
 
         $button = $crawler->selectButton('Save');
