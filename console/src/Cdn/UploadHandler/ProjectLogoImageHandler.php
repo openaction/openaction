@@ -19,7 +19,7 @@ class ProjectLogoImageHandler implements UploadedImageHandlerInterface
         $canvas = $this->imageManager->make($file->getLocalContent());
         $canvas->orientate();
 
-        $canvas->resize(400, 200, static function ($constraint) {
+        $canvas->resize(800, 400, static function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
