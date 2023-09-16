@@ -15,24 +15,24 @@ class ProjectLogoImageHandlerTest extends UnitTestCase
             'local' => __DIR__.'/../../Fixtures/upload/mario.png',
             'storage' => 'upload/mario',
             'extension' => 'png',
-            'expectedWidth' => 159,
-            'expectedHeight' => 200,
+            'expectedWidth' => 318,
+            'expectedHeight' => 400,
         ];
 
         yield 'image-exif.jpg' => [
             'local' => __DIR__.'/../../Fixtures/upload/image-exif.jpg',
             'storage' => 'upload/image-exif',
             'extension' => 'jpg',
-            'expectedWidth' => 133,
-            'expectedHeight' => 200,
+            'expectedWidth' => 267,
+            'expectedHeight' => 400,
         ];
 
         yield 'image.webp' => [
             'local' => __DIR__.'/../../Fixtures/upload/image.webp',
             'storage' => 'upload/image-webp',
             'extension' => 'webp',
-            'expectedWidth' => 396,
-            'expectedHeight' => 200,
+            'expectedWidth' => 792,
+            'expectedHeight' => 400,
         ];
     }
 

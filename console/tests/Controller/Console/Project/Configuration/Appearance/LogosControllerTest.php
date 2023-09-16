@@ -35,8 +35,8 @@ class LogosControllerTest extends WebTestCase
         $project = static::getContainer()->get(ProjectRepository::class)->findOneBy(['uuid' => '2c720420-65fd-4360-9d77-731758008497']);
 
         $expected = [
-            ['upload' => $project->getAppearanceLogoDark(), 'width' => 159, 'height' => 200],
-            ['upload' => $project->getAppearanceLogoWhite(), 'width' => 159, 'height' => 200],
+            ['upload' => $project->getAppearanceLogoDark(), 'width' => 318, 'height' => 400],
+            ['upload' => $project->getAppearanceLogoWhite(), 'width' => 318, 'height' => 400],
             ['upload' => $project->getAppearanceIcon(), 'width' => 256, 'height' => 256],
         ];
 
