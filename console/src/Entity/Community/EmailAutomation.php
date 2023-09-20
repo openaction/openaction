@@ -25,6 +25,7 @@ class EmailAutomation
 
     public const TRIGGER_NEW_CONTACT = 'new_contact';
     public const TRIGGER_NEW_FORM_ANSWER = 'new_form_answer';
+    public const TRIGGER_CONTACT_TAGGED = 'contact_tagged';
     public const TYPE_CONTACT = 'contact';
     public const TYPE_MEMBER = 'member';
 
@@ -166,8 +167,17 @@ class EmailAutomation
         $this->replyToEmail = $metadata->replyToEmail ?: null;
         $this->replyToName = $metadata->replyToName ?: null;
         $this->toEmail = 'specific' === $metadata->toEmailType && $metadata->toEmail ? $metadata->toEmail : null;
-        $this->typeFilter = $metadata->typeFilter ?: null;
-        $this->formFilter = $metadata->formFilter;
+        $this->typeFilter = $metadata->typeFilter;
+
+        // Update filters
+        $this->formFilter = null;
+        $this->tagFilter = null;
+
+        if (self::TRIGGER_NEW_FORM_ANSWER === $this->trigger) {
+            $this->formFilter = $metadata->formFilter ?: null;
+        } elseif (self::TRIGGER_CONTACT_TAGGED === $this->trigger) {
+            $this->tagFilter = $metadata->tagFilter ?: null;
+        }
     }
 
     public function applyUnlayerUpdate(array $design, ?string $content)

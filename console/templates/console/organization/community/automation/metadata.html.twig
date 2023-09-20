@@ -52,6 +52,12 @@
                     'label': 'automation.metadata.automation.trigger.form_filter'|trans({}, 'organization_community'),
                 }) }}
             </div>
+
+            <div {{ stimulus_target('automation-form-filter', 'tagFilter') }}>
+                {{ form_row(form.tagFilter, {
+                    'label': 'automation.metadata.automation.trigger.tag_filter'|trans({}, 'organization_community'),
+                }) }}
+            </div>
         </div>
     </div>
 

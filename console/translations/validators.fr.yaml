@@ -29,6 +29,9 @@ console:
             minimal_data_required: |
                 Vous devez indiquer au moins un nom de famille, une adresse email ou un numéro de téléphone.
 
+        automations:
+            missing_tag_filter: Vous devez indiquer un tag sur lequel cette automatisation doit être exécutée.
+
     project:
         emailing:
             email_invalid: L'adresse de l'expéditeur est invalide

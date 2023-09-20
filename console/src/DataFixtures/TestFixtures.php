@@ -3107,6 +3107,19 @@ class TestFixtures extends AbstractFixtures
                 'weight' => 3,
             ]),
 
+            // Tag filter
+            'c61a2198-905d-4e1f-af2f-0e432b430885' => $appendContent('Tag alert [fullName]', [
+                'orga' => $this->orgas['219025aa-7fe2-4385-ad8f-31f386720d10'],
+                'name' => 'Filtered tag alert',
+                'toEmail' => 'contact@citipo.com',
+                'fromEmail' => 'contact@citipo.com',
+                'fromName' => 'Jacques BAUER',
+                'subject' => 'Filtered tag alert',
+                'weight' => 4,
+                'trigger' => EmailAutomation::TRIGGER_CONTACT_TAGGED,
+                'tagFilter' => $this->tags['exampletag'],
+            ]),
+
             // Acme automations for forms
             'cbd064c2-d724-4817-99d4-f9b6ff53ef75' => $appendContent('Contact [fullName]', [
                 'orga' => $this->orgas['cbeb774c-284c-43e3-923a-5a2388340f91'],

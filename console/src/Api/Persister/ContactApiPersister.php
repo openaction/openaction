@@ -70,13 +70,22 @@ class ContactApiPersister
             $created = true;
         }
 
-        // Map the data and check whether the contact became a member
+        // Map the data and check whether the contact became a member / just received new tags
         $wasMember = $contact->isMember();
+        $previousTagsNames = $contact->getMetadataTagsNames();
+
         $this->map($contact, $data, ($created && $in instanceof Project) ? $in : null);
 
         // If the contact has just been created, trigger automations
         if ($created) {
             $this->automationDispatcher->dispatch(EmailAutomation::TRIGGER_NEW_CONTACT, $contact->getOrganization(), $contact, null);
+        }
+
+        // Trigger automations for newly added tags
+        foreach ($contact->getMetadataTags() as $tag) {
+            if (!in_array($tag->getName(), $previousTagsNames, true)) {
+                $this->automationDispatcher->dispatch(EmailAutomation::TRIGGER_CONTACT_TAGGED, $contact->getOrganization(), $contact, $tag);
+            }
         }
 
         // If the contact just became a member, start validation process

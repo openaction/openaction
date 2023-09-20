@@ -3,9 +3,11 @@
 namespace App\Form\Community;
 
 use App\Entity\Community\EmailAutomation;
+use App\Entity\Community\Tag;
 use App\Entity\Organization;
 use App\Entity\Website\Form;
 use App\Form\Community\Model\EmailAutomationMetaData;
+use App\Repository\Community\TagRepository;
 use App\Repository\Website\FormRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -28,6 +30,7 @@ class EmailAutomationMetaDataType extends AbstractType
                 'choices' => [
                     'automation.metadata.automation.trigger.contact_created' => EmailAutomation::TRIGGER_NEW_CONTACT,
                     'automation.metadata.automation.trigger.form_answered' => EmailAutomation::TRIGGER_NEW_FORM_ANSWER,
+                    'automation.metadata.automation.trigger.contact_tagged' => EmailAutomation::TRIGGER_CONTACT_TAGGED,
                 ],
             ])
             ->add('formFilter', EntityType::class, [
@@ -46,6 +49,19 @@ class EmailAutomationMetaDataType extends AbstractType
                 },
                 'placeholder' => 'automation.metadata.automation.trigger.form_filter_placeholder',
                 'translation_domain' => 'organization_community',
+            ])
+            ->add('tagFilter', EntityType::class, [
+                'class' => Tag::class,
+                'required' => false,
+                'query_builder' => static function (TagRepository $repository) use ($options) {
+                    return $repository->createQueryBuilder('t')
+                        ->where('t.organization = :organization')
+                        ->setParameter('organization', $options['organization'])
+                        ->orderBy('t.name', 'ASC');
+                },
+                'choice_label' => static function (Tag $tag) {
+                    return $tag->getName();
+                },
             ])
             ->add('subject', TextType::class)
             ->add('preview', TextType::class, ['required' => false])

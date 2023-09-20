@@ -293,6 +293,8 @@ automation:
                 form_answered: 'Wird ausgeführt, wenn ein Formular beantwortet wird'
                 form_filter: 'Für welches Formular soll diese Automatisierung ausgeführt werden?'
                 form_filter_placeholder: 'Für alle Formen der Organisation ausführen'
+                contact_tagged: Wird ausgeführt, wenn ein Kontakt markiert wird
+                tag_filter: Für welches Tag soll diese Automatisierung ausgeführt werden?
         subject:
             title: Thema
             desc: 'Wie lautet die Betreffzeile für diese Automatisierung?'
