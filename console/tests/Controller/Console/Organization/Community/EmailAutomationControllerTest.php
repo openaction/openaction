@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Console\Organization\Community;
 
 use App\Entity\Community\EmailAutomation;
 use App\Repository\Community\EmailAutomationRepository;
+use App\Repository\Community\TagRepository;
 use App\Repository\Website\FormRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
@@ -80,7 +81,45 @@ class EmailAutomationControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testEditMetadata()
+    public function testEditMetadataAllContacts()
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/automations/828e0d22-0fab-4a59-a9d6-9b5dc575680f/metadata');
+        $this->assertResponseIsSuccessful();
+
+        $button = $crawler->selectButton('Save details');
+        $client->submit($button->form(), [
+            'email_automation_meta_data[name]' => 'Renamed',
+            'email_automation_meta_data[subject]' => 'Subject',
+            'email_automation_meta_data[preview]' => 'Preview',
+            'email_automation_meta_data[fromEmail]' => 'edited@gmail.com',
+            'email_automation_meta_data[fromName]' => 'Edited',
+            'email_automation_meta_data[toEmailType]' => 'everyone',
+            'email_automation_meta_data[trigger]' => 'new_contact',
+            'email_automation_meta_data[typeFilter]' => 'contact',
+        ]);
+
+        $this->assertResponseRedirects('/console/organization/'.self::ORGA_CITIPO_UUID.'/community/automations/828e0d22-0fab-4a59-a9d6-9b5dc575680f/metadata');
+
+        /** @var EmailAutomation $automation */
+        $automation = static::getContainer()->get(EmailAutomationRepository::class)->findOneBy(['uuid' => '828e0d22-0fab-4a59-a9d6-9b5dc575680f']);
+        $this->assertSame('Renamed', $automation->getName());
+        $this->assertSame('Subject', $automation->getSubject());
+        $this->assertSame('Preview', $automation->getPreview());
+        $this->assertSame('edited@gmail.com', $automation->getFromEmail());
+        $this->assertSame('Edited', $automation->getFromName());
+        $this->assertNull($automation->getToEmail());
+        $this->assertSame(EmailAutomation::TYPE_CONTACT, $automation->getTypeFilter());
+        $this->assertNull($automation->getFormFilter());
+        $this->assertNull($automation->getTagFilter());
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testEditMetadataFormFilter()
     {
         $client = static::createClient();
         $this->authenticate($client, 'titouan.galopin@citipo.com');
@@ -99,6 +138,7 @@ class EmailAutomationControllerTest extends WebTestCase
             'email_automation_meta_data[fromName]' => 'Edited',
             'email_automation_meta_data[toEmailType]' => 'everyone',
             'email_automation_meta_data[typeFilter]' => 'contact',
+            'email_automation_meta_data[trigger]' => 'new_form_answer',
             'email_automation_meta_data[formFilter]' => $form->getId(),
         ]);
 
@@ -114,6 +154,48 @@ class EmailAutomationControllerTest extends WebTestCase
         $this->assertNull($automation->getToEmail());
         $this->assertSame(EmailAutomation::TYPE_CONTACT, $automation->getTypeFilter());
         $this->assertSame($form->getId(), $automation->getFormFilter()?->getId());
+        $this->assertNull($automation->getTagFilter());
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testEditMetadataTagFilter()
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/automations/828e0d22-0fab-4a59-a9d6-9b5dc575680f/metadata');
+        $this->assertResponseIsSuccessful();
+
+        $tag = static::getContainer()->get(TagRepository::class)->findOneBy(['name' => 'ExampleTag']);
+
+        $button = $crawler->selectButton('Save details');
+        $client->submit($button->form(), [
+            'email_automation_meta_data[name]' => 'Renamed',
+            'email_automation_meta_data[subject]' => 'Subject',
+            'email_automation_meta_data[preview]' => 'Preview',
+            'email_automation_meta_data[fromEmail]' => 'edited@gmail.com',
+            'email_automation_meta_data[fromName]' => 'Edited',
+            'email_automation_meta_data[toEmailType]' => 'everyone',
+            'email_automation_meta_data[typeFilter]' => 'contact',
+            'email_automation_meta_data[trigger]' => 'contact_tagged',
+            'email_automation_meta_data[tagFilter]' => $tag->getId(),
+        ]);
+
+        $this->assertResponseRedirects('/console/organization/'.self::ORGA_CITIPO_UUID.'/community/automations/828e0d22-0fab-4a59-a9d6-9b5dc575680f/metadata');
+
+        /** @var EmailAutomation $automation */
+        $automation = static::getContainer()->get(EmailAutomationRepository::class)->findOneBy(['uuid' => '828e0d22-0fab-4a59-a9d6-9b5dc575680f']);
+        $this->assertSame('Renamed', $automation->getName());
+        $this->assertSame('Subject', $automation->getSubject());
+        $this->assertSame('Preview', $automation->getPreview());
+        $this->assertSame('edited@gmail.com', $automation->getFromEmail());
+        $this->assertSame('Edited', $automation->getFromName());
+        $this->assertNull($automation->getToEmail());
+        $this->assertSame(EmailAutomation::TYPE_CONTACT, $automation->getTypeFilter());
+        $this->assertSame($tag->getId(), $automation->getTagFilter()?->getId());
+        $this->assertNull($automation->getFormFilter());
 
         $client->followRedirect();
         $this->assertResponseIsSuccessful();

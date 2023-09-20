@@ -36,6 +36,11 @@ class EmailAutomationSender
             return false;
         }
 
+        // If no automation email and no contact email, ignore
+        if (!$automation->getToEmail() && (!$contact || !$contact->getEmail())) {
+            return false;
+        }
+
         // Persist the automation message
         if ($automation->getToEmail()) {
             $this->messageRepository->createNotificationMessage($automation);

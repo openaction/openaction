@@ -346,6 +346,8 @@ automation:
                 form_answered: Executed when a form is answered
                 form_filter: For which form should this automation be executed?
                 form_filter_placeholder: Execute for all forms of the organization
+                contact_tagged: Executed when a contact is tagged
+                tag_filter: For which tag should this automation be executed?
 
         subject:
             title: Subject

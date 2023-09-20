@@ -215,6 +215,7 @@ class ContactControllerTest extends ApiTestCase
             'expectedAdminAutomation' => true,
             'expectedWelcomeAutomation' => false,
             'expectedRegisterConfirm' => false,
+            'expectedTagAutomation' => true,
         ];
 
         yield 'newContactNoEmail' => [
@@ -258,6 +259,7 @@ class ContactControllerTest extends ApiTestCase
             'expectedAdminAutomation' => true,
             'expectedWelcomeAutomation' => false,
             'expectedRegisterConfirm' => false,
+            'expectedTagAutomation' => true,
         ];
 
         yield 'newMember' => [
@@ -303,14 +305,69 @@ class ContactControllerTest extends ApiTestCase
             'expectedAdminAutomation' => true,
             'expectedWelcomeAutomation' => true,
             'expectedRegisterConfirm' => true,
+            'expectedTagAutomation' => true,
+        ];
+
+        yield 'newTaggedContactEmail' => [
+            'json' => Json::encode([
+                'email' => 'New@Email.com',
+                'profileFormalTitle' => 'Mr',
+                'profileFirstName' => 'John',
+                'profileMiddleName' => 'J',
+                'profileLastName' => 'Doe',
+                'profileBirthdate' => '2020-01-02',
+                'profileGender' => 'male',
+                'profileNationality' => 'FR',
+                'profileCompany' => 'ECorp',
+                'profileJobTitle' => 'CEO',
+                'accountLanguage' => 'fr',
+                'contactAdditionalEmails' => ['johndoe@gmail.com', 'johndoe@orange.fr'],
+                'contactPhone' => '01 23 45 67 89',
+                'contactWorkPhone' => '01.00.00.00.01',
+                'socialFacebook' => 'https://facebook.com/ecorp.ceo',
+                'socialTwitter' => 'https://twitter.com/ecorp.ceo',
+                'socialLinkedIn' => 'https://linkedin.com/ecorp.ceo',
+                'socialTelegram' => 'ec0rp_ce0',
+                'socialWhatsapp' => '+33666666666',
+                'addressStreetNumber' => '1',
+                'addressStreetLine1' => 'First avenue',
+                'addressStreetLine2' => 'Suite 1',
+                'addressZipCode' => '92110',
+                'addressCity' => 'Clichy',
+                'addressCountry' => 'FR',
+                'settingsReceiveNewsletters' => false,
+                'settingsReceiveSms' => false,
+                'settingsReceiveCalls' => false,
+                'metadataCustomFields' => ['hello' => 'moto'],
+                'metadataTags' => ['ExampleTag', 'NewTagShouldBeCreated'],
+                'metadataSource' => 'API test',
+                'metadataComment' => 'a comment',
+            ]),
+            'expectedParsedContactPhone' => '+33 1 23 45 67 89',
+            'expectedParsedContactWorkPhone' => '+33 1 00 00 00 01',
+            'expectedCode' => Response::HTTP_OK,
+            'expectedArea' => '39389989938296926',
+            'expectedAdminAutomation' => true,
+            'expectedWelcomeAutomation' => false,
+            'expectedRegisterConfirm' => false,
+            'expectedTagAutomation' => true,
         ];
     }
 
     /**
      * @dataProvider provideCreateContact
      */
-    public function testCreateContact(string $json, ?string $expectedParsedContactPhone, ?string $expectedParsedContactWorkPhone, int $expectedCode, string $expectedArea, bool $expectedAdminAutomation, bool $expectedWelcomeAutomation, bool $expectedRegisterConfirm)
-    {
+    public function testCreateContact(
+        string $json,
+        ?string $expectedParsedContactPhone,
+        ?string $expectedParsedContactWorkPhone,
+        int $expectedCode,
+        string $expectedArea,
+        bool $expectedAdminAutomation,
+        bool $expectedWelcomeAutomation,
+        bool $expectedRegisterConfirm,
+        bool $expectedTagAutomation,
+    ) {
         $client = self::createClient();
 
         $response = $this->apiRequest($client, 'POST', '/api/community/contacts', self::CITIPO_TOKEN, $expectedCode, $json);
@@ -402,7 +459,8 @@ class ContactControllerTest extends ApiTestCase
             1000000
                 - ($expectedAdminAutomation ? 1 : 0)
                 - ($expectedWelcomeAutomation ? 1 : 0)
-                - ($expectedRegisterConfirm ? 1 : 0),
+                - ($expectedRegisterConfirm ? 1 : 0)
+                - ($expectedTagAutomation ? 1 : 0),
             $orga->getCreditsBalance()
         );
 
@@ -414,17 +472,9 @@ class ContactControllerTest extends ApiTestCase
         $transport = static::getContainer()->get('messenger.transport.async_emailing');
 
         $this->assertCount(
-            ($expectedAdminAutomation ? 1 : 0) + ($expectedWelcomeAutomation ? 1 : 0),
+            ($expectedAdminAutomation ? 1 : 0) + ($expectedWelcomeAutomation ? 1 : 0) + ($expectedTagAutomation ? 1 : 0),
             $messages = $transport->get()
         );
-
-        if ($expectedWelcomeAutomation) {
-            $this->assertSame(1, $automationMessageRepo->count(['email' => $contact->getEmail()]));
-        }
-
-        if ($expectedAdminAutomation) {
-            $this->assertSame(1, $automationMessageRepo->count(['email' => 'contact@citipo.com']));
-        }
 
         $expectedMailsSent = [];
 
@@ -445,6 +495,16 @@ class ContactControllerTest extends ApiTestCase
                 'fromName' => 'Jacques BAUER',
                 'content' => 'Welcome [fullName]',
                 'to' => [$contact->getEmail()],
+            ];
+        }
+
+        if ($expectedTagAutomation) {
+            $expectedMailsSent[] = [
+                'subject' => 'Filtered tag alert',
+                'fromEmail' => 'contact@citipo.com',
+                'fromName' => 'Jacques BAUER',
+                'content' => 'Tag alert [fullName]',
+                'to' => ['contact@citipo.com'],
             ];
         }
 

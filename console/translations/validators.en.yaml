@@ -28,6 +28,9 @@ console:
             email_not_equal: You need to provide a different email from your current one.
             minimal_data_required: You need to provide at least a last name, an email address or a phone number.
 
+        automations:
+            missing_tag_filter: You need to provide a tag for which this automation will be executed.
+
     project:
         emailing:
             email_invalid: This sender's email address is invalid.

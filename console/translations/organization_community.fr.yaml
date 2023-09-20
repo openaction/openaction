@@ -349,6 +349,8 @@ automation:
                 form_answered: Lorsqu'une réponse à un questionnaire est envoyée
                 form_filter: Pour quel questionnaire cette automatisation doit-elle être exécutée ?
                 form_filter_placeholder: Exécuter pour tous les questionnaires de l'organisation
+                contact_tagged: Lorsqu'un tag est associé à un contact
+                tag_filter: Pour quel tag cette automatisation doit-elle être exécutée ?
 
         subject:
             title: Sujet
