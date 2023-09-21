@@ -7,8 +7,9 @@
         <div class="list-items">
             {% for post in posts %}
                 <div class="list-items-item box-offset">
-                    <a href="{{ path('membership_area_post_view', {'id': post.id, 'slug': post.slug}) }}"
-                       class="streched-link list-items-item-link">
+                    <a href="{{ post.externalUrl|default(path('membership_area_post_view', {'id': post.id, 'slug': post.slug})) }}"
+                       class="streched-link list-items-item-link"
+                       {% if post.externalUrl %}target="_blank" rel="noopener noreferrer"{% endif %}>
                         <div class="list-items-item-box">
                             <div class="row align-items-center">
                                 <div class="col-md-8 mb-3 mb-md-0">

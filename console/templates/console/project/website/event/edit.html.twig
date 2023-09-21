@@ -13,6 +13,7 @@
 {% set categoryIds = event.categories|map(p => p.id) %}
 
 {% do expose('event_metadata', {
+    'externalUrl': event.externalUrl,
     'image': event.image ? cdn_image_url(event.image) : event.image,
     'publishedAt': event.publishedAt ? event.publishedAt.format('Y-m-d\\TH:i:sP') : null,
     'categories': categories,
@@ -41,6 +42,7 @@
                     <div data-controller="event--edit"
                          data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
                         <div class="d-none">
+                            {{ form_widget(form.externalUrl, {'attr': {'data-event--edit-target': 'externalUrl'}}) }}
                             {{ form_widget(form.publishedAt, {'attr': {'data-event--edit-target': 'publishedAt'}}) }}
                             {{ form_widget(form.categories, {'attr': {'data-event--edit-target': 'categories'}}) }}
                             {{ form_widget(form.onlyForMembers, {'attr': {'data-event--edit-target': 'onlyForMembers'}}) }}

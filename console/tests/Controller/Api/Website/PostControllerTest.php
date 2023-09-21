@@ -30,6 +30,7 @@ class PostControllerTest extends ApiTestCase
                     'quote' => 'Quote 1',
                     'slug' => 'the-eu-must-stand-with-the-people-of-hong-kong-against-china-s-abuse-of-power',
                     'description' => 'Description 1',
+                    'externalUrl' => 'https://openaction.eu',
                     'video' => 'youtube:nxaOzonmeic',
                     'image' => 'http://localhost/serve/post-image.png',
                     'sharer' => 'http://localhost/serve/post-image.png?t=sharer',

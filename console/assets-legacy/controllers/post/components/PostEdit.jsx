@@ -60,6 +60,7 @@ export function PostEdit(props) {
                 exposedDataReader.read('endpoints')['metadata'],
                 createUrlEncoded({
                     [props.descriptionInput]: metadata.description ? metadata.description : '',
+                    [props.externalUrlInput]: metadata.externalUrl ? metadata.externalUrl : '',
                     [props.quoteInput]: metadata.quote ? metadata.quote : '',
                     [props.videoInput]: metadata.video ? metadata.video : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',

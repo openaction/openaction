@@ -30,6 +30,7 @@ export function EventMetadataEdit(props) {
             .post(
                 exposedDataReader.read('endpoints')['metadata'],
                 createUrlEncoded({
+                    [props.externalUrlInput]: metadata.externalUrl ? metadata.externalUrl : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
                     [props.onlyForMembersInput]: metadata.onlyForMembers ? 1 : 0,

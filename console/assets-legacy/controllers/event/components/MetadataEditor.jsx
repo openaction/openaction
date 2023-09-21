@@ -11,6 +11,14 @@ export function MetadataEditor(props) {
         }
     };
 
+    const handleExternalUrlChange = (externalUrl) => {
+        if (saveTimeout) {
+            clearTimeout(saveTimeout);
+        }
+
+        saveTimeout = setTimeout(() => props.onMetadataChange({ ...props.metadata, externalUrl: externalUrl }), 700);
+    };
+
     const handleCategoriesChange = (categories) => {
         if (saveTimeout) {
             clearTimeout(saveTimeout);
@@ -74,6 +82,24 @@ export function MetadataEditor(props) {
                     </div>
                 </div>
                 <div className="col-12 col-lg-6">
+                    <div className="p-3">
+                        <div className="mb-2">
+                            <strong>{translator.trans('event.edit.metadata_modal.externalUrl.label')}</strong>
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                className="form-control"
+                                defaultValue={props.metadata.externalUrl}
+                                onChange={(e) => handleExternalUrlChange(e.currentTarget.value)}
+                            />
+                        </div>
+
+                        <small className="text-muted">
+                            {translator.trans('event.edit.metadata_modal.externalUrl.help')}
+                        </small>
+                    </div>
+
                     <div className="p-3">
                         <div className="mb-2">
                             <strong>{translator.trans('event.edit.metadata_modal.categories.label')}</strong>

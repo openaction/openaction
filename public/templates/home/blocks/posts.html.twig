@@ -13,7 +13,8 @@
     {% endfor %}
 
     {% set post = post|merge({
-        url: path('post_view', {'id': post.id, 'slug': post.slug}),
+        url: post.externalUrl|default(path('post_view', {'id': post.id, 'slug': post.slug})),
+        target: post.externalUrl is defined ? '_blank' : null,
         videoImage: videoImage,
         publishedAt: post.published_at|format_date('medium'),
         categories: itemCategories,

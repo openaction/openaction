@@ -54,6 +54,10 @@ class PostController extends AbstractController
             return $this->redirectToRoute('post_view', ['id' => $id, 'slug' => $post->slug], Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        if ($post->externalUrl) {
+            return $this->redirect($post->externalUrl);
+        }
+
         return $this->render('posts/view.html.twig', [
             'post' => $post,
         ]);

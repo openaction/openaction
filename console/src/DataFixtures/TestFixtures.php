@@ -1350,6 +1350,7 @@ class TestFixtures extends AbstractFixtures
                 'image' => $this->uploads['post-image.png'],
                 'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
                 'publishedAt' => new \DateTime('-5 months'),
+                'externalUrl' => 'https://openaction.eu',
                 'categories' => [
                     $this->postCategories['29c0b44c-7ed1-44c5-ada9-4622ce77d5bb'],
                 ],
@@ -1544,6 +1545,7 @@ class TestFixtures extends AbstractFixtures
                 'slug' => 'event-1',
                 'quote' => 'Event quote',
                 'content' => 'Event content',
+                'externalUrl' => 'https://openaction.eu',
                 'publishedAt' => new \DateTime('-1 days'),
                 'beginAt' => new \DateTime('+1 days'),
                 'url' => 'https://citipo.com',

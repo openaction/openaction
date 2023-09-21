@@ -131,6 +131,24 @@ export function MetadataEditor(props) {
                 <div className="col-12 col-lg-6">
                     <div className="p-3">
                         <div className="mb-2">
+                            <strong>{translator.trans('post.edit.metadata_modal.externalUrl.label')}</strong>
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                className="form-control"
+                                defaultValue={props.metadata.externalUrl}
+                                onChange={(e) => handleInputChange(e, 'externalUrl')}
+                            />
+                        </div>
+
+                        <small className="text-muted">
+                            {translator.trans('post.edit.metadata_modal.externalUrl.help')}
+                        </small>
+                    </div>
+
+                    <div className="p-3">
+                        <div className="mb-2">
                             <strong>{translator.trans('post.edit.metadata_modal.description.label')}</strong>
                         </div>
 

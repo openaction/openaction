@@ -126,6 +126,10 @@ class ContentController extends AbstractMembershipController
             throw $this->createNotFoundException();
         }
 
+        if ($post->externalUrl) {
+            return $this->redirect($post->externalUrl);
+        }
+
         if ($post->slug !== $slug) {
             return $this->redirectToRoute(
                 'membership_area_post_view',
@@ -178,6 +182,10 @@ class ContentController extends AbstractMembershipController
         $event = $this->container->get(CitipoInterface::class)->getMembersEvent($this->getApiToken(), $authToken, $id);
         if (!$event) {
             throw $this->createNotFoundException();
+        }
+
+        if ($event->externalUrl) {
+            return $this->redirect($event->externalUrl);
         }
 
         if ($event->slug !== $slug) {
