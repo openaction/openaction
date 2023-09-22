@@ -38,7 +38,6 @@ class EventRepository extends ServiceEntityRepository
                 ->leftJoin('ep.organization', 'o')
                 ->andWhere('e.onlyForMembers = FALSE')
                 ->andWhere('ep.rootDomain IS NOT NULL')
-                ->andWhere('ep.websiteAccessUser IS NULL')
                 ->andWhere('e.publishedAt <= :now')
                 ->setParameter('now', new \DateTime())
                 ->getQuery()
