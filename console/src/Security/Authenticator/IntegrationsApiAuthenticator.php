@@ -2,7 +2,7 @@
 
 namespace App\Security\Authenticator;
 
-use App\Security\Provider\IntegrationsApiProvider;
+use App\Repository\Integration\TelegramAppAuthorizationRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +17,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class IntegrationsApiAuthenticator extends AbstractAuthenticator
 {
-    private IntegrationsApiProvider $provider;
+    private TelegramAppAuthorizationRepository $telegramRepository;
 
-    public function __construct(IntegrationsApiProvider $provider)
+    public function __construct(TelegramAppAuthorizationRepository $telegramRepository)
     {
-        $this->provider = $provider;
+        $this->telegramRepository = $telegramRepository;
     }
 
     public function supports(Request $request): bool
@@ -39,11 +39,15 @@ class IntegrationsApiAuthenticator extends AbstractAuthenticator
             throw new TokenNotFoundException();
         }
 
-        if (!$this->provider->loadUserByIdentifier($apiToken = trim($matches[1]))) {
+        if (!$authorization = $this->telegramRepository->findOneBy(['apiToken' => trim($matches[1])])) {
             throw new BadCredentialsException();
         }
 
-        return new SelfValidatingPassport(new UserBadge($apiToken));
+        if (!$authorization->getMember()) {
+            throw new BadCredentialsException();
+        }
+
+        return new SelfValidatingPassport(new UserBadge($authorization->getApiToken(), static fn () => $authorization));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response

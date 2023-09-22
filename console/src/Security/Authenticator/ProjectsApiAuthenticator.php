@@ -43,7 +43,7 @@ class ProjectsApiAuthenticator extends AbstractAuthenticator
             throw new BadCredentialsException();
         }
 
-        return new SelfValidatingPassport(new UserBadge($project->getApiToken()));
+        return new SelfValidatingPassport(new UserBadge($project->getApiToken(), static fn () => $project));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
