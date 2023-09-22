@@ -13,14 +13,6 @@ security:
                 class: 'App\Entity\User'
                 property: email
 
-        app_integrations_api_provider:
-            id: 'App\Security\Provider\IntegrationsApiProvider'
-
-        app_projects_api_provider:
-            entity:
-                class: 'App\Entity\Project'
-                property: apiToken
-
     role_hierarchy:
         ROLE_ADMIN:
             - ROLE_ALLOWED_TO_SWITCH
@@ -45,14 +37,12 @@ security:
         integrations_api:
             pattern: ^/api/integrations
             stateless: true
-            provider: app_integrations_api_provider
             custom_authenticators:
                 - 'App\Security\Authenticator\IntegrationsApiAuthenticator'
 
         projects_api:
             pattern: ^/api
             stateless: true
-            provider: app_projects_api_provider
             custom_authenticators:
                 - 'App\Security\Authenticator\ProjectsApiAuthenticator'
 
