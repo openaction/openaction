@@ -1,6 +1,6 @@
 # OpenAction
 
-OpenAction is a SaaS platform to organize and grow communities organized in federations.
+OpenAction is a platform to organize and grow online communities.
 
 ## Architecture
 

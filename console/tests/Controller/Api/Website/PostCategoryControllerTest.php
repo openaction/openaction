@@ -78,7 +78,7 @@ class PostCategoryControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/posts-categories/invalid', self::DEFAULT_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/posts-categories/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/posts-categories/invalid', self::EXAMPLECO_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/posts-categories/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 }

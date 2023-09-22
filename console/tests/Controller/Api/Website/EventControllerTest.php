@@ -255,14 +255,14 @@ class EventControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/events/invalid', self::DEFAULT_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/events/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/events/invalid', self::EXAMPLECO_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/events/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 
     public function testViewOnlyForMembers()
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/events/14nA0lolffAnALGPRxdlrN', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/events/14nA0lolffAnALGPRxdlrN', self::EXAMPLECO_TOKEN, 404);
     }
 }

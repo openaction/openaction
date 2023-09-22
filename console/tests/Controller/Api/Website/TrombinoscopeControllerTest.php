@@ -191,6 +191,6 @@ class TrombinoscopeControllerTest extends ApiTestCase
         $client = self::createClient();
 
         $this->apiRequest($client, 'GET', '/api/website/trombinoscope/invalid', self::ACME_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/trombinoscope/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/trombinoscope/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 }

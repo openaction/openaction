@@ -40,6 +40,12 @@ security:
             custom_authenticators:
                 - 'App\Security\Authenticator\IntegrationsApiAuthenticator'
 
+        admin_api:
+            pattern: ^/api/admin
+            stateless: true
+            custom_authenticators:
+                - 'App\Security\Authenticator\AdminApiAuthenticator'
+
         projects_api:
             pattern: ^/api
             stateless: true

@@ -8,7 +8,7 @@ class SitemapControllerTest extends ApiTestCase
 {
     public function provideSitemap(): iterable
     {
-        yield [ApiTestCase::DEFAULT_TOKEN];
+        yield [ApiTestCase::EXAMPLECO_TOKEN];
         yield [ApiTestCase::CITIPO_TOKEN];
         yield [ApiTestCase::ACME_TOKEN];
     }

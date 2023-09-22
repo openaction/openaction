@@ -96,14 +96,9 @@ quick_start:
 developers:
     access:
         title: API access
-        description:
-            1: |
-                Citipo provides multiple API to access and update the various sections of your organization.
-            2: |
-                Citipo authenticates requests on the Website, Community and Membership area APIs using
-                projects API tokens. If the token is invalid, expired or missing, Citipo will display an error.
         learn_more: Read the API documentation (French only)
-        subtitle: Project API token
+        token_standard: Standard token
+        token_admin: Administrator token
 
     theme:
         title: Edit theme code

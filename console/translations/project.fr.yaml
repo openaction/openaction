@@ -96,16 +96,9 @@ quick_start:
 developers:
     access:
         title: Accès API
-        description:
-            1: |
-                Citipo dispose de plusieurs API permettant d'accéder et de modifier les
-                différentes sections de votre organisation de manière programmatique.
-            2: |
-                Citipo identifie les requêtes sur les API Site internet, Communauté et Espace membre
-                en utilisant le token API de votre projet. Si le token est incorrect, expiré ou
-                manquant dans votre requête, Citipo affichera une erreur.
         learn_more: Lire la documentation de l'API
-        subtitle: Token API du projet
+        token_standard: Token standard
+        token_admin: Token administrateur
 
     theme:
         title: Modifier le code du thème

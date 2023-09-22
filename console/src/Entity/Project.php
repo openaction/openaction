@@ -60,6 +60,9 @@ class Project implements UserInterface
     #[ORM\Column(length: 64, unique: true)]
     private string $apiToken;
 
+    #[ORM\Column(length: 80, unique: true, nullable: true)]
+    private ?string $adminApiToken = null;
+
     /**
      * Modules enabled for this project.
      *
@@ -228,6 +231,7 @@ class Project implements UserInterface
     public function __construct(Organization $organization, string $name, WebsiteTheme $websiteTheme, string $locale = 'fr')
     {
         $this->populateTimestampable();
+        $this->generateAdminApiToken();
         $this->uuid = Uid::random();
         $this->organization = $organization;
         $this->name = $name;
@@ -270,7 +274,8 @@ EOT;
     public static function createFixture(array $data): self
     {
         $self = new self($data['orga'], $data['name'], $data['theme']);
-        $self->apiToken = $data['apiToken'] ?? bin2hex(random_bytes(32));
+        $self->apiToken = $data['apiToken'] ?? $self->apiToken;
+        $self->adminApiToken = $data['adminApiToken'] ?? $self->adminApiToken;
         $self->modules = $data['modules'] ?? Features::allModules();
         $self->tools = $data['tools'] ?? Features::allTools();
         $self->rootDomain = $data['domain'];
@@ -380,6 +385,13 @@ EOT;
         $this->name = $name ?: '';
     }
 
+    public function generateAdminApiToken(): void
+    {
+        if (!$this->getAdminApiToken()) {
+            $this->adminApiToken = 'admin_'.bin2hex(random_bytes(32));
+        }
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -390,9 +402,14 @@ EOT;
         return $this->organization;
     }
 
-    public function getApiToken(): string
+    public function getApiToken(): ?string
     {
-        return $this->apiToken;
+        return $this->apiToken ?? null;
+    }
+
+    public function getAdminApiToken(): ?string
+    {
+        return $this->adminApiToken;
     }
 
     public function getModules(): array

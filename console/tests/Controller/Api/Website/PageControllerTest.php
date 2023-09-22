@@ -193,14 +193,14 @@ class PageControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/pages/invalid', self::DEFAULT_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/pages/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/pages/invalid', self::EXAMPLECO_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/pages/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 
     public function testViewOnlyForMembers()
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/pages/14nA0lolffAnALGPRxdlrN', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/pages/14nA0lolffAnALGPRxdlrN', self::EXAMPLECO_TOKEN, 404);
     }
 }

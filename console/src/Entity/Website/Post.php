@@ -38,10 +38,10 @@ class Post implements Searchable
     private ?string $slug;
 
     #[ORM\Column(length: 200, nullable: true)]
-    private ?string $description;
+    private ?string $description = null;
 
     #[ORM\Column(length: 200, nullable: true)]
-    private ?string $quote;
+    private ?string $quote = null;
 
     #[ORM\Column(type: 'text')]
     private string $content = '';
@@ -208,6 +208,27 @@ class Post implements Searchable
     /*
      * Setters
      */
+
+    /**
+     * @param iterable<PageCategory> $categories
+     */
+    public function applyAdminApiUpdate(
+        string $content,
+        ?string $description,
+        ?string $video,
+        ?\DateTime $publishedAt,
+        iterable $categories,
+    ): void {
+        $this->content = $content;
+        $this->description = $description;
+        $this->video = $video;
+        $this->publishedAt = $publishedAt;
+
+        foreach ($categories as $category) {
+            $this->categories->add($category);
+        }
+    }
+
     public function setPublishedAt(\DateTime $date = null)
     {
         $this->publishedAt = $date;

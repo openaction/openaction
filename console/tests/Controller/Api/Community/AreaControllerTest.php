@@ -20,7 +20,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/pages', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -70,7 +70,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/pages?category=2j7qdd4EDE0CJVOw0WCWAp', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -86,7 +86,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/pages/14nA0lolffAnALGPRxdlrN', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -128,7 +128,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/posts', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -179,7 +179,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/posts?category=6Xtiq0UNncsemt50yvqsoj', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -194,7 +194,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/posts/14nA0lolffAnALGPRxdlrN', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -238,7 +238,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/events', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -289,7 +289,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/events?category=1r1BjY3gmpXo6e4KH7kMNU', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -304,7 +304,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/events/14nA0lolffAnALGPRxdlrN', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -350,7 +350,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/forms', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -396,7 +396,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $result = $this->createApiRequest('GET', '/api/community/area/forms/5ABVt8CfIxY5GrexUynjW4', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->toArray()
         ;
@@ -442,7 +442,7 @@ class AreaControllerTest extends ApiTestCase
         $token = $this->authenticateAsMember($client);
 
         $this->createApiRequest('POST', '/api/website/forms/5ABVt8CfIxY5GrexUynjW4/answer', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withAuthToken(Json::encode($token))
             ->withContent(Json::encode([
                 'fields' => [
@@ -515,7 +515,7 @@ class AreaControllerTest extends ApiTestCase
     private function authenticateAsMember(KernelBrowser $client): array
     {
         $result = $this->createApiRequest('POST', '/api/community/members/login', $client)
-            ->withApiToken(self::DEFAULT_TOKEN)
+            ->withApiToken(self::EXAMPLECO_TOKEN)
             ->withContent(Json::encode([
                 'email' => 'julien.dubois@exampleco.com',
                 'password' => 'password',

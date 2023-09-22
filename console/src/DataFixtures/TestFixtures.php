@@ -755,6 +755,7 @@ class TestFixtures extends AbstractFixtures
                 'domain' => $this->domains['exampleco.com'],
                 'orga' => $this->orgas['682746ea-3e2f-4e5b-983b-6548258a2033'],
                 'apiToken' => '41d7821176ed9079640650922e1290aba97b949362339a7ed5539f0d5b9f21ba',
+                'adminApiToken' => 'admin_6d06eec96e8c615b76ccf3b9166b174b4e2f59804f8b97773532957b4acf8691',
                 'socialEmail' => 'contact@exampleco.com',
                 'socialFacebook' => 'https://facebook.com/exampleco',
                 'socialSnapchat' => 'exampleco',

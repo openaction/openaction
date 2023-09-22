@@ -84,11 +84,9 @@ quick_start:
 developers:
     access:
         title: API-Zugang
-        description:
-            1: "Citipo bietet mehrere APIs für den Zugriff und die Aktualisierung der verschiedenen Bereiche Ihrer Organisation.\n"
-            2: "Citipo authentifiziert Anfragen für die APIs der Website, der Community und des Mitgliedschaftsbereichs mit\nProjekte API-Tokens. Wenn das Token ungültig oder abgelaufen ist oder fehlt, zeigt Citipo einen Fehler an.\n"
         learn_more: 'Lesen Sie die API-Dokumentation (nur auf Französisch)'
-        subtitle: Projekt-API-Token
+        token_standard: Standard token
+        token_admin: Administrator token
     theme:
         title: 'Theme-Code bearbeiten'
         description: "Bearbeiten Sie den Code Ihres Themes für erweiterte Anpassungen (beachten Sie, dass dies Entwicklungskenntnisse erfordert\nund kann bei Missbrauch Ihrer Website schaden).\n"
