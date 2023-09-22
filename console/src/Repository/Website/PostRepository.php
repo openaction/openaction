@@ -38,7 +38,6 @@ class PostRepository extends ServiceEntityRepository
                 ->leftJoin('po.organization', 'o')
                 ->andWhere('p.onlyForMembers = FALSE')
                 ->andWhere('po.rootDomain IS NOT NULL')
-                ->andWhere('po.websiteAccessUser IS NULL')
                 ->andWhere('p.publishedAt <= :now')
                 ->setParameter('now', new \DateTime())
                 ->getQuery()
