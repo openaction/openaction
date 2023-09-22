@@ -30,6 +30,7 @@ class UpdateEventType extends AbstractType
             ->add('longitude', HiddenType::class, ['required' => false])
             ->add('publishedAt', HiddenType::class, ['required' => false])
             ->add('categories', HiddenType::class, ['required' => false])
+            ->add('externalUrl', HiddenType::class, ['required' => false])
             ->add('onlyForMembers', HiddenType::class, ['required' => false])
         ;
     }

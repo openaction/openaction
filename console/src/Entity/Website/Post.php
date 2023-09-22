@@ -29,6 +29,7 @@ class Post implements Searchable
     use Util\EntityProjectTrait;
     use Util\EntityMemberRestrictedTrait;
     use Util\EntityPageViewsTrait;
+    use Util\EntityExternalUrlTrait;
 
     #[ORM\Column(length: 200)]
     private string $title;
@@ -105,6 +106,7 @@ class Post implements Searchable
         $self->quote = $data['quote'] ?? null;
         $self->content = $data['content'] ?? '';
         $self->description = $data['description'] ?? null;
+        $self->externalUrl = $data['externalUrl'] ?? null;
         $self->image = $data['image'] ?? null;
         $self->video = $data['video'] ?? null;
         $self->publishedAt = $data['publishedAt'] ?? null;
@@ -224,6 +226,7 @@ class Post implements Searchable
         $this->description = (string) $data->description;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
         $this->quote = (string) $data->quote;
+        $this->externalUrl = $data->externalUrl ?: null;
         $this->onlyForMembers = (bool) $data->onlyForMembers;
     }
 

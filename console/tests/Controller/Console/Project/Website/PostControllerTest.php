@@ -112,16 +112,45 @@ class PostControllerTest extends WebTestCase
 
     public function provideUpdateMetadata(): iterable
     {
-        yield 'youtube' => ['description', 'https://www.youtube.com/watch?v=rjb9FdVdX5I', 'youtube:rjb9FdVdX5I', 'My quote', '1'];
-        yield 'facebook' => ['description', 'https://www.facebook.com/watch/?v=427923618291453', 'facebook:427923618291453', 'My quote', '0'];
-        yield 'no_video' => ['description', '', null, '', '1'];
+        yield 'youtube' => [
+            'description',
+            'https://www.youtube.com/watch?v=rjb9FdVdX5I',
+            'youtube:rjb9FdVdX5I',
+            'My quote',
+            '1',
+            '',
+        ];
+
+        yield 'facebook' => [
+            'description',
+            'https://www.facebook.com/watch/?v=427923618291453',
+            'facebook:427923618291453',
+            'My quote',
+            '0',
+            '',
+        ];
+
+        yield 'no_video' => [
+            'description',
+            '',
+            null,
+            '',
+            '1',
+            'https://google.com',
+        ];
     }
 
     /**
      * @dataProvider provideUpdateMetadata
      */
-    public function testUpdateMetadata(string $description, string $video, ?string $expectedVideo, string $quote, string $onlyForMembers)
-    {
+    public function testUpdateMetadata(
+        string $description,
+        string $video,
+        ?string $expectedVideo,
+        string $quote,
+        string $onlyForMembers,
+        ?string $externalUrl,
+    ) {
         $client = static::createClient();
         $this->authenticate($client);
 
@@ -136,6 +165,7 @@ class PostControllerTest extends WebTestCase
                     'description' => $description,
                     'video' => $video,
                     'quote' => $quote,
+                    'externalUrl' => $externalUrl,
                     'onlyForMembers' => $onlyForMembers,
                 ],
             ],
@@ -150,6 +180,7 @@ class PostControllerTest extends WebTestCase
         $this->assertEquals($description, $post->getDescription());
         $this->assertEquals($expectedVideo, $post->getVideo());
         $this->assertEquals($quote, $post->getQuote());
+        $this->assertSame($externalUrl ?: null, $post->getExternalUrl());
         $this->assertSame((bool) $onlyForMembers, $post->isOnlyForMembers());
     }
 

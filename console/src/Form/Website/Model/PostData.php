@@ -29,6 +29,10 @@ class PostData
 
     public ?bool $onlyForMembers = false;
 
+    #[Assert\Length(max: 250, groups: ['Metadata'])]
+    #[Assert\Url(groups: ['Metadata'])]
+    public ?string $externalUrl = null;
+
     public function __construct(?string $video)
     {
         $this->video = $video;

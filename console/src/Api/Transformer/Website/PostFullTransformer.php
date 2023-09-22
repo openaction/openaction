@@ -49,6 +49,7 @@ class PostFullTransformer extends AbstractTransformer
             'quote' => '?string',
             'slug' => 'string',
             'description' => '?string',
+            'externalUrl' => '?string',
             'video' => '?string',
             'image' => '?string',
             'sharer' => '?string',

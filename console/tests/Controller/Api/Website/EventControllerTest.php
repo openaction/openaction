@@ -26,6 +26,7 @@ class EventControllerTest extends ApiTestCase
                     'title' => 'Event 1',
                     'slug' => 'event-1',
                     'content' => 'Event content',
+                    'externalUrl' => 'https://openaction.eu',
                     'url' => 'https://citipo.com',
                     'buttonText' => 'Click here',
                     'latitude' => '1.2345000',

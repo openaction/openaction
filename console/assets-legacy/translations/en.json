@@ -207,6 +207,10 @@
                     "label": "Restrict this post to members",
                     "help": "If enabled, only logged-in members will be able to see this post."
                 },
+                "externalUrl": {
+                    "label": "External URL",
+                    "help": "When you provide an external URL, clicking on this post in the website will lead visitors to the provided URL instead of the post content."
+                },
                 "description": {
                     "label": "Description",
                     "help": "The description is used on Google and social media under the page title. Maximum 150 characters."
@@ -275,6 +279,10 @@
                 "categories": {
                     "label": "Categories",
                     "help": "Categories related to this event"
+                },
+                "externalUrl": {
+                    "label": "External URL",
+                    "help": "When you provide an external URL, clicking on this event in the website will lead visitors to the provided URL instead of the event content."
                 },
                 "onlyForMembers": {
                     "label": "Restrict this event to members",

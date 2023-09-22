@@ -15,7 +15,8 @@
         {% set items = items|merge([
             {
                 'title': post.title,
-                'url': path('post_view', {'id': post.id, 'slug': post.slug}),
+                'url': post.externalUrl|default(path('post_view', {'id': post.id, 'slug': post.slug})),
+                'target': post.externalUrl is defined ? '_blank' : null,
                 'description': post.description,
                 'image': post.image,
                 'video': post.video ? post.video|split(':') : null,

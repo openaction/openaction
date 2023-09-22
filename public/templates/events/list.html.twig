@@ -15,7 +15,8 @@
         {% set items = items|merge([
             {
                 'title': event.title,
-                'url': path('event_view', {'id': event.id, 'slug': event.slug}),
+                'url': event.externalUrl|default(path('event_view', {'id': event.id, 'slug': event.slug})),
+                'target': event.externalUrl is defined ? '_blank' : null,
                 'description': (event.content|u.truncate(150, '...')) ~ '',
                 'image': event.image,
                 'date': event.begin_at ? event.begin_at|format_datetime('medium', 'short') : null,

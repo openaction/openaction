@@ -54,6 +54,10 @@ class EventController extends AbstractController
             return $this->redirectToRoute('event_view', ['id' => $id, 'slug' => $event->slug], Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        if ($event->externalUrl) {
+            return $this->redirect($event->externalUrl);
+        }
+
         return $this->render('events/view.html.twig', [
             'event' => $event,
         ]);

@@ -38,6 +38,10 @@ class EventData
     #[Assert\Json(groups: ['Metadata'])]
     public ?string $categories = null;
 
+    #[Assert\Length(max: 250)]
+    #[Assert\Url]
+    public ?string $externalUrl = null;
+
     public ?bool $onlyForMembers = false;
 
     public function __construct(Event $event)
@@ -45,6 +49,7 @@ class EventData
         $this->title = $event->getTitle();
         $this->beginAt = $event->getBeginAt() ?: new \DateTime('tomorrow 18:00');
         $this->content = $event->getContent();
+        $this->externalUrl = $event->getExternalUrl();
         $this->url = $event->getUrl();
         $this->buttonText = $event->getButtonText();
         $this->address = $event->getAddress();

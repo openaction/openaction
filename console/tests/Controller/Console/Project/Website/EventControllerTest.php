@@ -316,6 +316,7 @@ class EventControllerTest extends WebTestCase
                     'publishedAt' => '2020-08-27T10:05:00+02:00',
                     'categories' => '["'.$category->getId().'"]',
                     'onlyForMembers' => '1',
+                    'externalUrl' => 'https://google.com',
                 ],
             ],
             [],
@@ -332,6 +333,7 @@ class EventControllerTest extends WebTestCase
         $this->assertSame($expectedDate->getTimestamp(), $event->getPublishedAt()->getTimestamp());
         $this->assertSame('Meetups', $event->getCategories()->first()->getName());
         $this->assertTrue($event->isOnlyForMembers());
+        $this->assertSame('https://google.com', $event->getExternalUrl());
     }
 
     public function testUpdateImage()

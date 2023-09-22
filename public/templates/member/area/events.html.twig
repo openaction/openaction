@@ -7,8 +7,9 @@
         <div class="list-items">
             {% for event in events %}
                 <div class="list-items-item box-offset">
-                    <a href="{{ path('membership_area_event_view', {'id': event.id, 'slug': event.slug}) }}"
-                       class="streched-link list-items-item-link">
+                    <a href="{{ event.externalUrl|default(path('membership_area_event_view', {'id': event.id, 'slug': event.slug})) }}"
+                       class="streched-link list-items-item-link"
+                       {% if event.externalUrl %}target="_blank" rel="noopener noreferrer"{% endif %}>
                         <div class="list-items-item-box">
                             <div class="row align-items-center">
                                 <div class="col-md-8 mb-3 mb-md-0">

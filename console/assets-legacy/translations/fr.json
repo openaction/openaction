@@ -207,6 +207,10 @@
                     "label": "Restreindre cette actualité aux membres",
                     "help": "Si activé, seuls les membres connectés pourront visualiser cette actualité."
                 },
+                "externalUrl": {
+                    "label": "URL externe",
+                    "help": "Lorsque vous indiquez une URL externe, les liens vers cette actualité sur votre site internet amèneront les visiteurs vers cette URL à la place du contenu de l'actualité."
+                },
                 "description": {
                     "label": "Description",
                     "help": "La description est affichée lors du partage sur Google ou sur les réseaux sociaux, sous le titre de la page. Maximum 150 caractères."
@@ -275,6 +279,10 @@
                 "categories": {
                     "label": "Catégories",
                     "help": "Catégories liées à cette évènement"
+                },
+                "externalUrl": {
+                    "label": "URL externe",
+                    "help": "Lorsque vous indiquez une URL externe, les liens vers cet événement sur votre site internet amèneront les visiteurs vers cette URL à la place du contenu de l'événement."
                 },
                 "onlyForMembers": {
                     "label": "Restreindre cet évènement aux membres",

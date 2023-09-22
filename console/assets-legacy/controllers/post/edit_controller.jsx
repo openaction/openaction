@@ -8,6 +8,7 @@ export default class extends Controller {
         'title',
         'content',
         'description',
+        'externalUrl',
         'video',
         'publishedAt',
         'image',
@@ -26,6 +27,7 @@ export default class extends Controller {
                 contentInput={this.contentTarget.getAttribute('name')}
                 quoteInput={this.quoteTarget.getAttribute('name')}
                 descriptionInput={this.descriptionTarget.getAttribute('name')}
+                externalUrlInput={this.externalUrlTarget.getAttribute('name')}
                 videoInput={this.videoTarget.getAttribute('name')}
                 videoValue={this.videoTarget.value}
                 publishedAtInput={this.publishedAtTarget.getAttribute('name')}

@@ -17,6 +17,7 @@ class PostType extends AbstractType
             ->add('title', HiddenType::class, ['required' => false])
             ->add('description', HiddenType::class, ['required' => false])
             ->add('quote', HiddenType::class, ['required' => false])
+            ->add('externalUrl', HiddenType::class, ['required' => false])
             ->add('video', VideoUrlType::class, ['required' => false])
             ->add('content', HiddenType::class, ['required' => false])
             ->add('publishedAt', HiddenType::class, ['required' => false])

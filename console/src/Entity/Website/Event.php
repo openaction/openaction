@@ -29,6 +29,7 @@ class Event implements Searchable
     use Util\EntityProjectTrait;
     use Util\EntityMemberRestrictedTrait;
     use Util\EntityPageViewsTrait;
+    use Util\EntityExternalUrlTrait;
 
     #[ORM\Column(length: 200)]
     private string $title;
@@ -117,6 +118,7 @@ class Event implements Searchable
         $self->longitude = $data['longitude'] ?? null;
         $self->address = $data['address'] ?? null;
         $self->image = $data['image'] ?? null;
+        $self->externalUrl = $data['externalUrl'] ?? null;
         $self->pageViews = $data['pageViews'] ?? 0;
         $self->onlyForMembers = $data['onlyForMembers'] ?? false;
         $self->form = $data['form'] ?? null;
@@ -244,6 +246,7 @@ class Event implements Searchable
     public function applyMetadataUpdate(EventData $data)
     {
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
+        $this->externalUrl = $data->externalUrl ?: null;
         $this->onlyForMembers = (bool) $data->onlyForMembers;
     }
 
