@@ -238,8 +238,8 @@ class FormControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/forms/invalid', self::DEFAULT_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/forms/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/forms/invalid', self::EXAMPLECO_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/forms/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 
     public function testViewNoToken()

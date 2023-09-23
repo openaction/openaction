@@ -79,7 +79,7 @@ class DocumentControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->apiRequest($client, 'GET', '/api/website/documents/invalid', self::DEFAULT_TOKEN, 404);
-        $this->apiRequest($client, 'GET', '/api/website/documents/7rnedzqzqk0hv5ktdm3a1m', self::DEFAULT_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/documents/invalid', self::EXAMPLECO_TOKEN, 404);
+        $this->apiRequest($client, 'GET', '/api/website/documents/7rnedzqzqk0hv5ktdm3a1m', self::EXAMPLECO_TOKEN, 404);
     }
 }

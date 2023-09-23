@@ -3,10 +3,9 @@
 namespace App\Controller\Api;
 
 use App\Api\ApiRequestQueryParser;
+use App\Api\Payload\PayloadValidationException;
 use App\Api\Transformer\Validator\ConstraintViolationTransformer;
 use App\Controller\Util\ApiControllerTrait;
-use App\Entity\Organization;
-use App\Entity\Project;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\DoctrinePaginatorAdapter;
@@ -16,9 +15,16 @@ use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\TransformerAbstract;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractApiController extends BaseController
 {
@@ -26,6 +32,8 @@ abstract class AbstractApiController extends BaseController
 
     protected ApiRequestQueryParser $apiQueryParser;
     protected ConstraintViolationTransformer $constraintViolationTransformer;
+    private SerializerInterface $serializer;
+    private ValidatorInterface $validator;
 
     public function denyUnlessSameOrganization($entity)
     {
@@ -116,25 +124,76 @@ abstract class AbstractApiController extends BaseController
         return $fractal;
     }
 
-    public function getOrganization(): ?Organization
+    /**
+     * @template T
+     *
+     * @param class-string<T> $payloadType
+     *
+     * @return T
+     */
+    public function createPayloadFromRequestContent(Request $request, string $payloadType)
     {
-        return $this->container->get('request_stack')->getCurrentRequest()->attributes->get('organization');
+        $payload = $this->serializer->deserialize(
+            data: $request->getContent(),
+            type: $payloadType,
+            format: 'json'
+        );
+
+        $errors = $this->validator->validate($payload);
+        if ($errors->count() > 0) {
+            throw new PayloadValidationException($errors);
+        }
+
+        return $payload;
     }
 
-    public function getProject(): ?Project
+    /**
+     * @template T
+     *
+     * @param class-string<T> $payloadType
+     *
+     * @return T
+     */
+    public function createPayloadFromRequestFiles(Request $request, string $payloadType)
     {
-        return $this->container->get('request_stack')->getCurrentRequest()->attributes->get('project');
+        $payload = new $payloadType();
+
+        $infos = new PropertyInfoExtractor([new ReflectionExtractor()]);
+
+        $accessor = new PropertyAccessor();
+        foreach ($infos->getProperties($payloadType) as $propertyName) {
+            $accessor->setValue($payload, $propertyName, $request->files->get($propertyName));
+        }
+
+        $errors = $this->validator->validate($payload);
+        if ($errors->count() > 0) {
+            throw new PayloadValidationException($errors);
+        }
+
+        return $payload;
     }
 
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setQueryParser(ApiRequestQueryParser $queryParser)
+    #[Required]
+    public function setQueryParser(ApiRequestQueryParser $queryParser): void
     {
         $this->apiQueryParser = $queryParser;
     }
 
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setConstraintViolationTransformer(ConstraintViolationTransformer $transformer)
+    #[Required]
+    public function setConstraintViolationTransformer(ConstraintViolationTransformer $transformer): void
     {
         $this->constraintViolationTransformer = $transformer;
+    }
+
+    #[Required]
+    public function setSerializer(SerializerInterface $serializer): void
+    {
+        $this->serializer = $serializer;
+    }
+
+    #[Required]
+    public function setValidator(ValidatorInterface $validator): void
+    {
+        $this->validator = $validator;
     }
 }

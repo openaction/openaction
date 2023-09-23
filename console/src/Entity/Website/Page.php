@@ -176,6 +176,20 @@ class Page implements Searchable
     /*
      * Setters
      */
+
+    /**
+     * @param iterable<PageCategory> $categories
+     */
+    public function applyAdminApiUpdate(string $content, ?string $description, iterable $categories): void
+    {
+        $this->content = $content;
+        $this->description = $description;
+
+        foreach ($categories as $category) {
+            $this->categories->add($category);
+        }
+    }
+
     public function applyContentUpdate(PageData $data)
     {
         $this->title = (string) $data->title;
