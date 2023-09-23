@@ -91,6 +91,27 @@ class TrombinoscopeControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testListCategory()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest($client, 'GET', '/api/website/trombinoscope?category=7Fy7Er4zVNHhotuL9q2JfQ', self::ACME_TOKEN);
+        $this->assertCount(2, $result['data']);
+
+        $this->assertApiResponse($result, [
+            'data' => [
+                [
+                    'id' => '3gQjYZ1UYDaaBmOcian0vT',
+                    'fullName' => 'Nathalie Loiseau',
+                ],
+                [
+                    'id' => '7cKpEjgYnJ8hf1DbJLGTLe',
+                    'fullName' => 'Marie-Pierre Vedrenne',
+                ],
+            ],
+        ]);
+    }
+
     public function testListNoToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/website/trombinoscope', null, 401);

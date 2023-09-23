@@ -7,6 +7,7 @@ use App\Api\Transformer\Website\TrombinoscopePersonPartialTransformer;
 use App\Controller\Api\AbstractApiController;
 use App\Repository\Website\TrombinoscopePersonRepository;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[OA\Tag(name: 'Website')]
@@ -21,9 +22,9 @@ class TrombinoscopeController extends AbstractApiController
     }
 
     #[Route('/trombinoscope', name: 'api_website_trombinoscope_list', methods: ['GET'])]
-    public function list(TrombinoscopePersonPartialTransformer $transformer)
+    public function list(TrombinoscopePersonPartialTransformer $transformer, Request $request)
     {
-        $persons = $this->repository->getApiPersons($this->getUser());
+        $persons = $this->repository->getApiPersons($this->getUser(), $request->query->get('category'));
 
         return $this->handleApiCollection($persons, $transformer, false);
     }
