@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
+use App\Util\Uid;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,10 +42,11 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
     /**
      * @return TrombinoscopePerson[]
      */
-    public function getApiPersons(Project $project): iterable
+    public function getApiPersons(Project $project, ?string $category = null): iterable
     {
-        return $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->select('p', 'i')
+            ->leftJoin('p.categories', 'pc')
             ->leftJoin('p.image', 'i')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
@@ -52,9 +54,14 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
             ->andWhere('p.publishedAt IS NOT NULL')
             ->andWhere('p.publishedAt <= :now')
             ->setParameter('now', new \DateTime())
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($category) {
+            $qb->andWhere('pc.uuid = :category')
+                ->setParameter('category', Uid::fromBase62($category));
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function getPersonsNextTo(TrombinoscopePerson $person, string $type): ?TrombinoscopePerson
