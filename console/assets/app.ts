@@ -2,6 +2,7 @@
 import './styles/blueprint.scss';
 import './styles/crm.scss';
 import './styles/unlayer.scss';
+import './styles/contenteditor.scss';
 
 // Flags
 import 'flag-icons/sass/flag-icons.scss';

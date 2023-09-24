@@ -1,0 +1,84 @@
+.contenteditor-custom-block {
+    &-modal {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10004;
+        background: rgba(255, 255, 255, 0.000001);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: sans-serif;
+
+        &-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: -1;
+        }
+
+        &-content {
+            position: relative;
+            width: 90%;
+            max-width: 760px;
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgb(199, 199, 199);
+            box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.02);
+            padding: 12px;
+        }
+    }
+
+    &-qomon {
+        display: block;
+        background: #ff387f;
+        color: #fff;
+        padding: 20px 20px 35px 20px;
+        margin: 10px 0;
+        text-align: center;
+        position: relative;
+
+        &-icon {
+            margin-bottom: 10px;
+            height: 80px;
+        }
+
+        &-title {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        &-help {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        &-noedit {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 170px;
+        }
+
+        .btn-link,
+        .btn-link:hover {
+            color: #fff;
+            text-decoration: underline;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        &-modal-content {
+            max-width: 500px;
+        }
+    }
+}

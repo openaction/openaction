@@ -6,22 +6,20 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\PageBlock;
 use App\Repository\Website\EventRepository;
 use App\Repository\Website\PostRepository;
+use App\Website\CustomBlockParser;
+use App\Website\PageBlock\HomeContentBlock;
 use App\Website\PageBlock\HomeEventsBlock;
 use App\Website\PageBlock\HomePostsBlock;
 
 class PageBlockTransformer extends AbstractTransformer
 {
-    private PostRepository $postRepository;
-    private PostPartialTransformer $postTransformer;
-    private EventRepository $eventRepository;
-    private EventTransformer $eventTransformer;
-
-    public function __construct(PostRepository $pr, PostPartialTransformer $pt, EventRepository $er, EventTransformer $et)
-    {
-        $this->postRepository = $pr;
-        $this->postTransformer = $pt;
-        $this->eventRepository = $er;
-        $this->eventTransformer = $et;
+    public function __construct(
+        private readonly PostRepository $postRepository,
+        private readonly PostPartialTransformer $postTransformer,
+        private readonly EventRepository $eventRepository,
+        private readonly EventTransformer $eventTransformer,
+        private readonly CustomBlockParser $customBlockParser,
+    ) {
     }
 
     public function transform(PageBlock $item)
@@ -55,6 +53,10 @@ class PageBlockTransformer extends AbstractTransformer
 
                 $payload['events'][] = $itemPayload;
             }
+        }
+
+        if (HomeContentBlock::TYPE === $item->getType()) {
+            $payload['content'] = $this->customBlockParser->normalizeCustomBlocksIn($payload['content'] ?? '');
         }
 
         return $payload;
