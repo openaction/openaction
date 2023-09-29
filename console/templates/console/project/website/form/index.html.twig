@@ -47,23 +47,21 @@
             {% else %}
                 <div class="world-list">
                     {% for form in forms %}
-                        <div class="world-list-row p-4" id="form-{{ form.id }}" data-id="{{ form.id }}">
+                        <div class="world-list-row p-3" id="form-{{ form.id }}" data-id="{{ form.id }}">
                             <div class="row align-items-center">
                                 <div class="col-lg">
-                                    <h4 class="mb-1 pages-title">
+                                    <h5 class="mb-1 pages-title">
                                         <a href="{{ path('console_website_forms_edit', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}">
                                             {{ form.title }}
                                         </a>
-                                    </h4>
+                                    </h5>
 
-                                    <div class="mb-2">
-                                        <small class="font-italic text-muted">
+                                    <div>
+                                        <small class="text-muted">
                                             {{ 'index.created_at'|trans({'%datetime%': form.createdAt|format_datetime('medium', 'short')}, 'project_forms') }}
-                                        </small>
-                                    </div>
 
-                                    <div class="text-muted">
-                                        <small>
+                                            <span class="mx-1">|</span>
+
                                             <i class="fad fa-chart-area mr-1"></i>
                                             {{ form.pageViews }}
                                             {{ 'index.visits'|trans({}, 'project_forms') }}

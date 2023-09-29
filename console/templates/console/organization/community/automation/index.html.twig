@@ -49,12 +49,12 @@
             {% else %}
                 <div class="world-list">
                     {% for automation in automations %}
-                        <div class="world-list-row p-4" id="automation-{{ automation.uuid }}">
+                        <div class="world-list-row p-3" id="automation-{{ automation.uuid }}">
                             <div class="row align-items-center">
                                 <div class="col-lg">
-                                    <h4 class="mb-1 posts-title">
+                                    <h5 class="mb-1 posts-title">
                                         {{ automation.name }}
-                                    </h4>
+                                    </h5>
 
                                     <div class="text-muted">
                                         {{ ('automation.index.trigger.'~automation.trigger)|trans({}, 'organization_community') }}

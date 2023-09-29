@@ -2,16 +2,12 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\ProgramProposal as CitePolitiqueProposal;
 use App\Entity\Util;
 use App\Form\Website\Model\ManifestoProposalData;
 use App\Repository\Website\ManifestoProposalRepository;
 use App\Search\Model\Searchable;
 use App\Util\Uid;
 use Doctrine\ORM\Mapping as ORM;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ManifestoProposalRepository::class)]
@@ -64,15 +60,6 @@ class ManifestoProposal implements Searchable
     /*
      * Factories
      */
-    public static function importFromCitePolitique(ManifestoTopic $topic, CitePolitiqueProposal $cpProposal, int $weight, string $builtContent): self
-    {
-        $self = new self($topic, u($cpProposal->getTitle())->slice(0, 150), $weight);
-        $self->content = $builtContent;
-        $self->createdAt = new \DateTime($cpProposal->getUpdatedAt()->format('Y-m-d H:i:s'));
-        $self->updatedAt = new \DateTime($cpProposal->getUpdatedAt()->format('Y-m-d H:i:s'));
-
-        return $self;
-    }
 
     public static function createFixture(array $data): self
     {

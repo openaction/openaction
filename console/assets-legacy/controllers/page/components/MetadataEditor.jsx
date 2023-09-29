@@ -1,6 +1,7 @@
 import React from 'react';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { translator } from '../../../services/translator';
+import { exposedDataReader } from '../../../services/exposed-data-reader';
 
 let saveTimeout = null;
 
@@ -28,6 +29,14 @@ export function MetadataEditor(props) {
         saveTimeout = setTimeout(() => props.onMetadataChange({ ...props.metadata, categoryIds: categories }), 700);
     };
 
+    const handleParentPageChange = (parentId) => {
+        if (saveTimeout) {
+            clearTimeout(saveTimeout);
+        }
+
+        saveTimeout = setTimeout(() => props.onMetadataChange({ ...props.metadata, parentId: parentId || '' }), 700);
+    };
+
     const handleOnlyForMembersChange = (onlyForMembers) => {
         if (saveTimeout) {
             clearTimeout(saveTimeout);
@@ -43,6 +52,9 @@ export function MetadataEditor(props) {
     if (props.metadata.image && props.uploadStatus !== 'saving') {
         uploaderViewStyle.backgroundImage = 'url(' + props.metadata.image + ')';
     }
+
+    const availableParentPages = exposedDataReader.read('available_parent_pages');
+    console.log(availableParentPages);
 
     return (
         <div>
@@ -120,6 +132,32 @@ export function MetadataEditor(props) {
                     </div>
                 </div>
                 <div className="col-12 col-lg-6">
+                    <div className="p-3">
+                        <div className="mb-2">
+                            <strong>{translator.trans('page.edit.metadata_modal.parentId.label')}</strong>
+                        </div>
+
+                        <div className="mb-1">
+                            <select
+                                className="form-control"
+                                defaultValue={props.metadata.parentId}
+                                onChange={(e) => handleParentPageChange(e.currentTarget.value)}
+                            >
+                                <option value={null}></option>
+
+                                {availableParentPages.map((page) => (
+                                    <option key={page.id} value={parseInt(page.id)}>
+                                        {page.title}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <small className="text-muted">
+                            {translator.trans('page.edit.metadata_modal.parentId.help')}
+                        </small>
+                    </div>
+
                     <div className="p-3">
                         <div className="mb-2">
                             <strong>{translator.trans('page.edit.metadata_modal.description.label')}</strong>

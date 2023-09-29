@@ -53,7 +53,7 @@
             {% else %}
                 <div class="world-list">
                     {% for page in pages %}
-                        <div class="world-list-row p-4" id="page-{{ page.id }}" data-id="{{ page.id }}" data-uuid="{{ page.uuid }}">
+                        <div class="world-list-row py-2 px-3" id="page-{{ page.id }}" data-id="{{ page.id }}" data-uuid="{{ page.uuid }}">
                             <div class="row align-items-center">
                                 <div class="col-lg-auto d-none d-lg-block">
                                     <div class="world-list-image">
@@ -62,27 +62,34 @@
                                 </div>
 
                                 <div class="col-lg">
-                                    <h4 class="mb-1 pages-title">
+                                    <h5 class="mb-1 pages-title">
                                         <a href="{{ path('console_website_page_edit', {'uuid': page.uuid, 'projectUuid': project.uuid}) }}">
                                             {{ page.title }}
                                         </a>
-                                    </h4>
+                                    </h5>
 
-                                    <div class="mb-2">
-                                        <small class="font-italic text-muted">
-                                            {{ 'index.created_at'|trans({'%datetime%': page.createdAt|format_datetime('medium', 'short')}, 'project_pages') }}
-                                        </small>
-                                    </div>
+                                    <div>
+                                        {% if page.parent %}
+                                            <div>
+                                                <small class="text-muted">
+                                                    <i class="fad fa-link mr-1"></i>
+                                                    {{ page.parent.title }}
+                                                </small>
+                                            </div>
+                                        {% endif %}
 
-                                    <div class="text-muted">
-                                        <small>
+                                        <small class="text-muted">
+                                            {{ 'index.created_at'|trans({'%datetime%': page.createdAt|format_datetime('short', 'short')}, 'project_pages') }}
+
+                                            <span class="mx-1">|</span>
+
                                             <i class="fad fa-chart-area mr-1"></i>
                                             {{ page.pageViews }}
                                             {{ 'index.visits'|trans({}, 'project_pages') }}
 
                                             <span class="mx-1">|</span>
 
-                                            {{ 'index.last_modified'|trans({'%datetime%': page.updatedAt|format_datetime('medium', 'short')}, 'project_pages') }}
+                                            {{ 'index.last_modified'|trans({'%datetime%': page.updatedAt|format_datetime('short', 'short')}, 'project_pages') }}
                                         </small>
                                     </div>
                                 </div>

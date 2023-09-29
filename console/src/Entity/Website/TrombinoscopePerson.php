@@ -2,7 +2,6 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\Candidate as CitePolitiqueCandidate;
 use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
@@ -14,9 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TrombinoscopePersonRepository::class)]
@@ -95,20 +91,6 @@ class TrombinoscopePerson implements Searchable
     /*
      * Factories
      */
-    public static function importFromCitePolitique(Project $project, CitePolitiqueCandidate $cpCandidate, int $weight, string $content): self
-    {
-        $self = new self($project, u($cpCandidate->getFullName())->slice(0, 100), $weight);
-        $self->content = $content;
-        $self->role = u($cpCandidate->getDescription())->slice(0, 250);
-        $self->socialEmail = $cpCandidate->getEmail();
-        $self->socialFacebook = $cpCandidate->getFacebook();
-        $self->socialTwitter = $cpCandidate->getTwitter();
-        $self->publishedAt = new \DateTime($cpCandidate->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->createdAt = new \DateTime($cpCandidate->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->updatedAt = new \DateTime($cpCandidate->getPublishedAt()->format('Y-m-d H:i:s'));
-
-        return $self;
-    }
 
     public static function createFixture(array $data): self
     {

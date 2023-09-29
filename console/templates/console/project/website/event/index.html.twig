@@ -65,7 +65,7 @@
                     {% endif %}
 
                     {% for event in events %}
-                        <div class="world-list-row p-4" id="event-{{ event.uuid }}" data-id="{{ event.uuid }}">
+                        <div class="world-list-row py-2 px-3" id="event-{{ event.uuid }}" data-id="{{ event.uuid }}">
                             <div class="row align-items-center">
                                 <div class="col-lg-auto d-none d-lg-block">
                                     <div class="world-list-image">
@@ -74,51 +74,53 @@
                                 </div>
 
                                 <div class="col-lg">
-                                    <h4 class="mb-0 posts-title">
+                                    <h5 class="mb-2 posts-title">
                                         <a href="{{ path('console_website_event_edit', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}">
                                             {{ event.title }}
-                                        </a>
-                                    </h4>
 
-                                    <div class="mb-2 text-muted">
-                                        {% if event.beginAt is not null %}
-                                            {{ 'index.begin_at'|trans({'%datetime%': event.beginAt|format_datetime('medium', 'short')}, 'project_events') }}
-                                        {% else %}
-                                            {{ 'index.no_begin_date'|trans({}, 'project_events') }}
-                                        {% endif %}
-                                    </div>
+                                            <small class="d-inline-block ml-3 text-muted">
+                                                {% if event.beginAt is not null %}
+                                                    {{ 'index.begin_at'|trans({'%datetime%': event.beginAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                                {% else %}
+                                                    {{ 'index.no_begin_date'|trans({}, 'project_events') }}
+                                                {% endif %}
+                                            </small>
+                                        </a>
+                                    </h5>
 
                                     <div class="mb-2">
                                         {% if event.publishedAt and event.publishedAt >= date() %}
                                             <div class="world-badge world-badge-info mr-2">
                                                 {{ 'index.scheduled'|trans({}, 'project_events') }}
                                             </div>
-                                            <small class="font-italic text-muted">
-                                                {{ 'index.scheduled_for'|trans({'%datetime%': event.publishedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                            <small class="text-muted">
+                                                {{ 'index.scheduled_for'|trans({'%datetime%': event.publishedAt|format_datetime('short', 'short')}, 'project_events') }}
                                             </small>
+
+                                            <span class="mx-1 text-muted">|</span>
                                         {% elseif event.publishedAt and event.publishedAt < date() %}
                                             <div class="world-badge world-badge-success mr-2">
                                                 {{ 'index.published'|trans({}, 'project_events') }}
                                             </div>
-                                            <small class="font-italic text-muted">
-                                                {{ 'index.published_at'|trans({'%datetime%': event.publishedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                            <small class="text-muted">
+                                                {{ 'index.published_at'|trans({'%datetime%': event.publishedAt|format_datetime('short', 'short')}, 'project_events') }}
                                             </small>
+
+                                            <span class="mx-1 text-muted">|</span>
                                         {% else %}
-                                            <div class="world-badge world-badge-warning">
+                                            <div class="world-badge world-badge-warning mr-2">
                                                 {{ 'index.draft'|trans({}, 'project_events') }}
                                             </div>
                                         {% endif %}
-                                    </div>
 
-                                    <div class="text-muted">
-                                        <small>
+                                        <small class="text-muted">
                                             <i class="fad fa-chart-area mr-1"></i>
                                             {{ event.pageViews }}
                                             {{ 'index.visits'|trans({}, 'project_events') }}
 
                                             <span class="mx-1">|</span>
 
-                                            {{ 'index.last_modified'|trans({'%datetime%': event.updatedAt|format_datetime('medium', 'short')}, 'project_events') }}
+                                            {{ 'index.last_modified'|trans({'%datetime%': event.updatedAt|format_datetime('short', 'short')}, 'project_events') }}
                                         </small>
                                     </div>
                                 </div>

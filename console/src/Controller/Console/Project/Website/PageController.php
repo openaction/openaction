@@ -154,6 +154,7 @@ class PageController extends AbstractController
             'page' => $page,
             'form' => $this->createForm(PageType::class)->createView(),
             'categories' => $this->categoryRepository->getProjectCategories($this->getProject(), Query::HYDRATE_ARRAY),
+            'available_parent_pages' => $this->repository->getAvailableParentPages($this->getProject(), $page),
             'image_form' => $this->createForm(PageImageType::class, new PageImageData())->createView(),
         ]);
     }
@@ -190,6 +191,12 @@ class PageController extends AbstractController
             $page->applyContentUpdate($pageData);
         } elseif ('Metadata' === $groupValidation) {
             $page->applyMetadataUpdate($pageData);
+
+            $page->setParent(
+                $pageData->parentId
+                    ? $this->repository->findOneBy(['project' => $this->getProject(), 'id' => (int) $pageData->parentId])
+                    : null
+            );
         }
 
         $this->em->persist($page);

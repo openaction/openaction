@@ -43,12 +43,12 @@
             {% else %}
                 <div class="world-list">
                     {% for draft in campaigns_drafts %}
-                        <div class="world-list-row p-4" id="campaign-{{ draft.uuid }}" data-campaign="{{ draft.uuid }}">
+                        <div class="world-list-row p-3" id="campaign-{{ draft.uuid }}" data-campaign="{{ draft.uuid }}">
                             <div class="row align-items-center">
                                 <div class="col-lg-9">
-                                    <h4 class="mb-1 posts-title">
+                                    <h5 class="mb-1 posts-title">
                                         {{ draft.name }}
-                                    </h4>
+                                    </h5>
 
                                     <div class="text-muted">
                                         {% set to = 'to' %}

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\ProgramTopic as CitePolitiqueTopic;
 use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
@@ -15,9 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ManifestoTopicRepository::class)]
@@ -72,17 +68,6 @@ class ManifestoTopic implements Searchable
     /*
      * Factories
      */
-    public static function importFromCitePolitique(Project $project, CitePolitiqueTopic $cpTopic, int $weight): self
-    {
-        $self = new self($project, u($cpTopic->getTitle())->slice(0, 150), $weight);
-        $self->title = u($cpTopic->getTitle())->slice(0, 150);
-        $self->color = $cpTopic->getColor() ?: '000000';
-        $self->publishedAt = new \DateTime($cpTopic->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->createdAt = new \DateTime($cpTopic->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->updatedAt = new \DateTime($cpTopic->getPublishedAt()->format('Y-m-d H:i:s'));
-
-        return $self;
-    }
 
     public static function createFixture(array $data): self
     {
