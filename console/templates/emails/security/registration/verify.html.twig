@@ -2,20 +2,20 @@
 
 {% block content %}
     <h2>
-        {{ 'transactional.registration.verify.title'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.registration.verify.title'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </h2>
 
     <spacer size="16"></spacer>
 
     <p>
-        {{ 'transactional.registration.verify.desc'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.registration.verify.desc'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </p>
 
     <spacer size="16"></spacer>
 
     <button class="large expand"
             href="{{ url('security_register_finalizing', {'uuid': registration_uuid, 'token': registration_token}) }}">
-        {{ 'transactional.registration.verify.link'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.registration.verify.link'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </button>
 {% endblock %}
 

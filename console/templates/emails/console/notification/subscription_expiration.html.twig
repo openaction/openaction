@@ -3,6 +3,7 @@
 {% block content %}
     <h2>
         {{ 'transactional.notification.subscription_expiration.title'|trans({
+            '%platform%': platform_name,
             '%organization%': organization_name,
             '%days_left%': days_left,
         }, 'emails', locale|default('en')) }}
@@ -12,23 +13,23 @@
 
     <p>
         {{ 'transactional.notification.subscription_expiration.desc'|trans({
+            '%platform%': platform_name,
             '%organization%': organization_name,
             '%days_left%': days_left,
         }, 'emails', locale|default('en'))|raw }}
     </p>
 
-    <button class="large expand"
-            href="mailto:{{ 'contact_email'|trans({}, 'global', locale|default('en'))|raw }}">
-        {{ 'transactional.notification.subscription_expiration.ask_us'|trans({}, 'emails', locale|default('en')) }}
+    <button class="large expand" href="mailto:{{ platform_email }}">
+        {{ 'transactional.notification.subscription_expiration.ask_us'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </button>
 
     <p>
-        {{ 'transactional.notification.subscription_expiration.ask_us'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.notification.subscription_expiration.ask_us'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </p>
 
     <spacer size="16"></spacer>
 
     <p>
-        {{ 'transactional.notification.footer'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.notification.footer'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </p>
 {% endblock %}

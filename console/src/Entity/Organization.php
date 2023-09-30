@@ -138,6 +138,16 @@ class Organization
     private ?string $textingSenderCode = null;
 
     /*
+     * White label
+     */
+
+    #[ORM\OneToOne(targetEntity: Upload::class)]
+    private ?Upload $whiteLabelLogo = null;
+
+    #[ORM\Column(length: 25, nullable: true)]
+    private ?string $whiteLabelName = null;
+
+    /*
      * Relationships
      */
 
@@ -758,10 +768,31 @@ class Organization
     }
 
     /*
+     * White label
+     */
+
+    public function applyWhiteLabelUpdate(?Upload $logo, ?string $name): void
+    {
+        $this->whiteLabelLogo = $logo ?: $this->whiteLabelLogo;
+        $this->whiteLabelName = $name;
+    }
+
+    public function getWhiteLabelLogo(): ?Upload
+    {
+        return $this->whiteLabelLogo;
+    }
+
+    public function getWhiteLabelName(): ?string
+    {
+        return $this->whiteLabelName;
+    }
+
+    /*
      * Relationships
      */
+
     /**
-     * @return Collection|Project[]
+     * @return Collection<Project>
      */
     public function getProjects(): Collection
     {
@@ -769,7 +800,7 @@ class Organization
     }
 
     /**
-     * @return Collection|Domain[]
+     * @return Collection<Domain>
      */
     public function getDomains(): Collection
     {
@@ -777,7 +808,7 @@ class Organization
     }
 
     /**
-     * @return Collection|OrganizationMember[]
+     * @return Collection<OrganizationMember>
      */
     public function getMembers(): Collection
     {
@@ -785,7 +816,7 @@ class Organization
     }
 
     /**
-     * @return Collection|OrganizationMember[]
+     * @return Collection<OrganizationMember>
      */
     public function getAdmins(): Collection
     {

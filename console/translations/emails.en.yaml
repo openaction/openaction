@@ -1,31 +1,31 @@
 transactional:
-    greetings: Our best,<br />The Citipo team
+    greetings: 'Our best,<br />The %platform% team'
     footer: |
-        You received this email because you are registered on Citipo.
+        You received this email because you are registered on %platform%.
         If you wish to stop receiving emails from us, contact us at
 
     registration:
         verify:
-            subject: '[Citipo] You are almost there!'
+            subject: 'You are almost there!'
             title: You are almost there!
             desc: 'Click on the button below to finish signing up:'
             link: Finalize my account
 
         welcome:
-            subject: '[Citipo] Welcome to Citipo!'
-            title: Welcome to Citipo
+            subject: 'Welcome!'
+            title: 'Welcome to %platform%'
             intro: 'Hello %name%,'
-            thanks: Thanks for signing up to Citipo!
-            cta: 'Starting from now, you can create your website and start to grow your community with Citipo:'
-            link: Start using Citipo
+            thanks: 'Thanks for signing up to %platform%!'
+            cta: 'Starting from now, you can create your website and start to grow your community with %platform%:'
+            link: 'Start using %platform%'
             feedback: 'If you have any questions, ideas, or feedbacks, just reply to this email, we would love to hear from you!'
 
     forgot_password:
         request:
-            subject: '[Citipo] Reset your password'
+            subject: 'Reset your password'
             title: Reset your password
             desc: |
-                Someone (hopefully you!) requested a password reset on your Citipo account.
+                Someone (hopefully you!) requested a password reset on your %platform% account.
                 Click on the button below to reset your password:
             link: Reset my password
             ignore: |
@@ -33,18 +33,18 @@ transactional:
                 email and your password will remain the same.
 
         updated:
-            subject: '[Citipo] Your password has been updated'
-            title: Your Citipo password has been updated
+            subject: 'Your password has been updated'
+            title: Your %platform% password has been updated
             desc: |
                 If you didn't just reset your password, get in touch with us so that we can
                 help you secure your account:
 
     invite:
-        subject: '[Citipo] %author% is waiting for you on Citipo'
-        title: Join your team on Citipo
+        subject: '%author% is waiting for you!'
+        title: Join your team on %platform%
         desc: |
             <strong>%author%</strong> invited you to join the <strong>%organization%</strong>
-            organization on Citipo. Just click below to start collaborating with your team in minutes:
+            organization on %platform%. Just click below to start collaborating with your team in minutes:
         link: Join my team
 
     notification:
@@ -53,38 +53,37 @@ transactional:
             settings in your account configuration.
 
         new_project:
-            subject: '[Citipo] A new project was created in your organization'
+            subject: 'A new project was created in your organization'
             title: A new project was created in your organization
             desc: |
                 The project <strong>%project%</strong> has been created in
                 the <strong>%organization%</strong> organization.
-            error: If you believe this project was created in error, you can remove it on your Citipo dashboard.
+            error: If you believe this project was created in error, you can remove it on your %platform% dashboard.
 
         new_invoice:
-            subject: '[Citipo] Invoice %number% for %organization%'
+            subject: 'Invoice %number% for %organization%'
             title: A new invoice is available in your organization
             desc: |
                 Please find attached your latest invoice for your organization %organization%.
                 This invoice is already paid, no further payment is due.
 
         new_quote:
-            subject: '[Citipo] Quote %number% for %organization%'
+            subject: 'Quote %number% for %organization%'
             title: A new quotation is available in your organization
-            desc: |
-                Please find attached your latest quotation for your organization %organization%.
+            desc: Please find attached your latest quotation for your organization %organization%.
 
         subscription_expiration:
             subject_early: '[IMPORTANT] The subscription of %organization% ends in %days_left% days'
-            subject_late: '[IMPORTANT] Your Citipo website will be disabled'
+            subject_late: '[IMPORTANT] Your website will be disabled'
             title: The subscription of %organization% expires in %days_left% days
             desc: |
                 The subscription of your organization %organization% is ending in %days_left% days.
                 As soon as your subscription will be expired, your website will be innaccessible and
-                you won't have access to Citipo anymore.
+                you won't have access to %platform% anymore.
             ask_us: Contact us to renew your subscription now
 
         export:
-            subject: '[Citipo] Export finished for %organization%'
+            subject: 'Export finished for %organization%'
             title: The contacts export is finished
             desc: 'The export you requested is finished. You can download it by clicking the button below:'
             button: Download the export

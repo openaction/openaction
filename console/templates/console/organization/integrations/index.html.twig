@@ -37,7 +37,7 @@
                 'feature': 'feature_integration_quorum',
                 'url': 'https://qomon.com',
                 'docUrl': 'https://citipo.com/doc-qomon',
-                'buttonUrl': 'mailto:' ~ ('contact_email'|trans({}, 'global')),
+                'buttonUrl': 'mailto:' ~ platform_email,
                 'buttonLabel': 'index.acquisition.quorum.link',
             },
         },
@@ -140,7 +140,7 @@
                                     }, 'organization') }}
                                 </div>
 
-                                <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}" target="_blank" class="btn btn-primary text-white">
+                                <a href="mailto:{{ platform_email }}" target="_blank" class="btn btn-primary text-white">
                                     {{ 'upgrade.contact_us'|trans({}, 'organization') }}
                                 </a>
                             {% endif %}

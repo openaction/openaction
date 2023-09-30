@@ -60,11 +60,11 @@ class GenerateInvoicePdfHandlerTest extends KernelTestCase
 
         /** @var Email $message */
         $message = $this->getMailerMessage();
-        $this->assertSame('[Citipo] Invoice 156 for Acme', $message->getSubject());
+        $this->assertSame('Invoice 156 for Acme', $message->getSubject());
         $this->assertSame(
             ['billing@citipo.com'],
             array_map(static fn (Address $a) => $a->getEncodedAddress(), $message->getTo()),
         );
-        $this->assertCount(2, $message->getAttachments());
+        $this->assertCount(1, $message->getAttachments());
     }
 }

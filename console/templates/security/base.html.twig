@@ -7,8 +7,8 @@
         <div class="security-box">
             <div class="mt-5 mb-5 text-center">
                 <a href="https://citipo.com/{{ app.request.locale }}">
-                    <img src="{{ console_logo|default(asset('res/logo/logo-dark.svg')) }}"
-                         class="security-logo" alt="{{ console_name|default('platform'|trans({}, 'global')) }}" />
+                    <img src="{{ platform_logo }}"
+                         class="security-logo" alt="{{ console_name|default(platform_name) }}" />
                 </a>
             </div>
 
@@ -18,10 +18,10 @@
 
             <div class="mt-5 pt-5 text-center">
                 <small class="text-muted">
-                    <a href="mailto:{{ console_email|default('contact_email'|trans({}, 'global')) }}"
+                    <a href="mailto:{{ platform_email }}"
                        class="text-muted">{{ 'contact_us'|trans({}, 'global') }}</a>
                     |
-                    {{ 'now'|date('Y') }} © {{ console_legal_name|default('legal_name'|trans({}, 'global')) }}
+                    {{ 'now'|date('Y') }} © {{ platform_legal_name }}
                 </small>
             </div>
         </div>

@@ -2,11 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Cdn\CdnUploader;
+use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Organization;
 use App\Entity\OrganizationMember;
 use App\Platform\Plans;
 use App\Repository\OrganizationMemberRepository;
 use App\Search\TenantTokenManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -24,14 +27,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class OrganizationController extends AbstractCrudController
 {
     public function __construct(
-        private OrganizationMemberRepository $memberRepository,
-        private bool $isOnPremise
+        private readonly OrganizationMemberRepository $memberRepository,
+        private readonly bool $isOnPremise,
     ) {
     }
 
@@ -217,6 +226,11 @@ class OrganizationController extends AbstractCrudController
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->add(
                 Crud::PAGE_INDEX,
+                Action::new('upate_white_label', 'Update white label details')
+                    ->linkToRoute('admin_organization_upate_white_label', fn (Organization $o) => ['id' => $o->getId()])
+            )
+            ->add(
+                Crud::PAGE_INDEX,
                 Action::new('impersonate', 'Impersonate')
                     ->linkToRoute('admin_organization_impersonate', fn (Organization $o) => ['id' => $o->getId()])
             )
@@ -248,6 +262,50 @@ class OrganizationController extends AbstractCrudController
 
         return $this->redirectToRoute('console_organization_projects', [
             'organizationUuid' => $organization->getUuid(),
+        ]);
+    }
+
+    #[Route('/admin/organizations/{id}/update-white-label', name: 'admin_organization_upate_white_label', methods: ['GET', 'POST'])]
+    public function updateWhiteLabel(
+        CdnUploader $cdnUploader,
+        EntityManagerInterface $manager,
+        AdminUrlGenerator $adminUrlGenerator,
+        Organization $organization,
+        Request $request,
+    ) {
+        $form = $this->createFormBuilder(['name' => $organization->getWhiteLabelName()])
+            ->add('name', TextType::class, [
+                'label' => 'Custom name',
+                'required' => false,
+                'constraints' => [new NotBlank(), new Length(max: 25)],
+            ])
+            ->add('logo', FileType::class, [
+                'label' => 'Custom logo',
+                'required' => false,
+                'constraints' => [new NotBlank(), new Image(maxSize: '5M')],
+            ])
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $upload = null;
+            if ($uploadedLogo = $form->get('logo')->getData()) {
+                $upload = $cdnUploader->upload(CdnUploadRequest::createOrganizationWhiteLabelLogoRequest($uploadedLogo));
+            }
+
+            $organization->applyWhiteLabelUpdate(logo: $upload, name: $form->get('name')->getData());
+
+            $manager->persist($organization);
+            $manager->flush();
+
+            return $this->redirect($adminUrlGenerator->setController(self::class)->setAction('index')->generateUrl());
+        }
+
+        return $this->render('admin/organizations/update_white_label.html.twig', [
+            'organization' => $organization,
+            'form' => $form->createView(),
         ]);
     }
 }

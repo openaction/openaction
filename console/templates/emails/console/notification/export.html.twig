@@ -2,17 +2,17 @@
 
 {% block content %}
     <h2>
-        {{ 'transactional.notification.export.title'|trans({}, 'emails', locale) }}
+        {{ 'transactional.notification.export.title'|trans({'%platform%': platform_name}, 'emails', locale) }}
     </h2>
 
     <spacer size="16"></spacer>
 
     <p>
-        {{ 'transactional.notification.export.desc'|trans({'%organization%': organization_name}, 'emails', locale)|raw }}
+        {{ 'transactional.notification.export.desc'|trans({'%organization%': organization_name, '%platform%': platform_name}, 'emails', locale)|raw }}
     </p>
 
     <button class="large expand"
             href="{{ url('console_organization_community_contacts_export_download', {'organizationUuid': organization_uuid, 'pathname': export_pathname}) }}">
-        {{ 'transactional.notification.export.button'|trans({'%organization%': organization_name}, 'emails', locale)|raw }}
+        {{ 'transactional.notification.export.button'|trans({'%organization%': organization_name, '%platform%': platform_name}, 'emails', locale)|raw }}
     </button>
 {% endblock %}

@@ -34,6 +34,7 @@ class PlatformMailer
                 ->subject($this->translator->trans('transactional.registration.verify.subject', [], 'emails', $registration->getLocale()))
                 ->htmlTemplate('emails/security/registration/verify.html.twig')
                 ->context([
+                    'current_organization' => $registration->getOrganization(),
                     'locale' => $registration->getLocale(),
                     'registration_uuid' => $registration->getUuid()->toRfc4122(),
                     'registration_token' => $registration->getToken(),
@@ -70,6 +71,7 @@ class PlatformMailer
                 ->subject($subject)
                 ->htmlTemplate('emails/console/organization/invite_new.html.twig')
                 ->context([
+                    'current_organization' => $organization,
                     'locale' => $registration->getLocale(),
                     'registration_uuid' => $registration->getUuid()->toRfc4122(),
                     'registration_token' => $registration->getToken(),
@@ -94,6 +96,7 @@ class PlatformMailer
                 ->subject($subject)
                 ->htmlTemplate('emails/console/organization/invite_registered.html.twig')
                 ->context([
+                    'current_organization' => $organization,
                     'locale' => $invited->getLocale(),
                     'organization_uuid' => $organization->getUuid()->toRfc4122(),
                     'organization_name' => $organization->getName(),
@@ -137,6 +140,7 @@ class PlatformMailer
                 ->subject($this->translator->trans('transactional.notification.new_project.subject', [], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_project.html.twig')
                 ->context([
+                    'current_organization' => $organization,
                     'locale' => $user->getLocale(),
                     'project_name' => $project->getName(),
                     'organization_name' => $organization->getName(),
@@ -162,6 +166,7 @@ class PlatformMailer
                 ], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/console/notification/subscription_expiration.html.twig')
                 ->context([
+                    'current_organization' => $organization,
                     'locale' => $user->getLocale(),
                     'organization_name' => $organization->getName(),
                     'days_left' => $daysLeft,
@@ -180,6 +185,7 @@ class PlatformMailer
                 ], 'emails', $order->getRecipient()->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_invoice.html.twig')
                 ->context([
+                    'current_organization' => $order->getOrganization(),
                     'organization_name' => $order->getOrganization()->getName(),
                     'locale' => $order->getRecipient()->getLocale(),
                 ])
@@ -198,6 +204,7 @@ class PlatformMailer
                 ], 'emails', $quote->getRecipient()->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_quote.html.twig')
                 ->context([
+                    'current_organization' => $quote->getOrganization(),
                     'organization_name' => $quote->getOrganization()->getName(),
                     'locale' => $quote->getRecipient()->getLocale(),
                 ])
@@ -215,6 +222,7 @@ class PlatformMailer
                 ], 'emails', $locale))
                 ->htmlTemplate('emails/console/notification/export.html.twig')
                 ->context([
+                    'current_organization' => $orga,
                     'organization_uuid' => $orga->getUuid(),
                     'organization_name' => $orga->getName(),
                     'locale' => $locale,

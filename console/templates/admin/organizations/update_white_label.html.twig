@@ -1,0 +1,36 @@
+{% extends ea.templatePath('layout') %}
+
+{% form_theme form with '@EasyAdmin/crud/form_theme.html.twig' only %}
+
+{% block content_title 'Update white label details for ' ~ organization.name %}
+{% block content_footer_wrapper '' %}
+
+{% block main %}
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+
+            {{ form_row(form.logo) }}
+
+            {% if organization.whiteLabelLogo %}
+                <a href="">
+                    Remove current white label logo (use default one)
+                </a>
+            {% endif %}
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Update
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

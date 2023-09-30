@@ -43,6 +43,11 @@ class CdnUploadRequest
         return new self($file, 'automation', EmailingContentImageHandler::class);
     }
 
+    public static function createOrganizationWhiteLabelLogoRequest(File $file): self
+    {
+        return new self($file, 'organization-logo', ProjectLogoImageHandler::class);
+    }
+
     public static function createProjectLogoRequest(Project $project, File $file): self
     {
         return new self($file, 'project-logo', ProjectLogoImageHandler::class, $project);

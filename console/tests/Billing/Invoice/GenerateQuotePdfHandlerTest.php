@@ -45,11 +45,11 @@ class GenerateQuotePdfHandlerTest extends KernelTestCase
 
         /** @var Email $message */
         $message = $this->getMailerMessage();
-        $this->assertSame('[Citipo] Quote 1 for Acme', $message->getSubject());
+        $this->assertSame('Quote 1 for Acme', $message->getSubject());
         $this->assertSame(
             ['billing@citipo.com'],
             array_map(static fn (Address $a) => $a->getEncodedAddress(), $message->getTo()),
         );
-        $this->assertCount(2, $message->getAttachments());
+        $this->assertCount(1, $message->getAttachments());
     }
 }

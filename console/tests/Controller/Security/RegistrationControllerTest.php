@@ -110,7 +110,7 @@ class RegistrationControllerTest extends WebTestCase
 
         /** @var Email $message */
         $message = $this->getMailerMessage(0);
-        $this->assertSame($message->getSubject(), '[Citipo] You are almost there!');
+        $this->assertSame($message->getSubject(), 'You are almost there!');
         $this->assertEmailAddressContains($message, 'to', $email);
         $this->assertEmailTextBodyContains($message, 'Finalize my account');
 
@@ -144,7 +144,7 @@ class RegistrationControllerTest extends WebTestCase
 
         /** @var Email $message */
         $message = $this->getMailerMessage(0);
-        $this->assertSame($message->getSubject(), '[Citipo] You are almost there!');
+        $this->assertSame($message->getSubject(), 'You are almost there!');
         $this->assertEmailAddressContains($message, 'to', $email);
         $this->assertEmailTextBodyContains($message, 'Finalize my account');
 

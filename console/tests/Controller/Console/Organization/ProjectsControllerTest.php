@@ -153,7 +153,7 @@ class ProjectsControllerTest extends WebTestCase
         // Test notification e-mail
         /** @var Email $message */
         $message = $this->getMailerMessage(0);
-        $this->assertSame($message->getSubject(), '[Citipo] A new project was created in your organization');
+        $this->assertSame($message->getSubject(), 'A new project was created in your organization');
         $this->assertEmailAddressContains($message, 'to', 'titouan.galopin@citipo.com');
 
         $client->followRedirect();
@@ -235,17 +235,17 @@ class ProjectsControllerTest extends WebTestCase
         // Test notification e-mails
         /** @var Email $message */
         $message = $this->getMailerMessage(0);
-        $this->assertSame($message->getSubject(), '[Citipo] A new project was created in your organization');
+        $this->assertSame($message->getSubject(), 'A new project was created in your organization');
         $this->assertEmailAddressContains($message, 'to', 'titouan.galopin@citipo.com');
 
         /** @var Email $message */
         $message = $this->getMailerMessage(1);
-        $this->assertSame($message->getSubject(), '[Citipo] Titouan Galopin is waiting for you on Citipo');
+        $this->assertSame($message->getSubject(), 'Titouan Galopin is waiting for you!');
         $this->assertEmailAddressContains($message, 'to', 'project1admin@citipo.com');
 
         /** @var Email $message */
         $message = $this->getMailerMessage(2);
-        $this->assertSame($message->getSubject(), '[Citipo] A new project was created in your organization');
+        $this->assertSame($message->getSubject(), 'A new project was created in your organization');
         $this->assertEmailAddressContains($message, 'to', 'titouan.galopin@citipo.com');
 
         $client->followRedirect();
