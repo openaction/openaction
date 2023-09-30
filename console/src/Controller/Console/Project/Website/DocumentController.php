@@ -45,8 +45,6 @@ class DocumentController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_DOCUMENTS_MANAGE, $project);
         $this->denyIfSubscriptionExpired();
 
-        $currentPage = $request->query->getInt('p', 1);
-
         if ($this->requestStack->getSession()->has('file_upload')) {
             if (1 === $this->requestStack->getSession()->get('file_upload')) {
                 $this->addFlash('success', 'documents.upload_success.single');
@@ -58,8 +56,7 @@ class DocumentController extends AbstractController
         }
 
         return $this->render('console/project/website/document/index.html.twig', [
-            'documents' => $this->repository->getProjectDocuments($project, $currentPage),
-            'current_page' => $currentPage,
+            'documents' => $this->repository->getProjectDocuments($project),
             'project' => $project,
             'form' => $this->createForm(DocumentType::class, new DocumentData())->createView(),
         ]);

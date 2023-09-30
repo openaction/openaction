@@ -28,15 +28,13 @@ class DocumentRepository extends ServiceEntityRepository
     /**
      * @return Document[]|Paginator
      */
-    public function getProjectDocuments(Project $project, int $page, int $limit = 30): Paginator
+    public function getProjectDocuments(Project $project): Paginator
     {
         $qb = $this->createQueryBuilder('d')
             ->select('d')
             ->where('d.project = :project')
             ->setParameter('project', $project->getId())
             ->orderBy('d.createdAt', 'DESC')
-            ->setMaxResults($limit)
-            ->setFirstResult(($page - 1) * $limit)
         ;
 
         return new Paginator($qb->getQuery(), true);
