@@ -26,10 +26,15 @@
         </div>
     </div>
 
-    <div class="world-box mb-3">
+    <div class="world-box mb-3" data-controller="list-local-filter">
         <h3 class="world-box-title">
             {{ 'index.list.title'|trans({}, 'project_documents') }}
         </h3>
+
+        <div class="p-2 pt-0">
+            <input type="text" class="form-control" placeholder="Recherche ..." data-list-local-filter-target="input" />
+        </div>
+
         <div class="bg-light">
             {% if documents|length == 0 %}
                 <div class="text-center p-5">
@@ -59,7 +64,10 @@
 
                     <tbody>
                     {% for document in documents %}
-                        <tr id="document-{{ document.uuid }}" data-document="{{ document.uuid }}">
+                        <tr id="document-{{ document.uuid }}" data-document="{{ document.uuid }}"
+                            data-list-local-filter-target="item"
+                            data-id="{{ document.uuid }}"
+                            data-reference="{{ document.name|e('html_attr') }}">
                             <td>
                                 {{ document.name }}
                             </td>
@@ -99,10 +107,6 @@
                     {% endfor %}
                     </tbody>
                 </table>
-
-                <div class="p-3">
-                    {{ pagination(documents, current_page, 30) }}
-                </div>
             {% endif %}
         </div>
     </div>
