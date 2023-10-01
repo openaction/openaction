@@ -2,13 +2,13 @@
 
 {% block content %}
     <h2>
-        {{ 'transactional.forgot_password.updated.title'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.forgot_password.updated.title'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </h2>
 
     <spacer size="16"></spacer>
 
     <p>
-        {{ 'transactional.forgot_password.updated.desc'|trans({}, 'emails', locale|default('en')) }}
-        <a href="mailto:{{ 'contact_email'|trans({}, 'global', locale|default('en')) }}">{{ 'contact_email'|trans({}, 'global', locale|default('en')) }}</a>.
+        {{ 'transactional.forgot_password.updated.desc'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
+        <a href="mailto:{{ platform_email }}">{{ platform_email }}</a>.
     </p>
 {% endblock %}

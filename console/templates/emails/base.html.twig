@@ -1,3 +1,13 @@
+{% set platform_name = console_name|default('OpenAction') %}
+{% set platform_logo = url('root_url')|trim('/') ~ console_logo|default(asset('res/logo/logo-dark.svg')) %}
+{% set platform_legal_name = console_email|default('OpenAction Foundation') %}
+{% set platform_email = console_email|default('contact@openaction.eu') %}
+
+{% if current_organization|default(null) %}
+    {% set platform_name = current_organization.whiteLabelName|default(platform_name) %}
+    {% set platform_logo = current_organization.whiteLabelLogo ? cdn_url(current_organization.whiteLabelLogo) : platform_logo %}
+{% endif %}
+
 {% apply inky_to_html|inline_css(source('@emails/inky.css'), source('@emails/custom.css')) %}
     {% block style '' %}
 
@@ -10,8 +20,7 @@
 
                 <a href="{{ url('homepage_redirect') }}">
                     <center>
-                        <img src="{{ email is defined ? email.image('@emails/logo.png') : asset('emails/logo.png') }}"
-                             class="logo" alt="{{ 'platform'|trans({}, 'global', locale|default('en')) }}" />
+                        <img src="{{ platform_logo }}" class="logo" alt="{{ platform_name }}" />
                     </center>
                 </a>
             </columns>
@@ -25,15 +34,15 @@
                 <spacer size="16"></spacer>
 
                 <p>
-                    {{ 'transactional.greetings'|trans({}, 'emails', locale|default('en'))|raw }}
+                    {{ 'transactional.greetings'|trans({'%platform%': platform_name}, 'emails', locale|default('en'))|raw }}
                 </p>
 
                 <spacer size="32"></spacer>
 
                 <center>
                     <small>
-                        {{ 'transactional.footer'|trans({}, 'emails', locale|default('en')) }}
-                        <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}">{{ 'contact_email'|trans({}, 'global', locale|default('en')) }}</a>.
+                        {{ 'transactional.footer'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
+                        <a href="mailto:{{ platform_email }}">{{ platform_email }}</a>.
                     </small>
                 </center>
             </columns>

@@ -2,13 +2,14 @@
 
 {% block content %}
     <h2>
-        {{ 'transactional.invite.title'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.invite.title'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </h2>
 
     <spacer size="16"></spacer>
 
     <p>
         {{ 'transactional.invite.desc'|trans({
+            '%platform%': platform_name,
             '%author%': author_name,
             '%organization%': organization_name,
         }, 'emails', locale|default('en'))|raw }}
@@ -18,6 +19,6 @@
 
     <button class="large expand"
             href="{{ url('security_register_finalizing', {'uuid': registration_uuid, 'token': registration_token, '_locale': locale|default('en')}) }}">
-        {{ 'transactional.invite.link'|trans({}, 'emails', locale|default('en')) }}
+        {{ 'transactional.invite.link'|trans({'%platform%': platform_name}, 'emails', locale|default('en')) }}
     </button>
 {% endblock %}

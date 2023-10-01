@@ -2,12 +2,12 @@
 
 {% block content %}
     <h2>
-        {{ 'transactional.notification.new_invoice.title'|trans({}, 'emails', locale) }}
+        {{ 'transactional.notification.new_invoice.title'|trans({'%platform%': platform_name}, 'emails', locale) }}
     </h2>
 
     <spacer size="16"></spacer>
 
     <p>
-        {{ 'transactional.notification.new_invoice.desc'|trans({'%organization%': organization_name}, 'emails', locale)|raw }}
+        {{ 'transactional.notification.new_invoice.desc'|trans({'%organization%': organization_name, '%platform%': platform_name}, 'emails', locale)|raw }}
     </p>
 {% endblock %}

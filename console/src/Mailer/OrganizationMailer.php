@@ -36,6 +36,7 @@ class OrganizationMailer
                 ->subject($this->translator->trans('community.register.subject', [], 'emails', $project->getWebsiteLocale()))
                 ->htmlTemplate('emails/community/account_register.html.twig')
                 ->context([
+                    'current_organization' => $project->getOrganization(),
                     'project' => $project,
                     'contact' => $contact,
                     'reference' => Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountConfirmToken(),
@@ -55,6 +56,7 @@ class OrganizationMailer
                 ->subject($this->translator->trans('community.reset.subject', [], 'emails', $project->getWebsiteLocale()))
                 ->htmlTemplate('emails/community/account_reset.html.twig')
                 ->context([
+                    'current_organization' => $project->getOrganization(),
                     'project' => $project,
                     'contact' => $contact,
                     'reference' => Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountResetToken(),
@@ -76,6 +78,7 @@ class OrganizationMailer
                 ->subject($this->translator->trans('community.update_email.subject', [], 'emails', $project->getWebsiteLocale()))
                 ->htmlTemplate('emails/community/account_update_email.html.twig')
                 ->context([
+                    'current_organization' => $project->getOrganization(),
                     'contact' => $contact,
                     'project' => $project,
                     'reference' => Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken(),
@@ -93,6 +96,7 @@ class OrganizationMailer
                 ->subject($this->translator->trans('community.unregister.subject', [], 'emails', $project->getWebsiteLocale()))
                 ->htmlTemplate('emails/community/account_unregister.html.twig')
                 ->context([
+                    'current_organization' => $project->getOrganization(),
                     'contact' => $contact,
                     'project' => $project,
                     'reference' => Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken(),

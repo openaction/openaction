@@ -1,6 +1,16 @@
 {% set current_route = app.request.attributes.get('_route') %}
 {% set current_route_params = app.request.attributes.get('_route_params') %}
 
+{% set platform_name = console_name|default('OpenAction') %}
+{% set platform_logo = console_logo|default(asset('res/logo/logo-dark.svg')) %}
+{% set platform_legal_name = console_email|default('contact@openaction.eu') %}
+{% set platform_email = console_email|default('contact@openaction.eu') %}
+
+{% if current_organization|default(null) %}
+    {% set platform_name = current_organization.whiteLabelName|default(platform_name) %}
+    {% set platform_logo = current_organization.whiteLabelLogo ? cdn_url(current_organization.whiteLabelLogo) : platform_logo %}
+{% endif %}
+
 {% do expose('locale', app.request.locale) %}
 {% do expose('user', app.user ? app.user.uuid.toRfc4122 : null) %}
 {% do expose('token', get_global_csrf_token()) %}
@@ -14,7 +24,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>{% block title %}{% block page_title '' %} | {{ 'platform'|trans({}, 'global') }}{% endblock %}</title>
+    <title>{% block title %}{% block page_title '' %} | {{ platform_name }}{% endblock %}</title>
 
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -45,7 +55,7 @@
     <meta name="theme-color" content="#0077cc">
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="{{ 'platform'|trans({}, 'global') }}" />
+    <meta property="og:site_name" content="{{ platform_name }}" />
     <meta property="og:url" content="{{ block('meta_canonical') }}" />
     <meta property="og:title" content="{{ block('title') }}" />
     <meta property="og:description" content="{{ block('meta_description') }}" />
@@ -64,7 +74,7 @@
             "@context": "http://schema.org",
             "@type": "Organization",
             "url": "{{ block('meta_canonical') }}",
-            "name": "{{ 'platform'|trans({}, 'global') }}",
+            "name": "{{ platform_name }}",
             "logo": "{{ (url('root_url')|trim('/')) ~ asset('res/logo/logo-dark.svg') }}",
             "description": "{{ block('meta_description') }}"
         }

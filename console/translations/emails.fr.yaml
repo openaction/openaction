@@ -1,31 +1,31 @@
 transactional:
-    greetings: Cordialement,<br />L'équipe Citipo
+    greetings: 'Cordialement,<br />L''équipe %platform%'
     footer: |
-        Vous recevez cet email car vous être enregistré sur Citipo.
+        Vous recevez cet email car vous être enregistré sur %platform%.
         Si vous souhaitez arrêter de recevoir des e-mails de notre part, contactez-nous à
 
     registration:
         verify:
-            subject: '[Citipo] Vous y êtes presque !'
+            subject: 'Vous y êtes presque !'
             title: Vous y êtes presque !
             desc: 'Cliquez sur le bouton ci-dessous pour finaliser votre inscription :'
             link: Finaliser mon inscription
 
         welcome:
-            subject: '[Citipo] Bienvenue sur Citipo!'
-            title: Bienvenue sur Citipo
+            subject: 'Bienvenue!'
+            title: 'Bienvenue sur %platform%'
             intro: 'Bonjour %name%,'
-            thanks: Merci pour votre inscription sur Citipo!
-            cta: 'Vous pouvez dès maintenant créer un site internet et commencer à faire grandir votre communauté Citipo :'
-            link: Commencer à utiliser Citipo
+            thanks: 'Merci pour votre inscription sur %platform%!'
+            cta: 'Vous pouvez dès maintenant créer un site internet et commencer à faire grandir votre communauté %platform% :'
+            link: 'Commencer à utiliser %platform%'
             feedback: 'Si vous avez des questions, idées ou remarques, n''hésitez pas à répondre à cet email directement, nous serons ravis d''échanger avec vous !'
 
     forgot_password:
         request:
-            subject: '[Citipo] Réinitialiser mon mot de passe'
+            subject: 'Réinitialiser mon mot de passe'
             title: Réinitialiser mon mot de passe
             desc: |
-                Quelqu'un (probablement vous !) a demandé à réinitialiser le mot de passe de votre compte Citipo.
+                Quelqu'un (probablement vous !) a demandé à réinitialiser le mot de passe de votre compte %platform%.
                 Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :
             link: Réinitialiser mon mot de passe
             ignore: |
@@ -33,18 +33,18 @@ transactional:
                 cet email et votre mot de passe restera le même.
 
         updated:
-            subject: '[Citipo] Votre mot de passe a été mis à jour'
+            subject: 'Votre mot de passe a été mis à jour'
             title: Votre mot de passe a été mis à jour
             desc: |
                 Si vous n'êtes pas à l'origine de la modification de votre mot de passe, prenez contact avec
-                l'équipe Citipo pour que nous puissions vous aider à sécuriser votre compte :
+                l'équipe %platform% pour que nous puissions vous aider à sécuriser votre compte :
 
     invite:
-        subject: '[Citipo] %author% vous attend sur Citipo'
-        title: Rejoignez votre équipe sur Citipo
+        subject: '%author% vous attend!'
+        title: Rejoignez votre équipe sur %platform%
         desc: |
             <strong>%author%</strong> vient de vous inviter à rejoindre l'organisation <strong>%organization%</strong>
-            sur Citipo. Cliquer sur le lien ci-dessous pour commencer à collaborer avec votre équipe dès maintenant :
+            sur %platform%. Cliquer sur le lien ci-dessous pour commencer à collaborer avec votre équipe dès maintenant :
         link: Rejoindre mon équipe
 
     notification:
@@ -53,38 +53,35 @@ transactional:
             dans les paramètres de votre compte.
 
         new_project:
-            subject: '[Citipo] Un nouveau projet vient d''être créé dans votre organisation'
+            subject: 'Un nouveau projet vient d''être créé dans votre organisation'
             title: Un nouveau projet a été créé dans votre organisation
-            desc: |
-                Le projet <strong>%project%</strong> a été créé
-                dans l'organisation <strong>%organization%</strong>.
-            error: Si vous pensez que ce projet a été créé par erreur, vous pouvez le supprimer depuis le tableau de bord de Citipo.
+            desc: Le projet <strong>%project%</strong> a été créé dans l'organisation <strong>%organization%</strong>.
+            error: Si vous pensez que ce projet a été créé par erreur, vous pouvez le supprimer depuis le tableau de bord de %platform%.
 
         new_invoice:
-            subject: '[Citipo] Facture %number% pour %organization%'
+            subject: 'Facture %number% pour %organization%'
             title: Une nouvelle facture est disponible pour votre organisation
             desc: |
                 Vous trouverez ci-joint votre dernière facture pour votre organisation %organization%.
                 Cette facture a déjà été payée, aucun paiement supplémentaire n'est nécessaire.
 
         new_quote:
-            subject: '[Citipo] Devis %number% pour %organization%'
+            subject: 'Devis %number% pour %organization%'
             title: Un nouveau devis est disponible pour votre organisation
-            desc: |
-                Vous trouverez ci-joint le devis pour votre organisation %organization%.
+            desc: Vous trouverez ci-joint le devis pour votre organisation %organization%.
 
         subscription_expiration:
             subject_early: '[IMPORTANT] L''abonnement de %organization% se termine dans %days_left% jours'
-            subject_late: '[IMPORTANT] Votre site Citipo va être désactivé'
+            subject_late: '[IMPORTANT] Votre site va être désactivé'
             title: L'abonnement de %organization% se termine dans %days_left% jours
             desc: |
                 L'abonnement de votre organisation %organization% se termine dans %days_left% jours.
                 Dès que l'abonnement aura expiré, votre site internet sera inaccessible et vous n'aurez plus
-                accès aux fonctionnalités de Citipo.
+                accès aux fonctionnalités de %platform%.
             ask_us: Contactez-nous dès maintenant pour renouveler votre souscription
 
         export:
-            subject: '[Citipo] Export terminé pour %organization%'
+            subject: 'Export terminé pour %organization%'
             title: L'export des contacts est terminé
             desc: |
                 L'export que vous avez demandé a bien été réalisé. Vous pouvez le téléchager en cliquant sur le bouton

@@ -1,59 +1,59 @@
 transactional:
-    greetings: 'Mit freundlichen Grüßen,<br />Das Citipo-Team'
-    footer: "Sie haben diese E-Mail erhalten, weil Sie auf Citipo registriert sind.\nWenn Sie keine E-Mails mehr von uns erhalten möchten, kontaktieren Sie uns unter\n"
+    greetings: 'Mit freundlichen Grüßen,<br />Das %platform%-Team'
+    footer: "Sie haben diese E-Mail erhalten, weil Sie auf %platform% registriert sind.\nWenn Sie keine E-Mails mehr von uns erhalten möchten, kontaktieren Sie uns unter\n"
     registration:
         verify:
-            subject: '[Sie sind fast am Ziel!'
+            subject: 'Sie sind fast am Ziel!'
             title: 'Sie sind fast am Ziel!'
             desc: 'Klicken Sie auf die Schaltfläche unten, um die Anmeldung abzuschließen:'
             link: 'Mein Konto abschließen'
         welcome:
-            subject: '[Citipo] Willkommen bei Citipo!'
-            title: 'Willkommen bei Citipo'
+            subject: 'Willkommen!'
+            title: 'Willkommen bei %platform%'
             intro: 'Hallo %name%,'
-            thanks: 'Danke, dass Sie sich bei Citipo angemeldet haben!'
-            cta: 'Ab sofort können Sie Ihre Website erstellen und Ihre Community mit Citipo vergrößern:'
-            link: 'Mit Citipo beginnen'
+            thanks: 'Danke, dass Sie sich bei %platform% angemeldet haben!'
+            cta: 'Ab sofort können Sie Ihre Website erstellen und Ihre Community mit %platform% vergrößern:'
+            link: 'Mit %platform% beginnen'
             feedback: 'Wenn Sie Fragen, Ideen oder Rückmeldungen haben, antworten Sie einfach auf diese E-Mail, wir würden uns freuen, von Ihnen zu hören!'
     forgot_password:
         request:
-            subject: '[Citipo] Ihr Passwort zurücksetzen'
+            subject: 'Ihr Passwort zurücksetzen'
             title: 'Ihr Passwort zurücksetzen'
-            desc: "Jemand (hoffentlich Sie!) hat ein neues Passwort für Ihr Citipo-Konto beantragt.\nKlicken Sie auf die Schaltfläche unten, um Ihr Passwort zurückzusetzen:\n"
+            desc: "Jemand (hoffentlich Sie!) hat ein neues Passwort für Ihr %platform%-Konto beantragt.\nKlicken Sie auf die Schaltfläche unten, um Ihr Passwort zurückzusetzen:\n"
             link: 'Mein Passwort zurücksetzen'
             ignore: "Wenn Sie für Ihr Konto keine Passwortrücksetzung angefordert haben, können Sie diese E-Mail ignorieren.\nE-Mail ignorieren, und Ihr Passwort wird unverändert bleiben.\n"
         updated:
-            subject: '[Citipo] Ihr Passwort wurde aktualisiert'
-            title: 'Ihr Citipo-Passwort wurde aktualisiert'
+            subject: 'Ihr Passwort wurde aktualisiert'
+            title: 'Ihr %platform%-Passwort wurde aktualisiert'
             desc: "Wenn Sie Ihr Passwort nicht gerade zurückgesetzt haben, setzen Sie sich mit uns in Verbindung, damit wir Ihnen helfen können\nIhnen helfen können, Ihr Konto zu sichern:\n"
     invite:
-        subject: '[Citipo] %author% wartet auf Sie auf Citipo'
-        title: 'Verbinden Sie Ihr Team auf Citipo'
-        desc: "<strong>%Autor%</strong> hat dich eingeladen, der <strong>%Organisation%</strong> beizutreten\nOrganisation auf Citipo beizutreten. Klicken Sie einfach unten, um die Zusammenarbeit mit Ihrem Team in wenigen Minuten zu beginnen:\n"
+        subject: '%author% wartet auf Sie'
+        title: 'Verbinden Sie Ihr Team auf %platform%'
+        desc: "<strong>%Autor%</strong> hat dich eingeladen, der <strong>%Organisation%</strong> beizutreten\nOrganisation auf %platform% beizutreten. Klicken Sie einfach unten, um die Zusammenarbeit mit Ihrem Team in wenigen Minuten zu beginnen:\n"
         link: 'Meinem Team beitreten'
     notification:
         footer: "Diese Nachricht ist eine Benachrichtigung, die sich auf Ihr Konto bezieht. Sie können Ihre Benachrichtigungs\nEinstellungen in Ihrer Kontokonfiguration aktualisieren.\n"
         new_project:
-            subject: '[Citipo] Ein neues Projekt wurde in Ihrer Organisation erstellt'
+            subject: 'Ein neues Projekt wurde in Ihrer Organisation erstellt'
             title: 'Ein neues Projekt wurde in Ihrer Organisation erstellt'
             desc: "Das Projekt <strong>%Projekt%</strong> wurde erstellt in\nder <strong>%Organisation%</strong> Organisation erstellt.\n"
-            error: 'Wenn Sie glauben, dass dieses Projekt irrtümlich erstellt wurde, können Sie es in Ihrem Citipo-Dashboard entfernen.'
+            error: 'Wenn Sie glauben, dass dieses Projekt irrtümlich erstellt wurde, können Sie es in Ihrem %platform%-Dashboard entfernen.'
         new_invoice:
-            subject: '[Citipo] Rechnung %Nummer% für %Organisation%'
+            subject: 'Rechnung %Nummer% für %Organisation%'
             title: 'Eine neue Rechnung ist in Ihrer Organisation verfügbar'
             desc: "Anbei finden Sie Ihre letzte Rechnung für Ihre Organisation %Organisation%.\nDiese Rechnung ist bereits bezahlt, es ist keine weitere Zahlung fällig.\n"
         new_quote:
-            subject: '[Citipo] Zitat %Nummer% für %Organisation%'
+            subject: 'Zitat %Nummer% für %Organisation%'
             title: 'Ein neues Angebot ist in Ihrer Organisation verfügbar'
             desc: "In der Anlage finden Sie Ihr aktuelles Angebot für Ihre Organisation %Organisation%.\n"
         subscription_expiration:
             subject_early: '[WICHTIG] Das Abonnement von %organization% endet in %days_left% Tagen'
-            subject_late: '[WICHTIG] Ihre Citipo-Website wird deaktiviert'
+            subject_late: '[WICHTIG] Ihre Website wird deaktiviert'
             title: 'Das Abonnement von %organization% läuft in %days_left% Tagen ab'
             desc: "Das Abonnement Ihrer Organisation %organization% läuft in %days_left% Tagen aus.\nSobald Ihr Abonnement abläuft, wird Ihre Website unzugänglich sein und\nSie werden keinen Zugang mehr zu Citipo haben.\n"
             ask_us: 'Kontaktieren Sie uns, um Ihr Abonnement jetzt zu verlängern'
         export:
-            subject: '[Citipo] Export für %Organisation% abgeschlossen'
+            subject: 'Export für %Organisation% abgeschlossen'
             title: 'Der Export der Kontakte ist abgeschlossen'
             desc: 'Der von Ihnen angeforderte Export ist abgeschlossen. Sie können ihn herunterladen, indem Sie auf die Schaltfläche unten klicken:'
             button: 'Download der Exportdatei'

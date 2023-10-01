@@ -36,8 +36,8 @@
 
                 {{ 'console.header.soon_expires.ask_citipo'|trans({}, 'global') }}
 
-                <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}">
-                    {{ 'contact_email'|trans({}, 'global') }}
+                <a href="mailto:{{ platform_email }}">
+                    {{ platform_email }}
                 </a>
             </div>
         {% elseif current_organization.isSubscriptionTrialing %}
@@ -48,8 +48,8 @@
 
                 {{ 'console.header.trialing.ask_citipo'|trans({}, 'global') }}
 
-                <a href="mailto:{{ 'contact_email'|trans({}, 'global') }}">
-                    {{ 'contact_email'|trans({}, 'global') }}
+                <a href="mailto:{{ platform_email }}">
+                    {{ platform_email }}
                 </a>
             </div>
         {% endif %}
@@ -86,7 +86,7 @@
                 <div class="row align-items-center no-gutters">
                     <div class="col-12 col-md-auto mb-3 mb-md-0 mr-md-3">
                         <a href="{{ current_organization ? path('console_organization_projects', {'organizationUuid': current_organization.uuid}) : path('homepage_redirect') }}">
-                            <img src="{{ console_logo|default(asset('res/logo/logo-dark.svg')) }}" class="world-header-logo" />
+                            <img src="{{ platform_logo }}" class="world-header-logo" />
                         </a>
                     </div>
 
