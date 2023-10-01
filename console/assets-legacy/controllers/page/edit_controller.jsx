@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { PageEdit } from './components/PageEdit';
 
 export default class extends Controller {
-    static targets = ['title', 'content', 'description', 'image', 'categories', 'onlyForMembers'];
+    static targets = ['title', 'content', 'description', 'image', 'categories', 'parentId', 'onlyForMembers'];
 
     connect() {
         render(
@@ -16,6 +16,7 @@ export default class extends Controller {
                 contentInput={this.contentTarget.getAttribute('name')}
                 descriptionInput={this.descriptionTarget.getAttribute('name')}
                 imageInput={this.imageTarget.getAttribute('name')}
+                parentIdInput={this.parentIdTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 onlyForMembersInput={this.onlyForMembersTarget.getAttribute('name')}
             />,

@@ -126,22 +126,22 @@
         }
 
         &-image {
-            width: 150px;
-            flex-basis: 150px;
+            width: 110px;
+            flex-basis: 110px;
             text-align: center;
 
             img {
-                max-height: 100px;
-                max-width: 150px;
+                max-height: 70px;
+                max-width: 110px;
             }
         }
     }
 
     &-badge {
         display: inline-block;
-        font-size: $font-size-sm;
-        padding: 0.25rem 0.5rem;
-        line-height: 1.5;
+        font-size: $font-size-base * 0.725;
+        padding: 0.2rem 0.4rem;
+        line-height: 1.4;
         border-radius: 0.2rem;
         color: $dark;
         background: #dde0e8;

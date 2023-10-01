@@ -17,6 +17,7 @@ class PageType extends AbstractType
             ->add('description', HiddenType::class, ['required' => false])
             ->add('content', HiddenType::class, ['required' => false])
             ->add('categories', HiddenType::class, ['required' => false])
+            ->add('parentId', HiddenType::class, ['required' => false])
             ->add('onlyForMembers', HiddenType::class, ['required' => false])
         ;
     }

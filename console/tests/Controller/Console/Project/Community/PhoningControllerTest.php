@@ -158,7 +158,7 @@ class PhoningControllerTest extends WebTestCase
         $link = $crawler->filter('a:contains("Delete")');
         $this->assertCount(1, $link);
 
-        $this->assertCount(1, $crawler->filter('h4:contains("Draft campaign")'));
+        $this->assertCount(1, $crawler->filter('h5:contains("Draft campaign")'));
         $this->assertCount(1, $crawler->filter('td:contains("Active campaign")'));
         $this->assertCount(1, $crawler->filter('td:contains("Finished campaign")'));
     }

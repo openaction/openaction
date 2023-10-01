@@ -145,7 +145,7 @@ class PageControllerTest extends ApiTestCase
         $this->apiRequest(self::createClient(), 'GET', '/api/website/pages', 'invalid', 401);
     }
 
-    public function testView()
+    public function testViewNoChildren()
     {
         $client = self::createClient();
 
@@ -173,6 +173,46 @@ class PageControllerTest extends ApiTestCase
                         '_links' => [
                             'self' => 'http://localhost/api/website/pages-categories/7hIQY74GJcZWKsJxafwbHZ',
                         ],
+                    ],
+                ],
+            ],
+            'children' => ['data' => []],
+        ]);
+    }
+
+    public function testViewWithChildren()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest($client, 'GET', '/api/website/pages/1k8qbksfGCGNJTlcecs8nd', self::ACME_TOKEN);
+
+        // Test the payload, including post content
+        $this->assertApiResponse($result, [
+            '_resource' => 'Page',
+            '_links' => [
+                'self' => 'http://localhost/api/website/pages/1k8qbksfGCGNJTlcecs8nd',
+            ],
+            'id' => '1k8qbksfGCGNJTlcecs8nd',
+            'title' => 'Emmanuel Macron, la tentation d\'une démission réélection',
+            'slug' => 'emmanuel-macron-la-tentation-d-une-demission-reelection',
+            'description' => null,
+            'content' => '',
+            'image' => null,
+            'sharer' => null,
+            'categories' => ['data' => []],
+            'children' => [
+                'data' => [
+                    [
+                        '_resource' => 'Page',
+                        '_links' => [
+                            'self' => 'http://localhost/api/website/pages/1PHbHzada4anX9PeRWyY5p',
+                        ],
+                        'id' => '1PHbHzada4anX9PeRWyY5p',
+                        'title' => 'Subpage example',
+                        'slug' => 'subpage-example',
+                        'description' => null,
+                        'image' => null,
+                        'sharer' => null,
                     ],
                 ],
             ],

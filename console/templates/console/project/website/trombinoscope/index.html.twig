@@ -56,7 +56,7 @@
 
                     <div data-sortable-target="element" class="world-list">
                         {% for person in persons %}
-                            <div class="world-list-row p-4" id="person-{{ person.id }}" data-id="{{ person.id }}">
+                            <div class="world-list-row py-2 px-3" id="person-{{ person.id }}" data-id="{{ person.id }}">
                                 <div class="row align-items-center">
                                     <div class="col-lg-auto">
                                         <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
@@ -70,11 +70,11 @@
                                     </div>
 
                                     <div class="col-lg">
-                                        <h4 class="mb-1">
+                                        <h5 class="mb-2">
                                             <a href="{{ path('console_website_trombinoscope_edit', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}">
                                                 {{ person.fullName }}
                                             </a>
-                                        </h4>
+                                        </h5>
 
                                         <div class="mb-2">
                                             <div class="world-badge world-badge-info mr-2">
@@ -85,36 +85,40 @@
                                                 <div class="world-badge world-badge-info mr-2">
                                                     {{ 'index.scheduled'|trans({}, 'project_trombinoscope') }}
                                                 </div>
-                                                <small class="font-italic text-muted">
-                                                    {{ 'index.scheduled_for'|trans({'%datetime%': person.publishedAt|format_datetime('medium', 'short')}, 'project_trombinoscope') }}
+                                                <small class="text-muted">
+                                                    {{ 'index.scheduled_for'|trans({'%datetime%': person.publishedAt|format_datetime('short', 'short')}, 'project_trombinoscope') }}
                                                 </small>
+
+                                                <span class="mx-1 text-muted">|</span>
                                             {% elseif person.publishedAt and person.publishedAt < date() %}
                                                 <div class="world-badge world-badge-success mr-2">
                                                     {{ 'index.published'|trans({}, 'project_trombinoscope') }}
                                                 </div>
-                                                <small class="font-italic text-muted">
-                                                    {{ 'index.published_at'|trans({'%datetime%': person.publishedAt|format_datetime('medium', 'short')}, 'project_trombinoscope') }}
+                                                <small class="text-muted">
+                                                    {{ 'index.published_at'|trans({'%datetime%': person.publishedAt|format_datetime('short', 'short')}, 'project_trombinoscope') }}
                                                 </small>
+
+                                                <span class="mx-1 text-muted">|</span>
                                             {% else %}
-                                                <div class="world-badge world-badge-warning">
+                                                <div class="world-badge world-badge-warning mr-2">
                                                     {{ 'index.draft'|trans({}, 'project_trombinoscope') }}
                                                 </div>
                                             {% endif %}
-                                        </div>
 
-                                        <div class="text-muted">
-                                            <small>
+                                            <small class="text-muted">
                                                 <i class="fad fa-chart-area mr-1"></i>
                                                 {{ person.pageViews }}
                                                 {{ 'index.visits'|trans({}, 'project_trombinoscope') }}
 
                                                 <span class="mx-1">|</span>
 
-                                                {{ 'index.last_modified'|trans({'%datetime%': person.updatedAt|format_datetime('medium', 'short')}, 'project_trombinoscope') }}
-                                            </small>
-                                            <br />
-                                            <small>
-                                                {{ person.categories|join(', ') }}
+                                                {{ 'index.last_modified'|trans({'%datetime%': person.updatedAt|format_datetime('short', 'short')}, 'project_trombinoscope') }}
+
+                                                {% if person.categories|length > 0 %}
+                                                    <span class="mx-1">|</span>
+
+                                                    {{ person.categories|join(', ') }}
+                                                {% endif %}
                                             </small>
                                         </div>
                                     </div>

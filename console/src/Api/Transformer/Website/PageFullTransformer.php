@@ -24,6 +24,11 @@ class PageFullTransformer extends AbstractTransformer
         $data = $this->partialTransformer->transform($page);
         $data['content'] = $page->getContent();
 
+        $data['children']['data'] = [];
+        foreach ($page->getChildren() as $child) {
+            $data['children']['data'][] = $this->partialTransformer->transform($child);
+        }
+
         return $data;
     }
 
@@ -50,6 +55,12 @@ class PageFullTransformer extends AbstractTransformer
                 'data' => new Property([
                     'type' => 'array',
                     'items' => new Items(['ref' => '#/components/schemas/PageCategory']),
+                ]),
+            ],
+            'children' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/Page']),
                 ]),
             ],
         ];

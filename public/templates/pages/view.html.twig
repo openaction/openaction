@@ -18,6 +18,19 @@
         'params': {'id': page.id, 'slug': page.slug}
     }) %}
 
+    {% set more = [] %}
+    {% for other in (page.children|default([]))[0:3] %}
+        {% set more = more|merge([
+            {
+                title: other.title,
+                url: path('page_view', {'id': other.id, 'slug': other.slug}),
+                description: other.description,
+                image: other.image,
+                categories: [],
+            }
+        ]) %}
+    {% endfor %}
+
     {% set payload = {
         'current_url': url('page_view', {'id': page.id, 'slug': page.slug}),
         'current_project': current_project.toArray,
@@ -33,6 +46,7 @@
         'externalLabel': 'base.embed-consent.external'|trans,
         'cancelLabel': 'base.embed-consent.cancel'|trans,
         'section_id': 'pages',
+        'default_list_image': asset('res/default.jpg'),
     } %}
 
     {% sandbox %}

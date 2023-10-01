@@ -1255,8 +1255,14 @@ class TestFixtures extends AbstractFixtures
                 'project' => $this->projects['643e47ea-fd9d-4963-958f-05970de2f88b'],
             ],
             [
+                'uuid' => '394f6665-4529-51fb-ba6a-050ab7c5c6d5',
                 'title' => 'Emmanuel Macron, la tentation d\'une démission réélection',
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
+            ],
+            [
+                'title' => 'Subpage example',
+                'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
+                'parent' => '394f6665-4529-51fb-ba6a-050ab7c5c6d5',
             ],
             [
                 'title' => 'Only for members page',
@@ -1266,8 +1272,20 @@ class TestFixtures extends AbstractFixtures
             ],
         ];
 
+        $pages = [];
+
         foreach ($items as $data) {
-            $this->em->persist(Page::createFixture($data));
+            if ($data['parent'] ?? null) {
+                $data['parent'] = $pages[$data['parent']] ?? null;
+            }
+
+            $page = Page::createFixture($data);
+
+            if ($data['uuid'] ?? null) {
+                $pages[$data['uuid']] = $page;
+            }
+
+            $this->em->persist($page);
         }
 
         $this->em->flush();

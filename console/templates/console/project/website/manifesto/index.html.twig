@@ -75,14 +75,14 @@
                                                         {{ 'index.scheduled'|trans({}, 'project_manifesto') }}
                                                     </div>
                                                     <small class="font-italic text-muted">
-                                                        {{ 'index.scheduled_for'|trans({'%datetime%': topic.publishedAt|format_datetime('medium', 'short')}, 'project_manifesto') }}
+                                                        {{ 'index.scheduled_for'|trans({'%datetime%': topic.publishedAt|format_datetime('short', 'short')}, 'project_manifesto') }}
                                                     </small>
                                                 {% elseif topic.publishedAt and topic.publishedAt < date() %}
                                                     <div class="world-badge world-badge-success mr-2">
                                                         {{ 'index.published'|trans({}, 'project_manifesto') }}
                                                     </div>
                                                     <small class="font-italic text-muted">
-                                                        {{ 'index.published_at'|trans({'%datetime%': topic.publishedAt|format_datetime('medium', 'short')}, 'project_manifesto') }}
+                                                        {{ 'index.published_at'|trans({'%datetime%': topic.publishedAt|format_datetime('short', 'short')}, 'project_manifesto') }}
                                                     </small>
                                                 {% else %}
                                                     <div class="world-badge world-badge-warning">

@@ -19,6 +19,8 @@ class PageData
     #[Assert\Json(groups: ['Metadata'])]
     public ?string $categories = null;
 
+    public ?string $parentId = null;
+
     public ?bool $onlyForMembers = false;
 
     public function getCategoriesArray()

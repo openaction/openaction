@@ -2,7 +2,6 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\Post as CitePolitiquePost;
 use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
@@ -14,9 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -75,18 +71,6 @@ class Post implements Searchable
     /*
      * Factories
      */
-    public static function importFromCitePolitique(Project $project, CitePolitiquePost $cpPost, string $builtContent): self
-    {
-        $self = new self($project, u($cpPost->getTitle())->slice(0, 150));
-        $self->description = strip_tags(u($cpPost->getDescription() ?: '')->slice(0, 150));
-        $self->publishedAt = new \DateTime($cpPost->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->createdAt = new \DateTime($cpPost->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->updatedAt = new \DateTime($cpPost->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->video = $cpPost->getVideo();
-        $self->content = $builtContent;
-
-        return $self;
-    }
 
     public static function createInitialPost(Project $project, string $title, string $description, ?Upload $image, string $content = ''): self
     {

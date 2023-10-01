@@ -2,7 +2,6 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\Page as CitePolitiquePage;
 use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
@@ -14,9 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PageRepository::class)]
@@ -45,12 +41,21 @@ class Page implements Searchable
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     private ?Upload $image = null;
 
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist', 'remove'], inversedBy: 'children')]
+    private ?self $parent = null;
+
     /**
-     * @var PageCategory[]|Collection
+     * @var Collection<PageCategory>
      */
     #[ORM\ManyToMany(targetEntity: PageCategory::class, inversedBy: 'pages')]
     #[ORM\JoinTable(name: 'website_pages_pages_categories')]
     private Collection $categories;
+
+    /**
+     * @var Collection<self>
+     */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    private Collection $children;
 
     public function __construct(Project $project, string $title)
     {
@@ -60,19 +65,12 @@ class Page implements Searchable
         $this->title = $title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->categories = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /*
      * Factories
      */
-    public static function importFromCitePolitique(Project $project, CitePolitiquePage $cpPage, string $builtContent): self
-    {
-        $self = new self($project, u($cpPage->getTitle())->slice(0, 150));
-        $self->description = strip_tags(u($cpPage->getMetaDescription() ?: '')->slice(0, 150));
-        $self->content = $builtContent;
-
-        return $self;
-    }
 
     public static function createDefaultPage(Project $project, string $title, string $content): self
     {
@@ -87,6 +85,7 @@ class Page implements Searchable
         $self = new self($data['project'], $data['title']);
         $self->uuid = isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Uid::fixed($data['title']);
         $self->content = $data['content'] ?? '';
+        $self->parent = $data['parent'] ?? null;
         $self->description = $data['description'] ?? null;
         $self->image = $data['image'] ?? null;
         $self->createdAt = $data['createdAt'] ?? new \DateTime();
@@ -203,13 +202,18 @@ class Page implements Searchable
         $this->onlyForMembers = (bool) $data->onlyForMembers;
     }
 
+    public function setParent(?self $parent)
+    {
+        $this->parent = $parent;
+    }
+
     public function setImage(?Upload $image)
     {
         $this->image = $image;
     }
 
     /**
-     * @return Collection|PageCategory[]
+     * @return Collection<PageCategory>
      */
     public function getCategories(): Collection
     {
@@ -225,9 +229,23 @@ class Page implements Searchable
         return $this;
     }
 
+    /**
+     * @return Collection<self>
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
     /*
      * Getters
      */
+
+    public function getParent(): ?Page
+    {
+        return $this->parent;
+    }
+
     public function getTitle(): string
     {
         return $this->title;

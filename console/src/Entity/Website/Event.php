@@ -2,7 +2,6 @@
 
 namespace App\Entity\Website;
 
-use App\Bridge\CitePolitique\Client\Model\Event as CitePolitiqueEvent;
 use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
@@ -14,9 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
-use function Symfony\Component\String\u;
-
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -88,22 +84,6 @@ class Event implements Searchable
     /*
      * Factories
      */
-    public static function importFromCitePolitique(Project $project, CitePolitiqueEvent $cpEvent): self
-    {
-        $self = new self($project, u($cpEvent->getTitle() ?: '')->slice(0, 150));
-        $self->content = $cpEvent->getDescription();
-        $self->publishedAt = new \DateTime($cpEvent->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->beginAt = new \DateTime($cpEvent->getDate()->format('Y-m-d H:i:s'));
-        $self->url = u($cpEvent->getUrl() ?: '')->slice(0, 200);
-        $self->buttonText = u($cpEvent->getButtonText() ?: '')->slice(0, 35);
-        $self->latitude = $cpEvent->getLatitude();
-        $self->longitude = $cpEvent->getLongitude();
-        $self->address = u($cpEvent->getAddress() ?: '')->slice(0, 200);
-        $self->createdAt = new \DateTime($cpEvent->getPublishedAt()->format('Y-m-d H:i:s'));
-        $self->updatedAt = new \DateTime($cpEvent->getPublishedAt()->format('Y-m-d H:i:s'));
-
-        return $self;
-    }
 
     public static function createFixture(array $data): self
     {

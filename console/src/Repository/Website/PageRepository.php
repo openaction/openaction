@@ -27,6 +27,21 @@ class PageRepository extends ServiceEntityRepository
         parent::__construct($registry, Page::class);
     }
 
+    public function getAvailableParentPages(Project $project, Page $currentPage): iterable
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id', 'p.title')
+            ->where('p.project = :project')
+            ->setParameter('project', $project->getId())
+            ->andWhere('p.id != :currentPageId')
+            ->setParameter('currentPageId', $currentPage->getId())
+            ->andWhere('p.onlyForMembers = :onlyForMembers')
+            ->setParameter('onlyForMembers', $currentPage->isOnlyForMembers())
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     public function getAllPublicPages(): iterable
     {
         $iterable = new Paginator(
@@ -47,12 +62,13 @@ class PageRepository extends ServiceEntityRepository
         }
     }
 
-    public function getPaginator(Project $project, ?int $category, int $currentPage, int $limit = 10): Paginator
+    public function getPaginator(Project $project, ?int $category, int $currentPage, int $limit = 25): Paginator
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p', 'pc', 'pi')
+            ->select('p', 'pc', 'pi', 'pp')
             ->leftJoin('p.categories', 'pc')
             ->leftJoin('p.image', 'pi')
+            ->leftJoin('p.parent', 'pp')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
             ->orderBy('p.title', 'ASC')
@@ -73,9 +89,10 @@ class PageRepository extends ServiceEntityRepository
     public function getApiPages(Project $project, ?string $category): iterable
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p', 'pc', 'pi')
+            ->select('p', 'pc', 'pi', 'c')
             ->leftJoin('p.categories', 'pc')
             ->leftJoin('p.image', 'pi')
+            ->leftJoin('p.children', 'c')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
             ->andWhere('p.onlyForMembers = FALSE')

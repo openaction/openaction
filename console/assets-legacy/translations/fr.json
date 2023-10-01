@@ -250,6 +250,10 @@
                     "label": "Restreindre cette page aux membres",
                     "help": "Si activé, seuls les membres connectés pourront visualiser cette page."
                 },
+                "parentId": {
+                    "label": "Page parente",
+                    "help": "Si indiqué, la page courante sera affiché dans la section \"Plus\" de la page parente."
+                },
                 "description": {
                     "label": "Description",
                     "help": "La description est affichée lors du partage sur Google ou sur les réseaux sociaux, sous le titre de la page. Maximum 150 caractères."

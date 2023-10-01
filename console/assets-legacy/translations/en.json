@@ -250,6 +250,10 @@
                     "label": "Restrict this page to members",
                     "help": "If enabled, only logged-in members will be able to see this page."
                 },
+                "parentId": {
+                    "label": "Parent page",
+                    "help": "If provided, the current page will be displayed in the \"More\" section of the parent page."
+                },
                 "description": {
                     "label": "Description",
                     "help": "The description is used on Google and social media under the page title. Maximum 150 characters."

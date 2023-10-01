@@ -53,7 +53,7 @@
             {% else %}
                 <div class="world-list">
                     {% for post in posts %}
-                        <div class="world-list-row p-4" id="post-{{ post.id }}" data-id="{{ post.id }}">
+                        <div class="world-list-row py-2 px-3" id="post-{{ post.id }}" data-id="{{ post.id }}">
                             <div class="row align-items-center">
                                 <div class="col-lg-auto d-none d-lg-block">
                                     <div class="world-list-image">
@@ -62,36 +62,38 @@
                                 </div>
 
                                 <div class="col-lg">
-                                    <h4 class="mb-1 posts-title">
+                                    <h5 class="mb-2 posts-title">
                                         <a href="{{ path('console_website_post_edit', {'uuid': post.uuid, 'projectUuid': project.uuid}) }}">
                                             {{ post.title }}
                                         </a>
-                                    </h4>
+                                    </h5>
 
-                                    <div class="mb-2">
+                                    <div>
                                         {% if post.publishedAt and post.publishedAt >= date() %}
                                             <div class="world-badge world-badge-info mr-2">
                                                 {{ 'index.scheduled'|trans({}, 'project_posts') }}
                                             </div>
-                                            <small class="font-italic text-muted">
-                                                {{ 'index.scheduled_for'|trans({'%datetime%': post.publishedAt|format_datetime('medium', 'short')}, 'project_posts') }}
+                                            <small class="text-muted">
+                                                {{ 'index.scheduled_for'|trans({'%datetime%': post.publishedAt|format_datetime('short', 'short')}, 'project_posts') }}
                                             </small>
+
+                                            <span class="mx-1">|</span>
                                         {% elseif post.publishedAt and post.publishedAt < date() %}
                                             <div class="world-badge world-badge-success mr-2">
                                                 {{ 'index.published'|trans({}, 'project_posts') }}
                                             </div>
-                                            <small class="font-italic text-muted">
-                                                {{ 'index.published_at'|trans({'%datetime%': post.publishedAt|format_datetime('medium', 'short')}, 'project_posts') }}
+                                            <small class="text-muted">
+                                                {{ 'index.published_at'|trans({'%datetime%': post.publishedAt|format_datetime('short', 'short')}, 'project_posts') }}
                                             </small>
+
+                                            <span class="mx-1 text-muted">|</span>
                                         {% else %}
-                                            <div class="world-badge world-badge-warning">
+                                            <div class="world-badge world-badge-warning mr-2">
                                                 {{ 'index.draft'|trans({}, 'project_posts') }}
                                             </div>
                                         {% endif %}
-                                    </div>
 
-                                    <div class="text-muted">
-                                        <small>
+                                        <small class="text-muted">
                                             {% if is_granted('website_access_stats', current_project) %}
                                                 <i class="fad fa-chart-area mr-1"></i>
                                                 {{ post.pageViews }}

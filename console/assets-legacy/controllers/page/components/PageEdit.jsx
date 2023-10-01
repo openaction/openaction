@@ -56,6 +56,7 @@ export function PageEdit(props) {
                 createUrlEncoded({
                     [props.descriptionInput]: metadata.description ? metadata.description : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
+                    [props.parentIdInput]: metadata.parentId ? metadata.parentId : null,
                     [props.onlyForMembersInput]: metadata.onlyForMembers ? 1 : 0,
                 })
             )
