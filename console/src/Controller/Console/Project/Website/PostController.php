@@ -69,12 +69,7 @@ class PostController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_post_edit', methods: ['GET'])]
     public function edit(Post $post)
     {
-        if ($post->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_ENTITY, $post);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($post);
 
@@ -100,12 +95,7 @@ class PostController extends AbstractController
 
     private function updatePost(Post $post, Request $request, string $groupValidation)
     {
-        if ($post->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_ENTITY, $post);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($post);
@@ -150,12 +140,7 @@ class PostController extends AbstractController
     #[Route('/{uuid}/update/image', name: 'console_website_post_update_image')]
     public function updateImage(Post $post, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
-        if ($post->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_ENTITY, $post);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($post);
@@ -181,12 +166,7 @@ class PostController extends AbstractController
     #[Route('/{uuid}/content/upload', name: 'console_website_post_upload_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, Post $post, Request $request)
     {
-        if ($post->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_ENTITY, $post);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($post);
 
@@ -199,12 +179,7 @@ class PostController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_post_delete', methods: ['GET'])]
     public function delete(Post $post, Request $request)
     {
-        if ($post->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_ENTITY, $post);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($post);

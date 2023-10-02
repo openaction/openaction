@@ -134,11 +134,13 @@
                                             {% endif %}
                                         </a>
 
-                                        <a href="{{ path('console_website_trombinoscope_edit', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}"
-                                           class="btn btn-sm btn-outline-primary border-0 mr-2 trombinoscope-list-action-edit">
-                                            <i class="fad fa-edit mr-1"></i>
-                                            {{ 'index.edit'|trans({}, 'project_trombinoscope') }}
-                                        </a>
+                                        {% if is_granted('website_trombinoscope_manage_entity', person) %}
+                                            <a href="{{ path('console_website_trombinoscope_edit', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               class="btn btn-sm btn-outline-primary border-0 mr-2 trombinoscope-list-action-edit">
+                                                <i class="fad fa-edit mr-1"></i>
+                                                {{ 'index.edit'|trans({}, 'project_trombinoscope') }}
+                                            </a>
+                                        {% endif %}
 
                                         <a href="{{ csrf_path('console_website_trombinoscope_duplicate', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}"
                                            class="btn btn-sm btn-outline-primary border-0 mr-2 trombinoscope-list-action-duplicate">
@@ -154,14 +156,16 @@
                                             </a>
                                         {% endif %}
 
-                                        <a href="{{ csrf_path('console_website_trombinoscope_delete', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}"
-                                           data-controller="delete"
-                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': person.fullName}, 'project_trombinoscope') }}"
-                                           data-target="#person-{{ person.id }}"
-                                           class="btn btn-sm btn-outline-danger border-0 trombinoscope-list-action-delete">
-                                            <i class="fad fa-trash mr-1"></i>
-                                            {{ 'index.delete'|trans({}, 'project_trombinoscope') }}
-                                        </a>
+                                        {% if is_granted('website_trombinoscope_manage_entity', person) %}
+                                            <a href="{{ csrf_path('console_website_trombinoscope_delete', {'uuid': person.uuid, 'projectUuid': current_project.uuid}) }}"
+                                               data-controller="delete"
+                                               data-message="{{ 'index.remove_confirm'|trans({'%name%': person.fullName}, 'project_trombinoscope') }}"
+                                               data-target="#person-{{ person.id }}"
+                                               class="btn btn-sm btn-outline-danger border-0 trombinoscope-list-action-delete">
+                                                <i class="fad fa-trash mr-1"></i>
+                                                {{ 'index.delete'|trans({}, 'project_trombinoscope') }}
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

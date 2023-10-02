@@ -21,6 +21,16 @@
     'onlyForMembers': event.onlyForMembers,
 }) %}
 
+{% block stylesheets %}
+    {% if not is_granted('website_events_publish', current_project) %}
+        <style>
+            .publish-button {
+                display: none;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div class="world-box mb-3">
         <div class="world-box-status">

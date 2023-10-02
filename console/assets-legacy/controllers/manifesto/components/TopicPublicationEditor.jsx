@@ -70,7 +70,7 @@ export function TopicPublicationEditor(props) {
                 <div className="col-auto">
                     <button
                         type="button"
-                        className={'btn btn-sm ml-2 ' + (publishedAt ? 'btn-secondary' : 'btn-primary')}
+                        className={'btn btn-sm ml-2 publish-button ' + (publishedAt ? 'btn-secondary' : 'btn-primary')}
                         onClick={() => setPublishModalOpened(true)}
                     >
                         <i className={'mr-2 far ' + (publishedAt ? 'fa-eye-slash' : 'fa-eye')}></i>

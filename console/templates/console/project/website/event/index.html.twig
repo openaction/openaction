@@ -136,11 +136,13 @@
                                         {% endif %}
                                     </a>
 
-                                    <a href="{{ path('console_website_event_edit', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
-                                       class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-edit">
-                                        <i class="fad fa-edit mr-1"></i>
-                                        {{ 'index.edit'|trans({}, 'project_events') }}
-                                    </a>
+                                    {% if is_granted('website_events_manage_entity', event) %}
+                                        <a href="{{ path('console_website_event_edit', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-edit">
+                                            <i class="fad fa-edit mr-1"></i>
+                                            {{ 'index.edit'|trans({}, 'project_events') }}
+                                        </a>
+                                    {% endif %}
 
                                     <a href="{{ csrf_path('console_website_event_duplicate', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
                                        class="btn btn-sm btn-outline-primary border-0 mr-2 events-list-action-duplicate">
@@ -156,14 +158,16 @@
                                         </a>
                                     {% endif %}
 
-                                    <a href="{{ csrf_path('console_website_event_delete', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
-                                       data-controller="delete"
-                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': event.title}, 'project_events') }}"
-                                       data-target="#event-{{ event.uuid }}"
-                                       class="btn btn-sm btn-outline-danger border-0 events-list-action-delete">
-                                        <i class="fad fa-trash mr-1"></i>
-                                        {{ 'index.delete'|trans({}, 'project_events') }}
-                                    </a>
+                                    {% if is_granted('website_events_manage_entity', event) %}
+                                        <a href="{{ csrf_path('console_website_event_delete', {'uuid': event.uuid, 'projectUuid': project.uuid}) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': event.title}, 'project_events') }}"
+                                           data-target="#event-{{ event.uuid }}"
+                                           class="btn btn-sm btn-outline-danger border-0 events-list-action-delete">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.delete'|trans({}, 'project_events') }}
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

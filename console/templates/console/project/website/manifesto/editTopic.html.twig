@@ -10,6 +10,16 @@
     'shareUrl': domain_share_url(topic.project, 'topic', topic.uuid|toBase62, topic.slug),
 }) %}
 
+{% block stylesheets %}
+    {% if not is_granted('website_manifesto_publish', current_project) %}
+        <style>
+            .publish-button {
+                display: none;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div class="world-box mb-3">
         <div class="world-box-status">
