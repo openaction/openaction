@@ -94,12 +94,7 @@ class ManifestoTopicController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_manifesto_topic_edit')]
     public function edit(ManifestoTopic $topic, Request $request)
     {
-        if ($topic->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_ENTITY, $topic);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($topic);
 
@@ -126,12 +121,7 @@ class ManifestoTopicController extends AbstractController
     #[Route('/{uuid}/save', name: 'console_website_manifesto_topic_save', methods: ['POST'])]
     public function save(DomainRouter $domainRouter, ManifestoTopic $topic, Request $request)
     {
-        if ($topic->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_ENTITY, $topic);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($topic);
@@ -166,12 +156,7 @@ class ManifestoTopicController extends AbstractController
     #[Route('/{uuid}/image', name: 'console_website_manifesto_topic_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $cdnRouter, ManifestoTopic $topic, Request $request)
     {
-        if ($topic->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_ENTITY, $topic);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($topic);
@@ -248,12 +233,7 @@ class ManifestoTopicController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_manifesto_topic_delete', methods: ['GET'])]
     public function delete(ManifestoTopic $topic, Request $request)
     {
-        if ($topic->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_ENTITY, $topic);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($topic);

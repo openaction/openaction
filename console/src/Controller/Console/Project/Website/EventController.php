@@ -131,14 +131,9 @@ class EventController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_event_edit')]
     public function edit(Event $event, Request $request)
     {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_ENTITY, $event);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($event);
-
-        if ($event->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_PUBLISHED, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
-        }
 
         $eventData = new EventData($event);
 
@@ -221,15 +216,10 @@ class EventController extends AbstractController
     #[Route('/{uuid}/update/metadata', name: 'console_website_event_update_metadata', methods: ['POST'])]
     public function updateMetadata(Event $event, Request $request)
     {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_ENTITY, $event);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($event);
-
-        if ($event->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_PUBLISHED, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
-        }
 
         $eventData = new EventData($event);
 
@@ -290,15 +280,10 @@ class EventController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_event_delete')]
     public function delete(Event $event, Request $request)
     {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_ENTITY, $event);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($event);
-
-        if ($event->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_PUBLISHED, $this->getProject());
-        }
 
         $this->bus->dispatch(RemoveCmsDocumentMessage::forSearchable($event));
 

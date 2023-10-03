@@ -197,6 +197,11 @@ class ManifestoTopic implements Searchable
         return $this->publishedAt && $this->publishedAt < new \DateTime();
     }
 
+    public function isDraft()
+    {
+        return !$this->publishedAt;
+    }
+
     public function getTitle(): string
     {
         return $this->title;

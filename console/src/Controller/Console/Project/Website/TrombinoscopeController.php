@@ -82,12 +82,7 @@ class TrombinoscopeController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_trombinoscope_edit', methods: ['GET'])]
     public function edit(TrombinoscopePerson $person)
     {
-        if ($person->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY, $person);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($person);
 
@@ -113,12 +108,7 @@ class TrombinoscopeController extends AbstractController
 
     private function applyUpdate(TrombinoscopePerson $person, EntityManagerInterface $manager, Request $request, string $groupValidation)
     {
-        if ($person->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY, $person);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($person);
@@ -156,12 +146,7 @@ class TrombinoscopeController extends AbstractController
     #[Route('/{uuid}/update/image', name: 'console_website_trombinoscope_update_image')]
     public function updateImage(TrombinoscopePerson $person, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
-        if ($person->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY, $person);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($person);
@@ -185,12 +170,7 @@ class TrombinoscopeController extends AbstractController
     #[Route('/{uuid}/content/upload', name: 'console_website_trombinoscope_upload_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, TrombinoscopePerson $person, Request $request)
     {
-        if ($person->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY, $person);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($person);
 
@@ -203,12 +183,7 @@ class TrombinoscopeController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_trombinoscope_delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, TrombinoscopePerson $person, Request $request)
     {
-        if ($person->isPublished()) {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
-        } else {
-            $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $this->getProject());
-        }
-
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY, $person);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($person);

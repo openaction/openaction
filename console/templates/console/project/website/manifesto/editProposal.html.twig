@@ -15,6 +15,14 @@
     <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+
+    {% if not is_granted('website_manifesto_publish', current_project) %}
+        <style>
+            .publish-button {
+                display: none;
+            }
+        </style>
+    {% endif %}
 {% endblock %}
 
 {% block head_javascripts %}

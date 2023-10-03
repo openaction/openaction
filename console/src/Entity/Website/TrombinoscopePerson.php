@@ -244,7 +244,12 @@ class TrombinoscopePerson implements Searchable
      */
     public function isPublished()
     {
-        return $this->publishedAt && $this->publishedAt < new \DateTime();
+        return $this->publishedAt && $this->publishedAt <= new \DateTime();
+    }
+
+    public function isDraft()
+    {
+        return !$this->publishedAt;
     }
 
     /**

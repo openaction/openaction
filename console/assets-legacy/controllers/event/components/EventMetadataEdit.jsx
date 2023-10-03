@@ -90,7 +90,9 @@ export function EventMetadataEdit(props) {
 
                     <button
                         type="button"
-                        className={'btn btn-sm ml-2 ' + (metadata.publishedAt ? 'btn-secondary' : 'btn-primary')}
+                        className={
+                            'btn btn-sm ml-2 publish-button ' + (metadata.publishedAt ? 'btn-secondary' : 'btn-primary')
+                        }
                         onClick={() => setPublishModalOpened(true)}
                     >
                         <i className={'mr-2 far ' + (metadata.publishedAt ? 'fa-eye-slash' : 'fa-eye')}></i>

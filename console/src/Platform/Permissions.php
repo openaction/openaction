@@ -27,6 +27,7 @@ final class Permissions
     public const WEBSITE_PAGES_MANAGE_CATEGORIES = 'website_pages_manage_categories';
 
     // Posts
+    public const WEBSITE_POSTS_MANAGE_ENTITY = 'website_posts_manage_entity';
     public const WEBSITE_POSTS_MANAGE_DRAFTS = 'website_posts_manage_drafts';
     public const WEBSITE_POSTS_MANAGE_PUBLISHED = 'website_posts_manage_published';
     public const WEBSITE_POSTS_PUBLISH = 'website_posts_publish';
@@ -36,6 +37,7 @@ final class Permissions
     public const WEBSITE_DOCUMENTS_MANAGE = 'website_documents_manage';
 
     // Events
+    public const WEBSITE_EVENTS_MANAGE_ENTITY = 'website_events_manage_entity';
     public const WEBSITE_EVENTS_MANAGE_DRAFTS = 'website_events_manage_drafts';
     public const WEBSITE_EVENTS_MANAGE_PUBLISHED = 'website_events_manage_published';
     public const WEBSITE_EVENTS_PUBLISH = 'website_events_publish';
@@ -45,12 +47,14 @@ final class Permissions
     public const WEBSITE_FORMS_ACCESS_RESULTS = 'website_forms_access_results';
 
     // Trombinoscope
+    public const WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY = 'website_trombinoscope_manage_entity';
     public const WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS = 'website_trombinoscope_manage_drafts';
     public const WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED = 'website_trombinoscope_manage_published';
     public const WEBSITE_TROMBINOSCOPE_PUBLISH = 'website_trombinoscope_publish';
     public const WEBSITE_TROMBINOSCOPE_MANAGE_CATEGORIES = 'website_trombinoscope_manage_categories';
 
     // Manifesto
+    public const WEBSITE_MANIFESTO_MANAGE_ENTITY = 'website_manifesto_manage_entity';
     public const WEBSITE_MANIFESTO_MANAGE_DRAFTS = 'website_manifesto_manage_drafts';
     public const WEBSITE_MANIFESTO_MANAGE_PUBLISHED = 'website_manifesto_manage_published';
     public const WEBSITE_MANIFESTO_PUBLISH = 'website_manifesto_publish';
