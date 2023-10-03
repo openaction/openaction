@@ -42,7 +42,7 @@ class WebsiteManifestoMainImageHandlerTest extends UnitTestCase
     public function testHandle(string $local, string $storage, string $extension, int $expectedWidth, int $expectedHeight)
     {
         $manager = new ImageManager();
-        $handler = new WebsiteManifestoMainImageHandler($manager);
+        $handler = new WebsiteManifestoMainImageHandler($manager, '1700x600');
 
         $upload = new CdnUpload($local, $storage, $extension);
         $handler->handle($upload);

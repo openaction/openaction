@@ -42,7 +42,7 @@ class WebsiteTrombinoscopeMainImageHandlerTest extends UnitTestCase
     public function testHandle(string $local, string $storage, string $extension, int $expectedWidth, int $expectedHeight)
     {
         $manager = new ImageManager();
-        $handler = new WebsiteTrombinoscopeMainImageHandler($manager);
+        $handler = new WebsiteTrombinoscopeMainImageHandler($manager, '800x800');
 
         $upload = new CdnUpload($local, $storage, $extension);
         $handler->handle($upload);

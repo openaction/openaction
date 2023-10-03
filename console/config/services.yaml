@@ -20,6 +20,10 @@ services:
             $defaultModules: '%env(APP_DEFAULT_MODULES)%'
             $defaultTools: '%env(APP_DEFAULT_TOOLS)%'
             $databaseUrl: '%env(DATABASE_URL)%'
+            $sizeHomeMainImage: '%env(APP_SIZE_HOME_MAIN_IMAGE)%'
+            $sizeContentMainImage: '%env(APP_SIZE_CONTENT_MAIN_IMAGE)%'
+            $sizeTrombinoscopeMainImage: '%env(APP_SIZE_TROMBINOSCOPE_MAIN_IMAGE)%'
+            $sizeManifestoMainImage: '%env(APP_SIZE_MANIFESTO_MAIN_IMAGE)%'
 
     _instanceof:
         App\Cdn\UploadHandler\UploadedImageHandlerInterface:

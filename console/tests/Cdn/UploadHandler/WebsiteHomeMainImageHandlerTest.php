@@ -42,7 +42,7 @@ class WebsiteHomeMainImageHandlerTest extends UnitTestCase
     public function testHandle(string $local, string $storage, string $extension, int $expectedWidth, int $expectedHeight)
     {
         $manager = new ImageManager();
-        $handler = new WebsiteHomeMainImageHandler($manager);
+        $handler = new WebsiteHomeMainImageHandler($manager, '2700x1500');
 
         $upload = new CdnUpload($local, $storage, $extension);
         $handler->handle($upload);

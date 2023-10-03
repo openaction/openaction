@@ -8,10 +8,13 @@ use Intervention\Image\ImageManager;
 class WebsiteHomeMainImageHandler implements UploadedImageHandlerInterface
 {
     private ImageManager $imageManager;
+    private int $width;
+    private int $height;
 
-    public function __construct(ImageManager $imageManager)
+    public function __construct(ImageManager $imageManager, string $sizeHomeMainImage)
     {
         $this->imageManager = $imageManager;
+        [$this->width, $this->height] = explode('x', $sizeHomeMainImage);
     }
 
     public function handle(CdnUpload $file)
@@ -19,7 +22,7 @@ class WebsiteHomeMainImageHandler implements UploadedImageHandlerInterface
         $data = $this->imageManager->make($file->getLocalContent());
         $data->orientate();
 
-        $data->resize(2700, 1500, static function ($constraint) {
+        $data->resize($this->width, $this->height, static function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });

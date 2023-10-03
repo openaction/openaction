@@ -8,10 +8,13 @@ use Intervention\Image\ImageManager;
 class WebsiteTrombinoscopeMainImageHandler implements UploadedImageHandlerInterface
 {
     private ImageManager $imageManager;
+    private int $width;
+    private int $height;
 
-    public function __construct(ImageManager $imageManager)
+    public function __construct(ImageManager $imageManager, string $sizeTrombinoscopeMainImage)
     {
         $this->imageManager = $imageManager;
+        [$this->width, $this->height] = explode('x', $sizeTrombinoscopeMainImage);
     }
 
     public function handle(CdnUpload $file)
@@ -19,11 +22,11 @@ class WebsiteTrombinoscopeMainImageHandler implements UploadedImageHandlerInterf
         $data = $this->imageManager->make($file->getLocalContent());
         $data->orientate();
 
-        $data->resize(800, 800, static function ($constraint) {
+        $data->resize($this->width, $this->height, static function ($constraint) {
             $constraint->aspectRatio();
         });
 
-        $canvas = $this->imageManager->canvas(800, 800, 'ffffff');
+        $canvas = $this->imageManager->canvas($this->width, $this->height, 'ffffff');
         $canvas->insert($data, 'center');
 
         $canvas->encode('jpg');
