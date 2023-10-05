@@ -23,40 +23,19 @@ class ProjectTransformer extends AbstractTransformer
 {
     protected array $availableIncludes = ['header', 'footer', 'home'];
 
-    private ThemeManager $themeManager;
-    private AssetManager $assetManager;
-    private CdnLookup $cdnLookup;
-    private CdnRouter $cdnRouter;
-
-    // Repositories
-    private RedirectionRepository $redirectionRepository;
-    private MenuItemRepository $menuItemRepository;
-    private PageBlockRepository $blockRepository;
-
-    // Transformers
-    private PageBlockTransformer $homeBlockTranformer;
-
     // Local cache for includes
     private array $cache = [];
 
     public function __construct(
-        ThemeManager $themeManager,
-        AssetManager $assetManager,
-        CdnLookup $cdnLookup,
-        CdnRouter $cdnRouter,
-        RedirectionRepository $redirectionRepository,
-        MenuItemRepository $menuItemRepository,
-        PageBlockRepository $blockRepository,
-        PageBlockTransformer $homeBlockTranformer,
+        private readonly ThemeManager $themeManager,
+        private readonly AssetManager $assetManager,
+        private readonly CdnLookup $cdnLookup,
+        private readonly CdnRouter $cdnRouter,
+        private readonly RedirectionRepository $redirectionRepository,
+        private readonly MenuItemRepository $menuItemRepository,
+        private readonly PageBlockRepository $blockRepository,
+        private readonly PageBlockTransformer $homeBlockTranformer,
     ) {
-        $this->themeManager = $themeManager;
-        $this->assetManager = $assetManager;
-        $this->redirectionRepository = $redirectionRepository;
-        $this->menuItemRepository = $menuItemRepository;
-        $this->blockRepository = $blockRepository;
-        $this->cdnLookup = $cdnLookup;
-        $this->cdnRouter = $cdnRouter;
-        $this->homeBlockTranformer = $homeBlockTranformer;
     }
 
     public function transform(Project $project)

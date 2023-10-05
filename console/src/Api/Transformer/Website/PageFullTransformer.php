@@ -4,25 +4,25 @@ namespace App\Api\Transformer\Website;
 
 use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\Page;
+use App\Website\CustomBlockParser;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
 class PageFullTransformer extends AbstractTransformer
 {
-    private PagePartialTransformer $partialTransformer;
-
     protected array $availableIncludes = ['categories'];
     protected array $defaultIncludes = ['categories'];
 
-    public function __construct(PagePartialTransformer $partialTransformer)
-    {
-        $this->partialTransformer = $partialTransformer;
+    public function __construct(
+        private readonly PagePartialTransformer $partialTransformer,
+        private readonly CustomBlockParser $customBlockParser,
+    ) {
     }
 
     public function transform(Page $page)
     {
         $data = $this->partialTransformer->transform($page);
-        $data['content'] = $page->getContent();
+        $data['content'] = $this->customBlockParser->normalizeCustomBlocksIn($page->getContent());
 
         $data['children']['data'] = [];
         foreach ($page->getChildren() as $child) {

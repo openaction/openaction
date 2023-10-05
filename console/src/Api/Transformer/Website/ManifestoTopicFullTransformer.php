@@ -5,6 +5,7 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\ManifestoTopic;
 use App\Repository\Website\ManifestoTopicRepository;
+use App\Website\CustomBlockParser;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
@@ -12,13 +13,11 @@ class ManifestoTopicFullTransformer extends AbstractTransformer
 {
     protected array $availableIncludes = ['previous', 'next'];
 
-    private ManifestoTopicRepository $repository;
-    private ManifestoTopicPartialTransformer $partialTransformer;
-
-    public function __construct(ManifestoTopicRepository $repository, ManifestoTopicPartialTransformer $partialTransformer)
-    {
-        $this->repository = $repository;
-        $this->partialTransformer = $partialTransformer;
+    public function __construct(
+        private readonly ManifestoTopicRepository $repository,
+        private readonly ManifestoTopicPartialTransformer $partialTransformer,
+        private readonly CustomBlockParser $customBlockParser,
+    ) {
     }
 
     public function transform(ManifestoTopic $topic)
@@ -29,7 +28,7 @@ class ManifestoTopicFullTransformer extends AbstractTransformer
         foreach ($topic->getProposals() as $proposal) {
             $data['proposals'][] = [
                 'title' => $proposal->getTitle(),
-                'content' => $proposal->getContent(),
+                'content' => $this->customBlockParser->normalizeCustomBlocksIn($proposal->getContent()),
                 'status' => $proposal->getStatus(),
                 'statusDescription' => $proposal->getStatusDescription(),
                 'statusCtaText' => $proposal->getStatusCtaText(),
