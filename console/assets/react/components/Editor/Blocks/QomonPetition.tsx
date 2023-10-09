@@ -65,8 +65,11 @@ export function QomonPetitionModal(props: EditorProps) {
                         Créer une pétition Qomon
                     </a>
                     <br />
-                    <a href="https://help.qomon.com/fr/articles/6926604-comment-creer-une-petition"
-                       className="btn btn-link" target="_blank">
+                    <a
+                        href="https://help.qomon.com/fr/articles/6926604-comment-creer-une-petition"
+                        className="btn btn-link"
+                        target="_blank"
+                    >
                         Lire la documentation
                     </a>
                 </div>

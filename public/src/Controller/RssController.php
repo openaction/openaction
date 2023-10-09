@@ -49,7 +49,7 @@ class RssController extends AbstractController
                 UrlGeneratorInterface::ABSOLUTE_URL
             ));
 
-            if ($post['image']) {
+            if ($post['image'] ?? null) {
                 $entry->setEnclosure(['uri' => $post['image'], 'type' => 'image/jpeg']);
             }
 
