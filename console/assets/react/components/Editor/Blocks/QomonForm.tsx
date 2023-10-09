@@ -65,7 +65,11 @@ export function QomonFormModal(props: EditorProps) {
                         Créer un formulaire Qomon
                     </a>
                     <br />
-                    <a href="" className="btn btn-link">
+                    <a
+                        href="https://help.qomon.com/fr/articles/8042129-comment-utiliser-les-formulaires-en-ligne"
+                        className="btn btn-link"
+                        target="_blank"
+                    >
                         Lire la documentation
                     </a>
                 </div>
