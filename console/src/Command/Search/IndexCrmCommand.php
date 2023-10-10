@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:search:index-crm',
-    description: 'Index the CRM database in MeiliSearch.',
+    description: 'Index the CRM database in Meilisearch.',
 )]
 class IndexCrmCommand extends Command
 {

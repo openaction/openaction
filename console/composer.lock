@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b59c0a51988afbb1d3b84aa32d167cd",
+    "content-hash": "5f8bc9def630f3027c134877c8dfe164",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3952,16 +3952,16 @@
         },
         {
             "name": "meilisearch/meilisearch-php",
-            "version": "v0.24.2",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/meilisearch/meilisearch-php.git",
-                "reference": "7f7b350480bce4bc80efc9a613a820261a96ef8b"
+                "reference": "956e2677b0cbbff8e9dfa658106097639bc9a507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/meilisearch/meilisearch-php/zipball/7f7b350480bce4bc80efc9a613a820261a96ef8b",
-                "reference": "7f7b350480bce4bc80efc9a613a820261a96ef8b",
+                "url": "https://api.github.com/repos/meilisearch/meilisearch-php/zipball/956e2677b0cbbff8e9dfa658106097639bc9a507",
+                "reference": "956e2677b0cbbff8e9dfa658106097639bc9a507",
                 "shasum": ""
             },
             "require": {
@@ -3976,11 +3976,11 @@
                 "guzzlehttp/guzzle": "^7.1",
                 "http-interop/http-factory-guzzle": "^1.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan": "1.10.32",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^9.5 || ^10.1"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "Use Guzzle ^7 as HTTP client",
@@ -3989,7 +3989,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "MeiliSearch\\": "src/"
+                    "MeiliSearch\\": "src/",
+                    "Meilisearch\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4013,9 +4014,9 @@
             ],
             "support": {
                 "issues": "https://github.com/meilisearch/meilisearch-php/issues",
-                "source": "https://github.com/meilisearch/meilisearch-php/tree/v0.24.2"
+                "source": "https://github.com/meilisearch/meilisearch-php/tree/v1.4.0"
             },
-            "time": "2022-08-16T15:18:17+00:00"
+            "time": "2023-09-25T11:42:54+00:00"
         },
         {
             "name": "mollie/mollie-api-php",
@@ -13855,5 +13856,5 @@
         "composer-runtime-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

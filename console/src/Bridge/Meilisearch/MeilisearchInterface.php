@@ -3,7 +3,7 @@
 namespace App\Bridge\Meilisearch;
 
 use App\Bridge\Meilisearch\Model\Task;
-use MeiliSearch\Endpoints\Keys;
+use Meilisearch\Endpoints\Keys;
 
 interface MeilisearchInterface
 {

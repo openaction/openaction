@@ -35,7 +35,7 @@ services:
             RABBITMQ_DEFAULT_PASS: guest
 
     meilisearch:
-        image: getmeili/meilisearch:v0.28.1
+        image: getmeili/meilisearch:v1.4
         ports: ['7700']
         environment:
             MEILI_MASTER_KEY: secret
