@@ -123,6 +123,21 @@ export function MetadataEditor(props) {
                         <div className="mb-1">
                             <div>
                                 <small className="text-muted">
+                                    {translator.trans('trombinoscope.edit.metadata_modal.socials.socialWebsite')}
+                                </small>
+                            </div>
+
+                            <input
+                                type="email"
+                                className="form-control"
+                                defaultValue={props.metadata.socialWebsite}
+                                onChange={(e) => handleInputChange(e, 'socialWebsite')}
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <div>
+                                <small className="text-muted">
                                     {translator.trans('trombinoscope.edit.metadata_modal.socials.socialEmail')}
                                 </small>
                             </div>

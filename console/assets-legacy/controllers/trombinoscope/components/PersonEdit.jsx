@@ -54,6 +54,7 @@ export function PersonEdit(props) {
                 createUrlEncoded({
                     [props.roleInput]: metadata.role ? metadata.role : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
+                    [props.socialWebsiteInput]: metadata.socialWebsite ? metadata.socialWebsite : '',
                     [props.socialEmailInput]: metadata.socialEmail ? metadata.socialEmail : '',
                     [props.socialFacebookInput]: metadata.socialFacebook ? metadata.socialFacebook : '',
                     [props.socialTwitterInput]: metadata.socialTwitter ? metadata.socialTwitter : '',

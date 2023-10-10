@@ -9,6 +9,7 @@ export default class extends Controller {
         'role',
         'content',
         'publishedAt',
+        'socialWebsite',
         'socialEmail',
         'socialFacebook',
         'socialTwitter',
@@ -28,6 +29,7 @@ export default class extends Controller {
                 roleInput={this.roleTarget.getAttribute('name')}
                 contentInput={this.contentTarget.getAttribute('name')}
                 publishedAtInput={this.publishedAtTarget.getAttribute('name')}
+                socialWebsiteInput={this.socialWebsiteTarget.getAttribute('name')}
                 socialEmailInput={this.socialEmailTarget.getAttribute('name')}
                 socialFacebookInput={this.socialFacebookTarget.getAttribute('name')}
                 socialTwitterInput={this.socialTwitterTarget.getAttribute('name')}

@@ -323,6 +323,7 @@
                 "socials": {
                     "label": "Social links",
                     "help": "Links to the social networks of this person.",
+                    "socialWebsite": "Website",
                     "socialEmail": "Email address",
                     "socialFacebook": "Facebook URL",
                     "socialTwitter": "Twitter URL",

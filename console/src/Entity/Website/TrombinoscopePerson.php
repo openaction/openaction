@@ -47,6 +47,9 @@ class TrombinoscopePerson implements Searchable
     private ?string $socialEmail;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialWebsite;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialFacebook;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -101,6 +104,7 @@ class TrombinoscopePerson implements Searchable
         $self->image = $data['image'] ?? null;
         $self->publishedAt = $data['publishedAt'] ?? null;
         $self->socialEmail = $data['socialEmail'] ?? null;
+        $self->socialWebsite = $data['socialWebsite'] ?? null;
         $self->socialFacebook = $data['socialFacebook'] ?? null;
         $self->socialTwitter = $data['socialTwitter'] ?? null;
         $self->socialInstagram = $data['socialInstagram'] ?? null;
@@ -122,6 +126,7 @@ class TrombinoscopePerson implements Searchable
         $self->slug = $this->slug;
         $self->role = $this->role;
         $self->content = $this->content;
+        $self->socialWebsite = $this->socialWebsite;
         $self->socialEmail = $this->socialEmail;
         $self->socialFacebook = $this->socialEmail;
         $self->socialTwitter = $this->socialEmail;
@@ -224,6 +229,7 @@ class TrombinoscopePerson implements Searchable
     {
         $this->role = (string) $data->role;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
+        $this->socialWebsite = (string) $data->socialWebsite;
         $this->socialEmail = (string) $data->socialEmail;
         $this->socialFacebook = (string) $data->socialFacebook;
         $this->socialTwitter = (string) $data->socialTwitter;
@@ -302,6 +308,11 @@ class TrombinoscopePerson implements Searchable
     public function getImage(): ?Upload
     {
         return $this->image;
+    }
+
+    public function getSocialWebsite(): ?string
+    {
+        return $this->socialWebsite;
     }
 
     public function getSocialEmail(): ?string
