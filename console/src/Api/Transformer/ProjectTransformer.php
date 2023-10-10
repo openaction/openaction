@@ -56,6 +56,7 @@ class ProjectTransformer extends AbstractTransformer
                 'javascript_custom' => $this->createAssetUrl($project, 'cdn_theme_js', ['uuid' => $uuid, 'v' => $appearanceVersion]),
                 'analytics' => $this->createAssetUrl($project, 'root_url').'/projects/event',
             ],
+            'uuid' => $project->getUuid()->toRfc4122(),
             'id' => Uid::toBase62($project->getUuid()),
             'name' => $project->getName(),
             'locale' => $project->getWebsiteLocale(),
