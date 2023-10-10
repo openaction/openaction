@@ -6,7 +6,6 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Website\TrombinoscopePersonRepository;
 use App\Website\CustomBlockParser;
-use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonFullTransformer extends AbstractTransformer
@@ -41,21 +40,6 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
                 'self' => 'string',
             ],
             'id' => 'string',
-            'title' => 'string',
-            'quote' => '?string',
-            'slug' => 'string',
-            'description' => '?string',
-            'video' => '?string',
-            'image' => '?string',
-            'sharer' => '?string',
-            'published_at' => '?string',
-            'content' => 'string',
-            'categories' => [
-                'data' => new Property([
-                    'type' => 'array',
-                    'items' => new Items(['ref' => '#/components/schemas/PostCategory']),
-                ]),
-            ],
             'previous' => new Property(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
             'next' => new Property(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
         ];

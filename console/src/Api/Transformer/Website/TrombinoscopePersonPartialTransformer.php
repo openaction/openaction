@@ -6,8 +6,6 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Util\Uid;
-use OpenApi\Annotations\Items;
-use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonPartialTransformer extends AbstractTransformer
 {
@@ -35,6 +33,7 @@ class TrombinoscopePersonPartialTransformer extends AbstractTransformer
             'fullName' => $person->getFullName(),
             'role' => $person->getRole() ?: null,
             'position' => $person->getWeight(),
+            'socialWebsite' => $person->getSocialWebsite() ?: null,
             'socialEmail' => $person->getSocialEmail() ?: null,
             'socialFacebook' => $person->getSocialFacebook() ?: null,
             'socialTwitter' => $person->getSocialTwitter() ?: null,
@@ -61,20 +60,6 @@ class TrombinoscopePersonPartialTransformer extends AbstractTransformer
                 'self' => 'string',
             ],
             'id' => 'string',
-            'title' => 'string',
-            'quote' => '?string',
-            'slug' => 'string',
-            'description' => '?string',
-            'video' => '?string',
-            'image' => '?string',
-            'sharer' => '?string',
-            'published_at' => '?string',
-            'categories' => [
-                'data' => new Property([
-                    'type' => 'array',
-                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopeCategory']),
-                ]),
-            ],
         ];
     }
 

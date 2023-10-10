@@ -18,6 +18,9 @@ class TrombinoscopePersonData
 
     public ?string $publishedAt = null;
 
+    #[Assert\Url]
+    public ?string $socialWebsite = null;
+
     #[Assert\Email]
     public ?string $socialEmail = null;
 

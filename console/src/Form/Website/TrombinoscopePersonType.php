@@ -17,6 +17,7 @@ class TrombinoscopePersonType extends AbstractType
             ->add('role', HiddenType::class)
             ->add('content', HiddenType::class)
             ->add('publishedAt', HiddenType::class)
+            ->add('socialWebsite', HiddenType::class)
             ->add('socialEmail', HiddenType::class)
             ->add('socialFacebook', HiddenType::class)
             ->add('socialTwitter', HiddenType::class)
