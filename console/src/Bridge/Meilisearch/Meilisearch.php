@@ -3,9 +3,9 @@
 namespace App\Bridge\Meilisearch;
 
 use App\Bridge\Meilisearch\Model\Task;
-use MeiliSearch\Client;
-use MeiliSearch\Endpoints\Keys;
-use MeiliSearch\Exceptions\ApiException;
+use Meilisearch\Client;
+use Meilisearch\Endpoints\Keys;
+use Meilisearch\Exceptions\ApiException;
 
 class Meilisearch implements MeilisearchInterface
 {

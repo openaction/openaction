@@ -34,7 +34,7 @@
         "league/fractal": "^0.20",
         "maennchen/zipstream-php": "^2.1",
         "martin-georgiev/postgresql-for-doctrine": "^1.7",
-        "meilisearch/meilisearch-php": "^v0.24.1",
+        "meilisearch/meilisearch-php": "^1.4",
         "mollie/mollie-api-php": "^2.39",
         "monolog/monolog": "^2.6",
         "nelmio/api-doc-bundle": "^4.5",

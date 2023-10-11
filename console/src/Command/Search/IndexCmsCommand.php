@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:search:index-cms',
-    description: 'Index the CMS database in MeiliSearch.',
+    description: 'Index the CMS database in Meilisearch.',
 )]
 class IndexCmsCommand extends Command
 {
