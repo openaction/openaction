@@ -2,6 +2,7 @@
 
 namespace App\Api\Transformer;
 
+use App\Cdn\CdnRouter;
 use App\Entity\Project;
 use App\Entity\Website\Document;
 use App\Entity\Website\Event;
@@ -30,11 +31,10 @@ use Symfony\Component\Uid\Uuid;
 
 class SitemapTransformer extends AbstractTransformer
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly CdnRouter $cdnRouter,
+    ) {
     }
 
     public function transform(Project $project): array
@@ -60,6 +60,7 @@ class SitemapTransformer extends AbstractTransformer
                     'title' => $page->getTitle(),
                     'description' => $page->getDescription(),
                     'createdAt' => $page->getCreatedAt()->format(\DateTime::ATOM),
+                    'image' => $page->getImage() ? $this->cdnRouter->generateUrl($page->getImage()) : null,
                 ]);
             }
         }
@@ -73,6 +74,7 @@ class SitemapTransformer extends AbstractTransformer
                     'title' => $post->getTitle(),
                     'description' => $post->getDescription(),
                     'createdAt' => $post->getPublishedAt()->format(\DateTime::ATOM),
+                    'image' => $post->getImage() ? $this->cdnRouter->generateUrl($post->getImage()) : null,
                 ]);
             }
 
@@ -94,6 +96,7 @@ class SitemapTransformer extends AbstractTransformer
                 $sitemap['events'][] = $this->createNode($event->getUuid(), $event->getSlug(), $event->getUpdatedAt(), [
                     'title' => $event->getTitle(),
                     'createdAt' => $event->getPublishedAt()->format(\DateTime::ATOM),
+                    'image' => $event->getImage() ? $this->cdnRouter->generateUrl($event->getImage()) : null,
                 ]);
             }
 
@@ -138,6 +141,7 @@ class SitemapTransformer extends AbstractTransformer
                     'title' => $person->getFullName(),
                     'description' => $person->getRole(),
                     'createdAt' => $person->getPublishedAt()->format(\DateTime::ATOM),
+                    'image' => $person->getImage() ? $this->cdnRouter->generateUrl($person->getImage()) : null,
                 ]);
             }
         }
@@ -151,6 +155,7 @@ class SitemapTransformer extends AbstractTransformer
                     'title' => $topic->getTitle(),
                     'description' => $topic->getDescription(),
                     'createdAt' => $topic->getPublishedAt()->format(\DateTime::ATOM),
+                    'image' => $topic->getImage() ? $this->cdnRouter->generateUrl($topic->getImage()) : null,
                 ]);
             }
         }
