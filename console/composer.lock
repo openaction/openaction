@@ -2515,16 +2515,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598"
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/b94b2807d85443f9719887892882d0329d1e2598",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/67ab6e18aaa14d753cc148911d273f6e6cb6721e",
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e",
                 "shasum": ""
             },
             "require": {
@@ -2534,11 +2534,6 @@
                 "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "src/functions_include.php"
@@ -2579,7 +2574,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/1.5.2"
+                "source": "https://github.com/guzzle/promises/tree/1.5.3"
             },
             "funding": [
                 {
@@ -2595,7 +2590,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T14:55:35+00:00"
+            "time": "2023-05-21T12:31:43+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -4965,26 +4960,26 @@
         },
         {
             "name": "php-http/message-factory",
-            "version": "v1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message-factory.git",
-                "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1"
+                "reference": "4d8778e1c7d405cbb471574821c1ff5b68cc8f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message-factory/zipball/a478cb11f66a6ac48d8954216cfed9aa06a501a1",
-                "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1",
+                "url": "https://api.github.com/repos/php-http/message-factory/zipball/4d8778e1c7d405cbb471574821c1ff5b68cc8f57",
+                "reference": "4d8778e1c7d405cbb471574821c1ff5b68cc8f57",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4",
-                "psr/http-message": "^1.0"
+                "psr/http-message": "^1.0 || ^2.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -5013,9 +5008,10 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/message-factory/issues",
-                "source": "https://github.com/php-http/message-factory/tree/master"
+                "source": "https://github.com/php-http/message-factory/tree/1.1.0"
             },
-            "time": "2015-12-19T14:08:53+00:00"
+            "abandoned": "psr/http-factory",
+            "time": "2023-04-14T14:16:17+00:00"
         },
         {
             "name": "php-http/promise",
@@ -6344,21 +6340,21 @@
         },
         {
             "name": "sentry/sdk",
-            "version": "3.3.0",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php-sdk.git",
-                "reference": "d0678fc7274dbb03046ed05cb24eb92945bedf8e"
+                "reference": "cd91b752f07c4bab9fb3b173f81af68a78a78d6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/d0678fc7274dbb03046ed05cb24eb92945bedf8e",
-                "reference": "d0678fc7274dbb03046ed05cb24eb92945bedf8e",
+                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/cd91b752f07c4bab9fb3b173f81af68a78a78d6d",
+                "reference": "cd91b752f07c4bab9fb3b173f81af68a78a78d6d",
                 "shasum": ""
             },
             "require": {
                 "http-interop/http-factory-guzzle": "^1.0",
-                "sentry/sentry": "^3.9",
+                "sentry/sentry": "^3.19",
                 "symfony/http-client": "^4.3|^5.0|^6.0"
             },
             "type": "metapackage",
@@ -6385,7 +6381,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php-sdk/issues",
-                "source": "https://github.com/getsentry/sentry-php-sdk/tree/3.3.0"
+                "source": "https://github.com/getsentry/sentry-php-sdk/tree/3.5.0"
             },
             "funding": [
                 {
@@ -6397,26 +6393,26 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-10-11T09:05:00+00:00"
+            "time": "2023-06-12T17:50:36+00:00"
         },
         {
             "name": "sentry/sentry",
-            "version": "3.17.0",
+            "version": "3.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "95d2e932383cf684f77acff0d2a5aef5ad2f1933"
+                "reference": "624aafc22b84b089ffa43b71fb01e0096505ec4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/95d2e932383cf684f77acff0d2a5aef5ad2f1933",
-                "reference": "95d2e932383cf684f77acff0d2a5aef5ad2f1933",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/624aafc22b84b089ffa43b71fb01e0096505ec4f",
+                "reference": "624aafc22b84b089ffa43b71fb01e0096505ec4f",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "guzzlehttp/promises": "^1.4",
+                "guzzlehttp/promises": "^1.5.3|^2.0",
                 "jean85/pretty-package-versions": "^1.5|^2.0.4",
                 "php": "^7.2|^8.0",
                 "php-http/async-client-implementation": "^1.0",
@@ -6424,6 +6420,7 @@
                 "php-http/discovery": "^1.15",
                 "php-http/httplug": "^1.1|^2.0",
                 "php-http/message": "^1.5",
+                "php-http/message-factory": "^1.1",
                 "psr/http-factory": "^1.0",
                 "psr/http-factory-implementation": "^1.0",
                 "psr/log": "^1.0|^2.0|^3.0",
@@ -6453,11 +6450,6 @@
                 "monolog/monolog": "Allow sending log messages to Sentry by using the included Monolog handler."
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.13.x-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "src/functions.php"
@@ -6489,7 +6481,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.17.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.21.0"
             },
             "funding": [
                 {
@@ -6501,27 +6493,28 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-03-26T21:54:06+00:00"
+            "time": "2023-07-31T15:31:24+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "4.7.0",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "cd2bc2a1ffd5cacc3031feffb8d422cbc2daf5c0"
+                "reference": "6c17890bfc65aa7e2ee33ee505231e6660778cc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/cd2bc2a1ffd5cacc3031feffb8d422cbc2daf5c0",
-                "reference": "cd2bc2a1ffd5cacc3031feffb8d422cbc2daf5c0",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/6c17890bfc65aa7e2ee33ee505231e6660778cc5",
+                "reference": "6c17890bfc65aa7e2ee33ee505231e6660778cc5",
                 "shasum": ""
             },
             "require": {
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "jean85/pretty-package-versions": "^1.5 || ^2.0",
                 "php": "^7.2||^8.0",
-                "sentry/sdk": "^3.3",
-                "sentry/sentry": "^3.15",
+                "sentry/sdk": "^3.4",
+                "sentry/sentry": "^3.20.1",
                 "symfony/cache-contracts": "^1.1||^2.4||^3.0",
                 "symfony/config": "^4.4.20||^5.0.11||^6.0",
                 "symfony/console": "^4.4.20||^5.0.11||^6.0",
@@ -6530,12 +6523,13 @@
                 "symfony/http-kernel": "^4.4.20||^5.0.11||^6.0",
                 "symfony/polyfill-php80": "^1.22",
                 "symfony/psr-http-message-bridge": "^1.2||^2.0",
-                "symfony/security-core": "^4.4.20||^5.0.11||^6.0"
+                "symfony/security-core": "^4.4.20||^5.0.11||^6.0",
+                "symfony/security-http": "^4.4.20||^5.0.11||^6.0"
             },
             "require-dev": {
                 "doctrine/dbal": "^2.13||^3.0",
                 "doctrine/doctrine-bundle": "^1.12||^2.5",
-                "friendsofphp/php-cs-fixer": "^2.19||^3.6",
+                "friendsofphp/php-cs-fixer": "^2.19||<=3.16.0",
                 "jangregor/phpstan-prophecy": "^1.0",
                 "monolog/monolog": "^1.3||^2.0",
                 "phpspec/prophecy": "!=1.11.0",
@@ -6567,7 +6561,6 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.6.x-dev",
                     "releases/3.2.x": "3.2.x-dev",
                     "releases/2.x": "2.x-dev",
                     "releases/1.x": "1.x-dev"
@@ -6605,7 +6598,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-symfony/issues",
-                "source": "https://github.com/getsentry/sentry-symfony/tree/4.7.0"
+                "source": "https://github.com/getsentry/sentry-symfony/tree/4.11.0"
             },
             "funding": [
                 {
@@ -6617,7 +6610,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-03-14T11:26:22+00:00"
+            "time": "2023-09-07T14:41:20+00:00"
         },
         {
             "name": "spomky-labs/otphp",
@@ -13855,5 +13848,5 @@
         "composer-runtime-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
