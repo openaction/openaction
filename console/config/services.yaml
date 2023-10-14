@@ -49,12 +49,6 @@ services:
     #
     # Bridges
     #
-    App\Bridge\Sentry\SentryHandler: ~
-
-    App\Bridge\Sentry\SentryListener:
-        arguments:
-            $deploymentId: '%env(APP_DEPLOYMENT_ID)%'
-
     Monolog\Processor\PsrLogMessageProcessor:
         tags: ['monolog.processor']
 
