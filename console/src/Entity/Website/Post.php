@@ -4,6 +4,7 @@ namespace App\Entity\Website;
 
 use App\Entity\Project;
 use App\Entity\Upload;
+use App\Entity\User;
 use App\Entity\Util;
 use App\Form\Website\Model\PostData;
 use App\Repository\Website\PostRepository;
@@ -39,6 +40,9 @@ class Post implements Searchable
     #[ORM\Column(length: 200, nullable: true)]
     private ?string $quote = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $author = null;
+
     #[ORM\Column(type: 'text')]
     private string $content = '';
 
@@ -58,7 +62,7 @@ class Post implements Searchable
     #[ORM\JoinTable(name: 'website_posts_posts_categories')]
     private Collection $categories;
 
-    public function __construct(Project $project, string $title)
+    public function __construct(Project $project, string $title, User $author = null)
     {
         $this->populateTimestampable();
         $this->project = $project;
@@ -66,6 +70,10 @@ class Post implements Searchable
         $this->title = $title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->categories = new ArrayCollection();
+
+        if ($author) {
+            $this->author = $author->getFullName();
+        }
     }
 
     /*
@@ -200,12 +208,16 @@ class Post implements Searchable
         string $content,
         ?string $description,
         ?string $video,
+        ?string $quote,
+        ?string $author,
         ?\DateTime $publishedAt,
         iterable $categories,
     ): void {
         $this->content = $content;
         $this->description = $description;
         $this->video = $video;
+        $this->quote = $quote;
+        $this->author = $author;
         $this->publishedAt = $publishedAt;
 
         foreach ($categories as $category) {
@@ -231,6 +243,7 @@ class Post implements Searchable
         $this->description = (string) $data->description;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
         $this->quote = (string) $data->quote;
+        $this->author = (string) $data->author;
         $this->externalUrl = $data->externalUrl ?: null;
         $this->onlyForMembers = (bool) $data->onlyForMembers;
     }
@@ -288,6 +301,11 @@ class Post implements Searchable
     public function getQuote(): ?string
     {
         return $this->quote;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
     }
 
     public function getContent(): string

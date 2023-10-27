@@ -219,6 +219,10 @@
                     "label": "Citation",
                     "help": "Courte citation pour présenter l'actualité. Maximum 100 caractères."
                 },
+                "author": {
+                    "label": "Auteur",
+                    "help": "Nom de l'auteur de cet actualité. Maximum 100 caractères."
+                },
                 "close": "Fermer"
             },
             "publish_modal": {

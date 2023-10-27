@@ -182,6 +182,23 @@ export function MetadataEditor(props) {
 
                         <small className="text-muted">{translator.trans('post.edit.metadata_modal.quote.help')}</small>
                     </div>
+
+                    <div className="p-3">
+                        <div className="mb-2">
+                            <strong>{translator.trans('post.edit.metadata_modal.author.label')}</strong>
+                        </div>
+
+                        <div className="mb-1">
+                            <input
+                                className="form-control"
+                                type="text"
+                                defaultValue={props.metadata.author}
+                                onChange={(e) => handleInputChange(e, 'author')}
+                            />
+                        </div>
+
+                        <small className="text-muted">{translator.trans('post.edit.metadata_modal.author.help')}</small>
+                    </div>
                 </div>
             </div>
         </div>
