@@ -62,6 +62,7 @@ export function PostEdit(props) {
                     [props.descriptionInput]: metadata.description ? metadata.description : '',
                     [props.externalUrlInput]: metadata.externalUrl ? metadata.externalUrl : '',
                     [props.quoteInput]: metadata.quote ? metadata.quote : '',
+                    [props.authorInput]: metadata.author ? metadata.author : '',
                     [props.videoInput]: metadata.video ? metadata.video : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),

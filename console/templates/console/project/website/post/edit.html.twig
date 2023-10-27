@@ -16,6 +16,7 @@
 {% do expose('post_metadata', {
     'description': post.description,
     'quote': post.quote,
+    'author': post.author,
     'video': post.video,
     'externalUrl': post.externalUrl,
     'publishedAt': post.publishedAt ? post.publishedAt.format('Y-m-d\\TH:i:sP') : null,
@@ -70,6 +71,7 @@
                             {{ form_widget(form.title, {'attr': {'data-post--edit-target': 'title'}}) }}
                             {{ form_widget(form.content, {'attr': {'data-post--edit-target': 'content'}}) }}
                             {{ form_widget(form.quote, {'attr': {'data-post--edit-target': 'quote'}}) }}
+                            {{ form_widget(form.author, {'attr': {'data-post--edit-target': 'author'}}) }}
                             {{ form_widget(form.description, {'attr': {'data-post--edit-target': 'description'}}) }}
                             {{ form_widget(form.externalUrl, {'attr': {'data-post--edit-target': 'externalUrl'}}) }}
                             {{ form_widget(form.video, {'attr': {'data-post--edit-target': 'video'}}) }}

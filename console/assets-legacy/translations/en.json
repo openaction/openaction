@@ -219,6 +219,10 @@
                     "label": "Quote",
                     "help": "Brief description about this Post. Maximum 100 characters."
                 },
+                "author": {
+                    "label": "Author",
+                    "help": "Author name of this post. Maximum 100 characters."
+                },
                 "close": "Close"
             },
             "publish_modal": {

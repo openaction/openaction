@@ -15,6 +15,7 @@ export default class extends Controller {
         'categories',
         'onlyForMembers',
         'quote',
+        'author',
     ];
 
     connect() {
@@ -26,6 +27,7 @@ export default class extends Controller {
                 titleInput={this.titleTarget.getAttribute('name')}
                 contentInput={this.contentTarget.getAttribute('name')}
                 quoteInput={this.quoteTarget.getAttribute('name')}
+                authorInput={this.authorTarget.getAttribute('name')}
                 descriptionInput={this.descriptionTarget.getAttribute('name')}
                 externalUrlInput={this.externalUrlTarget.getAttribute('name')}
                 videoInput={this.videoTarget.getAttribute('name')}

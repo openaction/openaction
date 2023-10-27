@@ -23,6 +23,14 @@ class CreatePostPayload
     public mixed $videoUrl = null;
 
     #[Assert\Type('string')]
+    #[Assert\Length(max: 200)]
+    public mixed $quote = null;
+
+    #[Assert\Type('string')]
+    #[Assert\Length(max: 100)]
+    public mixed $author = null;
+
+    #[Assert\Type('string')]
     #[Assert\DateTime]
     public mixed $publishedAt = null;
 
