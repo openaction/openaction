@@ -57,7 +57,7 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('p.image', 'pi')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
-            ->orderBy('p.createdAt', 'DESC')
+            ->orderBy('p.publishedAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
