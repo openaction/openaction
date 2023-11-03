@@ -13,9 +13,6 @@ class TrombinoscopeControllerTest extends ApiTestCase
         $result = $this->apiRequest($client, 'GET', '/api/website/trombinoscope', self::ACME_TOKEN);
         $this->assertCount(4, $result['data']);
 
-        // Test content is not included in the payload
-        $this->assertArrayNotHasKey('content', $result['data'][0]);
-
         // Test the payload is the one expected
         $this->assertApiResponse($result, [
             'data' => [
@@ -28,6 +25,7 @@ class TrombinoscopeControllerTest extends ApiTestCase
                     'id' => '3gQjYZ1UYDaaBmOcian0vT',
                     'fullName' => 'Nathalie Loiseau',
                     'role' => 'Tête de liste Renaissance pour les élections européennes. (Île-de-France).',
+                    'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
                     'socialEmail' => 'nathalie.loiseau@example.org',
                     'socialFacebook' => 'https://facebook.com',
                     'socialTwitter' => 'https://twitter.com',

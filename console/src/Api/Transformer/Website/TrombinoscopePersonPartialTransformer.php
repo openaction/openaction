@@ -6,19 +6,18 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Util\Uid;
+use App\Website\CustomBlockParser;
 
 class TrombinoscopePersonPartialTransformer extends AbstractTransformer
 {
-    private TrombinoscopeCategoryTransformer $categoryTransformer;
-    private CdnRouter $cdnRouter;
-
     protected array $availableIncludes = ['categories'];
     protected array $defaultIncludes = ['categories'];
 
-    public function __construct(TrombinoscopeCategoryTransformer $categoryTransformer, CdnRouter $cdnRouter)
-    {
-        $this->categoryTransformer = $categoryTransformer;
-        $this->cdnRouter = $cdnRouter;
+    public function __construct(
+        private readonly TrombinoscopeCategoryTransformer $categoryTransformer,
+        private readonly CdnRouter $cdnRouter,
+        private readonly CustomBlockParser $customBlockParser,
+    ) {
     }
 
     public function transform(TrombinoscopePerson $person)
@@ -32,6 +31,7 @@ class TrombinoscopePersonPartialTransformer extends AbstractTransformer
             'slug' => $person->getSlug(),
             'fullName' => $person->getFullName(),
             'role' => $person->getRole() ?: null,
+            'content' => $this->customBlockParser->normalizeCustomBlocksIn($person->getContent()),
             'position' => $person->getWeight(),
             'socialWebsite' => $person->getSocialWebsite() ?: null,
             'socialEmail' => $person->getSocialEmail() ?: null,

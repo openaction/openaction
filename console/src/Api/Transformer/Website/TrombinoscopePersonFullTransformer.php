@@ -5,7 +5,6 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Website\TrombinoscopePersonRepository;
-use App\Website\CustomBlockParser;
 use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonFullTransformer extends AbstractTransformer
@@ -15,16 +14,12 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
     public function __construct(
         private readonly TrombinoscopePersonRepository $repository,
         private readonly TrombinoscopePersonPartialTransformer $partialTransformer,
-        private readonly CustomBlockParser $customBlockParser,
     ) {
     }
 
     public function transform(TrombinoscopePerson $person)
     {
-        $data = $this->partialTransformer->transform($person);
-        $data['content'] = $this->customBlockParser->normalizeCustomBlocksIn($person->getContent());
-
-        return $data;
+        return $this->partialTransformer->transform($person);
     }
 
     public static function describeResourceName(): string
