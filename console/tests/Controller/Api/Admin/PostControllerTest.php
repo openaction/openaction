@@ -25,7 +25,6 @@ class PostControllerTest extends ApiTestCase
                 'content' => '<div class="row"><div class="col-md-12"><p>Content example</p></div></div>',
                 'description' => 'Description example',
                 'quote' => 'Quote example',
-                'author' => 'Author example',
                 'videoUrl' => 'https://www.youtube.com/watch?v=muDpH2Ty2tg',
                 'publishedAt' => '2023-02-25 10:00:00',
                 'categories' => ['Category 2', 'Category to create'],
@@ -40,7 +39,6 @@ class PostControllerTest extends ApiTestCase
             'id' => $result['id'],
             'title' => 'Title example',
             'quote' => 'Quote example',
-            'author' => 'Author example',
             'slug' => 'title-example',
             'description' => 'Description example',
             'video' => 'youtube:muDpH2Ty2tg',
@@ -65,6 +63,9 @@ class PostControllerTest extends ApiTestCase
                         'slug' => 'category-to-create',
                     ],
                 ],
+            ],
+            'authors' => [
+                'data' => [],
             ],
         ]);
     }
@@ -92,13 +93,15 @@ class PostControllerTest extends ApiTestCase
             'id' => $result['id'],
             'title' => 'Title example',
             'quote' => null,
-            'author' => null,
             'slug' => 'title-example',
             'description' => null,
             'video' => null,
             'image' => null,
             'sharer' => null,
             'categories' => [
+                'data' => [],
+            ],
+            'authors' => [
                 'data' => [],
             ],
         ]);

@@ -101,9 +101,9 @@ export function PersonEdit(props) {
         });
 
         // Listen on content
-        personContent = window.editors['person-editor'].getHtml();
+        personContent = props.editor.getHtml();
 
-        window.editors['person-editor'].onChange((saveImages) => {
+        props.editor.onChange((saveImages) => {
             setStatus('saving');
 
             saveImages((html) => {

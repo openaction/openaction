@@ -123,6 +123,9 @@ class TestFixtures extends AbstractFixtures
     /** @var TrombinoscopeCategory[] */
     private array $trombinoscopeCategories = [];
 
+    /** @var TrombinoscopePerson[] */
+    private array $trombinoscopePersons = [];
+
     /** @var ManifestoTopic[] */
     private array $manifestoTopics = [];
 
@@ -176,13 +179,13 @@ class TestFixtures extends AbstractFixtures
         $this->loadMenuItems();
         $this->loadPageCategories();
         $this->loadPages();
-        $this->loadPostCategories();
-        $this->loadPosts();
         $this->loadEventsCategories();
         $this->loadForms();
         $this->loadEvents();
         $this->loadTrombinoscopeCategories();
         $this->loadTrombinoscopePersons();
+        $this->loadPostCategories();
+        $this->loadPosts();
         $this->loadManifestoTopics();
         $this->loadManifestoProposals();
         $this->loadHomeBlocks();
@@ -1373,6 +1376,10 @@ class TestFixtures extends AbstractFixtures
                 'categories' => [
                     $this->postCategories['29c0b44c-7ed1-44c5-ada9-4622ce77d5bb'],
                 ],
+                'authors' => [
+                    $this->trombinoscopePersons['46fab812-1f9b-42d4-b5d5-a8de79991690'],
+                    $this->trombinoscopePersons['33d0ba46-2c1d-4bfd-b7e4-0f75bf801fd3'],
+                ],
             ],
             [
                 'title' => 'Only for members',
@@ -1768,7 +1775,7 @@ class TestFixtures extends AbstractFixtures
     private function loadTrombinoscopePersons()
     {
         $items = [
-            [
+            '46fab812-1f9b-42d4-b5d5-a8de79991690' => [
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
                 'fullName' => 'Nathalie Loiseau',
                 'role' => 'Tête de liste Renaissance pour les élections européennes. (Île-de-France).',
@@ -1788,14 +1795,14 @@ class TestFixtures extends AbstractFixtures
                 ],
                 'publishedAt' => new \DateTime('yesterday'),
             ],
-            [
+            '33d0ba46-2c1d-4bfd-b7e4-0f75bf801fd3' => [
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
                 'fullName' => 'Pascal Canfin',
                 'role' => 'Ancien président de WWF (Île-de-France).',
                 'weight' => 2,
                 'publishedAt' => new \DateTime('+1 month'),
             ],
-            [
+            'ce8f8ab5-6a7d-49c4-b1f1-2cb1524e72f7' => [
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
                 'fullName' => 'Marie-Pierre Vedrenne',
                 'role' => 'Juriste et directrice de la Maison de l’Europe à Rennes (Bretagne).',
@@ -1805,7 +1812,7 @@ class TestFixtures extends AbstractFixtures
                 ],
                 'publishedAt' => new \DateTime('yesterday'),
             ],
-            [
+            'aa0e7959-0a41-44f5-9378-1b42c63526e0' => [
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
                 'fullName' => 'Jérémy Decerle',
                 'role' => 'Exploitant agricole et président des Jeunes Agriculteurs (Bourgogne-Franche-Comté).',
@@ -1815,7 +1822,7 @@ class TestFixtures extends AbstractFixtures
                 ],
                 'publishedAt' => new \DateTime('yesterday'),
             ],
-            [
+            '978294a3-ae08-4ace-a864-52ac717a7374' => [
                 'project' => $this->projects['2c720420-65fd-4360-9d77-731758008497'],
                 'fullName' => 'Catherine Chabaud',
                 'role' => 'Navigatrice et journaliste (Pays de la Loire).',
@@ -1824,8 +1831,8 @@ class TestFixtures extends AbstractFixtures
             ],
         ];
 
-        foreach ($items as $data) {
-            $this->em->persist(TrombinoscopePerson::createFixture($data));
+        foreach ($items as $id => $data) {
+            $this->em->persist($this->trombinoscopePersons[$id] = TrombinoscopePerson::createFixture(array_merge($data, ['uuid' => $id])));
         }
 
         $this->em->flush();

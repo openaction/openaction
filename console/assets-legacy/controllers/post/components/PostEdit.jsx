@@ -62,10 +62,10 @@ export function PostEdit(props) {
                     [props.descriptionInput]: metadata.description ? metadata.description : '',
                     [props.externalUrlInput]: metadata.externalUrl ? metadata.externalUrl : '',
                     [props.quoteInput]: metadata.quote ? metadata.quote : '',
-                    [props.authorInput]: metadata.author ? metadata.author : '',
                     [props.videoInput]: metadata.video ? metadata.video : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
+                    [props.authorsInput]: JSON.stringify(metadata.authorsIds ? metadata.authorsIds : []),
                     [props.onlyForMembersInput]: metadata.onlyForMembers ? 1 : 0,
                 })
             )
@@ -107,9 +107,9 @@ export function PostEdit(props) {
         });
 
         // Listen on content
-        postContent = window.editors['post-editor'].getHtml();
+        postContent = props.editor.getHtml();
 
-        window.editors['post-editor'].onChange((saveImages) => {
+        props.editor.onChange((saveImages) => {
             setStatus('saving');
 
             saveImages((html) => {
@@ -191,6 +191,7 @@ export function PostEdit(props) {
                     onMetadataChange={(metadata) => saveMetadata(metadata)}
                     uploadStatus={uploadStatus}
                     fieldCategory="id"
+                    fieldAuthor="id"
                     onImageChange={(e) => uploadImage(e)}
                 />
             </Modal>

@@ -8,6 +8,7 @@ use App\Entity\Website\Post;
 use App\Repository\ProjectRepository;
 use App\Repository\Website\PostCategoryRepository;
 use App\Repository\Website\PostRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
 use App\Util\Uid;
@@ -388,6 +389,53 @@ class PostControllerTest extends WebTestCase
 
         $post = static::getContainer()->get(PostRepository::class)->findOneBy(['uuid' => self::POST_GRAVITATION_UUID]);
         $this->assertCount(count($categories), $post->getCategories());
+    }
+
+    public function provideAuthors(): iterable
+    {
+        yield [
+            'authors' => ['Nathalie Loiseau'],
+        ];
+
+        yield [
+            'authors' => ['Nathalie Loiseau', 'Pascal Canfin'],
+        ];
+
+        yield [
+            'authors' => [],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAuthors
+     */
+    public function testUpdateAuthors(array $authors)
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/website/posts/'.self::POST_GRAVITATION_UUID.'/edit');
+        $this->assertResponseIsSuccessful();
+
+        $repo = static::getContainer()->get(TrombinoscopePersonRepository::class);
+
+        $ids = [];
+        foreach ($authors as $author) {
+            $ids[] = $repo->findOneBy(['fullName' => $author])->getId();
+        }
+
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_CITIPO_UUID.'/website/posts/'.self::POST_GRAVITATION_UUID.'/update/metadata',
+            ['post' => ['authors' => Json::encode($ids)]],
+            [],
+            ['HTTP_X-XSRF-TOKEN' => $this->filterGlobalCsrfToken($crawler)]
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $post = static::getContainer()->get(PostRepository::class)->findOneBy(['uuid' => self::POST_GRAVITATION_UUID]);
+        $this->assertCount(count($authors), $post->getAuthors());
     }
 
     public function testDuplicate()

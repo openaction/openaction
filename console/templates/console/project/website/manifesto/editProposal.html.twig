@@ -70,7 +70,7 @@
             </div>
 
             <div class="editor-container">
-                <div class="editor-content"
+                <div class="editor-content editor-contentbuilder"
                      data-upload-url="{{ path('console_website_manifesto_proposal_upload_image', {'projectUuid': current_project.uuid, 'uuid': proposal.uuid}) }}"
                      id="proposal-editor">{{ proposal.content|raw }}</div>
             </div>

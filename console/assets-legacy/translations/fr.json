@@ -209,19 +209,19 @@
                 },
                 "externalUrl": {
                     "label": "URL externe",
-                    "help": "Lorsque vous indiquez une URL externe, les liens vers cette actualité sur votre site internet amèneront les visiteurs vers cette URL à la place du contenu de l'actualité."
+                    "help": "Si indiqué, cette URL externa sera ouverte à la place du contenu de l'actualité au clic sur celle-ci."
                 },
                 "description": {
                     "label": "Description",
-                    "help": "La description est affichée lors du partage sur Google ou sur les réseaux sociaux, sous le titre de la page. Maximum 150 caractères."
+                    "help": "Description utilisée par Google et les réseaux sociaux lors des partages."
                 },
                 "quote": {
                     "label": "Citation",
-                    "help": "Courte citation pour présenter l'actualité. Maximum 100 caractères."
+                    "help": "Courte citation pour présenter l'actualité."
                 },
                 "author": {
-                    "label": "Auteur",
-                    "help": "Nom de l'auteur de cet actualité. Maximum 100 caractères."
+                    "label": "Auteur(es)",
+                    "help": "Les auteurs peuvent être définis dans le Trombinoscope."
                 },
                 "close": "Fermer"
             },

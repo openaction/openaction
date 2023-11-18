@@ -2,13 +2,30 @@ import React from 'react';
 import { Controller } from 'stimulus';
 import { render } from 'react-dom';
 import { PageEdit } from './components/PageEdit';
+import { Editor } from '../../editor/Editor';
+import { CONTENT_EDITOR_WEB_OPTIONS } from '../../editor/ContentBuilderOptions';
 
 export default class extends Controller {
-    static targets = ['title', 'content', 'description', 'image', 'categories', 'parentId', 'onlyForMembers'];
+    static targets = [
+        'topbar',
+        'editor',
+        'title',
+        'content',
+        'description',
+        'image',
+        'categories',
+        'parentId',
+        'onlyForMembers',
+    ];
 
     connect() {
+        const id = this.editorTarget.getAttribute('id');
+        const uploadUrl = this.editorTarget.getAttribute('data-upload-url');
+        const editor = new Editor('contentbuilder', id, CONTENT_EDITOR_WEB_OPTIONS, uploadUrl);
+
         render(
             <PageEdit
+                editor={editor}
                 features={{
                     sharer: '1' === this.element.getAttribute('data-sharer'),
                 }}
@@ -20,7 +37,7 @@ export default class extends Controller {
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 onlyForMembersInput={this.onlyForMembersTarget.getAttribute('name')}
             />,
-            this.element
+            this.topbarTarget
         );
     }
 }

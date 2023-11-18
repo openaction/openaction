@@ -5,22 +5,21 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Post;
+use App\Entity\Website\TrombinoscopePerson;
 use App\Util\Uid;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
 class PostPartialTransformer extends AbstractTransformer
 {
-    private PostCategoryTransformer $categoryTransformer;
-    private CdnRouter $cdnRouter;
+    protected array $availableIncludes = ['categories', 'authors'];
+    protected array $defaultIncludes = ['categories', 'authors'];
 
-    protected array $availableIncludes = ['categories'];
-    protected array $defaultIncludes = ['categories'];
-
-    public function __construct(PostCategoryTransformer $categoryTransformer, CdnRouter $cdnRouter)
-    {
-        $this->categoryTransformer = $categoryTransformer;
-        $this->cdnRouter = $cdnRouter;
+    public function __construct(
+        private readonly PostCategoryTransformer $categoryTransformer,
+        private readonly TrombinoscopePersonLightTransformer $authorTransformer,
+        private readonly CdnRouter $cdnRouter,
+    ) {
     }
 
     public function transform(Post $post)
@@ -37,7 +36,6 @@ class PostPartialTransformer extends AbstractTransformer
             'id' => Uid::toBase62($post->getUuid()),
             'title' => $post->getTitle(),
             'quote' => $post->getQuote(),
-            'author' => $post->getAuthor(),
             'slug' => $post->getSlug(),
             'description' => $post->getDescription() ?: null,
             'externalUrl' => $post->getExternalUrl() ?: null,
@@ -63,7 +61,6 @@ class PostPartialTransformer extends AbstractTransformer
             'id' => 'string',
             'title' => 'string',
             'quote' => '?string',
-            'author' => '?string',
             'slug' => 'string',
             'description' => '?string',
             'externalUrl' => '?string',
@@ -77,11 +74,25 @@ class PostPartialTransformer extends AbstractTransformer
                     'items' => new Items(['ref' => '#/components/schemas/PostCategory']),
                 ]),
             ],
+            'authors' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
+                ]),
+            ],
         ];
     }
 
     public function includeCategories(Post $post)
     {
         return $this->collection($post->getCategories()->toArray(), $this->categoryTransformer);
+    }
+
+    public function includeAuthors(Post $post)
+    {
+        return $this->collection(
+            $post->getAuthors()->filter(static fn (TrombinoscopePerson $p) => $p->isPublished())->toArray(),
+            $this->authorTransformer,
+        );
     }
 }

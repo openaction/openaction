@@ -32,7 +32,7 @@ class PostCategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return PostCategory[]
+     * @return PostCategory[]|array
      */
     public function getProjectCategories(Project $project, $hydrationMode = Query::HYDRATE_OBJECT): iterable
     {

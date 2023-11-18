@@ -74,11 +74,18 @@ class TrombinoscopePerson implements Searchable
     private ?\DateTime $publishedAt = null;
 
     /**
-     * @var TrombinoscopeCategory[]|Collection
+     * @var Collection<TrombinoscopeCategory>
      */
     #[ORM\ManyToMany(targetEntity: TrombinoscopeCategory::class, inversedBy: 'persons')]
     #[ORM\JoinTable(name: 'website_trombinoscope_persons_categories')]
     private Collection $categories;
+
+    /**
+     * @var Collection<Post>
+     */
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'authors')]
+    #[ORM\JoinTable(name: 'website_posts_authors')]
+    private Collection $posts;
 
     public function __construct(Project $project, string $fullName, int $weight)
     {
@@ -89,6 +96,7 @@ class TrombinoscopePerson implements Searchable
         $this->slug = (new AsciiSlugger())->slug($this->fullName)->lower();
         $this->weight = $weight;
         $this->categories = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     /*
@@ -114,7 +122,7 @@ class TrombinoscopePerson implements Searchable
         $self->socialTelegram = $data['socialTelegram'] ?? null;
 
         foreach ($data['categories'] ?? [] as $category) {
-            $self->addCategory($category);
+            $self->categories[] = $category;
         }
 
         return $self;
@@ -137,7 +145,7 @@ class TrombinoscopePerson implements Searchable
         $self->socialTelegram = $this->socialEmail;
 
         foreach ($this->categories as $category) {
-            $self->addCategory($category);
+            $self->categories[] = $category;
         }
 
         return $self;
@@ -213,19 +221,19 @@ class TrombinoscopePerson implements Searchable
     /*
      * Setters
      */
-    public function setPublishedAt(\DateTime $date = null)
+    public function setPublishedAt(\DateTime $date = null): void
     {
         $this->publishedAt = $date;
     }
 
-    public function applyContentUpdate(TrombinoscopePersonData $data)
+    public function applyContentUpdate(TrombinoscopePersonData $data): void
     {
         $this->fullName = (string) $data->fullName;
         $this->slug = (new AsciiSlugger())->slug($this->fullName)->lower();
         $this->content = (string) $data->content;
     }
 
-    public function applyMetadataUpdate(TrombinoscopePersonData $data)
+    public function applyMetadataUpdate(TrombinoscopePersonData $data): void
     {
         $this->role = (string) $data->role;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
@@ -240,7 +248,7 @@ class TrombinoscopePerson implements Searchable
         $this->socialTelegram = (string) $data->socialTelegram;
     }
 
-    public function setImage(?Upload $image)
+    public function setImage(?Upload $image): void
     {
         $this->image = $image;
     }
@@ -248,36 +256,30 @@ class TrombinoscopePerson implements Searchable
     /*
      * Getters
      */
-    public function isPublished()
+    public function isPublished(): bool
     {
         return $this->publishedAt && $this->publishedAt <= new \DateTime();
     }
 
-    public function isDraft()
+    public function isDraft(): bool
     {
         return !$this->publishedAt;
     }
 
     /**
-     * @return Collection|TrombinoscopeCategory[]
+     * @return Collection<TrombinoscopeCategory>
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function getCategoriesNames(): array
+    /**
+     * @return Collection<Post>
+     */
+    public function getPosts(): Collection
     {
-        return $this->categories->map(static fn (TrombinoscopeCategory $c) => $c->getName())->toArray();
-    }
-
-    public function addCategory(TrombinoscopeCategory $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
+        return $this->posts;
     }
 
     public function getFullName(): string

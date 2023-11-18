@@ -54,7 +54,6 @@ export function MetadataEditor(props) {
     }
 
     const availableParentPages = exposedDataReader.read('available_parent_pages');
-    console.log(availableParentPages);
 
     return (
         <div>

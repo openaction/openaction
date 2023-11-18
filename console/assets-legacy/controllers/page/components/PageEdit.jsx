@@ -98,9 +98,9 @@ export function PageEdit(props) {
         });
 
         // Listen on content
-        postContent = window.editors['page-editor'].getHtml();
+        postContent = props.editor.getHtml();
 
-        window.editors['page-editor'].onChange((saveImages) => {
+        props.editor.onChange((saveImages) => {
             setStatus('saving');
 
             saveImages((html) => {

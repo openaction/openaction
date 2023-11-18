@@ -11,18 +11,20 @@
     'shareUrl': domain_share_url(post.project, 'post', post.uuid|toBase62, post.slug),
 }) %}
 
-{% set categoryIds = post.categories|map(p => p.id) %}
+{% set authorsIds = post.authors|map(a => a.id ~ '') %}
+{% set categoriesIds = post.categories|map(c => c.id) %}
 
 {% do expose('post_metadata', {
     'description': post.description,
     'quote': post.quote,
-    'author': post.author,
     'video': post.video,
     'externalUrl': post.externalUrl,
     'publishedAt': post.publishedAt ? post.publishedAt.format('Y-m-d\\TH:i:sP') : null,
     'image': post.image ? cdn_image_url(post.image) : post.image,
     'categories': categories,
-    'categoryIds': categoryIds,
+    'categoryIds': categoriesIds,
+    'availableAuthors': availableAuthors,
+    'authorsIds': authorsIds,
     'onlyForMembers': post.onlyForMembers,
 }) %}
 
@@ -48,7 +50,9 @@
 {% block javascripts encore_entry_script_tags('editor') %}
 
 {% block content %}
-    <div class="world-box mb-3">
+    <div class="world-box mb-3"
+         data-controller="post--edit"
+         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
         <div class="world-box-status">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-auto">
@@ -65,18 +69,17 @@
                     </a>
                 </div>
                 <div class="col-12 col-lg-auto ml-lg-auto">
-                    <div data-controller="post--edit"
-                         data-sharer="{{ current_project.isFeatureInPlan('feature_website_social_crossposting') ? '1' : '0' }}">
+                    <div data-post--edit-target="topbar">
                         <div class="d-none">
                             {{ form_widget(form.title, {'attr': {'data-post--edit-target': 'title'}}) }}
                             {{ form_widget(form.content, {'attr': {'data-post--edit-target': 'content'}}) }}
                             {{ form_widget(form.quote, {'attr': {'data-post--edit-target': 'quote'}}) }}
-                            {{ form_widget(form.author, {'attr': {'data-post--edit-target': 'author'}}) }}
                             {{ form_widget(form.description, {'attr': {'data-post--edit-target': 'description'}}) }}
                             {{ form_widget(form.externalUrl, {'attr': {'data-post--edit-target': 'externalUrl'}}) }}
                             {{ form_widget(form.video, {'attr': {'data-post--edit-target': 'video'}}) }}
                             {{ form_widget(form.publishedAt, {'attr': {'data-post--edit-target': 'publishedAt'}}) }}
                             {{ form_widget(form.categories, {'attr': {'data-post--edit-target': 'categories'}}) }}
+                            {{ form_widget(form.authors, {'attr': {'data-post--edit-target': 'authors'}}) }}
                             {{ form_widget(form.onlyForMembers, {'attr': {'data-post--edit-target': 'onlyForMembers'}}) }}
                             {{ form_widget(image_form.file, {'attr': {'data-post--edit-target': 'image'}}) }}
                         </div>
@@ -91,6 +94,7 @@
 
             <div class="editor-container">
                 <div class="editor-content"
+                     data-post--edit-target="editor"
                      data-upload-url="{{ path('console_website_post_upload_image', {'projectUuid': current_project.uuid, 'uuid': post.uuid}) }}"
                      id="post-editor">{{ post.content|raw }}</div>
             </div>

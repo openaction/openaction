@@ -1,6 +1,7 @@
 import React from 'react';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { translator } from '../../../services/translator';
+import { AuthorsSelector } from './AuthorsSelector';
 
 let saveTimeout = null;
 
@@ -81,7 +82,7 @@ export function MetadataEditor(props) {
                         <div className="mb-1">
                             <input
                                 type="text"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 placeholder={translator.trans('post.edit.metadata_modal.video.placeholder')}
                                 defaultValue={props.videoValue}
                                 onChange={(e) => handleInputChange(e, 'video')}
@@ -136,7 +137,7 @@ export function MetadataEditor(props) {
 
                         <div className="mb-1">
                             <input
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.externalUrl}
                                 onChange={(e) => handleInputChange(e, 'externalUrl')}
                             />
@@ -154,7 +155,7 @@ export function MetadataEditor(props) {
 
                         <div className="mb-1">
                             <textarea
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 rows={5}
                                 defaultValue={props.metadata.description}
                                 onChange={(e) => handleInputChange(e, 'description')}
@@ -173,7 +174,7 @@ export function MetadataEditor(props) {
 
                         <div className="mb-1">
                             <textarea
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 rows={3}
                                 defaultValue={props.metadata.quote}
                                 onChange={(e) => handleInputChange(e, 'quote')}
@@ -188,14 +189,11 @@ export function MetadataEditor(props) {
                             <strong>{translator.trans('post.edit.metadata_modal.author.label')}</strong>
                         </div>
 
-                        <div className="mb-1">
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue={props.metadata.author}
-                                onChange={(e) => handleInputChange(e, 'author')}
-                            />
-                        </div>
+                        <AuthorsSelector
+                            choices={props.metadata.availableAuthors}
+                            selectedIds={props.metadata.authorsIds}
+                            onChange={(authors) => handleMetadataChange('authorsIds', authors)}
+                        />
 
                         <small className="text-muted">{translator.trans('post.edit.metadata_modal.author.help')}</small>
                     </div>

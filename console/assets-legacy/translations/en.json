@@ -220,8 +220,8 @@
                     "help": "Brief description about this Post. Maximum 100 characters."
                 },
                 "author": {
-                    "label": "Author",
-                    "help": "Author name of this post. Maximum 100 characters."
+                    "label": "Author(s)",
+                    "help": "Authors can be defined in the Trombinoscope module."
                 },
                 "close": "Close"
             },
