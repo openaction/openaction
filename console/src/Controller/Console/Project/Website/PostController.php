@@ -20,6 +20,7 @@ use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
 use App\Repository\Website\PostCategoryRepository;
 use App\Repository\Website\PostRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use App\Search\Consumer\RemoveCmsDocumentMessage;
 use App\Search\Consumer\UpdateCmsDocumentMessage;
 use App\Util\Uid;
@@ -42,6 +43,7 @@ class PostController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly PostRepository $repository,
         private readonly PostCategoryRepository $categoryRepository,
+        private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
         private readonly MessageBusInterface $bus,
         private readonly DomainRouter $domainRouter,
     ) {
@@ -76,6 +78,7 @@ class PostController extends AbstractController
         return $this->render('console/project/website/post/edit.html.twig', [
             'post' => $post,
             'form' => $this->createForm(PostType::class, new PostData($post->getVideo()))->createView(),
+            'availableAuthors' => $this->trombinoscopePersonRepository->getProjectAuthors($this->getProject(), Query::HYDRATE_ARRAY),
             'categories' => $this->categoryRepository->getProjectCategories($this->getProject(), Query::HYDRATE_ARRAY),
             'image_form' => $this->createForm(PostImageType::class, new PostImageData())->createView(),
         ]);
@@ -124,6 +127,7 @@ class PostController extends AbstractController
         $this->em->flush();
 
         if ('Metadata' === $groupValidation) {
+            $this->trombinoscopePersonRepository->updateAuthors($post, $postData->getAuthorsArray());
             $this->categoryRepository->updateCategories($post, $postData->getCategoriesArray());
         }
 

@@ -7,7 +7,7 @@ export function Modal(props) {
         } else {
             document.body.classList.remove('modal-open');
         }
-    });
+    }, [props.opened]);
 
     return (
         <div>

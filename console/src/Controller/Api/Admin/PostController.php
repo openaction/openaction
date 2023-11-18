@@ -57,7 +57,6 @@ class PostController extends AbstractApiController
             description: $payload->description ?: null,
             video: $payload->videoUrl ? Video::createFromUrl($payload->videoUrl)?->toReference() : null,
             quote: $payload->quote ?: null,
-            author: $payload->author ?: null,
             publishedAt: $payload->publishedAt ? new \DateTime($payload->publishedAt) : null,
             categories: $categories,
         );

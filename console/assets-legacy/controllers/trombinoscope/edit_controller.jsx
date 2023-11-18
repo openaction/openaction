@@ -2,9 +2,13 @@ import React from 'react';
 import { Controller } from 'stimulus';
 import { render } from 'react-dom';
 import { PersonEdit } from './components/PersonEdit';
+import { Editor } from '../../editor/Editor';
+import { CONTENT_EDITOR_WEB_OPTIONS } from '../../editor/ContentBuilderOptions';
 
 export default class extends Controller {
     static targets = [
+        'topbar',
+        'editor',
         'fullName',
         'role',
         'content',
@@ -23,8 +27,13 @@ export default class extends Controller {
     ];
 
     connect() {
+        const id = this.editorTarget.getAttribute('id');
+        const uploadUrl = this.editorTarget.getAttribute('data-upload-url');
+        const editor = new Editor('contentbuilder', id, CONTENT_EDITOR_WEB_OPTIONS, uploadUrl);
+
         render(
             <PersonEdit
+                editor={editor}
                 fullNameInput={this.fullNameTarget.getAttribute('name')}
                 roleInput={this.roleTarget.getAttribute('name')}
                 contentInput={this.contentTarget.getAttribute('name')}
@@ -41,7 +50,7 @@ export default class extends Controller {
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 imageInput={this.imageTarget.getAttribute('name')}
             />,
-            this.element
+            this.topbarTarget
         );
     }
 }

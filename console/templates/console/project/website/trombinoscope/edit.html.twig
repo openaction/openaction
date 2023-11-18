@@ -51,7 +51,7 @@
         'categoryIds': categoryIds,
     }) %}
 
-    <div class="world-box mb-3">
+    <div class="world-box mb-3" data-controller="trombinoscope--edit">
         <div class="world-box-status">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-auto">
@@ -68,7 +68,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-lg-auto ml-lg-auto">
-                    <div data-controller="trombinoscope--edit">
+                    <div data-trombinoscope--edit-target="topbar">
                         <div class="d-none">
                             {{ form_widget(form.fullName, {'attr': {'data-trombinoscope--edit-target': 'fullName'}}) }}
                             {{ form_widget(form.role, {'attr': {'data-trombinoscope--edit-target': 'role'}}) }}
@@ -97,6 +97,7 @@
 
             <div class="editor-container">
                 <div class="editor-content"
+                     data-trombinoscope--edit-target="editor"
                      data-upload-url="{{ path('console_website_trombinoscope_upload_image', {'projectUuid': current_project.uuid, 'uuid': person.uuid}) }}"
                      id="person-editor">{{ person.content|raw }}</div>
             </div>

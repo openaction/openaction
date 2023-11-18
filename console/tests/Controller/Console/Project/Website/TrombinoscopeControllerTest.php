@@ -19,8 +19,8 @@ use Symfony\Component\Uid\Uuid;
 
 class TrombinoscopeControllerTest extends WebTestCase
 {
-    private const PERSON_NLOISEAU_UUID = '790e9491-03c9-501f-897d-33709b02c3a3';
-    private const PERSON_CCHABAUD_UUID = '5d01e66a-917b-5eed-b654-eaebb962c125';
+    private const PERSON_NLOISEAU_UUID = '46fab812-1f9b-42d4-b5d5-a8de79991690';
+    private const PERSON_CCHABAUD_UUID = '978294a3-ae08-4ace-a864-52ac717a7374';
 
     public function testIndex()
     {

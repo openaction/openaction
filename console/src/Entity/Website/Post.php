@@ -4,7 +4,6 @@ namespace App\Entity\Website;
 
 use App\Entity\Project;
 use App\Entity\Upload;
-use App\Entity\User;
 use App\Entity\Util;
 use App\Form\Website\Model\PostData;
 use App\Repository\Website\PostRepository;
@@ -40,9 +39,6 @@ class Post implements Searchable
     #[ORM\Column(length: 200, nullable: true)]
     private ?string $quote = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $author = null;
-
     #[ORM\Column(type: 'text')]
     private string $content = '';
 
@@ -56,13 +52,21 @@ class Post implements Searchable
     private ?Upload $image = null;
 
     /**
-     * @var PostCategory[]|Collection
+     * @var Collection<PostCategory>
      */
     #[ORM\ManyToMany(targetEntity: PostCategory::class, inversedBy: 'posts')]
     #[ORM\JoinTable(name: 'website_posts_posts_categories')]
     private Collection $categories;
 
-    public function __construct(Project $project, string $title, User $author = null)
+    /**
+     * @var Collection<TrombinoscopePerson>
+     */
+    #[ORM\ManyToMany(targetEntity: TrombinoscopePerson::class, inversedBy: 'posts')]
+    #[ORM\JoinTable(name: 'website_posts_authors')]
+    #[ORM\OrderBy(['weight' => 'ASC'])]
+    private Collection $authors;
+
+    public function __construct(Project $project, string $title)
     {
         $this->populateTimestampable();
         $this->project = $project;
@@ -70,26 +74,12 @@ class Post implements Searchable
         $this->title = $title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->categories = new ArrayCollection();
-
-        if ($author) {
-            $this->author = $author->getFullName();
-        }
+        $this->authors = new ArrayCollection();
     }
 
     /*
      * Factories
      */
-
-    public static function createInitialPost(Project $project, string $title, string $description, ?Upload $image, string $content = ''): self
-    {
-        $self = new self($project, $title);
-        $self->description = $description;
-        $self->image = $image;
-        $self->publishedAt = new \DateTime();
-        $self->content = $content;
-
-        return $self;
-    }
 
     public static function createFixture(array $data): self
     {
@@ -106,7 +96,11 @@ class Post implements Searchable
         $self->pageViews = $data['pageViews'] ?? 0;
 
         foreach ($data['categories'] ?? [] as $category) {
-            $self->addCategory($category);
+            $self->categories[] = $category;
+        }
+
+        foreach ($data['authors'] ?? [] as $author) {
+            $self->authors[] = $author;
         }
 
         return $self;
@@ -122,7 +116,7 @@ class Post implements Searchable
         $self->onlyForMembers = $this->onlyForMembers;
 
         foreach ($this->categories as $category) {
-            $self->addCategory($category);
+            $self->categories[] = $category;
         }
 
         return $self;
@@ -209,7 +203,6 @@ class Post implements Searchable
         ?string $description,
         ?string $video,
         ?string $quote,
-        ?string $author,
         ?\DateTime $publishedAt,
         iterable $categories,
     ): void {
@@ -217,7 +210,6 @@ class Post implements Searchable
         $this->description = $description;
         $this->video = $video;
         $this->quote = $quote;
-        $this->author = $author;
         $this->publishedAt = $publishedAt;
 
         foreach ($categories as $category) {
@@ -225,59 +217,57 @@ class Post implements Searchable
         }
     }
 
-    public function setPublishedAt(\DateTime $date = null)
+    public function setPublishedAt(\DateTime $date = null): void
     {
         $this->publishedAt = $date;
     }
 
-    public function applyContentUpdate(PostData $data)
+    public function applyContentUpdate(PostData $data): void
     {
         $this->title = (string) $data->title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->content = (string) $data->content;
     }
 
-    public function applyMetadataUpdate(PostData $data)
+    public function applyMetadataUpdate(PostData $data): void
     {
         $this->video = $data->video;
         $this->description = (string) $data->description;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
         $this->quote = (string) $data->quote;
-        $this->author = (string) $data->author;
         $this->externalUrl = $data->externalUrl ?: null;
         $this->onlyForMembers = (bool) $data->onlyForMembers;
     }
 
-    public function setImage(?Upload $image)
+    public function setImage(?Upload $image): void
     {
         $this->image = $image;
     }
 
-    public function isPublished()
+    public function isPublished(): bool
     {
         return $this->publishedAt && $this->publishedAt < new \DateTime();
     }
 
-    public function isDraft()
+    public function isDraft(): bool
     {
         return !$this->publishedAt;
     }
 
     /**
-     * @return Collection|PostCategory[]
+     * @return Collection<PostCategory>
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function addCategory(PostCategory $category): self
+    /**
+     * @return Collection<TrombinoscopePerson>
+     */
+    public function getAuthors(): Collection
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
+        return $this->authors;
     }
 
     /*
@@ -301,11 +291,6 @@ class Post implements Searchable
     public function getQuote(): ?string
     {
         return $this->quote;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
     }
 
     public function getContent(): string

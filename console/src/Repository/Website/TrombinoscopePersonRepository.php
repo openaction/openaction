@@ -4,10 +4,12 @@ namespace App\Repository\Website;
 
 use App\Entity\Project;
 use App\Entity\Upload;
+use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
 use App\Util\Uid;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,21 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return TrombinoscopePerson[]|array
+     */
+    public function getProjectAuthors(Project $project, $hydrationMode = Query::HYDRATE_OBJECT): iterable
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.id', 'p.fullName')
+            ->where('p.project = :project')
+            ->setParameter('project', $project->getId())
+            ->orderBy('p.fullName')
+        ;
+
+        return $qb->getQuery()->getResult($hydrationMode);
     }
 
     /**
@@ -119,6 +136,28 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
 
                 $connection->update($tableName, ['weight' => (int) $item['order']], ['id' => $item['id']]);
             }
+        });
+    }
+
+    public function updateAuthors(Post $post, array $authorsIds)
+    {
+        $this->_em->wrapInTransaction(function () use ($post, $authorsIds) {
+            $metadata = $this->_em->getClassMetadata(TrombinoscopePerson::class);
+
+            $this->_em->getConnection()->createQueryBuilder()
+                ->delete($metadata->associationMappings['posts']['joinTable']['name'])
+                ->where('post_id = :post')
+                ->setParameter('post', $post->getId())
+                ->execute()
+            ;
+
+            $post->getAuthors()->clear();
+            foreach ($authorsIds as $id) {
+                $post->getAuthors()->add($this->find($id));
+            }
+
+            $this->_em->persist($post);
+            $this->_em->flush();
         });
     }
 }

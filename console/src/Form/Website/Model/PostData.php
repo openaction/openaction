@@ -14,9 +14,6 @@ class PostData
     #[Assert\Length(max: 200, groups: ['Metadata'])]
     public ?string $quote = null;
 
-    #[Assert\Length(max: 100, groups: ['Metadata'])]
-    public ?string $author = null;
-
     public ?string $content = '';
 
     #[Assert\Length(max: 200, groups: ['Metadata'])]
@@ -29,6 +26,7 @@ class PostData
     public ?string $publishedAt = null;
 
     public ?string $categories = null;
+    public ?string $authors = null;
 
     public ?bool $onlyForMembers = false;
 
@@ -49,5 +47,10 @@ class PostData
     public function getCategoriesArray()
     {
         return Json::decode($this->categories) ?: [];
+    }
+
+    public function getAuthorsArray()
+    {
+        return Json::decode($this->authors) ?: [];
     }
 }
