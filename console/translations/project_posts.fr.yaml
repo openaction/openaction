@@ -8,8 +8,9 @@ index:
     edit: Modifier
     duplicate: Dupliquer
     move: Déplacer
+    crosspost: Crossposter
     delete: Supprimer
-    view: Voir sur le site
+    view: Voir
     preview: Prévisualiser
     draft: Brouillon
     scheduled: Planifiée
@@ -33,6 +34,16 @@ move:
     back: Retour à la liste
     to: Dans quel projet souhaitez-vous déplacer cette actualité ?
     submit: Déplacer
+
+crosspost:
+    title: Crossposter l'actualité "%title%"
+    back: Retour à la liste
+    help: |
+        Crossposter une actualité permet de la dupliquer dans plusieurs projets à la fois. Les versions dupliquées
+        seront indépendantes les unes des autres et pourront être modifiées séparément. Elles seront crées commes
+        brouillons sur les projets choisis.
+    to: Dans quels projets souhaitez-vous crossposter cette actualité ?
+    submit: Crossposter
 
 categories:
     index:

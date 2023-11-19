@@ -8,6 +8,7 @@ index:
     edit: bearbeiten
     duplicate: 'Duplizieren Sie'
     move: Verschieben
+    crosspost: Crossposten
     delete: Löschen
     view: Siehe
     preview: Vorschau
@@ -30,6 +31,15 @@ move:
     back: 'Zurück zur Liste'
     to: 'In welches Projekt möchten Sie diesen Beitrag verschieben?'
     submit: Verschieben
+crosspost:
+    title: Crossposten "%title%"
+    back: 'Zurück zur Liste'
+    help: |
+        Durch das Cross-Posten eines Beitrags wird dieser gleichzeitig in mehreren Projekten dupliziert. 
+        Doppelte Versionen sind unabhängig voneinander und können separat geändert werden. Sie werden als 
+        erstellt Entwürfe zu den ausgewählten Projekten.
+    to: In welchen Projekten möchten Sie diesen Beitrag Crossposten?
+    submit: Crossposten
 categories:
     index:
         back: 'Zurück zu den Beiträgen'

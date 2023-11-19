@@ -482,6 +482,41 @@ class PostControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    public function testCrosspost()
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/website/posts/'.self::POST_GRAVITATION_UUID.'/crosspost');
+        $this->assertResponseIsSuccessful();
+
+        /** @var Project $acmeProject */
+        $acmeProject = static::getContainer()->get(ProjectRepository::class)->findOneByUuid(self::PROJECT_ACME_UUID);
+
+        $form = $crawler->selectButton('Crosspost')->form();
+        $client->submit($form, ['crosspost_entity[intoProjects]' => [$acmeProject->getId()]]);
+
+        // Check original location didn't change
+        /** @var Post $post */
+        $post = static::getContainer()->get(PostRepository::class)->findOneBy(['uuid' => self::POST_GRAVITATION_UUID]);
+        $this->assertNotSame($acmeProject->getId(), $post->getProject()->getId());
+
+        // Check duplicate location is target project
+        /** @var Post $duplicate */
+        $duplicate = static::getContainer()->get(PostRepository::class)->findOneBy([
+            'title' => $post->getTitle(),
+            'project' => $acmeProject,
+        ]);
+        $this->assertInstanceOf(Post::class, $duplicate);
+        $this->assertNotSame($post->getId(), $duplicate->getId());
+        $this->assertSame($post->getTitle(), $duplicate->getTitle());
+        $this->assertSame($post->getContent(), $duplicate->getContent());
+        $this->assertSame($post->getDescription(), $duplicate->getDescription());
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
     public function testView()
     {
         $client = static::createClient();

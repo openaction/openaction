@@ -115,10 +115,6 @@ class Post implements Searchable
         $self->video = $this->video;
         $self->onlyForMembers = $this->onlyForMembers;
 
-        foreach ($this->categories as $category) {
-            $self->categories[] = $category;
-        }
-
         return $self;
     }
 
