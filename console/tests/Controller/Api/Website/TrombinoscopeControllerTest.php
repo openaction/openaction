@@ -195,6 +195,35 @@ class TrombinoscopeControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testViewPosts()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest($client, 'GET', '/api/website/trombinoscope/29w2ahAQA0Rbaa0FVTBHay?includes=previous,next,posts', self::ACME_TOKEN);
+
+        $this->assertApiResponse($result, [
+            'id' => '29w2ahAQA0Rbaa0FVTBHay',
+            'fullName' => 'Nathalie Loiseau',
+            'posts' => [
+                'data' => [
+                    [
+                        '_resource' => 'Post',
+                        '_links' => ['self' => 'http://localhost/api/website/posts/2m4VBvTA1NbUi7acpk7JFy'],
+                        'id' => '2m4VBvTA1NbUi7acpk7JFy',
+                        'title' => 'The EU must stand with the people of Hong Kong against China’s abuse of power',
+                        'quote' => 'Quote 1',
+                        'slug' => 'the-eu-must-stand-with-the-people-of-hong-kong-against-china-s-abuse-of-power',
+                        'description' => 'Description 1',
+                        'externalUrl' => 'https://openaction.eu',
+                        'video' => 'youtube:nxaOzonmeic',
+                        'image' => 'http://localhost/serve/post-image.png',
+                        'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     public function testViewNoToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/website/trombinoscope/29w2ahAQA0Rbaa0FVTBHay', null, 401);
