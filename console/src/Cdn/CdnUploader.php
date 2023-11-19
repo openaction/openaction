@@ -62,7 +62,7 @@ class CdnUploader
         }
 
         $pathinfo = pathinfo($upload->getPathname());
-        $newPathname = $pathinfo['dirname'].'/'.$pathinfo['filename'].'-copy-'.date('Y-m-d-H-i').'.'.$pathinfo['extension'];
+        $newPathname = $pathinfo['dirname'].'/'.$pathinfo['filename'].'-copy-'.date('Y-m-d-H-i').'-'.substr(md5(random_bytes(10)), 0, 6).'.'.$pathinfo['extension'];
 
         // Save it into the CDN
         $this->cdnStorage->write($newPathname, $this->cdnStorage->read($upload->getPathname()));
