@@ -15,16 +15,21 @@ interface Props {
 }
 
 function fuzzySearchAuthors(availableAuthors: Author[], search: string): Author[] {
+    const maxResults = 5;
+
     if (!search) {
-        return availableAuthors;
+        return availableAuthors.slice(0, maxResults);
     }
 
     const fuse = new Fuse(availableAuthors, {
         includeScore: true,
-        keys: ['name'],
+        keys: ['fullName'],
     });
 
-    return fuse.search(search).map((result) => result.item);
+    return fuse
+        .search(search)
+        .slice(0, maxResults)
+        .map((result) => result.item);
 }
 
 const InternalTagSelect = MultiSelect.ofType<Author>();
