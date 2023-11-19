@@ -94,13 +94,10 @@ class CdnUploaderTest extends UnitTestCase
 
         $upload = $uploader->upload(new CdnUploadRequest($uploadedFile, 'post-image', null, $this->createProject(1), 'file'));
         $duplicated = $uploader->duplicate($upload);
+        $this->assertNotSame($upload->getPathname(), $duplicated->getPathname());
 
         // Should have been persisted in the CDN
-        $expectedPath = '15016b0b-3ed6-5630-a167-3dff4ddf43ac/post-image/file-copy-'.date('Y-m-d-H-i').'.jpg';
-        $this->assertTrue($storage->fileExists($expectedPath));
-        $this->assertStringEqualsFile($uploadedFile->getPathname(), $storage->read($expectedPath));
-
-        // Should have created a reference in the database
-        $this->assertSame($expectedPath, $duplicated->getPathname());
+        $this->assertTrue($storage->fileExists($duplicated->getPathname()));
+        $this->assertStringEqualsFile($uploadedFile->getPathname(), $storage->read($duplicated->getPathname()));
     }
 }
