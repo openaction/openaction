@@ -85,6 +85,7 @@ class TrombinoscopePerson implements Searchable
      */
     #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'authors')]
     #[ORM\JoinTable(name: 'website_posts_authors')]
+    #[ORM\OrderBy(['publishedAt' => 'DESC'])]
     private Collection $posts;
 
     public function __construct(Project $project, string $fullName, int $weight)

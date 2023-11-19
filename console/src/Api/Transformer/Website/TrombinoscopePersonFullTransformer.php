@@ -3,17 +3,20 @@
 namespace App\Api\Transformer\Website;
 
 use App\Api\Transformer\AbstractTransformer;
+use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Website\TrombinoscopePersonRepository;
+use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonFullTransformer extends AbstractTransformer
 {
-    protected array $availableIncludes = ['previous', 'next'];
+    protected array $availableIncludes = ['previous', 'next', 'posts'];
 
     public function __construct(
         private readonly TrombinoscopePersonRepository $repository,
         private readonly TrombinoscopePersonPartialTransformer $partialTransformer,
+        private readonly PostLightTransformer $postLightTransformer,
     ) {
     }
 
@@ -37,6 +40,12 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
             'id' => 'string',
             'previous' => new Property(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
             'next' => new Property(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
+            'posts' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/Post']),
+                ]),
+            ],
         ];
     }
 
@@ -56,5 +65,13 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
         }
 
         return null;
+    }
+
+    public function includePosts(TrombinoscopePerson $person)
+    {
+        return $this->collection(
+            $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 5),
+            $this->postLightTransformer,
+        );
     }
 }
