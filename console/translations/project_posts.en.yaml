@@ -8,6 +8,7 @@ index:
     edit: Edit
     duplicate: Duplicate
     move: Move
+    crosspost: Crosspost
     delete: Delete
     view: View
     preview: Preview
@@ -33,6 +34,16 @@ move:
     back: Back to the list
     to: Into which project would you like to move this post?
     submit: Move
+
+crosspost:
+    title: Croppost post "%title%"
+    back: Back to the list
+    help: |
+        Cross-posting a post duplicates it in several projects at the same time. Duplicate versions
+        will be independent of each other and can be modified separately. They will be created as
+        drafts on the chosen projects.
+    to: In which projects do you want to crosspost this post?
+    submit: Crosspost
 
 categories:
     index:

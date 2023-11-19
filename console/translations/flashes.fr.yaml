@@ -73,3 +73,6 @@ printing:
 
 move:
     success: L'élément a bien été déplacé.
+
+crosspost:
+    success: L'élément a bien été crossposté.

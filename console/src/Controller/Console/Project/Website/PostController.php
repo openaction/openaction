@@ -9,7 +9,10 @@ use App\Controller\AbstractController;
 use App\Controller\Util\ApiControllerTrait;
 use App\Controller\Util\ContentEditorUploadControllerTrait;
 use App\DataManager\PostDataManager;
+use App\Entity\Project;
 use App\Entity\Website\Post;
+use App\Form\Project\CrosspostEntityType;
+use App\Form\Project\Model\CrosspostEntityData;
 use App\Form\Project\Model\MoveEntityData;
 use App\Form\Project\MoveEntityType;
 use App\Form\Website\Model\PostData;
@@ -268,6 +271,49 @@ class PostController extends AbstractController
         }
 
         return $this->render('console/project/website/post/move.html.twig', [
+            'post' => $post,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/{uuid}/crosspost', name: 'console_website_post_crosspost', methods: ['GET', 'POST'])]
+    public function crosspost(PostDataManager $dataManager, Post $post, Request $request)
+    {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($post);
+
+        $data = new CrosspostEntityData();
+
+        $form = $this->createForm(CrosspostEntityType::class, $data, [
+            'user' => $this->getUser(),
+            'permission' => Permissions::WEBSITE_POSTS_MANAGE_DRAFTS,
+            'current_project' => $this->getProject(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Project $project */
+            foreach ($data->intoProjects as $project) {
+                if (!$this->isGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $project)) {
+                    continue;
+                }
+
+                $duplicate = $dataManager->duplicate($post);
+                $dataManager->move($duplicate, $project);
+
+                $this->bus->dispatch(UpdateCmsDocumentMessage::forSearchable($duplicate));
+            }
+
+            $this->addFlash('success', 'crosspost.success');
+
+            return $this->redirectToRoute('console_website_posts', [
+                'projectUuid' => $this->getProject()->getUuid(),
+            ]);
+        }
+
+        return $this->render('console/project/website/post/crosspost.html.twig', [
             'post' => $post,
             'form' => $form->createView(),
         ]);

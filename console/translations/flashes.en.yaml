@@ -71,3 +71,6 @@ printing:
 
 move:
     success: The element was moved successfully.
+
+crosspost:
+    success: The element was crossposted successfully.

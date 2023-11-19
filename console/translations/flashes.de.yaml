@@ -53,3 +53,5 @@ printing:
     updated_success: 'Die Details der Kampagne wurden erfolgreich gespeichert.'
 move:
     success: 'Das Element wurde erfolgreich verschoben.'
+crosspost:
+    success: Das Element wurde erfolgreich Crossgepostet.
