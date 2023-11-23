@@ -4,6 +4,7 @@ namespace App\Api\Transformer\Website;
 
 use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\Post;
+use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Website\PostRepository;
 use App\Website\CustomBlockParser;
 use OpenApi\Annotations\Items;
@@ -11,13 +12,14 @@ use OpenApi\Annotations\Property;
 
 class PostFullTransformer extends AbstractTransformer
 {
-    protected array $availableIncludes = ['categories', 'more'];
-    protected array $defaultIncludes = ['categories'];
+    protected array $availableIncludes = ['categories', 'authors', 'more'];
+    protected array $defaultIncludes = ['categories', 'authors'];
 
     public function __construct(
         private readonly PostRepository $repository,
         private readonly PostCategoryTransformer $categoryTransformer,
         private readonly PostPartialTransformer $partialTransformer,
+        private readonly TrombinoscopePersonLightTransformer $authorTransformer,
         private readonly CustomBlockParser $customBlockParser,
     ) {
     }
@@ -59,6 +61,12 @@ class PostFullTransformer extends AbstractTransformer
                     'items' => new Items(['ref' => '#/components/schemas/PostCategory']),
                 ]),
             ],
+            'authors' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonLight']),
+                ]),
+            ],
             'more' => [
                 'data' => new Property([
                     'type' => 'array',
@@ -76,5 +84,13 @@ class PostFullTransformer extends AbstractTransformer
     public function includeMore(Post $post)
     {
         return $this->collection($this->repository->getMorePosts($post), $this->partialTransformer);
+    }
+
+    public function includeAuthors(Post $post)
+    {
+        return $this->collection(
+            $post->getAuthors()->filter(static fn (TrombinoscopePerson $p) => $p->isPublished())->toArray(),
+            $this->authorTransformer,
+        );
     }
 }
