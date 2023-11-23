@@ -77,7 +77,7 @@ class PostPartialTransformer extends AbstractTransformer
             'authors' => [
                 'data' => new Property([
                     'type' => 'array',
-                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonPartial']),
+                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonLight']),
                 ]),
             ],
         ];
