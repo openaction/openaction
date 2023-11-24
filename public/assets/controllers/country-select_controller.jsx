@@ -6,13 +6,13 @@ import { CountrySelect } from './components/CountrySelect';
 export default class extends Controller {
     connect() {
         // Try to detect current country
-        this._setDefaultCountry();
-
-        // Render a better select field with flags
-        this._renderFlagsSelect();
+        this._setDefaultCountry((country) => {
+            // Render a better select field with flags
+            this._renderFlagsSelect(country);
+        });
     }
 
-    _setDefaultCountry() {
+    _setDefaultCountry(cb) {
         // If it exists in cache, use it
         const country = localStorage.getItem('country');
 
@@ -26,6 +26,8 @@ export default class extends Controller {
             if (countryOption) {
                 countryOption.selected = true;
             }
+
+            cb(country);
 
             return;
         }
@@ -45,11 +47,13 @@ export default class extends Controller {
                 if (countryOption) {
                     countryOption.selected = true;
                 }
+
+                cb(country.toUpperCase());
             })
         ;
     }
 
-    _renderFlagsSelect() {
+    _renderFlagsSelect(defaultValue) {
         // Create a wrapper
         const wrapper = document.createElement('div');
         this.element.parentNode.insertBefore(wrapper, this.element);
@@ -57,7 +61,7 @@ export default class extends Controller {
 
         // Render the new select field
         const options = [];
-        let defaultValue = null;
+        let defaultOption = null;
 
         this.element.querySelectorAll('option').forEach(option => {
             const data = {
@@ -65,17 +69,17 @@ export default class extends Controller {
                 label: <><span className={'mr-1 fi fi-'+option.innerText.toLowerCase()} /> {option.innerText}</>,
             };
 
-            options.push(data);
-
-            if (option.selected) {
-                defaultValue = data;
+            if (option.value === defaultValue) {
+                defaultOption = data;
             }
+
+            options.push(data);
         });
 
         render(
             <CountrySelect
                 options={options}
-                defaultValue={defaultValue}
+                defaultValue={defaultOption}
                 fieldName={this.element.getAttribute('name')}
             />,
             wrapper
