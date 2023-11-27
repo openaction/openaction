@@ -79,10 +79,19 @@
                         {{ 'edit.form.details'|trans({}, 'project_events') }}
                     </div>
 
-                    {{ form_row(form.beginAt, {
-                        'label': 'edit.form.beginAt.label'|trans({}, 'project_events'),
-                        'help': 'edit.form.beginAt.help'|trans({}, 'project_events'),
-                    }) }}
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form_row(form.beginAt, {
+                                'label': 'edit.form.beginAt.label'|trans({}, 'project_events'),
+                                'help': 'edit.form.beginAt.help'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.timezone, {
+                                'label': 'edit.form.timezone.label'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                    </div>
 
                     <div>
                         {{ form_row(form.address, {

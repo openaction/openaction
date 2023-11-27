@@ -42,6 +42,9 @@ class Event implements Searchable
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $beginAt = null;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $timezone = null;
+
     #[ORM\Column(length: 250, nullable: true)]
     private ?string $url = null;
 
@@ -92,6 +95,7 @@ class Event implements Searchable
         $self->content = $data['content'] ?? '';
         $self->publishedAt = $data['publishedAt'] ?? null;
         $self->beginAt = $data['beginAt'] ?? null;
+        $self->timezone = $data['timezone'] ?? 'Europe/Paris';
         $self->url = $data['url'] ?? null;
         $self->buttonText = $data['buttonText'] ?? null;
         $self->latitude = $data['latitude'] ?? null;
@@ -120,6 +124,7 @@ class Event implements Searchable
         $self->slug = $this->slug;
         $self->content = $this->content;
         $self->beginAt = $this->beginAt;
+        $self->timezone = $this->timezone;
         $self->url = $this->url;
         $self->buttonText = $this->buttonText;
         $self->latitude = $this->latitude;
@@ -215,6 +220,7 @@ class Event implements Searchable
         $this->title = (string) $data->title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->beginAt = $data->beginAt;
+        $this->timezone = $data->timezone;
         $this->content = (string) $data->content;
         $this->url = (string) $data->url;
         $this->buttonText = (string) $data->buttonText;
@@ -293,6 +299,11 @@ class Event implements Searchable
     public function getBeginAt(): ?\DateTime
     {
         return $this->beginAt;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
     }
 
     public function getUrl(): ?string

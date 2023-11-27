@@ -34,6 +34,8 @@ create:
         beginAt:
             label: Date et heure de début de l'évènement
             help: La date de début sera utilisée pour aider les participants à noter l'évènement dans leur agenda.
+        timezone:
+            label: Fuseau horaire
         address:
             label: Adresse postale de l'évènement
             help: Conserver le champ libre si l'évènement a lieu en ligne
@@ -86,6 +88,8 @@ edit:
         beginAt:
             label: Date et heure de début de l'évènement
             help: La date de début sera utilisée pour aider les participants à noter l'évènement dans leur agenda.
+        timezone:
+            label: Fuseau horaire
         address:
             label: Adresse postale de l'évènement
             help: Conserver le champ libre si l'évènement a lieu en ligne

@@ -32,6 +32,8 @@ create:
         beginAt:
             label: 'Datum und Uhrzeit des Beginns der Veranstaltung'
             help: 'Dieses Anfangsdatum wird den Teilnehmern helfen, die Veranstaltung in ihrem Kalender zu markieren.'
+        timezone:
+            label: Timezone
         address:
             label: 'Postanschrift der Veranstaltung'
             help: 'Leer bleiben, wenn die Veranstaltung online stattfindet'
@@ -72,6 +74,8 @@ edit:
         beginAt:
             label: 'Datum und Uhrzeit des Beginns der Veranstaltung'
             help: 'Dieses Anfangsdatum wird den Teilnehmern helfen, die Veranstaltung in ihrem Kalender zu markieren.'
+        timezone:
+            label: Timezone
         address:
             label: 'Postanschrift der Veranstaltung'
             help: 'Leer bleiben, wenn die Veranstaltung online stattfindet'
