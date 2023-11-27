@@ -14,6 +14,9 @@ class EventData
 
     public ?\DateTime $beginAt = null;
 
+    #[Assert\Timezone]
+    public ?string $timezone = '';
+
     public ?string $content = '';
 
     #[Assert\Length(max: 250)]
@@ -48,6 +51,7 @@ class EventData
     {
         $this->title = $event->getTitle();
         $this->beginAt = $event->getBeginAt() ?: new \DateTime('tomorrow 18:00');
+        $this->timezone = $event->getTimezone() ?: 'Europe/Paris';
         $this->content = $event->getContent();
         $this->externalUrl = $event->getExternalUrl();
         $this->url = $event->getUrl();

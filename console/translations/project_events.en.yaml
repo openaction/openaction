@@ -34,6 +34,8 @@ create:
         beginAt:
             label: Start date and time of the event
             help: This start date will be used to help attendees mark the event in their agenda
+        timezone:
+            label: Timezone
         address:
             label: Postal address of the event
             help: Keep empty if the event is going to be online
@@ -86,6 +88,8 @@ edit:
         beginAt:
             label: Start date and time of the event
             help: This start date will be used to help attendees mark the event in their agenda
+        timezone:
+            label: Timezone
         address:
             label: Postal address of the event
             help: Keep empty if the event is going to be online

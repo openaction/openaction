@@ -44,6 +44,7 @@ class EventTransformer extends AbstractTransformer
             'externalUrl' => $event->getExternalUrl() ?: null,
             'published_at' => $event->getPublishedAt()?->format(\DateTime::ATOM),
             'begin_at' => $event->getBeginAt()?->format(\DateTime::ATOM),
+            'timezone' => $event->getTimezone(),
             'url' => $event->getUrl(),
             'buttonText' => $event->getButtonText(),
             'latitude' => $event->getLatitude(),
