@@ -70,7 +70,7 @@
                             {{ 'events.begin_at'|trans }}
                         </div>
 
-                        {{ event.begin_at|format_datetime('medium', 'short') }}
+                        {{ event.begin_at|format_datetime('medium', 'short') }} ({{ event.timezone }})
                     </div>
                 {% endif %}
             </div>
