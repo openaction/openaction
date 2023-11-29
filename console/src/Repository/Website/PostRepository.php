@@ -132,8 +132,9 @@ class PostRepository extends ServiceEntityRepository
     public function getHomePosts(Project $project, ?int $category): iterable
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p', 'pc', 'pi')
+            ->select('p', 'pc', 'pi', 'pa')
             ->leftJoin('p.categories', 'pc')
+            ->leftJoin('p.authors', 'pa')
             ->leftJoin('p.image', 'pi')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())

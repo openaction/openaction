@@ -16,8 +16,11 @@ class PageBlockTransformer extends AbstractTransformer
     public function __construct(
         private readonly PostRepository $postRepository,
         private readonly PostPartialTransformer $postTransformer,
+        private readonly PostCategoryTransformer $postCategoryTransformer,
+        private readonly TrombinoscopePersonLightTransformer $authorTransformer,
         private readonly EventRepository $eventRepository,
         private readonly EventTransformer $eventTransformer,
+        private readonly EventCategoryTransformer $eventCategoryTransformer,
         private readonly CustomBlockParser $customBlockParser,
     ) {
     }
@@ -37,8 +40,16 @@ class PageBlockTransformer extends AbstractTransformer
             $payload['posts'] = [];
             foreach ($posts as $post) {
                 $itemPayload = $this->postTransformer->transform($post);
-                $itemPayload['categories'] = $this->postTransformer->includeCategories($post);
-                $itemPayload['authors'] = $this->postTransformer->includeAuthors($post);
+
+                $itemPayload['categories'] = [];
+                foreach ($post->getCategories() as $category) {
+                    $itemPayload['categories'][] = $this->postCategoryTransformer->transform($category);
+                }
+
+                $itemPayload['authors'] = [];
+                foreach ($post->getAuthors() as $author) {
+                    $itemPayload['authors'][] = $this->authorTransformer->transform($author);
+                }
 
                 $payload['posts'][] = $itemPayload;
             }
@@ -50,7 +61,11 @@ class PageBlockTransformer extends AbstractTransformer
             $payload['events'] = [];
             foreach ($events as $event) {
                 $itemPayload = $this->eventTransformer->transform($event);
-                $itemPayload['categories'] = $this->eventTransformer->includeCategories($event);
+
+                $itemPayload['categories'] = [];
+                foreach ($event->getCategories() as $category) {
+                    $itemPayload['categories'][] = $this->eventCategoryTransformer->transform($category);
+                }
 
                 $payload['events'][] = $itemPayload;
             }
