@@ -11,10 +11,11 @@ use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonFullTransformer extends AbstractTransformer
 {
-    protected array $availableIncludes = ['previous', 'next', 'posts'];
+    protected array $availableIncludes = ['previous', 'next', 'posts', 'categories'];
 
     public function __construct(
         private readonly TrombinoscopePersonRepository $repository,
+        private readonly TrombinoscopeCategoryTransformer $categoryTransformer,
         private readonly TrombinoscopePersonPartialTransformer $partialTransformer,
         private readonly PostLightTransformer $postLightTransformer,
     ) {
@@ -73,5 +74,10 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
             $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 5),
             $this->postLightTransformer,
         );
+    }
+
+    public function includeCategories(TrombinoscopePerson $person)
+    {
+        return $this->collection($person->getCategories()->toArray(), $this->categoryTransformer);
     }
 }
