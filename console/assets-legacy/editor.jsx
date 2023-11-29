@@ -8,7 +8,9 @@ import { UNLAYER_EMAIL_OPTIONS } from './editor/UnlayerOptions';
 import { Editor } from './editor/Editor';
 
 // Expose the built list of editors to allow for changes listening
-window.editors = {};
+if (typeof window.editors === 'undefined') {
+    window.editors = {};
+}
 
 const webEditorNodes = document.querySelectorAll('.editor-contentbuilder');
 for (let i in webEditorNodes) {

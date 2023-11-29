@@ -21,7 +21,13 @@ export default class extends Controller {
     connect() {
         const id = this.editorTarget.getAttribute('id');
         const uploadUrl = this.editorTarget.getAttribute('data-upload-url');
+
         const editor = new Editor('contentbuilder', id, CONTENT_EDITOR_WEB_OPTIONS, uploadUrl);
+        if (!window.editors) {
+            window.editors = {};
+        }
+
+        window.editors[id] = editor;
 
         render(
             <PageEdit
