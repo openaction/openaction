@@ -38,6 +38,7 @@ class PageBlockTransformer extends AbstractTransformer
             foreach ($posts as $post) {
                 $itemPayload = $this->postTransformer->transform($post);
                 $itemPayload['categories'] = $this->postTransformer->includeCategories($post);
+                $itemPayload['authors'] = $this->postTransformer->includeAuthors($post);
 
                 $payload['posts'][] = $itemPayload;
             }
