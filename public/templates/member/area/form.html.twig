@@ -91,7 +91,7 @@
         {% endfor %}
 
         <div class="user-form-field">
-            {{ form_row(form.privacy, {'label': 'forms.privacy'|trans}) }}
+            {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
         </div>
 
         <div class="user-form-submit">
