@@ -735,6 +735,7 @@ class TestFixtures extends AbstractFixtures
                 'domain' => $this->domains['localhost'],
                 'orga' => $this->orgas['cbeb774c-284c-43e3-923a-5a2388340f91'],
                 'apiToken' => '31cf08f5e0354198a3b26b5b08f59a4ed871cbaec6e4eb8b158fab57a7193b7a',
+                'adminApiToken' => 'admin_31cf08f5e0354198a3b26b5b08f59a4ed871cbaec6e4eb8b158fab57a7193b7a',
                 'socialSharers' => [SocialSharers::FACEBOOK, SocialSharers::TWITTER, SocialSharers::TELEGRAM, SocialSharers::WHATSAPP],
                 'legalGdprName' => 'Acme Inc SAS',
                 'legalGdprEmail' => 'gdpremail@example.com',
