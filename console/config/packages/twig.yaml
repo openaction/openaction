@@ -16,6 +16,7 @@ twig:
         console_legal_name: '%env(APP_CONSOLE_LEGAL_NAME)%'
         console_email: '%env(APP_CONSOLE_EMAIL)%'
         meilisearch_endpoint: '%env(MEILISEARCH_ENDPOINT)%'
+        onpremise_domain: '%env(APP_ONPREMISE_DOMAIN)%'
 
 when@test:
     twig:
