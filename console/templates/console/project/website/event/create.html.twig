@@ -35,10 +35,19 @@
                         {{ 'create.form.details'|trans({}, 'project_events') }}
                     </div>
 
-                    {{ form_row(form.beginAt, {
-                        'label': 'create.form.beginAt.label'|trans({}, 'project_events'),
-                        'help': 'create.form.beginAt.help'|trans({}, 'project_events'),
-                    }) }}
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form_row(form.beginAt, {
+                                'label': 'create.form.beginAt.label'|trans({}, 'project_events'),
+                                'help': 'create.form.beginAt.help'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form_row(form.timezone, {
+                                'label': 'create.form.timezone.label'|trans({}, 'project_events'),
+                            }) }}
+                        </div>
+                    </div>
 
                     <div>
                         {{ form_row(form.address, {
