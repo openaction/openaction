@@ -56,6 +56,7 @@
         'items': items,
         'no_items_message': 'base.no_element'|trans,
         'categories': filters,
+        'pagination': events.meta.pagination,
         'previous': pagination.previous is defined ? path('event_list', {'p': current_page - 1, 'c': current_category}) : null,
         'next': pagination.next is defined ? path('event_list', {'p': current_page + 1, 'c': current_category}) : null,
     } %}

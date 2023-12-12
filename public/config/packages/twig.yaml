@@ -25,6 +25,7 @@ services:
             $allowedTags: ['if', 'for', 'set', 'block']
             $allowedFunctions:
                 - attribute
+                - dump
                 - stimulus_controller
                 - stimulus_target
                 - stimulus_action
