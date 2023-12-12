@@ -57,6 +57,7 @@
         'items': items,
         'no_items_message': 'base.no_element'|trans,
         'categories': filters,
+        'pagination': posts.meta.pagination,
         'previous': pagination.previous is defined ? path('post_list', {'p': current_page - 1, 'c': current_category}) : null,
         'next': pagination.next is defined ? path('post_list', {'p': current_page + 1, 'c': current_category}) : null,
     } %}
