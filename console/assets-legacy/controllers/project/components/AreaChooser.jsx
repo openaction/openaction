@@ -51,7 +51,7 @@ export function AreaChooser(props) {
     };
 
     return (
-        <div>
+        <div className="project-areas-chooser">
             <div className="font-weight-bold">{translator.trans('organization.create-project.area.label')}</div>
 
             <div className="text-muted mb-3">{translator.trans('organization.create-project.area.help')}</div>
