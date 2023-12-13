@@ -62,7 +62,7 @@ export function ModuleChooser(props) {
     const onChange = (modules, tools) => setState({ modules: modules, tools: tools });
 
     return (
-        <div>
+        <div className="project-modules-chooser">
             <div className="font-weight-bold">
                 {translator.trans('organization.create-project.modules-chooser.label')}
             </div>
