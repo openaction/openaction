@@ -35,6 +35,7 @@ services:
                 - hex2rgba
             $allowedFilters:
                 - raw
+                - nl2br
                 - length
                 - default
                 - trans
