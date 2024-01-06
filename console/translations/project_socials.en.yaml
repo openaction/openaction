@@ -2,6 +2,7 @@ accounts:
     title: Your social accounts
     help: Configure your social network accounts to show them on your website and in your campaigns.
     email: Which public email address should your visitors be able to contact you on?
+    phone: Which public phone number should your visitors be able to contact you on?
     facebook: What is the URL of your Facebook page?
     twitter: What is the URL of your Twitter account?
     instagram: What is the URL of your Instagram account?
@@ -10,6 +11,8 @@ accounts:
     medium: What is the URL of your Medium account?
     telegram: What is the username of your Telegram account?
     snapchat: What is the username of your Snapchat account?
+    whatsapp: What is the URL of your Medium account?
+    tiktok: What is the URL of your Medium account?
     submit: Save
 
 sharers:

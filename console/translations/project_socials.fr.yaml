@@ -2,6 +2,7 @@ accounts:
     title: Vos comptes sociaux
     help: Configurez les comptes sociaux associés à votre projet pour les mettre en avant sur votre site et vos campagnes.
     email: À quelle adresse email publique peut-on vous contacter ?
+    phone: À quel numéro de téléphone public peut-on vous contacter ?
     facebook: Quelle est l'adresse URL de votre page Facebook ?
     twitter: Quelle est l'adresse URL de votre fil Twitter ?
     instagram: Quelle est l'adresse URL de votre compte Instagram ?
@@ -10,6 +11,8 @@ accounts:
     medium: Quelle est l'adresse URL de votre fil Medium ?
     telegram: Quel est le nom d'utilisateur de votre compte Telegram ?
     snapchat: Quel est le nom d'utilisateur de votre compte Snapchat ?
+    whatsapp: Quelle est l'adresse URL de votre channel WhatsApp ?
+    tiktok: Quelle est l'adresse URL de votre compte TikTok ?
     submit: Enregistrer
 
 sharers:
