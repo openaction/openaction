@@ -24,6 +24,7 @@
 {% endfor %}
 
 {% set payload = {
+    'key': key,
     'current_project': current_project.toArray,
     'force_embed_consent': force_embed_consent,
     'posts_title': block.config.label|default(current_project.terminology.posts),
