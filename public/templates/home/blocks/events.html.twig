@@ -17,6 +17,7 @@
 {% endfor %}
 
 {% set payload = {
+    'key': key,
     'current_project': current_project.toArray,
     'force_embed_consent': force_embed_consent,
     'events_title': block.config.label|default(current_project.terminology.events),
