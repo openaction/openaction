@@ -10,6 +10,9 @@ class UpdateSocialAccountsData
     #[Assert\Email(message: 'console.project.settings.socials.invalid_email')]
     public ?string $email = '';
 
+    #[Assert\Length(max: 50, maxMessage: 'console.project.settings.socials.invalid_length')]
+    public ?string $phone = '';
+
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
     #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.)?facebook\.com\/(_|-|[a-z]|[0-9]|\.)+\/?$/i', message: 'console.project.settings.socials.invalid_facebook')]
     public ?string $facebook = '';
@@ -42,8 +45,17 @@ class UpdateSocialAccountsData
     #[Assert\Regex(pattern: '/^([a-z]|[0-9]|_){2,50}$/i', message: 'console.project.settings.socials.invalid_snapchat')]
     public ?string $snapchat = '';
 
+    #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
+    #[Assert\Url]
+    public ?string $whatsapp = '';
+
+    #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
+    #[Assert\Url]
+    public ?string $tiktok = '';
+
     public function __construct(
         ?string $email = '',
+        ?string $phone = '',
         ?string $facebook = '',
         ?string $instagram = '',
         ?string $twitter = '',
@@ -52,8 +64,11 @@ class UpdateSocialAccountsData
         ?string $medium = '',
         ?string $telegram = '',
         ?string $snapchat = '',
+        ?string $whatsapp = '',
+        ?string $tiktok = '',
     ) {
         $this->email = $email;
+        $this->phone = $phone;
         $this->facebook = $facebook;
         $this->instagram = $instagram;
         $this->twitter = $twitter;
@@ -62,12 +77,15 @@ class UpdateSocialAccountsData
         $this->medium = $medium;
         $this->telegram = $telegram;
         $this->snapchat = $snapchat;
+        $this->whatsapp = $whatsapp;
+        $this->tiktok = $tiktok;
     }
 
     public static function createFromProject(Project $project): self
     {
         $data = new self();
         $data->email = $project->getSocialEmail();
+        $data->phone = $project->getSocialPhone();
         $data->facebook = $project->getSocialFacebook();
         $data->instagram = $project->getSocialInstagram();
         $data->twitter = $project->getSocialTwitter();
@@ -76,6 +94,8 @@ class UpdateSocialAccountsData
         $data->medium = $project->getSocialMedium();
         $data->telegram = $project->getSocialTelegram();
         $data->snapchat = $project->getSocialSnapchat();
+        $data->whatsapp = $project->getSocialWhatsapp();
+        $data->tiktok = $project->getSocialTiktok();
 
         return $data;
     }

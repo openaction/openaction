@@ -2,6 +2,7 @@ accounts:
     title: 'Ihre sozialen Konten'
     help: 'Konfigurieren Sie Ihre sozialen Netzwerkkonten so, dass sie auf Ihrer Website und in Ihren Kampagnen angezeigt werden.'
     email: 'Über welche öffentliche E-Mail-Adresse sollen Ihre Besucher Sie kontaktieren können?'
+    phone: 'Über welche öffentliche Telefonnummer sollen Ihre Besucher Sie kontaktieren können?'
     facebook: 'Wie lautet die URL Ihrer Facebook-Seite?'
     twitter: 'Wie lautet die URL Ihres Twitter-Kontos?'
     instagram: 'Wie lautet die URL Ihres Instagram-Kontos?'
@@ -10,6 +11,8 @@ accounts:
     medium: 'Wie lautet die URL Ihres Medium-Kontos?'
     telegram: 'Wie lautet der Benutzername deines Telegram-Kontos?'
     snapchat: 'Wie lautet der Nutzername deines Snapchat-Kontos?'
+    whatsapp: 'Wie lautet die URL Ihres WhatsApp-Kontos?'
+    tiktok: 'Wie lautet die URL Ihres TikTok-Kontos?'
     submit: 'Speichern Sie'
 sharers:
     title: 'Tools für den sozialen Austausch'

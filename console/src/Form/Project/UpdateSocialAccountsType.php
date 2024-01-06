@@ -16,6 +16,7 @@ class UpdateSocialAccountsType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, ['required' => false])
+            ->add('phone', TextType::class, ['required' => false])
             ->add('facebook', UrlType::class, ['required' => false])
             ->add('twitter', UrlType::class, ['required' => false])
             ->add('instagram', UrlType::class, ['required' => false])
@@ -24,6 +25,8 @@ class UpdateSocialAccountsType extends AbstractType
             ->add('medium', UrlType::class, ['required' => false])
             ->add('telegram', TextType::class, ['required' => false])
             ->add('snapchat', TextType::class, ['required' => false])
+            ->add('whatsapp', UrlType::class, ['required' => false])
+            ->add('tiktok', UrlType::class, ['required' => false])
         ;
     }
 

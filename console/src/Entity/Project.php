@@ -186,6 +186,9 @@ class Project implements UserInterface
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialEmail = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $socialPhone = null;
+
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialFacebook = null;
 
@@ -209,6 +212,12 @@ class Project implements UserInterface
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $socialTelegram = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialWhatsapp = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialTiktok = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $socialSharers = null;
@@ -342,10 +351,13 @@ EOT;
         $self->membershipMainPage = $this->membershipMainPage;
         $self->membershipFormSettings = $this->membershipFormSettings;
         $self->socialEmail = $this->socialEmail;
+        $self->socialPhone = $this->socialPhone;
         $self->socialFacebook = $this->socialFacebook;
         $self->socialTwitter = $this->socialTwitter;
         $self->socialTelegram = $this->socialTelegram;
         $self->socialSnapchat = $this->socialSnapchat;
+        $self->socialWhatsapp = $this->socialWhatsapp;
+        $self->socialTiktok = $this->socialTiktok;
         $self->socialSharers = $this->socialSharers;
 
         foreach ($this->getAreas() as $area) {
@@ -839,6 +851,7 @@ EOT;
     public function applySocialsAccountsUpdate(UpdateSocialAccountsData $data)
     {
         $this->socialEmail = $data->email;
+        $this->socialPhone = $data->phone;
         $this->socialFacebook = $data->facebook;
         $this->socialTwitter = $data->twitter;
         $this->socialInstagram = $data->instagram;
@@ -847,6 +860,8 @@ EOT;
         $this->socialMedium = $data->medium;
         $this->socialTelegram = $data->telegram;
         $this->socialSnapchat = $data->snapchat;
+        $this->socialWhatsapp = $data->whatsapp;
+        $this->socialTiktok = $data->tiktok;
     }
 
     public function applySocialSharersUpdate(SocialSharers $socialSharers)
@@ -902,6 +917,21 @@ EOT;
     public function getSocialTelegram(): ?string
     {
         return $this->socialTelegram;
+    }
+
+    public function getSocialPhone(): ?string
+    {
+        return $this->socialPhone;
+    }
+
+    public function getSocialWhatsapp(): ?string
+    {
+        return $this->socialWhatsapp;
+    }
+
+    public function getSocialTiktok(): ?string
+    {
+        return $this->socialTiktok;
     }
 
     /*
