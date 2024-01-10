@@ -18,6 +18,11 @@
         'params': {'id': page.id, 'slug': page.slug}
     }) %}
 
+    {% set categories = {} %}
+    {% for category in page.categories %}
+        {% set categories = categories|merge({ (category.name): true }) %}
+    {% endfor %}
+
     {% set more = [] %}
     {% for other in (page.children|default([]))[0:3] %}
         {% set more = more|merge([
@@ -39,6 +44,7 @@
         'description': page.description|default(''),
         'social_sharers': social_sharers,
         'image': page.image,
+        'categories': categories,
         'content': '<div class="user-content">'~ page.content|apply_embed_consent ~'</div>',
         'titleLabel': 'base.embed-consent.title'|trans,
         'descriptionLabel': 'base.embed-consent.description'|trans,
