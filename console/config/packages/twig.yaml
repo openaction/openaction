@@ -58,3 +58,4 @@ services:
                 - format_datetime
                 - round
                 - merge
+                - split
