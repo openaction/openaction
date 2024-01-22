@@ -13,11 +13,13 @@
     {% endfor %}
 
     {% set post = post|merge({
-        url: post.externalUrl|default(path('post_view', {'id': post.id, 'slug': post.slug})),
-        target: post.externalUrl is defined ? '_blank' : null,
-        videoImage: videoImage,
-        publishedAt: post.published_at|format_date('medium'),
-        categories: itemCategories,
+        'url': post.externalUrl|default(path('post_view', {'id': post.id, 'slug': post.slug})),
+        'target': post.externalUrl is defined ? '_blank' : null,
+        'videoImage': videoImage,
+        'publishedAt': post.published_at|format_date('medium'),
+        'date': post.published_at|format_date('medium'),
+        'raw_date': post.published_at,
+        'categories': itemCategories,
     }) %}
 
     {% set posts = posts|merge([post]) %}

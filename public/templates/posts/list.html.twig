@@ -21,6 +21,7 @@
                 'image': post.image,
                 'video': post.video ? post.video|split(':') : null,
                 'date': post.published_at|format_date('medium'),
+                'raw_date': post.published_at,
                 'categories': itemCategories,
             }
         ]) %}

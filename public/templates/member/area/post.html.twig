@@ -22,12 +22,13 @@
     {% for other in post.more[0:3] %}
         {% set more = more|merge([
             {
-                title: other.title,
-                url: path('membership_area_post_view', {'id': other.id, 'slug': other.slug}),
-                description: other.description,
-                image: other.image,
-                video: other.video ? other.video|split(':') : null,
-                date: other.published_at|format_date('medium'),
+                'title': other.title,
+                'url': path('membership_area_post_view', {'id': other.id, 'slug': other.slug}),
+                'description': other.description,
+                'image': other.image,
+                'video': other.video ? other.video|split(':') : null,
+                'date': other.published_at|format_date('medium'),
+                'raw_date': other.published_at,
             }
         ]) %}
     {% endfor %}
@@ -45,6 +46,7 @@
         'title': post.title,
         'description': post.description|default(''),
         'date': post.published_at ? post.published_at|format_date('medium') : null,
+        'raw_date': post.published_at,
         'social_sharers': social_sharers,
         'video': post.video ? post.video|split(':') : null,
         'image': post.image,

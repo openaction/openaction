@@ -7,10 +7,12 @@
     {% endfor %}
 
     {% set event = event|merge({
-        url: event.externalUrl|default(path('event_view', {'id': event.id, 'slug': event.slug})),
-        target: event.externalUrl is defined ? '_blank' : null,
-        beginAt: event.begin_at|format_datetime('medium', 'short'),
-        categories: itemCategories,
+        'url': event.externalUrl|default(path('event_view', {'id': event.id, 'slug': event.slug})),
+        'target': event.externalUrl is defined ? '_blank' : null,
+        'beginAt': event.begin_at|format_datetime('medium', 'short'),
+        'date': event.begin_at|format_datetime('medium', 'short'),
+        'raw_date': event.begin_at,
+        'categories': itemCategories,
     }) %}
 
     {% set events = events|merge([event]) %}
