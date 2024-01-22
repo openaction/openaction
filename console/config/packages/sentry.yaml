@@ -4,13 +4,6 @@ when@prod:
         register_error_listener: false
         register_error_handler: false
 
-    monolog:
-        handlers:
-            sentry:
-                type: sentry
-                level: !php/const Monolog\Logger::ERROR
-                hub_id: Sentry\State\HubInterface
-
     services:
         Monolog\Processor\PsrLogMessageProcessor:
             tags: [ 'monolog.processor' ]

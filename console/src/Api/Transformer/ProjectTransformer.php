@@ -92,6 +92,7 @@ class ProjectTransformer extends AbstractTransformer
             ],
             'socials' => [
                 'email' => $project->getSocialEmail(),
+                'phone' => $project->getSocialPhone(),
                 'facebook' => $project->getSocialFacebook(),
                 'twitter' => $project->getSocialTwitter(),
                 'instagram' => $project->getSocialInstagram(),
@@ -100,6 +101,8 @@ class ProjectTransformer extends AbstractTransformer
                 'medium' => $project->getSocialMedium(),
                 'telegram' => $project->getSocialTelegram(),
                 'snapchat' => $project->getSocialSnapchat(),
+                'whatsapp' => $project->getSocialWhatsapp(),
+                'tiktok' => $project->getSocialTiktok(),
             ],
             'socialSharers' => [
                 'facebook' => $project->getSocialSharers()->isEnabled(SocialSharers::FACEBOOK),
