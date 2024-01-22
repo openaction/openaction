@@ -54,6 +54,7 @@ newsletter:
     zipCode: Código postal
     submit: Assinar
     success: Você se inscreveu para receber o boletim de notícias.
+    unsubscribed: Você cancelou a assinatura do boletim informativo com sucesso.
 
 legalities:
     title: Avisos legais

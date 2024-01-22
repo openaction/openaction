@@ -7,8 +7,10 @@ use App\Entity\Community\EmailAutomation;
 use App\Entity\Community\EmailingCampaign;
 use SendGrid\Mail\CustomArg;
 use SendGrid\Mail\From;
+use SendGrid\Mail\Header;
 use SendGrid\Mail\Mail;
 use SendGrid\Mail\To;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use function Symfony\Component\String\u;
 
@@ -16,11 +18,10 @@ use Twig\Environment;
 
 class EmailMessageFactory
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly UrlGeneratorInterface $router,
+    ) {
     }
 
     /**
@@ -48,6 +49,15 @@ class EmailMessageFactory
             $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
             $personalization->addTo(new To($email));
             $personalization->addCustomArg(new CustomArg('message-uuid', $recipient->getMessageId()));
+
+            if (!empty($contactUuid = $recipient->getVariables()['-contact-id-'] ?? null)) {
+                $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
+                $personalization->addHeader(new Header('List-Unsubscribe', sprintf(
+                    '<mailto:%s?subject=Unsubscribe>, <%s>',
+                    $fromEmail,
+                    $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $contactUuid]),
+                )));
+            }
 
             foreach ($recipient->getVariables() as $name => $substitute) {
                 $personalization->addSubstitution($name, $substitute);

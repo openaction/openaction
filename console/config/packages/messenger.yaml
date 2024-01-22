@@ -105,6 +105,7 @@ framework:
             'App\Community\Webhook\SendgridWebhookMessage': async_priority_low
             'App\Community\Webhook\TwilioWebhookMessage': async_priority_low
             'App\Community\Webhook\WingsWebhookMessage': async_priority_low
+            'App\Community\Webhook\ListUnsubscribeWebhookMessage': async_priority_low
 
             # Themes
             'App\Theme\Consumer\SyncThemeMessage': async_priority_high

@@ -24,6 +24,10 @@
             <div class="user-form-success">
                 <span>{{ 'newsletter.success'|trans }}</span>
             </div>
+        {% elseif unsubscribed %}
+            <div class="user-form-success">
+                <span>{{ 'newsletter.unsubscribed'|trans }}</span>
+            </div>
         {% endif %}
 
         {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}

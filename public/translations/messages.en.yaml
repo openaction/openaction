@@ -54,6 +54,7 @@ newsletter:
     zipCode: ZIP code
     submit: Subscribe
     success: You successfully subscribed to the newsletter.
+    unsubscribed: You successfully unsubscribed from the newsletter.
 
 legalities:
     title: Legalities

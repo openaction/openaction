@@ -54,6 +54,7 @@ newsletter:
     zipCode: Postcode
     submit: Abonneren
     success: U bent succesvol geabonneerd op de nieuwsbrief.
+    unsubscribed: U heeft zich succesvol afgemeld voor de nieuwsbrief.
 
 legalities:
     title: Legaliteiten

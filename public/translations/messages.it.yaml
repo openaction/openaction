@@ -54,6 +54,7 @@ newsletter:
     zipCode: Codice postale
     submit: Iscriviti
     success: Ti sei iscritto con successo alla newsletter.
+    unsubscribed: Ti sei cancellato con successo dalla newsletter.
 
 legalities:
     title: Legalità
