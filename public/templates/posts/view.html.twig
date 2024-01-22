@@ -23,6 +23,11 @@
         {% set categories = categories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
     {% endfor %}
 
+    {% set authors = {} %}
+    {% for author in post.authors %}
+        {% set authors = authors|merge([author.toArray()]) %}
+    {% endfor %}
+
     {% set more = [] %}
     {% for other in post.more[0:3] %}
         {% set otherCategories = {} %}
@@ -65,6 +70,8 @@
         'image': post.image,
         'previewing_text': not post.published_at ? 'posts.not_published'|trans : null,
         'content': '<div class="user-content">'~ post.content|apply_embed_consent ~'</div>',
+        'quote': post.quote,
+        'authors': authors,
         'more': more,
         'titleLabel': 'base.embed-consent.title'|trans,
         'descriptionLabel': 'base.embed-consent.description'|trans,
