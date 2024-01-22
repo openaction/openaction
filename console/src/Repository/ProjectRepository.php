@@ -40,6 +40,22 @@ class ProjectRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findMainWebsiteProjectForOrganization(Organization $organization): ?Project
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.modules LIKE :hasWebsiteModule')
+            ->setParameter('hasWebsiteModule', '%'.Features::MODULE_WEBSITE.'%')
+            ->andWhere('p.organization = :organization')
+            ->setParameter('organization', $organization->getId())
+            ->andWhere('p.areas IS EMPTY')
+            ->andWhere('p.tags IS EMPTY')
+            ->orderBy('p.createdAt', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findUuidsByOrganization(Organization $organization): array
     {
         return array_column(

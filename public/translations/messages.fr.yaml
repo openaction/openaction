@@ -55,6 +55,7 @@ newsletter:
     zipCode: Votre code postal
     submit: Je m'inscris
     success: Vous avez bien été inscrit à la newsletter.
+    unsubscribed: Vous avez bien été désinscrit de la newsletter.
 
 legalities:
     title: Mentions légales

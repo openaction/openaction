@@ -51,6 +51,7 @@ class NewsletterController extends AbstractController
         return $this->render('newsletter/subscribe.html.twig', [
             'form' => $form->createView(),
             'success' => $request->query->getBoolean('s'),
+            'unsubscribed' => $request->query->getBoolean('unsubscribe'),
         ]);
     }
 }

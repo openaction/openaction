@@ -54,6 +54,7 @@ newsletter:
     zipCode: PLZ
     submit: Abonnieren
     success: Sie haben sich erfolgreich für den Newsletter angemeldet.
+    unsubscribed: Sie haben sich erfolgreich vom Newsletter abgemeldet.
 
 legalities:
     title: Rechtliches
