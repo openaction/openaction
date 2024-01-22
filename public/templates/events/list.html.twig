@@ -20,6 +20,7 @@
                 'description': (event.content|u.truncate(150, '...')) ~ '',
                 'image': event.image,
                 'date': event.begin_at ? event.begin_at|format_datetime('medium', 'short') : null,
+                'raw_date': event.begin_at,
                 'categories': itemCategories,
             }
         ]) %}

@@ -32,13 +32,14 @@
 
         {% set more = more|merge([
             {
-                title: other.title,
-                url: path('post_view', {'id': other.id, 'slug': other.slug}),
-                description: other.description,
-                image: other.image,
-                video: other.video ? other.video|split(':') : null,
-                date: other.published_at|format_date('medium'),
-                categories: categories,
+                'title': other.title,
+                'url': path('post_view', {'id': other.id, 'slug': other.slug}),
+                'description': other.description,
+                'image': other.image,
+                'video': other.video ? other.video|split(':') : null,
+                'date': other.published_at|format_date('medium'),
+                'raw_date': other.published_at,
+                'categories': categories,
             }
         ]) %}
     {% endfor %}
@@ -57,6 +58,7 @@
         'title': post.title,
         'description': post.description|default(''),
         'date': post.published_at ? post.published_at|format_date('medium') : null,
+        'raw_date': post.published_at,
         'categories': categories,
         'social_sharers': social_sharers,
         'video': post.video ? post.video|split(':') : null,
