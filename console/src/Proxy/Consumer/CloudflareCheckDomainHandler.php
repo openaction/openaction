@@ -21,7 +21,10 @@ final class CloudflareCheckDomainHandler implements MessageHandlerInterface
             return;
         }
 
-        $config = $this->cloudflare->getRootDomainConfig($domain->getCloudflareConfig()->getId());
+        if (!$config = $this->cloudflare->getRootDomainConfig($domain->getCloudflareConfig()->getId())) {
+            return;
+        }
+
         $domain->setCloudflareConfig($config);
 
         // If the status is ready, persists and then triggers additional configuration

@@ -16,7 +16,7 @@ interface CloudflareInterface
 
     public function createRootDomainCname(string $zoneId, string $host, string $target, bool $dnsOnly = true): bool;
 
-    public function getRootDomainConfig(string $zoneId): CloudflareDomainConfig;
+    public function getRootDomainConfig(string $zoneId): ?CloudflareDomainConfig;
 
     public function hasTrialSubdomain(string $subdomain): bool;
 
