@@ -143,9 +143,13 @@ class Cloudflare implements CloudflareInterface
         return $this->getDNSClient()->addRecord($zoneId, 'CNAME', $host, $target, 0, !$dnsOnly);
     }
 
-    public function getRootDomainConfig(string $zoneId): CloudflareDomainConfig
+    public function getRootDomainConfig(string $zoneId): ?CloudflareDomainConfig
     {
-        $zone = $this->getZonesClient()->getZoneById($zoneId)->result;
+        try {
+            $zone = $this->getZonesClient()->getZoneById($zoneId)->result;
+        } catch (\Exception) {
+            return null;
+        }
 
         return new CloudflareDomainConfig($zone->id, $zone->name, $zone->status, $zone->name_servers);
     }
