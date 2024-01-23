@@ -5,7 +5,8 @@ window.QomonIframes = [];
 
 window.addEventListener('message', message => {
     for (let i in window.QomonIframes) {
-        if (window.QomonIframes[i].contentWindow === message.source) {
+        if (window.QomonIframes[i].contentWindow === message.source
+            && !window.QomonIframes[i].classList.contains('contenteditor-customblock-qomon-resized')) {
             window.QomonIframes[i].style.height = message.data.height + 'px';
             window.QomonIframes[i].classList.add('contenteditor-customblock-qomon-resized');
             window.QomonIframes[i].scrolling = 'no';
@@ -31,7 +32,7 @@ export default class extends Controller {
 
     qomonPetition(data) {
         const iframe = document.createElement('iframe');
-        iframe.src = data.url + '?embed=1';
+        iframe.src = data.url;
         iframe.frameBorder = '0';
 
         window.QomonIframes.push(iframe);

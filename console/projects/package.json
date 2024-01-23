@@ -16,7 +16,6 @@
         "@babel/core": "^7.13.16",
         "@babel/plugin-proposal-class-properties": "^7.13.0",
         "@symfony/webpack-encore": "^0.28.2",
-        "node-sass": "^4.13.1",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^7.0.1",
         "webpack-bundle-analyzer": "^3.7.0"
