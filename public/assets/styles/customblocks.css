@@ -1,7 +1,13 @@
 .contenteditor-customblock-qomon-petition {
-    border: 1px solid #ff387f;
     background: #fff;
 }
+@media (min-width: 910px) {
+    .contenteditor-customblock-qomon-petition {
+        margin-left: calc(-100vw / 2 + 910px / 2);
+        margin-right: calc(-100vw / 2 + 910px / 2);
+    }
+}
+
 .contenteditor-customblock-qomon-petition iframe {
     width: 100%;
     height: 950px;

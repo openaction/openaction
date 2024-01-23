@@ -25,7 +25,7 @@ class Citipo implements CitipoInterface
 
     public function getProject(string $apiToken): ?ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/project?includes=header,footer,pages,posts,home', $apiToken));
+        return $this->parseResource($this->request('GET', '/api/project?includes=header,footer,pages,posts,home', $apiToken, nullable: false));
     }
 
     public function getProjectSitemap(string $apiToken): ?ApiResource
