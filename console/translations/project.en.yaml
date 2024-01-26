@@ -48,6 +48,7 @@ sidebar:
         theme: Theme code
         redirections: Redirections
         api: API access
+        captcha: Smart Captcha
 
 quick_start:
     title: Quick start
@@ -99,6 +100,18 @@ developers:
         learn_more: Read the API documentation (French only)
         token_standard: Standard token
         token_admin: Administrator token
+
+    captcha:
+        title: Smart Captcha
+        description: |
+            Citipo uses Cloudflare Turnstile to protect your surveys and registration forms
+            robots and avoid SPAM. By default, to avoid creating obstacles for your real users,
+            Cloudflare Turnstile is disabled. Provide Cloudflare configuration information below
+            Turnstile to enable it on your site.
+        learn_more: Read Cloudflare Turnstile documentation
+        site_key: Site key
+        secret_key: Secret key
+        save: Save
 
     theme:
         title: Edit theme code

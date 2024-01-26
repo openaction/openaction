@@ -11,6 +11,7 @@ use App\Form\Appearance\Model\LogosData;
 use App\Form\Appearance\Model\WebsiteAccessData;
 use App\Form\Appearance\Model\WebsiteIntroData;
 use App\Form\Appearance\Model\WebsiteThemeData;
+use App\Form\Developer\Model\UpdateCaptchaData;
 use App\Form\Project\Model\UpdateDetailsData;
 use App\Form\Project\Model\UpdateLegalitiesData;
 use App\Form\Project\Model\UpdateMetasData;
@@ -170,6 +171,12 @@ class Project implements UserInterface
 
     #[ORM\Column(type: 'json')]
     private array $websiteCustomTemplates = [];
+
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private ?string $websiteTurnstileSiteKey = null;
+
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private ?string $websiteTurnstileSecretKey = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $emailingCustomCss = null;
@@ -711,6 +718,12 @@ EOT;
         $this->websiteCustomTemplates[$filename] = $content;
     }
 
+    public function applyWebsiteTurnstileUpdate(UpdateCaptchaData $data)
+    {
+        $this->websiteTurnstileSiteKey = $data->siteKey;
+        $this->websiteTurnstileSecretKey = $data->secretKey;
+    }
+
     public function getWebsiteLocale(): string
     {
         return $this->websiteLocale;
@@ -809,6 +822,16 @@ EOT;
     public function getWebsiteCustomTemplates(): array
     {
         return $this->websiteCustomTemplates;
+    }
+
+    public function getWebsiteTurnstileSiteKey(): ?string
+    {
+        return $this->websiteTurnstileSiteKey;
+    }
+
+    public function getWebsiteTurnstileSecretKey(): ?string
+    {
+        return $this->websiteTurnstileSecretKey;
     }
 
     /*

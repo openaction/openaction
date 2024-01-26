@@ -41,6 +41,7 @@ sidebar:
         theme: 'Code des Themas'
         redirections: Umleitungen
         api: API-Zugang
+        captcha: Smart Captcha
 quick_start:
     title: Schnellstart
     launch:
@@ -87,6 +88,17 @@ developers:
         learn_more: 'Lesen Sie die API-Dokumentation (nur auf Französisch)'
         token_standard: Standard token
         token_admin: Administrator token
+    captcha:
+        title: Smart Captcha
+        description: |
+            Citipo nutzt Cloudflare Turnstile, um Ihre Umfragen und Registrierungsformulare zu schützen
+            Roboter und vermeiden Sie SPAM. Um zu vermeiden, dass Hindernisse für Ihre echten Benutzer entstehen,
+            Cloudflare-Drehkreuz ist deaktiviert. Geben Sie unten Informationen zur Cloudflare-Konfiguration an
+            Drehkreuz, um es auf Ihrer Website zu aktivieren.
+        learn_more: Lesen Sie die Dokumentation zu Cloudflare Turnstile
+        site_key: Site key
+        secret_key: Secret key
+        save: 'Speichern Sie'
     theme:
         title: 'Theme-Code bearbeiten'
         description: "Bearbeiten Sie den Code Ihres Themes für erweiterte Anpassungen (beachten Sie, dass dies Entwicklungskenntnisse erfordert\nund kann bei Missbrauch Ihrer Website schaden).\n"

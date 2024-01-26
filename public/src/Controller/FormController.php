@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
 use App\FormBuilder\SymfonyFormBuilder;
 use App\Util\Url;
@@ -14,11 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FormController extends AbstractController
 {
-    private CitipoInterface $citipo;
-
-    public function __construct(CitipoInterface $citipo)
-    {
-        $this->citipo = $citipo;
+    public function __construct(
+        private readonly Turnstile $turnstile,
+        private readonly CitipoInterface $citipo,
+    ) {
     }
 
     /**
@@ -38,10 +38,16 @@ class FormController extends AbstractController
             return $this->redirectToRoute('form_view', ['id' => $id, 'slug' => $formData->slug], Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $challenge = $this->turnstile->createCaptchaChallenge($this->getProject());
+
         $form = $builder->createFromBlocks($formData->blocks->data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($challenge && !$challenge->isValidResponse($request->request->get('cf-turnstile-response'))) {
+                return $this->redirectToRoute('form_view', ['id' => $id, 'slug' => $slug]);
+            }
+
             // Persist answer
             $answers = $builder->normalizeFormData($formData->blocks->data, $form->getData());
             $persistedAnswer = $this->citipo->createFormAnswer($this->getApiToken(), $id, $answers);
@@ -68,6 +74,7 @@ class FormController extends AbstractController
         return $this->render('forms/view.html.twig', [
             'formData' => $formData,
             'form' => $form->createView(),
+            'captcha_challenge' => $challenge,
             'success' => $request->query->getBoolean('s'),
         ]);
     }

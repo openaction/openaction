@@ -403,6 +403,16 @@
                                     {{ 'sidebar.developers.api'|trans({}, 'project') }}
                                 </div>
                             </a>
+
+                            <a href="{{ path('console_developers_captcha', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item world-sidebar-item-api {% block sidebar_captcha '' %}">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-user-robot"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.developers.captcha'|trans({}, 'project') }}
+                                </div>
+                            </a>
                         {% endif %}
                     </div>
                 {% endif %}
