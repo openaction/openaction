@@ -1,0 +1,46 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'developers.captcha.title'|trans({}, 'project') %}
+
+{% block sidebar_captcha 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>
+                {{ 'developers.captcha.title'|trans({}, 'project') }}
+            </h3>
+
+            <div class="text-muted mb-2">
+                {{ 'developers.captcha.description'|trans({}, 'project') }}
+            </div>
+
+            <a href="https://developers.cloudflare.com/turnstile/" target="_blank" rel="noreferrer noopener">
+                {{ 'developers.captcha.learn_more'|trans({}, 'project') }}
+            </a>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-6">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.siteKey, {
+                        'label': 'developers.captcha.site_key'|trans({}, 'project')
+                    }) }}
+                    {{ form_row(form.secretKey, {
+                        'label': 'developers.captcha.secret_key'|trans({}, 'project')
+                    }) }}
+
+                    <button class="btn btn-primary">
+                        {{ 'developers.captcha.save'|trans({}, 'project') }}
+                    </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

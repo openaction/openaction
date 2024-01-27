@@ -73,6 +73,10 @@
         {{ form_row(form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
 
         <div class="user-form-submit">
+            {% if captcha_challenge %}
+                <div class="cf-turnstile mb-2" data-sitekey="{{ captcha_challenge.siteKey }}"></div>
+            {% endif %}
+
             <button type="submit" class="btn btn-primary btn-lg">
                 {{ 'newsletter.submit'|trans }}
             </button>

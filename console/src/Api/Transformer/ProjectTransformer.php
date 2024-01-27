@@ -121,6 +121,8 @@ class ProjectTransformer extends AbstractTransformer
             ],
             'membership' => $project->getMembershipFormSettings()->toArray(),
             'membershipMainPage' => $project->getMembershipMainPage(),
+            'captchaSiteKey' => $project->getWebsiteTurnstileSiteKey(),
+            'captchaSecretKey' => $project->getWebsiteTurnstileSecretKey(),
         ];
     }
 

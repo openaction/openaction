@@ -95,6 +95,10 @@
         </div>
 
         <div class="user-form-submit">
+            {% if captcha_challenge %}
+                <div class="cf-turnstile mb-2" data-sitekey="{{ captcha_challenge.siteKey }}"></div>
+            {% endif %}
+
             <button type="submit" class="btn btn-primary btn-lg">
                 {{ 'forms.submit'|trans }}
             </button>
