@@ -720,8 +720,8 @@ EOT;
 
     public function applyWebsiteTurnstileUpdate(UpdateCaptchaData $data)
     {
-        $this->websiteTurnstileSiteKey = $data->siteKey;
-        $this->websiteTurnstileSecretKey = $data->secretKey;
+        $this->websiteTurnstileSiteKey = $data->siteKey ?: null;
+        $this->websiteTurnstileSecretKey = $data->secretKey ?: null;
     }
 
     public function getWebsiteLocale(): string
