@@ -13,8 +13,8 @@ class UpdateCaptchaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('siteKey', TextType::class, ['required' => true])
-            ->add('secretKey', TextType::class, ['required' => true])
+            ->add('siteKey', TextType::class, ['required' => false])
+            ->add('secretKey', TextType::class, ['required' => false])
         ;
     }
 

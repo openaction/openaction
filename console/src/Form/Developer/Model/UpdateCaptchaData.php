@@ -7,11 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateCaptchaData
 {
-    #[Assert\NotBlank]
     #[Assert\Length(max: 64)]
     public $siteKey;
 
-    #[Assert\NotBlank]
     #[Assert\Length(max: 64)]
     public $secretKey;
 
