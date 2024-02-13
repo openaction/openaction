@@ -1,0 +1,44 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'content_import.title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'content_import.upload.title'|trans({}, 'project_configuration') }}
+            </h3>
+        </div>
+
+        <div class="bg-light px-3 py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+                    <div class="alert alert-info">
+                        {{ 'content_import.upload.note'|trans({}, 'project_configuration')|raw }}
+                    </div>
+
+                    <div>
+                        <label for="uploadcare">
+                            {{ 'content_import.upload.file.label'|trans({}, 'project_configuration') }}
+                        </label>
+                    </div>
+
+                    <div class="print-uploader" style="height: 40px">
+                        <div {{ react_component('Organization/Community/ImportUploader', {
+                            uploadKey: uploadKey.toArray,
+                            prepareUrl: csrf_path('console_project_configuration_content_import_prepare', {'projectUuid': current_project.uuid}),
+                            errorLabel: 'content_import.upload.file.error'|trans({}, 'project_configuration'),
+                        }) }}></div>
+                    </div>
+
+                    <small class="text-muted mt-1">
+                        {{ 'content_import.upload.file.help'|trans({}, 'project_configuration') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

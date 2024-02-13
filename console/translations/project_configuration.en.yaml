@@ -41,3 +41,17 @@ menu:
         newTab:
             label: Should this link be opened in a new tab?
             help: You should open links in new tabs if the links target external websites
+
+content_import:
+    title: Content import
+    upload:
+        title: Import file with content
+        note: |
+            <strong>Note:</strong> Please upload the file that contains your export data in order to be parsed 
+            and imported to your project!
+        file:
+            label: File
+            help: Upload an XML file.
+            error: An error occurred during the file upload, could you try again?
+    settings:
+        title: Settings
