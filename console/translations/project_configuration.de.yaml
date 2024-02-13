@@ -33,3 +33,17 @@ menu:
         newTab:
             label: 'Soll dieser Link in einer neuen Registerkarte geöffnet werden?'
             help: 'Sie sollten Links in neuen Tabs öffnen, wenn die Links auf externe Websites verweisen'
+
+content_import:
+    title: Content import
+    upload:
+        title: Import file with content
+        note: |
+            <strong>Note:</strong> Please upload the file that contains your export data in order to be parsed 
+            and imported to your project!
+        file:
+            label: File
+            help: Upload an XML file.
+            error: An error occurred during the file upload, could you try again?
+    settings:
+        title: Settings

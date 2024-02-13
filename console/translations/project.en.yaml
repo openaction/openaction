@@ -38,6 +38,7 @@ sidebar:
         label: Configuration
         appearance: Appearance
         menu: Menu and footer
+        import_content: Import content
         access: Access control
         legal_details: Legal details
         settings: Project settings
