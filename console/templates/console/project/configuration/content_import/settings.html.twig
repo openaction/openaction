@@ -5,6 +5,8 @@
 {% block sidebar_import 'current' %}
 
 {% block content %}
+    {% set WORDPRESS = constant('App\\Entity\\Community\\Model\\ContentImportSettingsWordpress::IMPORT_SOURCE') %}
+
     <div class="world-box">
         <div class="world-box-title">
             <h3 class="mb-0">
@@ -12,8 +14,51 @@
             </h3>
         </div>
 
+        {% if import.source == WORDPRESS %}
         <div class="bg-light p-4">
-            settings come here
+            <div class="mb-5">
+                <div class="mb-1">
+                    <h4>
+                        {{ 'content_import.settings.wordpress.label'|trans({}, 'project_configuration') }}
+                    </h4>
+                </div>
+                <div class="text-muted mb-3">
+                    {{ 'content_import.settings.wordpress.help'|trans({}, 'project_configuration')|raw }}
+                </div>
+
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+                <div class="mb-5">
+                    <div class="mb-1">
+                        <strong>
+                            {{ 'content_import.settings.wordpress.post_save_status.label'|trans({}, 'project_configuration') }}
+                        </strong>
+                    </div>
+
+                    <div class="text-muted mb-3">
+                        {{ 'content_import.settings.wordpress.post_save_status.help'|trans({}, 'project_configuration') }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_widget(form.postSaveStatus, {'label': false}) }}
+                        </div>
+                    </div>
+
+                    {{ form_errors(form.postSaveStatus) }}
+                </div>
+
+                <hr/>
+
+                <div class="text-center mt-4 mb-4">
+                    <button type="submit" class="btn btn-lg btn-primary">
+                        {{ 'contacts.import.columns.submit'|trans({}, 'organization_community') }}
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}
