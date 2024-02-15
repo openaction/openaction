@@ -6,7 +6,7 @@ use App\Entity\Community\ContentImport;
 use RuntimeException;
 
 /**
- * Contains constants and properties needed for settings for content import
+ * Contains constants and properties needed for settings for content import.
  */
 class ContentImportSettings
 {
@@ -18,7 +18,7 @@ class ContentImportSettings
 
     public static function createFromImport(ContentImport $import): self
     {
-        if ($import->getSource() === self::IMPORT_SOURCE_WORDPRESS) {
+        if (self::IMPORT_SOURCE_WORDPRESS === $import->getSource()) {
             return new self();
         }
 
