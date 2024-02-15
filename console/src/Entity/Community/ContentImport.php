@@ -12,7 +12,7 @@ use App\Util\Uid;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContentImportRepository::class)]
-#[ORM\Table('project_content_imports')]
+#[ORM\Table('projects_content_imports')]
 class ContentImport
 {
     use Util\EntityIdTrait;
