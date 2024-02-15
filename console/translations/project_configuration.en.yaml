@@ -54,4 +54,14 @@ content_import:
             help: Upload an XML file.
             error: An error occurred during the file upload, could you try again?
     settings:
-        title: Settings
+        title: Import settings
+        wordpress:
+            label: WordPress content import
+            help: |
+                Please select the desired options from the settings below!<br/><strong>Note!</strong> Only published (non-draft) pages will be imported!
+            post_save_status:
+                label: How to save the blog posts?
+                help: You can choose the status of the blogposts at save. Either all posts will be saved as drafts or saved with their original status
+                as_draft: Import and save all blogposts as drafts
+                as_original: Import and save all blogposts with their original status
+

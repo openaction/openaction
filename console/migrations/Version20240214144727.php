@@ -7,7 +7,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240212192500 extends AbstractMigration
+final class Version20240214144727 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -16,7 +16,7 @@ final class Version20240212192500 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE project_content_imports (id BIGSERIAL NOT NULL, file_id BIGINT NOT NULL, job_id BIGINT NOT NULL, organization_id BIGINT NOT NULL, uuid UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE project_content_imports (id BIGSERIAL NOT NULL, organization_id BIGINT NOT NULL, source VARCHAR(20) NOT NULL, settings JSON DEFAULT NULL, file_id BIGINT NOT NULL, job_id BIGINT NOT NULL, uuid UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9FAC415FD17F50A6 ON project_content_imports (uuid)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9FAC415F93CB796C ON project_content_imports (file_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9FAC415FBE04EA9 ON project_content_imports (job_id)');

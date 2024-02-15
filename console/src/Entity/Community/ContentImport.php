@@ -2,6 +2,7 @@
 
 namespace App\Entity\Community;
 
+use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Organization;
 use App\Entity\Platform\Job;
 use App\Entity\Upload;
@@ -19,6 +20,12 @@ class ContentImport
     use Util\EntityOrganizationTrait;
     use Util\EntityTimestampableTrait;
 
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $source;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $settings;
+
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private Upload $file;
@@ -27,11 +34,12 @@ class ContentImport
     #[ORM\JoinColumn(nullable: false)]
     private Job $job;
 
-    public function __construct(Organization $organization, Upload $file)
+    public function __construct(Organization $organization, Upload $file, string $source, )
     {
         $this->uuid = Uid::random();
         $this->organization = $organization;
         $this->file = $file;
+        $this->source = $source;
         $this->job = new Job('import', 0, 0);
     }
 
@@ -43,6 +51,16 @@ class ContentImport
     public function getJob(): Job
     {
         return $this->job;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    public function setSelectedSettings(ContentImportSettings $settings)
+    {
+        $this->settings = get_object_vars($settings);
     }
 
     // TODO! Add fixtures
