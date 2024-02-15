@@ -34,7 +34,7 @@ class ContentImport
     #[ORM\JoinColumn(nullable: false)]
     private Job $job;
 
-    public function __construct(Organization $organization, Upload $file, string $source, )
+    public function __construct(Organization $organization, Upload $file, string $source)
     {
         $this->uuid = Uid::random();
         $this->organization = $organization;
@@ -58,7 +58,7 @@ class ContentImport
         return $this->source;
     }
 
-    public function setSelectedSettings(ContentImportSettings $settings)
+    public function setSelectedSettings(ContentImportSettings $settings): void
     {
         $this->settings = get_object_vars($settings);
     }
