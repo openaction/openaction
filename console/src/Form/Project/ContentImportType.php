@@ -15,11 +15,11 @@ class ContentImportType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['import_source'] === ContentImportSettings::IMPORT_SOURCE_WORDPRESS) {
-            // add all options related to WordPress import
             $builder->add('postSaveStatus', ChoiceType::class, [
+                'translation_domain' => 'project_configuration',
                 'choices' => [
-                    'Import all posts as drafts' => ContentImportSettings::POST_STATUS_SAVE_AS_DRAFT,
-                    'Import all posts with their original status' => ContentImportSettings::POST_STATUS_SAVE_AS_ORIGINAL,
+                    'content_import.settings.wordpress.post_save_status.options.as_draft' => ContentImportSettings::POST_STATUS_SAVE_AS_DRAFT,
+                    'content_import.settings.wordpress.post_save_status.options.as_original' => ContentImportSettings::POST_STATUS_SAVE_AS_ORIGINAL,
                 ],
                 'multiple' => false,
                 'expanded' => true,
