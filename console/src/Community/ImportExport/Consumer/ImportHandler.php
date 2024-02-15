@@ -18,7 +18,6 @@ use League\Flysystem\FilesystemReader;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 use function Symfony\Component\String\u;

@@ -14,7 +14,7 @@ class ContentImportType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['import_source'] === ContentImportSettings::IMPORT_SOURCE_WORDPRESS) {
+        if (ContentImportSettings::IMPORT_SOURCE_WORDPRESS === $options['import_source']) {
             $builder->add('postSaveStatus', ChoiceType::class, [
                 'translation_domain' => 'project_configuration',
                 'choices' => [
