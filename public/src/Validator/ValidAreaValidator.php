@@ -28,7 +28,7 @@ class ValidAreaValidator extends ConstraintValidator
         $country = $entity->{$constraint->countryField} ?? null;
         $zipCode = str_replace([' ', "\t"], '', trim($entity->{$constraint->zipCodeField} ?? null));
 
-        if (!$country && !$zipCode) {
+        if (!$country || !$zipCode) {
             return;
         }
 
