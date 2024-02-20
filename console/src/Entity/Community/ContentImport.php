@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table('projects_content_imports')]
 class ContentImport
 {
+    public const WORDPRESS_CONTENT_TYPE_PAGE = 'page';
+    public const WORDPRESS_CONTENT_TYPE_POST = 'post';
+    public const WORDPRESS_CONTENT_TYPE_ATTACHMENT = 'attachment';
+
     use Util\EntityIdTrait;
     use Util\EntityUuidTrait;
     use Util\EntityOrganizationTrait;
@@ -61,6 +65,11 @@ class ContentImport
     public function setSelectedSettings(ContentImportSettings $settings): void
     {
         $this->settings = get_object_vars($settings);
+    }
+
+    public function getSettings(): array
+    {
+        return $this->settings;
     }
 
     // TODO! Add fixtures

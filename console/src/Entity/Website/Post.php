@@ -213,6 +213,11 @@ class Post implements Searchable
         }
     }
 
+    public function getPublishedAt(): ?\DateTime
+    {
+        return $this->publishedAt;
+    }
+
     public function setPublishedAt(\DateTime $date = null): void
     {
         $this->publishedAt = $date;
@@ -274,6 +279,11 @@ class Post implements Searchable
         return $this->title;
     }
 
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -282,6 +292,11 @@ class Post implements Searchable
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     public function getQuote(): ?string
@@ -294,14 +309,14 @@ class Post implements Searchable
         return $this->content;
     }
 
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
+
     public function getVideo(): ?string
     {
         return $this->video;
-    }
-
-    public function getPublishedAt(): ?\DateTime
-    {
-        return $this->publishedAt;
     }
 
     public function getImage(): ?Upload
