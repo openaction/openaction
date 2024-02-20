@@ -4,7 +4,7 @@ namespace App\Community\ImportExport;
 
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
-use App\Community\ImportExport\Consumer\ImportMessage;
+use App\Community\ImportExport\Consumer\ContentImportMessage;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Organization;
@@ -44,6 +44,6 @@ class ContentImporter
         $this->em->persist($import);
         $this->em->flush();
 
-        $this->bus->dispatch(new ImportMessage($import->getId()));
+        $this->bus->dispatch(new ContentImportMessage($import->getId()));
     }
 }
