@@ -45,7 +45,7 @@ class ContentImportHandler
     ) {
     }
 
-    public function __invoke(ContentImportMessage $message)
+    public function __invoke(ContentImportMessage $message): bool
     {
         if (!$import = $this->contentImportRepository->find($message->getImportId())) {
             $this->logger->error('Import not found by its ID', ['id' => $message->getImportId()]);
@@ -61,12 +61,14 @@ class ContentImportHandler
 
         if (ContentImportSettings::IMPORT_SOURCE_WORDPRESS === $import->getSource()) {
             $this->importWordPressContent($import);
-        } else {
-            throw new \RuntimeException('Import source handler not yet implemented!');
+
+            return true;
         }
+
+        throw new \RuntimeException('Import source handler not yet implemented!');
     }
 
-    private function importWordPressContent(ContentImport $import)
+    private function importWordPressContent(ContentImport $import): void
     {
         $this->logger->info('Parsing file', ['id' => $import->getId()]);
         $localFile = sys_get_temp_dir().'/citipo-wp-content-import-'.$import->getId().'.'.$import->getFile()->getExtension();
@@ -196,8 +198,8 @@ class ContentImportHandler
                     $this->logger->warning('No page or post found to attach the uploaded image to', ['id' => $parentId]);
                 }
             }
-        } catch(\Exception $e) {
-            echo "Exception: " . $e->getMessage();
+        } finally {
+            @unlink($localFile);
         }
     }
 
@@ -217,7 +219,7 @@ class ContentImportHandler
         }
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if (!in_array($ext, self::ALLOWED_IMAGE_EXTENSIONS, true)) {
+        if (!in_array(strtolower($ext), self::ALLOWED_IMAGE_EXTENSIONS, true)) {
             return false;
         }
 
