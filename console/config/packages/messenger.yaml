@@ -94,6 +94,7 @@ framework:
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_priority_high
             'App\Community\ImportExport\Consumer\ExportMessage': async_priority_high
+            'App\Community\ImportExport\Consumer\ContentImportMessage': async_priority_high
 
             # Integrations
             'App\Bridge\Quorum\Consumer\QuorumMessage': async_priority_low
