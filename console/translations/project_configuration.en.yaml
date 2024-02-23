@@ -65,4 +65,16 @@ content_import:
                 options:
                     as_draft: Import and save all blogposts as drafts
                     as_original: Import and save all blogposts with their original status
+    progress:
+        title: Import file
+        processing:
+            title: Processing import data ...
+            desc: |
+                Your file has been parsed, data is being processed, and imported
+                into your project.
+        finished:
+            title: Finished!
+            desc: Your file has been imported successfully.
+            back: Go to pages
+
 
