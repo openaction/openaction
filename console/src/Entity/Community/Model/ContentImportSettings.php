@@ -10,6 +10,13 @@ use RuntimeException;
  */
 class ContentImportSettings
 {
+    /** general */
+    public const ALLOWED_IMAGE_EXTENSIONS = [
+        'jpg',
+        'jpeg',
+        'png'
+    ];
+
     /** WordPress import related constants and attributes */
     public const IMPORT_SOURCE_WORDPRESS = 'wordpress';
     public const POST_STATUS_SAVE_AS_DRAFT = 'save_as_draft';
