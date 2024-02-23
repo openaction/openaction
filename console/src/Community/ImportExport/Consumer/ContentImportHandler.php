@@ -10,6 +10,7 @@ use App\Entity\Project;
 use App\Entity\Website\Page;
 use App\Entity\Website\Post;
 use App\Repository\Community\ContentImportRepository;
+use App\Repository\Platform\JobRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UploadRepository;
 use App\Repository\Website\PageRepository;
@@ -37,6 +38,7 @@ class ContentImportHandler
         private readonly PageRepository $pageRepository,
         private readonly PostRepository $postRepository,
         private readonly UploadRepository $uploadRepository,
+        private readonly JobRepository $jobRepository,
         private readonly EntityManagerInterface $em,
         private readonly LoggerInterface $logger,
         private readonly FilesystemReader $cdnStorage,
@@ -82,11 +84,17 @@ class ContentImportHandler
         $externalPostIds = [];
         $externalImageIds = [];
 
+        $jobId = $import->getJob()->getId();
+        $batchSize = 100;
+        $steps = 0;
+
         try {
             $reader = XMLReader::open($localFile);
 
             while ($reader->read()) {
                 if ($reader->nodeType === XMLReader::ELEMENT && $reader->localName === 'item') {
+                    ++$steps;
+
                     // read and validate the entire <item> node
                     $entryXml = $reader->readOuterXml();
 
@@ -137,35 +145,38 @@ class ContentImportHandler
                             $externalPostIds[$itemId] = $newPost->getId();
                         } elseif (ContentImport::WORDPRESS_CONTENT_TYPE_ATTACHMENT === $itemType) {
                             // save attachment
-                            $imageUrl = $this->extractTagByName($entryXml, 'wp:attachment_url');
-                            $imageFileName = $this->getFilename($imageUrl);
+                            // check if image belongs to a page or post, else ignore
+                            $itemParentId = $this->extractTagByName($entryXml, 'wp:post_parent');
 
-                            if ($this->validateImageByExtension($imageFileName)) {
-                                $destFilename = @tempnam(md5(uniqid('', true)), 'content_import_');
+                            if ($itemParentId) {
+                                $imageUrl = $this->extractTagByName($entryXml, 'wp:attachment_url');
+                                $imageFileName = $this->getFilename($imageUrl);
 
-                                // download external image to a local file
-                                if (file_put_contents($destFilename, file_get_contents($imageUrl))) {
-                                    $file = new UploadedFile($destFilename, $imageFileName);
+                                if ($this->validateImageByExtension($imageFileName)) {
+                                    $destFilename = @tempnam(md5(uniqid('', true)), 'content_import_image_');
 
-                                    // upload local file to cdn and save to db
-                                    $upload = $this->cdnUploader->upload(CdnUploadRequest::createWebsiteContentImageRequest($project, $file));
+                                    // download external image to a local file
+                                    if (file_put_contents($destFilename, file_get_contents($imageUrl))) {
+                                        $file = new UploadedFile($destFilename, $imageFileName);
 
-                                    $itemParentId = $this->extractTagByName($entryXml, 'wp:post_parent');
-                                    if ($itemParentId) {
+                                        // upload local file to CDN and save to db
+                                        $upload = $this->cdnUploader->upload(CdnUploadRequest::createWebsiteContentImageRequest($project, $file));
                                         $externalImageIds[$itemParentId] = $upload->getId();
                                     } else {
-                                        $this->logger->error('Cannot associate imported image to any of the imported blogs/pages', ['id' => $upload->getId()]);
+                                        $this->logger->warning('Cannot download image to local file', [
+                                            'image_url' => $imageUrl,
+                                            'dest_filename' => $destFilename,
+                                        ]);
                                     }
                                 } else {
-                                    $this->logger->error('Cannot download image to local file', [
-                                        'image_url' => $imageUrl,
-                                        'dest_filename' => $destFilename,
-                                    ]);
+                                    $this->logger->warning('Not allowed import image extension', ['image_filename' => $imageFileName]);
                                 }
-                            } else {
-                                $this->logger->error('Not allowed import image type', ['image_filename' => $imageFileName]);
                             }
                         }
+                    }
+
+                    if (0 === $steps % $batchSize) {
+                        $this->jobRepository->setJobStep($jobId, $steps);
                     }
                 }
             }
@@ -198,9 +209,15 @@ class ContentImportHandler
                     $this->logger->warning('No page or post found to attach the uploaded image to', ['id' => $parentId]);
                 }
             }
+        } catch (\Exception $e) {
+            $this->logger->error('Exception: ' . $e->getMessage());
         } finally {
             @unlink($localFile);
         }
+
+        // Mark job finished
+        $this->jobRepository->setJobStep($jobId, $steps);
+        $this->jobRepository->setJobTotalSteps($jobId, $steps);
     }
 
     private function getFilename(?string $url): ?string
