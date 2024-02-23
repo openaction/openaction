@@ -24,7 +24,6 @@ class ImportContentController extends AbstractController
     #[Route('', name: 'console_project_configuration_content_import')]
     public function start(): Response
     {
-        // TODO! change to right permission
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
 
@@ -36,7 +35,6 @@ class ImportContentController extends AbstractController
     #[Route('/prepare', name: 'console_project_configuration_content_import_prepare')]
     public function prepare(Request $request): JsonResponse
     {
-        // TODO! Change to right permissions
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessValidCsrf($request);
