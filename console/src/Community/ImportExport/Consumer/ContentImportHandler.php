@@ -80,7 +80,7 @@ class ContentImportHandler
             $reader = \XMLReader::open($localFile);
 
             while ($reader->read()) {
-                if ($reader->nodeType === \XMLReader::ELEMENT && $reader->localName === 'item') {
+                if (\XMLReader::ELEMENT === $reader->nodeType && 'item' === $reader->localName) {
                     ++$steps;
 
                     // read and validate the entire <item> node
@@ -199,7 +199,7 @@ class ContentImportHandler
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error('Exception: ' . $e->getMessage());
+            $this->logger->error('Exception: '.$e->getMessage());
         } finally {
             @unlink($localFile);
         }
@@ -234,7 +234,7 @@ class ContentImportHandler
 
     private function extractTagByName(string $xml, string $tagName, $default = null): ?string
     {
-        $pattern = '/<' . $tagName . '>(.*?)<\/' . $tagName . '>/';
+        $pattern = '/<'.$tagName.'>(.*?)<\/'.$tagName.'>/';
 
         return preg_match($pattern, $xml, $matches) ?
             $this->removeCDataFromString($matches[1])

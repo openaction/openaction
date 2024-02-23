@@ -14,7 +14,7 @@ class ContentImportSettings
     public const ALLOWED_IMAGE_EXTENSIONS = [
         'jpg',
         'jpeg',
-        'png'
+        'png',
     ];
 
     /** WordPress import related constants and attributes */
