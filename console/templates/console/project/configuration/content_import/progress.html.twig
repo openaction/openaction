@@ -1,0 +1,27 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'content_import.title'|trans({}, 'organization_community') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'contacts.import.progress.title'|trans({}, 'organization_community') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-5" {{ react_component('Organization/Community/ImportProgress', {
+            'statusUrl': path('console_api_job_status', {'id': import.job.id}),
+            'contactsUrl': path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}),
+            'labels': {
+                'processingTitle': 'contacts.import.progress.processing.title'|trans({}, 'organization_community'),
+                'processingDesc': 'contacts.import.progress.processing.desc'|trans({}, 'organization_community'),
+                'finishedTitle': 'contacts.import.progress.finished.title'|trans({}, 'organization_community'),
+                'finishedDesc': 'contacts.import.progress.finished.desc'|trans({}, 'organization_community'),
+                'finishedBack': 'contacts.import.progress.finished.back'|trans({}, 'organization_community'),
+            },
+        }) }}></div>
+    </div>
+{% endblock %}

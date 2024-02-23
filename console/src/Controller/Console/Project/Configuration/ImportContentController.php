@@ -53,7 +53,7 @@ class ImportContentController extends AbstractController
 
         // currently only WP content can be imported, so we set the import type accordingly
         // this can be extended with a form to select the import type before the file is uploaded
-        $import = $this->importer->prepareImport($this->getOrganization(), $file, ContentImportSettings::IMPORT_SOURCE_WORDPRESS);
+        $import = $this->importer->prepareImport($this->getProject(), $file, ContentImportSettings::IMPORT_SOURCE_WORDPRESS);
 
         // Provide redirect URL to JavaScript
         return new JsonResponse([
@@ -67,10 +67,9 @@ class ImportContentController extends AbstractController
     #[Route('/{uuid}/settings', name: 'console_project_configuration_content_import_settings')]
     public function settings(ContentImport $import, Request $request): Response
     {
-        // TODO! Change to right permissions
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
-        $this->denyUnlessSameOrganization($import);
+        $this->denyUnlessSameOrganization($import->getProject());
 
         $data = ContentImportSettings::createFromImport($import);
         $form = $this->createForm(ContentImportType::class, $data, ['import_source' => $import->getSource()]);
@@ -79,12 +78,27 @@ class ImportContentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->importer->startImport($import, $form->getData());
 
-            // TODO! Redirect to next step
+            return $this->redirectToRoute('console_project_configuration_content_import_progress', [
+                'projectUuid' => $this->getProject()->getUuid(),
+                'uuid' => $import->getUuid(),
+            ]);
         }
 
         return $this->render('console/project/configuration/content_import/settings.html.twig', [
             'import' => $import,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/{uuid}/progress', name: 'console_project_configuration_content_import_progress')]
+    public function progress(ContentImport $import)
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameOrganization($import->getProject());
+
+        return $this->render('console/project/configuration/content_import/progress.html.twig', [
+            'import' => $import,
         ]);
     }
 }

@@ -7,7 +7,7 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Community\ImportExport\Consumer\ContentImportMessage;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
-use App\Entity\Organization;
+use App\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,11 +25,11 @@ class ContentImporter
         $this->bus = $bus;
     }
 
-    public function prepareImport(Organization $organization, File $file, string $source): ContentImport
+    public function prepareImport(Project $project, File $file, string $source): ContentImport
     {
         $upload = $this->uploader->upload(CdnUploadRequest::createOrganizationPrivateFileRequest($file));
 
-        $import = new ContentImport($organization, $upload, $source);
+        $import = new ContentImport($project, $upload, $source);
 
         $this->em->persist($import);
         $this->em->flush();

@@ -6,12 +6,10 @@ use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
-use App\Entity\Project;
 use App\Entity\Website\Page;
 use App\Entity\Website\Post;
 use App\Repository\Community\ContentImportRepository;
 use App\Repository\Platform\JobRepository;
-use App\Repository\ProjectRepository;
 use App\Repository\UploadRepository;
 use App\Repository\Website\PageRepository;
 use App\Repository\Website\PostRepository;
@@ -19,22 +17,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemReader;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use XMLReader;
 
 #[AsMessageHandler]
 class ContentImportHandler
 {
-    private const ALLOWED_IMAGE_EXTENSIONS = [
-        'jpg',
-        'jpeg',
-        'png'
-    ];
-
     public function __construct(
         private readonly ContentImportRepository $contentImportRepository,
-        private readonly ProjectRepository $projectRepository,
         private readonly PageRepository $pageRepository,
         private readonly PostRepository $postRepository,
         private readonly UploadRepository $uploadRepository,
@@ -42,8 +31,7 @@ class ContentImportHandler
         private readonly EntityManagerInterface $em,
         private readonly LoggerInterface $logger,
         private readonly FilesystemReader $cdnStorage,
-        private readonly CdnUploader $cdnUploader,
-        private readonly RequestStack $requestStack
+        private readonly CdnUploader $cdnUploader
     ) {
     }
 
@@ -76,7 +64,7 @@ class ContentImportHandler
         $localFile = sys_get_temp_dir().'/citipo-wp-content-import-'.$import->getId().'.'.$import->getFile()->getExtension();
         file_put_contents($localFile, $this->cdnStorage->readStream($import->getFile()->getPathname()));
 
-        $project = $this->getCurrentProject();
+        $project = $import->getProject();
         $importSettings = $import->getSettings();
 
         // save external ids to attach an imported image to its page/post
@@ -89,10 +77,10 @@ class ContentImportHandler
         $steps = 0;
 
         try {
-            $reader = XMLReader::open($localFile);
+            $reader = \XMLReader::open($localFile);
 
             while ($reader->read()) {
-                if ($reader->nodeType === XMLReader::ELEMENT && $reader->localName === 'item') {
+                if ($reader->nodeType === \XMLReader::ELEMENT && $reader->localName === 'item') {
                     ++$steps;
 
                     // read and validate the entire <item> node
@@ -183,9 +171,10 @@ class ContentImportHandler
 
             $reader->close();
 
-            // attach images to their pages/posts
+            // attach imported images to their pages/posts
             foreach ($externalImageIds as $parentId => $uploadId) {
                 $parent = null;
+
                 if (isset($externalPageIds[$parentId])) {
                     $parent = $this->pageRepository->findOneBy(['id' => $externalPageIds[$parentId]]);
                 }
@@ -236,7 +225,7 @@ class ContentImportHandler
         }
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if (!in_array(strtolower($ext), self::ALLOWED_IMAGE_EXTENSIONS, true)) {
+        if (!in_array(strtolower($ext), ContentImportSettings::ALLOWED_IMAGE_EXTENSIONS, true)) {
             return false;
         }
 
@@ -260,12 +249,6 @@ class ContentImportHandler
         }
 
         return new \DateTime();
-    }
-
-    private function getCurrentProject(): Project
-    {
-        $projectUuid = $this->requestStack->getMainRequest()->get('projectUuid');
-        return $this->projectRepository->findOneByUuid($projectUuid);
     }
 
     private function removeCDataFromString(string $string): string

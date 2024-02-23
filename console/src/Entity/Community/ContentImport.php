@@ -3,8 +3,8 @@
 namespace App\Entity\Community;
 
 use App\Entity\Community\Model\ContentImportSettings;
-use App\Entity\Organization;
 use App\Entity\Platform\Job;
+use App\Entity\Project;
 use App\Entity\Upload;
 use App\Entity\Util;
 use App\Repository\Community\ContentImportRepository;
@@ -21,7 +21,7 @@ class ContentImport
 
     use Util\EntityIdTrait;
     use Util\EntityUuidTrait;
-    use Util\EntityOrganizationTrait;
+    use Util\EntityProjectTrait;
     use Util\EntityTimestampableTrait;
 
     #[ORM\Column(type: 'string', length: 20)]
@@ -38,10 +38,10 @@ class ContentImport
     #[ORM\JoinColumn(nullable: false)]
     private Job $job;
 
-    public function __construct(Organization $organization, Upload $file, string $source)
+    public function __construct(Project $project, Upload $file, string $source)
     {
         $this->uuid = Uid::random();
-        $this->organization = $organization;
+        $this->project = $project;
         $this->file = $file;
         $this->source = $source;
         $this->job = new Job('import', 0, 0);
