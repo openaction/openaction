@@ -24,7 +24,12 @@ class EventController extends AbstractApiController
     public function list(EventTransformer $transformer, Request $request)
     {
         $currentPage = $this->apiQueryParser->getPage();
-        $events = $this->repository->getApiEvents($this->getUser(), $request->query->get('category'), $currentPage);
+        $events = $this->repository->getApiEvents(
+            project: $this->getUser(),
+            category: $request->query->get('category'),
+            archived: $request->query->getBoolean('archived'),
+            currentPage: $currentPage,
+        );
 
         return $this->handleApiCollection($events, $transformer, true);
     }

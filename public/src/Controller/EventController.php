@@ -32,7 +32,12 @@ class EventController extends AbstractController
         return $this->render('events/list.html.twig', [
             'current_page' => $page,
             'current_category' => $category,
-            'events' => $this->citipo->getEvents($this->getApiToken(), $page, $category),
+            'events' => $this->citipo->getEvents(
+                $this->getApiToken(),
+                $page,
+                $category,
+                $request->query->getBoolean('archived'),
+            ),
             'categories' => $this->citipo->getEventsCategories($this->getApiToken()),
         ]);
     }
