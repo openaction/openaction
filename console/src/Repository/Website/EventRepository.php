@@ -101,7 +101,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Paginator|Event[]
      */
-    public function getApiEvents(Project $project, ?string $category, int $currentPage, int $limit = 12): Paginator
+    public function getApiEvents(Project $project, ?string $category, bool $archived, int $currentPage, int $limit = 12): Paginator
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e')
@@ -112,9 +112,6 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.onlyForMembers = FALSE')
             ->andWhere('e.publishedAt IS NOT NULL')
             ->andWhere('e.publishedAt <= :now')
-            ->andWhere('e.beginAt >= :now')
-            ->setParameter('now', new \DateTime())
-            ->orderBy('e.beginAt', 'ASC')
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
@@ -122,6 +119,12 @@ class EventRepository extends ServiceEntityRepository
         if ($category) {
             $qb->andWhere('ec.uuid = :category')
                 ->setParameter('category', Uid::fromBase62($category));
+        }
+
+        if ($archived) {
+            $qb->andWhere('e.beginAt < :now')->setParameter('now', new \DateTime())->orderBy('e.beginAt', 'DESC');
+        } else {
+            $qb->andWhere('e.beginAt >= :now')->setParameter('now', new \DateTime())->orderBy('e.beginAt', 'ASC');
         }
 
         return new Paginator($qb->getQuery(), true);

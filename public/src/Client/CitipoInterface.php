@@ -22,7 +22,7 @@ interface CitipoInterface
 
     public function getPost(string $apiToken, string $id): ?ApiResource;
 
-    public function getEvents(string $apiToken, int $page, string $category = null): ApiCollection;
+    public function getEvents(string $apiToken, int $page, string $category = null, bool $archived = false): ApiCollection;
 
     public function getEventsCategories(string $apiToken): ApiCollection;
 
