@@ -73,11 +73,12 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @return Paginator|Post[]
      */
-    public function getApiPosts(Project $project, ?string $category, int $currentPage, int $limit = 12): Paginator
+    public function getApiPosts(Project $project, ?string $category, ?string $author, int $currentPage, int $limit = 12): Paginator
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->leftJoin('p.categories', 'pc')
+            ->leftJoin('p.authors', 'pa')
             ->leftJoin('p.image', 'pi')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
@@ -93,6 +94,11 @@ class PostRepository extends ServiceEntityRepository
         if ($category) {
             $qb->andWhere('pc.uuid = :category')
                 ->setParameter('category', Uid::fromBase62($category));
+        }
+
+        if ($author) {
+            $qb->andWhere('pa.uuid = :author')
+                ->setParameter('author', Uid::fromBase62($author));
         }
 
         return new Paginator($qb->getQuery(), true);
