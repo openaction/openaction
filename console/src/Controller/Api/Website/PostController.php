@@ -25,7 +25,12 @@ class PostController extends AbstractApiController
     public function list(PostPartialTransformer $transformer, Request $request)
     {
         $currentPage = $this->apiQueryParser->getPage();
-        $posts = $this->repository->getApiPosts($this->getUser(), $request->query->get('category'), $currentPage);
+        $posts = $this->repository->getApiPosts(
+            project: $this->getUser(),
+            category: $request->query->get('category'),
+            author: $request->query->get('author'),
+            currentPage: $currentPage,
+        );
 
         return $this->handleApiCollection($posts, $transformer, true);
     }

@@ -16,7 +16,7 @@ interface CitipoInterface
 
     public function getPage(string $apiToken, string $id): ?ApiResource;
 
-    public function getPosts(string $apiToken, int $page, string $category = null): ApiCollection;
+    public function getPosts(string $apiToken, int $page, string $category = null, string $author = null): ApiCollection;
 
     public function getPostsCategories(string $apiToken): ApiCollection;
 

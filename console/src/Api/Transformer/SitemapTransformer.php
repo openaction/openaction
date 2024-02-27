@@ -69,7 +69,7 @@ class SitemapTransformer extends AbstractTransformer
             /** @var PostRepository $repo */
             $repo = $this->em->getRepository(Post::class);
 
-            foreach ($repo->getApiPosts($project, null, 1) as $post) {
+            foreach ($repo->getApiPosts($project, category: null, author: null, currentPage: 1) as $post) {
                 $sitemap['posts'][] = $this->createNode($post->getUuid(), $post->getSlug(), $post->getUpdatedAt(), [
                     'title' => $post->getTitle(),
                     'description' => $post->getDescription(),

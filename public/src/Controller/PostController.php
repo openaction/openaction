@@ -28,11 +28,12 @@ class PostController extends AbstractController
 
         $page = $request->query->getInt('p', 1);
         $category = $request->query->get('c');
+        $author = $request->query->get('a');
 
         return $this->render('posts/list.html.twig', [
             'current_page' => $page,
             'current_category' => $category,
-            'posts' => $this->citipo->getPosts($this->getApiToken(), $page, $category),
+            'posts' => $this->citipo->getPosts($this->getApiToken(), $page, $category, $author),
             'categories' => $this->citipo->getPostsCategories($this->getApiToken()),
         ]);
     }

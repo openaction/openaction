@@ -48,9 +48,9 @@ class Citipo implements CitipoInterface
         return $this->parseCollection($this->request('GET', '/api/website/posts-categories', $apiToken));
     }
 
-    public function getPosts(string $apiToken, int $page, string $category = null): ApiCollection
+    public function getPosts(string $apiToken, int $page, string $category = null, string $author = null): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/posts?page='.$page.'&category='.$category, $apiToken));
+        return $this->parseCollection($this->request('GET', '/api/website/posts?page='.$page.'&category='.$category.'&author='.$author, $apiToken));
     }
 
     public function getPost(string $apiToken, string $id): ?ApiResource
