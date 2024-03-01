@@ -6,7 +6,6 @@ import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
-import Clipboard from 'stimulus-clipboard';
 
 // Log errors
 const sentryDsn = document.body.getAttribute('data-sentry-dsn');
@@ -22,9 +21,13 @@ if (sentryDsn) {
 // Launch Stimulus
 const application = Application.start();
 const context = require.context('./controllers', true, /\.jsx$/);
-
 application.load(definitionsFromContext(context));
+
+import Clipboard from 'stimulus-clipboard';
+import CheckboxSelectAll from 'stimulus-checkbox-select-all';
+
 application.register('stimulus-clipboard', Clipboard);
+application.register('checkbox-select-all', CheckboxSelectAll);
 
 // Launch Bootstrap
 require('bootstrap/js/src/modal');
