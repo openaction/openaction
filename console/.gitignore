@@ -1,4 +1,3 @@
-rector.php
 /config/secrets/keys/github-citipo-themes.pem
 
 ###> symfony/framework-bundle ###
