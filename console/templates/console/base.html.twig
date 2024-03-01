@@ -278,7 +278,7 @@
                                         <strong>{{ 'console.header.organization.switch'|trans({}, 'global') }}</strong>
                                     </div>
 
-                                    <div class="list-group list-group-flush" data-orga-chooser>
+                                    <div class="list-group list-group-flush world-header-menu-orga-chooser" data-orga-chooser>
                                         {% for organization in get_user_organizations_switcher(app.user) %}
                                             <a href="{{ path('console_organization_projects', {'organizationUuid': organization.uuid}) }}"
                                                class="list-group-item list-group-item-action" data-orga-chooser-item>
