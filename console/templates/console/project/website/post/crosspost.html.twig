@@ -22,7 +22,22 @@
 
                     {{ form_start(form) }}
 
-                    {{ form_row(form.intoProjects, {'label': 'crosspost.to'|trans({}, 'project_posts')}) }}
+                    <div class="mb-3" data-controller="checkbox-select-all">
+                        {{ form_label(form.intoProjects, 'crosspost.to'|trans({}, 'project_posts')) }}
+
+                        <div class="form-check mb-2">
+                            <input type="checkbox" id="select-all" class="form-check-input" data-checkbox-select-all-target="checkboxAll" />
+                            <label class="form-check-label" for="select-all">
+                                {{ 'select_all'|trans({}, 'global') }}
+                            </label>
+                        </div>
+
+                        {% for field in form.intoProjects %}
+                            {{ form_widget(field, {'attr': {'data-checkbox-select-all-target': 'checkbox'}}) }}
+                        {% endfor %}
+
+                        {{ form_errors(form.intoProjects) }}
+                    </div>
 
                     <button type="submit" class="btn btn-primary">
                         {{ 'crosspost.submit'|trans({}, 'project_posts') }}
