@@ -71,6 +71,4 @@ class ContentImport
     {
         return $this->settings;
     }
-
-    // TODO! Add fixtures
 }
