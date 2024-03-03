@@ -8,6 +8,7 @@ use App\Api\Model\ContactPictureApiData;
 use App\Api\Model\ContactUpdateEmailApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Api\Transformer\Community\ContactTransformer;
+use App\Bridge\Meilisearch\MeilisearchInterface;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Community\ContactViewBuilder;
@@ -15,6 +16,7 @@ use App\Controller\Api\AbstractApiController;
 use App\Controller\Util\ApiControllerTrait;
 use App\Entity\Community\Contact;
 use App\Entity\Community\ContactUpdate;
+use App\Entity\Project;
 use App\Mailer\OrganizationMailer;
 use App\Repository\Community\ContactRepository;
 use App\Repository\Community\ContactUpdateRepository;
@@ -39,12 +41,12 @@ class ContactController extends AbstractApiController
     use ApiControllerTrait;
 
     public function __construct(
-        private ValidatorInterface $validator,
-        private ContactRepository $repository,
-        private ContactUpdateRepository $contactUpdateRepository,
-        private OrganizationMailer $mailer,
-        private ContactTransformer $transformer,
-        private MessageBusInterface $bus,
+        private readonly ValidatorInterface $validator,
+        private readonly ContactRepository $repository,
+        private readonly ContactUpdateRepository $contactUpdateRepository,
+        private readonly OrganizationMailer $mailer,
+        private readonly ContactTransformer $transformer,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -83,6 +85,35 @@ class ContactController extends AbstractApiController
         ;
 
         return $this->handleApiCollection($contacts, $this->transformer, true);
+    }
+
+    /**
+     * Search a contact in the organization index.
+     */
+    #[Route('/search', name: 'api_contacts_search', methods: ['POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the contacts results of the search.',
+        content: new OA\JsonContent(type: 'array'),
+    )]
+    public function search(MeilisearchInterface $meilisearch, Request $request)
+    {
+        /** @var Project $project */
+        $project = $this->getUser();
+
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\Exception) {
+            $payload = [];
+        }
+
+        $payload['filter'][] = 'projects = "'.$project->getUuid()->toRfc4122().'"';
+
+        return new JsonResponse($meilisearch->search(
+            index: $project->getOrganization()->getCrmIndexName(),
+            query: $payload['q'] ?? null,
+            searchParams: $payload,
+        ));
     }
 
     /**

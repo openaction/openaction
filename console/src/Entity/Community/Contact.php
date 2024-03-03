@@ -277,7 +277,7 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $self->addressStreetNumber = $data['addressStreetNumber'] ?? null;
         $self->addressStreetLine1 = $data['addressStreetLine1'] ?? null;
         $self->addressStreetLine2 = $data['addressStreetLine2'] ?? null;
-        $self->addressZipCode = $data['addressZipCode'] ?? null;
+        $self->addressZipCode = trim(str_replace(' ', '', (string) ($data['addressZipCode'] ?? null))) ?: null;
         $self->addressCity = Address::formatCityName($data['addressCity'] ?? null);
         $self->addressCountry = $data['addressCountry'] ?? null;
         $self->settingsReceiveNewsletters = $data['settingsReceiveNewsletters'] ?? true;
@@ -289,6 +289,16 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $self->contactPhone = $data['contactPhone'] ?? null;
         $self->contactWorkPhone = $data['contactWorkPhone'] ?? null;
         $self->contactAdditionalEmails = $data['contactAdditionalEmails'] ?? [];
+
+        // Slugs
+        $slugger = new AsciiSlugger(strtolower($data['addressCountry'] ?? 'fr'));
+        $self->profileFirstNameSlug = $slugger->slug((string) $self->profileFirstName, '-')->lower()->toString() ?: null;
+        $self->profileMiddleNameSlug = $slugger->slug((string) $self->profileMiddleName, '-')->lower()->toString() ?: null;
+        $self->profileLastNameSlug = $slugger->slug((string) $self->profileLastName, '-')->lower()->toString() ?: null;
+        $self->profileCompanySlug = $slugger->slug((string) $self->profileCompany, '-')->lower()->toString() ?: null;
+        $self->profileJobTitleSlug = $slugger->slug((string) $self->profileJobTitle, '-')->lower()->toString() ?: null;
+        $self->addressStreetLine1Slug = $slugger->slug((string) $self->addressStreetLine1, '-')->lower()->toString() ?: null;
+        $self->addressStreetLine2Slug = $slugger->slug((string) $self->addressStreetLine2, '-')->lower()->toString() ?: null;
 
         // Parse phone and work phone
         $self->refreshParsedPhoneNumbers();
