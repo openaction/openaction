@@ -61,6 +61,13 @@ class CrmIndexer
         'profile_gender',
         'profile_nationality',
 
+        // Address
+        'address_street_line1',
+        'address_street_line2',
+        'address_zip_code',
+        'address_city',
+        'address_country',
+
         // Status
         'status',
 
