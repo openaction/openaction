@@ -49,12 +49,19 @@ class CrmIndexer
         'email',
         'contact_additional_emails',
         'contact_phone',
+        'parsed_contact_phone',
+        'contact_work_phone',
+        'parsed_contact_work_phone',
 
         // Profile
         'profile_first_name',
+        'profile_first_name_slug',
         'profile_last_name',
+        'profile_last_name_slug',
         'profile_company',
+        'profile_company_slug',
         'profile_job_title',
+        'profile_job_title_slug',
         'profile_birthdate',
         'profile_birthdate_int',
         'profile_age',
@@ -62,8 +69,8 @@ class CrmIndexer
         'profile_nationality',
 
         // Address
-        'address_street_line1',
-        'address_street_line2',
+        'address_street_line1_slug',
+        'address_street_line2_slug',
         'address_zip_code',
         'address_city',
         'address_country',
@@ -110,9 +117,9 @@ class CrmIndexer
     ];
 
     public function __construct(
-        private Crm\CrmDataFactory $dataFactory,
-        private Crm\CrmDataParser $dataParser,
-        private Crm\CrmDataIndexer $dataIndexer,
+        private readonly Crm\CrmDataFactory $dataFactory,
+        private readonly Crm\CrmDataParser $dataParser,
+        private readonly Crm\CrmDataIndexer $dataIndexer,
     ) {
     }
 

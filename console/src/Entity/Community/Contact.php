@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber as PhoneNumberModel;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 use function Symfony\Component\String\u;
 
@@ -65,10 +66,19 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     private ?string $profileFirstName = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $profileFirstNameSlug = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $profileMiddleName = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $profileMiddleNameSlug = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $profileLastName = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $profileLastNameSlug = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTime $profileBirthdate = null;
@@ -83,7 +93,13 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     private ?string $profileCompany = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $profileCompanySlug = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $profileJobTitle = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $profileJobTitleSlug = null;
 
     #[ORM\Column(length: 250, nullable: true)]
     private ?string $accountPassword = null;
@@ -140,7 +156,13 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     private ?string $addressStreetLine1 = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $addressStreetLine1Slug = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $addressStreetLine2 = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $addressStreetLine2Slug = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $addressZipCode = null;
@@ -456,25 +478,34 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
     public function applyDataUpdate(ContactData $data, ?string $source = null)
     {
+        $slugger = new AsciiSlugger(defaultLocale: strtolower($data->addressCountry ?: $this->addressCountry ?: 'fr'));
+
         $this->email = self::normalizeEmail($data->email);
         $this->contactAdditionalEmails = array_map([self::class, 'normalizeEmail'], array_filter(array_values($data->additionalEmails)));
         $this->profileFormalTitle = $data->profileFormalTitle;
         $this->profileFirstName = $data->profileFirstName;
+        $this->profileFirstNameSlug = $slugger->slug($data->profileFirstName, '-')->lower()->toString();
         $this->profileMiddleName = $data->profileMiddleName;
+        $this->profileMiddleNameSlug = $slugger->slug($data->profileMiddleName, '-')->lower()->toString();
         $this->profileLastName = $data->profileLastName;
+        $this->profileLastNameSlug = $slugger->slug($data->profileLastName, '-')->lower()->toString();
         $this->profileBirthdate = $data->profileBirthdate;
         $this->profileGender = $data->profileGender;
         $this->profileNationality = $data->profileNationality;
         $this->profileCompany = $data->profileCompany;
+        $this->profileCompanySlug = $slugger->slug($data->profileCompany, '-')->lower()->toString();
         $this->profileJobTitle = $data->profileJobTitle;
+        $this->profileJobTitleSlug = $slugger->slug($data->profileJobTitle, '-')->lower()->toString();
         $this->socialFacebook = $data->socialFacebook;
         $this->socialTwitter = $data->socialTwitter;
         $this->socialLinkedIn = $data->socialLinkedIn;
         $this->socialTelegram = $data->socialTelegram;
         $this->socialWhatsapp = $data->socialWhatsapp;
         $this->addressStreetLine1 = $data->addressStreetLine1;
+        $this->addressStreetLine1Slug = $slugger->slug($data->addressStreetLine1, '-')->lower()->toString();
         $this->addressStreetLine2 = $data->addressStreetLine2;
-        $this->addressZipCode = $data->addressZipCode;
+        $this->addressStreetLine2Slug = $slugger->slug($data->addressStreetLine2, '-')->lower()->toString();
+        $this->addressZipCode = trim(str_replace(' ', '', (string) $data->addressZipCode)) ?: null;
         $this->addressCity = Address::formatCityName($data->addressCity);
         $this->addressCountry = $data->addressCountry;
         $this->metadataComment = $data->metadataComment;
@@ -514,7 +545,6 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
             'addressStreetNumber',
             'addressStreetLine1',
             'addressStreetLine2',
-            'addressZipCode',
             'metadataSource',
             'metadataComment',
         ];
@@ -550,8 +580,43 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->refreshSettings($data);
 
         // Format city
+        if (trim((string) $data->addressZipCode)) {
+            $this->addressZipCode = trim(str_replace(' ', '', $data->addressZipCode));
+        }
+
         if (trim((string) $data->addressCity)) {
             $this->addressCity = Address::formatCityName($data->addressCity);
+        }
+
+        // Slugs
+        $slugger = new AsciiSlugger(defaultLocale: strtolower($data->addressCountry ?: $this->addressCountry ?: 'fr'));
+
+        if ($data->profileFirstName) {
+            $this->profileFirstNameSlug = $slugger->slug($data->profileFirstName, '-')->lower()->toString();
+        }
+
+        if ($data->profileMiddleName) {
+            $this->profileMiddleNameSlug = $slugger->slug($data->profileMiddleName, '-')->lower()->toString();
+        }
+
+        if ($data->profileLastName) {
+            $this->profileLastNameSlug = $slugger->slug($data->profileLastName, '-')->lower()->toString();
+        }
+
+        if ($data->profileCompany) {
+            $this->profileCompanySlug = $slugger->slug($data->profileCompany, '-')->lower()->toString();
+        }
+
+        if ($data->profileJobTitle) {
+            $this->profileJobTitleSlug = $slugger->slug($data->profileJobTitle, '-')->lower()->toString();
+        }
+
+        if ($data->addressStreetLine1) {
+            $this->addressStreetLine1Slug = $slugger->slug($data->addressStreetLine1, '-')->lower()->toString();
+        }
+
+        if ($data->addressStreetLine2) {
+            $this->addressStreetLine2Slug = $slugger->slug($data->addressStreetLine2, '-')->lower()->toString();
         }
 
         // Parse birthdate
@@ -573,13 +638,18 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->picture = null;
         $this->profileFormalTitle = null;
         $this->profileFirstName = null;
+        $this->profileFirstNameSlug = null;
         $this->profileMiddleName = null;
+        $this->profileMiddleNameSlug = null;
         $this->profileLastName = null;
+        $this->profileLastNameSlug = null;
         $this->profileBirthdate = null;
         $this->profileGender = null;
         $this->profileNationality = null;
         $this->profileCompany = null;
+        $this->profileCompanySlug = null;
         $this->profileJobTitle = null;
+        $this->profileJobTitleSlug = null;
         $this->accountPassword = null;
         $this->accountConfirmed = false;
         $this->accountConfirmToken = null;
@@ -596,7 +666,9 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->socialWhatsapp = null;
         $this->addressStreetNumber = null;
         $this->addressStreetLine1 = null;
+        $this->addressStreetLine1Slug = null;
         $this->addressStreetLine2 = null;
+        $this->addressStreetLine2Slug = null;
         $this->addressZipCode = null;
         $this->addressCity = null;
         $this->settingsReceiveNewsletters = false;
@@ -1063,6 +1135,41 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getMetadataComment(): ?string
     {
         return $this->metadataComment;
+    }
+
+    public function getProfileFirstNameSlug(): ?string
+    {
+        return $this->profileFirstNameSlug;
+    }
+
+    public function getProfileMiddleNameSlug(): ?string
+    {
+        return $this->profileMiddleNameSlug;
+    }
+
+    public function getProfileLastNameSlug(): ?string
+    {
+        return $this->profileLastNameSlug;
+    }
+
+    public function getProfileCompanySlug(): ?string
+    {
+        return $this->profileCompanySlug;
+    }
+
+    public function getProfileJobTitleSlug(): ?string
+    {
+        return $this->profileJobTitleSlug;
+    }
+
+    public function getAddressStreetLine1Slug(): ?string
+    {
+        return $this->addressStreetLine1Slug;
+    }
+
+    public function getAddressStreetLine2Slug(): ?string
+    {
+        return $this->addressStreetLine2Slug;
     }
 
     /**
