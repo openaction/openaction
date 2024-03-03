@@ -161,6 +161,104 @@ class ContactControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testSearchFirstNameLastName()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest(
+            client: $client,
+            method: 'POST',
+            endpoint: '/api/community/contacts/search',
+            token: self::CITIPO_TOKEN,
+            content: Json::encode([
+                'filter' => [
+                    'profile_first_name_slug = "apolline"',
+                    'profile_last_name_slug = "mousseau"',
+                ],
+            ]),
+        );
+
+        $this->assertCount(1, $result['hits']);
+
+        $this->assertApiResponse($result, [
+            'hits' => [
+                // Full mapping testing in indexer tests
+                ['email' => 'apolline.mousseau@rpr.fr'],
+            ],
+        ]);
+    }
+
+    public function testSearchEmail()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest(
+            client: $client,
+            method: 'POST',
+            endpoint: '/api/community/contacts/search',
+            token: self::CITIPO_TOKEN,
+            content: Json::encode([
+                'filter' => [
+                    'email = "olivie.gregoire@gmail.com"',
+                ],
+            ]),
+        );
+
+        $this->assertCount(1, $result['hits']);
+
+        $this->assertApiResponse($result, [
+            'hits' => [
+                // Full mapping testing in indexer tests
+                ['email' => 'olivie.gregoire@gmail.com'],
+            ],
+        ]);
+    }
+
+    public function testSearchPhone()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest(
+            client: $client,
+            method: 'POST',
+            endpoint: '/api/community/contacts/search',
+            token: self::CITIPO_TOKEN,
+            content: Json::encode([
+                'filter' => [
+                    'parsed_contact_phone = "+33757594629"',
+                ],
+            ]),
+        );
+
+        $this->assertCount(1, $result['hits']);
+
+        $this->assertApiResponse($result, [
+            'hits' => [
+                // Full mapping testing in indexer tests
+                ['email' => 'tchalut@yahoo.fr'],
+            ],
+        ]);
+    }
+
+    public function testSearchNotInProject()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest(
+            client: $client,
+            method: 'POST',
+            endpoint: '/api/community/contacts/search',
+            token: '3a4683898cdd75936c94475d55049c07c407b64f18e23d6f726894fc0cc79f4f', // IDF
+            content: Json::encode([
+                'filter' => [
+                    'email = "olivie.gregoire@gmail.com"',
+                ],
+            ]),
+        );
+
+        $this->assertCount(0, $result['hits']);
+    }
+
     public function testCreateEditNoToken()
     {
         $this->apiRequest(self::createClient(), 'POST', '/api/community/contacts', null, 401);
