@@ -19,19 +19,29 @@ class CrmDataParser
         'email',
         'contact_additional_emails',
         'contact_phone',
+        'parsed_contact_phone',
+        'contact_work_phone',
+        'parsed_contact_work_phone',
         'profile_formal_title',
         'profile_first_name',
+        'profile_first_name_slug',
         'profile_middle_name',
+        'profile_middle_name_slug',
         'profile_last_name',
+        'profile_last_name_slug',
         'profile_birthdate',
         'profile_birthdate_int',
         'profile_age',
         'profile_gender',
         'profile_nationality',
         'profile_company',
+        'profile_company_slug',
         'profile_job_title',
+        'profile_job_title_slug',
         'address_street_line1',
+        'address_street_line1_slug',
         'address_street_line2',
+        'address_street_line2_slug',
         'address_zip_code',
         'address_city',
         'address_country',
@@ -82,7 +92,7 @@ class CrmDataParser
 
     public function createNdJsonBatchesFromFile(string $filename): array
     {
-        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 25_000);
+        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 15_000);
 
         $file = fopen($filename, 'rb');
         while (false !== ($line = fgets($file))) {
@@ -106,7 +116,7 @@ class CrmDataParser
 
     public function createNdJsonBatchesFromContacts(array $contactsUuids): array
     {
-        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 25_000);
+        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 15_000);
 
         $stmt = $this->db->executeQuery('
             SELECT * FROM '.CrmIndexer::INDEXING_TABLE." 
@@ -143,23 +153,33 @@ class CrmDataParser
             'email' => $row['email'],
             'contact_additional_emails' => $row['contact_additional_emails'],
             'contact_phone' => $row['contact_phone'],
+            'parsed_contact_phone' => $row['parsed_contact_phone'],
+            'contact_work_phone' => $row['contact_work_phone'],
+            'parsed_contact_work_phone' => $row['parsed_contact_work_phone'],
 
             // Profile
             'profile_formal_title' => $row['profile_formal_title'],
             'profile_first_name' => $row['profile_first_name'],
+            'profile_first_name_slug' => $row['profile_first_name_slug'],
             'profile_middle_name' => $row['profile_middle_name'],
+            'profile_middle_name_slug' => $row['profile_middle_name_slug'],
             'profile_last_name' => $row['profile_last_name'],
+            'profile_last_name_slug' => $row['profile_last_name_slug'],
             'profile_birthdate' => $row['profile_birthdate'],
             'profile_birthdate_int' => ((int) $row['profile_birthdate_int']) ?: null,
             'profile_age' => ((int) $row['profile_age']) ?: null,
             'profile_gender' => $row['profile_gender'],
             'profile_nationality' => $row['profile_nationality'],
             'profile_company' => $row['profile_company'],
+            'profile_company_slug' => $row['profile_company_slug'],
             'profile_job_title' => $row['profile_job_title'],
+            'profile_job_title_slug' => $row['profile_job_title_slug'],
 
             // Address
             'address_street_line1' => $row['address_street_line1'],
+            'address_street_line1_slug' => $row['address_street_line1_slug'],
             'address_street_line2' => $row['address_street_line2'],
+            'address_street_line2_slug' => $row['address_street_line2_slug'],
             'address_zip_code' => $row['address_zip_code'],
             'address_city' => $row['address_city'],
             'address_country' => $row['address_country'],
