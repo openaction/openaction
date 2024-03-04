@@ -234,7 +234,7 @@ class ContentImportHandler
 
     private function extractTagByName(string $xml, string $tagName, $default = null): ?string
     {
-        $pattern = '/<'.$tagName.'>(.*?)<\/'.$tagName.'>/';
+        $pattern = '/<'.$tagName.'>(.*?)<\/'.$tagName.'>/s';
 
         return preg_match($pattern, $xml, $matches) ?
             $this->removeCDataFromString($matches[1])
@@ -254,7 +254,7 @@ class ContentImportHandler
     private function removeCDataFromString(string $string): string
     {
         return preg_replace_callback(
-            '/<!\[CDATA\[(.*)\]\]>/',
+            '/<!\[CDATA\[(.*)\]\]>/s',
             static function (array $matches) {
                 return $matches[1];
             },
