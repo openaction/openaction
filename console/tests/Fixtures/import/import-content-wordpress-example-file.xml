@@ -121,7 +121,6 @@ This is our purpose.]]></content:encoded>
 </item>
 <item>
   <title><![CDATA[Test Attachment]]></title>
-  <link>https://renaissanceforeurope.wordpress.com/contact/placeholder-image/</link>
   <description/>
   <content:encoded><![CDATA[]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -139,7 +138,7 @@ This is our purpose.]]></content:encoded>
   <wp:post_type>attachment</wp:post_type>
   <wp:post_password/>
   <wp:is_sticky>0</wp:is_sticky>
-  <wp:attachment_url>https://renaissanceforeurope.files.wordpress.com/2018/10/twentyseventeen-contact.jpg</wp:attachment_url>
+  <wp:attachment_url>https://citipo.com/res/home/us/titouan.jpg</wp:attachment_url>
 </item>
 </channel>
 </rss>

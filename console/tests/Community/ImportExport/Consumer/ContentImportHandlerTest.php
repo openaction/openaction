@@ -5,6 +5,7 @@ namespace App\Tests\Community\ImportExport\Consumer;
 use App\Community\ImportExport\Consumer\ContentImportHandler;
 use App\Community\ImportExport\Consumer\ContentImportMessage;
 use App\Entity\Community\ContentImport;
+use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Upload;
 use App\Entity\Website\Page;
 use App\Entity\Website\Post;
@@ -77,17 +78,17 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertStringContainsString('This is our purpose', $page->getContent());
         $this->assertSame('2018-10-16', $page->getCreatedAt()->format('Y-m-d'));
         $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string)$page->getProject()->getUuid()->__toString()); // correct project
-        $this->assertInstanceOf(Upload::class, $page->getImage()); // it has attached an image
 
+        // check attachment (image)
+        $attachment = $page->getImage();
+        $this->assertNotNull($attachment); // check if image successfully imported
+        $this->assertInstanceOf(Upload::class, $attachment);
+        $this->assertStringContainsString('website-content', $attachment->getPathname());
+        $this->assertContains($attachment->getExtension(), ContentImportSettings::ALLOWED_IMAGE_EXTENSIONS);
 
-
-
-
+        // check if jobs is processed
         static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
         $this->assertSame(4, $job->getTotal());
         $this->assertTrue($job->isFinished());
-
-
     }
-
 }
