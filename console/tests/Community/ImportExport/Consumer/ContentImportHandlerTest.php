@@ -32,6 +32,9 @@ class ContentImportHandlerTest extends KernelTestCase
         $import = static::getContainer()->get(ContentImportRepository::class)->findOneByUuid('8a7f9d2e-56c1-4826-9b40-7fe8a58e3d14');
         $this->assertInstanceOf(ContentImport::class, $import);
 
+        static::getContainer()->get('cdn.storage')->write('import-started.xml', file_get_contents(__DIR__.'/../../../Fixtures/import/import-content-wordpress-example-file.xml'));
 
+        $handler = static::getContainer()->get(ContentImportHandler::class);
+        $handler(new ContentImportMessage($import->getId()));
     }
 }

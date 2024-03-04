@@ -39,12 +39,13 @@ class ContentImport
     #[ORM\JoinColumn(nullable: false)]
     private Job $job;
 
-    public function __construct(Project $project, Upload $file, string $source)
+    public function __construct(Project $project, Upload $file, string $source, array $settings = [])
     {
         $this->uuid = Uid::random();
         $this->project = $project;
         $this->file = $file;
         $this->source = $source;
+        $this->settings = $settings;
         $this->job = new Job('import', 0, 0);
     }
 
@@ -75,7 +76,7 @@ class ContentImport
 
     public static function createFixture(array $data): self
     {
-        $self = new self($data['project'], $data['file'], $data['source']);
+        $self = new self($data['project'], $data['file'], $data['source'], $data['settings']);
 
         if (isset($data['uuid']) && $data['uuid']) {
             $self->uuid = Uuid::fromString($data['uuid']);

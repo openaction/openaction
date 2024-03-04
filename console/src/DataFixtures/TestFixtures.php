@@ -2759,21 +2759,21 @@ class TestFixtures extends AbstractFixtures
                 'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
                 'file' => $this->uploads['import-not-started.xml'],
                 'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
+                'settings' => [],
             ],
             // Started
             '8a7f9d2e-56c1-4826-9b40-7fe8a58e3d14' => [
                 'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
                 'file' => $this->uploads['import-started.xml'],
                 'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
-                //'startedAt' => new \DateTime(),
+                'settings' => ['postSaveStatus' => 'save_as_original'],
             ],
             '15bcff6e-a160-4e7b-bfdc-d43a273db1a6' => [
                 'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
                 'file' => $this->uploads['import-started-2.xml'],
                 'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
-                //'startedAt' => new \DateTime(),
+                'settings' => [],
             ],
-
         ];
 
         foreach ($items as $id => $data) {
