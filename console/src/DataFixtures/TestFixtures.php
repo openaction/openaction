@@ -822,7 +822,6 @@ class TestFixtures extends AbstractFixtures
             'import-started-2.xlsx' => [],
             'import-not-started.xml' => [],
             'import-started.xml' => [],
-            'import-started-2.xml' => [],
             'contact-picture.jpg' => [],
             'invoice.pdf' => [],
         ];
