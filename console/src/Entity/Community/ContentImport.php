@@ -10,6 +10,7 @@ use App\Entity\Util;
 use App\Repository\Community\ContentImportRepository;
 use App\Util\Uid;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContentImportRepository::class)]
 #[ORM\Table('projects_content_imports')]
@@ -70,5 +71,16 @@ class ContentImport
     public function getSettings(): array
     {
         return $this->settings;
+    }
+
+    public static function createFixture(array $data): self
+    {
+        $self = new self($data['project'], $data['file'], $data['source']);
+
+        if (isset($data['uuid']) && $data['uuid']) {
+            $self->uuid = Uuid::fromString($data['uuid']);
+        }
+
+        return $self;
     }
 }
