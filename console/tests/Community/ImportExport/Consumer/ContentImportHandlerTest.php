@@ -57,7 +57,7 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame('2018-10-16', $post->getCreatedAt()->format('Y-m-d'));
         $this->assertNull($post->getPublishedAt()); // unpublished (draft)
         $this->assertNull($post->getImage());
-        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string)$post->getProject()->getUuid()->__toString()); // correct project
+        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $post->getProject()->getUuid()->__toString()); // correct project
 
         // check imported published blogpost
         /** @var Post $post */
@@ -68,7 +68,7 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame('2018-10-18', $post->getCreatedAt()->format('Y-m-d'));
         $this->assertSame('2018-10-18', $post->getPublishedAt()->format('Y-m-d')); // published
         $this->assertNull($post->getImage());
-        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string)$post->getProject()->getUuid()->__toString()); // correct project
+        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $post->getProject()->getUuid()->__toString()); // correct project
 
         // check the imported page
         /** @var Page $page */
@@ -77,7 +77,7 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertNull($page->getDescription());
         $this->assertStringContainsString('This is our purpose', $page->getContent());
         $this->assertSame('2018-10-16', $page->getCreatedAt()->format('Y-m-d'));
-        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string)$page->getProject()->getUuid()->__toString()); // correct project
+        $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $page->getProject()->getUuid()->__toString()); // correct project
 
         // check attachment (image)
         $attachment = $page->getImage();
