@@ -10,6 +10,7 @@
     'shareUrl': domain_share_url(event.project, 'event', event.uuid|toBase62, event.slug),
 }) %}
 
+{% set participantsIds = event.participants|map(p => p.id ~ '') %}
 {% set categoryIds = event.categories|map(p => p.id) %}
 
 {% do expose('event_metadata', {
@@ -18,6 +19,8 @@
     'publishedAt': event.publishedAt ? event.publishedAt.format('Y-m-d\\TH:i:sP') : null,
     'categories': categories,
     'categoryIds': categoryIds,
+    'availableParticipants': availableParticipants,
+    'participantsIds': participantsIds,
     'onlyForMembers': event.onlyForMembers,
 }) %}
 
@@ -55,6 +58,7 @@
                             {{ form_widget(form.externalUrl, {'attr': {'data-event--edit-target': 'externalUrl'}}) }}
                             {{ form_widget(form.publishedAt, {'attr': {'data-event--edit-target': 'publishedAt'}}) }}
                             {{ form_widget(form.categories, {'attr': {'data-event--edit-target': 'categories'}}) }}
+                            {{ form_widget(form.participants, {'attr': {'data-event--edit-target': 'participants'}}) }}
                             {{ form_widget(form.onlyForMembers, {'attr': {'data-event--edit-target': 'onlyForMembers'}}) }}
                             {{ form_widget(image_form.file, {'attr': {'data-event--edit-target': 'image'}}) }}
                         </div>

@@ -33,6 +33,7 @@ export function EventMetadataEdit(props) {
                     [props.externalUrlInput]: metadata.externalUrl ? metadata.externalUrl : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
+                    [props.participantsInput]: JSON.stringify(metadata.participantsIds ? metadata.participantsIds : []),
                     [props.onlyForMembersInput]: metadata.onlyForMembers ? 1 : 0,
                 })
             )
@@ -140,6 +141,7 @@ export function EventMetadataEdit(props) {
                     onMetadataChange={(metadata) => saveMetadata(metadata)}
                     uploadStatus={status}
                     fieldCategory="id"
+                    fieldParticipant="id"
                     onImageChange={(e) => uploadImage(e)}
                 />
             </Modal>

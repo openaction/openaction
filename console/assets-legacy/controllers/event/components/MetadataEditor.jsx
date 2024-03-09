@@ -1,6 +1,7 @@
 import React from 'react';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { translator } from '../../../services/translator';
+import { ParticipantsSelector } from './ParticipantsSelector';
 
 let saveTimeout = null;
 
@@ -9,6 +10,17 @@ export function MetadataEditor(props) {
         if (typeof e.target.files[0] !== 'undefined') {
             props.onImageChange(e.target.files[0]);
         }
+    };
+
+    const handleParticipantsChange = (participantsIds) => {
+        if (saveTimeout) {
+            clearTimeout(saveTimeout);
+        }
+
+        saveTimeout = setTimeout(
+            () => props.onMetadataChange({ ...props.metadata, participantsIds: participantsIds }),
+            700
+        );
     };
 
     const handleExternalUrlChange = (externalUrl) => {
@@ -80,8 +92,7 @@ export function MetadataEditor(props) {
 
                         <small className="text-muted">{translator.trans('event.edit.metadata_modal.image.help')}</small>
                     </div>
-                </div>
-                <div className="col-12 col-lg-6">
+
                     <div className="p-3">
                         <div className="mb-2">
                             <strong>{translator.trans('event.edit.metadata_modal.externalUrl.label')}</strong>
@@ -89,7 +100,7 @@ export function MetadataEditor(props) {
 
                         <div className="mb-1">
                             <input
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.externalUrl}
                                 onChange={(e) => handleExternalUrlChange(e.currentTarget.value)}
                             />
@@ -99,7 +110,8 @@ export function MetadataEditor(props) {
                             {translator.trans('event.edit.metadata_modal.externalUrl.help')}
                         </small>
                     </div>
-
+                </div>
+                <div className="col-12 col-lg-6">
                     <div className="p-3">
                         <div className="mb-2">
                             <strong>{translator.trans('event.edit.metadata_modal.categories.label')}</strong>
@@ -135,6 +147,20 @@ export function MetadataEditor(props) {
                         <small className="text-muted">
                             {translator.trans('event.edit.metadata_modal.onlyForMembers.help')}
                         </small>
+                    </div>
+
+                    <div className="p-3">
+                        <div className="mb-2">
+                            <strong>{translator.trans('post.edit.metadata_modal.author.label')}</strong>
+                        </div>
+
+                        <ParticipantsSelector
+                            choices={props.metadata.availableParticipants}
+                            selectedIds={props.metadata.participantsIds}
+                            onChange={(participants) => handleParticipantsChange(participants)}
+                        />
+
+                        <small className="text-muted">{translator.trans('post.edit.metadata_modal.author.help')}</small>
                     </div>
                 </div>
             </div>

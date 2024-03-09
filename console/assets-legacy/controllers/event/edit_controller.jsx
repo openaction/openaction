@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { EventMetadataEdit } from './components/EventMetadataEdit';
 
 export default class extends Controller {
-    static targets = ['publishedAt', 'image', 'categories', 'externalUrl', 'onlyForMembers'];
+    static targets = ['publishedAt', 'image', 'categories', 'externalUrl', 'onlyForMembers', 'participants'];
 
     connect() {
         render(
@@ -17,6 +17,7 @@ export default class extends Controller {
                 externalUrlInput={this.externalUrlTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 onlyForMembersInput={this.onlyForMembersTarget.getAttribute('name')}
+                participantsInput={this.participantsTarget.getAttribute('name')}
             />,
             this.element
         );

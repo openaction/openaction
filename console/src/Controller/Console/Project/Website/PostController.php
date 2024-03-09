@@ -81,7 +81,7 @@ class PostController extends AbstractController
         return $this->render('console/project/website/post/edit.html.twig', [
             'post' => $post,
             'form' => $this->createForm(PostType::class, new PostData($post->getVideo()))->createView(),
-            'availableAuthors' => $this->trombinoscopePersonRepository->getProjectAuthors($this->getProject(), Query::HYDRATE_ARRAY),
+            'availableAuthors' => $this->trombinoscopePersonRepository->getProjectPersonsList($this->getProject(), Query::HYDRATE_ARRAY),
             'categories' => $this->categoryRepository->getProjectCategories($this->getProject(), Query::HYDRATE_ARRAY),
             'image_form' => $this->createForm(PostImageType::class, new PostImageData())->createView(),
         ]);
