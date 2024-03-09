@@ -22,6 +22,7 @@ use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
 use App\Repository\Website\EventCategoryRepository;
 use App\Repository\Website\EventRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use App\Search\Consumer\RemoveCmsDocumentMessage;
 use App\Search\Consumer\UpdateCmsDocumentMessage;
 use App\Util\Uid;
@@ -43,6 +44,7 @@ class EventController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly EventRepository $repo,
         private readonly EventCategoryRepository $categoryRepo,
+        private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
         private readonly DomainRouter $domainRouter,
         private readonly TranslatorInterface $translator,
         private readonly MessageBusInterface $bus,
@@ -153,6 +155,7 @@ class EventController extends AbstractController
         return $this->render('console/project/website/event/edit.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
+            'availableParticipants' => $this->trombinoscopePersonRepository->getProjectPersonsList($this->getProject(), Query::HYDRATE_ARRAY),
             'image_form' => $this->createForm(EventImageType::class, new EventImageData())->createView(),
             'categories' => $this->categoryRepo->getProjectCategories($this->getProject(), Query::HYDRATE_ARRAY),
         ]);
@@ -239,6 +242,7 @@ class EventController extends AbstractController
         $this->em->persist($event);
         $this->em->flush();
 
+        $this->trombinoscopePersonRepository->updateParticipants($event, $eventData->getParticipantsArray());
         $this->categoryRepo->updateCategories($event, $eventData->getCategoriesArray());
 
         $this->bus->dispatch(UpdateCmsDocumentMessage::forSearchable($event));

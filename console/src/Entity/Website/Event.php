@@ -74,6 +74,14 @@ class Event implements Searchable
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Form $form = null;
 
+    /**
+     * @var Collection<TrombinoscopePerson>
+     */
+    #[ORM\ManyToMany(targetEntity: TrombinoscopePerson::class, inversedBy: 'events')]
+    #[ORM\JoinTable(name: 'website_events_participants')]
+    #[ORM\OrderBy(['weight' => 'ASC'])]
+    private Collection $participants;
+
     public function __construct(Project $project, string $title)
     {
         $this->populateTimestampable();
@@ -82,6 +90,7 @@ class Event implements Searchable
         $this->title = $title;
         $this->slug = (new AsciiSlugger())->slug($this->title)->lower();
         $this->categories = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
     /*
@@ -113,6 +122,10 @@ class Event implements Searchable
 
         foreach ($data['categories'] ?? [] as $category) {
             $self->addCategory($category);
+        }
+
+        foreach ($data['participants'] ?? [] as $participant) {
+            $self->participants[] = $participant;
         }
 
         return $self;
@@ -339,5 +352,13 @@ class Event implements Searchable
     public function getForm(): ?Form
     {
         return $this->form;
+    }
+
+    /**
+     * @return Collection<TrombinoscopePerson>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
     }
 }

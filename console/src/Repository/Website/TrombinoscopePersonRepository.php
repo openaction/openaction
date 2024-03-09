@@ -4,6 +4,7 @@ namespace App\Repository\Website;
 
 use App\Entity\Project;
 use App\Entity\Upload;
+use App\Entity\Website\Event;
 use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
@@ -44,7 +45,7 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
     /**
      * @return TrombinoscopePerson[]|array
      */
-    public function getProjectAuthors(Project $project, $hydrationMode = Query::HYDRATE_OBJECT): iterable
+    public function getProjectPersonsList(Project $project, $hydrationMode = Query::HYDRATE_OBJECT): iterable
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p.id', 'p.fullName')
@@ -157,6 +158,28 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
             }
 
             $this->_em->persist($post);
+            $this->_em->flush();
+        });
+    }
+
+    public function updateParticipants(Event $event, array $participantsIds)
+    {
+        $this->_em->wrapInTransaction(function () use ($event, $participantsIds) {
+            $metadata = $this->_em->getClassMetadata(TrombinoscopePerson::class);
+
+            $this->_em->getConnection()->createQueryBuilder()
+                ->delete($metadata->associationMappings['events']['joinTable']['name'])
+                ->where('event_id = :event')
+                ->setParameter('event', $event->getId())
+                ->execute()
+            ;
+
+            $event->getParticipants()->clear();
+            foreach ($participantsIds as $id) {
+                $event->getParticipants()->add($this->find($id));
+            }
+
+            $this->_em->persist($event);
             $this->_em->flush();
         });
     }

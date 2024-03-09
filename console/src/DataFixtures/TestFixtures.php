@@ -179,11 +179,11 @@ class TestFixtures extends AbstractFixtures
         $this->loadMenuItems();
         $this->loadPageCategories();
         $this->loadPages();
+        $this->loadTrombinoscopeCategories();
+        $this->loadTrombinoscopePersons();
         $this->loadEventsCategories();
         $this->loadForms();
         $this->loadEvents();
-        $this->loadTrombinoscopeCategories();
-        $this->loadTrombinoscopePersons();
         $this->loadPostCategories();
         $this->loadPosts();
         $this->loadManifestoTopics();
@@ -1740,6 +1740,10 @@ class TestFixtures extends AbstractFixtures
                 'beginAt' => new \DateTime('+7 days'),
                 'categories' => [
                     $this->eventCategories['dee2afbb-f2ca-42bd-8c3e-d483a2fa3893'],
+                ],
+                'participants' => [
+                    $this->trombinoscopePersons['46fab812-1f9b-42d4-b5d5-a8de79991690'],
+                    $this->trombinoscopePersons['33d0ba46-2c1d-4bfd-b7e4-0f75bf801fd3'],
                 ],
             ],
         ];

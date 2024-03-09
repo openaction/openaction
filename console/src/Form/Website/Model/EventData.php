@@ -41,6 +41,9 @@ class EventData
     #[Assert\Json(groups: ['Metadata'])]
     public ?string $categories = null;
 
+    #[Assert\Json(groups: ['Metadata'])]
+    public ?string $participants = null;
+
     #[Assert\Length(max: 250)]
     #[Assert\Url]
     public ?string $externalUrl = null;
@@ -70,5 +73,10 @@ class EventData
     public function getCategoriesArray()
     {
         return Json::decode($this->categories) ?: [];
+    }
+
+    public function getParticipantsArray()
+    {
+        return Json::decode($this->participants) ?: [];
     }
 }

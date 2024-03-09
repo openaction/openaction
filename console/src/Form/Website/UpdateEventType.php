@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,7 +24,7 @@ class UpdateEventType extends AbstractType
             ])
             ->add('timezone', TimezoneType::class, ['required' => false])
             ->add('content', TextareaType::class, ['required' => false, 'attr' => ['rows' => 5]])
-            ->add('url', UrlType::class, ['required' => false])
+            ->add('url', TextType::class, ['required' => false])
             ->add('buttonText', TextType::class, ['required' => false])
             ->add('address', TextType::class, ['required' => false])
             ->add('latitude', HiddenType::class, ['required' => false])
@@ -34,6 +33,7 @@ class UpdateEventType extends AbstractType
             ->add('categories', HiddenType::class, ['required' => false])
             ->add('externalUrl', HiddenType::class, ['required' => false])
             ->add('onlyForMembers', HiddenType::class, ['required' => false])
+            ->add('participants', HiddenType::class, ['required' => false])
         ;
     }
 
