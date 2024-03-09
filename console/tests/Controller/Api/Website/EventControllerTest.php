@@ -207,6 +207,24 @@ class EventControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testListParticipantEvents()
+    {
+        $client = self::createClient();
+
+        $result = $this->apiRequest($client, 'GET', '/api/website/events?participant=29w2ahAQA0Rbaa0FVTBHay');
+        $this->assertCount(1, $result['data']);
+
+        // Mapping has already been tested in a previous test, focus on testing filtering
+        $this->assertApiResponse($result, [
+            'data' => [
+                [
+                    'id' => '5BehrTYzzuXwHL9Hc3cZHf',
+                    'title' => 'Event 1',
+                ],
+            ],
+        ]);
+    }
+
     public function testListNoToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/website/events', null, 401);

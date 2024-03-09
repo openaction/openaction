@@ -35,6 +35,11 @@
             {% set otherCategories = categories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
         {% endfor %}
 
+        {% set otherAuthors = {} %}
+        {% for a in other.authors %}
+            {% set otherAuthors = otherAuthors|merge([a.toArray()]) %}
+        {% endfor %}
+
         {% set more = more|merge([
             {
                 'title': other.title,
@@ -45,6 +50,7 @@
                 'date': other.published_at|format_date('medium'),
                 'raw_date': other.published_at,
                 'categories': categories,
+                'authors': otherAuthors,
             }
         ]) %}
     {% endfor %}
