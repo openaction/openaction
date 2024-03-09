@@ -101,11 +101,12 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return Paginator|Event[]
      */
-    public function getApiEvents(Project $project, ?string $category, bool $archived, int $currentPage, int $limit = 12): Paginator
+    public function getApiEvents(Project $project, ?string $category, ?string $participant, bool $archived, int $currentPage, int $limit = 12): Paginator
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e')
             ->leftJoin('e.categories', 'ec')
+            ->leftJoin('e.participants', 'ep')
             ->leftJoin('e.image', 'ei')
             ->where('e.project = :project')
             ->setParameter('project', $project->getId())
@@ -119,6 +120,11 @@ class EventRepository extends ServiceEntityRepository
         if ($category) {
             $qb->andWhere('ec.uuid = :category')
                 ->setParameter('category', Uid::fromBase62($category));
+        }
+
+        if ($participant) {
+            $qb->andWhere('ep.uuid = :participant')
+                ->setParameter('participant', Uid::fromBase62($participant));
         }
 
         if ($archived) {

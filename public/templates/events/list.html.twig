@@ -12,6 +12,11 @@
             {% set itemCategories = itemCategories|merge({ (category.name): path('event_list', {'c': category.id}) }) %}
         {% endfor %}
 
+        {% set itemParticipants = {} %}
+        {% for participant in event.participants %}
+            {% set itemParticipants = itemParticipants|merge([participant.toArray()]) %}
+        {% endfor %}
+
         {% set items = items|merge([
             {
                 'title': event.title,
@@ -31,6 +36,7 @@
                 'image': event.image,
                 'form': event.form,
                 'categories': itemCategories,
+                'participants': itemParticipants,
             }
         ]) %}
     {% endfor %}

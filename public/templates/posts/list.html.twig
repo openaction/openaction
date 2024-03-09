@@ -12,6 +12,11 @@
             {% set itemCategories = itemCategories|merge({ (category.name): path('post_list', {'c': category.id}) }) %}
         {% endfor %}
 
+        {% set itemAuthors = {} %}
+        {% for author in post.authors %}
+            {% set itemAuthors = itemAuthors|merge([author.toArray()]) %}
+        {% endfor %}
+
         {% set items = items|merge([
             {
                 'title': post.title,
@@ -23,6 +28,7 @@
                 'date': post.published_at|format_date('medium'),
                 'raw_date': post.published_at,
                 'categories': itemCategories,
+                'authors': itemAuthors,
             }
         ]) %}
     {% endfor %}

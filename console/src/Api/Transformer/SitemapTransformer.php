@@ -92,7 +92,7 @@ class SitemapTransformer extends AbstractTransformer
             /** @var EventRepository $repo */
             $repo = $this->em->getRepository(Event::class);
 
-            foreach ($repo->getApiEvents($project, category: null, archived: false, currentPage: 1) as $event) {
+            foreach ($repo->getApiEvents($project, category: null, participant: null, archived: false, currentPage: 1) as $event) {
                 $sitemap['events'][] = $this->createNode($event->getUuid(), $event->getSlug(), $event->getUpdatedAt(), [
                     'title' => $event->getTitle(),
                     'createdAt' => $event->getPublishedAt()->format(\DateTime::ATOM),

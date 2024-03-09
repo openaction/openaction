@@ -195,7 +195,7 @@ class TrombinoscopeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function testViewPosts()
+    public function testViewPostsEvents()
     {
         $client = self::createClient();
 
@@ -218,6 +218,29 @@ class TrombinoscopeControllerTest extends ApiTestCase
                         'video' => 'youtube:nxaOzonmeic',
                         'image' => 'http://localhost/serve/post-image.png',
                         'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+                    ],
+                ],
+            ],
+            'events' => [
+                'data' => [
+                    [
+                        '_resource' => 'Event',
+                        '_links' => [
+                            'self' => 'http://localhost/api/website/events/5BehrTYzzuXwHL9Hc3cZHf',
+                        ],
+                        'id' => '5BehrTYzzuXwHL9Hc3cZHf',
+                        'title' => 'Event 1',
+                        'slug' => 'event-1',
+                        'content' => 'Event content',
+                        'externalUrl' => 'https://openaction.eu',
+                        'url' => 'https://citipo.com',
+                        'buttonText' => 'Click here',
+                        'latitude' => '1.2345000',
+                        'longitude' => '6.7890000',
+                        'address' => 'Event address',
+                        'image' => 'http://localhost/serve/event-image.png',
+                        'sharer' => 'http://localhost/serve/event-image.png?t=sharer',
+                        'form' => 'https://exampleco.com/_redirect/form/4wxrTbH3IvFqnMdO3L789k',
                     ],
                 ],
             ],

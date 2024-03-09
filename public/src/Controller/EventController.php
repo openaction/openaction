@@ -36,6 +36,7 @@ class EventController extends AbstractController
                 $this->getApiToken(),
                 $page,
                 $category,
+                $request->query->get('participant'),
                 $request->query->getBoolean('archived'),
             ),
             'categories' => $this->citipo->getEventsCategories($this->getApiToken()),

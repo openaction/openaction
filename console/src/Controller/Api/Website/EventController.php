@@ -27,6 +27,7 @@ class EventController extends AbstractApiController
         $events = $this->repository->getApiEvents(
             project: $this->getUser(),
             category: $request->query->get('category'),
+            participant: $request->query->get('participant'),
             archived: $request->query->getBoolean('archived'),
             currentPage: $currentPage,
         );

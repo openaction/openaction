@@ -23,6 +23,11 @@
         {% set categories = categories|merge({ (category.name): path('event_list', {'c': category.id}) }) %}
     {% endfor %}
 
+    {% set participants = {} %}
+    {% for participant in event.participants %}
+        {% set participants = participants|merge([participant.toArray()]) %}
+    {% endfor %}
+
     {% set payload = {
         'current_url': url('event_view', {'id': event.id, 'slug': event.slug}),
         'current_project': current_project.toArray,
@@ -33,6 +38,7 @@
         'section_name': current_project.terminology.events,
         'section_url': path('event_list'),
         'categories': categories,
+        'participants': participants,
         'social_sharers': social_sharers,
         'title': event.title,
         'slug': event.slug,

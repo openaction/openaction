@@ -3,6 +3,7 @@
 namespace App\Api\Transformer\Website;
 
 use App\Api\Transformer\AbstractTransformer;
+use App\Entity\Website\Event;
 use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Website\TrombinoscopePersonRepository;
@@ -11,13 +12,15 @@ use OpenApi\Annotations\Property;
 
 class TrombinoscopePersonFullTransformer extends AbstractTransformer
 {
-    protected array $availableIncludes = ['previous', 'next', 'posts', 'categories'];
+    protected array $availableIncludes = ['previous', 'next', 'posts', 'events', 'categories'];
+    protected array $defaultIncludes = ['previous', 'next', 'posts', 'events', 'categories'];
 
     public function __construct(
         private readonly TrombinoscopePersonRepository $repository,
         private readonly TrombinoscopeCategoryTransformer $categoryTransformer,
         private readonly TrombinoscopePersonPartialTransformer $partialTransformer,
         private readonly PostLightTransformer $postLightTransformer,
+        private readonly EventLightTransformer $eventLightTransformer,
     ) {
     }
 
@@ -47,6 +50,12 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
                     'items' => new Items(['ref' => '#/components/schemas/Post']),
                 ]),
             ],
+            'events' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/Event']),
+                ]),
+            ],
         ];
     }
 
@@ -71,8 +80,16 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
     public function includePosts(TrombinoscopePerson $person)
     {
         return $this->collection(
-            $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 5),
+            $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 6),
             $this->postLightTransformer,
+        );
+    }
+
+    public function includeEvents(TrombinoscopePerson $person)
+    {
+        return $this->collection(
+            $person->getEvents()->filter(static fn (Event $e) => $e->isPublished() && !$e->isOnlyForMembers())->slice(0, 6),
+            $this->eventLightTransformer,
         );
     }
 
