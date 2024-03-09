@@ -5,6 +5,7 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Event;
+use App\Entity\Website\TrombinoscopePerson;
 use App\Proxy\DomainRouter;
 use App\Util\Uid;
 use OpenApi\Annotations\Items;
@@ -12,18 +13,15 @@ use OpenApi\Annotations\Property;
 
 class EventTransformer extends AbstractTransformer
 {
-    private EventCategoryTransformer $categoryTransformer;
-    private CdnRouter $cdnRouter;
-    private DomainRouter $domainRouter;
+    protected array $availableIncludes = ['categories', 'participants'];
+    protected array $defaultIncludes = ['categories', 'participants'];
 
-    protected array $availableIncludes = ['categories'];
-    protected array $defaultIncludes = ['categories'];
-
-    public function __construct(EventCategoryTransformer $categoryTransformer, CdnRouter $cdnRouter, DomainRouter $domainRouter)
-    {
-        $this->categoryTransformer = $categoryTransformer;
-        $this->cdnRouter = $cdnRouter;
-        $this->domainRouter = $domainRouter;
+    public function __construct(
+        private readonly EventCategoryTransformer $categoryTransformer,
+        private readonly TrombinoscopePersonLightTransformer $participantTransformer,
+        private readonly CdnRouter $cdnRouter,
+        private readonly DomainRouter $domainRouter
+    ) {
     }
 
     public function transform(Event $event)
@@ -89,11 +87,25 @@ class EventTransformer extends AbstractTransformer
                     'items' => new Items(['ref' => '#/components/schemas/EventCategory']),
                 ]),
             ],
+            'participants' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonLight']),
+                ]),
+            ],
         ];
     }
 
     public function includeCategories(Event $event)
     {
         return $this->collection($event->getCategories()->toArray(), $this->categoryTransformer);
+    }
+
+    public function includeParticipants(Event $event)
+    {
+        return $this->collection(
+            $event->getParticipants()->filter(static fn (TrombinoscopePerson $p) => $p->isPublished())->toArray(),
+            $this->participantTransformer,
+        );
     }
 }

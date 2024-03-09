@@ -48,6 +48,19 @@ class EventControllerTest extends ApiTestCase
                             ],
                         ],
                     ],
+                    'participants' => [
+                        'data' => [
+                            [
+                                '_resource' => 'TrombinoscopePersonLight',
+                                '_links' => ['self' => 'http://localhost/api/website/trombinoscope/29w2ahAQA0Rbaa0FVTBHay'],
+                                'id' => '29w2ahAQA0Rbaa0FVTBHay',
+                                'slug' => 'nathalie-loiseau',
+                                'fullName' => 'Nathalie Loiseau',
+                                'position' => 1,
+                                'image' => null,
+                            ],
+                        ],
+                    ],
                 ],
 
                 // Test nullable image, empty categories

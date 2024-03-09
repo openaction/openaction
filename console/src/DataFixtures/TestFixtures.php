@@ -1585,6 +1585,10 @@ class TestFixtures extends AbstractFixtures
                 'categories' => [
                     $this->eventCategories['3cf44f2c-7cc7-4216-b5a0-699ffac1c1e8'],
                 ],
+                'participants' => [
+                    $this->trombinoscopePersons['46fab812-1f9b-42d4-b5d5-a8de79991690'],
+                    $this->trombinoscopePersons['33d0ba46-2c1d-4bfd-b7e4-0f75bf801fd3'],
+                ],
                 'form' => $this->forms['a2ad18d7-7cc3-4b9e-be77-900eda0262b4'],
             ],
             [
@@ -1740,10 +1744,6 @@ class TestFixtures extends AbstractFixtures
                 'beginAt' => new \DateTime('+7 days'),
                 'categories' => [
                     $this->eventCategories['dee2afbb-f2ca-42bd-8c3e-d483a2fa3893'],
-                ],
-                'participants' => [
-                    $this->trombinoscopePersons['46fab812-1f9b-42d4-b5d5-a8de79991690'],
-                    $this->trombinoscopePersons['33d0ba46-2c1d-4bfd-b7e4-0f75bf801fd3'],
                 ],
             ],
         ];
