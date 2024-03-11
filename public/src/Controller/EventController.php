@@ -28,16 +28,18 @@ class EventController extends AbstractController
 
         $page = $request->query->getInt('p', 1);
         $category = $request->query->get('c');
+        $archived = $request->query->getBoolean('archived');
 
         return $this->render('events/list.html.twig', [
             'current_page' => $page,
             'current_category' => $category,
+            'is_archive' => $archived,
             'events' => $this->citipo->getEvents(
                 $this->getApiToken(),
                 $page,
                 $category,
                 $request->query->get('participant'),
-                $request->query->getBoolean('archived'),
+                $archived,
             ),
             'categories' => $this->citipo->getEventsCategories($this->getApiToken()),
         ]);
