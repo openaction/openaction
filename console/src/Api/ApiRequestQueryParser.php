@@ -29,6 +29,11 @@ class ApiRequestQueryParser
         return $this->getRequest()->query->getInt('page', 1);
     }
 
+    public function getLimit(): int
+    {
+        return $this->getRequest()->query->getInt('limit');
+    }
+
     private function getRequest(): Request
     {
         if ($request = $this->stack->getCurrentRequest()) {

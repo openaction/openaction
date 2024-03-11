@@ -5,6 +5,7 @@ namespace App\Controller\Api\Website;
 use App\Api\Transformer\Website\PostFullTransformer;
 use App\Api\Transformer\Website\PostPartialTransformer;
 use App\Controller\Api\AbstractApiController;
+use App\Entity\Project;
 use App\Repository\Website\PostRepository;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +25,15 @@ class PostController extends AbstractApiController
     #[Route('/posts', name: 'api_website_posts_list', methods: ['GET'])]
     public function list(PostPartialTransformer $transformer, Request $request)
     {
-        $currentPage = $this->apiQueryParser->getPage();
+        /** @var Project $project */
+        $project = $this->getUser();
+
         $posts = $this->repository->getApiPosts(
-            project: $this->getUser(),
+            project: $project,
             category: $request->query->get('category'),
             author: $request->query->get('author'),
-            currentPage: $currentPage,
+            currentPage: $this->apiQueryParser->getPage(),
+            limit: $this->apiQueryParser->getLimit() ?: $project->getWebsiteTheme()?->getEventsPerPage() ?: 12,
         );
 
         return $this->handleApiCollection($posts, $transformer, true);
