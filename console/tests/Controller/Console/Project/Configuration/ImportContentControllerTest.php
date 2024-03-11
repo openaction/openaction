@@ -16,7 +16,7 @@ class ImportContentControllerTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client, 'titouan.galopin@citipo.com');
 
-        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/configuration/content/import');
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/configuration/content-import/wordpress');
         self::assertResponseIsSuccessful();
 
         MockUploadcare::setMockFile(__DIR__.'/../../../../Fixtures/import/import-content-wordpress-example-file.xml');

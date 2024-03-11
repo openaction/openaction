@@ -313,18 +313,15 @@
                                 </div>
                             </a>
 
-                            {% if is_granted('website_pages_manage', current_project)
-                                or is_granted('website_posts_manage_drafts', current_project) %}
-                                <a href="{{ path('console_project_configuration_content_import', { 'projectUuid': current_project.uuid }) }}"
-                                   class="world-sidebar-item world-sidebar-item-pages {% block sidebar_import_content '' %}">
-                                    <div class="world-sidebar-item-icon">
-                                        <i class="fad fa-cloud-upload"></i>
-                                    </div>
-                                    <div class="world-sidebar-item-label">
-                                        {{ 'sidebar.configuration.import_content'|trans({}, 'project') }}
-                                    </div>
-                                </a>
-                            {% endif %}
+                            <a href="{{ path('console_project_configuration_content_import', { 'projectUuid': current_project.uuid }) }}"
+                               class="world-sidebar-item world-sidebar-item-pages {% block sidebar_import_content '' %}">
+                                <div class="world-sidebar-item-icon">
+                                    <i class="fad fa-cloud-upload"></i>
+                                </div>
+                                <div class="world-sidebar-item-label">
+                                    {{ 'sidebar.configuration.import_content'|trans({}, 'project') }}
+                                </div>
+                            </a>
                         {% endif %}
 
                         {% if is_granted('organization_project_manage', current_organization) %}

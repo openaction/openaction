@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Console\Project\Configuration;
+namespace App\Controller\Console\Project\Configuration\ContentImport;
 
 use App\Bridge\Uploadcare\UploadcareInterface;
 use App\Community\ImportExport\ContentImporter;
@@ -14,28 +14,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/console/project/{projectUuid}/configuration/content/import')]
-class ImportContentController extends AbstractController
+#[Route('/console/project/{projectUuid}/configuration/content-import/wordpress')]
+class WordpressController extends AbstractController
 {
-    public function __construct(private UploadcareInterface $uploadCare, private ContentImporter $importer)
-    {
+    public function __construct(
+        private readonly UploadcareInterface $uploadCare,
+        private readonly ContentImporter $importer
+    ) {
     }
 
-    #[Route('', name: 'console_project_configuration_content_import')]
+    #[Route('', name: 'console_project_configuration_content_import_wordpress')]
     public function start(): Response
     {
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
 
-        return $this->render('console/project/configuration/content_import/start.html.twig', [
+        return $this->render('console/project/configuration/content_import/wordpress/start.html.twig', [
             'uploadKey' => $this->uploadCare->generateUploadKey(),
         ]);
     }
 
-    #[Route('/prepare', name: 'console_project_configuration_content_import_prepare')]
+    #[Route('/prepare', name: 'console_project_configuration_content_import_wordpress_prepare')]
     public function prepare(Request $request): JsonResponse
     {
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessValidCsrf($request);
 
@@ -55,17 +57,17 @@ class ImportContentController extends AbstractController
 
         // Provide redirect URL to JavaScript
         return new JsonResponse([
-            'redirectUrl' => $this->generateUrl('console_project_configuration_content_import_settings', [
+            'redirectUrl' => $this->generateUrl('console_project_configuration_content_import_wordpress_settings', [
                 'projectUuid' => $this->getProject()->getUuid(),
                 'uuid' => $import->getUuid(),
             ]),
         ]);
     }
 
-    #[Route('/{uuid}/settings', name: 'console_project_configuration_content_import_settings')]
+    #[Route('/{uuid}/settings', name: 'console_project_configuration_content_import_wordpress_settings')]
     public function settings(ContentImport $import, Request $request): Response
     {
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameOrganization($import->getProject());
 
@@ -76,26 +78,26 @@ class ImportContentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->importer->startImport($import, $form->getData());
 
-            return $this->redirectToRoute('console_project_configuration_content_import_progress', [
+            return $this->redirectToRoute('console_project_configuration_content_import_wordpress_progress', [
                 'projectUuid' => $this->getProject()->getUuid(),
                 'uuid' => $import->getUuid(),
             ]);
         }
 
-        return $this->render('console/project/configuration/content_import/settings.html.twig', [
+        return $this->render('console/project/configuration/content_import/wordpress/settings.html.twig', [
             'import' => $import,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{uuid}/progress', name: 'console_project_configuration_content_import_progress')]
+    #[Route('/{uuid}/progress', name: 'console_project_configuration_content_import_wordpress_progress')]
     public function progress(ContentImport $import)
     {
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameOrganization($import->getProject());
 
-        return $this->render('console/project/configuration/content_import/progress.html.twig', [
+        return $this->render('console/project/configuration/content_import/wordpress/progress.html.twig', [
             'import' => $import,
         ]);
     }

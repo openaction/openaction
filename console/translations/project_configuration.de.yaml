@@ -35,37 +35,52 @@ menu:
             help: 'Sie sollten Links in neuen Tabs öffnen, wenn die Links auf externe Websites verweisen'
 
 content_import:
-    title: Content import
-    upload:
-        title: Import file with content
-        note: |
-            <strong>Note:</strong> Please upload the file that contains your export data in order to be parsed 
-            and imported to your project!
-        file:
-            label: File
-            help: Upload an XML file.
-            error: An error occurred during the file upload, could you try again?
-    settings:
-        title: Import settings
-        wordpress:
-            label: WordPress content import
-            help: |
-                Please select the desired options from the settings below!<br/><strong>Note!</strong> Only published (non-draft) pages will be imported!
-            post_save_status:
-                label: How to save the blog posts?
-                help: You can choose the status of the blogposts at save. Either all posts will be saved as drafts or saved with their original status
-                options:
-                    as_draft: Import and save all blogposts as drafts
-                    as_original: Import and save all blogposts with their original status
+    title: Inhalt importieren
+    start_import: Import starten
+    index:
+        question: Welche Technologie wird von der Website verwendet, von der Sie Inhalt importieren möchten?
+        choices:
+            wordpress: Wordpress
+            drupal: Drupal (bald verfügbar)
     progress:
-        title: Import file
         processing:
-            title: Processing import data ...
-            desc: |
-                Your file has been parsed, data is being processed, and imported
-                into your project.
+            title: Import läuft ...
+            desc: Ihre Datei wird importiert ...
         finished:
-            title: Finished!
-            desc: Your file has been imported successfully.
-            back: Go to pages
-
+            title: Import abgeschlossen!
+            desc: Ihre Datei wurde erfolgreich importiert.
+            back: Neuigkeiten ansehen
+    wordpress:
+        upload:
+            description: |
+                Um Inhalte von einer Wordpress-Website in dieses Projekt zu importieren, müssen Sie zunächst
+                den Inhalt der Wordpress-Website im XML-Format exportieren.
+                <br /><br />
+                Dazu öffnen Sie in Ihrem Wordpress-Verwaltungsbereich die Option Werkzeuge > Exportieren und klicken
+                auf Alles exportieren. Sie erhalten dann eine E-Mail mit einer XML-Datei, die alle Seiten und
+                Nachrichten Ihrer Website enthält.
+                <br /><br />
+                Sobald Sie sie erhalten haben, importieren Sie diese XML-Datei in das untenstehende Formular.
+            file:
+                label: Wordpress-Exportdatei im XML-Format
+                error: Ein Fehler ist aufgetreten, können Sie es erneut versuchen?
+        settings:
+            title: Importeinstellungen
+            description: |
+                Beim Import:
+                <ul>
+                    <li>
+                        Alle öffentlichen Seiten der Wordpress-Website werden importiert und auf Ihrer Website veröffentlicht.
+                    </li>
+                    <li>
+                        Sie können wählen, alle Nachrichten als Entwürfe zu importieren, oder den
+                        gleichen Status (veröffentlicht / Entwurf) wie auf der Wordpress-Website beizubehalten.
+                    </li>
+                </ul>
+            options:
+                post_save_status:
+                    label: Wie möchten Sie die Nachrichten von der Wordpress-Website importieren?
+                    as_draft: Alle Nachrichten als Entwurf importieren
+                    as_original: |
+                        Die Nachrichten unter Beibehaltung ihres Wordpress-Status importieren (veröffentlicht, wenn die Nachricht
+                        auf Wordpress veröffentlicht wurde, sonst als Entwurf)

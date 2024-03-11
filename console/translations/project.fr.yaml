@@ -38,7 +38,7 @@ sidebar:
         label: Configuration
         appearance: Apparence
         menu: Menu et pied de page
-        import_content: Import content
+        import_content: Importer du contenu
         access: Contrôle d'accès
         legal_details: Mentions légales
         settings: Paramètres du projet

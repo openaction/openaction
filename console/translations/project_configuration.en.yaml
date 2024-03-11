@@ -43,38 +43,52 @@ menu:
             help: You should open links in new tabs if the links target external websites
 
 content_import:
-    title: Content import
-    upload:
-        title: Import file with content
-        note: |
-            <strong>Note:</strong> Please upload the file that contains your export data in order to be parsed 
-            and imported to your project!
-        file:
-            label: File
-            help: Upload an XML file.
-            error: An error occurred during the file upload, could you try again?
-    settings:
-        title: Import settings
-        wordpress:
-            label: WordPress content import
-            help: |
-                Please select the desired options from the settings below!<br/><strong>Note!</strong> Only published (non-draft) pages will be imported!
-            post_save_status:
-                label: How to save the blog posts?
-                help: You can choose the status of the blogposts at save. Either all posts will be saved as drafts or saved with their original status
-                options:
-                    as_draft: Import and save all blogposts as drafts
-                    as_original: Import and save all blogposts with their original status
+    title: Import content
+    start_import: Start the import
+    index:
+        question: What is the technology used by the website from which you wish to import content?
+        choices:
+            wordpress: Wordpress
+            drupal: Drupal (coming soon)
     progress:
-        title: Import file
         processing:
-            title: Processing import data ...
-            desc: |
-                Your file has been parsed, data is being processed, and imported
-                into your project.
+            title: Import in progress ...
+            desc: Your file is being imported ...
         finished:
-            title: Finished!
-            desc: Your file has been imported successfully.
-            back: Go to pages
-
-
+            title: Import completed!
+            desc: Your file has been successfully imported.
+            back: See the news
+    wordpress:
+        upload:
+            description: |
+                To import content from a Wordpress site into this project, you first need to export
+                the content of the Wordpress site in XML format.
+                <br /><br />
+                For this, in your Wordpress administration panel, open the Tools > Export option and click
+                on Export All. You will then receive an email with an XML file containing all the pages and
+                news from your website.
+                <br /><br />
+                Once you have received it, import this XML file into the form below.
+            file:
+                label: Wordpress export file in XML format
+                error: An error has occurred, can you try again?
+        settings:
+            title: Import settings
+            description: |
+                During the import:
+                <ul>
+                    <li>
+                        All public pages of the Wordpress site will be imported and published on your website.
+                    </li>
+                    <li>
+                        You can choose to import all the news as drafts, or to keep the
+                        same status (published / draft) as on the Wordpress site.
+                    </li>
+                </ul>
+            options:
+                post_save_status:
+                    label: How do you wish to import the news from the Wordpress site?
+                    as_draft: Import all news as draft
+                    as_original: |
+                        Import the news while keeping their Wordpress status (published if the news was published
+                        on Wordpress, draft otherwise)

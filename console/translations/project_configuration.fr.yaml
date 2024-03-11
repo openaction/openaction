@@ -43,37 +43,52 @@ menu:
             help: Nous vous conseillons d'ouvrir un lien dans un nouvel onglet si le lien renvoie vers un site extérieur
 
 content_import:
-    title: Content import
-    upload:
-        title: Import file with content
-        note: |
-            <strong>Note:</strong> Please upload the file that contains your export data in order to be parsed 
-            and imported to your project!
-        file:
-            label: File
-            help: Upload an XML file.
-            error: An error occurred during the file upload, could you try again?
-    settings:
-        title: Import settings
-        wordpress:
-            label: WordPress content import
-            help: |
-                Please select the desired options from the settings below!<br/><strong>Note!</strong> Only published (non-draft) pages will be imported!
-            post_save_status:
-                label: How to save the blog posts?
-                help: You can choose the status of the blogposts at save. Either all posts will be saved as drafts or saved with their original status
-                options:
-                    as_draft: Import and save all blogposts as drafts
-                    as_original: Import and save all blogposts with their original status
+    title: Importer du contenu
+    start_import: Lancer l'import
+    index:
+        question: Quelle est la technologie utilisée par le site internet dont vous souhaitez importer le contenu ?
+        choices:
+            wordpress: Wordpress
+            drupal: Drupal (bientôt disponible)
     progress:
-        title: Import file
         processing:
-            title: Processing import data ...
-            desc: |
-                Your file has been parsed, data is being processed, and imported
-                into your project.
+            title: Import en cours ...
+            desc: Votre fichier est en cours d'import ...
         finished:
-            title: Finished!
-            desc: Your file has been imported successfully.
-            back: Go to pages
-
+            title: Import terminé !
+            desc: Votre fichier a bien été importé.
+            back: Voir les actualités
+    wordpress:
+        upload:
+            description: |
+                Pour importer du contenu d'un site Wordpress au sein de ce projet, il faut d'abord que vous exportiez
+                le contenu du site Wordpress au format XML.
+                <br /><br />
+                Pour cela, dans votre panel d'administration Wordpress, ouvrez l'option Outils > Exporter puis cliquez
+                sur Exporter tout. Vous recevrez alors par email un fichier XML contenant toutes les pages et 
+                actualités de votre site internet.
+                <br /><br />
+                Lorsque vous l'avez reçu, importez ce fichier XML dans le formulaire ci-dessous.
+            file:
+                label: Fichier d'export Wordpress au format XML
+                error: Une erreur s'est produite, pouvez-vous réessayer ?
+        settings:
+            title: Paramètres de l'import
+            description: |
+                Lors de l'import :
+                <ul>
+                    <li>
+                        Toutes les pages publiques du site Wordpress seront importées et publiées sur votre site internet.
+                    </li>
+                    <li>
+                        Vous pouvez choisir d'importer toutes les actualités comme brouillons, ou bien de garder le
+                        même statut (publié / brouillon) que sur le site Wordpress.
+                    </li>
+                </ul>
+            options:
+                post_save_status:
+                    label: Comment souhaitez-vous importer les actualités du site Wordpress ?
+                    as_draft: Importer toutes les actualités en tant que brouillon
+                    as_original: |
+                        Importer les actualités en gardant leur status Wordpress (publiée si l'actualité était publiée
+                        sur Wordpress, brouillon sinon)

@@ -1,0 +1,40 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'content_import.title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'content_import.wordpress.settings.title'|trans({}, 'project_configuration') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+                    <div class="text-muted mb-4">
+                        {{ 'content_import.wordpress.settings.description'|trans({}, 'project_configuration')|raw }}
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    {{ form_row(form.postSaveStatus, {
+                        'label': 'content_import.wordpress.settings.options.post_save_status.label'|trans({}, 'project_configuration'),
+                    }) }}
+
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-primary">
+                            {{ 'content_import.start_import'|trans({}, 'project_configuration') }}
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

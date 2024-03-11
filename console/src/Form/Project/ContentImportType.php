@@ -18,8 +18,8 @@ class ContentImportType extends AbstractType
             $builder->add('postSaveStatus', ChoiceType::class, [
                 'translation_domain' => 'project_configuration',
                 'choices' => [
-                    'content_import.settings.wordpress.post_save_status.options.as_draft' => ContentImportSettings::POST_STATUS_SAVE_AS_DRAFT,
-                    'content_import.settings.wordpress.post_save_status.options.as_original' => ContentImportSettings::POST_STATUS_SAVE_AS_ORIGINAL,
+                    'content_import.wordpress.settings.options.post_save_status.as_draft' => ContentImportSettings::POST_STATUS_SAVE_AS_DRAFT,
+                    'content_import.wordpress.settings.options.post_save_status.as_original' => ContentImportSettings::POST_STATUS_SAVE_AS_ORIGINAL,
                 ],
                 'multiple' => false,
                 'expanded' => true,
