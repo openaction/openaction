@@ -82,23 +82,6 @@ class SocialNetworksControllerTest extends WebTestCase
         $this->assertSelectorExists('div.world-alert:contains("Social networks configuration was successfully saved")');
     }
 
-    public function testUpdateSocialAccountsInvalid()
-    {
-        $client = static::createClient();
-        $this->authenticate($client, 'titouan.galopin@citipo.com');
-
-        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/configuration/social-networks/accounts');
-        $button = $crawler->selectButton('Save');
-
-        $client->submit($button->form(), [
-            'update_social_accounts[youtube]' => 'twitter.com/test',
-            'update_social_accounts[telegram]' => 'some-thing',
-        ]);
-
-        $this->assertSelectorExists('span.form-error-message:contains("This link doesn\'t seem to be a valid Youtube one.")');
-        $this->assertSelectorExists('span.form-error-message:contains("This Telegram username is not valid.")');
-    }
-
     public function provideUpdateSocialSharers(): iterable
     {
         yield 'social' => [

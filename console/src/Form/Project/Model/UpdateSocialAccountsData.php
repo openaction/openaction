@@ -14,35 +14,27 @@ class UpdateSocialAccountsData
     public ?string $phone = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.)?facebook\.com\/(_|-|[a-z]|[0-9]|\.)+\/?$/i', message: 'console.project.settings.socials.invalid_facebook')]
     public ?string $facebook = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.)?instagram\.com\/(_|-|[a-z]|[0-9]|\.)+\/?$/i', message: 'console.project.settings.socials.invalid_instagram')]
     public ?string $instagram = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.)?twitter\.com\/(_|-|[a-z]|[0-9]|\.)+\/?$/i', message: 'console.project.settings.socials.invalid_twitter')]
     public ?string $twitter = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.|[a-z]{1,3}\.)?linkedin\.com\/(_|-|[a-z]|[0-9]|\.|\/)+\/?$/i', message: 'console.project.settings.socials.invalid_linkedin')]
     public ?string $linkedIn = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.)?youtube\.com\/(_|-|[a-z]|[0-9]|\.|\/)+\/?$/i', message: 'console.project.settings.socials.invalid_youtube')]
     public ?string $youtube = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^(http(s?):\/\/)?(www\.|[a-z]{1,16}\.)?medium\.com\/(_|-|[a-z]|[0-9]|\.|\/)+\/?$/i', message: 'console.project.settings.socials.invalid_medium')]
     public ?string $medium = '';
 
     #[Assert\Length(max: 50, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^([a-z]|[0-9]|_){2,50}$/i', message: 'console.project.settings.socials.invalid_telegram')]
     public ?string $telegram = '';
 
     #[Assert\Length(max: 50, maxMessage: 'console.project.settings.socials.invalid_length')]
-    #[Assert\Regex(pattern: '/^([a-z]|[0-9]|_){2,50}$/i', message: 'console.project.settings.socials.invalid_snapchat')]
     public ?string $snapchat = '';
 
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
@@ -52,6 +44,10 @@ class UpdateSocialAccountsData
     #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
     #[Assert\Url]
     public ?string $tiktok = '';
+
+    #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
+    #[Assert\Url]
+    public ?string $threads = '';
 
     public function __construct(
         ?string $email = '',
@@ -66,6 +62,7 @@ class UpdateSocialAccountsData
         ?string $snapchat = '',
         ?string $whatsapp = '',
         ?string $tiktok = '',
+        ?string $threads = '',
     ) {
         $this->email = $email;
         $this->phone = $phone;
@@ -79,6 +76,7 @@ class UpdateSocialAccountsData
         $this->snapchat = $snapchat;
         $this->whatsapp = $whatsapp;
         $this->tiktok = $tiktok;
+        $this->threads = $threads;
     }
 
     public static function createFromProject(Project $project): self
@@ -96,6 +94,7 @@ class UpdateSocialAccountsData
         $data->snapchat = $project->getSocialSnapchat();
         $data->whatsapp = $project->getSocialWhatsapp();
         $data->tiktok = $project->getSocialTiktok();
+        $data->threads = $project->getSocialThreads();
 
         return $data;
     }

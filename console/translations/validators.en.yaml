@@ -41,14 +41,6 @@ console:
                 invalid_url: This value is not a valid URL (http and https only).
                 invalid_length: This value is too long. It should have {{ limit }} characters or less.
                 invalid_email: This value is not a valid email.
-                invalid_facebook: This link doesn't seem to be a Facebook one.
-                invalid_instagram: This link doesn't seem to be an Instagram one.
-                invalid_twitter: This link doesn't seem to be a Twitter one.
-                invalid_youtube: This link doesn't seem to be a valid Youtube one.
-                invalid_linkedin: This link doesn't seem to be a valid LinkedIn one.
-                invalid_medium: This link doesn't seem to be a valid Medium one.
-                invalid_telegram: This Telegram username is not valid.
-                invalid_snapchat: This Snapchat username is not valid.
         appearance:
             homepage:
                 socials:

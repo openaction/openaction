@@ -103,6 +103,7 @@ class ProjectTransformer extends AbstractTransformer
                 'snapchat' => $project->getSocialSnapchat(),
                 'whatsapp' => $project->getSocialWhatsapp(),
                 'tiktok' => $project->getSocialTiktok(),
+                'threads' => $project->getSocialThreads(),
             ],
             'socialSharers' => [
                 'facebook' => $project->getSocialSharers()->isEnabled(SocialSharers::FACEBOOK),

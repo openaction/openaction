@@ -13,6 +13,7 @@ accounts:
     snapchat: 'Wie lautet der Nutzername deines Snapchat-Kontos?'
     whatsapp: 'Wie lautet die URL Ihres WhatsApp-Kontos?'
     tiktok: 'Wie lautet die URL Ihres TikTok-Kontos?'
+    threads: 'Wie lautet die URL Ihres Threads-Kontos?'
     submit: 'Speichern Sie'
 sharers:
     title: 'Tools für den sozialen Austausch'
