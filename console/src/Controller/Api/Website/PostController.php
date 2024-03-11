@@ -33,7 +33,7 @@ class PostController extends AbstractApiController
             category: $request->query->get('category'),
             author: $request->query->get('author'),
             currentPage: $this->apiQueryParser->getPage(),
-            limit: $this->apiQueryParser->getLimit() ?: $project->getWebsiteTheme()?->getEventsPerPage() ?: 12,
+            limit: $this->apiQueryParser->getLimit() ?: $project->getWebsiteTheme()?->getPostsPerPage() ?: 12,
         );
 
         return $this->handleApiCollection($posts, $transformer, true);
