@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemReader;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 use function Symfony\Component\String\u;
@@ -25,7 +25,8 @@ use function Symfony\Component\String\u;
 /**
  * Process import files.
  */
-final class ImportHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ImportHandler
 {
     public function __construct(
         private EntityManagerInterface $em,

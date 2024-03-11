@@ -1,0 +1,27 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'content_import.title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'content_import.title'|trans({}, 'project_configuration') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-5" {{ react_component('Project/Website/ImportProgress', {
+            'statusUrl': path('console_api_job_status', {'id': import.job.id}),
+            'postsUrl': path('console_website_posts', {'projectUuid': current_project.uuid}),
+            'labels': {
+                'processingTitle': 'content_import.progress.processing.title'|trans({}, 'project_configuration'),
+                'processingDesc': 'content_import.progress.processing.desc'|trans({}, 'project_configuration'),
+                'finishedTitle': 'content_import.progress.finished.title'|trans({}, 'project_configuration'),
+                'finishedDesc': 'content_import.progress.finished.desc'|trans({}, 'project_configuration'),
+                'finishedBack': 'content_import.progress.finished.back'|trans({}, 'project_configuration'),
+            },
+        }) }}></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a test import file to be used  for content import testing for WordPress content -->
+<rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+<title>A European Renaissance</title>
+<link>https://renaissanceforeurope.wordpress.com</link>
+<description>Renaissance</description>
+<pubDate>Tue, 06 Feb 2024 20:58:47 +0000</pubDate>
+<language>en</language>
+<item>
+  <title><![CDATA[Test unpublished blog post: The Journey Begins]]></title>
+  <link>https://renaissanceforeurope.wordpress.com/the-journey-begins/</link>
+  <pubDate>Tue, 16 Oct 2018 20:26:48 +0000</pubDate>
+  <dc:creator>renaissanceforeurope</dc:creator>
+  <guid isPermaLink="false">https://renaissanceforeurope.wordpress.com/?p=3</guid>
+  <description>Let the journey begin!</description>
+  <content:encoded><![CDATA[Thanks for joining me! <blockquote>Good company in a journey makes the way seem shorter. — Izaak Walton</blockquote><img class="wp-image-7 size-full" src="https://headstartdata.files.wordpress.com/2018/02/post.png" alt="post" width="1000" height="563" />]]></content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>1</wp:post_id>
+  <wp:post_date>2018-10-16 20:26:48</wp:post_date>
+  <wp:post_date_gmt>2018-10-16 20:26:48</wp:post_date_gmt>
+  <wp:post_modified>2024-02-06 20:58:29</wp:post_modified>
+  <wp:post_modified_gmt>2024-02-06 20:58:29</wp:post_modified_gmt>
+  <wp:comment_status>open</wp:comment_status>
+  <wp:ping_status>open</wp:ping_status>
+  <wp:post_name>the-journey-begins</wp:post_name>
+  <wp:status>draft</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>post</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+</item>
+<item>
+  <title><![CDATA[Test published blog post: Our Pledge]]></title>
+  <link>https://renaissanceforeurope.wordpress.com/?page_id=57</link>
+  <description>This is our pledge</description>
+  <content:encoded><![CDATA[<h1>1- being proud of our identities</h1>
+We are Spaniards, Germans, Poles, French, Estonians… and we are proud of what we are.<img class="  wp-image-43 alignright" src="https://renaissanceforeurope.files.wordpress.com/2018/10/architecture-branches-city-4618622.jpg" alt="architecture-branches-city-461862" width="348" height="253" />
+
+What Europe is all about is to combine and articulate the genius of its people, to share and strengthen together these cultures and national pride.
+
+This is how we will achieve a better life in this continent we share and a brighter future for our children.
+
+Europe has never been about creating out of the blue a flavorless people speaking the same language, having the same life and forgetting their history: what a boring world!
+
+We want to take seriously the motto of the European Union: In varietate concordia. United in diversity.
+
+That’s our purpose. And we have so much to do together!
+
+&nbsp;
+<h2>2- protect asylum, regulate migration, ensure integration</h2>
+Offering aid and protection to those genuinely fleeing persecutions should not even be questioned: this has been a tradition in all our cultures for millennia. And we will not betray ourselves. Protecting this tradition means not to confuse it with migrations for all other legitimate reasons. It is totally foolish to pretend that nobody should settle in Europe. But this must be much better and willingly regulated, not to be left in the hand of hazard, danger, or worse illegal or criminal networks. And those who are coming should be greeted and ensured to fully become part of the national community. This means that integration must become as important a focus as immigration. Many of us are the products of these successful trajectories: we want others to be able to follow the same fruitful and gratifying dreams our fathers had for us.
+
+&nbsp;
+<h2>3- take Europe’s destiny in the world in our own hands</h2>
+We are, even standing together, a relatively tiny portion of a world that is moving fast. We will have to reinvent the world of tomorrow among other super powers that doesn’t necessarily share the same values, the same hopes and the same interests as ours. If we want to live in the world we hope for, we will have to empower ourselves to shape it. We have to dare, we have to be courageous, we have to stand on our own and stop relying on other powers for our defense, for our protection, for our military or economic strength. In the coming world, alliances will only make sense if we can combine power, not subtract it. We therefore believe that time has come for a European sovereignty. We must, collectively, become more autonomous and live up to our ambitions.
+
+&nbsp;
+<h2>4- build the new frontiers: make the world we live in better, fairer, stronger</h2>
+What will we do with this new power? Reinventing a world that is made for everyone. We don’t believe in promises, but in challenges, and the new world we are heading to opens uncharted areas we must conquer. The greatest challenge is to protect the air we breathe, the land, the water and the soil we live on for our children and our children’s children: this will command the sustainability of the well-being and the quality of life we are going to leave to future generations. Another frontier to reach is for every woman and man in Europe to have the support of public institutions for engaging in a better life, and for those institutions to provide care and open opportunities for all: this is at the core of the European model. Against the greedy few, the predatory practices of speculators and the destructive outcomes of insufficiently regulated markets, we will champion the unique and fruitful European blend of freedom and solidarity, market efficiency and public social protection. This also applies to the digital frontier, where the new world, far from a Wild West, will be a world where privacy is protected and everybody – including the biggest corporations – contribute their fair share to the welfare of all people. Europe is a place where we can build a Tech for Good.
+
+&nbsp;
+<h2>5- Champion the rule of law and protect all the citizens</h2>
+It goes without saying that Europe is a land of human rights, democratic dialogue and shared responsibility in solving conflicts. This is more than a heritage: this is our identity. We would betray it if we were straying away from being the homeland of the rule of law, freedom and solidarity. The European Union is absolutely right in defending democratic values and principles, fairness and a fierce fight against corruption and prevarication among its own members. It’s a worthy fight first and foremost for the citizens themselves.]]></content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>2</wp:post_id>
+  <wp:post_date>2018-10-18 21:49:54</wp:post_date>
+  <wp:post_date_gmt>0000-00-00 00:00:00</wp:post_date_gmt>
+  <wp:post_modified>2018-10-18 21:49:54</wp:post_modified>
+  <wp:post_modified_gmt>2018-10-18 21:49:54</wp:post_modified_gmt>
+  <wp:comment_status>closed</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name/>
+  <wp:status>publish</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>post</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+</item>
+<item>
+  <title><![CDATA[Test published page: Why a European Renaissance ?]]></title>
+  <link>https://renaissanceforeurope.wordpress.com/why-european-renaissance</link>
+  <pubDate>Tue, 16 Oct 2018 20:26:48 +0000</pubDate>
+  <dc:creator>renaissanceforeurope</dc:creator>
+  <guid isPermaLink="false">https://renaissanceforeurope.wordpress.com/?p=3</guid>
+  <description/>
+  <content:encoded><![CDATA[Because this time, it’s different.
+
+Because so many things need to change.
+
+Because we deserve a better future.
+
+It’s time to lay the foundation for a European Renaissance…
+
+<hr>
+
+<h3><strong>We, the people of Europe</strong></h3>We know in our hearts that an era is ending. The European Union must change radically, deeply and quickly.
+
+The next European parliament election will be critical like no others. And staying in the old partisan way will not do.
+
+<strong>The many individuals, grassroots movement and political forces all across Europe need to connect, well beyond the partisan divides.</strong>
+
+This is our purpose.]]></content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>3</wp:post_id>
+  <wp:post_date>2018-10-16 20:26:47</wp:post_date>
+  <wp:post_date_gmt>2018-10-16 20:26:47</wp:post_date_gmt>
+  <wp:post_modified>2018-11-08 18:33:59</wp:post_modified>
+  <wp:post_modified_gmt>2018-11-08 18:33:59</wp:post_modified_gmt>
+  <wp:comment_status>closed</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name>home</wp:post_name>
+  <wp:status>publish</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>1</wp:menu_order>
+  <wp:post_type>page</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+</item>
+<item>
+  <title><![CDATA[Test Attachment]]></title>
+  <description/>
+  <content:encoded><![CDATA[]]></content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>2</wp:post_id>
+  <wp:post_date>2018-10-16 20:31:50</wp:post_date>
+  <wp:post_date_gmt>2018-10-16 20:31:50</wp:post_date_gmt>
+  <wp:post_modified>2018-10-16 20:31:50</wp:post_modified>
+  <wp:post_modified_gmt>2018-10-16 20:31:50</wp:post_modified_gmt>
+  <wp:comment_status>open</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name>placeholder-image</wp:post_name>
+  <wp:status>inherit</wp:status>
+  <wp:post_parent>3</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>attachment</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+  <wp:attachment_url>https://citipo.com/res/home/us/titouan.jpg</wp:attachment_url>
+</item>
+</channel>
+</rss>

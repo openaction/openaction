@@ -14,11 +14,13 @@ use App\Entity\Billing\Order;
 use App\Entity\Billing\Quote;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContentImport;
 use App\Entity\Community\EmailAutomation;
 use App\Entity\Community\EmailAutomationMessage;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Community\EmailingCampaignMessage;
 use App\Entity\Community\Import;
+use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Community\Model\ImportHead;
 use App\Entity\Community\PhoningCampaign;
 use App\Entity\Community\PhoningCampaignCall;
@@ -192,6 +194,7 @@ class TestFixtures extends AbstractFixtures
         $this->loadContacts();
         $this->loadContactsAmbiguous();
         $this->loadImports();
+        $this->loadContentImportWordPress();
         $this->loadFormsBlocks();
         $this->loadFormsAnswers();
         $this->loadEmailingCampaigns();
@@ -817,6 +820,8 @@ class TestFixtures extends AbstractFixtures
             'import-not-started.xlsx' => [],
             'import-started.xlsx' => [],
             'import-started-2.xlsx' => [],
+            'import-not-started.xml' => [],
+            'import-started.xml' => [],
             'contact-picture.jpg' => [],
             'invoice.pdf' => [],
         ];
@@ -2740,6 +2745,30 @@ class TestFixtures extends AbstractFixtures
 
         foreach ($items as $id => $data) {
             $this->em->persist($this->imports[$id] = Import::createFixture(array_merge($data, ['uuid' => $id])));
+        }
+
+        $this->em->flush();
+    }
+
+    private function loadContentImportWordPress(): void
+    {
+        $items = [
+            'c65ab14d-1c4b-4f5d-ba12-3c6dc7e8239d' => [
+                'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
+                'file' => $this->uploads['import-not-started.xml'],
+                'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
+                'settings' => [],
+            ],
+            '8a7f9d2e-56c1-4826-9b40-7fe8a58e3d14' => [
+                'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
+                'file' => $this->uploads['import-started.xml'],
+                'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
+                'settings' => ['postSaveStatus' => 'save_as_original'],
+            ],
+        ];
+
+        foreach ($items as $id => $data) {
+            $this->em->persist($this->imports[$id] = ContentImport::createFixture(array_merge($data, ['uuid' => $id])));
         }
 
         $this->em->flush();

@@ -11,6 +11,7 @@
         "ext-pdo": "*",
         "ext-redis": "*",
         "ext-sodium": "*",
+        "ext-xmlreader": "*",
         "ext-zip": "*",
         "composer-runtime-api": "^2.0",
         "cloudflare/sdk": "^1.1",

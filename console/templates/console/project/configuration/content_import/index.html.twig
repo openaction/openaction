@@ -1,0 +1,41 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'content_import.title'|trans({}, 'project_configuration') %}
+
+{% block sidebar_import 'current' %}
+
+{% block content %}
+    <div class="world-box">
+        <div class="world-box-title">
+            <h3 class="mb-0">
+                {{ 'content_import.title'|trans({}, 'project_configuration') }}
+            </h3>
+        </div>
+
+        <div class="bg-light p-4">
+            <div class="mb-2">
+                <strong>
+                    {{ 'content_import.index.question'|trans({}, 'project_configuration') }}
+                </strong>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <a href="{{ path('console_project_configuration_content_import_wordpress', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-secondary btn-block p-2">
+                        <i class="fa-brands fa-wordpress fa-2x"></i>
+                        <br />
+                        {{ 'content_import.index.choices.wordpress'|trans({}, 'project_configuration') }}
+                    </a>
+                </div>
+                <div class="col-2">
+                    <a href="" class="btn btn-secondary btn-block disabled p-2" disabled="disabled">
+                        <i class="fa-brands fa-drupal fa-2x"></i>
+                        <br />
+                        {{ 'content_import.index.choices.drupal'|trans({}, 'project_configuration') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
