@@ -30,14 +30,6 @@ console:
                 invalid_url: 'Dieser Wert ist keine gültige URL (nur http und https).'
                 invalid_length: 'Dieser Wert ist zu lang. Er sollte {{ limit }} Zeichen oder weniger haben.'
                 invalid_email: 'Dieser Wert ist keine gültige E-Mail.'
-                invalid_facebook: 'Dieser Link scheint kein Facebook-Link zu sein.'
-                invalid_instagram: 'Dieser Link scheint kein Instagram-Link zu sein.'
-                invalid_twitter: 'Dieser Link scheint kein Twitter-Link zu sein.'
-                invalid_youtube: 'Dieser Link scheint kein gültiger Youtube-Link zu sein.'
-                invalid_linkedin: 'Dieser Link scheint kein gültiger LinkedIn-Link zu sein.'
-                invalid_medium: 'Dieser Link scheint kein gültiger Medium-Link zu sein.'
-                invalid_telegram: 'Dieser Telegram-Benutzername ist nicht gültig.'
-                invalid_snapchat: 'Dieser Snapchat-Benutzername ist nicht gültig.'
         appearance:
             homepage:
                 socials:

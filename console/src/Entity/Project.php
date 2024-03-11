@@ -226,6 +226,9 @@ class Project implements UserInterface
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialTiktok = null;
 
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialThreads = null;
+
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $socialSharers = null;
 
@@ -365,6 +368,7 @@ EOT;
         $self->socialSnapchat = $this->socialSnapchat;
         $self->socialWhatsapp = $this->socialWhatsapp;
         $self->socialTiktok = $this->socialTiktok;
+        $self->socialThreads = $this->socialThreads;
         $self->socialSharers = $this->socialSharers;
 
         foreach ($this->getAreas() as $area) {
@@ -885,6 +889,7 @@ EOT;
         $this->socialSnapchat = $data->snapchat;
         $this->socialWhatsapp = $data->whatsapp;
         $this->socialTiktok = $data->tiktok;
+        $this->socialThreads = $data->threads;
     }
 
     public function applySocialSharersUpdate(SocialSharers $socialSharers)
@@ -955,6 +960,11 @@ EOT;
     public function getSocialTiktok(): ?string
     {
         return $this->socialTiktok;
+    }
+
+    public function getSocialThreads(): ?string
+    {
+        return $this->socialThreads;
     }
 
     /*

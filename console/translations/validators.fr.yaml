@@ -42,14 +42,6 @@ console:
                 invalid_url: La valeur entrée n'est pas une URL valide (http et https uniquement)
                 invalid_length: La valeur entrée est trop longue. Elle doit avoir {{ limit }} signes ou moins.
                 invalid_email: La valeur entrée n'est pas un email valide.
-                invalid_facebook: Ce lien ne semble pas être un lien Facebook valide.
-                invalid_instagram:  Ce lien ne semble pas être un lien Instagram valide.
-                invalid_twitter: Ce lien ne semble pas être un lien Twitter valide.
-                invalid_youtube: Ce lien ne semble pas être un lien Youtube valide.
-                invalid_linkedin: Ce lien ne semble pas être un lien Linkedin valide.
-                invalid_medium: Ce lien ne semble pas être un lien Medium valide.
-                invalid_telegram: Ce nom d'utilisateur Telegram n'est pas valide
-                invalid_snapchat: Ce nom d'utilisateur Snapchat n'est pas valide
         appearance:
             homepage:
                 socials:

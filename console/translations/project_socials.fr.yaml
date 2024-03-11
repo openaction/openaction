@@ -13,6 +13,7 @@ accounts:
     snapchat: Quel est le nom d'utilisateur de votre compte Snapchat ?
     whatsapp: Quelle est l'adresse URL de votre channel WhatsApp ?
     tiktok: Quelle est l'adresse URL de votre compte TikTok ?
+    threads: Quelle est l'adresse URL de votre compte Threads ?
     submit: Enregistrer
 
 sharers:

@@ -27,6 +27,7 @@ class UpdateSocialAccountsType extends AbstractType
             ->add('snapchat', TextType::class, ['required' => false])
             ->add('whatsapp', UrlType::class, ['required' => false])
             ->add('tiktok', UrlType::class, ['required' => false])
+            ->add('threads', UrlType::class, ['required' => false])
         ;
     }
 

@@ -11,8 +11,9 @@ accounts:
     medium: What is the URL of your Medium account?
     telegram: What is the username of your Telegram account?
     snapchat: What is the username of your Snapchat account?
-    whatsapp: What is the URL of your Medium account?
-    tiktok: What is the URL of your Medium account?
+    whatsapp: What is the URL of your Whatsapp account?
+    tiktok: What is the URL of your TikTok account?
+    threads: What is the URL of your Threads account?
     submit: Save
 
 sharers:
