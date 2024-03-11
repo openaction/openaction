@@ -68,6 +68,12 @@ class WebsiteTheme
     #[ORM\Column(type: 'json')]
     private array $templates = [];
 
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private ?int $postsPerPage = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private ?int $eventsPerPage = null;
+
     #[ORM\OneToMany(targetEntity: WebsiteThemeAsset::class, mappedBy: 'theme', orphanRemoval: true)]
     private Collection $assets;
 
@@ -168,6 +174,16 @@ class WebsiteTheme
         ];
     }
 
+    public function setPostsPerPage(?int $postsPerPage): void
+    {
+        $this->postsPerPage = $postsPerPage;
+    }
+
+    public function setEventsPerPage(?int $eventsPerPage): void
+    {
+        $this->eventsPerPage = $eventsPerPage;
+    }
+
     /*
      * Getters
      */
@@ -229,6 +245,16 @@ class WebsiteTheme
     public function getTemplates(): array
     {
         return $this->templates;
+    }
+
+    public function getPostsPerPage(): ?int
+    {
+        return $this->postsPerPage;
+    }
+
+    public function getEventsPerPage(): ?int
+    {
+        return $this->eventsPerPage;
     }
 
     /**

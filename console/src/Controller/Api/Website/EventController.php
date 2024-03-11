@@ -4,6 +4,7 @@ namespace App\Controller\Api\Website;
 
 use App\Api\Transformer\Website\EventTransformer;
 use App\Controller\Api\AbstractApiController;
+use App\Entity\Project;
 use App\Repository\Website\EventRepository;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,13 +24,16 @@ class EventController extends AbstractApiController
     #[Route('/events', name: 'api_website_events_list', methods: ['GET'])]
     public function list(EventTransformer $transformer, Request $request)
     {
-        $currentPage = $this->apiQueryParser->getPage();
+        /** @var Project $project */
+        $project = $this->getUser();
+
         $events = $this->repository->getApiEvents(
-            project: $this->getUser(),
+            project: $project,
             category: $request->query->get('category'),
             participant: $request->query->get('participant'),
             archived: $request->query->getBoolean('archived'),
-            currentPage: $currentPage,
+            currentPage: $this->apiQueryParser->getPage(),
+            limit: $this->apiQueryParser->getLimit() ?: $project->getWebsiteTheme()?->getEventsPerPage() ?: 12,
         );
 
         return $this->handleApiCollection($events, $transformer, true);

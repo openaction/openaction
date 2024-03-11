@@ -25,6 +25,8 @@ class ThemeManifestValidatorTest extends KernelTestCase
                 'assets' => 1,
                 'defaultColors' => 1,
                 'defaultFonts' => 1,
+                'postsPerPage' => 'foo',
+                'eventsPerPage' => 'foo',
             ],
             'expected' => [
                 'description: The property description is required',
@@ -33,6 +35,8 @@ class ThemeManifestValidatorTest extends KernelTestCase
                 'name: Integer value found, but an object is required',
                 'defaultColors: Integer value found, but an object is required',
                 'defaultFonts: Integer value found, but an object is required',
+                'postsPerPage: String value found, but an integer is required',
+                'eventsPerPage: String value found, but an integer is required',
                 'assets: Integer value found, but an array is required',
             ],
         ];
@@ -77,6 +81,8 @@ class ThemeManifestValidatorTest extends KernelTestCase
                 'defaultColors' => ['primary' => '000', 'secondary' => '111', 'third' => '222'],
                 'defaultFonts' => ['title' => 'Roboto', 'text' => 'Roboto'],
                 'description' => ['fr' => 'A', 'en' => 'B'],
+                'postsPerPage' => 10,
+                'eventsPerPage' => 10,
                 'thumbnail' => '',
                 'templates' => [
                     'style' => '',

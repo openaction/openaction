@@ -54,6 +54,8 @@ class SyncThemeHandlerTest extends KernelTestCase
         $this->assertSame('222', $theme->getDefaultColors()['third']);
         $this->assertSame('Roboto Slab', $theme->getDefaultFonts()['title']);
         $this->assertSame('Roboto', $theme->getDefaultFonts()['text']);
+        $this->assertSame(10, $theme->getPostsPerPage());
+        $this->assertSame(11, $theme->getEventsPerPage());
         $this->assertSame('style', trim($theme->getTemplates()['style']));
         $this->assertSame('', trim($theme->getTemplates()['script']));
         $this->assertSame('head', trim($theme->getTemplates()['head']));

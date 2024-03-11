@@ -65,6 +65,12 @@
                 "text"
             ]
         },
+        "postsPerPage": {
+            "type": "integer"
+        },
+        "eventsPerPage": {
+            "type": "integer"
+        },
         "thumbnail": {
             "type": "string"
         },

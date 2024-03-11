@@ -11,6 +11,8 @@ class WebsiteThemeManifest
     private string $thumbnail;
     private array $templates;
     private array $assets;
+    private ?int $postsPerPage;
+    private ?int $eventsPerPage;
 
     public function __construct(array $manifest)
     {
@@ -21,6 +23,8 @@ class WebsiteThemeManifest
         $this->thumbnail = $manifest['thumbnail'] ?? '';
         $this->templates = $manifest['templates'] ?? [];
         $this->assets = $manifest['assets'] ?? [];
+        $this->postsPerPage = $manifest['postsPerPage'] ?? null;
+        $this->eventsPerPage = $manifest['eventsPerPage'] ?? null;
     }
 
     public function getName(): array
@@ -56,5 +60,15 @@ class WebsiteThemeManifest
     public function getAssets(): array
     {
         return $this->assets;
+    }
+
+    public function getPostsPerPage(): ?int
+    {
+        return $this->postsPerPage;
+    }
+
+    public function getEventsPerPage(): ?int
+    {
+        return $this->eventsPerPage;
     }
 }

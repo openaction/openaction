@@ -92,6 +92,8 @@ final class SyncThemeHandler implements MessageHandlerInterface
 
         // Update theme
         $theme->updateDetails($manifest->getName(), $manifest->getDescription(), $newThumbnail, $templates);
+        $theme->setPostsPerPage($manifest->getPostsPerPage());
+        $theme->setEventsPerPage($manifest->getEventsPerPage());
         $theme->updateDefaultColors(
             $manifest->getDefaultColors()['primary'] ?? Themes::DEFAULT_COLOR_PRIMARY,
             $manifest->getDefaultColors()['secondary'] ?? Themes::DEFAULT_COLOR_SECONDARY,

@@ -16,6 +16,8 @@
         "title": "Roboto Slab",
         "text": "Roboto"
     },
+    "postsPerPage": 10,
+    "eventsPerPage": 11,
     "thumbnail": "thumbnail.jpg",
     "templates": {
         "style": "src/style.css.twig",
