@@ -23,10 +23,12 @@
                 'slug': event.slug,
                 'content': event.content,
                 'description': (event.content|u.truncate(150, '...')) ~ '',
+                'externalUrl': event.externalUrl,
                 'url': event.externalUrl|default(path('event_view', {'id': event.id, 'slug': event.slug})),
                 'target': event.externalUrl is defined ? '_blank' : null,
                 'published_at': event.published_at,
                 'date': event.begin_at ? event.begin_at|format_datetime('medium', 'short') : null,
+                'has_started': event.begin_at and event.begin_at > date('now'),
                 'raw_date': event.begin_at,
                 'timezone': event.timezone,
                 'buttonText': event.buttonText,
@@ -70,11 +72,12 @@
         'section_id': 'events',
         'section_name': current_project.terminology.events,
         'items': items,
+        'is_archive': is_archive,
         'no_items_message': 'base.no_element'|trans,
         'categories': filters,
         'pagination': events.meta.pagination,
-        'previous': pagination.previous is defined ? path('event_list', {'p': current_page - 1, 'c': current_category}) : null,
-        'next': pagination.next is defined ? path('event_list', {'p': current_page + 1, 'c': current_category}) : null,
+        'previous': pagination.previous is defined ? path('event_list', {'p': current_page - 1, 'c': current_category, 'archived': is_archive ? '1' : '0'}) : null,
+        'next': pagination.next is defined ? path('event_list', {'p': current_page + 1, 'c': current_category, 'archived': is_archive ? '1' : '0'}) : null,
     } %}
 
     {% sandbox %}
