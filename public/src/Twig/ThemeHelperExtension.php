@@ -5,6 +5,8 @@ namespace App\Twig;
 use App\Client\CitipoInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -25,6 +27,7 @@ class ThemeHelperExtension extends AbstractExtension
             new TwigFunction('citipo_theme_asset_url', [$this, 'getThemeAssetUrl']),
             new TwigFunction('citipo_project_asset_url', [$this, 'getProjectAssetUrl']),
             new TwigFunction('citipo_page', [$this, 'getPageContent'], ['is_safe' => ['html']]),
+            new TwigFunction('citipo_dump', [$this, 'dump'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -41,6 +44,24 @@ class ThemeHelperExtension extends AbstractExtension
     public function getPageContent(string $id): ?string
     {
         return $this->citipo->getPage($this->getApiToken(), $id)?->content;
+    }
+
+    public function dump(mixed $data): string
+    {
+        $cloner = new VarCloner();
+        $dumper = new HtmlDumper();
+        $output = '';
+
+        $dumper->dump(
+            $cloner->cloneVar($data),
+            function (string $line, int $depth) use (&$output): void {
+                if ($depth >= 0) {
+                    $output .= $line."\n";
+                }
+            }
+        );
+
+        return $output;
     }
 
     private function getApiToken(): ?string

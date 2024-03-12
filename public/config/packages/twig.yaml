@@ -25,7 +25,6 @@ services:
             $allowedTags: ['if', 'for', 'set', 'block']
             $allowedFunctions:
                 - attribute
-                - dump
                 - json_encode
                 - stimulus_controller
                 - stimulus_target
@@ -33,6 +32,7 @@ services:
                 - citipo_theme_asset_url
                 - citipo_project_asset_url
                 - citipo_page
+                - citipo_dump
                 - hex2rgba
             $allowedFilters:
                 - raw
