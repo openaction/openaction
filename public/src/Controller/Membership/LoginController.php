@@ -2,6 +2,7 @@
 
 namespace App\Controller\Membership;
 
+use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
 use App\Controller\AbstractController;
 use App\Form\Member\LoginType;
@@ -27,9 +28,11 @@ class LoginController extends AbstractController
     /**
      * @Route("/login", name="membership_login")
      */
-    public function login(Request $request)
+    public function login(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
+
+        $challenge = $turnstile->createCaptchaChallenge($this->getProject());
 
         $data = new LoginData();
 
@@ -37,6 +40,10 @@ class LoginController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($challenge && !$challenge->isValidResponse($request->request->get('cf-turnstile-response'))) {
+                return $this->redirectToRoute('membership_login');
+            }
+
             if (!$authToken = $this->citipo->login($this->getApiToken(), $data->email, $data->password)) {
                 return $this->redirectToRoute('membership_login', ['error' => 'credentials']);
             }
@@ -53,6 +60,7 @@ class LoginController extends AbstractController
             'reset_success' => $request->query->getBoolean('reset'),
             'update_email_success' => $request->query->getBoolean('update-email'),
             'error' => $request->query->get('error'),
+            'captcha_challenge' => $challenge,
         ]);
     }
 

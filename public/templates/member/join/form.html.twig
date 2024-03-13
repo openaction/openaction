@@ -207,6 +207,10 @@
             </div>
 
             <div class="mt-3 text-center">
+                {% if captcha_challenge %}
+                    <div class="cf-turnstile mb-2" data-sitekey="{{ captcha_challenge.siteKey }}"></div>
+                {% endif %}
+
                 <button type="submit" class="btn btn-primary btn-lg">
                     {{ 'membership.form.submit_join'|trans }}
                 </button>
