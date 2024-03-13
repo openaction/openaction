@@ -23,7 +23,7 @@ class ThemeDebugListener implements EventSubscriberInterface
 
         if ($e instanceof Error) {
             $event->setResponse(new Response(
-                content: 'Template error: '.$e->getMessage(),
+                content: 'Template error in '.$e->getSourceContext()?->getPath().' on line '.$e->getTemplateLine().': '.$e->getMessage(),
                 headers: ['Content-Type' => 'text/plain'],
             ));
         }
