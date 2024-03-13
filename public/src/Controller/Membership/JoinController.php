@@ -2,6 +2,7 @@
 
 namespace App\Controller\Membership;
 
+use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
 use App\Controller\AbstractController;
 use App\Form\Member\JoinType;
@@ -28,7 +29,7 @@ class JoinController extends AbstractController
     /**
      * @Route("/join", name="membership_join")
      */
-    public function join(Request $request)
+    public function join(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
 
@@ -36,12 +37,18 @@ class JoinController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $challenge = $turnstile->createCaptchaChallenge($project);
+
         $data = new JoinData();
 
         $form = $this->createForm(JoinType::class, $data, ['membership_settings' => $project->membership]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($challenge && !$challenge->isValidResponse($request->request->get('cf-turnstile-response'))) {
+                return $this->redirectToRoute('membership_join');
+            }
+
             $this->citipo->persistContact($this->getApiToken(), $data->createApiPayload('api:'.$project->id));
 
             return $this->redirectToRoute('membership_join_verify');
@@ -49,6 +56,7 @@ class JoinController extends AbstractController
 
         return $this->render('member/join/form.html.twig', [
             'form' => $form->createView(),
+            'captcha_challenge' => $challenge,
         ]);
     }
 
@@ -79,16 +87,22 @@ class JoinController extends AbstractController
     /**
      * @Route("/reset", name="membership_reset")
      */
-    public function reset(Request $request)
+    public function reset(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
 
         $data = new ResetRequestData();
 
+        $challenge = $turnstile->createCaptchaChallenge($this->getProject());
+
         $form = $this->createForm(ResetRequestType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($challenge && !$challenge->isValidResponse($request->request->get('cf-turnstile-response'))) {
+                return $this->redirectToRoute('membership_reset');
+            }
+
             $status = $this->citipo->getContactStatus($this->getApiToken(), $data->email);
 
             if ('member' === $status->status) {
@@ -100,6 +114,7 @@ class JoinController extends AbstractController
 
         return $this->render('member/reset/request.html.twig', [
             'form' => $form->createView(),
+            'captcha_challenge' => $challenge,
         ]);
     }
 
