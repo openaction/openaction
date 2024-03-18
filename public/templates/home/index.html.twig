@@ -16,7 +16,7 @@
                     'content': include('home/blocks/'~ block.type ~'.html.twig', {
                         'key': key,
                         'block': block,
-                        'current_project': current_project.toArray,
+                        'current_project': current_project,
                         'newsletterForm': newsletterForm,
                     })
                 }
