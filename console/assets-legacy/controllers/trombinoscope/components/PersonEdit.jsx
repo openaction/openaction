@@ -53,6 +53,7 @@ export function PersonEdit(props) {
                 exposedDataReader.read('endpoints')['metadata'],
                 createUrlEncoded({
                     [props.roleInput]: metadata.role ? metadata.role : '',
+                    [props.descriptionInput]: metadata.description ? metadata.description : '',
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.socialWebsiteInput]: metadata.socialWebsite ? metadata.socialWebsite : '',
                     [props.socialEmailInput]: metadata.socialEmail ? metadata.socialEmail : '',

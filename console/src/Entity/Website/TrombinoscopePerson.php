@@ -32,7 +32,10 @@ class TrombinoscopePerson implements Searchable
     private ?string $slug;
 
     #[ORM\Column(length: 250, nullable: true)]
-    private ?string $role;
+    private ?string $role = null;
+
+    #[ORM\Column(length: 250, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column(type: 'text')]
     private string $content = '';
@@ -143,6 +146,7 @@ class TrombinoscopePerson implements Searchable
         $self = new self($this->project, $this->fullName, $this->weight);
         $self->slug = $this->slug;
         $self->role = $this->role;
+        $self->description = $this->description;
         $self->content = $this->content;
         $self->socialWebsite = $this->socialWebsite;
         $self->socialEmail = $this->socialEmail;
@@ -224,6 +228,7 @@ class TrombinoscopePerson implements Searchable
             'projectName' => $this->project->getName(),
             'slug' => $this->slug,
             'role' => $this->role,
+            'description' => $this->description,
             'image' => $this->image?->getPathname(),
         ];
     }
@@ -246,6 +251,7 @@ class TrombinoscopePerson implements Searchable
     public function applyMetadataUpdate(TrombinoscopePersonData $data): void
     {
         $this->role = (string) $data->role;
+        $this->description = (string) $data->description;
         $this->publishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
         $this->socialWebsite = (string) $data->socialWebsite;
         $this->socialEmail = (string) $data->socialEmail;
@@ -305,6 +311,11 @@ class TrombinoscopePerson implements Searchable
     public function getRole(): ?string
     {
         return $this->role;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     public function getContent(): string

@@ -24,6 +24,8 @@ class TrombinoscopePersonLightTransformer extends AbstractTransformer
             'slug' => $person->getSlug(),
             'fullName' => $person->getFullName(),
             'position' => $person->getWeight(),
+            'role' => $person->getRole() ?: null,
+            'description' => $person->getDescription() ?: null,
             'image' => $person->getImage() ? $this->cdnRouter->generateUrl($person->getImage()) : null,
         ];
     }

@@ -10,6 +10,7 @@ export default class extends Controller {
         'topbar',
         'editor',
         'fullName',
+        'description',
         'role',
         'content',
         'publishedAt',
@@ -42,6 +43,7 @@ export default class extends Controller {
                 editor={editor}
                 fullNameInput={this.fullNameTarget.getAttribute('name')}
                 roleInput={this.roleTarget.getAttribute('name')}
+                descriptionInput={this.descriptionTarget.getAttribute('name')}
                 contentInput={this.contentTarget.getAttribute('name')}
                 publishedAtInput={this.publishedAtTarget.getAttribute('name')}
                 socialWebsiteInput={this.socialWebsiteTarget.getAttribute('name')}
