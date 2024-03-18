@@ -324,6 +324,10 @@
                     "label": "Rôle",
                     "help": "Rôle de cette personne dans votre campagne, mouvement, organisation, ... Maximum 250 caractères."
                 },
+                "description": {
+                    "label": "Description",
+                    "help": "Description de cette personne (utilisée notamment sur les moteurs de recherche). Maximum 250 caractères."
+                },
                 "socials": {
                     "label": "Réseaux sociaux",
                     "help": "Liens des réseaux sociaux de la personne.",

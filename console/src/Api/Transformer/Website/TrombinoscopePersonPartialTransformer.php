@@ -31,6 +31,7 @@ class TrombinoscopePersonPartialTransformer extends AbstractTransformer
             'slug' => $person->getSlug(),
             'fullName' => $person->getFullName(),
             'role' => $person->getRole() ?: null,
+            'description' => $person->getDescription() ?: null,
             'content' => $this->customBlockParser->normalizeCustomBlocksIn($person->getContent()),
             'position' => $person->getWeight(),
             'socialWebsite' => $person->getSocialWebsite() ?: null,

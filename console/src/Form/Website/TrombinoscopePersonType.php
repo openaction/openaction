@@ -15,6 +15,7 @@ class TrombinoscopePersonType extends AbstractType
         $builder
             ->add('fullName', HiddenType::class)
             ->add('role', HiddenType::class)
+            ->add('description', HiddenType::class)
             ->add('content', HiddenType::class)
             ->add('publishedAt', HiddenType::class)
             ->add('socialWebsite', HiddenType::class)

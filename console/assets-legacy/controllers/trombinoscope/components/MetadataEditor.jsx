@@ -84,7 +84,7 @@ export function MetadataEditor(props) {
                         <div className="mb-1">
                             <input
                                 type="text"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.role}
                                 onChange={(e) => handleInputChange(e, 'role')}
                             />
@@ -92,6 +92,23 @@ export function MetadataEditor(props) {
 
                         <div className="mb-4 text-muted">
                             {translator.trans('trombinoscope.edit.metadata_modal.role.help')}
+                        </div>
+
+                        <div className="mb-2">
+                            <strong>{translator.trans('trombinoscope.edit.metadata_modal.description.label')}</strong>
+                        </div>
+
+                        <div className="mb-1">
+                            <textarea
+                                className="bp4-input bp4-fill"
+                                rows={5}
+                                defaultValue={props.metadata.description}
+                                onChange={(e) => handleInputChange(e, 'description')}
+                            />
+                        </div>
+
+                        <div className="mb-4 text-muted">
+                            {translator.trans('trombinoscope.edit.metadata_modal.description.help')}
                         </div>
 
                         <div className="mb-2">
@@ -129,7 +146,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="email"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialWebsite}
                                 onChange={(e) => handleInputChange(e, 'socialWebsite')}
                             />
@@ -144,7 +161,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="email"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialEmail}
                                 onChange={(e) => handleInputChange(e, 'socialEmail')}
                             />
@@ -159,7 +176,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialFacebook}
                                 onChange={(e) => handleInputChange(e, 'socialFacebook')}
                             />
@@ -174,7 +191,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialTwitter}
                                 onChange={(e) => handleInputChange(e, 'socialTwitter')}
                             />
@@ -189,7 +206,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialInstagram}
                                 onChange={(e) => handleInputChange(e, 'socialInstagram')}
                             />
@@ -204,7 +221,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialLinkedIn}
                                 onChange={(e) => handleInputChange(e, 'socialLinkedIn')}
                             />
@@ -219,7 +236,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialYoutube}
                                 onChange={(e) => handleInputChange(e, 'socialYoutube')}
                             />
@@ -234,7 +251,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="url"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialMedium}
                                 onChange={(e) => handleInputChange(e, 'socialMedium')}
                             />
@@ -249,7 +266,7 @@ export function MetadataEditor(props) {
 
                             <input
                                 type="text"
-                                className="form-control"
+                                className="bp4-input bp4-fill"
                                 defaultValue={props.metadata.socialTelegram}
                                 onChange={(e) => handleInputChange(e, 'socialTelegram')}
                             />

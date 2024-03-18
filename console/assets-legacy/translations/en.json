@@ -324,6 +324,10 @@
                     "label": "Role",
                     "help": "Role of this person in your campaign, movement, organization, ... Maximum 250 characters."
                 },
+                "description": {
+                    "label": "Description",
+                    "help": "Description of this person (used by search engines). Maximum 250 characters."
+                },
                 "socials": {
                     "label": "Social links",
                     "help": "Links to the social networks of this person.",
