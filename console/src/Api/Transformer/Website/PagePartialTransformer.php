@@ -5,6 +5,7 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Page;
+use App\Util\ReadTime;
 use App\Util\Uid;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
@@ -40,6 +41,7 @@ class PagePartialTransformer extends AbstractTransformer
             'description' => $page->getDescription() ?: null,
             'image' => $page->getImage() ? $this->cdnRouter->generateUrl($page->getImage()) : null,
             'sharer' => $page->getImage() ? $this->cdnRouter->generateUrl($page->getImage(), 'sharer') : null,
+            'read_time' => ReadTime::inMinutes($page->getContent()),
         ];
     }
 

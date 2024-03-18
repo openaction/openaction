@@ -34,6 +34,7 @@ class PostControllerTest extends ApiTestCase
                     'video' => 'youtube:nxaOzonmeic',
                     'image' => 'http://localhost/serve/post-image.png',
                     'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+                    'read_time' => 1,
                     'categories' => [
                         'data' => [
                             [
@@ -219,7 +220,7 @@ class PostControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $result = $this->apiRequest($client, 'GET', '/api/website/posts/2m4VBvTA1NbUi7acpk7JFy');
+        $result = $this->apiRequest($client, 'GET', '/api/website/posts/2m4VBvTA1NbUi7acpk7JFy?includes=more');
 
         // Test the payload is the one expected, including post content
         $this->assertApiResponse($result, [
@@ -235,6 +236,7 @@ class PostControllerTest extends ApiTestCase
             'video' => 'youtube:nxaOzonmeic',
             'image' => 'http://localhost/serve/post-image.png',
             'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+            'read_time' => 1,
             'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
             'categories' => [
                 'data' => [
@@ -258,6 +260,73 @@ class PostControllerTest extends ApiTestCase
                         'fullName' => 'Nathalie Loiseau',
                         'position' => 1,
                         'image' => null,
+                    ],
+                ],
+            ],
+            'more' => [
+                'data' => [
+                    [
+                        '_resource' => 'Post',
+                        'id' => '5dekUWIC8GW8BndaybQ3Yj',
+                        'title' => 'Renew Europe presents Action Plan to uphold democracy in times of COVID-19',
+                        'quote' => null,
+                        'slug' => 'renew-europe-presents-action-plan-to-uphold-democracy-in-times-of-covid-19',
+                        'description' => 'Description 5',
+                        'externalUrl' => null,
+                        'video' => 'youtube:nxaOzonmeic',
+                        'image' => null,
+                        'sharer' => null,
+                        'read_time' => 0,
+                        'categories' => [
+                            'data' => [],
+                        ],
+                        'authors' => [
+                            'data' => [],
+                        ],
+                    ],
+                    [
+                        '_resource' => 'Post',
+                        '_links' => [
+                            'self' => 'http://localhost/api/website/posts/5VGqCDdNlgcLJUeNcL8hX4',
+                        ],
+                        'id' => '5VGqCDdNlgcLJUeNcL8hX4',
+                        'title' => 'COVID19 recovery: The EU’s response to this crisis must match its magnitude',
+                        'quote' => null,
+                        'slug' => 'covid19-recovery-the-eu-s-response-to-this-crisis-must-match-its-magnitude',
+                        'description' => 'Description 3',
+                        'externalUrl' => null,
+                        'video' => null,
+                        'image' => null,
+                        'sharer' => null,
+                        'read_time' => 0,
+                        'categories' => [
+                            'data' => [],
+                        ],
+                        'authors' => [
+                            'data' => [],
+                        ],
+                    ],
+                    [
+                        '_resource' => 'Post',
+                        '_links' => [
+                            'self' => 'http://localhost/api/website/posts/4WgiNG2mipe5y51x6U3Vuf',
+                        ],
+                        'id' => '4WgiNG2mipe5y51x6U3Vuf',
+                        'title' => 'EU funding to Hungary must be strictly controlled by the Commission',
+                        'quote' => null,
+                        'slug' => 'eu-funding-to-hungary-must-be-strictly-controlled-by-the-commission',
+                        'description' => 'Description 4',
+                        'externalUrl' => null,
+                        'video' => null,
+                        'image' => null,
+                        'sharer' => null,
+                        'read_time' => 0,
+                        'categories' => [
+                            'data' => [],
+                        ],
+                        'authors' => [
+                            'data' => [],
+                        ],
                     ],
                 ],
             ],

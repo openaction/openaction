@@ -5,6 +5,7 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Post;
+use App\Util\ReadTime;
 use App\Util\Uid;
 
 class PostLightTransformer extends AbstractTransformer
@@ -33,6 +34,7 @@ class PostLightTransformer extends AbstractTransformer
             'video' => $post->getVideo() ?: null,
             'image' => $post->getImage() ? $this->cdnRouter->generateUrl($post->getImage()) : null,
             'sharer' => $post->getImage() ? $this->cdnRouter->generateUrl($post->getImage(), 'sharer') : null,
+            'read_time' => ReadTime::inMinutes($post->getContent()),
             'published_at' => $post->getPublishedAt()?->format(\DateTime::ATOM),
         ];
     }

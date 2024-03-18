@@ -6,6 +6,7 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
+use App\Util\ReadTime;
 use App\Util\Uid;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
@@ -42,6 +43,7 @@ class PostPartialTransformer extends AbstractTransformer
             'video' => $post->getVideo() ?: null,
             'image' => $post->getImage() ? $this->cdnRouter->generateUrl($post->getImage()) : null,
             'sharer' => $post->getImage() ? $this->cdnRouter->generateUrl($post->getImage(), 'sharer') : null,
+            'read_time' => ReadTime::inMinutes($post->getContent()),
             'published_at' => $post->getPublishedAt()?->format(\DateTime::ATOM),
         ];
     }
