@@ -24,6 +24,7 @@
                 'target': post.externalUrl is defined ? '_blank' : null,
                 'description': post.description,
                 'image': post.image,
+                'read_time': post.read_time,
                 'video': post.video ? post.video|split(':') : null,
                 'date': post.published_at|format_date('medium'),
                 'raw_date': post.published_at,

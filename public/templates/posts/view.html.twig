@@ -49,6 +49,7 @@
                 'video': other.video ? other.video|split(':') : null,
                 'date': other.published_at|format_date('medium'),
                 'raw_date': other.published_at,
+                'read_time': other.read_time,
                 'categories': categories,
                 'authors': otherAuthors,
             }
@@ -77,6 +78,7 @@
         'previewing_text': not post.published_at ? 'posts.not_published'|trans : null,
         'content': '<div class="user-content">'~ post.content|apply_embed_consent ~'</div>',
         'quote': post.quote,
+        'read_time': post.read_time,
         'authors': authors,
         'more': more,
         'titleLabel': 'base.embed-consent.title'|trans,

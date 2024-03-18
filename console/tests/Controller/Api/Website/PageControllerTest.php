@@ -28,6 +28,7 @@ class PageControllerTest extends ApiTestCase
                     'image' => null,
                     'description' => null,
                     'categories' => ['data' => []],
+                    'read_time' => 0,
                 ],
                 [
                     'id' => '2DCuzkKxcm7Q2Ax2yyRq53',
@@ -199,6 +200,7 @@ class PageControllerTest extends ApiTestCase
             'content' => '',
             'image' => null,
             'sharer' => null,
+            'read_time' => 0,
             'categories' => ['data' => []],
             'children' => [
                 'data' => [
