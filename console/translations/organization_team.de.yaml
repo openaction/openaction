@@ -50,6 +50,11 @@ permissions:
     website_trombinoscope_publish: 'Veröffentlichen trombinoscope Personen'
     website_trombinoscope_manage_published: 'Verwalten Sie das veröffentlichte Trombinoskop'
     website_trombinoscope_manage_categories: 'Verwalten Sie die Kategorien des Trombinoskops'
+    petitions: Petitionen
+    website_petition_manage_drafts: 'Verwalten der Entwürfe von Petitionen'
+    website_petition_publish: 'Petitionen veröffentlichen'
+    website_petition_manage_published: 'Verwalten Sie die veröffentlichten Petitionen'
+    website_petition_manage_categories: 'Verwalten Sie die Kategorien der Petitionen'
     manifesto: Manifest
     website_manifesto_manage_drafts: 'Verwaltung der Vorschlagsentwürfe'
     website_manifesto_publish: 'Vorschläge veröffentlichen'

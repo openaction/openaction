@@ -11,6 +11,7 @@ const platform = {
         'website_manifesto',
         'website_events',
         'website_forms',
+        'website_petitions',
     ],
     community: ['community_contacts', 'community_emailing', 'community_texting', 'community_phoning'],
     members_area: [

@@ -1,0 +1,79 @@
+index:
+    title: Petitionen
+    help: Verwalten Sie Ihre Petitionen, um Unterschriften zu sammeln und Ihre Gemeinschaft zu mobilisieren.
+    edit_categories: Kategorien bearbeiten
+    create: Neue Petition
+    no_result: Ihr Projekt enthält derzeit keine Petitionen.
+    no_result_create: Petition erstellen
+    edit: Bearbeiten
+    duplicate: Duplizieren
+    delete: Löschen
+    draft: Entwurf
+    metadata: Metadaten
+    form: Formular
+    scheduled: Geplant
+    scheduled_for: für %datetime%
+    published: Veröffentlicht
+    published_at: am %datetime%
+    signatures: Unterschriften
+    remove: Löschen
+    remove_confirm: Möchten Sie die Petition "%name%" wirklich löschen?
+    localized:
+        create: Neu
+
+create:
+    title: '(Unbenannte Petition)'
+    localized:
+        title: Neue lokalisierte Petition hinzufügen
+        help: Fügen Sie eine neue lokalisierte Version der Petition hinzu
+        label: Sprache
+        en: English
+        de: Deutsch
+        fr: Französisch
+        it: Italienisch
+        nl: Niederländisch
+        pt: Portugiesisch
+        submit: Fortfahren
+    form:
+        title: '(Unbenanntes Petitionsformular)'
+
+edit:
+    title:
+        label: Petition "%title%" bearbeiten
+        help: Bearbeiten Sie die Hauptinformationen Ihrer Petition
+    back: Zurück zur Liste
+    submit: Speichern
+    start_at:
+        label: Startdatum
+        help: Das Datum und die Uhrzeit, zu denen die Petition veröffentlicht wird
+    end_at:
+        label: Enddatum
+        help: Das Datum und die Uhrzeit, zu denen die Petition nicht mehr veröffentlicht wird
+    signatures_goal:
+        label: Unterschriftenziel
+        help: Die Anzahl der Unterschriften, die Sie mit dieser Petition erreichen möchten (mindestens 1)
+    authors:
+        label: Autoren
+        help: Die Person(en), die für diese Petition verantwortlich ist/sind
+
+categories:
+    index:
+        back: Zurück zu den Petitionen
+        title: Petitionskategorien
+        create: Neue Kategorie
+        no_records: Ihr Projekt enthält derzeit keine Petitionskategorie.
+        no_records_desc: Kategorien helfen Ihnen, Ihre Inhalte zu organisieren, damit es für Ihre Besucher einfacher ist, sie zu erkunden.
+        order: Reihenfolge
+        name: Name
+        number: Petitionen
+        created: Erstellungsdatum
+        edit: Bearbeiten
+        remove: Löschen
+        remove_confirm: Möchten Sie die Kategorie "%name%" wirklich löschen?
+
+    form:
+        title_create: Neue Kategorie
+        title_edit: Kategorie bearbeiten
+        back: Zurück zur Liste
+        name: Name
+        save: Speichern

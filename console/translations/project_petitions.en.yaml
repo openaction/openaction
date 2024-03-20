@@ -1,0 +1,80 @@
+index:
+    title: Petitions
+    help: Manage your petitions to collect signatures and mobilize your community.
+    edit_categories: Edit categories
+    create: New petition
+    no_result: Your project does not contain any petitions for now.
+    no_result_create: Create a petition
+    edit: Edit
+    duplicate: Duplicate
+    delete: Delete
+    draft: Draft
+    metadata: Metadata
+    form: Form
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    signatures: signatures
+    remove: Delete
+    remove_confirm: Are you sure you want to delete the petition "%name%"?
+    localized:
+        create: Add locale
+
+create:
+    back: Back to the list
+    title: '(Untitled petition)'
+    localized:
+        title: Add new localized petition
+        help: Add a new localized version of the petition
+        label: Locale
+        en: English
+        de: German
+        fr: French
+        it: Italian
+        nl: Dutch
+        pt: Portuguese
+        submit: Continue
+    form:
+        title: '(Untitled petition form)'
+
+edit:
+    title:
+        label: Edit petition "%title%"
+        help: Edit the main information of your petition
+    back: Back to the list
+    submit: Save
+    start_at:
+        label: Start date
+        help: The date and time when the petition will be published
+    end_at:
+        label: End date
+        help: The date and time when the petition will be unpublished
+    signatures_goal:
+        label: Signatures goal
+        help: The number of signatures you want to reach with this petition (minimum 1)
+    authors:
+        label: Authors
+        help: The person(s) that is responsible for this petition
+
+categories:
+    index:
+        back: Back to petitions
+        title: Petitions categories
+        create: New category
+        no_records: Your project does not contain any petition category for now.
+        no_records_desc: Categories help you organize your content so that it's easier for your visitor to explore.
+        order: Order
+        name: Name
+        number: Petitions
+        created: Creation date
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

@@ -1,0 +1,38 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'create.localized.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'edit.back'|trans({}, 'project_petitions') }}</span>
+            </a>
+        </div>
+        <div class="bg-light mb-3">
+            <div class="col-lg-8 pt-3 mb-3">
+                <h3>{{ 'create.localized.title'|trans({}, 'project_petitions') }}</h3>
+                <div class="text-muted">
+                    {{ 'create.localized.help'|trans({}, 'project_petitions') }}
+                </div>
+            </div>
+
+            <div class="col-lg-2 pt-3">
+                {{ form_start(form) }}
+
+                {{ form_row(form.locale, {'label': false}) }}
+
+                <button type="submit" class="btn btn-primary">
+                    {{ 'create.localized.submit'|trans({}, 'project_petitions') }}
+                </button>
+
+                {{ form_end(form) }}
+            </div>
+            <div class="p-3">&nbsp;</div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title.label'|trans({'%title%': petition.slug}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3"  data-controller="petition--edit">
+        <div class="world-box-status">
+            <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'edit.back'|trans({}, 'project_petitions') }}</span>
+            </a>
+        </div>
+
+        <div class="p-3 p-lg-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-6">
+                    <h1 class="col-12 pl-0 mb-1">
+                        {{ 'edit.title.label'|trans({'%title%': petition.slug}, 'project_petitions') }}
+                    </h1>
+                    <div class="text-muted mb-4">
+                        {{ 'edit.title.help'|trans({}, 'project_petitions') }}
+                    </div>
+
+                    {{ form_start(form) }}
+                        {{ form_row(form.startAt, {
+                            'label': 'edit.start_at.label'|trans({}, 'project_petitions'),
+                            'help': 'edit.start_at.help'|trans({}, 'project_petitions'),
+                            'attr': {'class': 'form-control-lg'},
+                        }) }}
+
+                        {{ form_row(form.endAt, {
+                            'label': 'edit.end_at.label'|trans({}, 'project_petitions'),
+                            'help': 'edit.end_at.help'|trans({}, 'project_petitions'),
+                            'attr': {'class': 'form-control-lg'},
+                        }) }}
+
+                        {{ form_row(form.signaturesGoal, {
+                            'label': 'edit.signatures_goal.label'|trans({}, 'project_petitions'),
+                            'help': 'edit.signatures_goal.help'|trans({}, 'project_petitions'),
+                            'attr': {'class': 'form-control-lg'},
+                        }) }}
+
+                        {{ form_row(form.authors, {
+                            'label': 'edit.authors.label'|trans({}, 'project_petitions'),
+                            'help': 'edit.authors.help'|trans({}, 'project_petitions'),
+                            'attr': {'class': 'form-control-m'},
+                        }) }}
+
+                        <div class="text-center mt-4 mb-4">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                {{ 'edit.submit'|trans({}, 'project_petitions') }}
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,9 +3,11 @@ import './styles/blueprint.scss';
 import './styles/crm.scss';
 import './styles/unlayer.scss';
 import './styles/contenteditor.scss';
+import './styles/uploadcare.scss';
 
-// Flags
+// Vendors
 import 'flag-icons/sass/flag-icons.scss';
+import '@uploadcare/react-uploader/core.css';
 
 // Application
 import { Application } from 'stimulus';

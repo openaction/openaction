@@ -59,6 +59,12 @@ permissions:
     website_trombinoscope_manage_published: Gérer les fiches du trombinoscope publiées
     website_trombinoscope_manage_categories: Gérer les catégories du trombinoscope
 
+    petitions: Pétitions
+    website_petition_manage_drafts: Gérer les brouillons de pétitions
+    website_petition_publish: Publier des pétitions
+    website_petition_manage_published: Gérer les pétitions publiées
+    website_petition_manage_categories: Gérer les catégories de pétitions
+
     manifesto: Manifesto
     website_manifesto_manage_drafts: Gérer les brouillons de propositions
     website_manifesto_publish: Publier des propositions

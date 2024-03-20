@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { request } from '../../../../utils/http';
-import { AnchorButton, Intent, ProgressBar } from '@blueprintjs/core';
+import React, {useEffect, useState} from 'react';
+import {request} from '../../../../utils/http';
+import {AnchorButton, Intent, ProgressBar} from '@blueprintjs/core';
 
 interface Props {
     statusUrl: string;
@@ -51,9 +51,9 @@ export default function ImportProgress(props: Props) {
 
                 <p className="bp4-text-muted">{props.labels.finishedDesc}</p>
 
-                <ProgressBar intent={Intent.SUCCESS} value={1.0} animate={false} stripes={false} />
+                <ProgressBar intent={Intent.SUCCESS} value={1.0} animate={false} stripes={false}/>
 
-                <br />
+                <br/>
 
                 <AnchorButton
                     href={props.postsUrl}

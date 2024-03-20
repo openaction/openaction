@@ -1,0 +1,93 @@
+index:
+    title: Pétitions
+    help: Gérez vos pétitions pour collecter des signatures et mobiliser votre communauté.
+    edit_categories: Modifier les catégories
+    create: Lancer une pétition
+    no_result: Votre projet ne contient actuellement aucune pétition.
+    no_result_create: Lancer une pétition
+    edit: Modifier
+    duplicate: Dupliquer
+    delete: Supprimer
+    draft: Brouillon
+    metadata: Métadonnées
+    form: Formulaire
+    scheduled: Planifié
+    scheduled_for: pour %datetime%
+    published: Publié
+    published_at: le %datetime%
+    signatures: signatures
+    remove: Supprimer
+    remove_confirm: Voulez-vous vraiment supprimer la pétition "%name%"?
+    localized:
+        create: Ajouter
+
+create:
+    back: Retour à la liste
+    title: Lancer une pétition
+    workflow:
+        title:
+            title: Quel est le titre de votre pétition ?
+            help: Expliquez le changement que vous voulez obtenir
+            label: Titre de la pétition
+            tips: |
+                <ul>
+                    <li>Soyez concis et direct (« arrêter, sauver, interdire, accorder, s'opposer, etc. ».)</li>
+                    <li>Nommez des lieux, des organisations ou des personnes spécifiques (« augmentez le salaire minimum à Paris à 10 euros de l'heure ».)</li>
+                    <li>Utilisez des titres plus longs pour ajouter des détails clés (« améliorez le diagnostic du cancer du sein secondaire : offrez-nous des radios ! »)</li>
+                </ul>
+
+    # title: '(Pétition sans titre)'
+    localized:
+        title: Ajouter une pétition localisée
+        help: Ajoutez une nouvelle version localisée de la pétition
+        label: Langue
+        en: Anglais
+        de: Allemand
+        fr: Français
+        it: Italien
+        nl: Néerlandais
+        pt: Portugais
+        submit: Continuer
+    form:
+        title: '(Formulaire de pétition sans titre)'
+
+edit:
+    title:
+        label: Modifier la pétition "%title%"
+        help: Modifiez les informations principales de votre pétition
+    back: Retour à la liste
+    submit: Enregistrer
+    start_at:
+        label: Date de début
+        help: La date et l'heure à laquelle la pétition sera publiée
+    end_at:
+        label: Date de fin
+        help: La date et l'heure à laquelle la pétition sera dépubliée
+    signatures_goal:
+        label: Objectif de signatures
+        help: Le nombre de signatures que vous souhaitez atteindre avec cette pétition (minimum 1)
+    authors:
+        label: Auteurs
+        help: La ou les personnes responsables de cette pétition
+
+categories:
+    index:
+        back: Retour aux pétitions
+        title: Catégories de pétitions
+        create: Nouvelle catégorie
+        no_records: Votre projet ne contient actuellement aucune catégorie de pétition.
+        no_records_desc: Les catégories vous aident à organiser votre contenu pour que vos visiteurs puissent l'explorer plus facilement.
+        order: Ordre
+        name: Nom
+        number: Pétitions
+        created: Date de création
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Voulez-vous vraiment supprimer la catégorie "%name%"?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier une catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Enregistrer
