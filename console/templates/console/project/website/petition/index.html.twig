@@ -1,0 +1,32 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'index.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% from 'console/_macros/pagination.html.twig' import pagination %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h3>
+                        {{ 'index.title'|trans({}, 'project_petitions') }}
+                    </h3>
+
+                    <div class="text-muted">
+                        {{ 'index.help'|trans({}, 'project_petitions') }}
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-right">
+                    dono what comes here either
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-light">
+            dono what comes here
+        </div>
+    </div>
+{% endblock %}
