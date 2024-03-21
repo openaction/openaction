@@ -33,7 +33,7 @@ class Post implements Searchable
     #[ORM\Column(length: 200)]
     private ?string $slug;
 
-    #[ORM\Column(length: 200, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 200, nullable: true)]

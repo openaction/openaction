@@ -16,7 +16,6 @@ class PostData
 
     public ?string $content = '';
 
-    #[Assert\Length(max: 200, groups: ['Metadata'])]
     public ?string $description = '';
 
     #[Assert\Length(max: 50, groups: ['Metadata'])]

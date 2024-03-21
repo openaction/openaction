@@ -34,7 +34,7 @@ class TrombinoscopePerson implements Searchable
     #[ORM\Column(length: 250, nullable: true)]
     private ?string $role = null;
 
-    #[ORM\Column(length: 250, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'text')]
