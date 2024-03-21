@@ -18,7 +18,7 @@ class ManifestoTopicPartialTransformer extends AbstractTransformer
 
     public function transform(ManifestoTopic $topic)
     {
-        return [
+        $data = [
             '_resource' => 'ManifestoTopic',
             '_links' => [
                 'self' => $this->createLink('api_website_manifesto_view', ['id' => Uid::toBase62($topic->getUuid())]),
@@ -31,7 +31,20 @@ class ManifestoTopicPartialTransformer extends AbstractTransformer
             'color' => $topic->getColor(),
             'sharer' => $topic->getImage() ? $this->cdnRouter->generateUrl($topic->getImage(), 'sharer') : null,
             'published_at' => $topic->isPublished() ? $topic->getPublishedAt()->format(\DateTime::ATOM) : null,
+            'proposals' => [],
         ];
+
+        foreach ($topic->getProposals() as $proposal) {
+            $data['proposals'][] = [
+                'title' => $proposal->getTitle(),
+                'status' => $proposal->getStatus(),
+                'statusDescription' => $proposal->getStatusDescription(),
+                'statusCtaText' => $proposal->getStatusCtaText(),
+                'statusCtaUrl' => $proposal->getStatusCtaUrl(),
+            ];
+        }
+
+        return $data;
     }
 
     public static function describeResourceName(): string
