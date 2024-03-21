@@ -29,6 +29,7 @@
     {% endfor %}
 
     {% set payload = {
+        'event': event.toArray,
         'current_url': url('event_view', {'id': event.id, 'slug': event.slug}),
         'current_project': current_project.toArray,
         'force_embed_consent': force_embed_consent,

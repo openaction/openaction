@@ -14,7 +14,6 @@ class TrombinoscopePersonData
     #[Assert\Length(max: 250, groups: ['Metadata'])]
     public ?string $role = null;
 
-    #[Assert\Length(max: 250, groups: ['Metadata'])]
     public ?string $description = null;
 
     public ?string $content = '';

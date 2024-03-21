@@ -270,7 +270,6 @@ class PostControllerTest extends WebTestCase
 
     public function provideUpdateMetadataInvalid()
     {
-        yield 'description_invalid_length' => [str_repeat('x', 300), '', ''];
         yield 'quote_invalid_length' => ['Title', '', str_repeat('x', 300)];
     }
 

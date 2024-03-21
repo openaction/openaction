@@ -15,7 +15,6 @@ class ManifestoTopicData
     #[Assert\Length(max: 6)]
     public ?string $color = '002851';
 
-    #[Assert\Length(max: 200)]
     public ?string $description = '';
 
     public function __construct(ManifestoTopic $topic)

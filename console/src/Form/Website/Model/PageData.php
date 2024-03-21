@@ -13,7 +13,6 @@ class PageData
 
     public ?string $content = '';
 
-    #[Assert\Length(max: 200, groups: ['Metadata'])]
     public ?string $description = '';
 
     #[Assert\Json(groups: ['Metadata'])]

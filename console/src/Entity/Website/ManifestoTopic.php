@@ -32,7 +32,7 @@ class ManifestoTopic implements Searchable
     #[ORM\Column(length: 200)]
     private string $slug;
 
-    #[ORM\Column(length: 200, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description;
 
     #[ORM\Column(length: 6)]

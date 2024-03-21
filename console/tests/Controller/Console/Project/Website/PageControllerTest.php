@@ -234,7 +234,6 @@ class PageControllerTest extends WebTestCase
 
     public function provideUpdateMetadataInvalid()
     {
-        yield 'invalid_description' => [str_repeat('x', 300), '[]'];
         yield 'invalid_categories' => ['Description', '[data: "xxx"]'];
     }
 
