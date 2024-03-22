@@ -57,6 +57,8 @@
     {% endfor %}
 
     {% set payload = {
+        'item': post.toArray,
+        'post': post.toArray,
         'current_url': url('post_view', {'id': post.id, 'slug': post.slug}),
         'current_project': current_project.toArray,
         'force_embed_consent': force_embed_consent,

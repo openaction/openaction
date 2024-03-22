@@ -18,6 +18,8 @@
     }) %}
 
     {% set payload = {
+        'item': formData.toArray,
+        'form': formData.toArray,
         'current_url': url('form_view', {'id': formData.id, 'slug': formData.slug}),
         'current_project': current_project.toArray,
         'force_embed_consent': force_embed_consent,
