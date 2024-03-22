@@ -84,3 +84,8 @@ content_import:
                     as_original: |
                         Die Nachrichten unter Beibehaltung ihres Wordpress-Status importieren (veröffentlicht, wenn die Nachricht
                         auf Wordpress veröffentlicht wurde, sonst als Entwurf)
+                post_author_id:
+                    label: |
+                        Optional können Sie einen Autor mit allen importierten Nachrichten verknüpfen. Wenn du
+                        Wenn Sie möchten, wählen Sie unten einen oder mehrere Autoren aus. Wenn du es nicht willst,
+                        Lassen Sie dieses Feld leer.

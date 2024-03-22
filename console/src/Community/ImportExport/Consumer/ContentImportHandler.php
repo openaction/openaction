@@ -13,6 +13,7 @@ use App\Repository\Platform\JobRepository;
 use App\Repository\UploadRepository;
 use App\Repository\Website\PageRepository;
 use App\Repository\Website\PostRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemReader;
 use Psr\Log\LoggerInterface;
@@ -24,6 +25,7 @@ class ContentImportHandler
 {
     public function __construct(
         private readonly ContentImportRepository $contentImportRepository,
+        private readonly TrombinoscopePersonRepository $personRepository,
         private readonly PageRepository $pageRepository,
         private readonly PostRepository $postRepository,
         private readonly UploadRepository $uploadRepository,
@@ -66,6 +68,9 @@ class ContentImportHandler
 
         $project = $import->getProject();
         $importSettings = $import->getSettings();
+
+        // Resolve authors
+        $authorsIds = !empty($importSettings['postAuthorsIds']) ? explode(',', $importSettings['postAuthorsIds']) : [];
 
         // save external ids to attach an imported image to its page/post
         $externalPageIds = [];
@@ -129,6 +134,10 @@ class ContentImportHandler
 
                             $this->em->persist($newPost);
                             $this->em->flush();
+
+                            if ($authorsIds) {
+                                $this->personRepository->updateAuthors($newPost, $authorsIds);
+                            }
 
                             $externalPostIds[$itemId] = $newPost->getId();
                         } elseif (ContentImport::WORDPRESS_CONTENT_TYPE_ATTACHMENT === $itemType) {
