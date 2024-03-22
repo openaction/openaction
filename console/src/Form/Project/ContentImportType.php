@@ -6,6 +6,7 @@ use App\Entity\Community\Model\ContentImportSettings;
 use RuntimeException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,9 +29,13 @@ class ContentImportType extends AbstractType
                     new NotBlank(),
                 ],
             ]);
-        } else {
-            throw new RuntimeException('Missing import source in content type!');
+
+            $builder->add('postAuthorsIds', HiddenType::class);
+
+            return;
         }
+
+        throw new RuntimeException('Missing import source in content type!');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

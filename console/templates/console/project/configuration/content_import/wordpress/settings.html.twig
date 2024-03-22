@@ -26,6 +26,16 @@
                         'label': 'content_import.wordpress.settings.options.post_save_status.label'|trans({}, 'project_configuration'),
                     }) }}
 
+                    <div class="mb-1">
+                        {{ 'content_import.wordpress.settings.options.post_author_id.label'|trans({}, 'project_configuration') }}
+                    </div>
+
+                    {% set input = form_widget(form.postAuthorsIds) %}
+                    <div {{ react_component('Project/Website/ImportAuthorsSelector', {
+                        'choices': availableAuthors,
+                        'fieldName': field_name(form.postAuthorsIds),
+                    }) }}>{{ input }}</div>
+
                     <div class="text-center mt-4 mb-4">
                         <button type="submit" class="btn btn-primary">
                             {{ 'content_import.start_import'|trans({}, 'project_configuration') }}

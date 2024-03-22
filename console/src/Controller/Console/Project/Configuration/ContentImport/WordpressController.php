@@ -9,6 +9,8 @@ use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Form\Project\ContentImportType;
 use App\Platform\Permissions;
+use App\Repository\Website\TrombinoscopePersonRepository;
+use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,13 +67,14 @@ class WordpressController extends AbstractController
     }
 
     #[Route('/{uuid}/settings', name: 'console_project_configuration_content_import_wordpress_settings')]
-    public function settings(ContentImport $import, Request $request): Response
+    public function settings(TrombinoscopePersonRepository $trombinoscopeRepository, ContentImport $import, Request $request): Response
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameOrganization($import->getProject());
 
         $data = ContentImportSettings::createFromImport($import);
+
         $form = $this->createForm(ContentImportType::class, $data, ['import_source' => $import->getSource()]);
         $form->handleRequest($request);
 
@@ -86,6 +89,7 @@ class WordpressController extends AbstractController
 
         return $this->render('console/project/configuration/content_import/wordpress/settings.html.twig', [
             'import' => $import,
+            'availableAuthors' => $trombinoscopeRepository->getProjectPersonsList($this->getProject(), Query::HYDRATE_ARRAY),
             'form' => $form,
         ]);
     }

@@ -92,3 +92,8 @@ content_import:
                     as_original: |
                         Import the news while keeping their Wordpress status (published if the news was published
                         on Wordpress, draft otherwise)
+                post_author_id:
+                    label: |
+                        Optionally, you can link an author to all imported posts. If you
+                        wish to do it, choose one or more authors below. If you don't,
+                        leave this field empty.

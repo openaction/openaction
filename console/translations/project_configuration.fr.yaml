@@ -92,3 +92,8 @@ content_import:
                     as_original: |
                         Importer les actualités en gardant leur status Wordpress (publiée si l'actualité était publiée
                         sur Wordpress, brouillon sinon)
+                post_author_id:
+                    label: |
+                        Optionellement, vous pouvez lier un auteur à toutes les actualités importées. Si vous le
+                        souhaitez, choisissez un ou plusieurs auteurs ci-dessous. Si vous ne le souhaitez pas,
+                        laissez ce champ vide.
