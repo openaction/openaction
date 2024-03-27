@@ -1,0 +1,111 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'categories.index.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <h3 class="world-box-title">
+            <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0 mb-2">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'categories.index.back'|trans({}, 'project_petitions') }}</span>
+            </a>
+
+            <br />
+
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    {{ 'categories.index.title'|trans({}, 'project_petitions') }}
+                </div>
+                <div class="col-lg-8 text-lg-right">
+                    <a href="{{ path('console_website_petition_category_create', { 'projectUuid': current_project.uuid }) }}"
+                       class="btn btn-primary">
+                        <i class="far fa-plus mr-1"></i>
+                        {{ 'categories.index.create'|trans({}, 'project_petitions') }}
+                    </a>
+                </div>
+            </div>
+        </h3>
+
+        <div class="bg-light">
+            {% if categories|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-3">
+                            {{ 'categories.index.no_records'|trans({}, 'project_petitions') }}
+                        </h4>
+
+                        <div class="text-muted mb-4">
+                            {{ 'categories.index.no_records_desc'|trans({}, 'project_petitions') }}
+                        </div>
+
+                        <a href="{{ path('console_website_petition_category_create', { 'projectUuid': current_project.uuid }) }}"
+                           class="btn btn-lg btn-primary">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'categories.index.create'|trans({}, 'project_petitions') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <table class="world-table table"
+                       data-controller="sortable"
+                       data-endpoint="{{ path('console_website_petition_category_sort', { 'projectUuid': current_project.uuid }) }}">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="world-table-sortable">
+                            {{ 'categories.index.order'|trans({}, 'project_petitions') }}
+                        </th>
+                        <th scope="col">
+                            {{ 'categories.index.name'|trans({}, 'project_petitions') }}
+                        </th>
+                        <th scope="col" class="world-table-number d-none d-lg-table-cell">
+                            {{ 'categories.index.number'|trans({}, 'project_petitions') }}
+                        </th>
+                        <th scope="col" class="world-table-date d-none d-lg-table-cell">
+                            {{ 'categories.index.created'|trans({}, 'project_petitions') }}
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody data-sortable-target="element">
+                    {% for category in categories %}
+                        <tr id="category-{{ category.uuid }}">
+                            <td data-id="{{ category.uuid }}" class="world-table-sortable">
+                                <i class="fas fa-arrows-alt world-table-sortable-icon handle"></i>
+                            </td>
+                            <td>
+                                {{ category.name }}
+                            </td>
+                            <td class="world-table-number d-none d-lg-table-cell">
+                                {{ categories_count[category.id]|default(0) }}
+                            </td>
+                            <td class="world-table-date d-none d-lg-table-cell">
+                                {{ category.createdAt|format_datetime('medium', 'short') }}
+                            </td>
+                            <td class="world-table-actions">
+                                <a href="{{ path('console_website_petition_category_edit', { 'uuid': category.uuid, 'projectUuid': current_project.uuid }) }}"
+                                   class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                    <i class="fad fa-edit mr-1"></i>
+                                    <span>{{ 'categories.index.edit'|trans({}, 'project_petitions') }}</span>
+                                </a>
+
+                                <a href="{{ csrf_path('console_website_petition_category_delete', { 'uuid': category.uuid, 'projectUuid': current_project.uuid }) }}"
+                                   data-controller="delete"
+                                   data-message="{{ 'categories.index.remove_confirm'|trans({'%name%': category.name}, 'project_petitions') }}"
+                                   data-target="#category-{{ category.uuid }}"
+                                   class="btn btn-sm btn-outline-danger border-0">
+                                    <i class="fad fa-trash mr-1"></i>
+                                    <span>{{ 'categories.index.remove'|trans({}, 'project_petitions') }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

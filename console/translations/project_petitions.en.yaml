@@ -1,3 +1,45 @@
 index:
     title: Petitions
     help: Manage your petitions to collect signatures and mobilize your community.
+    edit_categories: Edit categories
+    create: New petition
+    no_result: Your project does not contain any petitions for now.
+    no_result_create: Create a petition
+    edit: Edit
+    duplicate: Duplicate
+    delete: Delete
+    draft: Draft
+    scheduled: Scheduled
+    scheduled_for: for %datetime%
+    published: Published
+    published_at: on %datetime%
+    signatures: signatures
+
+create:
+    title: '(Untitled petition)'
+
+edit:
+    title: Edit petition "%title%"
+    back: Back to the list
+
+categories:
+    index:
+        back: Back to petitions
+        title: Petitions categories
+        create: New category
+        no_records: Your project does not contain any petition category for now.
+        no_records_desc: Categories help you organize your content so that it's easier for your visitor to explore.
+        order: Order
+        name: Name
+        number: Petitions
+        created: Creation date
+        edit: Edit
+        remove: Delete
+        remove_confirm: Are you sure you want to delete the category "%name%"?
+
+    form:
+        title_create: New category
+        title_edit: Edit a category
+        back: Back to the list
+        name: Name
+        save: Save

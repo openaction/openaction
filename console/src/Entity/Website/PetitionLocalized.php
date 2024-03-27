@@ -38,8 +38,8 @@ class PetitionLocalized
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Petition $petition;
 
-    #[ORM\ManyToMany(targetEntity: PetitionCategory::class, inversedBy: 'posts')]
-    #[ORM\JoinTable(name: 'website_posts_posts_categories')]
+    #[ORM\ManyToMany(targetEntity: PetitionCategory::class, inversedBy: 'petitionsLocalized')]
+    #[ORM\JoinTable(name: 'website_petitions_localized_petitions_localized_categories')]
     private Collection $categories;
 
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
@@ -100,16 +100,6 @@ class PetitionLocalized
         $this->content = $content;
     }
 
-    public function getMainImage(): ?Upload
-    {
-        return $this->mainImage;
-    }
-
-    public function setMainImage(?Upload $mainImage): void
-    {
-        $this->mainImage = $mainImage;
-    }
-
     public function getSubmitButtonLabel(): string
     {
         return $this->submitButtonLabel;
@@ -139,5 +129,15 @@ class PetitionLocalized
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+
+    public function getMainImage(): ?Upload
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?Upload $mainImage): void
+    {
+        $this->mainImage = $mainImage;
     }
 }

@@ -1,3 +1,45 @@
 index:
     title: Pétitions
     help: Gérez vos pétitions pour collecter des signatures et mobiliser votre communauté.
+    edit_categories: Modifier les catégories
+    create: Nouvelle pétition
+    no_result: Votre projet ne contient actuellement aucune pétition.
+    no_result_create: Créer une pétition
+    edit: Modifier
+    duplicate: Dupliquer
+    delete: Supprimer
+    draft: Brouillon
+    scheduled: Planifié
+    scheduled_for: pour %datetime%
+    published: Publié
+    published_at: le %datetime%
+    signatures: signatures
+
+create:
+    title: '(Pétition sans titre)'
+
+edit:
+    title: Modifier la pétition "%title%"
+    back: Retour à la liste
+
+categories:
+    index:
+        back: Retour aux pétitions
+        title: Catégories de pétitions
+        create: Nouvelle catégorie
+        no_records: Votre projet ne contient actuellement aucune catégorie de pétition.
+        no_records_desc: Les catégories vous aident à organiser votre contenu pour que vos visiteurs puissent l'explorer plus facilement.
+        order: Ordre
+        name: Nom
+        number: Pétitions
+        created: Date de création
+        edit: Modifier
+        remove: Supprimer
+        remove_confirm: Voulez-vous vraiment supprimer la catégorie "%name%"?
+
+    form:
+        title_create: Nouvelle catégorie
+        title_edit: Modifier une catégorie
+        back: Retour à la liste
+        name: Nom
+        save: Enregistrer
