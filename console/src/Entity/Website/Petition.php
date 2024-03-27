@@ -29,10 +29,10 @@ class Petition
     #[ORM\Column(type: 'datetime')]
     private ?DateTime $publishedAt = null;
 
-    #[ORM\Column(type: 'startAt')]
+    #[ORM\Column(type: 'datetime')]
     private ?DateTime $startAt = null;
 
-    #[ORM\Column(type: 'endAt')]
+    #[ORM\Column(type: 'datetime')]
     private ?DateTime $endAt = null;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
@@ -41,7 +41,7 @@ class Petition
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private ?int $signaturesCount = null;
 
-    #[ORM\OneToMany(mappedBy: 'petition', targetEntity: PetitionLocalized::class, cascade: ['persist','remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'petition', targetEntity: PetitionLocalized::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $localized;
 
     /** @var Collection<TrombinoscopePerson> */
@@ -109,6 +109,12 @@ class Petition
     public function setEndAt(?DateTime $endAt): void
     {
         $this->endAt = $endAt;
+    }
+
+    /** @return Collection<PetitionLocalized> */
+    public function getLocalized(): Collection
+    {
+        return $this->localized;
     }
 
     /** @return Collection<TrombinoscopePerson> */

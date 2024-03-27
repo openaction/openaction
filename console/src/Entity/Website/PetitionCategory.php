@@ -32,7 +32,6 @@ class PetitionCategory
     #[ORM\Column(type: 'integer')]
     private int $weight;
 
-    /** @var Collection<PetitionLocalized> */
     #[ORM\ManyToMany(targetEntity: PetitionLocalized::class, mappedBy: 'categories')]
     #[ORM\JoinTable(name: 'website_petitions_localized_petitions_localized_categories')]
     private Collection $petitionsLocalized;
@@ -73,7 +72,6 @@ class PetitionCategory
         return $this->weight;
     }
 
-    /** @return Collection<PetitionLocalized> */
     public function getPetitionsLocalized(): Collection
     {
         return $this->petitionsLocalized;
