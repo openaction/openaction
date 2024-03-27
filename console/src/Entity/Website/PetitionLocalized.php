@@ -6,8 +6,8 @@ use App\Entity\Upload;
 use App\Entity\Util;
 use App\Repository\Website\PetitionLocalizedRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PetitionLocalizedRepository::class)]
 #[ORM\Table(name: 'website_petitions_localized')]
@@ -50,7 +50,6 @@ class PetitionLocalized
         $this->populateTimestampable();
         $this->petition = $petition;
         $this->categories = new ArrayCollection();
-
     }
 
     public function getId(): ?int

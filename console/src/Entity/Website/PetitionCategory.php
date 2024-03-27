@@ -6,9 +6,9 @@ use App\Entity\Project;
 use App\Entity\Util;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Util\Uid;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
 
