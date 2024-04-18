@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Client\CitipoInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +22,7 @@ class ManifestoController extends AbstractController
     /**
      * @Route("", name="manifesto_list")
      */
-    public function list()
+    public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_manifesto');
 
@@ -29,13 +30,14 @@ class ManifestoController extends AbstractController
 
         return $this->render('manifesto/list.html.twig', [
             'manifesto' => $manifesto,
+            'statusFilter' => $request->query->get('status'),
         ]);
     }
 
     /**
      * @Route("/{id}/{slug}", name="manifesto_view")
      */
-    public function view(string $id, string $slug)
+    public function view(string $id, string $slug, Request $request)
     {
         $this->denyUnlessToolEnabled('website_manifesto');
 
@@ -49,8 +51,12 @@ class ManifestoController extends AbstractController
             return $this->redirectToRoute('manifesto_view', ['id' => $id, 'slug' => $topic->slug], Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $manifesto = $this->citipo->getManifesto($this->getApiToken());
+
         return $this->render('manifesto/view.html.twig', [
+            'manifesto' => $manifesto,
             'topic' => $topic,
+            'statusFilter' => $request->query->get('status'),
         ]);
     }
 }
