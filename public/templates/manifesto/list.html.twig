@@ -8,9 +8,17 @@
     {% set manifestoPayload = [] %}
 
     {% for topic in manifesto %}
+        {% set filteredProposals = [] %}
+        {% for proposal in topic.proposals %}
+            {% if not statusFilter or statusFilter == proposal.status %}
+                {% set filteredProposals = filteredProposals|merge([proposal]) %}
+            {% endif %}
+        {% endfor %}
+
         {% set topicPayload = topic.toArray()|merge({
             url: path('manifesto_view', {'id': topic.id, 'slug': topic.slug}),
             backgroundColor: hex2rgba(topic.color, 0.1),
+            proposals: filteredProposals,
         }) %}
 
         {% set manifestoPayload = manifestoPayload|merge([topicPayload]) %}

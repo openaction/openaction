@@ -13,6 +13,17 @@
          data-citipo-contentview-type-value="manifesto"
          data-citipo-contentview-id-value="{{ topic.id }}"></div>
 
+    {% set manifestoPayload = [] %}
+
+    {% for t in manifesto %}
+        {% set topicPayload = t.toArray()|merge({
+            url: path('manifesto_view', {'id': topic.id, 'slug': topic.slug}),
+            backgroundColor: hex2rgba(topic.color, 0.1),
+        }) %}
+
+        {% set manifestoPayload = manifestoPayload|merge([topicPayload]) %}
+    {% endfor %}
+
     {% set topic = topic.toArray() %}
 
     {% set previous = null %}
@@ -31,10 +42,18 @@
         }) %}
     {% endif %}
 
+    {% set filteredProposals = [] %}
+    {% for proposal in topic.proposals %}
+        {% if not statusFilter or statusFilter == proposal.status %}
+            {% set filteredProposals = filteredProposals|merge([proposal]) %}
+        {% endif %}
+    {% endfor %}
+
     {% set topicPayload = topic|merge({
         previous: previous,
         next: next,
         backgroundColor: hex2rgba(topic.color, 0.1),
+        proposals: filteredProposals,
     }) %}
 
     {% set payload = {
@@ -45,6 +64,7 @@
         'section_id': 'manifesto',
         'section_name': current_project.terminology.manifesto,
         'section_url': path('manifesto_list'),
+        'manifesto': manifestoPayload,
         'topic': topicPayload,
         'default_image': asset('res/default.jpg'),
         'social_sharers': include('_include/social_sharers.html.twig', {
