@@ -118,7 +118,7 @@ class ContactImporterTest extends KernelTestCase
 
         // Check dispatched message
         /** @var TransportInterface $transport */
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
 
         $messages = $transport->get();
         $this->assertCount(1, $messages);
