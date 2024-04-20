@@ -17,8 +17,8 @@
 
     {% for t in manifesto %}
         {% set topicPayload = t.toArray()|merge({
-            url: path('manifesto_view', {'id': topic.id, 'slug': topic.slug}),
-            backgroundColor: hex2rgba(topic.color, 0.1),
+            url: path('manifesto_view', {'id': t.id, 'slug': t.slug}),
+            backgroundColor: hex2rgba(t.color, 0.1),
         }) %}
 
         {% set manifestoPayload = manifestoPayload|merge([topicPayload]) %}
