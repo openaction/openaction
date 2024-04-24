@@ -17,22 +17,28 @@ class PetitionLocalized
     use Util\EntityTimestampableTrait;
 
     #[ORM\Column(length: 10)]
-    private ?string $locale = null;
+    private ?string $locale;
 
     #[ORM\Column(length: 200)]
-    private ?string $title = null;
+    private ?string $title;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 200, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'text')]
-    private string $content = '';
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
-    #[ORM\Column(length: 30)]
-    private string $submitButtonLabel;
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $submitButtonLabel = null;
 
-    #[ORM\Column(length: 30)]
-    private string $optinLabel;
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $optinLabel = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $legalities = null;
+
+    #[ORM\Column(length: 200, nullable: true)]
+    private ?string $addressedTo = null;
 
     #[ORM\ManyToOne(targetEntity: Petition::class, inversedBy: 'localized')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -96,34 +102,54 @@ class PetitionLocalized
         $this->description = $description;
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent(string $content): void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
 
-    public function getSubmitButtonLabel(): string
+    public function getSubmitButtonLabel(): ?string
     {
         return $this->submitButtonLabel;
     }
 
-    public function setSubmitButtonLabel(string $submitButtonLabel): void
+    public function setSubmitButtonLabel(?string $submitButtonLabel): void
     {
         $this->submitButtonLabel = $submitButtonLabel;
     }
 
-    public function getOptinLabel(): string
+    public function getOptinLabel(): ?string
     {
         return $this->optinLabel;
     }
 
-    public function setOptinLabel(string $optinLabel): void
+    public function setOptinLabel(?string $optinLabel): void
     {
         $this->optinLabel = $optinLabel;
+    }
+
+    public function getLegalities(): ?string
+    {
+        return $this->legalities;
+    }
+
+    public function setLegalities(?string $legalities): void
+    {
+        $this->legalities = $legalities;
+    }
+
+    public function getAddressedTo(): ?string
+    {
+        return $this->addressedTo;
+    }
+
+    public function setAddressedTo(?string $addressedTo): void
+    {
+        $this->addressedTo = $addressedTo;
     }
 
     public function getPetition(): Petition
