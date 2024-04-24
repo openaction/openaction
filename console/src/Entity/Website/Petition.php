@@ -26,22 +26,22 @@ class Petition
     #[ORM\Column(length: 200)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTime $publishedAt = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTime $startAt = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTime $endAt = null;
 
-    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     private ?int $signaturesGoal = null;
 
-    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     private ?int $signaturesCount = null;
 
-    #[ORM\OneToMany(mappedBy: 'petition', targetEntity: PetitionLocalized::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'petition', targetEntity: PetitionLocalized::class, cascade: ['persist', 'remove'])]
     private Collection $localized;
 
     /** @var Collection<TrombinoscopePerson> */
@@ -55,7 +55,7 @@ class Petition
         $this->populateTimestampable();
         $this->project = $project;
         $this->uuid = Uid::random();
-        // TODO! How to set the slug?
+        // TODO! How to set the slug? AsciiSlugger
         $this->authors = new ArrayCollection();
     }
 
@@ -109,6 +109,26 @@ class Petition
     public function setEndAt(?DateTime $endAt): void
     {
         $this->endAt = $endAt;
+    }
+
+    public function getSignaturesGoal(): ?int
+    {
+        return $this->signaturesGoal;
+    }
+
+    public function setSignaturesGoal(?int $signaturesGoal): void
+    {
+        $this->signaturesGoal = $signaturesGoal;
+    }
+
+    public function getSignaturesCount(): ?int
+    {
+        return $this->signaturesCount;
+    }
+
+    public function setSignaturesCount(?int $signaturesCount): void
+    {
+        $this->signaturesCount = $signaturesCount;
     }
 
     /** @return Collection<PetitionLocalized> */

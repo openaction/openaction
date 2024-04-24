@@ -6,6 +6,10 @@
 
 {% from 'console/_macros/pagination.html.twig' import pagination %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+{% endblock %}
+
 {% block content %}
     <div class="world-box mb-3">
         <div class="world-box-title">
@@ -21,13 +25,13 @@
                 </div>
                 <div class="col-lg-4 text-lg-right">
                     <a href="{{ path('console_website_petitions_categories', { 'projectUuid': project.uuid }) }}"
-                       class="btn btn-secondary mr-2 posts-list-action-categories">
+                       class="btn btn-secondary mr-2 petitions-list-action-categories">
                         <i class="fad fa-cogs mr-1"></i>
                         {{ 'index.edit_categories'|trans({}, 'project_petitions') }}
                     </a>
 
-                    <a href="{{ csrf_path('console_website_post_create', { 'projectUuid': project.uuid }) }}"
-                       class="btn btn-primary posts-list-action-create">
+                    <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}"
+                       class="btn btn-primary petitions-list-action-create">
                         <i class="far fa-plus mr-1"></i>
                         {{ 'index.create'|trans({}, 'project_petitions') }}
                     </a>
@@ -36,7 +40,78 @@
         </div>
 
         <div class="bg-light">
-            dono what comes here
+            {% if petitions|length == 0 %}
+                <div class="text-center p-5">
+                    <div class="my-4">
+                        <h4 class="mb-4">
+                            {{ 'index.no_result'|trans({}, 'project_petitions') }}
+                        </h4>
+
+                        <a href="{{ csrf_path('console_website_petition_create', {'projectUuid': project.uuid}) }}"
+                           class="btn btn-lg btn-primary pages-list-action-create">
+                            <i class="far fa-plus mr-1"></i>
+                            {{ 'index.no_result_create'|trans({}, 'project_petitions') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="world-list">
+                    {% for petition in petitions %}
+                        <div class="world-list-row py-2" id="petition-{{ petition.id }}" data-id="{{ petition.id }}" data-uuid="{{ petition.uuid }}">
+                            <div class="col-sm-12 mb-2 d-flex justify-content-between">
+                                <div class="font-weight-bold">{{ petition.slug }}</div>
+                                <div>
+                                    <a href="{{ path('console_website_petition_edit', {'uuid': petition.uuid, 'projectUuid': project.uuid}) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-edit">
+                                        <i class="fad fa-edit mr-1"></i>
+                                        {{ 'index.edit'|trans({}, 'project_petitions') }}
+                                    </a>
+                                    <a href="{{ csrf_path('console_website_petition_delete', {'uuid': petition.uuid, 'projectUuid': project.uuid}) }}"
+                                       data-controller="delete"
+                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': petition.slug}, 'project_petitions') }}"
+                                       data-target="#petition-{{ petition.id }}"
+                                       class="btn btn-sm btn-outline-danger border-0 pages-list-action-delete">
+                                        <i class="fad fa-trash mr-1"></i>
+                                        {{ 'index.remove'|trans({}, 'project_petitions') }}
+                                    </a>
+                                </div>
+                            </div>
+
+                            {% for localizedPetition in petition.localized %}
+                                <div class="col-sm-12 mb-2 d-flex justify-content-between">
+                                    <div>
+                                    <span class="fi fi-{{ localizedPetition.locale }}"></span>&nbsp;<a href="#">{{ localizedPetition.title }}</a>
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('console_website_petition_localized_edit', {'id': localizedPetition.id, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-edit">
+                                            <i class="fad fa-edit mr-1"></i>
+                                            {{ 'index.metadata'|trans({}, 'project_petitions') }}
+                                        </a>
+                                        <a href="#"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-form-edit">
+                                            <i class="fad fa-list mr-1"></i>
+                                            {{ 'index.form'|trans({}, 'project_petitions') }}
+                                        </a>
+                                        <a href="{{ csrf_path('console_website_petition_localized_delete', {'id': localizedPetition.id, 'projectUuid': project.uuid}) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': localizedPetition.title}, 'project_petitions') }}"
+                                           data-target="#localizedPetition-{{ localizedPetition.id }}"
+                                           class="btn btn-sm btn-outline-danger border-0 pages-list-action-delete">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.remove'|trans({}, 'project_petitions') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="p-3">
+                    {{ pagination(petitions, current_page, 10) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

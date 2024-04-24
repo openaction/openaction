@@ -42,13 +42,20 @@ class PetitionLocalized
     #[ORM\JoinTable(name: 'website_petitions_localized_petitions_localized_categories')]
     private Collection $categories;
 
+    #[ORM\OneToOne(targetEntity: Form::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'SET NULL')]
+    private Form $form;
+
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     private ?Upload $mainImage = null;
 
-    public function __construct(Petition $petition)
+    public function __construct(Petition $petition, string $title, string $locale)
     {
         $this->populateTimestampable();
         $this->petition = $petition;
+        $this->title = $title;
+        $this->locale = $locale;
+        $this->form = new Form($petition->getProject(), 'test form');
         $this->categories = new ArrayCollection();
     }
 
@@ -128,6 +135,16 @@ class PetitionLocalized
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+
+    public function getForm(): Form
+    {
+        return $this->form;
+    }
+
+    public function setForm(Form $form): void
+    {
+        $this->form = $form;
     }
 
     public function getMainImage(): ?Upload

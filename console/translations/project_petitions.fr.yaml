@@ -9,11 +9,15 @@ index:
     duplicate: Dupliquer
     delete: Supprimer
     draft: Brouillon
+    metadata: Métadonnées
+    form: Formulaire
     scheduled: Planifié
     scheduled_for: pour %datetime%
     published: Publié
     published_at: le %datetime%
     signatures: signatures
+    remove: Supprimer
+    remove_confirm: Voulez-vous vraiment supprimer la pétition "%name%"?
 
 create:
     title: '(Pétition sans titre)'

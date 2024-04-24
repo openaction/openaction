@@ -2,8 +2,10 @@
 
 namespace App\Repository\Website;
 
+use App\Entity\Project;
 use App\Entity\Website\Petition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,5 +39,19 @@ class PetitionRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getPaginator(Project $project, int $currentPage, int $limit = 25): Paginator
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.project = :project')
+            ->setParameter('project', $project->getId())
+            ->orderBy('p.slug', 'ASC')
+            ->setMaxResults($limit)
+            ->setFirstResult(($currentPage - 1) * $limit)
+        ;
+
+        return new Paginator($qb->getQuery(), true);
     }
 }

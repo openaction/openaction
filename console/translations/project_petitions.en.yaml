@@ -9,11 +9,15 @@ index:
     duplicate: Duplicate
     delete: Delete
     draft: Draft
+    metadata: Metadata
+    form: Form
     scheduled: Scheduled
     scheduled_for: for %datetime%
     published: Published
     published_at: on %datetime%
     signatures: signatures
+    remove: Delete
+    remove_confirm: Are you sure you want to delete the petition "%name%"?
 
 create:
     title: '(Untitled petition)'

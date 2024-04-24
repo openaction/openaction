@@ -9,11 +9,15 @@ index:
     duplicate: Duplizieren
     delete: Löschen
     draft: Entwurf
+    metadata: Metadaten
+    form: Formular
     scheduled: Geplant
     scheduled_for: für %datetime%
     published: Veröffentlicht
     published_at: am %datetime%
     signatures: Unterschriften
+    remove: Löschen
+    remove_confirm: Möchten Sie die Petition "%name%" wirklich löschen?
 
 create:
     title: '(Unbenannte Petition)'
