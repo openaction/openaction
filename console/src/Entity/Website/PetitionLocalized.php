@@ -55,7 +55,7 @@ class PetitionLocalized
     private Form $form;
 
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
-    private ?Upload $mainImage = null;
+    private ?Upload $image = null;
 
     public function __construct(Petition $petition, string $title, string $locale)
     {
@@ -176,13 +176,13 @@ class PetitionLocalized
         $this->form = $form;
     }
 
-    public function getMainImage(): ?Upload
+    public function getImage(): ?Upload
     {
-        return $this->mainImage;
+        return $this->image;
     }
 
-    public function setMainImage(?Upload $mainImage): void
+    public function setImage(?Upload $image): void
     {
-        $this->mainImage = $mainImage;
+        $this->image = $image;
     }
 }
