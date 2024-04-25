@@ -20,7 +20,6 @@ export default class extends Controller {
         'image',
         'categories',
         'authors',
-        'onlyForMembers',
     ];
 
     connect() {
@@ -51,7 +50,6 @@ export default class extends Controller {
                 imageInput={this.imageTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 authorsInput={this.authorsTarget.getAttribute('name')}
-                onlyForMembersInput={this.onlyForMembersTarget.getAttribute('name')}
             />,
             this.topbarTarget
         );

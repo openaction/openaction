@@ -67,7 +67,6 @@ export function PetitionLocalizedEdit(props) {
                     [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
                     [props.authorsInput]: JSON.stringify(metadata.authorsIds ? metadata.authorsIds : []),
-                    [props.onlyForMembersInput]: metadata.onlyForMembers ? 1 : 0,
                 })
             )
             .then((response) => {

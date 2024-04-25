@@ -108,26 +108,6 @@ export function MetadataEditor(props) {
                             {translator.trans('post.edit.metadata_modal.categories.help')}
                         </small>
                     </div>
-
-                    <div className="p-3">
-                        <div className="custom-control custom-checkbox">
-                            <input
-                                type="checkbox"
-                                className="custom-control-input"
-                                defaultChecked={props.metadata.onlyForMembers}
-                                onChange={(ev) => handleMetadataChange('onlyForMembers', ev.target.checked)}
-                                id="only-for-members"
-                            />
-
-                            <label className="custom-control-label" htmlFor="only-for-members">
-                                <strong>{translator.trans('post.edit.metadata_modal.onlyForMembers.label')}</strong>
-                            </label>
-                        </div>
-
-                        <small className="text-muted">
-                            {translator.trans('post.edit.metadata_modal.onlyForMembers.help')}
-                        </small>
-                    </div>
                 </div>
                 <div className="col-12 col-lg-6">
                     <div className="p-3">
