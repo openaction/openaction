@@ -5,6 +5,7 @@ namespace App\Entity\Website;
 use App\Entity\Upload;
 use App\Entity\Util;
 use App\Repository\Website\PetitionLocalizedRepository;
+use App\Util\Uid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PetitionLocalized
 {
     use Util\EntityIdTrait;
+    use Util\EntityUuidTrait;
     use Util\EntityTimestampableTrait;
 
     #[ORM\Column(length: 10)]
@@ -59,6 +61,7 @@ class PetitionLocalized
     {
         $this->populateTimestampable();
         $this->petition = $petition;
+        $this->uuid = Uid::random();
         $this->title = $title;
         $this->locale = $locale;
         $this->form = new Form($petition->getProject(), 'test form');

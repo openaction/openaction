@@ -18,7 +18,9 @@ final class Version20240423091057 extends AbstractMigration
         $this->addSql('CREATE TABLE website_petitions_authors (petition_id BIGINT NOT NULL, trombinoscope_person_id BIGINT NOT NULL, PRIMARY KEY(petition_id, trombinoscope_person_id))');
         $this->addSql('CREATE INDEX IDX_FC70E0EAEC7D346 ON website_petitions_authors (petition_id)');
         $this->addSql('CREATE INDEX IDX_FC70E0EC69EE0FA ON website_petitions_authors (trombinoscope_person_id)');
-        $this->addSql('CREATE TABLE website_petitions_localized (id BIGSERIAL NOT NULL, petition_id BIGINT NOT NULL, form_id BIGINT NOT NULL, main_image_id BIGINT DEFAULT NULL, locale VARCHAR(10) NOT NULL, title VARCHAR(200) NOT NULL, description VARCHAR(200) DEFAULT NULL, content TEXT DEFAULT NULL, submit_button_label VARCHAR(30) DEFAULT NULL, optin_label VARCHAR(30) DEFAULT NULL, legalities TEXT DEFAULT NULL, addressed_to VARCHAR(200) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE website_petitions_localized (id BIGSERIAL NOT NULL, petition_id BIGINT NOT NULL, form_id BIGINT NOT NULL, main_image_id BIGINT DEFAULT NULL, locale VARCHAR(10) NOT NULL, title VARCHAR(200) NOT NULL, description VARCHAR(200) DEFAULT NULL, content TEXT DEFAULT NULL, submit_button_label VARCHAR(30) DEFAULT NULL, optin_label VARCHAR(30) DEFAULT NULL, legalities TEXT DEFAULT NULL, addressed_to VARCHAR(200) DEFAULT NULL, uuid UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN website_petitions_localized.uuid IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_3C9C8FEFD17F50A6 ON website_petitions_localized (uuid)');
         $this->addSql('CREATE INDEX IDX_3C9C8FEFAEC7D346 ON website_petitions_localized (petition_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_3C9C8FEF5FF69B7D ON website_petitions_localized (form_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_3C9C8FEFE4873418 ON website_petitions_localized (main_image_id)');
@@ -48,6 +50,7 @@ final class Version20240423091057 extends AbstractMigration
         $this->addSql('ALTER TABLE website_petitions_localized DROP CONSTRAINT FK_3C9C8FEFAEC7D346');
         $this->addSql('ALTER TABLE website_petitions_localized DROP CONSTRAINT FK_3C9C8FEF5FF69B7D');
         $this->addSql('ALTER TABLE website_petitions_localized DROP CONSTRAINT FK_3C9C8FEFE4873418');
+        $this->addSql('DROP INDEX UNIQ_3C9C8FEFD17F50A6');
         $this->addSql('ALTER TABLE website_petitions_localized_petitions_localized_categories DROP CONSTRAINT FK_73F58100BF5C489E');
         $this->addSql('ALTER TABLE website_petitions_localized_petitions_localized_categories DROP CONSTRAINT FK_73F5810063EBEEFE');
         $this->addSql('ALTER TABLE website_petitions_localized_categories DROP CONSTRAINT FK_4B844E5166D1F9C');
