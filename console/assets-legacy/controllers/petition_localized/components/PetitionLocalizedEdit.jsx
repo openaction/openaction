@@ -94,7 +94,7 @@ export function PetitionLocalizedEdit(props) {
     // Register listeners on content and title to save on change
     useEffect(() => {
         // Listen on title
-        const input = document.querySelector('#localized-petition-title');
+        const input = document.querySelector('#petition-localized-title');
         mainTitle = input.value;
 
         input.addEventListener('input', (e) => {
