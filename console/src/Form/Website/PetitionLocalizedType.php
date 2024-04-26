@@ -16,7 +16,12 @@ class PetitionLocalizedType extends AbstractType
             ->add('title', HiddenType::class, ['required' => false])
             ->add('description', HiddenType::class, ['required' => false])
             ->add('content', HiddenType::class, ['required' => false])
+            ->add('addressedTo', HiddenType::class, ['required' => false])
+            ->add('legalities', HiddenType::class, ['required' => false])
+            ->add('submitButtonLabel', HiddenType::class, ['required' => false])
+            ->add('optinLabel', HiddenType::class, ['required' => false])
             ->add('categories', HiddenType::class, ['required' => false])
+            ->add('authors', HiddenType::class, ['required' => false])
             ->add('onlyForMembers', HiddenType::class, ['required' => false])
         ;
     }

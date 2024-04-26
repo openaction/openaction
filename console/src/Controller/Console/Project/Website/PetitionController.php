@@ -30,6 +30,9 @@ class PetitionController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
 
+        $project = $this->getProject();
+        $currentPage = $request->query->getInt('p', 1);
+
         return $this->render('console/project/website/petition/index.html.twig', [
             'petitions' => $this->repository->getPaginator($project, $currentPage, 10),
             'current_page' => $currentPage,
