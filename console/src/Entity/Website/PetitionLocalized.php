@@ -4,6 +4,7 @@ namespace App\Entity\Website;
 
 use App\Entity\Upload;
 use App\Entity\Util;
+use App\Form\Website\Model\PetitionLocalizedData;
 use App\Repository\Website\PetitionLocalizedRepository;
 use App\Util\Uid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -184,5 +185,20 @@ class PetitionLocalized
     public function setImage(?Upload $image): void
     {
         $this->image = $image;
+    }
+
+    public function applyContentUpdate(PetitionLocalizedData $data): void
+    {
+        $this->title = (string) $data->title;
+        $this->content = (string) $data->content;
+    }
+
+    public function applyMetadataUpdate(PetitionLocalizedData $data): void
+    {
+        $this->description = (string) $data->description;
+        $this->addressedTo = (string) $data->addressedTo;
+        $this->submitButtonLabel = (string) $data->submitButtonLabel;
+        $this->optinLabel = (string) $data->optinLabel;
+        $this->legalities = (string) $data->legalities;
     }
 }

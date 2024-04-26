@@ -6,6 +6,7 @@ use App\Cdn\CdnRouter;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Controller\AbstractController;
+use App\Controller\Util\ApiControllerTrait;
 use App\Controller\Util\ContentEditorUploadControllerTrait;
 use App\Entity\Website\PetitionLocalized;
 use App\Form\Website\Model\PetitionLocalizedData;
@@ -26,18 +27,20 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/console/project/{projectUuid}/website/petition_localized')]
 class PetitionLocalizedController extends AbstractController
 {
+    use ApiControllerTrait;
     use ContentEditorUploadControllerTrait;
 
     public function __construct(
         private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
         private readonly PetitionCategoryRepository $categoryRepository,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
     #[Route('/{uuid}/edit', name: 'console_website_petition_localized_edit', methods: ['GET'])]
     public function edit(PetitionLocalized $petitionLocalized): Response
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petitionLocalized->getPetition());
 
@@ -64,18 +67,43 @@ class PetitionLocalizedController extends AbstractController
 
     private function update(PetitionLocalized $petitionLocalized, Request $request, string $groupValidation): JsonResponse
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petitionLocalized);
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petitionLocalized->getPetition());
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petitionLocalized->getPetition());
 
-        return new JsonResponse(['success' => true]);
+        $petitionLocalizedData = new PetitionLocalizedData();
+
+        $form = $this->createForm(PetitionLocalizedType::class, $petitionLocalizedData, ['validation_groups' => $groupValidation]);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ('Default' === $groupValidation) {
+            $petitionLocalized->applyContentUpdate($petitionLocalizedData);
+        } elseif ('Metadata' === $groupValidation) {
+            $petitionLocalized->applyMetadataUpdate($petitionLocalizedData);
+        }
+
+        $this->em->persist($petitionLocalized);
+        $this->em->flush();
+
+        if ('Metadata' === $groupValidation) {
+            $this->categoryRepository->updateCategories($petitionLocalized, $petitionLocalizedData->getCategoriesArray());
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'share_url' => 'TODO!!' //$this->domainRouter->generateShareUrl($post->getProject(), 'post', $id, $post->getSlug()),
+        ]);
     }
 
     #[Route('/{uuid}/content/upload', name: 'console_website_petition_localized_upload_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, PetitionLocalized $petitionLocalized, Request $request): Response
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petitionLocalized);
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petitionLocalized);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petitionLocalized->getPetition());
 
@@ -88,7 +116,7 @@ class PetitionLocalizedController extends AbstractController
     #[Route('/{uuid}/update/image', name: 'console_website_petition_localized_update_image')]
     public function updateImage(PetitionLocalized $petitionLocalized, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petitionLocalized);
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petitionLocalized);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petitionLocalized->getPetition());
@@ -99,7 +127,7 @@ class PetitionLocalizedController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_petition_localized_delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, PetitionLocalized $petitionLocalized, Request $request): RedirectResponse
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $this->getProject());
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petitionLocalized->getPetition());

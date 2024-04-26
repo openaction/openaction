@@ -4,6 +4,7 @@ namespace App\Repository\Website;
 
 use App\Entity\Project;
 use App\Entity\Website\PetitionCategory;
+use App\Entity\Website\PetitionLocalized;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\Persistence\ManagerRegistry;
@@ -86,6 +87,27 @@ class PetitionCategoryRepository extends ServiceEntityRepository
 
                 $connection->update($tableName, ['weight' => (int) $item['order']], ['uuid' => $item['id']]);
             }
+        });
+    }
+
+    public function updateCategories(PetitionLocalized $petitionLocalized, array $categoriesIds): void
+    {
+        $this->_em->wrapInTransaction(function () use ($petitionLocalized, $categoriesIds) {
+            $metadata = $this->_em->getClassMetadata(PetitionCategory::class);
+            $this->_em->getConnection()->createQueryBuilder()
+                ->delete($metadata->associationMappings['petitionsLocalized']['joinTable']['name'])
+                ->where('petition_localized_id = :pl_id')
+                ->setParameter('pl_id', $petitionLocalized->getId())
+                ->executeQuery()
+            ;
+
+            $petitionLocalized->getCategories()->clear();
+            foreach ($categoriesIds as $id) {
+                $petitionLocalized->getCategories()->add($this->find($id));
+            }
+
+            $this->_em->persist($petitionLocalized);
+            $this->_em->flush();
         });
     }
 }
