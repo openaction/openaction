@@ -325,17 +325,13 @@
                     "uploading": "En cours de chargement...",
                     "help": "Conseil : 1700px de large, 1080px de haut, maximum 10Mb"
                 },
-                "categories": {
-                    "label": "Catégories",
-                    "help": "Catégories de cette pétition"
-                },
-                "onlyForMembers": {
-                    "label": "Restreindre cette pétition aux membres",
-                    "help": "Si activé, seuls les membres connectés pourront visualiser cette pétition."
-                },
                 "description": {
                     "label": "Description",
                     "help": "Description utilisée par Google et les réseaux sociaux lors des partages."
+                },
+                "categories": {
+                    "label": "Catégories",
+                    "help": "Catégories de cette pétition"
                 },
                 "addressed_to": {
                     "label": "Destinataire",
@@ -353,18 +349,14 @@
                     "label": "Label de la case à cocher",
                     "help": "Le texte de la case à cocher pour l'inscription à la newsletter. Maximum 30 caractères."
                 },
-                "author": {
-                    "label": "Auteur(es)",
-                    "help": "Les auteurs peuvent être définis dans le Trombinoscope."
-                },
                 "close": "Fermer"
             },
             "publish_modal": {
                 "title": "Publication"
             },
             "social_share_modal": {
-                "title": "Share this petition on social networks",
-                "close": "Close"
+                "title": "Partagez cette pétition sur les réseaux sociaux",
+                "close": "Fermer"
             }
         }
     },

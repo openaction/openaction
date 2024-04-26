@@ -325,17 +325,13 @@
                     "uploading": "Uploading...",
                     "help": "Ideal: 1700px in width, 1080px in height, maximum 10Mb"
                 },
-                "categories": {
-                    "label": "Categories",
-                    "help": "Categories related to this petition"
-                },
-                "onlyForMembers": {
-                    "label": "Restrict this petition to members",
-                    "help": "If enabled, only logged-in members will be able to see this petition."
-                },
                 "description": {
                     "label": "Description",
                     "help": "The description is used on Google and social media under the page title. Maximum 150 characters."
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this petition"
                 },
                 "addressed_to": {
                     "label": "Addressed to",
@@ -352,10 +348,6 @@
                 "optin_label": {
                     "label": "Opt-in label",
                     "help": "The label of the opt-in checkbox. Maximum 30 characters."
-                },
-                "author": {
-                    "label": "Author(s)",
-                    "help": "Authors can be defined in the Trombinoscope module."
                 },
                 "close": "Close"
             },

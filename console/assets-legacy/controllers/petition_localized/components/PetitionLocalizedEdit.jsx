@@ -61,7 +61,7 @@ export function PetitionLocalizedEdit(props) {
                     [props.addressedToInput]: metadata.addressedTo ? metadata.addressedTo : '',
                     [props.legalitiesInput]: metadata.legalities ? metadata.legalities : '',
                     [props.submitButtonLabelInput]: metadata.submitButtonLabel ? metadata.submitButtonLabel : '',
-                    [props.optinLabelInput]: metadata.optinLabelInput ? metadata.optinLabelInput : '',
+                    [props.optinLabelInput]: metadata.optinLabel ? metadata.optinLabel : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
                 })
             )
