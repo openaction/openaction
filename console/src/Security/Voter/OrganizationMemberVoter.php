@@ -84,6 +84,7 @@ class OrganizationMemberVoter extends Voter
                     || $this->voteOnAttribute(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_EVENTS_MANAGE_PUBLISHED, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_FORMS_MANAGE, $project, $token)
+                    || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_PUBLISH, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_PUBLISHED, $project, $token)
@@ -167,6 +168,7 @@ class OrganizationMemberVoter extends Voter
                     && $project->isToolEnabled(Features::TOOL_WEBSITE_FORMS)
                     && $project->isFeatureInPlan(Features::TOOL_WEBSITE_FORMS);
 
+            case Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY:
             case Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS:
             case Permissions::WEBSITE_PETITIONS_MANAGE_PUBLISHED:
             case Permissions::WEBSITE_PETITIONS_PUBLISH:
