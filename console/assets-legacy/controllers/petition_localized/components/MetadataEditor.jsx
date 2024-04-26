@@ -1,7 +1,6 @@
 import React from 'react';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { translator } from '../../../services/translator';
-import { AuthorsSelector } from './AuthorsSelector';
 
 let saveTimeout = null;
 
@@ -162,20 +161,6 @@ export function MetadataEditor(props) {
                         </div>
 
                         <small className="text-muted">{translator.trans('post.edit.metadata_modal.quote.help')}</small>
-                    </div>
-
-                    <div className="p-3">
-                        <div className="mb-2">
-                            <strong>{translator.trans('post.edit.metadata_modal.author.label')}</strong>
-                        </div>
-
-                        <AuthorsSelector
-                            choices={props.metadata.availableAuthors}
-                            selectedIds={props.metadata.authorsIds}
-                            onChange={(authors) => handleMetadataChange('authorsIds', authors)}
-                        />
-
-                        <small className="text-muted">{translator.trans('post.edit.metadata_modal.author.help')}</small>
                     </div>
                 </div>
             </div>

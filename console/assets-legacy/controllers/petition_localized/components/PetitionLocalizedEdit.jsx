@@ -5,7 +5,6 @@ import { exposedDataReader } from '../../../services/exposed-data-reader';
 import { createDate } from '../../../services/create-date';
 import { Modal } from '../../../components/Modal';
 import { StatusView } from '../../../components/StatusView';
-import { PublishedAtView } from '../../../components/PublishedAtView';
 import { PublicationEditor } from '../../../components/PublicationEditor';
 import { MetadataEditor } from './MetadataEditor';
 import { SocialSharer } from '../../../components/SocialSharer/SocialSharer';
@@ -13,13 +12,12 @@ import { SocialSharer } from '../../../components/SocialSharer/SocialSharer';
 let contentSaveTimeout = null;
 
 // Data not handled by React, manually watched
-const input = document.querySelector('#localized-petition-title');
+const input = document.querySelector('#petition-localized-title');
 let mainTitle = input ? input.value : null;
 let mainContent = null;
 
 export function PetitionLocalizedEdit(props) {
     const [metadata, setMetadata] = useState(exposedDataReader.read('petition_localized_metadata'));
-    const [publishModalOpened, setPublishModalOpened] = useState(false);
     const [metadataModalOpened, setMetadataModalOpened] = useState(false);
     const [status, setStatus] = useState('saved');
     const [uploadStatus, setUploadStatus] = useState('saved');
@@ -64,9 +62,7 @@ export function PetitionLocalizedEdit(props) {
                     [props.legalitiesInput]: metadata.legalities ? metadata.legalities : '',
                     [props.submitButtonLabelInput]: metadata.submitButtonLabel ? metadata.submitButtonLabel : '',
                     [props.optinLabelInput]: metadata.optinLabelInput ? metadata.optinLabelInput : '',
-                    [props.publishedAtInput]: metadata.publishedAt ? metadata.publishedAt : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
-                    [props.authorsInput]: JSON.stringify(metadata.authorsIds ? metadata.authorsIds : []),
                 })
             )
             .then((response) => {
@@ -125,9 +121,6 @@ export function PetitionLocalizedEdit(props) {
                 <div className="col-auto">
                     <StatusView status={status} />
                 </div>
-                <div className="col-auto font-italic">
-                    <PublishedAtView date={metadata.publishedAt ? createDate(metadata.publishedAt) : null} />
-                </div>
                 <div className="col-auto">
                     <button
                         type="button"
@@ -138,20 +131,7 @@ export function PetitionLocalizedEdit(props) {
                         {translator.trans('petition_localized.edit.update_metadata')}
                     </button>
 
-                    <button
-                        type="button"
-                        className={
-                            'btn btn-sm ml-2 publish-button ' + (metadata.publishedAt ? 'btn-secondary' : 'btn-primary')
-                        }
-                        onClick={() => setPublishModalOpened(true)}
-                    >
-                        <i className={'mr-2 far ' + (metadata.publishedAt ? 'fa-eye-slash' : 'fa-eye')}></i>
-                        {metadata.publishedAt
-                            ? translator.trans('petition_localized.edit.unpublish')
-                            : translator.trans('petition_localized.edit.publish')}
-                    </button>
-
-                    {props.features.sharer && metadata.publishedAt ? (
+                    {props.features.sharer ? (
                         <button
                             type="button"
                             className="btn btn-primary btn-sm ml-2"
@@ -190,27 +170,7 @@ export function PetitionLocalizedEdit(props) {
                     onMetadataChange={(metadata) => saveMetadata(metadata)}
                     uploadStatus={uploadStatus}
                     fieldCategory="id"
-                    fieldAuthor="id"
                     onImageChange={(e) => uploadImage(e)}
-                />
-            </Modal>
-
-            <Modal
-                opened={publishModalOpened}
-                large={false}
-                onClose={() => setPublishModalOpened(false)}
-                title={translator.trans('petition_localized.edit.publish_modal.title')}
-            >
-                <PublicationEditor
-                    publishedAt={metadata.publishedAt ? createDate(metadata.publishedAt) : null}
-                    onChange={(newDate) => {
-                        saveMetadata({ ...metadata, publishedAt: newDate ? newDate.format() : '' });
-                        setPublishModalOpened(false);
-
-                        if (newDate) {
-                            setShareModalOpened(true);
-                        }
-                    }}
                 />
             </Modal>
 

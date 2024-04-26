@@ -16,10 +16,8 @@ export default class extends Controller {
         'legalities',
         'submitButtonLabel',
         'optinLabel',
-        'publishedAt',
         'image',
         'categories',
-        'authors',
     ];
 
     connect() {
@@ -46,10 +44,8 @@ export default class extends Controller {
                 submitButtonLabelInput={this.submitButtonLabelTarget.getAttribute('name')}
                 optinLabelInput={this.optinLabelTarget.getAttribute('name')}
                 descriptionInput={this.descriptionTarget.getAttribute('name')}
-                publishedAtInput={this.publishedAtTarget.getAttribute('name')}
                 imageInput={this.imageTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
-                authorsInput={this.authorsTarget.getAttribute('name')}
             />,
             this.topbarTarget
         );
