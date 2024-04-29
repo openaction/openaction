@@ -18,6 +18,8 @@ index:
     signatures: signatures
     remove: Delete
     remove_confirm: Are you sure you want to delete the petition "%name%"?
+    localized:
+        create: Add locale
 
 create:
     title: '(Untitled petition)'

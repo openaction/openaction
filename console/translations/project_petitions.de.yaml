@@ -18,6 +18,8 @@ index:
     signatures: Unterschriften
     remove: Löschen
     remove_confirm: Möchten Sie die Petition "%name%" wirklich löschen?
+    localized:
+        create: Neu
 
 create:
     title: '(Unbenannte Petition)'

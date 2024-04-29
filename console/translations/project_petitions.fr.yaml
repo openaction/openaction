@@ -18,6 +18,8 @@ index:
     signatures: signatures
     remove: Supprimer
     remove_confirm: Voulez-vous vraiment supprimer la pétition "%name%"?
+    localized:
+        create: Ajouter
 
 create:
     title: '(Pétition sans titre)'

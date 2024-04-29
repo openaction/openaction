@@ -16,6 +16,7 @@ use App\Form\Website\PetitionLocalizedType;
 use App\Platform\Permissions;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\PetitionLocalizedRepository;
+use App\Repository\Website\PetitionRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/website/petition_localized')]
 class PetitionLocalizedController extends AbstractController
@@ -33,10 +35,35 @@ class PetitionLocalizedController extends AbstractController
 
     public function __construct(
         private readonly PetitionCategoryRepository $categoryRepository,
+        private readonly PetitionRepository $petitionRepository,
         private readonly PetitionLocalizedRepository $repository,
         private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
         private readonly EntityManagerInterface $em,
     ) {
+    }
+
+    #[Route('/create', name: 'console_website_petition_localized_create', methods: ['GET'])]
+    public function create(Request $request, TranslatorInterface $translator): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyIfSubscriptionExpired();
+
+        $petition = $this->petitionRepository->findOneBy(['uuid' => $request->query->get('petitionUuid')]);
+
+        $entity = new PetitionLocalized(
+            $petition,
+            $translator->trans('create.title', [], 'project_petitions'),
+            $this->getProject()->getWebsiteLocale()
+        );
+
+        $this->em->persist($entity);
+        $this->em->flush();
+
+        return $this->redirectToRoute('console_website_petition_localized_edit', [
+            'projectUuid' => $this->getProject()->getUuid(),
+            'uuid' => $entity->getUuid(),
+        ]);
     }
 
     #[Route('/{uuid}/edit', name: 'console_website_petition_localized_edit', methods: ['GET'])]
