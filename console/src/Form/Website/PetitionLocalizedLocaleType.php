@@ -15,7 +15,7 @@ class PetitionLocalizedLocaleType extends AbstractType
         $builder->add('locale', ChoiceType::class, [
             'translation_domain' => 'project_petitions',
             'choices' => [
-                'create.localized.en' => 'en',
+                'create.localized.en' => 'gb',
                 'create.localized.fr' => 'fr',
                 'create.localized.de' => 'de',
                 'create.localized.it' => 'it',

@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PetitionLocalized
 {
     public const LOCALE_FR = 'fr';
-    public const LOCALE_EN = 'en';
+    public const LOCALE_EN = 'gb';
     public const LOCALE_DE = 'de';
     public const LOCALE_IT = 'it';
     public const LOCALE_NL = 'nl';
