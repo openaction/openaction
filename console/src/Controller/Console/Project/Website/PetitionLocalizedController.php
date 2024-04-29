@@ -11,7 +11,9 @@ use App\Controller\Util\ContentEditorUploadControllerTrait;
 use App\Entity\Website\PetitionLocalized;
 use App\Form\Website\Model\PetitionLocalizedData;
 use App\Form\Website\Model\PetitionLocalizedImageData;
+use App\Form\Website\Model\PetitionLocalizedLocaleData;
 use App\Form\Website\PetitionLocalizedImageType;
+use App\Form\Website\PetitionLocalizedLocaleType;
 use App\Form\Website\PetitionLocalizedType;
 use App\Platform\Permissions;
 use App\Repository\Website\PetitionCategoryRepository;
@@ -42,19 +44,53 @@ class PetitionLocalizedController extends AbstractController
     ) {
     }
 
+    #[Route('/pre_create', name: 'console_website_petition_localized_pre_create', methods: ['GET'])]
+    public function preCreate(Request $request, TranslatorInterface $translator): Response
+    {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyIfSubscriptionExpired();
+
+        $petitionUuid = $request->query->get('petitionUuid') ?:$request->query->getIterator()->getArrayCopy()['petition_localized_locale']['petitionUuid'];
+        $petition = $this->petitionRepository->findOneBy(['uuid' => $petitionUuid]);
+
+        if (! $petition) {
+            return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
+        }
+
+        $data = new PetitionLocalizedLocaleData($petitionUuid);
+        $form = $this->createForm(PetitionLocalizedLocaleType::class, $data);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('console_website_petition_localized_create', [
+                'projectUuid' => $this->getProject()->getUuid(),
+                'petitionUuid' => $petition->getUuid(),
+                'locale' => $data->locale,
+            ]);
+        }
+
+        return $this->render('console/project/website/petition_localized/pre_edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/create', name: 'console_website_petition_localized_create', methods: ['GET'])]
     public function create(Request $request, TranslatorInterface $translator): RedirectResponse
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
-        $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
 
         $petition = $this->petitionRepository->findOneBy(['uuid' => $request->query->get('petitionUuid')]);
 
+        if (! $petition) {
+            return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
+        }
+
         $entity = new PetitionLocalized(
             $petition,
             $translator->trans('create.title', [], 'project_petitions'),
-            $this->getProject()->getWebsiteLocale()
+            $request->query->get('locale')
         );
 
         $this->em->persist($entity);

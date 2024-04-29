@@ -23,6 +23,17 @@ index:
 
 create:
     title: '(Untitled petition)'
+    localized:
+        title: Add new localized petition
+        help: Add a new localized version of the petition
+        label: Locale
+        en: English
+        de: German
+        fr: French
+        it: Italian
+        nl: Dutch
+        pt: Portuguese
+        submit: Continue
 
 edit:
     title: Edit petition "%title%"

@@ -15,6 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'website_petitions_localized')]
 class PetitionLocalized
 {
+    public const LOCALE_FR = 'fr';
+    public const LOCALE_EN = 'en';
+    public const LOCALE_DE = 'de';
+    public const LOCALE_IT = 'it';
+    public const LOCALE_NL = 'nl';
+    public const LOCALE_PT = 'pt';
+
     use Util\EntityIdTrait;
     use Util\EntityUuidTrait;
     use Util\EntityTimestampableTrait;

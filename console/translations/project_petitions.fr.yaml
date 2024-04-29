@@ -23,6 +23,17 @@ index:
 
 create:
     title: '(Pétition sans titre)'
+    localized:
+        title: Ajouter une pétition localisée
+        help: Ajoutez une nouvelle version localisée de la pétition
+        label: Langue
+        en: Anglais
+        de: Allemand
+        fr: Français
+        it: Italien
+        nl: Néerlandais
+        pt: Portugais
+        submit: Continuer
 
 edit:
     title: Modifier la pétition "%title%"

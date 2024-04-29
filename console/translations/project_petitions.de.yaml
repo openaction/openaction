@@ -23,6 +23,17 @@ index:
 
 create:
     title: '(Unbenannte Petition)'
+    localized:
+        title: Neue lokalisierte Petition hinzufügen
+        help: Fügen Sie eine neue lokalisierte Version der Petition hinzu
+        label: Sprache
+        en: English
+        de: Deutsch
+        fr: Französisch
+        it: Italienisch
+        nl: Niederländisch
+        pt: Portugiesisch
+        submit: Fortfahren
 
 edit:
     title: Petition "%title%" bearbeiten

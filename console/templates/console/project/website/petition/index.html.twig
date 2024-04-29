@@ -61,7 +61,7 @@
                             <div class="col-sm-12 mb-2 d-flex justify-content-between">
                                 <div class="font-weight-bold">{{ petition.slug }}</div>
                                 <div>
-                                    <a href="{{ csrf_path('console_website_petition_localized_create', {'projectUuid': project.uuid, 'petitionUuid': petition.uuid}) }}"
+                                    <a href="{{ path('console_website_petition_localized_pre_create', {'projectUuid': project.uuid, 'petitionUuid': petition.uuid}) }}"
                                        class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-edit">
                                         <i class="fad fa-file mr-1"></i>
                                         {{ 'index.localized.create'|trans({}, 'project_petitions') }}
@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="p-3">
-                    {{ pagination(petitions, current_page, 10) }}
+                    {{ pagination(petitions, current_page, 25) }}
                 </div>
             {% endif %}
         </div>

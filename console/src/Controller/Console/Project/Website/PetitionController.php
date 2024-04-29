@@ -34,7 +34,7 @@ class PetitionController extends AbstractController
         $currentPage = $request->query->getInt('p', 1);
 
         return $this->render('console/project/website/petition/index.html.twig', [
-            'petitions' => $this->repository->getPaginator($project, $currentPage, 10),
+            'petitions' => $this->repository->getPaginator($project, $currentPage),
             'current_page' => $currentPage,
             'project' => $project,
         ]);

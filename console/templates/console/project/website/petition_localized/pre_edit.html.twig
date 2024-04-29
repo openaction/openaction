@@ -1,0 +1,30 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'create.localized.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-title">
+            <h3>{{ 'create.localized.title'|trans({}, 'project_petitions') }}</h3>
+            <div class="text-muted">
+                {{ 'create.localized.help'|trans({}, 'project_petitions') }}
+            </div>
+        </div>
+        <div class="bg-light mb-3">
+            <div class="col-lg-2 pt-3">
+                {{ form_start(form) }}
+
+                {{ form_row(form.locale, {'label': false}) }}
+
+                <button type="submit" class="btn btn-primary">
+                    {{ 'create.localized.submit'|trans({}, 'project_petitions') }}
+                </button>
+
+                {{ form_end(form) }}
+            </div>
+            <div class="p-3">&nbsp;</div>
+        </div>
+    </div>
+{% endblock %}
