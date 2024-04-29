@@ -36,8 +36,20 @@ create:
         submit: Fortfahren
 
 edit:
-    title: Petition "%title%" bearbeiten
+    title:
+        label: Petition "%title%" bearbeiten
+        help: Bearbeiten Sie die Hauptinformationen Ihrer Petition
     back: Zurück zur Liste
+    submit: Speichern
+    start_at:
+        label: Startdatum
+        help: Das Datum und die Uhrzeit, zu denen die Petition veröffentlicht wird
+    end_at:
+        label: Enddatum
+        help: Das Datum und die Uhrzeit, zu denen die Petition nicht mehr veröffentlicht wird
+    signatures_goal:
+        label: Unterschriftenziel
+        help: Die Anzahl der Unterschriften, die Sie mit dieser Petition erreichen möchten (mindestens 1)
 
 categories:
     index:

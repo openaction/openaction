@@ -8,5 +8,5 @@ class PetitionData
 
     public ?\DateTime $endAt = null;
 
-    private ?int $signaturesGoal = null;
+    public ?int $signaturesGoal = null;
 }

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/website/petitions')]
@@ -47,15 +48,17 @@ class PetitionController extends AbstractController
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
 
+        $initialTitle = $translator->trans('create.title', [], 'project_petitions');
+
         $petition = new Petition($this->getProject());
-        $petition->setSlug('test'); // TODO!! How to set the slug?
+        $petition->setSlug((new AsciiSlugger())->slug($initialTitle)->lower()); // a temporary slug
         $this->em->persist($petition);
         $this->em->flush();
 
         $localized = new PetitionLocalized(
             $petition,
-            $translator->trans('create.title', [], 'project_petitions'),
-            $this->getProject()->getWebsiteLocale()
+            $initialTitle,
+            $this->getProject()->getWebsiteLocale() // set project locale as default locale
         );
         $this->em->persist($localized);
         $this->em->flush();
@@ -66,16 +69,26 @@ class PetitionController extends AbstractController
         ]);
     }
 
-    #[Route('/{uuid}/edit', name: 'console_website_petition_edit', methods: ['GET'])]
-    public function edit(Petition $petition): Response
+    #[Route('/{uuid}/edit', name: 'console_website_petition_edit')]
+    public function edit(Request $request, Petition $petition): Response
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
 
+        $form = $this->createForm(PetitionType::class, $petition);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($petition);
+            $this->em->flush();
+
+            return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
+        }
+
         return $this->render('console/project/website/petition/edit.html.twig', [
             'petition' => $petition,
-            'form' => $this->createForm(PetitionType::class)->createView(),
+            'form' => $form->createView(),
         ]);
     }
 

@@ -55,7 +55,6 @@ class Petition
         $this->populateTimestampable();
         $this->project = $project;
         $this->uuid = Uid::random();
-        // TODO! How to set the slug? AsciiSlugger
         $this->authors = new ArrayCollection();
     }
 

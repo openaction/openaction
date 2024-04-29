@@ -36,8 +36,20 @@ create:
         submit: Continuer
 
 edit:
-    title: Modifier la pétition "%title%"
+    title:
+        label: Modifier la pétition "%title%"
+        help: Modifiez les informations principales de votre pétition
     back: Retour à la liste
+    submit: Enregistrer
+    start_at:
+        label: Date de début
+        help: La date et l'heure à laquelle la pétition sera publiée
+    end_at:
+        label: Date de fin
+        help: La date et l'heure à laquelle la pétition sera dépubliée
+    signatures_goal:
+        label: Objectif de signatures
+        help: Le nombre de signatures que vous souhaitez atteindre avec cette pétition (minimum 1)
 
 categories:
     index:

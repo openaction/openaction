@@ -36,8 +36,20 @@ create:
         submit: Continue
 
 edit:
-    title: Edit petition "%title%"
+    title:
+        label: Edit petition "%title%"
+        help: Edit the main information of your petition
     back: Back to the list
+    submit: Save
+    start_at:
+        label: Start date
+        help: The date and time when the petition will be published
+    end_at:
+        label: End date
+        help: The date and time when the petition will be unpublished
+    signatures_goal:
+        label: Signatures goal
+        help: The number of signatures you want to reach with this petition (minimum 1)
 
 categories:
     index:
