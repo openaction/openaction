@@ -56,13 +56,22 @@ class CmsIndexer
         }
     }
 
-    public function clearIndex(): void
+    public function getAllDocumentsIds(): array
     {
-        $task = $this->meilisearch->unindexAllDocuments(self::INDEX_NAME);
-        $this->meilisearch->waitForTasks([$task], 30_000, 500);
+        $data = $this->meilisearch->search(self::INDEX_NAME, '', [
+            'limit' => 999_999_999,
+            'attributesToRetrieve' => ['id'],
+        ]);
+
+        $ids = [];
+        foreach ($data['hits'] as $row) {
+            $ids[] = $row['id'];
+        }
+
+        return $ids;
     }
 
-    public function createIndex(): void
+    public function configureIndex(): void
     {
         $task = $this->meilisearch->createIndex(
             self::INDEX_NAME,
@@ -76,11 +85,15 @@ class CmsIndexer
 
     public function indexDocuments(array $documents): void
     {
-        $tasks = [];
         foreach (array_chunk($documents, 1500) as $batch) {
-            $tasks[] = $this->meilisearch->indexDocumentsBatch(self::INDEX_NAME, implode("\n", $batch));
+            $this->meilisearch->indexDocumentsBatch(self::INDEX_NAME, implode("\n", $batch));
         }
+    }
 
-        $this->meilisearch->waitForTasks($tasks, 60_000, 2_000);
+    public function unindexDocuments(array $documentsIds): void
+    {
+        foreach (array_chunk($documentsIds, 1500) as $batch) {
+            $this->meilisearch->unindexDocuments(self::INDEX_NAME, $batch);
+        }
     }
 }
