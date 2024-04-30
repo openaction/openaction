@@ -45,7 +45,7 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
     /**
      * @return TrombinoscopePerson[]|array
      */
-    public function getProjectPersonsList(Project $project, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, ): iterable
+    public function getProjectPersonsList(Project $project, $hydrationMode = AbstractQuery::HYDRATE_OBJECT): iterable
     {
         $qb = $this->createQueryBuilder('p');
 

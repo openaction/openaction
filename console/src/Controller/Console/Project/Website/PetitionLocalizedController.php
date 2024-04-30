@@ -50,10 +50,10 @@ class PetitionLocalizedController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
 
-        $petitionUuid = $request->query->get('petitionUuid') ?:$request->query->getIterator()->getArrayCopy()['petition_localized_locale']['petitionUuid'];
+        $petitionUuid = $request->query->get('petitionUuid') ?: $request->query->getIterator()->getArrayCopy()['petition_localized_locale']['petitionUuid'];
         $petition = $this->petitionRepository->findOneBy(['uuid' => $petitionUuid]);
 
-        if (! $petition) {
+        if (!$petition) {
             return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
         }
 
@@ -83,7 +83,7 @@ class PetitionLocalizedController extends AbstractController
 
         $petition = $this->petitionRepository->findOneBy(['uuid' => $request->query->get('petitionUuid')]);
 
-        if (! $petition) {
+        if (!$petition) {
             return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
         }
 
@@ -214,7 +214,7 @@ class PetitionLocalizedController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'redirect' => $this->generateUrl('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()])
+            'redirect' => $this->generateUrl('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Form\Website;
 
 use App\Entity\Website\Petition;
+use App\Entity\Website\TrombinoscopePerson;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -11,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Positive;
-use App\Entity\Website\TrombinoscopePerson;
 
 class PetitionType extends AbstractType
 {
@@ -23,9 +23,9 @@ class PetitionType extends AbstractType
             ->add('signaturesGoal', IntegerType::class, [
                 'constraints' => [
                     new Positive(),     // Ensure the value is positive
-                    new GreaterThan(0)  // Ensure the value is greater than 0
+                    new GreaterThan(0),  // Ensure the value is greater than 0
                 ],
-                'required' => true
+                'required' => true,
             ])
             ->add('authors', EntityType::class, [
                 'class' => TrombinoscopePerson::class,
