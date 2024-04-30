@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/website/petition_localized')]
@@ -148,6 +149,15 @@ class PetitionLocalizedController extends AbstractController
 
         if ('Default' === $groupValidation) {
             $petitionLocalized->applyContentUpdate($petitionLocalizedData);
+
+            // update petition slug if localized is the default website locale
+            if ($petitionLocalized->getLocale() === $this->getProject()->getWebsiteLocale()) {
+                $petition = $petitionLocalized->getPetition();
+                $petition->setSlug((new AsciiSlugger())->slug($petitionLocalizedData->title)->lower());
+
+                $this->em->persist($petition);
+                $this->em->flush();
+            }
         } elseif ('Metadata' === $groupValidation) {
             $petitionLocalized->applyMetadataUpdate($petitionLocalizedData);
         }
