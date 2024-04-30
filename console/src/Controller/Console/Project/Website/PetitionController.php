@@ -104,6 +104,9 @@ class PetitionController extends AbstractController
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
 
+        $this->em->remove($petition);
+        $this->em->flush();
+
         return $this->redirectToRoute('console_website_petitions', ['projectUuid' => $this->getProject()->getUuid()]);
     }
 }
