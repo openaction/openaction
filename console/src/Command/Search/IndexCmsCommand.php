@@ -35,7 +35,7 @@ class IndexCmsCommand extends Command
 
         $count = 0;
         foreach ($this->cmsIndexer->createPagesDocuments() as $document) {
-            $documents[] = Json::encode($document);
+            $documents[$document['id']] = Json::encode($document);
             ++$count;
         }
 
@@ -49,7 +49,7 @@ class IndexCmsCommand extends Command
 
         $count = 0;
         foreach ($this->cmsIndexer->createPostsDocuments() as $document) {
-            $documents[] .= Json::encode($document);
+            $documents[$document['id']] = Json::encode($document);
             ++$count;
         }
 
@@ -63,7 +63,7 @@ class IndexCmsCommand extends Command
 
         $count = 0;
         foreach ($this->cmsIndexer->createEventsDocuments() as $document) {
-            $documents[] .= Json::encode($document);
+            $documents[$document['id']] = Json::encode($document);
             ++$count;
         }
 
@@ -73,14 +73,17 @@ class IndexCmsCommand extends Command
          * Indexing
          */
 
-        $io->writeln('Clearing current index... ');
-        $this->cmsIndexer->clearIndex();
+        $io->writeln('Fetching already indexed documents... ');
+        $ids = $this->cmsIndexer->getAllDocumentsIds();
 
-        $io->writeln('Recreate index... ');
-        $this->cmsIndexer->createIndex();
+        $io->writeln('Configuring index... ');
+        $this->cmsIndexer->configureIndex();
 
-        $io->writeln('Indexing documents... ');
+        $io->writeln('Indexing public documents... ');
         $this->cmsIndexer->indexDocuments($documents);
+
+        $io->writeln('Removing old documents... ');
+        $this->cmsIndexer->unindexDocuments(array_diff($ids, array_keys($documents)));
 
         $io->success('Indexing done');
 
