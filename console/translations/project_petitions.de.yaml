@@ -34,6 +34,8 @@ create:
         nl: Niederländisch
         pt: Portugiesisch
         submit: Fortfahren
+    form:
+        title: '(Unbenanntes Petitionsformular)'
 
 edit:
     title:

@@ -34,6 +34,8 @@ create:
         nl: Néerlandais
         pt: Portugais
         submit: Continuer
+    form:
+        title: '(Formulaire de pétition sans titre)'
 
 edit:
     title:

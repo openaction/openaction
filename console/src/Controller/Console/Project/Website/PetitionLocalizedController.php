@@ -90,6 +90,7 @@ class PetitionLocalizedController extends AbstractController
         $entity = new PetitionLocalized(
             $petition,
             $translator->trans('create.title', [], 'project_petitions'),
+            $translator->trans('create.form.title', [], 'project_petitions'),
             $request->query->get('locale')
         );
 

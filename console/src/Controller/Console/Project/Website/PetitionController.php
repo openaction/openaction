@@ -57,9 +57,12 @@ class PetitionController extends AbstractController
         $this->em->persist($petition);
         $this->em->flush();
 
+        $initialFormTitle = $translator->trans('create.form.title', [], 'project_petitions');
+
         $localized = new PetitionLocalized(
             $petition,
             $initialTitle,
+            $initialFormTitle,
             $this->getProject()->getWebsiteLocale() // set project locale as default locale
         );
         $this->em->persist($localized);

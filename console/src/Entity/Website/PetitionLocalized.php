@@ -65,14 +65,14 @@ class PetitionLocalized
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     private ?Upload $image = null;
 
-    public function __construct(Petition $petition, string $title, string $locale)
+    public function __construct(Petition $petition, string $title, string $formTitle, string $locale)
     {
         $this->populateTimestampable();
         $this->petition = $petition;
         $this->uuid = Uid::random();
         $this->title = $title;
         $this->locale = $locale;
-        $this->form = new Form($petition->getProject(), 'test form');
+        $this->form = new Form($petition->getProject(), $formTitle);
         $this->categories = new ArrayCollection();
     }
 
