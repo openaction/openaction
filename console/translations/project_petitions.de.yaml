@@ -50,6 +50,9 @@ edit:
     signatures_goal:
         label: Unterschriftenziel
         help: Die Anzahl der Unterschriften, die Sie mit dieser Petition erreichen möchten (mindestens 1)
+    authors:
+        label: Autoren
+        help: Die Person(en), die für diese Petition verantwortlich ist/sind
 
 categories:
     index:

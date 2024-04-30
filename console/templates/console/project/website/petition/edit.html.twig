@@ -43,6 +43,12 @@
                             'attr': {'class': 'form-control-lg'},
                         }) }}
 
+                        {{ form_row(form.authors, {
+                            'label': 'edit.authors.label'|trans({}, 'project_petitions'),
+                            'help': 'edit.authors.help'|trans({}, 'project_petitions'),
+                            'attr': {'class': 'form-control-m'},
+                        }) }}
+
                         <div class="text-center mt-4 mb-4">
                             <button type="submit" class="btn btn-lg btn-primary">
                                 {{ 'edit.submit'|trans({}, 'project_petitions') }}
@@ -52,6 +58,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}

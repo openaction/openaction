@@ -8,6 +8,7 @@ use App\Entity\Website\PetitionLocalized;
 use App\Form\Website\PetitionType;
 use App\Platform\Permissions;
 use App\Repository\Website\PetitionRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class PetitionController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly PetitionRepository $repository,
+        private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
     ) {
     }
 
@@ -76,7 +78,9 @@ class PetitionController extends AbstractController
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
 
-        $form = $this->createForm(PetitionType::class, $petition);
+        $form = $this->createForm(PetitionType::class, $petition, [
+            'authors' => $this->trombinoscopePersonRepository->getProjectPersonsList($this->getProject()),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

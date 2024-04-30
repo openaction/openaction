@@ -3,6 +3,7 @@
 namespace App\Form\Website;
 
 use App\Entity\Website\Petition;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -10,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Positive;
+use App\Entity\Website\TrombinoscopePerson;
 
 class PetitionType extends AbstractType
 {
@@ -25,6 +27,14 @@ class PetitionType extends AbstractType
                 ],
                 'required' => true
             ])
+            ->add('authors', EntityType::class, [
+                'class' => TrombinoscopePerson::class,
+                'choices' => $options['authors'],
+                'choice_label' => 'fullName',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => true,
+            ])
         ;
     }
 
@@ -33,6 +43,7 @@ class PetitionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Petition::class,
             'csrf_protection' => false,
+            'authors' => null,
         ]);
     }
 }
