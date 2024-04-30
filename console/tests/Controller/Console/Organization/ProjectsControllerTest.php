@@ -195,7 +195,21 @@ class ProjectsControllerTest extends WebTestCase
         $this->assertCount(1, $project1->getAreas());
         $this->assertSame(['website', 'community'], $project1->getModules());
         $this->assertSame(
-            ['website_pages', 'website_posts', 'website_documents', 'website_events', 'website_forms', 'website_newsletter', 'website_trombinoscope', 'website_manifesto', 'community_contacts', 'community_emailing', 'community_texting', 'community_phoning'],
+            [
+                'website_pages',
+                'website_posts',
+                'website_documents',
+                'website_events',
+                'website_forms',
+                'website_petitions',
+                'website_newsletter',
+                'website_trombinoscope',
+                'website_manifesto',
+                'community_contacts',
+                'community_emailing',
+                'community_texting',
+                'community_phoning',
+            ],
             $project1->getTools()
         );
         $this->assertSame('c4o.io', $project1->getRootDomain()->getName());

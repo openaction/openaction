@@ -8,7 +8,6 @@
     'content': path('console_website_petition_localized_update_content', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
     'metadata': path('console_website_petition_localized_update_metadata', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
     'image': path('console_website_petition_localized_update_image', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
-    'shareUrl': 'TODO!!!',
 }) %}
 
 {% set categoriesIds = petitionLocalized.categories|map(c => c.id) %}

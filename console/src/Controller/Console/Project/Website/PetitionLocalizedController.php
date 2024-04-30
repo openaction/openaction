@@ -171,7 +171,6 @@ class PetitionLocalizedController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'share_url' => 'TODO!!' //$this->domainRouter->generateShareUrl($post->getProject(), 'post', $id, $post->getSlug()),
         ]);
     }
 

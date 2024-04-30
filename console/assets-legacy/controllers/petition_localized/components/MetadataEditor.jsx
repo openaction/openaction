@@ -59,7 +59,9 @@ export function MetadataEditor(props) {
                                             <div className="mb-2">
                                                 <i className="fal fa-cloud-upload"></i>
                                             </div>
-                                            {translator.trans('petition_localized.edit.metadata_modal.image.placeholder')}
+                                            {translator.trans(
+                                                'petition_localized.edit.metadata_modal.image.placeholder'
+                                            )}
                                         </div>
                                     )
                                 ) : (
@@ -67,15 +69,19 @@ export function MetadataEditor(props) {
                                 )}
                             </div>
 
-                            <input type="file" className="content-metadata-image-input" onChange={handleImageChange}/>
+                            <input type="file" className="content-metadata-image-input" onChange={handleImageChange} />
                         </div>
 
-                        <small className="text-muted">{translator.trans('petition_localized.edit.metadata_modal.image.help')}</small>
+                        <small className="text-muted">
+                            {translator.trans('petition_localized.edit.metadata_modal.image.help')}
+                        </small>
                     </div>
 
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.description.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.description.label')}
+                            </strong>
                         </div>
 
                         <div className="mb-1">
@@ -94,7 +100,9 @@ export function MetadataEditor(props) {
 
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.categories.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.categories.label')}
+                            </strong>
                         </div>
 
                         <CategoriesCheckbox
@@ -112,7 +120,9 @@ export function MetadataEditor(props) {
                 <div className="col-12 col-lg-6">
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.addressed_to.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.addressed_to.label')}
+                            </strong>
                         </div>
 
                         <div className="mb-1">
@@ -130,7 +140,9 @@ export function MetadataEditor(props) {
 
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.submit_button_label.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.submit_button_label.label')}
+                            </strong>
                         </div>
 
                         <div className="mb-1">
@@ -142,12 +154,16 @@ export function MetadataEditor(props) {
                             />
                         </div>
 
-                        <small className="text-muted">{translator.trans('petition_localized.edit.metadata_modal.submit_button_label.help')}</small>
+                        <small className="text-muted">
+                            {translator.trans('petition_localized.edit.metadata_modal.submit_button_label.help')}
+                        </small>
                     </div>
 
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.optin_label.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.optin_label.label')}
+                            </strong>
                         </div>
 
                         <div className="mb-1">
@@ -159,12 +175,16 @@ export function MetadataEditor(props) {
                             />
                         </div>
 
-                        <small className="text-muted">{translator.trans('petition_localized.edit.metadata_modal.optin_label.help')}</small>
+                        <small className="text-muted">
+                            {translator.trans('petition_localized.edit.metadata_modal.optin_label.help')}
+                        </small>
                     </div>
 
                     <div className="p-3">
                         <div className="mb-2">
-                            <strong>{translator.trans('petition_localized.edit.metadata_modal.legalities.label')}</strong>
+                            <strong>
+                                {translator.trans('petition_localized.edit.metadata_modal.legalities.label')}
+                            </strong>
                         </div>
 
                         <div className="mb-1">
@@ -176,7 +196,9 @@ export function MetadataEditor(props) {
                             />
                         </div>
 
-                        <small className="text-muted">{translator.trans('petition_localized.edit.metadata_modal.legalities.help')}</small>
+                        <small className="text-muted">
+                            {translator.trans('petition_localized.edit.metadata_modal.legalities.help')}
+                        </small>
                     </div>
                 </div>
             </div>
