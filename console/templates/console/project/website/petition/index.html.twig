@@ -85,7 +85,8 @@
                             {% for localizedPetition in petition.localized %}
                                 <div class="col-sm-12 mb-2 d-flex justify-content-between">
                                     <div>
-                                    <span class="fi fi-{{ localizedPetition.locale }}"></span>&nbsp;<a href="{{ path('console_website_petition_localized_edit', {'uuid': localizedPetition.uuid, 'projectUuid': project.uuid}) }}">{{ localizedPetition.title }}</a>
+                                        <span class="fi fi-{{ localizedPetition.locale }}"></span>&nbsp;
+                                        <a href="{{ path('console_website_petition_localized_edit', {'uuid': localizedPetition.uuid, 'projectUuid': project.uuid}) }}">{{ localizedPetition.title }}</a>
                                     </div>
                                     <div>
                                         <a href="{{ path('console_website_petition_localized_edit', {'uuid': localizedPetition.uuid, 'projectUuid': project.uuid}) }}"
@@ -93,8 +94,9 @@
                                             <i class="fad fa-edit mr-1"></i>
                                             {{ 'index.metadata'|trans({}, 'project_petitions') }}
                                         </a>
-                                        <a href="#"
-                                           class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-form-edit">
+                                        <a href="{{ path('console_website_forms_edit', { 'projectUuid': project.uuid, 'uuid': localizedPetition.form.uuid, 'from': 'petitions' }) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-form-edit"
+                                           target="_blank">
                                             <i class="fad fa-list mr-1"></i>
                                             {{ 'index.form'|trans({}, 'project_petitions') }}
                                         </a>
