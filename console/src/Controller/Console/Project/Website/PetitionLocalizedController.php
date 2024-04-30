@@ -112,7 +112,6 @@ class PetitionLocalizedController extends AbstractController
         return $this->render('console/project/website/petition_localized/edit.html.twig', [
             'petitionLocalized' => $petitionLocalized,
             'form' => $this->createForm(PetitionLocalizedType::class, new PetitionLocalizedData())->createView(),
-            'availableAuthors' => $this->trombinoscopePersonRepository->getProjectPersonsList($this->getProject(), AbstractQuery::HYDRATE_ARRAY),
             'categories' => $this->categoryRepository->getPetitionCategoriesForProject($this->getProject(), AbstractQuery::HYDRATE_ARRAY),
             'image_form' => $this->createForm(PetitionLocalizedImageType::class, new PetitionLocalizedImageData())->createView(),
         ]);

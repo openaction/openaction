@@ -47,7 +47,7 @@ class PetitionRepository extends ServiceEntityRepository
             ->select('p')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
-            ->orderBy('p.slug', 'ASC')
+            ->orderBy('p.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
