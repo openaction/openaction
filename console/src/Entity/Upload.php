@@ -16,7 +16,7 @@ class Upload
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Project $project;
 
-    #[ORM\Column(length: 250, unique: true)]
+    #[ORM\Column(type: 'text', unique: true)]
     private string $pathname;
 
     public function __construct(string $pathname, ?Project $project)
