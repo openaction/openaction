@@ -130,20 +130,6 @@ export function Editor(props: Props) {
 
         editor.addEventListener('editor:ready', () => {
             editor.loadDesign(props.design);
-            editor.setBodyValues({
-                backgroundColor: '#ffffff',
-                contentWidth: 'web' === props.displayMode ? '940px' : '500px',
-                fontFamily: {
-                    label: 'Open Sans',
-                    value: "'Open Sans', OpenSans,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Ubuntu,sans-serif",
-                },
-                linkStyle: {
-                    linkColor: props.appearance.colorThird ? '#' + props.appearance.colorThird : null,
-                    linkHoverColor: "props.appearance.colorThird ? '#' + props.appearance.colorThird : null",
-                    linkUnderline: false,
-                    linkHoverUnderline: true,
-                },
-            });
 
             // Register change handler
             editor.addEventListener('design:updated', () => {
