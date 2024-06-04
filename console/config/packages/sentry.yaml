@@ -3,6 +3,11 @@ when@prod:
         dsn: '%env(SENTRY_DSN)%'
         register_error_listener: false
         register_error_handler: false
+        options:
+            environment: "%kernel.environment%"
+            ignore_exceptions:
+                - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+                - 'Symfony\Component\HttpKernel\Exception\BadRequestHttpException'
 
     services:
         Monolog\Processor\PsrLogMessageProcessor:
