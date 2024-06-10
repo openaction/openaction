@@ -38,7 +38,6 @@ use App\Website\PageBlock\HomeSocialsBlock;
 use App\Website\PageBlockManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class ProjectDataManager implements ServiceSubscriberInterface
@@ -126,8 +125,8 @@ class ProjectDataManager implements ServiceSubscriberInterface
     {
         $uploader = $this->locator->get(CdnUploader::class);
 
-        $web = new Project($organization, $data->region, $this->getDefaultWebsiteTheme(), 'fr');
-        $web->updateModules([Features::MODULE_WEBSITE], [
+        $web = new Project($organization, $data->candidateName, $this->getDefaultWebsiteTheme(), 'fr');
+        $web->updateModules([Features::MODULE_WEBSITE, Features::MODULE_COMMUNITY], [
             Features::TOOL_WEBSITE_PAGES,
             Features::TOOL_WEBSITE_POSTS,
             Features::TOOL_WEBSITE_DOCUMENTS,
@@ -136,6 +135,8 @@ class ProjectDataManager implements ServiceSubscriberInterface
             Features::TOOL_WEBSITE_NEWSLETTER,
             Features::TOOL_WEBSITE_TROMBINOSCOPE,
             Features::TOOL_WEBSITE_MANIFESTO,
+            Features::TOOL_COMMUNITY_CONTACTS,
+            Features::TOOL_COMMUNITY_EMAILING,
         ]);
 
         // Website config
@@ -159,14 +160,9 @@ class ProjectDataManager implements ServiceSubscriberInterface
         ));
 
         // Domain
+        /** @var DomainManager $domainManager */
         $domainManager = $this->locator->get(DomainManager::class);
-        $web->updateDomain(
-            $domainManager->getTrialDomain(),
-            $trialSubdomain = (new AsciiSlugger())->slug($data->subdomain)->lower()->toString()
-        );
-
-        // Connect the subdomain to the infrastructure
-        $domainManager->connectTrialSubdomain($trialSubdomain);
+        $web->updateDomain($domainManager->createDomain($organization, $data->domain));
 
         // Persist the project
         $this->getEm()->persist($web);

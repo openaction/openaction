@@ -92,11 +92,10 @@ class Cloudflare implements CloudflareInterface
 
         // Add MX records if no MX records already exist
         if (!$hasMXRecords) {
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'aspmx.l.google.com', 0, false, '1');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'alt1.aspmx.l.google.com', 0, false, '5');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'alt2.aspmx.l.google.com', 0, false, '5');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'alt3.aspmx.l.google.com', 0, false, '10');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'alt4.aspmx.l.google.com', 0, false, '10');
+            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx1.mail.ovh.net', 0, false, '1');
+            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx2.mail.ovh.net', 0, false, '5');
+            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx3.mail.ovh.net', 0, false, '100');
+            $dns->addRecord($zone->id, 'TXT', $zone->name, 'v=spf1 include:mx.ovh.com -all', 0, false);
         }
 
         // Configure www redirect page rule

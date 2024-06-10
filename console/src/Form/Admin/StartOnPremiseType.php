@@ -3,7 +3,9 @@
 namespace App\Form\Admin;
 
 use App\Form\Admin\Model\StartOnPremiseData;
+use App\Platform\Circonscriptions;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -17,10 +19,11 @@ class StartOnPremiseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('region', TextType::class, ['required' => true])
+            ->add('circonscription', ChoiceType::class, ['required' => true, 'choices' => Circonscriptions::getFrChoices()])
+            ->add('candidateName', TextType::class, ['required' => true])
             ->add('websiteName', TextType::class, ['required' => true])
             ->add('websiteDescription', TextareaType::class, ['required' => true])
-            ->add('subdomain', TextType::class, ['required' => true])
+            ->add('domain', TextType::class, ['required' => true])
             ->add('adminEmail', EmailType::class, ['required' => true])
 
             ->add('facebook', UrlType::class, ['required' => false])

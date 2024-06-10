@@ -49,6 +49,10 @@ class DomainManager
 
     public function createDomain(Organization $organization, string $name): Domain
     {
+        if ($domain = $this->getDomain($name)) {
+            return $domain;
+        }
+
         $this->em->persist($domain = new Domain($organization, $name));
         $this->em->flush();
 

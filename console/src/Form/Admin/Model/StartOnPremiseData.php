@@ -8,7 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class StartOnPremiseData
 {
     #[Assert\NotBlank]
-    public ?string $region = null;
+    public ?string $circonscription = null;
+
+    #[Assert\NotBlank]
+    public ?string $candidateName = null;
 
     #[Assert\NotBlank]
     #[Assert\Length(max: 150)]
@@ -20,7 +23,7 @@ class StartOnPremiseData
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 60)]
-    public ?string $subdomain = '';
+    public ?string $domain = '';
 
     #[Assert\NotBlank]
     #[Assert\Length(max: 150)]

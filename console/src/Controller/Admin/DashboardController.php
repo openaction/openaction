@@ -120,7 +120,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToRoute('New organization', 'fa fa-plus', 'admin_start_on_premise');
         } else {
             yield MenuItem::linkToRoute('Empty organization', 'fa fa-plus', 'admin_start_trial');
-            yield MenuItem::linkToRoute('AvecVous organization', 'fa fa-plus', 'admin_start_on_premise');
+            yield MenuItem::linkToRoute('Landing page organization', 'fa fa-plus', 'admin_start_on_premise');
         }
 
         yield MenuItem::linkToCrud('Organizations', 'fa fa-building', Organization::class)
