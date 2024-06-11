@@ -42,6 +42,11 @@ class PageBlock
         return new self($data['project'], $data['page'], $data['type'], $data['weight'] ?? 1, $data['config'] ?? []);
     }
 
+    public function duplicate(Project $newProject): self
+    {
+        return new self($newProject, $this->page, $this->type, $this->weight, $this->config);
+    }
+
     public function setConfig(array $config)
     {
         $this->config = $config;

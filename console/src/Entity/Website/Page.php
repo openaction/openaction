@@ -106,10 +106,6 @@ class Page implements Searchable
         $self->description = $this->description;
         $self->onlyForMembers = $this->onlyForMembers;
 
-        foreach ($this->categories as $category) {
-            $self->addCategory($category);
-        }
-
         return $self;
     }
 

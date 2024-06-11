@@ -17,6 +17,7 @@ use App\Entity\Website\Form;
 use App\Entity\Website\ManifestoTopic;
 use App\Entity\Website\MenuItem;
 use App\Entity\Website\Page;
+use App\Entity\Website\PageBlock;
 use App\Entity\Website\Post;
 use App\Entity\Website\TrombinoscopePerson;
 use App\Form\Admin\Model\StartOnPremiseData;
@@ -260,6 +261,14 @@ class ProjectDataManager implements ServiceSubscriberInterface
 
             $refs[$item->getId()] = $dupItem;
         }
+
+        // Duplicate homepage
+        $items = $this->getEm()->getRepository(PageBlock::class)->findBy(['project' => $project], ['weight' => 'ASC']);
+        foreach ($items as $block) {
+            $this->getEm()->persist($block->duplicate($duplicate));
+        }
+
+        $this->getEm()->flush();
 
         // Duplicate website content
         $this->duplicateProjectContent(PageDataManager::class, Page::class, $project, $duplicate);

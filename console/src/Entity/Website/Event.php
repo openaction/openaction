@@ -145,10 +145,6 @@ class Event implements Searchable
         $self->address = $this->address;
         $self->onlyForMembers = $this->onlyForMembers;
 
-        foreach ($this->categories as $category) {
-            $self->addCategory($category);
-        }
-
         return $self;
     }
 
