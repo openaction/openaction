@@ -39,7 +39,7 @@ class StartOnPremiseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $organization = Organization::createOnPremise($data->region, Plans::ORGANIZATION);
+            $organization = Organization::createOnPremise($data->candidateName.' - '.$data->circonscription, Plans::ORGANIZATION);
             $orgaUuid = $organization->getUuid()->toRfc4122();
 
             if (($defaultPartner = $this->getParameter('default_partner'))

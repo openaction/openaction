@@ -17,14 +17,21 @@
             </h4>
 
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <div class="mb-3">
-                        {{ form_row(form.region, {
-                            'label': 'Région',
+                        {{ form_row(form.circonscription, {
+                            'label': 'Circonscription',
                         }) }}
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        {{ form_row(form.candidateName, {
+                            'label': 'Nom du candidat(e)',
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
                     <div class="mb-3">
                         {{ form_row(form.adminEmail, {
                             'label': 'Adresse e-mail de l\'administrateur principal',
@@ -49,32 +56,36 @@
                 <div class="col-lg-4">
                     <div class="mb-3">
                         {{ form_row(form.websiteName, {
-                            'label': 'Nom du site internet',
+                            'label': 'Titre principal du site internet',
                         }) }}
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="mb-3">
                         <div class="form-group">
-                            {{ form_label(form.subdomain, 'Sous-domaine du site internet') }}
+                            {{ form_label(form.domain, 'Domaine du site internet') }}
                             <div class="form-widget" style="max-width: 400px">
                                 <div class="input-group mb-0">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">https://</span>
                                     </div>
-                                    {{ form_widget(form.subdomain) }}
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">.{{ onpremise_domain }}</span>
-                                    </div>
+                                    {{ form_widget(form.domain) }}
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="text-muted" style="line-height: 1.2 !important; margin-top: -5px;">
+                            <small>
+                                Le domaine doit avoir été acheté par le client ou par nous. Une configuration
+                                des serveurs de noms sera nécessaire.
+                            </small>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="mb-3">
                         {{ form_row(form.websiteDescription, {
-                            'label': 'Description du site internet',
+                            'label': 'Slogan du site internet',
                         }) }}
                     </div>
                 </div>
