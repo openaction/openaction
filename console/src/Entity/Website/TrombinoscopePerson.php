@@ -158,10 +158,6 @@ class TrombinoscopePerson implements Searchable
         $self->socialMedium = $this->socialEmail;
         $self->socialTelegram = $this->socialEmail;
 
-        foreach ($this->categories as $category) {
-            $self->categories[] = $category;
-        }
-
         return $self;
     }
 

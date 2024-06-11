@@ -106,7 +106,7 @@ class Post implements Searchable
         return $self;
     }
 
-    public function duplicate(): self
+    public function duplicate(bool $withCategories = true): self
     {
         $self = new self($this->project, $this->title);
         $self->description = $this->description;
@@ -114,6 +114,12 @@ class Post implements Searchable
         $self->content = $this->content;
         $self->video = $this->video;
         $self->onlyForMembers = $this->onlyForMembers;
+
+        if ($withCategories) {
+            foreach ($this->categories as $category) {
+                $self->categories[] = $category;
+            }
+        }
 
         return $self;
     }

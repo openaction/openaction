@@ -42,7 +42,7 @@ class TrombinoscopeDataManager
 
     public function move(TrombinoscopePerson $person, Project $intoProject): TrombinoscopePerson
     {
-        if ($person->getProject()->getId() === $intoProject->getId()) {
+        if ($person->getProject()?->getId() === $intoProject->getId()) {
             return $person;
         }
 
