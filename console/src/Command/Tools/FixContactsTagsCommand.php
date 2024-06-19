@@ -18,6 +18,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 )]
 class FixContactsTagsCommand extends Command
 {
+    private const CHUNK_SIZE = 5_000;
+
     private bool $dumpSql;
     private OutputInterface $output;
     private Connection $db;
@@ -89,15 +91,17 @@ class FixContactsTagsCommand extends Command
 
             foreach ($aliases as $target => $duplicates) {
                 // Create new relationships with the target tag
-                $this->applySql('
-                    INSERT INTO '.$table.' ('.$fields['tagField'].', '.$fields['otherField'].')
-                    SELECT '.$target.', '.$fields['otherField'].' FROM '.$table.'
-                    WHERE '.$fields['tagField'].' IN ('.implode(',', $duplicates).')
-                    ON CONFLICT DO NOTHING
-                ');
+                foreach (array_chunk($duplicates, self::CHUNK_SIZE) as $chunk) {
+                    $this->applySql('
+                        INSERT INTO '.$table.' ('.$fields['tagField'].', '.$fields['otherField'].')
+                        SELECT '.$target.', '.$fields['otherField'].' FROM '.$table.'
+                        WHERE '.$fields['tagField'].' IN ('.implode(',', $chunk).')
+                        ON CONFLICT DO NOTHING
+                    ');
 
-                // Remove duplicated tags relationships
-                $this->applySql('DELETE FROM '.$table.' WHERE '.$fields['tagField'].' IN ('.implode(',', $duplicates).')');
+                    // Remove duplicated tags relationships
+                    $this->applySql('DELETE FROM '.$table.' WHERE '.$fields['tagField'].' IN ('.implode(',', $chunk).')');
+                }
 
                 if (!$this->dumpSql || $output->isVerbose()) {
                     $output->write('.');
@@ -115,16 +119,18 @@ class FixContactsTagsCommand extends Command
         }
 
         foreach ($aliases as $target => $duplicates) {
-            // Create new relationships with the target tag
-            $this->applySql('
-                INSERT INTO organizations_main_tags (tag_id, organization_id, weight)
-                SELECT '.$target.', organization_id, weight FROM organizations_main_tags
-                WHERE tag_id IN ('.implode(',', $duplicates).')
-                ON CONFLICT DO NOTHING
-            ');
+            foreach (array_chunk($duplicates, self::CHUNK_SIZE) as $chunk) {
+                // Create new relationships with the target tag
+                $this->applySql('
+                    INSERT INTO organizations_main_tags (tag_id, organization_id, weight)
+                    SELECT '.$target.', organization_id, weight FROM organizations_main_tags
+                    WHERE tag_id IN ('.implode(',', $chunk).')
+                    ON CONFLICT DO NOTHING
+                ');
 
-            // Remove duplicated tags relationships
-            $this->applySql('DELETE FROM organizations_main_tags WHERE tag_id IN ('.implode(',', $duplicates).')');
+                // Remove duplicated tags relationships
+                $this->applySql('DELETE FROM organizations_main_tags WHERE tag_id IN ('.implode(',', $chunk).')');
+            }
 
             if (!$this->dumpSql || $output->isVerbose()) {
                 $output->write('.');
@@ -141,10 +147,12 @@ class FixContactsTagsCommand extends Command
         }
 
         foreach ($aliases as $target => $duplicates) {
-            $this->applySql('
-                UPDATE community_email_automations SET tag_filter_id = '.$target.'
-                WHERE tag_filter_id IN ('.implode(',', $duplicates).')
-            ');
+            foreach (array_chunk($duplicates, self::CHUNK_SIZE) as $chunk) {
+                $this->applySql('
+                    UPDATE community_email_automations SET tag_filter_id = '.$target.'
+                    WHERE tag_filter_id IN ('.implode(',', $chunk).')
+                ');
+            }
 
             if (!$this->dumpSql || $output->isVerbose()) {
                 $output->write('.');
@@ -161,7 +169,9 @@ class FixContactsTagsCommand extends Command
         }
 
         foreach ($aliases as $duplicates) {
-            $this->applySql('DELETE FROM community_tags WHERE id IN ('.implode(',', $duplicates).')');
+            foreach (array_chunk($duplicates, self::CHUNK_SIZE) as $chunk) {
+                $this->applySql('DELETE FROM community_tags WHERE id IN ('.implode(',', $chunk).')');
+            }
 
             if (!$this->dumpSql || $output->isVerbose()) {
                 $output->write('.');
