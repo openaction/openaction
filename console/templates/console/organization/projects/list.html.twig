@@ -117,13 +117,6 @@
 
                         <div class="d-flex align-items-center text-muted mt-1">
                             <div class="projects-item-icon mr-1">
-                                <i class="fad fa-id-card"></i>
-                            </div>
-                            {{ item.members|format_number }} {{ 'list.members'|trans({}, 'organization_projects') }}
-                        </div>
-
-                        <div class="d-flex align-items-center text-muted mt-1">
-                            <div class="projects-item-icon mr-1">
                                 <i class="fad fa-paper-plane"></i>
                             </div>
                             {{ item.contacts|format_number }} {{ 'list.contacts'|trans({}, 'organization_projects') }}
@@ -175,13 +168,6 @@
                             {% else %}
                                 <em>{{ 'list.no_website'|trans({}, 'organization_projects') }}</em>
                             {% endif %}
-                        </div>
-
-                        <div class="d-flex align-items-center text-muted mt-1">
-                            <div class="projects-item-icon mr-1">
-                                <i class="fad fa-id-card"></i>
-                            </div>
-                            {{ item.members|format_number }} {{ 'list.members'|trans({}, 'organization_projects') }}
                         </div>
 
                         <div class="d-flex align-items-center text-muted mt-1">
