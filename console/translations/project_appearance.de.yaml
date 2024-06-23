@@ -181,7 +181,7 @@ homepage:
         help: "Zeigen Sie die neuesten Veröffentlichungen von Konten in sozialen Netzwerken direkt auf Ihrer Homepage an.\n"
         form:
             facebook: 'Wie lautet die URL der Facebook-Seite, die Sie anzeigen möchten?'
-            twitter: 'Wie lautet die URL des Twitter-Feeds, den Sie anzeigen möchten?'
+            twitter: 'Wie lautet die URL des X-Feeds, den Sie anzeigen möchten?'
     content:
         title: 'Benutzerdefinierter Inhalt'
         help: 'Vollständig anpassbarer Inhalt, um alles, was Sie wünschen, auf Ihrer Homepage anzuzeigen.'

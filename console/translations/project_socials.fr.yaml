@@ -4,7 +4,7 @@ accounts:
     email: À quelle adresse email publique peut-on vous contacter ?
     phone: À quel numéro de téléphone public peut-on vous contacter ?
     facebook: Quelle est l'adresse URL de votre page Facebook ?
-    twitter: Quelle est l'adresse URL de votre fil Twitter ?
+    twitter: Quelle est l'adresse URL de votre fil X ?
     instagram: Quelle est l'adresse URL de votre compte Instagram ?
     linkedIn: Quelle est l'adresse URL de votre page LinkedIn ?
     youtube: Quelle est l'adresse URL de votre chaine YouTube ?
@@ -22,7 +22,7 @@ sharers:
     label: Quels boutons de partage doivent être affichés sur les contenus de votre site ?
     label_help: Les boutons de partage sont des liens que vos visiteurs peuvent utiliser pour partager rapidement votre contenu sur leurs réseaux sociaux.
     facebook: Partager sur Facebook
-    twitter: Partager sur Twitter
+    twitter: Partager sur X
     linkedin: Partager sur LinkedIn
     telegram: Partager sur Telegram
     whatsapp: Partager sur Whatsapp

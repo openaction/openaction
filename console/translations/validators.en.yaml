@@ -46,4 +46,4 @@ console:
                 socials:
                     invalid_length: This value is too long. It should have {{ limit }} characters or less.
                     invalid_facebook: This link doesn't seem to be a Facebook one.
-                    invalid_twitter: This link doesn't seem to be a Twitter one.
+                    invalid_twitter: This link doesn't seem to be a X one.

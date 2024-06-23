@@ -116,7 +116,7 @@ membership:
             contactPhone: 'Persönliche Rufnummer'
             contactWorkPhone: 'Telefonnummer im Büro'
             socialFacebook: 'URL des Facebook-Profils'
-            socialTwitter: 'URL des Twitter-Kontos'
+            socialTwitter: 'URL des X-Kontos'
             socialLinkedIn: 'URL des LinkedIn-Profils'
             socialTelegram: Telegramm-Benutzername
             socialWhatsapp: WhatsApp-Telefonnummer

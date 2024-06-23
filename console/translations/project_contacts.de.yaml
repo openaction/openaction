@@ -99,7 +99,7 @@ form:
     socials:
         label: 'Soziale Netzwerke'
         facebook: 'URL des Facebook-Profils'
-        twitter: 'URL des Twitter-Profils'
+        twitter: 'URL des X-Profils'
         linkedIn: 'URL des LinkedIn-Profils'
         telegram: Telegramm-Kontoname
         whatsapp: 'Name des Whatsapp-Kontos'

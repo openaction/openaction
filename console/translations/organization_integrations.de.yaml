@@ -9,7 +9,7 @@ index:
         description: 'Schneller neue Kontakte knüpfen.'
         twitter_revue:
             title: Twitter-Revue
-            help: 'Zeigen Sie einen Button auf Ihrem Twitter-Profil an, um mit einem Klick Ihrer Citipo-Kontaktdatenbank beizutreten.'
+            help: 'Zeigen Sie einen Button auf Ihrem X-Profil an, um mit einem Klick Ihrer Citipo-Kontaktdatenbank beizutreten.'
         wings:
             title: Flügel
             help: "Synchronisieren Sie Petitionsunterschriften, Spenden, Veranstaltungsanmeldungen und alle anderen Kontakte\nzwischen Citipo und Wings.\n"
@@ -109,22 +109,22 @@ index:
             help: 'Nutzen Sie die Citipo-API, um Ihre eigenen, in Citipo integrierten Projekte zu erstellen.'
             link: 'Mehr erfahren'
 revue:
-    read_doc: 'Erfahren Sie, wie Sie die Twitter Revue Integration nutzen können'
+    read_doc: 'Erfahren Sie, wie Sie die X Revue Integration nutzen können'
     index:
-        page_title: 'Twitter Revue-Konten'
-        help: "Verbinden Sie Ihre Twitter Revue-Konten mit Citipo, um Ihre Revue-Abonnenten automatisch zu Ihrer\nCitipo-Kontaktdatenbank hinzuzufügen.\n"
+        page_title: 'X Revue-Konten'
+        help: "Verbinden Sie Ihre X Revue-Konten mit Citipo, um Ihre Revue-Abonnenten automatisch zu Ihrer\nCitipo-Kontaktdatenbank hinzuzufügen.\n"
         register: 'Ein Konto verbinden'
         none: 'Noch kein Konto verbunden.'
         edit: bearbeiten
         delete: 'Trennen Sie die Verbindung'
         delete_confirm: "Sind Sie sicher, dass Sie die Verbindung mit dem Konto %label% trennen wollen? Dadurch wird die Synchronisierung der Kontakte des Kontos\nKontakte mit Citipo.\n"
     create:
-        page_title: 'Verbinden Sie ein Twitter Revue-Konto'
+        page_title: 'Verbinden Sie ein X Revue-Konto'
     form:
         back: 'Zurück zu den Konten'
-        help: 'Abonnenten des Twitter Revue-Kontos werden automatisch auf Citipo hinzugefügt.'
-        label: 'Wie lautet der Twitter-Benutzername dieses Kontos?'
-        apiToken: 'Wie lautet das Twitter Revue API-Token des Kontos?'
+        help: 'Abonnenten des X Revue-Kontos werden automatisch auf Citipo hinzugefügt.'
+        label: 'Wie lautet der X-Benutzername dieses Kontos?'
+        apiToken: 'Wie lautet das X Revue API-Token des Kontos?'
         submit: 'Speichern Sie'
 wings:
     title: 'Synchronisierung Citipo x Wings'

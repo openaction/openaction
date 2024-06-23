@@ -106,7 +106,7 @@ form:
     socials:
         label: Social networks
         facebook: Facebook profile URL
-        twitter: Twitter profile URL
+        twitter: X profile URL
         linkedIn: LinkedIn profile URL
         telegram: Telegram account name
         whatsapp: Whatsapp account name

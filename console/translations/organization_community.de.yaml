@@ -136,7 +136,7 @@ contacts:
         socials:
             label: 'Soziale Netzwerke'
             facebook: 'URL des Facebook-Profils'
-            twitter: 'URL des Twitter-Profils'
+            twitter: 'URL des X-Profils'
             linkedIn: 'URL des LinkedIn-Profils'
             telegram: Telegramm-Kontoname
             whatsapp: Whatsapp-Telefonnummer
@@ -180,7 +180,7 @@ contacts:
                 contactPhone: 'Persönliches Telefon'
                 contactWorkPhone: 'Telefon Arbeit'
                 socialFacebook: 'URL des Facebook-Profils'
-                socialTwitter: 'URL des Twitter-Kontos'
+                socialTwitter: 'URL des X-Kontos'
                 socialLinkedIn: 'URL des LinkedIn-Profils'
                 socialTelegram: Telegramm-Benutzername
                 socialWhatsapp: Whatsapp-Telefonnummer

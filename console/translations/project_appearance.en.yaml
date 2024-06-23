@@ -222,7 +222,7 @@ homepage:
             Display the latest publications of social networks accounts directly on your homepage.
         form:
             facebook: What is the URL of the Facebook page you want to display?
-            twitter: What is the URL of the Twitter feed you want to display?
+            twitter: What is the URL of the X feed you want to display?
     content:
         title: Custom content
         help: Fully customizable content to display anything you wish on your homepage.
