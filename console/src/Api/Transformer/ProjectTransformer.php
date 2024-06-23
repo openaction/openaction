@@ -64,6 +64,7 @@ class ProjectTransformer extends AbstractTransformer
             'logoDark' => $project->getAppearanceLogoDark() ? $this->cdnRouter->generateUrl($project->getAppearanceLogoDark()) : null,
             'logoWhite' => $project->getAppearanceLogoWhite() ? $this->cdnRouter->generateUrl($project->getAppearanceLogoWhite()) : null,
             'icon' => $project->getAppearanceIcon() ? $this->cdnRouter->generateUrl($project->getAppearanceIcon()) : null,
+            'favicon' => $project->getAppearanceIcon() ? $this->cdnRouter->generateUrl($project->getAppearanceIcon(), type: 'favicon') : null,
             'sharer' => $project->getWebsiteSharer() ? $this->cdnRouter->generateUrl($project->getWebsiteSharer()) : null,
             'primary' => $project->getAppearancePrimary(),
             'secondary' => $project->getAppearanceSecondary(),

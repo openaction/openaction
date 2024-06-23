@@ -46,7 +46,7 @@
 
     {% if current_project.icon %}
         <link rel="apple-touch-icon" sizes="256x256" href="{{ current_project.icon }}">
-        <link rel="icon" type="image/png" sizes="256x256" href="{{ current_project.icon }}">
+        <link rel="icon" href="{{ current_project.favicon }}">
     {% endif %}
 
     <meta name="msapplication-TileColor" content="#{{ current_project.primary }}">
