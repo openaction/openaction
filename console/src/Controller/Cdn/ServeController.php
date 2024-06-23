@@ -41,14 +41,19 @@ class ServeController extends AbstractController
             $response = new Response($image->getEncoded());
             $response->headers->set('Content-Type', 'image/jpeg');
 
-            // Cache for 7 days in the reverse proxy
-            $response->setCache([
-                'public' => true,
-                'max_age' => 604_800,
-                's_maxage' => 604_800,
-            ]);
+            return $this->setResponseCache($response);
+        }
 
-            return $response;
+        // Favicon requested: resize and reencode on the fly
+        if ('favicon' === $request->query->get('t')) {
+            $image = $this->imageManager->make($this->storage->read($pathname));
+            $image->fit(96, 96);
+            $image->encode('png');
+
+            $response = new Response($image->getEncoded());
+            $response->headers->set('Content-Type', 'image/png');
+
+            return $this->setResponseCache($response);
         }
 
         // Otherwise serve as a stream
@@ -63,6 +68,11 @@ class ServeController extends AbstractController
         // Avoid robots to index this content
         $response->headers->set('X-Robots-Tag', 'noindex');
 
+        return $this->setResponseCache($response);
+    }
+
+    private function setResponseCache(Response $response): Response
+    {
         // Cache for 7 days in the reverse proxy
         $response->setCache([
             'public' => true,
