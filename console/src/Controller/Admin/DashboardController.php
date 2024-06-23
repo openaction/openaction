@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\DashboardStatsResolver;
 use App\Analytics\Analytics;
 use App\Billing\Stats\SubscriptionsStats;
 use App\Entity\Announcement;
@@ -15,24 +16,20 @@ use App\Entity\User;
 use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
-use App\Util\Chart;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    private bool $isOnPremise;
-    private ContainerInterface $locator;
-
-    public function __construct(bool $isOnPremise, ContainerInterface $locator)
-    {
-        $this->isOnPremise = $isOnPremise;
-        $this->locator = $locator;
+    public function __construct(
+        private readonly bool $isOnPremise,
+        private readonly DashboardStatsResolver $dashboardStatsResolver,
+        private readonly EntityManagerInterface $manager,
+    ) {
     }
 
     public static function getSubscribedServices(): array
@@ -50,28 +47,13 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'easyadmin')]
     public function index(): Response
     {
-        $startDate = new \DateTime('60 days ago 00:00:00');
-
-        return $this->render('admin/dashboard.html.twig', [
-            'organizations_count' => $this->locator->get(ProjectRepository::class)->count([]),
-            'users_count' => $this->locator->get(UserRepository::class)->count([]),
-            'projects_count' => $this->locator->get(ProjectRepository::class)->count([]),
-            'live_visitors' => $this->locator->get(Analytics::class)->countAdminLiveVisitors(),
-            'traffic_dashboard' => $this->locator->get(Analytics::class)->createAdminTrafficDashboard($startDate, Chart::PRECISION_DAY),
-            'community_dashboard' => $this->locator->get(Analytics::class)->createAdminCommunityDashboard($startDate, Chart::PRECISION_DAY),
-        ]);
+        return $this->render('admin/dashboard.html.twig', $this->dashboardStatsResolver->getAdminIndexStats());
     }
 
     #[Route('/admin/subscriptions', name: 'admin_subscriptions_dashboard')]
     public function subscriptions(): Response
     {
-        return $this->render('admin/subscriptions_dashboard.html.twig', [
-            'active_subscriptions' => $this->locator->get(OrganizationRepository::class)->countActiveSubscriptions(),
-            'trialing_subscriptions' => $this->locator->get(OrganizationRepository::class)->countTrialingSubscriptions(),
-            'expired_subscriptions' => $this->locator->get(OrganizationRepository::class)->countExpiredSubscriptions(),
-            'almost_expired_subscriptions' => $this->locator->get(OrganizationRepository::class)->findAlmostExpiredPayingSubscriptions(),
-            'mrr' => $this->locator->get(SubscriptionsStats::class)->computeMonthlyRecurringRevenue(),
-        ]);
+        return $this->render('admin/subscriptions_dashboard.html.twig', $this->dashboardStatsResolver->getAdminBillingStats());
     }
 
     public function configureDashboard(): Dashboard
@@ -84,9 +66,6 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        /** @var EntityManagerInterface $em */
-        $em = $this->locator->get(EntityManagerInterface::class);
-
         yield MenuItem::linkToDashboard('General dashboard', 'fa fa-home');
         yield MenuItem::linkToRoute('Back to Console', 'fa fa-share-square', 'homepage_redirect');
         yield MenuItem::linkToRoute('Log out', 'fa fa-sign-out', 'security_logout');
@@ -106,9 +85,9 @@ class DashboardController extends AbstractDashboardController
 
             yield MenuItem::linkToRoute('Billing dashboard', 'fa fa-home', 'admin_subscriptions_dashboard');
             yield MenuItem::linkToCrud('Orders', 'fa fa-file-invoice-dollar', Order::class)
-                ->setBadge($em->getRepository(Order::class)->count([]));
+                ->setBadge($this->manager->getRepository(Order::class)->count([]));
             yield MenuItem::linkToCrud('Quotes', 'fa fa-file-invoice-dollar', Quote::class)
-                ->setBadge($em->getRepository(Quote::class)->count([]));
+                ->setBadge($this->manager->getRepository(Quote::class)->count([]));
         }
 
         /*
@@ -124,11 +103,11 @@ class DashboardController extends AbstractDashboardController
         }
 
         yield MenuItem::linkToCrud('Organizations', 'fa fa-building', Organization::class)
-            ->setBadge($em->getRepository(Organization::class)->count([]));
+            ->setBadge($this->manager->getRepository(Organization::class)->count([]));
         yield MenuItem::linkToCrud('Domains', 'fa fa-globe', Domain::class)
-            ->setBadge($em->getRepository(Domain::class)->count([]));
+            ->setBadge($this->manager->getRepository(Domain::class)->count([]));
         yield MenuItem::linkToCrud('Projects', 'fa fa-cube', Project::class)
-            ->setBadge($em->getRepository(Project::class)->count([]));
+            ->setBadge($this->manager->getRepository(Project::class)->count([]));
         yield MenuItem::linkToRoute('Export projects', 'fa fa-cloud-download', 'admin_projects_export')
             ->setLinkTarget('_blank');
 
@@ -138,7 +117,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Users');
 
         yield MenuItem::linkToCrud('Users', 'fa fa-users', User::class)
-            ->setBadge($em->getRepository(User::class)->count([]));
+            ->setBadge($this->manager->getRepository(User::class)->count([]));
 
         yield MenuItem::linkToCrud('Registrations', 'fa fa-envelope', Registration::class);
     }
