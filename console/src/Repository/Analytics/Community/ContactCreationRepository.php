@@ -200,7 +200,6 @@ class ContactCreationRepository extends ServiceEntityRepository
                         GROUP BY p.organization_id, p.id, c.id, c.account_password, c.parsed_contact_phone, 
                                  c.settings_receive_newsletters, c.settings_receive_sms, c.profile_gender, 
                                  c.created_at, c.address_country_id
-                        HAVING COUNT(DISTINCT pt.tag_id) = (SELECT COUNT(DISTINCT spt.tag_id) FROM projects_tags spt WHERE spt.project_id = p.id)
                     ) cc
                 ;
             ");

@@ -45,6 +45,6 @@ class RefreshContactsStatsHandlerTest extends KernelTestCase
         // Check contact stats were updated
         $this->assertSame(6, static::getContainer()->get(ContactCreationRepository::class)->count(['project' => $globalProject]));
         $this->assertSame(5, static::getContainer()->get(ContactCreationRepository::class)->count(['project' => $localProject]));
-        $this->assertSame(1, static::getContainer()->get(ContactCreationRepository::class)->count(['project' => $thematicProject]));
+        $this->assertSame(4, static::getContainer()->get(ContactCreationRepository::class)->count(['project' => $thematicProject]));
     }
 }
