@@ -52,6 +52,9 @@ class ContactViewBuilderTest extends KernelTestCase
             static fn (ContactViewBuilder $builder, Organization $orga, Project $localProject, Project $thematicProject) => $builder->inProject($thematicProject),
             [
                 'olivie.gregoire@gmail.com',
+                null,
+                'brunella.courtemanche2@orange.fr',
+                'a.compagnon@protonmail.com',
             ],
         ];
 
@@ -62,6 +65,7 @@ class ContactViewBuilderTest extends KernelTestCase
             ),
             [
                 'olivie.gregoire@gmail.com',
+                'brunella.courtemanche2@orange.fr',
             ],
         ];
 

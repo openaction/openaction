@@ -23,7 +23,6 @@ list:
             Leurs modules sont adaptés pour se focaliser sur la communauté de cette zone.
         new: 'Lancer un nouveau projet local'
     no_website: Pas de site internet Citipo
-    members: membres
     contacts: contacts
 
 create:
