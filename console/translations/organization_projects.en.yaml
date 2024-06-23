@@ -23,7 +23,6 @@ list:
             Their modules are adapted to focus on contacts in this area.
         new: 'Launch a new local project'
     no_website: No Citipo website
-    members: members
     contacts: contacts
 
 create:

@@ -23,10 +23,8 @@ class ProjectsControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('[data-user]:contains("Titouan Galopin")');
         $this->assertSelectorExists('[data-global] .projects-item:contains("Citipo")');
-        $this->assertSelectorExists('[data-global] .projects-item:contains("1 members")');
         $this->assertSelectorExists('[data-global] .projects-item:contains("2 contacts")');
         $this->assertSelectorExists('[data-local] .projects-item:contains("Île-de-France")');
-        $this->assertSelectorExists('[data-local] .projects-item:contains("1 members")');
         $this->assertSelectorExists('[data-local] .projects-item:contains("1 contacts")');
     }
 

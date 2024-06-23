@@ -15,7 +15,6 @@ list:
         desc: "Lokale Projekte sind Projekte, die sich auf ein bestimmtes Gebiet konzentrieren.\nIhre Module sind so angepasst, dass sie sich auf die Kontakte in diesem Gebiet konzentrieren.\n"
         new: 'Ein neues lokales Projekt starten'
     no_website: 'Keine Citipo-Website'
-    members: Mitglieder
     contacts: Kontakte
 create:
     title: 'Ein Projekt starten'

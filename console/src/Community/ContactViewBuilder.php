@@ -264,8 +264,6 @@ class ContactViewBuilder
                 }
 
                 $filterQb->andWhere($tagCond);
-                $filterQb->having('COUNT(DISTINCT stp.id) = '.count($this->project->getTags()));
-                $filterQb->groupBy('sc.id');
             }
 
             if ($this->tagsFilter) {
