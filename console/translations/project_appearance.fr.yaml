@@ -224,7 +224,7 @@ homepage:
             Afficher les dernières publications de vos réseaux sociaux directement sur la page d’accueil de votre site.
         form:
             facebook: Quel est l’URL de la page Facebook que vous souhaitez afficher ?
-            twitter: Quel est l’URL du compte Twitter que vous souhaitez afficher ?
+            twitter: Quel est l’URL du compte X que vous souhaitez afficher ?
     content:
         title: Contenu personnalisé
         help: Contenu entièrement personnalisable à afficher sur votre page d’accueil.

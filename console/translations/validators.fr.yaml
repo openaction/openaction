@@ -47,4 +47,4 @@ console:
                 socials:
                     invalid_length: Cette valeur est trop longue. Elle devrait contenir {{ limit }} caractères ou moins.
                     invalid_facebook: Cette URL n'est pas une URL Facebook valide.
-                    invalid_twitter: Cette URL n'est pas une URL Twitter valide.
+                    invalid_twitter: Cette URL n'est pas une URL X valide.

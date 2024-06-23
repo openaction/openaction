@@ -150,7 +150,7 @@ contacts:
         socials:
             label: Social networks
             facebook: Facebook profile URL
-            twitter: Twitter profile URL
+            twitter: X profile URL
             linkedIn: LinkedIn profile URL
             telegram: Telegram account name
             whatsapp: Whatsapp phone number
@@ -205,7 +205,7 @@ contacts:
                 contactPhone: Personal phone
                 contactWorkPhone: Work phone
                 socialFacebook: Facebook profile URL
-                socialTwitter: Twitter account URL
+                socialTwitter: X account URL
                 socialLinkedIn: LinkedIn profile URL
                 socialTelegram: Telegram username
                 socialWhatsapp: Whatsapp phone number

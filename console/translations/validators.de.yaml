@@ -35,4 +35,4 @@ console:
                 socials:
                     invalid_length: 'Dieser Wert ist zu lang. Er sollte {{ limit }} Zeichen oder weniger haben.'
                     invalid_facebook: 'Dieser Link scheint kein Facebook-Link zu sein.'
-                    invalid_twitter: 'Dieser Link scheint kein Twitter-Link zu sein.'
+                    invalid_twitter: 'Dieser Link scheint kein X-Link zu sein.'

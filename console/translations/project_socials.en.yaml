@@ -4,7 +4,7 @@ accounts:
     email: Which public email address should your visitors be able to contact you on?
     phone: Which public phone number should your visitors be able to contact you on?
     facebook: What is the URL of your Facebook page?
-    twitter: What is the URL of your Twitter account?
+    twitter: What is the URL of your X account?
     instagram: What is the URL of your Instagram account?
     linkedIn: What is the URL of your LinkedIn account?
     youtube: What is the URL of your YouTube channel?
@@ -22,7 +22,7 @@ sharers:
     label: Which social links should be displayed on your website content pages?
     label_help: Social links are tools allowing your visitors to share content on their social networks easily.
     facebook: Share on Facebook
-    twitter: Share on Twitter
+    twitter: Share on X
     linkedin: Share on LinkedIn
     telegram: Share on Telegram
     whatsapp: Share on Whatsapp
