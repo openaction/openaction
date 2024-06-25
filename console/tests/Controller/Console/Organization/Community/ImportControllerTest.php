@@ -56,7 +56,7 @@ class ImportControllerTest extends WebTestCase
                 '1961-09-07 00:00:00', 'f', 'Total Yard Maintenance', 'Private detective', '03.15.35.41.79',
                 '+33 15 35 41 79', 'https://facebook.com/FabienMiron', 'https://twitter.com/FabienMiron',
                 'https://linkedin.com/FabienMiron', 'FabienMiron', '03.15.35.41.79', '5, Rue du Limas',
-                '', '21200', 'BEAUNE', 'France', '1', '0', '', 'Custom comment', 'Blue, Red, Black', 'Green',
+                '', 21200, 'BEAUNE', 'France', 1, 0, '', 'Custom comment', 'Blue, Red, Black', 'Green',
             ],
             $import->getHead()->getFirstLines()[0]
         );

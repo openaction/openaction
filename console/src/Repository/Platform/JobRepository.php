@@ -3,6 +3,7 @@
 namespace App\Repository\Platform;
 
 use App\Entity\Platform\Job;
+use App\Util\Json;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,7 +41,7 @@ class JobRepository extends ServiceEntityRepository
         ;
     }
 
-    public function resetJob(int $jobId)
+    public function resetJob(int $jobId): void
     {
         $this->createQueryBuilder('j')
             ->update()
@@ -52,19 +53,7 @@ class JobRepository extends ServiceEntityRepository
         ;
     }
 
-    public function setJobStep(int $jobId, int $step)
-    {
-        $this->createQueryBuilder('j')
-            ->update()
-            ->set('j.step', $step)
-            ->where('j.id = :jobId')
-            ->setParameter('jobId', $jobId)
-            ->getQuery()
-            ->execute()
-        ;
-    }
-
-    public function setJobTotalSteps(int $jobId, int $total)
+    public function setJobTotalSteps(int $jobId, int $total): void
     {
         $this->createQueryBuilder('j')
             ->update()
@@ -76,19 +65,35 @@ class JobRepository extends ServiceEntityRepository
         ;
     }
 
-    public function advanceJobStep(int $jobId, int $amount = 10)
+    public function setJobStep(int $jobId, int $step, array $payload = []): void
     {
         $this->createQueryBuilder('j')
             ->update()
-            ->set('j.step', 'j.step + '.$amount)
+            ->set('j.step', $step)
+            ->set('j.payload', ':payload')
             ->where('j.id = :jobId')
             ->setParameter('jobId', $jobId)
+            ->setParameter('payload', Json::encode($payload))
             ->getQuery()
             ->execute()
         ;
     }
 
-    public function finishJob(int $jobId, array $payload = [])
+    public function advanceJobStep(int $jobId, int $amount = 1, array $payload = []): void
+    {
+        $this->createQueryBuilder('j')
+            ->update()
+            ->set('j.step', 'j.step + '.$amount)
+            ->set('j.payload', ':payload')
+            ->where('j.id = :jobId')
+            ->setParameter('jobId', $jobId)
+            ->setParameter('payload', Json::encode($payload))
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    public function finishJob(int $jobId, array $payload = []): void
     {
         $job = $this->find($jobId);
         $job->finish($payload);

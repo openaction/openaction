@@ -64,7 +64,7 @@ class CrmDataParser
         'clicked_emails',
     ];
 
-    public function __construct(private Connection $db, private string $databaseUrl, private string $cacheDir)
+    public function __construct(private readonly Connection $db, private readonly string $databaseUrl, private readonly string $cacheDir)
     {
     }
 

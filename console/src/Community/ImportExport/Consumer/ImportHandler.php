@@ -3,24 +3,28 @@
 namespace App\Community\ImportExport\Consumer;
 
 use App\Analytics\Consumer\RefreshContactStatsMessage;
-use App\Api\Model\ContactApiData;
-use App\Community\ContactLocator;
 use App\Entity\Community\Contact;
 use App\Entity\Community\Import;
-use App\Repository\Community\ContactRepository;
 use App\Repository\Community\ImportRepository;
-use App\Repository\Community\TagRepository;
 use App\Repository\Platform\JobRepository;
-use App\Search\Consumer\UpdateCrmDocumentsMessage;
+use App\Search\CrmIndexer;
+use App\Util\Address;
+use App\Util\PhoneNumber;
 use App\Util\Spreadsheet;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\FilesystemReader;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function Symfony\Component\String\u;
+
+use Symfony\Component\String\UnicodeString;
 
 /**
  * Process import files.
@@ -29,15 +33,14 @@ use function Symfony\Component\String\u;
 final class ImportHandler
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private ContactRepository $contactRepository,
-        private TagRepository $tagRepository,
-        private ImportRepository $importRepository,
-        private JobRepository $jobRepository,
-        private FilesystemReader $cdnStorage,
-        private ContactLocator $contactLocator,
-        private MessageBusInterface $bus,
-        private LoggerInterface $logger
+        private readonly SluggerInterface $slugger,
+        private readonly ImportRepository $importRepository,
+        private readonly JobRepository $jobRepository,
+        private readonly FilesystemReader $cdnStorage,
+        private readonly LoggerInterface $logger,
+        private readonly EntityManagerInterface $em,
+        private readonly MessageBusInterface $bus,
+        private readonly CrmIndexer $crmIndexer,
     ) {
     }
 
@@ -55,92 +58,338 @@ final class ImportHandler
             return true;
         }
 
-        $orga = $import->getOrganization();
-        $orgaUuid = $orga->getUuid()->toRfc4122();
-        $orgaCrmIndexVersion = $orga->getCrmIndexVersion();
-        $jobId = $import->getJob()->getId();
+        if (!$organization = $import->getOrganization()) {
+            $this->logger->error('Invalid organization', ['id' => $message->getImportId()]);
 
-        // Parsing file
-        $this->logger->info('Parsing file', ['id' => $message->getImportId()]);
-        $localFile = $this->downloadImportFile($import);
-
-        // Importing lines
-        $this->logger->info('Importing lines', ['id' => $message->getImportId()]);
-
-        try {
-            $batchSize = 100;
-            $steps = 0;
-            $isFirstLine = true;
-            $crmBatch = [];
-
-            foreach (Spreadsheet::open($localFile) as $row) {
-                ++$steps;
-
-                if ($isFirstLine) {
-                    $isFirstLine = false;
-                    continue;
-                }
-
-                $row = array_values($row);
-
-                // Create update payload
-                $data = $this->createApiDataPayload($import, $row);
-
-                $this->logger->info('Importing line', ['email' => $data->email]);
-
-                // Fetching or creating the contact
-                if (!$data->email || !$contact = $this->contactRepository->findOneByAnyEmail($orga, $data->email)) {
-                    $contact = new Contact($orga, $data->email);
-                }
-
-                // Find contact country
-                if ($data->addressCountry) {
-                    if ($country = $this->contactLocator->findContactCountry($data->addressCountry)) {
-                        $data->addressCountry = $country->getCode();
-                        $contact->setCountry($country);
-                    } else {
-                        $data->addressCountry = null;
-                    }
-                }
-
-                // Apply update
-                $contact->applyApiUpdate($data, 'import');
-
-                // Locate the contact if possible
-                $contact->setArea($this->contactLocator->findContactArea($contact) ?: $import->getArea());
-
-                // Persist a first time before synchronizing tags
-                $this->em->persist($contact);
-                $this->em->flush($contact);
-
-                // Resolve new tags list and replace current tags with new ones
-                if ($data->metadataTags) {
-                    $resolvedNewTags = array_unique(array_merge($contact->getMetadataTagsNames(), $data->metadataTags));
-                    $this->tagRepository->replaceContactTags($contact, $resolvedNewTags);
-                }
-
-                // Trigger CRM update and refresh status
-                $crmBatch[$contact->getUuid()->toRfc4122()] = $contact->getId();
-
-                if (0 === $steps % $batchSize) {
-                    $this->jobRepository->setJobStep($jobId, $steps);
-                    $this->bus->dispatch(new UpdateCrmDocumentsMessage($orgaUuid, $orgaCrmIndexVersion, $crmBatch));
-                    $crmBatch = [];
-                }
-            }
-        } finally {
-            @unlink($localFile);
+            return true;
         }
 
-        // Trigger CRM update
-        $this->bus->dispatch(new UpdateCrmDocumentsMessage($orgaUuid, $orgaCrmIndexVersion, $crmBatch));
+        $jobId = $import->getJob()->getId();
 
-        // Trigger stats count
-        $this->bus->dispatch(new RefreshContactStatsMessage($orga->getId()));
+        $db = $this->em->getConnection();
 
-        // Mark job finished
-        $this->jobRepository->setJobStep($jobId, $steps);
-        $this->jobRepository->setJobTotalSteps($jobId, $steps);
+        /*
+         * Download file locally
+         */
+        $this->jobRepository->setJobStep($jobId, step: 1, payload: ['status' => 'downloading_file']);
+        $localFile = $this->downloadImportFile($import);
+
+        /*
+         * Prepare database
+         */
+        $this->jobRepository->setJobStep($jobId, step: 2, payload: ['status' => 'preparing_database']);
+
+        $columnsSlugged = [
+            'profileFirstName',
+            'profileMiddleName',
+            'profileLastName',
+            'profileCompany',
+            'profileJobTitle',
+            'addressStreetLine1',
+            'addressStreetLine2',
+        ];
+
+        $columnsMapping = [];
+        foreach ($import->getHead()->getMatchedColumns() as $key => $column) {
+            if ('ignored' !== $column && !isset($columnsMapping[$column])) {
+                $columnsMapping[$column] = $key;
+
+                if (\in_array($column, $columnsSlugged, true)) {
+                    $columnsMapping[$column.'Slug'] = $key;
+                } elseif ('contactPhone' === $column) {
+                    $columnsMapping['parsedContactPhone'] = $key;
+                } elseif ('contactWorkPhone' === $column) {
+                    $columnsMapping['parsedContactWorkPhone'] = $key;
+                }
+            }
+        }
+
+        // Create data import table
+        $tableName = 'community_imports_data_'.$import->getId();
+
+        $table = new Table($tableName);
+        foreach (array_keys($columnsMapping) as $column) {
+            $table->addColumn(strtolower($column), 'text', ['notnull' => false]);
+        }
+
+        foreach ($db->getDatabasePlatform()->getCreateTableSQL($table) as $sql) {
+            $db->executeStatement($sql);
+        }
+
+        /*
+         * Prepare SQL for raw import
+         */
+        $this->jobRepository->setJobStep($jobId, step: 3, payload: ['status' => 'parsing_file']);
+
+        $sqlValues = [];
+        $isHead = true;
+
+        foreach (Spreadsheet::open($localFile) as $row) {
+            // Ignore head
+            if ($isHead) {
+                $isHead = false;
+                continue;
+            }
+
+            $country = null;
+            if (isset($columnsMapping['addressCountry'])
+                && !empty($row[$columnsMapping['addressCountry']])
+                && Countries::exists(strtoupper($row[$columnsMapping['addressCountry']]))) {
+                $country = strtoupper($row[$columnsMapping['addressCountry']]);
+            }
+
+            $rowValues = [];
+            foreach ($columnsMapping as $type => $key) {
+                $rowValues[] = !empty($row[$key]) ? $db->quote($this->normalizeValue($type, $row[$key], $country)) : 'null';
+            }
+
+            $sqlValues[] = '('.implode(',', $rowValues).')';
+        }
+
+        /*
+         * Raw import
+         */
+        $progress = 0;
+        $this->jobRepository->setJobStep($jobId, step: 4, payload: ['status' => 'importing_raw_data', 'progress' => $progress]);
+
+        foreach (array_chunk($sqlValues, 10_000) as $chunk) {
+            $columnsNames = [];
+            foreach (array_keys($columnsMapping) as $column) {
+                $columnsNames[] = strtolower($column);
+            }
+
+            $db->executeStatement(
+                'INSERT INTO '.$tableName.' ('.implode(',', $columnsNames).') '.
+                'VALUES '.implode(',', $sqlValues)
+            );
+
+            // Update status
+            $progress += count($chunk);
+            $this->jobRepository->setJobStep($jobId, step: 4, payload: ['status' => 'importing_raw_data', 'progress' => $progress]);
+        }
+
+        /*
+         * Insert in contacts
+         */
+        $this->jobRepository->setJobStep($jobId, step: 5, payload: ['status' => 'inserting_contacts']);
+
+        $classMetadata = $this->em->getClassMetadata(Contact::class);
+
+        // Static mapping to be used on inserts (and not on conflict updates)
+        $insertMapping = [
+            'id' => 'nextval(\'community_contacts_id_seq\')',
+            'uuid' => 'gen_random_uuid()',
+            'organization_id' => $organization->getId(),
+            'contact_additional_emails' => $db->quote('[]'),
+            'account_confirmed' => 'false',
+            'settings_by_project' => $db->quote('[]'),
+            'metadata_custom_fields' => $db->quote('[]'),
+            'created_at' => 'CURRENT_TIMESTAMP',
+            'updated_at' => 'CURRENT_TIMESTAMP',
+        ];
+
+        // Values mapping to be used on inserts and conflict updates (including defaults)
+        $valuesMapping = [
+            'settings_receive_newsletters' => 'false',
+            'settings_receive_sms' => 'false',
+            'settings_receive_calls' => 'false',
+        ];
+
+        foreach (array_keys($columnsMapping) as $column) {
+            $valuesMapping = $this->applyInsertMapping($classMetadata, $valuesMapping, $column);
+        }
+
+        $insertColumns = array_merge(array_keys($insertMapping), array_keys($valuesMapping));
+        $selectColumns = array_merge(array_values($insertMapping), array_values($valuesMapping));
+
+        $selectDistinct = '';
+        if (isset($columnsMapping['email'])) {
+            $selectDistinct = ' DISTINCT ON (email) ';
+        }
+
+        $conflictUpdateSet = ['updated_at = CURRENT_TIMESTAMP'];
+        foreach (array_keys($valuesMapping) as $col) {
+            $conflictUpdateSet[] = $col.' = EXCLUDED.'.$col;
+        }
+
+        $db->executeStatement('
+            INSERT INTO community_contacts ('.implode(', ', $insertColumns).')
+            SELECT '.$selectDistinct.' '.implode(', ', $selectColumns).' FROM '.$tableName.'
+            ON CONFLICT (organization_id, email) DO UPDATE SET '.implode(', ', $conflictUpdateSet)
+        );
+
+        /*
+         * Insert in tags
+         */
+        $this->jobRepository->setJobStep($jobId, step: 6, payload: ['status' => 'inserting_tags']);
+
+        $tags = [];
+
+        if (isset($columnsMapping['metadataTag'])) {
+            $tags = array_merge(array_column(
+                $db->executeQuery('SELECT DISTINCT metadatatag AS tag FROM '.$tableName)
+                    ->fetchAllAssociative(),
+                'tag',
+            ));
+        }
+
+        if (isset($columnsMapping['metadataTagsList'])) {
+            $tags = array_merge(array_column(
+                $db->executeQuery('SELECT DISTINCT regexp_split_to_table(metadatatagslist, \',\') AS tag FROM '.$tableName)
+                    ->fetchAllAssociative(),
+                'tag',
+            ));
+        }
+
+        if ($tags) {
+            $values = [];
+
+            foreach ($tags as $tag) {
+                $row = [
+                    'nextval(\'community_tags_id_seq\')',
+                    $organization->getId(),
+                    $db->quote($tag),
+                    $db->quote($this->slugger->slug($tag)->lower()->toString()),
+                    'CURRENT_TIMESTAMP',
+                    'CURRENT_TIMESTAMP',
+                ];
+
+                $values[] = '('.implode(', ', $row).')';
+            }
+
+            foreach (array_chunk($values, 5_000) as $chunk) {
+                $db->executeStatement('
+                    INSERT INTO community_tags (id, organization_id, name, slug, created_at, updated_at)
+                    VALUES '.implode(', ', $chunk).'
+                    ON CONFLICT DO NOTHING
+                ');
+            }
+        }
+
+        /*
+         * Link tags
+         */
+        $this->jobRepository->setJobStep($jobId, step: 7, payload: ['status' => 'linking_tags']);
+
+        if (isset($columnsMapping['metadataTag'])) {
+            $db->executeStatement('
+                INSERT INTO community_contacts_tags (tag_id, contact_id) 
+                SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
+                FROM (
+                    SELECT email, metadatatag AS tag
+                    FROM '.$tableName.'
+                ) i
+                LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
+                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                ON CONFLICT DO NOTHING
+            ');
+        }
+
+        if (isset($columnsMapping['metadataTagsList'])) {
+            $db->executeStatement('
+                INSERT INTO community_contacts_tags (tag_id, contact_id) 
+                SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
+                FROM (
+                    SELECT email, regexp_split_to_table(metadatatagslist, \',\') AS tag
+                    FROM '.$tableName.'
+                ) i
+                LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
+                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                ON CONFLICT DO NOTHING
+            ');
+        }
+
+        /*
+         * Resolve areas
+         */
+        $this->jobRepository->setJobStep($jobId, step: 8, payload: ['status' => 'resolving_areas']);
+
+        // Resolve zip codes, when possible
+        $db->executeStatement('
+            UPDATE community_contacts c
+            SET area_id = (SELECT id FROM areas WHERE tree_root = c.address_country_id AND name = c.address_zip_code)
+            WHERE c.organization_id = '.$organization->getId().' AND c.address_country_id IS NOT NULL AND c.address_zip_code IS NOT NULL AND c.email IN (
+                SELECT DISTINCT email FROM '.$tableName.'
+            )
+        ');
+
+        // Use countries otherwise, when possible
+        $db->executeStatement('
+            UPDATE community_contacts c
+            SET area_id = address_country_id
+            WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.address_country_id IS NOT NULL AND c.email IN (
+                SELECT DISTINCT email FROM '.$tableName.'
+            )
+        ');
+
+        // Set default area if configured
+        if ($default = $import->getArea()) {
+            $db->executeStatement('
+                UPDATE community_contacts c
+                SET area_id = '.$default->getId().'
+                WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.email IN (
+                    SELECT DISTINCT email FROM '.$tableName.'
+                )
+            ');
+        }
+
+        /*
+         * Clean (not in try/catch to keep the table in case of failure for debug)
+         */
+        $this->jobRepository->setJobStep($jobId, step: 9, payload: ['status' => 'cleaning']);
+        @unlink($localFile);
+        $db->executeStatement('DROP TABLE IF EXISTS '.$tableName);
+
+        /*
+         * Stats count
+         */
+        $this->bus->dispatch(new RefreshContactStatsMessage($organization->getId()));
+
+        /*
+         * Indexing
+         */
+        $orgaUuid = $organization->getUuid()->toRfc4122();
+
+        // Creating indexing table
+        $this->jobRepository->setJobStep($jobId, step: 9, payload: ['status' => 'indexing_populating']);
+        $this->crmIndexer->resetIndexingTable();
+        $this->crmIndexer->populateIndexingTableForOrganization($organization->getId());
+
+        // Dumping indexing data locally
+        $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_dumping']);
+        $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
+
+        // Creating ndjson batches
+        $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_batching']);
+
+        // Create empty batches to ensure the creation of an index of organizations even without contacts
+        $batches = [$orgaUuid => []];
+
+        // Override with actual batches for organizations with contacts
+        foreach ($this->crmIndexer->createNdJsonBatchesFromFile($dumpedFilename) as $uuid => $filenames) {
+            $batches[$uuid] = $filenames;
+        }
+
+        // Create new index version
+        $this->jobRepository->setJobStep($jobId, step: 12, payload: ['status' => 'indexing_uploading']);
+        $newVersion = $this->crmIndexer->createIndexVersion($orgaUuid);
+
+        // Upload ndjson files
+        $tasks = [];
+        foreach ($batches[$orgaUuid] as $file) {
+            $tasks[] = $this->crmIndexer->indexFile($orgaUuid, $newVersion, $file);
+        }
+
+        // Wait for indexing to finish
+        $this->jobRepository->setJobStep($jobId, step: 13, payload: ['status' => 'indexing_waiting']);
+        if ($tasks) {
+            $this->crmIndexer->waitForIndexing($tasks);
+        }
+
+        // Create organization members search keys and swap live index version
+        $this->crmIndexer->bumpIndexVersion($orgaUuid, $newVersion);
+
+        $this->jobRepository->finishJob($jobId);
 
         return true;
     }
@@ -153,161 +402,158 @@ final class ImportHandler
         return new File($tempFile);
     }
 
-    private function createApiDataPayload(Import $import, array $line): ContactApiData
+    private function normalizeValue(string $type, $value, ?string $country): ?string
     {
-        $data = new ContactApiData();
-        $data->metadataSource = 'import:'.$import->getId();
-        $data->metadataTags = [];
+        $v = u($value)->trim()->replace('`', '')->replace('×', '')->replace('✂', '');
 
-        $columnsTypes = $import->getHead()->getMatchedColumns();
-
-        foreach ($line as $column => $value) {
-            $this->mapValue($data, $columnsTypes[$column] ?? 'ignored', trim($value));
-        }
-
-        return $data;
-    }
-
-    private function mapValue(ContactApiData $data, string $type, $value)
-    {
         switch ($type) {
             case 'ignored':
-                return;
+                return null;
 
             case 'email':
-                $data->email = u($value)->slice(0, 250)->toString();
-                break;
+                return $v->slice(0, 250)->lower()->toString();
 
             case 'profileFormalTitle':
-                $data->profileFormalTitle = u($value)->slice(0, 20)->toString();
-                break;
+                return $v->slice(0, 20)->toString();
+
+            case 'addressZipCode':
+                return $v->replace(' ', '')->slice(0, 20)->toString();
 
             case 'profileFirstName':
-                $data->profileFirstName = u($value)->slice(0, 150)->toString();
-                break;
-
             case 'profileMiddleName':
-                $data->profileMiddleName = u($value)->slice(0, 150)->toString();
-                break;
-
             case 'profileLastName':
-                $data->profileLastName = u($value)->slice(0, 150)->toString();
-                break;
+            case 'profileCompany':
+            case 'profileJobTitle':
+            case 'socialFacebook':
+            case 'socialTwitter':
+            case 'socialLinkedIn':
+            case 'socialTelegram':
+            case 'socialWhatsapp':
+            case 'addressStreetLine1':
+            case 'addressStreetLine2':
+                return $v->slice(0, 150)->toString();
+
+            case 'profileFirstNameSlug':
+            case 'profileMiddleNameSlug':
+            case 'profileLastNameSlug':
+            case 'profileCompanySlug':
+            case 'profileJobTitleSlug':
+            case 'addressStreetLine1Slug':
+            case 'addressStreetLine2Slug':
+                return $this->slugger->slug($v->slice(0, 150))->lower()->toString();
+
+            case 'addressCity':
+                return Address::formatCityName($v->slice(0, 150)->toString());
+
+            case 'addressCountry':
+            case 'contactPhone':
+            case 'contactWorkPhone':
+                return $v->slice(0, 50)->toString();
+
+            case 'parsedContactPhone':
+            case 'parsedContactWorkPhone':
+                $parsed = PhoneNumber::parse($v->slice(0, 50)->toString(), $country ?: 'FR');
+
+                return $parsed ? PhoneNumber::format($parsed) : '';
 
             case 'profileBirthdate':
                 try {
-                    $data->profileBirthdate = (new \DateTime($value))->format('Y-m-d');
-                } catch (\Exception $e) {
+                    return (new \DateTime($v->toString()))->format('Y-m-d');
+                } catch (\Exception) {
+                    return null;
                 }
-                break;
 
             case 'profileGender':
                 // Try to guess the gender based on the first letter of the word
                 $map = ['h' => 'male', 'm' => 'male', 'f' => 'female'];
-                $data->profileGender = $map[u($value)->slice(0, 1)->lower()->toString()] ?? null;
+
+                return $map[$v->slice(0, 1)->lower()->toString()] ?? null;
+
+            case 'settingsReceiveNewsletters':
+            case 'settingsReceiveSms':
+            case 'settingsReceiveCalls':
+                $value = $v->lower()->toString();
+
+                if (!$value
+                    || '0' === $value
+                    || 'false' === $value
+                    || 'f' === $value
+                    || 'null' === $value
+                    || 'n' === $value
+                    || 'non' === $value
+                    || 'no' === $value) {
+                    return '0';
+                }
+
+                return '1';
+
+            case 'metadataComment':
+            case 'metadataTag':
+                return $v->toString();
+
+            case 'metadataTagsList':
+                return u(',')->join(array_map(
+                    static fn (UnicodeString $s) => $s->trim(),
+                    $v->split(','),
+                ));
+        }
+
+        throw new \InvalidArgumentException('Invalid type '.$type);
+    }
+
+    private function applyInsertMapping(ClassMetadata $classMetadata, array $mapping, string $type): array
+    {
+        switch ($type) {
+            case 'settingsReceiveNewsletters':
+            case 'settingsReceiveSms':
+            case 'settingsReceiveCalls':
+                $mapping[$classMetadata->getColumnName($type)] = '(CASE WHEN '.strtolower($type).' = \'1\' THEN true ELSE false END)';
                 break;
 
-            case 'profileCompany':
-                $data->profileCompany = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'profileJobTitle':
-                $data->profileJobTitle = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'contactPhone':
-                $data->contactPhone = u($value)->slice(0, 50)->toString();
-                break;
-
-            case 'contactWorkPhone':
-                $data->contactWorkPhone = u($value)->slice(0, 50)->toString();
-                break;
-
-            case 'socialFacebook':
-                $data->socialFacebook = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'socialTwitter':
-                $data->socialTwitter = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'socialLinkedIn':
-                $data->socialLinkedIn = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'socialTelegram':
-                $data->socialTelegram = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'socialWhatsapp':
-                $data->socialWhatsapp = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'addressStreetLine1':
-                $data->addressStreetLine1 = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'addressStreetLine2':
-                $data->addressStreetLine2 = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'addressZipCode':
-                $data->addressZipCode = u($value)->slice(0, 150)->toString();
-                break;
-
-            case 'addressCity':
-                $data->addressCity = u($value)->slice(0, 150)->toString();
+            case 'profileBirthdate':
+                $mapping[$classMetadata->getColumnName($type)] = strtolower($type).'::date';
                 break;
 
             case 'addressCountry':
-                $data->addressCountry = u($value)->slice(0, 50)->toString();
+                $mapping['address_country_id'] = '(SELECT a.id FROM areas a '.
+                    'WHERE a.type = \'country\' AND '.
+                    '(LOWER(addresscountry) = LOWER(a.code) or LOWER(addresscountry) = LOWER(a.name)) '.
+                    'LIMIT 1)';
                 break;
 
-            case 'settingsReceiveNewsletters':
-                $data->settingsReceiveNewsletters = $this->normalizeBoolean($value);
-                break;
-
-            case 'settingsReceiveSms':
-                $data->settingsReceiveSms = $this->normalizeBoolean($value);
-                break;
-
-            case 'settingsReceiveCalls':
-                $data->settingsReceiveCalls = $this->normalizeBoolean($value);
-                break;
-
+            case 'email':
+            case 'profileFormalTitle':
+            case 'profileFirstName':
+            case 'profileMiddleName':
+            case 'profileLastName':
+            case 'profileCompany':
+            case 'profileJobTitle':
+            case 'profileGender':
+            case 'contactPhone':
+            case 'contactWorkPhone':
+            case 'parsedContactPhone':
+            case 'parsedContactWorkPhone':
+            case 'socialFacebook':
+            case 'socialTwitter':
+            case 'socialLinkedIn':
+            case 'socialTelegram':
+            case 'socialWhatsapp':
+            case 'addressStreetLine1':
+            case 'addressStreetLine2':
+            case 'addressZipCode':
+            case 'addressCity':
             case 'metadataComment':
-                $data->metadataComment = $value;
+            case 'profileFirstNameSlug':
+            case 'profileMiddleNameSlug':
+            case 'profileLastNameSlug':
+            case 'profileCompanySlug':
+            case 'profileJobTitleSlug':
+            case 'addressStreetLine1Slug':
+            case 'addressStreetLine2Slug':
+                $mapping[$classMetadata->getColumnName($type)] = strtolower($type);
                 break;
-
-            case 'metadataTagsList':
-                foreach (array_map('trim', explode(',', $value)) as $tag) {
-                    $data->metadataTags[] = $tag;
-                }
-
-                break;
-
-            case 'metadataTag':
-                $data->metadataTags[] = $value;
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid type '.$type);
         }
-    }
 
-    private function normalizeBoolean(string $value): bool
-    {
-        $value = strtolower(trim($value));
-
-        return !(
-            !$value
-            || '0' === $value
-            || 'false' === $value
-            || 'f' === $value
-            || 'null' === $value
-            || 'n' === $value
-            || 'non' === $value
-            || 'no' === $value
-        );
+        return $mapping;
     }
 }

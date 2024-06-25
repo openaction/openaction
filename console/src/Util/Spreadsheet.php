@@ -2,108 +2,49 @@
 
 namespace App\Util;
 
-use OpenSpout\Common\Entity\Row;
-use OpenSpout\Reader\Common\Creator\ReaderEntityFactory;
-use OpenSpout\Reader\ReaderInterface;
-use OpenSpout\Reader\SheetInterface;
+use avadim\FastExcelReader\Excel;
 use Symfony\Component\HttpFoundation\File\File;
+use Traversable;
 
-class Spreadsheet implements \Iterator
+class Spreadsheet implements \IteratorAggregate, \Countable
 {
-    private \Iterator $rows;
-
-    private function __construct(\Iterator $rows)
+    private function __construct(private readonly Excel $stream)
     {
-        $this->rows = $rows;
+        $this->stream->dateFormatter('Y-m-d H:i:s');
     }
 
     public static function open(File $file): ?self
     {
-        if (!$sheet = self::openFirstSheet(self::createReader($file))) {
-            return null;
-        }
-
-        return new self($sheet->getRowIterator());
+        return new self(Excel::open($file->getPathname()));
     }
 
     public function getFirstLines(int $limit): array
     {
         $lines = [];
-        foreach ($this as $row) {
+        foreach ($this->stream->sheet()?->nextRow(false, Excel::KEYS_ZERO_BASED, rowLimit: $limit) as $row) {
             $lines[] = $row;
-
-            if (count($lines) === $limit) {
-                return $lines;
-            }
         }
 
         return $lines;
     }
 
-    public function current(): ?array
+    public function getIterator(): Traversable
     {
-        if (!$row = $this->rows->current()) {
-            return null;
-        }
-
-        return self::normalizeRow($row);
-    }
-
-    public function next(): void
-    {
-        $this->rows->next();
-    }
-
-    public function key(): int
-    {
-        return $this->rows->key() - 1;
-    }
-
-    public function valid(): bool
-    {
-        return $this->rows->valid();
-    }
-
-    public function rewind(): void
-    {
-        $this->rows->rewind();
-    }
-
-    private static function createReader(File $file): ReaderInterface
-    {
-        $reader = match ($file->getMimeType()) {
-            'application/vnd.oasis.opendocument.spreadsheet' => ReaderEntityFactory::createODSReader(),
-            default => ReaderEntityFactory::createXLSXReader(),
-        };
-
-        $reader->open($file->getPathname());
-
-        return $reader;
-    }
-
-    private static function openFirstSheet(ReaderInterface $reader): ?SheetInterface
-    {
-        $iterator = $reader->getSheetIterator();
-        $iterator->rewind();
-
-        return $iterator->valid() ? $iterator->current() : null;
-    }
-
-    private static function normalizeRow(Row $row): array
-    {
-        $data = [];
-
-        $contentReached = false;
-        foreach (array_reverse($row->toArray()) as $cell) {
-            if (is_object($cell) || trim((string) $cell)) {
-                $contentReached = true;
-            }
-
-            if ($contentReached) {
-                $data[] = $cell instanceof \DateTime ? $cell->format('Y-m-d H:i:s') : trim($cell);
+        $rows = [];
+        foreach ($this->stream->readRows(false, Excel::KEYS_ZERO_BASED) as $row) {
+            foreach ($row as $cell) {
+                if ($cell) {
+                    $rows[] = $row;
+                    continue 2;
+                }
             }
         }
 
-        return array_reverse($data);
+        return new \ArrayIterator($rows);
+    }
+
+    public function count(): int
+    {
+        return $this->stream->sheet()?->countRows();
     }
 }
