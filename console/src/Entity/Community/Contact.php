@@ -28,9 +28,10 @@ use function Symfony\Component\String\u;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
-#[ORM\Table('community_contacts')]
-#[ORM\Index(name: 'community_contacts_email_idx', columns: ['email'])]
-#[ORM\Index(name: 'community_contacts_email_organization_idx', columns: ['email', 'organization_id'])]
+#[ORM\Table('community_contacts', uniqueConstraints: [
+    new ORM\UniqueConstraint('community_contacts_email_organization_unique_idx', ['email', 'organization_id']),
+])]
+#[ORM\Index(columns: ['email'], name: 'community_contacts_email_idx')]
 class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Searchable
 {
     use Util\EntityIdTrait;

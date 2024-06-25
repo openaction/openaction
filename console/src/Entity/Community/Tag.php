@@ -16,9 +16,10 @@ use function Symfony\Component\String\u;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-#[ORM\Table('community_tags')]
-#[ORM\Index(name: 'community_tags_slug_idx', columns: ['slug'])]
-#[ORM\Index(name: 'community_tags_name_organization_idx', columns: ['name', 'organization_id'])]
+#[ORM\Table('community_tags', uniqueConstraints: [
+    new ORM\UniqueConstraint('community_tags_name_organization_idx', ['name', 'organization_id']),
+])]
+#[ORM\Index(columns: ['slug'], name: 'community_tags_slug_idx')]
 class Tag
 {
     use Util\EntityIdTrait;
