@@ -2617,7 +2617,7 @@ class TestFixtures extends AbstractFixtures
                 'profileFirstName' => 'John',
                 'profileMiddleName' => 'Similar',
                 'profileLastName' => 'Email',
-                'email' => 'john@lennon.com',
+                'email' => 'john2@lennon.com',
             ],
             'd01342a4-cd62-4d86-b3e9-2d582db7797f' => [
                 'orga' => $this->orgas['682746ea-3e2f-4e5b-983b-6548258a2033'],
