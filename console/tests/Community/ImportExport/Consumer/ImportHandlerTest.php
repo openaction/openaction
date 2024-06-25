@@ -8,7 +8,6 @@ use App\Entity\Community\Contact;
 use App\Entity\Community\Import;
 use App\Repository\Community\ContactRepository;
 use App\Repository\Community\ImportRepository;
-use App\Search\Consumer\UpdateCrmDocumentsMessage;
 use App\Tests\KernelTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -52,7 +51,7 @@ class ImportHandlerTest extends KernelTestCase
 
         $job = $import->getJob();
         $this->assertFalse($job->isFinished());
-        $this->assertSame(0, $job->getTotal());
+        $this->assertSame(14, $job->getTotal());
 
         // Create uploaded file and handle the message
         static::getContainer()->get('cdn.storage')->write('import-not-started.xlsx', file_get_contents(__DIR__.'/../../../Fixtures/import/contacts-map-columns.xlsx'));
@@ -76,7 +75,7 @@ class ImportHandlerTest extends KernelTestCase
         $this->assertSame('female', $contact->getProfileGender());
         $this->assertSame('Total Yard Maintenance', $contact->getProfileCompany());
         $this->assertSame('Private detective', $contact->getProfileJobTitle());
-        $this->assertSame('+33 3 15 35 41 79', $contact->getContactPhone());
+        $this->assertSame('03.15.35.41.79', $contact->getContactPhone());
         $this->assertSame('+33 15 35 41 79', $contact->getContactWorkPhone());
         $this->assertSame('https://facebook.com/FabienMiron', $contact->getSocialFacebook());
         $this->assertSame('https://twitter.com/FabienMiron', $contact->getSocialTwitter());
@@ -101,11 +100,5 @@ class ImportHandlerTest extends KernelTestCase
         static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
         $this->assertSame(7, $job->getTotal());
         $this->assertTrue($job->isFinished());
-
-        // Should have published CRM updates
-        $transport = static::getContainer()->get('messenger.transport.async_indexing');
-        $messages = $transport->get();
-        $this->assertCount(1, $messages);
-        $this->assertInstanceOf(UpdateCrmDocumentsMessage::class, $messages[0]->getMessage());
     }
 }

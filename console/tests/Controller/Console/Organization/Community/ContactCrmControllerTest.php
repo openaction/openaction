@@ -114,7 +114,7 @@ class ContactCrmControllerTest extends WebTestCase
         $client->request('GET', $statusUrl);
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            ['finished' => false, 'step' => 0, 'total' => 1, 'progress' => 0, 'payload' => []],
+            ['finished' => false, 'step' => 0, 'total' => 2, 'progress' => 0, 'payload' => []],
             Json::decode($client->getResponse()->getContent())
         );
     }
@@ -168,7 +168,7 @@ class ContactCrmControllerTest extends WebTestCase
         $client->request('GET', $statusUrl);
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            ['finished' => false, 'step' => 0, 'total' => 1, 'progress' => 0, 'payload' => []],
+            ['finished' => false, 'step' => 0, 'total' => 2, 'progress' => 0, 'payload' => []],
             Json::decode($client->getResponse()->getContent())
         );
     }

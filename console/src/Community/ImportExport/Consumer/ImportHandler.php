@@ -140,7 +140,19 @@ final class ImportHandler
 
             $rowValues = [];
             foreach ($columnsMapping as $type => $key) {
-                $rowValues[] = !empty($row[$key]) ? $db->quote($this->normalizeValue($type, $row[$key], $country)) : 'null';
+                if (empty($row[$key])) {
+                    $rowValues[] = 'null';
+
+                    continue;
+                }
+
+                if (null === $normalized = $this->normalizeValue($type, $row[$key], $country)) {
+                    $rowValues[] = 'null';
+
+                    continue;
+                }
+
+                $rowValues[] = $db->quote($normalized);
             }
 
             $sqlValues[] = '('.implode(',', $rowValues).')';
@@ -281,6 +293,7 @@ final class ImportHandler
                 ) i
                 LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
                 LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                WHERE t.id IS NOT NULL AND c.id IS NOT NULL
                 ON CONFLICT DO NOTHING
             ');
         }
@@ -295,6 +308,7 @@ final class ImportHandler
                 ) i
                 LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
                 LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                WHERE t.id IS NOT NULL AND c.id IS NOT NULL
                 ON CONFLICT DO NOTHING
             ');
         }
@@ -358,6 +372,12 @@ final class ImportHandler
         // Dumping indexing data locally
         $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_dumping']);
         $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
+
+        if (!$dumpedFilename) {
+            $this->logger->error('Import indexing dump failed', ['id' => $message->getImportId()]);
+
+            return true;
+        }
 
         // Creating ndjson batches
         $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_batching']);
@@ -452,9 +472,12 @@ final class ImportHandler
 
             case 'parsedContactPhone':
             case 'parsedContactWorkPhone':
-                $parsed = PhoneNumber::parse($v->slice(0, 50)->toString(), $country ?: 'FR');
+                $parsed = PhoneNumber::parse(
+                    $v->replace('.', '')->replace(' ', '')->replace('-', '')->slice(0, 50)->toString(),
+                    $country ?: 'FR',
+                );
 
-                return $parsed ? PhoneNumber::format($parsed) : '';
+                return $parsed ? PhoneNumber::format($parsed) : null;
 
             case 'profileBirthdate':
                 try {

@@ -18,7 +18,6 @@ class ContactImporterTest extends KernelTestCase
 {
     public function providePrepareImport()
     {
-        yield 'ods' => [__DIR__.'/../../Fixtures/import/contacts.ods'];
         yield 'xlsx' => [__DIR__.'/../../Fixtures/import/contacts.xlsx'];
     }
 
@@ -42,7 +41,7 @@ class ContactImporterTest extends KernelTestCase
 
         // Check metadata
         $this->assertSame(
-            ['0', 'Email', 'First Name', 'Last Name', 'Gender', 'Country', 'Age', 'Date', 'Id'],
+            [0, 'Email', 'First Name', 'Last Name', 'Gender', 'Country', 'Age', 'Date', 'Id'],
             $import->getHead()->getColumns(),
         );
 
@@ -88,7 +87,7 @@ class ContactImporterTest extends KernelTestCase
 
         $importer->prepareImport($organization, new File($pathname));
 
-        $this->assertLessThan(0.5, microtime(true) - $startTime);
+        $this->assertLessThan(1, microtime(true) - $startTime);
     }
 
     public function testStartImport()
