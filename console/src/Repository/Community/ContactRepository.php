@@ -62,12 +62,16 @@ class ContactRepository extends ServiceEntityRepository
         ]);
     }
 
-    public function findOneByAnyEmail(Organization $orga, string $email): ?Contact
+    public function findOneByAnyEmail(Organization $orga, string $email, bool $onlyMainEmail = false): ?Contact
     {
         $normalized = Contact::normalizeEmail($email);
 
         if ($contact = $this->findOneBy(['organization' => $orga, 'email' => $normalized])) {
             return $contact;
+        }
+
+        if ($onlyMainEmail) {
+            return null;
         }
 
         $id = $this->_em->getConnection()->executeQuery(
