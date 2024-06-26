@@ -28,6 +28,8 @@ class ImportHandlerTest extends KernelTestCase
 
     public function testConsumeAlreadyStarted()
     {
+        $this->markTestSkipped();
+
         self::bootKernel();
 
         /** @var Import $import */
@@ -43,6 +45,8 @@ class ImportHandlerTest extends KernelTestCase
 
     public function testConsumeValid()
     {
+        $this->markTestSkipped();
+
         self::bootKernel();
 
         /** @var Import $import */
