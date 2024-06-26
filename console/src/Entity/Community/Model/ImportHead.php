@@ -44,7 +44,7 @@ class ImportHead
         return $this->matchedColumns;
     }
 
-    public function setMatchedColumns(array $matchedColumns)
+    public function setMatchedColumns(array $matchedColumns): void
     {
         $this->matchedColumns = $matchedColumns;
     }

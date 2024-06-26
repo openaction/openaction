@@ -49,7 +49,16 @@ class ContactImporter
             $columns[$key] = $column;
         }
 
-        $dataLines = array_slice($firstLines, 0, 5);
+        // Create data lines
+        $dataLines = [];
+        foreach (array_slice($firstLines, 0, 5) as $row) {
+            $dataLine = array_fill(0, count($columns), '');
+            foreach ($row as $key => $value) {
+                $dataLine[$key] = $value;
+            }
+
+            $dataLines[] = $dataLine;
+        }
 
         $head = new ImportHead($columns, $dataLines, $this->guessColumnsTypes($columns, $dataLines));
 
@@ -84,6 +93,7 @@ class ContactImporter
 
         $this->em->persist($import);
         $this->em->flush();
+
         $this->bus->dispatch(new ImportMessage($import->getId()));
     }
 

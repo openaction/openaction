@@ -159,7 +159,7 @@ class CrmIndexer
      *
      * @return string The pathname of the dumped file.
      */
-    public function dumpIndexingTableToFile(): string
+    public function dumpIndexingTableToFile(): ?string
     {
         return $this->dataParser->dumpIndexingTableToFile();
     }

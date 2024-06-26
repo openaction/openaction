@@ -8,6 +8,7 @@ use App\Search\CrmIndexer;
 use App\Util\Json;
 use App\Util\Uid;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Uid\Uuid;
 
@@ -64,11 +65,11 @@ class CrmDataParser
         'clicked_emails',
     ];
 
-    public function __construct(private Connection $db, private string $databaseUrl, private string $cacheDir)
+    public function __construct(private readonly Connection $db, private readonly string $databaseUrl, private readonly string $cacheDir)
     {
     }
 
-    public function dumpIndexingTableToFile(): string
+    public function dumpIndexingTableToFile(): ?string
     {
         $details = parse_url($this->databaseUrl);
 
@@ -76,16 +77,20 @@ class CrmDataParser
             unlink($filename);
         }
 
-        $process = new Process([
-            'psql', '-U', $details['user'], '-h', $details['host'], '-p', $details['port'],
-            '-d', ltrim($details['path'], '/'), '--set=sslmode=require', '-c',
-            '\copy (SELECT * FROM '.CrmIndexer::INDEXING_TABLE.' ORDER BY organization) to \''.$filename.'\' DELIMITER \'`\';',
-        ]);
+        try {
+            $process = new Process([
+                'psql', '-U', $details['user'], '-h', $details['host'], '-p', $details['port'],
+                '-d', ltrim($details['path'], '/'), '--set=sslmode=require', '-c',
+                '\copy (SELECT * FROM '.CrmIndexer::INDEXING_TABLE.' ORDER BY organization) to \''.$filename.'\' DELIMITER \'`\';',
+            ]);
 
-        $process->setEnv(['PGPASSWORD' => $details['pass']]);
-        $process->setTimeout(null);
-        $process->setIdleTimeout(null);
-        $process->mustRun();
+            $process->setEnv(['PGPASSWORD' => $details['pass']]);
+            $process->setTimeout(null);
+            $process->setIdleTimeout(null);
+            $process->mustRun();
+        } catch (ProcessFailedException) {
+            return null;
+        }
 
         return $filename;
     }

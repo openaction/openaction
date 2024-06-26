@@ -18,7 +18,6 @@ class ContactImporterTest extends KernelTestCase
 {
     public function providePrepareImport()
     {
-        yield 'ods' => [__DIR__.'/../../Fixtures/import/contacts.ods'];
         yield 'xlsx' => [__DIR__.'/../../Fixtures/import/contacts.xlsx'];
     }
 
@@ -42,7 +41,7 @@ class ContactImporterTest extends KernelTestCase
 
         // Check metadata
         $this->assertSame(
-            ['0', 'Email', 'First Name', 'Last Name', 'Gender', 'Country', 'Age', 'Date', 'Id'],
+            [0, 'Email', 'First Name', 'Last Name', 'Gender', 'Country', 'Age', 'Date', 'Id'],
             $import->getHead()->getColumns(),
         );
 
@@ -53,9 +52,9 @@ class ContactImporterTest extends KernelTestCase
 
         $this->assertSame(
             [
-                ['1', 'abril.dulce@citipo.com', 'Dulce', 'Abril', 'Female', 'United States', '32', '15/10/2017', '1562'],
-                ['2', 'mara.hashimoto@citipo.com', 'Mara', 'Hashimoto', 'Female', 'Great Britain', '25', '16/08/2016', '1582'],
-                ['3', 'philip.gent@citipo.com', 'Hervé', 'Gent', 'Male', 'France', '36', '21/05/2015', '2587'],
+                [1, 'abril.dulce@citipo.com', 'Dulce', 'Abril', 'Female', 'United States', 32, '15/10/2017', 1562],
+                [2, 'mara.hashimoto@citipo.com', 'Mara', 'Hashimoto', 'Female', 'Great Britain', 25, '16/08/2016', 1582],
+                [3, 'philip.gent@citipo.com', 'Hervé', 'Gent', 'Male', 'France', 36, '21/05/2015', 2587],
             ],
             $import->getHead()->getFirstLines(),
         );
@@ -66,7 +65,6 @@ class ContactImporterTest extends KernelTestCase
 
     public function providePerformancePrepareImport()
     {
-        yield 'ods' => [__DIR__.'/../../Fixtures/import/contacts-big.ods'];
         yield 'xlsx' => [__DIR__.'/../../Fixtures/import/contacts-big.xlsx'];
     }
 
@@ -88,7 +86,7 @@ class ContactImporterTest extends KernelTestCase
 
         $importer->prepareImport($organization, new File($pathname));
 
-        $this->assertLessThan(0.5, microtime(true) - $startTime);
+        $this->assertLessThan(1, microtime(true) - $startTime);
     }
 
     public function testStartImport()

@@ -28,6 +28,7 @@ class JobControllerTest extends WebTestCase
             [
                 'finished' => true,
                 'step' => 1,
+                'total' => 1,
                 'progress' => 1,
                 'payload' => ['key' => 'value'],
             ],

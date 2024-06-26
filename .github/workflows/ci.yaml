@@ -158,7 +158,7 @@ jobs:
               run: docker-compose exec -T console bin/console app:search:index-crm
 
             - name: PHPUnit
-              run: docker-compose exec -T console bin/phpunit
+              run: docker-compose exec -T console bin/phpunit --debug
 
     # Release
     console-release:

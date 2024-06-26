@@ -16,6 +16,7 @@ class JobController extends AbstractController
         return new JsonResponse([
             'finished' => $job->isFinished(),
             'step' => $job->getStep(),
+            'total' => $job->getTotal(),
             'progress' => $job->getProgress(),
             'payload' => $job->getPayload(),
         ]);
