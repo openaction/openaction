@@ -300,17 +300,24 @@ class ContactController extends AbstractApiController
             ]
         )
     )]
-    public function status(string $email)
+    public function status(Request $request, string $email)
     {
-        if ($contact = $this->repository->findOneByAnyEmail($this->getUser()->getOrganization(), $email)) {
-            return new JsonResponse([
-                '_resource' => 'ContactStatus',
-                'status' => $contact->isMember() ? 'member' : 'contact',
-                'id' => Uid::toBase62($contact->getUuid()),
-            ]);
+        $contact = $this->repository->findOneByAnyEmail(
+            $this->getUser()?->getOrganization(),
+            $email,
+            onlyMainEmail: $request->query->getBoolean('onlyMainEmail'),
+        );
+
+        if (!$contact) {
+            return new JsonResponse(['_resource' => 'ContactStatus', 'status' => 'not_found', 'id' => null, 'tags' => []]);
         }
 
-        return new JsonResponse(['_resource' => 'ContactStatus', 'status' => 'not_found', 'id' => null]);
+        return new JsonResponse([
+            '_resource' => 'ContactStatus',
+            'status' => $contact->isMember() ? 'member' : 'contact',
+            'tags' => $contact->getMetadataTagsNames(),
+            'id' => Uid::toBase62($contact->getUuid()),
+        ]);
     }
 
     /**
