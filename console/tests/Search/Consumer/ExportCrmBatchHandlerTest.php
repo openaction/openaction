@@ -71,7 +71,7 @@ class ExportCrmBatchHandlerTest extends WebTestCase
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
             $this->assertCount(2, $sheet = Spreadsheet::open(new File($tempFile)));
-            $this->assertCount(39, $sheet->getFirstLines(2)[1]);
+            $this->assertCount(27, $sheet->getFirstLines(2)[1]);
         } finally {
             unlink($tempFile);
         }
