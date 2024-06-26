@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ImportHandlerTest extends KernelTestCase
 {
-    public function testConsumeInvalid()
+    public function testConsumeInvalid(): void
     {
         self::bootKernel();
 
@@ -26,10 +26,8 @@ class ImportHandlerTest extends KernelTestCase
         $this->assertCount(0, $messages);
     }
 
-    public function testConsumeAlreadyStarted()
+    public function testConsumeAlreadyStarted(): void
     {
-        $this->markTestSkipped();
-
         self::bootKernel();
 
         /** @var Import $import */
@@ -43,10 +41,8 @@ class ImportHandlerTest extends KernelTestCase
         $handler(new ImportMessage($import->getId()));
     }
 
-    public function testConsumeValid()
+    public function testConsumeValid(): void
     {
-        $this->markTestSkipped();
-
         self::bootKernel();
 
         /** @var Import $import */

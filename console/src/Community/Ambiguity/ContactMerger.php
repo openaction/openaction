@@ -27,9 +27,6 @@ class ContactMerger
         /** @var Contact $oldest */
         $oldest = $ambiguity->getOldest();
 
-        // Email
-        $this->mergeEmail($oldest, $newest, $type);
-
         // Area
         $this->mergeArea($oldest, $newest);
 
@@ -58,11 +55,16 @@ class ContactMerger
         // Other fields
         $this->mergeOtherFields($oldest, $newest);
 
-        // Persist
+        // Persist data changes, remove newest contact
         $this->em->wrapInTransaction(function () use ($ambiguity) {
             $this->repository->removeRelationshipsToContactNewest($ambiguity);
             $this->repository->applyUpdateToContactNewest($ambiguity);
         });
+
+        // Persist email only after the newest contact has been removed to avoid triggering duplicate key
+        $this->mergeEmail($oldest, $newest, $type);
+        $this->em->persist($oldest);
+        $this->em->flush();
 
         // Update CRM search index
         $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($oldest));
