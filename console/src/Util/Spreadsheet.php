@@ -20,12 +20,17 @@ class Spreadsheet implements \IteratorAggregate, \Countable
 
     public function getFirstLines(int $limit): array
     {
-        $lines = [];
+        $rows = [];
         foreach ($this->stream->sheet()?->nextRow(false, Excel::KEYS_ZERO_BASED, rowLimit: $limit) as $row) {
-            $lines[] = $row;
+            foreach ($row as $cell) {
+                if ($cell) {
+                    $rows[] = $row;
+                    continue 2;
+                }
+            }
         }
 
-        return $lines;
+        return $rows;
     }
 
     public function getIterator(): Traversable
@@ -45,6 +50,6 @@ class Spreadsheet implements \IteratorAggregate, \Countable
 
     public function count(): int
     {
-        return $this->stream->sheet()?->countRows();
+        return iterator_count($this->getIterator());
     }
 }

@@ -65,7 +65,7 @@ class ExportHandlerTest extends WebTestCase
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
             $this->assertCount(7, $sheet = Spreadsheet::open(new File($tempFile)));
-            $this->assertCount(42, $sheet->getFirstLines(2)[1]);
+            $this->assertCount(26, $sheet->getFirstLines(2)[1]);
         } finally {
             unlink($tempFile);
         }
@@ -111,7 +111,7 @@ class ExportHandlerTest extends WebTestCase
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
             $this->assertCount(4, $sheet = Spreadsheet::open(new File($tempFile)));
-            $this->assertCount(42, $sheet->getFirstLines(2)[1]);
+            $this->assertCount(26, $sheet->getFirstLines(2)[1]);
         } finally {
             unlink($tempFile);
         }
