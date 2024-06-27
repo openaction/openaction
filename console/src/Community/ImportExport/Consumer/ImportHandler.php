@@ -373,12 +373,6 @@ final class ImportHandler
         $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_dumping']);
         $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
 
-        if (!$dumpedFilename) {
-            $this->logger->error('Import indexing dump failed', ['id' => $message->getImportId()]);
-
-            return true;
-        }
-
         // Creating ndjson batches
         $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_batching']);
 
@@ -546,11 +540,11 @@ final class ImportHandler
 
                 // Use parsed phone and parsed work phone if parsed successfully, original value otherwise
             case 'contactPhone':
-                $mapping['contact_phone'] = '(CASE WHEN parsed_contact_phone IS NOT NULL THEN parsed_contact_phone ELSE contact_phone END)';
+                $mapping['contact_phone'] = '(CASE WHEN parsedcontactphone IS NOT NULL THEN parsedcontactphone ELSE contactphone END)';
                 break;
 
             case 'contactWorkPhone':
-                $mapping['contact_work_phone'] = '(CASE WHEN parsed_contact_work_phone IS NOT NULL THEN parsed_contact_work_phone ELSE contact_work_phone END)';
+                $mapping['contact_work_phone'] = '(CASE WHEN parsedcontactworkphone IS NOT NULL THEN parsedcontactworkphone ELSE contactworkphone END)';
                 break;
 
             case 'email':

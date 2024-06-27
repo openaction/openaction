@@ -157,8 +157,11 @@ jobs:
             - name: Prepare Meilisearch
               run: docker-compose exec -T console bin/console app:search:index-crm
 
-            - name: PHPUnit
-              run: docker-compose exec -T console bin/phpunit
+            - name: 'PHPUnit (group: transactions enabled)'
+              run: docker-compose exec -T console bin/phpunit --exclude-group without-transaction
+
+            - name: 'PHPUnit (group: transactions disabled)'
+              run: docker-compose exec -T console bin/phpunit --group without-transaction
 
     # Release
     console-release:

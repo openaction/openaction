@@ -25,15 +25,13 @@ class ContactMergerTest extends KernelTestCase
 
     public function setUp(): void
     {
-        $this->markTestSkipped();
-
         self::bootKernel();
 
         $this->em = self::getContainer()->get(EntityManagerInterface::class);
         $this->contactMerger = self::getContainer()->get(ContactMerger::class);
     }
 
-    public function provideMergeEmail()
+    public function provideMergeEmail(): iterable
     {
         yield [
             ['email' => 'oldest1@citipo.email', 'contactAdditionalEmails' => []],
@@ -49,20 +47,20 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeEmail
      */
-    public function testMergeEmail(array $oldest, array $newest)
+    public function testMergeEmail(array $oldest, array $newest): void
     {
-        [$ambiguity, $oldestEntity] = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
+        $ambiguity = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
 
         $this->contactMerger->merge($ambiguity, 'newest');
 
         $quantityAdditionalEmails = count($oldest['contactAdditionalEmails']) + 1;
-        $additionalEmails = $oldestEntity->getContactAdditionalEmails();
+        $additionalEmails = $ambiguity->getOldest()->getContactAdditionalEmails();
 
         $this->assertCount($quantityAdditionalEmails, $additionalEmails);
 
         $email = array_pop($additionalEmails);
         $this->assertSame($oldest['email'], $email);
-        $this->assertSame($newest['email'], $oldestEntity->getEmail());
+        $this->assertSame($newest['email'], $ambiguity->getOldest()->getEmail());
     }
 
     public function provideMergeSettings()
@@ -91,18 +89,18 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeSettings
      */
-    public function testMergeSettings(array $oldest, array $newest)
+    public function testMergeSettings(array $oldest, array $newest): void
     {
-        [$ambiguity, $oldestEntity] = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
+        $ambiguity = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
 
         $this->contactMerger->merge($ambiguity, 'newest');
 
-        $this->assertSame($newest['settingsReceiveNewsletters'], $oldestEntity->hasSettingsReceiveNewsletters());
-        $this->assertSame($newest['settingsReceiveSms'], $oldestEntity->hasSettingsReceiveSms());
-        $this->assertSame($newest['settingsReceiveCalls'], $oldestEntity->hasSettingsReceiveCalls());
+        $this->assertSame($newest['settingsReceiveNewsletters'], $ambiguity->getOldest()->hasSettingsReceiveNewsletters());
+        $this->assertSame($newest['settingsReceiveSms'], $ambiguity->getOldest()->hasSettingsReceiveSms());
+        $this->assertSame($newest['settingsReceiveCalls'], $ambiguity->getOldest()->hasSettingsReceiveCalls());
     }
 
-    public function provideMergeArea()
+    public function provideMergeArea(): iterable
     {
         yield [
             ['email' => 'oldest9@citipo.email', 'area' => 36778547219895752],
@@ -120,18 +118,18 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeArea
      */
-    public function testMergeArea(array $oldest, array $newest, int $area)
+    public function testMergeArea(array $oldest, array $newest, int $area): void
     {
         $oldest['area'] = $this->em->getRepository(Area::class)->find($oldest['area']);
         $newest['area'] = $this->em->getRepository(Area::class)->find($newest['area']);
-        [$ambiguity, $oldestEntity] = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
+        $ambiguity = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
 
         $this->contactMerger->merge($ambiguity, 'newest');
 
-        $this->assertSame($area, $oldestEntity->getArea()->getId());
+        $this->assertSame($area, $ambiguity->getOldest()->getArea()->getId());
     }
 
-    public function provideMergeTags()
+    public function provideMergeTags(): iterable
     {
         yield [
             '20e51b91-bdec-495d-854d-85d6e74fc75e',
@@ -143,7 +141,7 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeTags
      */
-    public function testMergeTags(string $oldestUuid, string $newestUuid, array $expectedTagsOldest)
+    public function testMergeTags(string $oldestUuid, string $newestUuid, array $expectedTagsOldest): void
     {
         $oldest = $this->em->getRepository(Contact::class)->findOneBy(['uuid' => $oldestUuid]);
         $newest = $this->em->getRepository(Contact::class)->findOneBy(['uuid' => $newestUuid]);
@@ -158,7 +156,7 @@ class ContactMergerTest extends KernelTestCase
         $this->assertNull($newest);
     }
 
-    public function provideMergeComment()
+    public function provideMergeComment(): iterable
     {
         yield [
             ['email' => 'oldest13@citipo.email', 'metadataComment' => 'Comment 1'],
@@ -169,17 +167,16 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeComment
      */
-    public function testMergeComment(array $oldest, array $newest)
+    public function testMergeComment(array $oldest, array $newest): void
     {
-        [$ambiguity, $oldestEntity] = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
-
+        $ambiguity = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
         $this->contactMerger->merge($ambiguity, 'newest');
 
         $comment = "{$oldest['metadataComment']}\n{$newest['metadataComment']}";
-        $this->assertSame($comment, $oldestEntity->getMetadataComment());
+        $this->assertSame($comment, $ambiguity->getOldest()->getMetadataComment());
     }
 
-    public function provideMergeCustomFields()
+    public function provideMergeCustomFields(): iterable
     {
         yield [
             ['email' => 'oldest15@citipo.email', 'metadataCustomFields' => ['hello' => 'moto', 'key' => 'value']],
@@ -190,44 +187,35 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeCustomFields
      */
-    public function testMergeCustomFields(array $oldest, array $newest)
+    public function testMergeCustomFields(array $oldest, array $newest): void
     {
-        [$ambiguity, $oldestEntity] = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
+        $ambiguity = $this->createContactsAndAmbiguity($oldest, $newest, static::CITIPO_ORG);
 
         $this->contactMerger->merge($ambiguity, 'newest');
 
-        $this->assertSame('value', $oldestEntity->getMetadataCustomFields()['key']);
-        $this->assertSame('merge_moto', $oldestEntity->getMetadataCustomFields()['hello']);
+        $this->assertSame('value', $ambiguity->getOldest()->getMetadataCustomFields()['key']);
+        $this->assertSame('merge_moto', $ambiguity->getOldest()->getMetadataCustomFields()['hello']);
     }
 
-    private function createContactsAndAmbiguity(array $oldestData, array $newestData, string $orga)
+    private function createContactsAndAmbiguity(array $oldestData, array $newestData, string $orga): Ambiguity
     {
-        $repo = $this->em->getRepository(Contact::class);
         $orga = $this->em->getRepository(Organization::class)->findOneBy(['uuid' => $orga]);
 
-        if (isset($oldestData['email']) && $c = $repo->findOneBy(['email' => $oldestData['email']])) {
-            $this->em->remove($c);
-            $this->em->flush();
-        }
-
-        if (isset($newestData['email']) && $c = $repo->findOneBy(['email' => $newestData['email']])) {
-            $this->em->remove($c);
-            $this->em->flush();
-        }
-
         $oldest = Contact::createFixture($oldestData + ['orga' => $orga]);
-        $newest = Contact::createFixture($newestData + ['orga' => $orga]);
-
         $this->em->persist($oldest);
+
+        $newest = Contact::createFixture($newestData + ['orga' => $orga]);
         $this->em->persist($newest);
+
         $ambiguity = $this->createAmbiguity($oldest, $newest, $orga);
 
         $this->em->flush();
+        $this->em->clear();
 
-        return [$ambiguity, $oldest, $newest];
+        return $this->em->find(Ambiguity::class, $ambiguity->getId());
     }
 
-    public function provideMergeOtherFields()
+    public function provideMergeOtherFields(): iterable
     {
         yield [
             '20e51b91-bdec-495d-854d-85d6e74fc75e',
@@ -238,7 +226,7 @@ class ContactMergerTest extends KernelTestCase
     /**
      * @dataProvider provideMergeOtherFields
      */
-    public function testMergeOtherFields(string $oldestUuid, string $newestUuid)
+    public function testMergeOtherFields(string $oldestUuid, string $newestUuid): void
     {
         $oldest = $this->em->getRepository(Contact::class)->findOneBy(['uuid' => $oldestUuid]);
         $newest = $this->em->getRepository(Contact::class)->findOneBy(['uuid' => $newestUuid]);
@@ -266,7 +254,7 @@ class ContactMergerTest extends KernelTestCase
         $this->assertSame('+33601020304', $oldest->getSocialWhatsapp());
     }
 
-    public function provideMergeUpdateRelationships()
+    public function provideMergeUpdateRelationships(): iterable
     {
         yield [
             ['email' => 'newest@citipo.email'],
@@ -303,7 +291,7 @@ class ContactMergerTest extends KernelTestCase
         int $countPhoningCampaignTarget,
         int $countTextingCampaignMessage,
         int $countFormAnswer,
-    ) {
+    ): void {
         $orga = $this->em->getRepository(Organization::class)->findOneBy(['uuid' => static::CITIPO_ORG]);
         $newest = $this->em->getRepository(Contact::class)->findOneBy(['uuid' => $newestUuid]);
         $oldest = Contact::createFixture($oldest + ['orga' => $orga]);
@@ -337,7 +325,7 @@ class ContactMergerTest extends KernelTestCase
         $this->assertSame($countFormAnswer, $this->em->getRepository(FormAnswer::class)->count(['contact' => $oldest]));
     }
 
-    private function createAmbiguity(Contact $oldest, Contact $newest, $orga, bool $flush = false)
+    private function createAmbiguity(Contact $oldest, Contact $newest, $orga, bool $flush = false): Ambiguity
     {
         if (!$orga instanceof Organization) {
             $orga = $this->em->getRepository(Organization::class)->findOneBy(['uuid' => $orga]);
