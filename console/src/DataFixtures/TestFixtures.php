@@ -2720,26 +2720,21 @@ class TestFixtures extends AbstractFixtures
         ];
 
         $items = [
-            // Not started
             'b25ca589-a613-4e62-ac0b-168b9bdf0339' => [
                 'orga' => $this->orgas['219025aa-7fe2-4385-ad8f-31f386720d10'],
                 'file' => $this->uploads['import-not-started.xlsx'],
                 'area' => $this->areas[64795327863947811],
                 'head' => new ImportHead($types, [], $types),
             ],
-
-            // Started
             '5deedfb6-173d-4e8b-b208-f62dbf0c4e80' => [
                 'orga' => $this->orgas['219025aa-7fe2-4385-ad8f-31f386720d10'],
                 'file' => $this->uploads['import-started.xlsx'],
                 'head' => new ImportHead($types, [], $types),
-                'startedAt' => new \DateTime(),
             ],
             '15bcff6e-a160-4e7b-bfdc-d43a273db1a6' => [
                 'orga' => $this->orgas['219025aa-7fe2-4385-ad8f-31f386720d10'],
                 'file' => $this->uploads['import-started-2.xlsx'],
                 'head' => new ImportHead($types, [], $types),
-                'startedAt' => new \DateTime(),
             ],
         ];
 
