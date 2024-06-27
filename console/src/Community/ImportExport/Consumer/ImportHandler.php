@@ -202,9 +202,9 @@ final class ImportHandler
 
         // Values mapping to be used on inserts and conflict updates (including defaults)
         $valuesMapping = [
-            'settings_receive_newsletters' => 'false',
-            'settings_receive_sms' => 'false',
-            'settings_receive_calls' => 'false',
+            'settings_receive_newsletters' => 'true',
+            'settings_receive_sms' => 'true',
+            'settings_receive_calls' => 'true',
         ];
 
         foreach (array_keys($columnsMapping) as $column) {
@@ -544,6 +544,15 @@ final class ImportHandler
                     'LIMIT 1)';
                 break;
 
+                // Use parsed phone and parsed work phone if parsed successfully, original value otherwise
+            case 'contactPhone':
+                $mapping['contact_phone'] = '(CASE WHEN parsed_contact_phone IS NOT NULL THEN parsed_contact_phone ELSE contact_phone END)';
+                break;
+
+            case 'contactWorkPhone':
+                $mapping['contact_work_phone'] = '(CASE WHEN parsed_contact_work_phone IS NOT NULL THEN parsed_contact_work_phone ELSE contact_work_phone END)';
+                break;
+
             case 'email':
             case 'profileFormalTitle':
             case 'profileFirstName':
@@ -552,8 +561,6 @@ final class ImportHandler
             case 'profileCompany':
             case 'profileJobTitle':
             case 'profileGender':
-            case 'contactPhone':
-            case 'contactWorkPhone':
             case 'parsedContactPhone':
             case 'parsedContactWorkPhone':
             case 'socialFacebook':
