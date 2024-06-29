@@ -5,6 +5,8 @@ namespace App\Controller\Console\Project\Website;
 use App\Controller\AbstractController;
 use App\Entity\Website\Petition;
 use App\Entity\Website\PetitionLocalized;
+use App\Form\Website\LaunchPetitionType;
+use App\Form\Website\Model\LaunchPetitionData;
 use App\Form\Website\PetitionType;
 use App\Platform\Permissions;
 use App\Repository\Website\PetitionRepository;
@@ -44,11 +46,23 @@ class PetitionController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_petition_create')]
-    public function create(Request $request, TranslatorInterface $translator): RedirectResponse
+    public function create(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
-        $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
+
+        $data = new LaunchPetitionData();
+
+        $form = $this->createForm(LaunchPetitionType::class, $data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($data);exit;
+        }
+
+        return $this->render('console/project/website/petition/create.html.twig', [
+            'form' => $form,
+        ]);
 
         $initialTitle = $translator->trans('create.title', [], 'project_petitions');
 

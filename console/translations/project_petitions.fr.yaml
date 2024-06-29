@@ -2,9 +2,9 @@ index:
     title: Pétitions
     help: Gérez vos pétitions pour collecter des signatures et mobiliser votre communauté.
     edit_categories: Modifier les catégories
-    create: Nouvelle pétition
+    create: Lancer une pétition
     no_result: Votre projet ne contient actuellement aucune pétition.
-    no_result_create: Créer une pétition
+    no_result_create: Lancer une pétition
     edit: Modifier
     duplicate: Dupliquer
     delete: Supprimer
@@ -22,7 +22,20 @@ index:
         create: Ajouter
 
 create:
-    title: '(Pétition sans titre)'
+    title: Lancer une pétition
+    workflow:
+        title:
+            title: Quel est le titre de votre pétition ?
+            help: Expliquez le changement que vous voulez obtenir
+            label: Titre de la pétition
+            tips: |
+                <ul>
+                    <li>Soyez concis et direct (« arrêter, sauver, interdire, accorder, s'opposer, etc. ».)</li>
+                    <li>Nommez des lieux, des organisations ou des personnes spécifiques (« augmentez le salaire minimum à Paris à 10 euros de l'heure ».)</li>
+                    <li>Utilisez des titres plus longs pour ajouter des détails clés (« améliorez le diagnostic du cancer du sein secondaire : offrez-nous des radios ! »)</li>
+                </ul>
+
+    # title: '(Pétition sans titre)'
     localized:
         title: Ajouter une pétition localisée
         help: Ajoutez une nouvelle version localisée de la pétition

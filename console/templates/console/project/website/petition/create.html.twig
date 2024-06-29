@@ -1,0 +1,19 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'create.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    {% set fields = {} %}
+    {% for reference, field in form %}
+        {% set fields = fields|merge({
+            (reference): {
+                'name': field_name(field),
+                'value': field_value(field),
+            }
+        }) %}
+    {% endfor %}
+
+    <div class="world-box mb-3" {{ react_component('Project/Website/Petition/LaunchForm', {'fields': fields}) }}></div>
+{% endblock %}
