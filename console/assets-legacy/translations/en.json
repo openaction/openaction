@@ -124,6 +124,10 @@
                         "label": "Forms",
                         "help": "Collect and organize information from your visitors."
                     },
+                    "website_petitions": {
+                        "label": "Petitions",
+                        "help": "Launch petitions to mobilize your community."
+                    },
                     "website_newsletter": {
                         "label": "Newsletter form",
                         "help": "Display a form on your website to register to your newsletter."
@@ -303,6 +307,55 @@
             },
             "social_share_modal": {
                 "title": "Share this event on social networks",
+                "close": "Close"
+            }
+        }
+    },
+    "petition_localized": {
+        "edit": {
+            "publish": "Publish",
+            "unpublish": "Unpublish",
+            "update_metadata": "Update details",
+            "social_share": "Share",
+            "metadata_modal": {
+                "title": "Update petition details",
+                "image": {
+                    "label": "Main image",
+                    "placeholder": "Send an image",
+                    "uploading": "Uploading...",
+                    "help": "Ideal: 1700px in width, 1080px in height, maximum 10Mb"
+                },
+                "description": {
+                    "label": "Description",
+                    "help": "The description is used on Google and social media under the page title. Maximum 150 characters."
+                },
+                "categories": {
+                    "label": "Categories",
+                    "help": "Categories related to this petition"
+                },
+                "addressed_to": {
+                    "label": "Addressed to",
+                    "help": "To whom the petition is being addressed. Maximum 150 characters."
+                },
+                "legalities": {
+                    "label": "Legalities",
+                    "help": "Legalities of the petition"
+                },
+                "submit_button_label": {
+                    "label": "Submit button label",
+                    "help": "The label of the submit button. Maximum 30 characters."
+                },
+                "optin_label": {
+                    "label": "Opt-in label",
+                    "help": "The label of the opt-in checkbox. Maximum 30 characters."
+                },
+                "close": "Close"
+            },
+            "publish_modal": {
+                "title": "Publication"
+            },
+            "social_share_modal": {
+                "title": "Share this petition on social networks",
                 "close": "Close"
             }
         }

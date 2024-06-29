@@ -124,6 +124,10 @@
                         "label": "Formulaires",
                         "help": "Collectez des informations auprès de vos visiteurs."
                     },
+                    "website_petitions": {
+                        "label": "Pétitions",
+                        "help": "Lancez des pétitions pour mobiliser votre communauté."
+                    },
                     "website_newsletter": {
                         "label": "Formulaire de newsletter",
                         "help": "Affichez un formulaire de newsletter pour collecter des adresses emails sur votre site."
@@ -303,6 +307,55 @@
             },
             "social_share_modal": {
                 "title": "Partagez cet événement sur les réseaux sociaux",
+                "close": "Fermer"
+            }
+        }
+    },
+    "petition_localized": {
+        "edit": {
+            "publish": "Publier",
+            "unpublish": "Annuler la publication",
+            "update_metadata": "Mettre à jour les détails",
+            "social_share": "Partager",
+            "metadata_modal": {
+                "title": "Mettre à jour les détails de la pétition",
+                "image": {
+                    "label": "Image de la pétition",
+                    "placeholder": "Télécharger une image",
+                    "uploading": "En cours de chargement...",
+                    "help": "Conseil : 1700px de large, 1080px de haut, maximum 10Mb"
+                },
+                "description": {
+                    "label": "Description",
+                    "help": "Description utilisée par Google et les réseaux sociaux lors des partages."
+                },
+                "categories": {
+                    "label": "Catégories",
+                    "help": "Catégories de cette pétition"
+                },
+                "addressed_to": {
+                    "label": "Destinataire",
+                    "help": "Destinataire de la pétition"
+                },
+                "legalities": {
+                    "label": "Légalités",
+                    "help": "Informations légales sur la pétition"
+                },
+                "submit_button_label": {
+                    "label": "Label du bouton de soumission",
+                    "help": "Le texte du bouton de soumission de la pétition. Maximum 30 caractères."
+                },
+                "optin_label": {
+                    "label": "Label de la case à cocher",
+                    "help": "Le texte de la case à cocher pour l'inscription à la newsletter. Maximum 30 caractères."
+                },
+                "close": "Fermer"
+            },
+            "publish_modal": {
+                "title": "Publication"
+            },
+            "social_share_modal": {
+                "title": "Partagez cette pétition sur les réseaux sociaux",
                 "close": "Fermer"
             }
         }
