@@ -104,9 +104,11 @@ final class ImportHandler
             }
         }
 
-        // Create data import table
+        // Remove data import table if it already exists
         $tableName = 'community_imports_data_'.$import->getId();
+        $db->executeStatement('DROP TABLE IF EXISTS '.$tableName);
 
+        // Create data import table
         $table = new Table($tableName);
         foreach (array_keys($columnsMapping) as $column) {
             $table->addColumn(strtolower($column), 'text', ['notnull' => false]);
