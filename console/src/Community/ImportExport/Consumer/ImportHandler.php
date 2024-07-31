@@ -257,11 +257,15 @@ final class ImportHandler
             $values = [];
 
             foreach ($tags as $tag) {
+                if (!trim($tag) || !($slug = $this->slugger->slug($tag)->lower()->toString())) {
+                    continue;
+                }
+
                 $row = [
                     'nextval(\'community_tags_id_seq\')',
                     $organization->getId(),
                     $db->quote($tag),
-                    $db->quote($this->slugger->slug($tag)->lower()->toString()),
+                    $db->quote($slug),
                     'CURRENT_TIMESTAMP',
                     'CURRENT_TIMESTAMP',
                 ];
