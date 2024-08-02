@@ -56,6 +56,16 @@ export default function MainImageStep(props: Props) {
           secureExpire="1722620826"
           classNameUploader="citipo-uploadcare-theme uc-light"
           cropPreset="1200:675"
+          onDoneClick={(e) => {
+            if (typeof e.allEntries[0] === 'undefined') {
+              return;
+            }
+
+            props.onChange(e.allEntries[0].uuid);
+          }}
+          onFileRemoved={() => {
+            props.onChange('');
+          }}
         />
       </FormGroup>
 
