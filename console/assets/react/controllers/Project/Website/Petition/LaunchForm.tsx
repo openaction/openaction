@@ -29,6 +29,7 @@ export default function LaunchForm(props: Props) {
   const [step, setStep] = useState<Step>(Step.Title);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const [mainImage, setMainImage] = useState<string>('');
 
   return (
     <div className="row justify-content-center">
@@ -56,8 +57,8 @@ export default function LaunchForm(props: Props) {
 
         {step === Step.MainImage ? (
           <MainImageStep
-            defaultValue={''}
-            onChange={() => {}}
+            defaultValue={mainImage}
+            onChange={setMainImage}
             setStep={setStep}
             labels={props.labels.step3}
             backLabel={props.labels.back}

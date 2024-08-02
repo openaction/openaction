@@ -23,7 +23,7 @@ export interface ContentStepLabels {
 
 interface Props {
   defaultValue: string,
-  onChange: (title: string) => void,
+  onChange: (content: string) => void,
   setStep: (step: Step) => void,
   labels: ContentStepLabels,
   backLabel: string,

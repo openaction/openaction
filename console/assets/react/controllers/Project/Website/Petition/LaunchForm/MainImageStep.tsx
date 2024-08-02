@@ -1,6 +1,7 @@
 import React from 'react';
-import {Button, FormGroup, InputGroup, ProgressBar, TextArea} from "@blueprintjs/core";
+import {Button, FormGroup, ProgressBar} from "@blueprintjs/core";
 import {Step} from "../LaunchForm";
+import {FileUploaderRegular} from "@uploadcare/react-uploader";
 
 export interface MainImageStepLabels {
   title: string,
@@ -23,7 +24,7 @@ export interface MainImageStepLabels {
 
 interface Props {
   defaultValue: string,
-  onChange: (title: string) => void,
+  onChange: (mainImage: string) => void,
   setStep: (step: Step) => void,
   labels: MainImageStepLabels,
   backLabel: string,
@@ -44,13 +45,17 @@ export default function MainImageStep(props: Props) {
         helperText={props.labels.help}
         labelFor="title"
       >
-        <InputGroup
-          id="title"
-          large={true}
-          fill={true}
-          required={true}
-          defaultValue={props.defaultValue}
-          onChange={(e) => props.onChange(e.currentTarget.value)}
+        <FileUploaderRegular
+          localeName={window.Citipo.locale}
+          pubkey="fb22c411b0a34f349985"
+          maxLocalFileSizeBytes={10000000}
+          multiple={false}
+          imgOnly={true}
+          sourceList="local, url, camera"
+          secureSignature="43f7ea6fcac380e55d36c49e925a92c7824eaef5c20b882badf0e29f6ab45f87"
+          secureExpire="1722620826"
+          classNameUploader="citipo-uploadcare-theme uc-light"
+          cropPreset="1200:675"
         />
       </FormGroup>
 
