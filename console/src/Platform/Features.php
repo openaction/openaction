@@ -55,6 +55,7 @@ final class Features
     public const TOOL_WEBSITE_DOCUMENTS = 'website_documents';
     public const TOOL_WEBSITE_EVENTS = 'website_events';
     public const TOOL_WEBSITE_FORMS = 'website_forms';
+    public const TOOL_WEBSITE_PETITIONS = 'website_petitions';
     public const TOOL_WEBSITE_NEWSLETTER = 'website_newsletter';
     public const TOOL_WEBSITE_TROMBINOSCOPE = 'website_trombinoscope';
     public const TOOL_WEBSITE_MANIFESTO = 'website_manifesto';
@@ -125,6 +126,7 @@ final class Features
             self::TOOL_WEBSITE_DOCUMENTS,
             self::TOOL_WEBSITE_EVENTS,
             self::TOOL_WEBSITE_FORMS,
+            self::TOOL_WEBSITE_PETITIONS,
             self::TOOL_WEBSITE_NEWSLETTER,
             self::TOOL_WEBSITE_TROMBINOSCOPE,
             self::TOOL_WEBSITE_MANIFESTO,

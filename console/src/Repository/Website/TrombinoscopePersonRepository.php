@@ -10,7 +10,7 @@ use App\Entity\Website\TrombinoscopePerson;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
 use App\Util\Uid;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,10 +45,15 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
     /**
      * @return TrombinoscopePerson[]|array
      */
-    public function getProjectPersonsList(Project $project, $hydrationMode = Query::HYDRATE_OBJECT): iterable
+    public function getProjectPersonsList(Project $project, $hydrationMode = AbstractQuery::HYDRATE_OBJECT): iterable
     {
-        $qb = $this->createQueryBuilder('p')
-            ->select('p.id', 'p.fullName')
+        $qb = $this->createQueryBuilder('p');
+
+        if (AbstractQuery::HYDRATE_OBJECT !== $hydrationMode) {
+            $qb->select('p.id', 'p.fullName');
+        }
+
+        $qb
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
             ->orderBy('p.fullName')
