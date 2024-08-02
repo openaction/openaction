@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, FormGroup, InputGroup, ProgressBar} from "@blueprintjs/core";
+import {Button, FormGroup, InputGroup, ProgressBar, TextArea} from "@blueprintjs/core";
 import {Step} from "../LaunchForm";
 
-export interface TitleStepLabels {
+export interface MainImageStepLabels {
   title: string,
   label: string,
   help: string,
@@ -25,14 +25,15 @@ interface Props {
   defaultValue: string,
   onChange: (title: string) => void,
   setStep: (step: Step) => void,
-  labels: TitleStepLabels,
+  labels: MainImageStepLabels,
+  backLabel: string,
   nextLabel: string,
 }
 
-export default function TitleStep(props: Props) {
+export default function MainImageStep(props: Props) {
   return (
     <>
-      <ProgressBar intent="primary" stripes={false} value={0.33} className="mb-3" />
+      <ProgressBar intent="primary" stripes={false} value={1} className="mb-3" />
 
       <h1 className="bp4-heading mb-4">
         {props.labels.title}
@@ -59,7 +60,7 @@ export default function TitleStep(props: Props) {
         </h5>
 
         {[1, 2, 3].map(i => (
-          <div className="mt-3" key={'tip='+i}>
+          <div className="mt-3" key={'tip-' + i}>
             <h6 className="mb-0">{props.labels['tip'+i].title}</h6>
             <em>{props.labels['tip'+i].example}</em>
           </div>
@@ -67,7 +68,11 @@ export default function TitleStep(props: Props) {
       </div>
 
       <div className="text-right mt-4">
-        <Button large={true} intent="primary" className="ml-2" onClick={() => props.setStep(Step.Content)}>
+        <Button large={true} minimal={true} onClick={() => props.setStep(Step.Content)}>
+          {props.backLabel}
+        </Button>
+
+        <Button large={true} intent="primary" className="ml-2" onClick={() => props.setStep(Step.MainImage)}>
           {props.nextLabel}
         </Button>
       </div>

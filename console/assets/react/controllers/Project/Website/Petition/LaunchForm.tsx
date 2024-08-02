@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import TitleStep, {TitleStepLabels} from "./LaunchForm/TitleStep";
 import ContentStep, {ContentStepLabels} from "./LaunchForm/ContentStep";
+import MainImageStep, {MainImageStepLabels} from "./LaunchForm/MainImageStep";
 
 interface Props {
   fields: {
@@ -14,6 +15,7 @@ interface Props {
     back: string,
     step1: TitleStepLabels,
     step2: ContentStepLabels,
+    step3: MainImageStepLabels,
   }
 }
 
@@ -43,10 +45,21 @@ export default function LaunchForm(props: Props) {
 
         {step === Step.Content ? (
           <ContentStep
-            defaultValue={title}
+            defaultValue={content}
             onChange={setContent}
             setStep={setStep}
             labels={props.labels.step2}
+            backLabel={props.labels.back}
+            nextLabel={props.labels.next}
+          />
+        ) : ''}
+
+        {step === Step.MainImage ? (
+          <MainImageStep
+            defaultValue={''}
+            onChange={() => {}}
+            setStep={setStep}
+            labels={props.labels.step3}
             backLabel={props.labels.back}
             nextLabel={props.labels.next}
           />
