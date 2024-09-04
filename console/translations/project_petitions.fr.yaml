@@ -22,6 +22,7 @@ index:
         create: Ajouter
 
 create:
+    back: Retour à la liste
     title: Lancer une pétition
     workflow:
         title:

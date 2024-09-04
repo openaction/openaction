@@ -22,6 +22,7 @@ index:
         create: Add locale
 
 create:
+    back: Back to the list
     title: '(Untitled petition)'
     localized:
         title: Add new localized petition
