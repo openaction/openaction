@@ -1,0 +1,91 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'create.title'|trans({}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% block content %}
+    {% set fields = {} %}
+    {% for reference, field in form %}
+        {% set fields = fields|merge({
+            (reference): {
+                'name': field_name(field),
+                'value': field_value(field),
+            }
+        }) %}
+    {% endfor %}
+
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'create.back'|trans({}, 'project_petitions') }}</span>
+            </a>
+        </div>
+
+        <div class="px-4 py-5">
+            <div {{ react_component('Project/Website/Petition/LaunchForm', {
+                fields: fields,
+                labels: {
+                    next: 'Continuer',
+                    back: 'Retour',
+                    step1: {
+                        title: 'Lancer une pétition',
+                        label: 'Titre de la pétition',
+                        help: 'Expliquez le changement que vous voulez obtenir',
+                        tipsTitle: 'Conseils',
+                        tip1: {
+                            title: 'Soyez concis et direct',
+                            example: 'Exemples : « Arrêter, sauver, interdire, accorder, s\'opposer, etc. »',
+                        },
+                        tip2: {
+                            title: 'Nommez des lieux, des organisations ou des personnes spécifiques',
+                            example: 'Exemple : « Augmentez le salaire minimum à Paris à 10 euros de l\'heure »',
+                        },
+                        tip3: {
+                            title: 'Utilisez des titres plus longs pour ajouter des détails clés',
+                            example: 'Exemple : « Améliorez le diagnostic du cancer du sein : offrez-nous des radios ! »',
+                        }
+                    },
+                    step2: {
+                        title: 'Racontez votre combat',
+                        label: 'Description de la pétition',
+                        help: 'Expliquez la raison de cette pétition, qui est touché, les enjeux, pourquoi agir, ...',
+                        tipsTitle: 'Conseils',
+                        tip1: {
+                            title: 'Parlez de qui est touché',
+                            example: 'Décrivez comment les personnes sont concrètement affectées par le problème',
+                        },
+                        tip2: {
+                            title: 'Évoquez les enjeux',
+                            example: 'Expliquez ce que cela implique si les choses changent ou restent les mêmes',
+                        },
+                        tip3: {
+                            title: 'Expliquez pourquoi c\'est le moment d\'agir',
+                            example: 'Récapitulez et soulignez l\'importance d\'une action immédiate',
+                        }
+                    },
+                    step3: {
+                        title: 'Ajouter une image',
+                        label: 'Envoyer une image',
+                        help: 'Minimum 1200 x 675 pixels',
+                        tipsTitle: 'Conseils',
+                        tip1: {
+                            title: 'Utilisez une image illustrative efficace',
+                            example: 'Une image illustrative sans texte avec un bon constraste de couleurs est le plus efficace',
+                        },
+                        tip2: {
+                            title: 'Évitez les images contenant du texte',
+                            example: 'Les images content du texte influe négativement sur l\'attention des visiteurs',
+                        },
+                        tip3: {
+                            title: 'Évitez les images surchargées',
+                            example: 'Les images les plus efficaces sont celles montrant uniquement l\'élément important',
+                        }
+                    }
+                }
+            }) }}></div>
+        </div>
+    </div>
+{% endblock %}

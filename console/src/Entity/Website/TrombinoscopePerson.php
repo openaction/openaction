@@ -92,6 +92,14 @@ class TrombinoscopePerson implements Searchable
     private Collection $posts;
 
     /**
+     * @var Collection<Petition>
+     */
+    #[ORM\ManyToMany(targetEntity: Petition::class, mappedBy: 'authors')]
+    #[ORM\JoinTable(name: 'website_petitions_authors')]
+    #[ORM\OrderBy(['publishedAt' => 'DESC'])]
+    private Collection $petitions;
+
+    /**
      * @var Collection<Event>
      */
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'participants')]
@@ -292,6 +300,14 @@ class TrombinoscopePerson implements Searchable
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+    /**
+     * @return Collection<Petition>
+     */
+    public function getPetitions(): Collection
+    {
+        return $this->petitions;
     }
 
     public function getFullName(): string

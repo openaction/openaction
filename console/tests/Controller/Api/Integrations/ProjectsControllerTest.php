@@ -36,6 +36,7 @@ class ProjectsControllerTest extends ApiTestCase
                         'website_documents',
                         'website_events',
                         'website_forms',
+                        'website_petitions',
                         'website_newsletter',
                         'website_trombinoscope',
                         'website_manifesto',

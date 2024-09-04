@@ -1,6 +1,6 @@
 import React from 'react';
-import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
-import { MenuItem } from '@blueprintjs/core';
+import {ItemRenderer, MultiSelect} from '@blueprintjs/select';
+import {MenuItem} from '@blueprintjs/core';
 import Fuse from 'fuse.js';
 
 interface Author {
@@ -40,7 +40,7 @@ export default function ImportAuthorsSelector(props: Props) {
         setSelectedIds(ids);
     };
 
-    const renderItem: ItemRenderer<Author> = (author, { modifiers, handleClick }) => {
+    const renderItem: ItemRenderer<Author> = (author, {modifiers, handleClick}) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }
@@ -51,7 +51,7 @@ export default function ImportAuthorsSelector(props: Props) {
             <MenuItem
                 active={false}
                 selected={selected}
-                icon={selected ? <i className="fal fa-check" /> : <i className="fal" />}
+                icon={selected ? <i className="fal fa-check"/> : <i className="fal"/>}
                 key={author.id}
                 text={author.fullName}
                 onClick={handleClick}
@@ -62,7 +62,7 @@ export default function ImportAuthorsSelector(props: Props) {
 
     return (
         <>
-            <input type="hidden" name={props.fieldName} value={selectedIds.join(',')} />
+            <input type="hidden" name={props.fieldName} value={selectedIds.join(',')}/>
 
             <InternalTagSelect
                 items={props.choices}
@@ -76,7 +76,7 @@ export default function ImportAuthorsSelector(props: Props) {
                 }}
                 itemRenderer={renderItem}
                 tagRenderer={(author) => author.fullName}
-                noResults={<MenuItem disabled={true} text="Aucun résultat" />}
+                noResults={<MenuItem disabled={true} text="Aucun résultat"/>}
                 resetOnSelect={true}
                 itemListPredicate={(query: string, authors: Author[]) => fuzzySearchAuthors(authors, query)}
                 itemsEqual={(author1: Author, author2: Author) => author1.id === author2.id}
@@ -86,7 +86,7 @@ export default function ImportAuthorsSelector(props: Props) {
                     usePortal: false,
                 }}
                 tagInputProps={{
-                    leftIcon: <i className="far fa-user" />,
+                    leftIcon: <i className="far fa-user"/>,
                     placeholder: 'Rechercher un(e) auteur(e)',
                     onRemove: (_, index) => handleChange(selectedIds.filter((id) => id !== selectedIds[index])),
                 }}

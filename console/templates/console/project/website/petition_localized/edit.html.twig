@@ -1,0 +1,90 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'edit.title.label'|trans({'%title%': petitionLocalized.title}, 'project_petitions') %}
+
+{% block sidebar_petitions 'current' %}
+
+{% do expose('endpoints', {
+    'content': path('console_website_petition_localized_update_content', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
+    'metadata': path('console_website_petition_localized_update_metadata', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
+    'image': path('console_website_petition_localized_update_image', {'projectUuid': petitionLocalized.petition.project.uuid, 'uuid': petitionLocalized.uuid}),
+}) %}
+
+{% set categoriesIds = petitionLocalized.categories|map(c => c.id) %}
+
+{% do expose('petition_localized_metadata', {
+    'description': petitionLocalized.description,
+    'optinLabel': petitionLocalized.optinLabel,
+    'submitButtonLabel': petitionLocalized.submitButtonLabel,
+    'legalities': petitionLocalized.legalities,
+    'addressedTo': petitionLocalized.addressedTo,
+    'image': petitionLocalized.image ? cdn_image_url(petitionLocalized.image) : petitionLocalized.image,
+    'categories': categories,
+    'categoryIds': categoriesIds,
+}) %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+
+    {% if not is_granted('website_petitions_publish', current_project) %}
+        <style>
+            .publish-button {
+                display: none;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content-full.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% block content %}
+    <div class="world-box mb-3"
+         data-controller="petition-localized--edit"
+         data-sharer="">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>{{ 'edit.back'|trans({}, 'project_petitions') }}</span>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div data-petition-localized--edit-target="topbar">
+                        <div class="d-none">
+                            {{ form_widget(form.title, {'attr': {'data-petition-localized--edit-target': 'title'}}) }}
+                            {{ form_widget(form.content, {'attr': {'data-petition-localized--edit-target': 'content'}}) }}
+                            {{ form_widget(form.description, {'attr': {'data-petition-localized--edit-target': 'description'}}) }}
+                            {{ form_widget(form.optinLabel, {'attr': {'data-petition-localized--edit-target': 'optinLabel'}}) }}
+                            {{ form_widget(form.submitButtonLabel, {'attr': {'data-petition-localized--edit-target': 'submitButtonLabel'}}) }}
+                            {{ form_widget(form.legalities, {'attr': {'data-petition-localized--edit-target': 'legalities'}}) }}
+                            {{ form_widget(form.addressedTo, {'attr': {'data-petition-localized--edit-target': 'addressedTo'}}) }}
+                            {{ form_widget(form.categories, {'attr': {'data-petition-localized--edit-target': 'categories'}}) }}
+                            {{ form_widget(image_form.file, {'attr': {'data-petition-localized--edit-target': 'image'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="text-center">
+                <input type="text" class="editor-title" value="{{ petitionLocalized.title }}" id="petition-localized-title" />
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-petition-localized--edit-target="editor"
+                     data-upload-url="{{ path('console_website_petition_localized_upload_image', {'projectUuid': current_project.uuid, 'uuid': petitionLocalized.uuid}) }}"
+                     id="petition-localized-editor">{{ petitionLocalized.content|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
