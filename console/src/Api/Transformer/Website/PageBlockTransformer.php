@@ -72,7 +72,7 @@ class PageBlockTransformer extends AbstractTransformer
         }
 
         if (HomeContentBlock::TYPE === $item->getType()) {
-            $payload['content'] = $this->customBlockParser->normalizeCustomBlocksIn($payload['content'] ?? '');
+            $payload['config']['content'] = $this->customBlockParser->normalizeCustomBlocksIn($payload['config']['content'] ?? '');
         }
 
         return $payload;
