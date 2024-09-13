@@ -80,7 +80,7 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
     public function includePosts(TrombinoscopePerson $person)
     {
         return $this->collection(
-            $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 6),
+            $person->getPosts()->filter(static fn (Post $p) => $p->isPublished() && !$p->isOnlyForMembers())->slice(0, 60),
             $this->postLightTransformer,
         );
     }
@@ -88,7 +88,7 @@ class TrombinoscopePersonFullTransformer extends AbstractTransformer
     public function includeEvents(TrombinoscopePerson $person)
     {
         return $this->collection(
-            $person->getEvents()->filter(static fn (Event $e) => $e->isPublished() && !$e->isOnlyForMembers())->slice(0, 6),
+            $person->getEvents()->filter(static fn (Event $e) => $e->isPublished() && !$e->isOnlyForMembers())->slice(0, 60),
             $this->eventLightTransformer,
         );
     }
