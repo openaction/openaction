@@ -27,6 +27,7 @@ class UpdateDetailsType extends AbstractType
                     'Nederlands' => 'nl',
                     'Deutsch' => 'de',
                     'Italiano' => 'it',
+                    'Español' => 'es',
                 ],
             ])
         ;
