@@ -16,6 +16,10 @@ class CustomBlockParser
      */
     public function normalizeCustomBlocksIn(?string $content): string
     {
+        if (!trim($content)) {
+            return $content;
+        }
+
         $twig = $this->twig;
 
         return preg_replace_callback(

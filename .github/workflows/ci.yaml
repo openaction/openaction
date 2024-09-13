@@ -141,27 +141,27 @@ jobs:
               run: cd console && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
 
             - name: Start services
-              run: docker-compose up -d
+              run: docker compose up -d
 
             - name: Install PHP dependencies
-              run: docker-compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
+              run: docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
               run: cd console && cp -R tests/Fixtures/assets/build public/build && cp -R tests/Fixtures/assets/projects public/projects
 
             - name: Prepare database
               run: |
-                  docker-compose exec -T console bin/console doctrine:migrations:migrate -n -e test
-                  docker-compose exec -T console bin/console doctrine:fixtures:load -n --group test -e test
+                  docker compose exec -T console bin/console doctrine:migrations:migrate -n -e test
+                  docker compose exec -T console bin/console doctrine:fixtures:load -n --group test -e test
 
             - name: Prepare Meilisearch
-              run: docker-compose exec -T console bin/console app:search:index-crm
+              run: docker compose exec -T console bin/console app:search:index-crm
 
             - name: 'PHPUnit (group: transactions enabled)'
-              run: docker-compose exec -T console bin/phpunit --exclude-group without-transaction
+              run: docker compose exec -T console bin/phpunit --exclude-group without-transaction
 
             - name: 'PHPUnit (group: transactions disabled)'
-              run: docker-compose exec -T console bin/phpunit --group without-transaction
+              run: docker compose exec -T console bin/phpunit --group without-transaction
 
     # Release
     console-release:
@@ -300,12 +300,12 @@ jobs:
                   cd ../public && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
 
             - name: Start services
-              run: docker-compose up -d
+              run: docker compose up -d
 
             - name: Install PHP dependencies
               run: |
-                  docker-compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
-                  docker-compose exec -T public composer install --prefer-dist --no-interaction --no-ansi --no-progress
+                  docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
+                  docker compose exec -T public composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
               run: |
@@ -315,14 +315,14 @@ jobs:
 
             - name: Prepare database
               run: |
-                  docker-compose exec -T console bin/console doctrine:migrations:migrate -n
-                  docker-compose exec -T console bin/console doctrine:fixtures:load -n --group test
+                  docker compose exec -T console bin/console doctrine:migrations:migrate -n
+                  docker compose exec -T console bin/console doctrine:fixtures:load -n --group test
 
             - name: Prepare domains
-              run: docker-compose exec -T console bin/console app:proxy:refresh-domains-cache -n
+              run: docker compose exec -T console bin/console app:proxy:refresh-domains-cache -n
 
             - name: PHPUnit
-              run: docker-compose exec -T public bin/phpunit
+              run: docker compose exec -T public bin/phpunit
 
     # Release
     public-release:
