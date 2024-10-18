@@ -296,9 +296,11 @@ class WordpressContentParser implements ExternalContentParserInterface
 
     private function importPost(ContentImport $import, array $postsAuthorsRegistry, array $postsCategoriesRegistry, array $postData): void
     {
+        $uuid = Uid::random()->toRfc4122();
+
         $insertData = [
             'id' => 'nextval(\'website_posts_id_seq\')',
-            'uuid' => 'gen_random_uuid()',
+            'uuid' => $this->db->quote($uuid),
             'project_id' => $import->getProject()?->getId(),
             'image_id' => 'null',
             'title' => $this->db->quote($postData['title']),
@@ -323,7 +325,7 @@ class WordpressContentParser implements ExternalContentParserInterface
             'updated_at, published_at, only_for_members, page_views) VALUES ('.implode(', ', $insertData).')'
         );
 
-        $postId = $this->db->lastInsertId();
+        $postId = $this->db->executeQuery('SELECT id FROM website_posts WHERE uuid = ?', [$uuid])->fetchAssociative()['id'];
 
         // Attach categories
         $insertValues = [];
@@ -356,9 +358,11 @@ class WordpressContentParser implements ExternalContentParserInterface
 
     private function importPage(ContentImport $import, array $pagesCategoriesRegistry, array $pageData): void
     {
+        $uuid = Uid::random()->toRfc4122();
+
         $insertData = [
             'id' => 'nextval(\'website_pages_id_seq\')',
-            'uuid' => 'gen_random_uuid()',
+            'uuid' => $this->db->quote($uuid),
             'project_id' => $import->getProject()?->getId(),
             'image_id' => 'null',
             'title' => $this->db->quote($pageData['title']),
@@ -383,7 +387,7 @@ class WordpressContentParser implements ExternalContentParserInterface
             'updated_at, only_for_members, page_views, parent_id) VALUES ('.implode(', ', $insertData).')'
         );
 
-        $pageId = $this->db->lastInsertId();
+        $pageId = $this->db->executeQuery('SELECT id FROM website_pages WHERE uuid = ?', [$uuid])->fetchAssociative()['id'];
 
         // Attach categories
         $insertValues = [];
