@@ -101,8 +101,8 @@ framework:
 
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_importing
-            'App\Community\ImportExport\Consumer\ContentImportMessage': async_importing
             'App\Community\ImportExport\Consumer\ExportMessage': async_priority_high
+            'App\Website\ImportExport\Consumer\ContentImportMessage': async_importing
 
             # Integrations
             'App\Bridge\Quorum\Consumer\QuorumMessage': async_priority_low

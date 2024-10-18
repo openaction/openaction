@@ -17,6 +17,8 @@ interface Props {
 interface Job {
     finished: boolean;
     step: number;
+    total: number;
+    progress: number;
     payload: object;
 }
 
@@ -67,9 +69,11 @@ export default function ImportProgress(props: Props) {
         <>
             <h5 className="bp4-heading">{props.labels.processingTitle}</h5>
 
-            <p className="bp4-text-muted">{props.labels.processingDesc + (job ? ' (' + job.step + ')' : '')}</p>
+            <p className="bp4-text-muted">
+                {props.labels.processingDesc + (job ? ' (' + Math.round(job.progress * 100) + '%)' : '')}
+            </p>
 
-            <ProgressBar intent={Intent.PRIMARY} value={undefined} />
+            <ProgressBar intent={Intent.PRIMARY} value={job ? job.progress : undefined} />
         </>
     );
 }

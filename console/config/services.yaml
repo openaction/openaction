@@ -38,6 +38,9 @@ services:
         App\Community\History\ContactHistorySourceInterface:
             tags: ['app.contact_history_source']
 
+        App\Website\ImportExport\Parser\ExternalContentParserInterface:
+            tags: ['app.external_content_parser']
+
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Util,Kernel.php}'
