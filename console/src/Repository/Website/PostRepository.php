@@ -58,6 +58,7 @@ class PostRepository extends ServiceEntityRepository
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
             ->orderBy('p.publishedAt', 'DESC')
+            ->addOrderBy('p.updatedAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
