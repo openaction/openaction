@@ -21,6 +21,7 @@ gender:
 
 console:
     title: Console
+    search_field_placeholder: Search
 
     header:
         soon_expires:
