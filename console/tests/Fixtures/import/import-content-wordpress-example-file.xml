@@ -30,6 +30,8 @@
   <wp:post_type>post</wp:post_type>
   <wp:post_password/>
   <wp:is_sticky>0</wp:is_sticky>
+  <category domain="category" nicename="deconfinement"><![CDATA[(Dé)confinement]]></category>
+  <category domain="category" nicename="actualites"><![CDATA[Actualités]]></category>
 </item>
 <item>
   <title><![CDATA[Test published blog post: Our Pledge]]></title>
@@ -118,6 +120,7 @@ This is our purpose.]]></content:encoded>
   <wp:post_type>page</wp:post_type>
   <wp:post_password/>
   <wp:is_sticky>0</wp:is_sticky>
+  <category domain="category" nicename="deconfinement"><![CDATA[(Dé)confinement]]></category>
 </item>
 <item>
   <title><![CDATA[Test Attachment]]></title>

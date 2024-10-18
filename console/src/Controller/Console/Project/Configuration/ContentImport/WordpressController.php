@@ -3,13 +3,13 @@
 namespace App\Controller\Console\Project\Configuration\ContentImport;
 
 use App\Bridge\Uploadcare\UploadcareInterface;
-use App\Community\ImportExport\ContentImporter;
 use App\Controller\AbstractController;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Form\Project\ContentImportType;
 use App\Platform\Permissions;
 use App\Repository\Website\TrombinoscopePersonRepository;
+use App\Website\ImportExport\ContentImporter;
 use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

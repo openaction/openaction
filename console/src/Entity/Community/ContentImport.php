@@ -21,10 +21,6 @@ class ContentImport
     use Util\EntityProjectTrait;
     use Util\EntityTimestampableTrait;
 
-    public const WORDPRESS_CONTENT_TYPE_PAGE = 'page';
-    public const WORDPRESS_CONTENT_TYPE_POST = 'post';
-    public const WORDPRESS_CONTENT_TYPE_ATTACHMENT = 'attachment';
-
     #[ORM\Column(type: 'string', length: 20)]
     private string $source;
 

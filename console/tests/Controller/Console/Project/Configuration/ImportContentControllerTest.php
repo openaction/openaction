@@ -3,10 +3,10 @@
 namespace App\Tests\Controller\Console\Project\Configuration;
 
 use App\Bridge\Uploadcare\MockUploadcare;
-use App\Community\ImportExport\Consumer\ContentImportMessage;
 use App\Repository\Community\ContentImportRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
+use App\Website\ImportExport\Consumer\ContentImportMessage;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class ImportContentControllerTest extends WebTestCase

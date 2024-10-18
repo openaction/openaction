@@ -43,62 +43,41 @@ class JobRepository extends ServiceEntityRepository
 
     public function resetJob(int $jobId): void
     {
-        $this->createQueryBuilder('j')
-            ->update()
-            ->set('j.step', '0')
-            ->where('j.id = :jobId')
-            ->setParameter('jobId', $jobId)
-            ->getQuery()
-            ->execute()
-        ;
+        $this->_em->getConnection()->executeStatement(
+            sql: 'UPDATE platform_jobs SET step = 0 WHERE id = ?',
+            params: [$jobId],
+        );
     }
 
-    public function setJobTotalSteps(int $jobId, int $total): void
+    public function setJobStatus(int $jobId, int $step, int $total): void
     {
-        $this->createQueryBuilder('j')
-            ->update()
-            ->set('j.total', $total)
-            ->where('j.id = :jobId')
-            ->setParameter('jobId', $jobId)
-            ->getQuery()
-            ->execute()
-        ;
+        $this->_em->getConnection()->executeStatement(
+            sql: 'UPDATE platform_jobs SET step = ?, total = ? WHERE id = ?',
+            params: [$step, $total, $jobId],
+        );
     }
 
     public function setJobStep(int $jobId, int $step, array $payload = []): void
     {
-        $this->createQueryBuilder('j')
-            ->update()
-            ->set('j.step', $step)
-            ->set('j.payload', ':payload')
-            ->where('j.id = :jobId')
-            ->setParameter('jobId', $jobId)
-            ->setParameter('payload', Json::encode($payload))
-            ->getQuery()
-            ->execute()
-        ;
+        $this->_em->getConnection()->executeStatement(
+            sql: 'UPDATE platform_jobs SET step = ?, payload = ? WHERE id = ?',
+            params: [$step, Json::encode($payload), $jobId],
+        );
     }
 
     public function advanceJobStep(int $jobId, int $amount = 1, array $payload = []): void
     {
-        $this->createQueryBuilder('j')
-            ->update()
-            ->set('j.step', 'j.step + '.$amount)
-            ->set('j.payload', ':payload')
-            ->where('j.id = :jobId')
-            ->setParameter('jobId', $jobId)
-            ->setParameter('payload', Json::encode($payload))
-            ->getQuery()
-            ->execute()
-        ;
+        $this->_em->getConnection()->executeStatement(
+            sql: 'UPDATE platform_jobs SET step = step + '.$amount.', payload = ? WHERE id = ?',
+            params: [Json::encode($payload), $jobId],
+        );
     }
 
     public function finishJob(int $jobId, array $payload = []): void
     {
-        $job = $this->find($jobId);
-        $job->finish($payload);
-
-        $this->_em->persist($job);
-        $this->_em->flush();
+        $this->_em->getConnection()->executeStatement(
+            sql: 'UPDATE platform_jobs SET total = GREATEST(1, total), step = GREATEST(1, total), payload = ? WHERE id = ?',
+            params: [Json::encode($payload), $jobId],
+        );
     }
 }

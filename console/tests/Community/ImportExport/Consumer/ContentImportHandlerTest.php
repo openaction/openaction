@@ -2,8 +2,6 @@
 
 namespace App\Tests\Community\ImportExport\Consumer;
 
-use App\Community\ImportExport\Consumer\ContentImportHandler;
-use App\Community\ImportExport\Consumer\ContentImportMessage;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Upload;
@@ -13,6 +11,8 @@ use App\Repository\Community\ContentImportRepository;
 use App\Repository\Website\PageRepository;
 use App\Repository\Website\PostRepository;
 use App\Tests\KernelTestCase;
+use App\Website\ImportExport\Consumer\ContentImportHandler;
+use App\Website\ImportExport\Consumer\ContentImportMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 
@@ -54,7 +54,7 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame('Test unpublished blog post: The Journey Begins', $post->getTitle());
         $this->assertStringContainsString('Let the journey begin!', $post->getDescription());
         $this->assertStringContainsString('Izaak Walton', $post->getContent());
-        $this->assertSame('2018-10-16', $post->getCreatedAt()->format('Y-m-d'));
+        $this->assertSame('2018-10-08', $post->getCreatedAt()->format('Y-m-d'));
         $this->assertNull($post->getPublishedAt()); // unpublished (draft)
         $this->assertNull($post->getImage());
         $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $post->getProject()->getUuid()->__toString()); // correct project
@@ -65,8 +65,8 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame('Test published blog post: Our Pledge', $post->getTitle());
         $this->assertStringContainsString('This is our pledge', $post->getDescription());
         $this->assertStringContainsString('In varietate concordia', $post->getContent());
-        $this->assertSame('2018-10-18', $post->getCreatedAt()->format('Y-m-d'));
-        $this->assertSame('2018-10-18', $post->getPublishedAt()->format('Y-m-d')); // published
+        $this->assertSame('2018-10-09', $post->getCreatedAt()->format('Y-m-d'));
+        $this->assertSame('2018-10-09', $post->getPublishedAt()->format('Y-m-d')); // published
         $this->assertNull($post->getImage());
         $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $post->getProject()->getUuid()->__toString()); // correct project
 
@@ -76,7 +76,7 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame('Test published page: Why a European Renaissance ?', $page->getTitle());
         $this->assertNull($page->getDescription());
         $this->assertStringContainsString('This is our purpose', $page->getContent());
-        $this->assertSame('2018-10-16', $page->getCreatedAt()->format('Y-m-d'));
+        $this->assertSame('2018-10-08', $page->getCreatedAt()->format('Y-m-d'));
         $this->assertSame('e816bcc6-0568-46d1-b0c5-917ce4810a87', (string) $page->getProject()->getUuid()->__toString()); // correct project
 
         // check attachment (image)
@@ -88,7 +88,39 @@ class ContentImportHandlerTest extends KernelTestCase
 
         // check if jobs is processed
         static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
-        $this->assertSame(4, $job->getTotal());
+        $this->assertSame(3, $job->getTotal());
+        $this->assertTrue($job->isFinished());
+    }
+
+    public function testConsumeLarge(): void
+    {
+        self::bootKernel();
+
+        /** @var ContentImport $import */
+        $import = static::getContainer()->get(ContentImportRepository::class)->findOneByUuid('8a7f9d2e-56c1-4826-9b40-7fe8a58e3d14');
+        $this->assertInstanceOf(ContentImport::class, $import);
+
+        $postsCountBeforeImport = static::getContainer()->get(PostRepository::class)->count(['project' => $import->getProject()]);
+        $pagesCountBeforeImport = static::getContainer()->get(PageRepository::class)->count(['project' => $import->getProject()]);
+
+        $job = $import->getJob();
+        $this->assertFalse($job->isFinished());
+        $this->assertSame(0, $job->getTotal());
+
+        static::getContainer()->get('cdn.storage')->write('import-started.xml', file_get_contents(__DIR__.'/../../../Fixtures/import/import-content-wordpress-large.xml'));
+
+        $handler = static::getContainer()->get(ContentImportHandler::class);
+        $handler(new ContentImportMessage($import->getId()));
+
+        $postsCountAfterImport = static::getContainer()->get(PostRepository::class)->count(['project' => $import->getProject()]);
+        $pagesCountAfterImport = static::getContainer()->get(PageRepository::class)->count(['project' => $import->getProject()]);
+
+        $this->assertSame(399, $postsCountAfterImport - $postsCountBeforeImport);
+        $this->assertSame(13, $pagesCountAfterImport - $pagesCountBeforeImport);
+
+        // check if jobs is processed
+        static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
+        $this->assertSame(412, $job->getTotal());
         $this->assertTrue($job->isFinished());
     }
 }
