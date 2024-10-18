@@ -16,6 +16,7 @@ gender:
     other: Andere
 console:
     title: Konsole
+    search_field_placeholder: Suche
     header:
         soon_expires:
             desc: 'Ihr Abonnement läuft am %date% (in %days% Tagen) ab.'

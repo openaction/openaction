@@ -61,12 +61,14 @@ class PostController extends AbstractController
         $project = $this->getProject();
         $currentCategory = $request->query->getInt('c');
         $currentPage = $request->query->getInt('p', 1);
+        $currentQuery = $request->query->get('q');
 
         return $this->render('console/project/website/post/index.html.twig', [
-            'posts' => $this->repository->getConsolePaginator($project, $currentCategory, $currentPage),
+            'posts' => $this->repository->getConsolePaginator($project, $currentQuery, $currentCategory, $currentPage),
             'categories' => $this->categoryRepository->getProjectCategories($project),
             'current_category' => $currentCategory,
             'current_page' => $currentPage,
+            'current_query' => $currentQuery,
             'project' => $project,
         ]);
     }

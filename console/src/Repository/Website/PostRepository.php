@@ -11,6 +11,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function Symfony\Component\String\u;
+
 /**
  * @method Post|null find($id, $lockMode = null, $lockVersion = null)
  * @method Post|null findOneBy(array $criteria, array $orderBy = null)
@@ -49,7 +51,7 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-    public function getConsolePaginator(Project $project, ?int $category, int $currentPage, int $limit = 10): Paginator
+    public function getConsolePaginator(Project $project, ?string $query, ?int $category, int $currentPage, int $limit = 10): Paginator
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p')
@@ -62,6 +64,11 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
+
+        if ($query) {
+            $qb->andWhere('LOWER(p.title) LIKE :searchQuery')
+                ->setParameter('searchQuery', '%'.u($query)->lower()->replace(' ', '%').'%');
+        }
 
         if ($category) {
             $qb->andWhere('pc.id = :category')
