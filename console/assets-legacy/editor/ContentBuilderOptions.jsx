@@ -4,6 +4,7 @@ import { translator } from '../services/translator';
 export const CONTENT_EDITOR_WEB_OPTIONS = {
     snippetOpen: false,
     snippetHandle: false,
+    elementSelection: false,
     toolbarDisplay: 'always',
     toolbar: 'right',
     buttons: [

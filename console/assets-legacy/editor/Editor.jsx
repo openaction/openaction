@@ -17,6 +17,11 @@ export class Editor {
             options['container'] = '#' + nodeId;
             options['onChange'] = () => this._handleCodeBuildChange();
 
+            // Override default paste behavior to always handle new lines in paste
+            if (!window.localStorage.getItem('_pasteresult')) {
+                window.localStorage.setItem('_pasteresult', 'html-without-styles');
+            }
+
             this._instance = new ContentBuilder(options);
             this._uploadUrl = uploadUrl;
         }
