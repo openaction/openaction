@@ -83,6 +83,7 @@ class CrmIndexer
         'settings_receive_calls',
         'settings_receive_sms',
         'created_at',
+        'created_at_int',
 
         // Area
         'area_'.Area::TYPE_COUNTRY,
