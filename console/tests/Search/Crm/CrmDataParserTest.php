@@ -87,6 +87,7 @@ class CrmDataParserTest extends KernelTestCase
                 'settings_receive_calls' => false,
                 'settings_receive_sms' => true,
                 'created_at' => '2024-03-03 02:00:00',
+                'created_at_int' => 20240303,
                 'area_country' => 36778547219895752,
                 'area_country_code' => 'fr',
                 'area_province' => 64795327863947811,

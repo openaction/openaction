@@ -59,6 +59,7 @@ class CrmDataFactory
                 settings_receive_sms BOOLEAN,
                 settings_receive_calls BOOLEAN,
                 created_at TIMESTAMP(0),
+                created_at_int INT,
                 status VARCHAR(1),
                 area TEXT,
                 tags TEXT,
@@ -139,6 +140,7 @@ class CrmDataFactory
 
                 -- Metadata
                 c.settings_receive_newsletters, c.settings_receive_calls, c.settings_receive_sms, c.created_at,
+                replace(to_char(c.created_at, \'YYYY-MM-DD\'), \'-\', \'\')::int as created_at_int,
 
                 -- Status
                 (CASE

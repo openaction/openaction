@@ -111,7 +111,7 @@ function normalizeIdentifier(identifier: string): string {
         newsletters: 'settings_receive_newsletters',
         appels: 'settings_receive_calls',
         sms: 'settings_receive_sms',
-        date: 'created_at',
+        date: 'created_at_int',
         statut: 'status',
     };
 

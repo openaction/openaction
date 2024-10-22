@@ -29,7 +29,13 @@ class CrmDataFactoryTest extends KernelTestCase
         $db = self::getContainer()->get(Connection::class);
         $document = $db->executeQuery('SELECT * FROM indexing_crm ORDER BY email LIMIT 1')->fetchAssociative();
 
-        unset($document['created_at'], $document['area'], $document['tags'], $document['projects']);
+        $this->assertArrayHasKey('created_at', $document);
+        $this->assertArrayHasKey('created_at_int', $document);
+        $this->assertArrayHasKey('area', $document);
+        $this->assertArrayHasKey('tags', $document);
+        $this->assertArrayHasKey('projects', $document);
+        unset($document['created_at'], $document['created_at_int'], $document['area'], $document['tags'], $document['projects']);
+
         $this->assertSame(
             [
                 'organization' => '219025aa-7fe2-4385-ad8f-31f386720d10',
