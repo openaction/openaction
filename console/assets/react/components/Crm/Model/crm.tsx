@@ -272,9 +272,14 @@ export class SearchEngine {
     }
 
     getBatchPayload(): CrmBatchPayload {
+        let filter = this.createSearchFilter();
+        if (this._isQueryLanguage) {
+            filter = [parseQueryToSearchFilters(this.query), ...filter];
+        }
+
         return {
-            queryInput: this.query,
-            queryFilter: this.createSearchFilter(),
+            queryInput: this._isQueryLanguage ? '' : this.query,
+            queryFilter: filter,
             querySort: this.createSearchSort(),
         };
     }

@@ -56,7 +56,7 @@ export interface CrmActionsBatchEndpoints {
 interface Props {
     nbHits: number;
     batch?: CrmActionsBatchEndpoints;
-    batchPayload: CrmBatchPayload;
+    createBatchPayload: () => CrmBatchPayload;
     tagsRegistry: TagsRegistry;
     onResetClick: () => void;
     onActionFinished: () => void;
@@ -240,9 +240,11 @@ function CrmExportAction(props: CrmExportActionProps) {
             }}
             startJob={() =>
                 new Promise<string>((resolve) => {
-                    request('POST', props.batch.export, { data: { ...props.batchPayload, params: {} } }).then((res) => {
-                        resolve(res.data.statusUrl);
-                    });
+                    request('POST', props.batch.export, { data: { ...props.createBatchPayload(), params: {} } }).then(
+                        (res) => {
+                            resolve(res.data.statusUrl);
+                        }
+                    );
                 })
             }
         />
@@ -303,7 +305,7 @@ function CrmAddTagAction(props: CrmAddTagActionProps) {
             startJob={() =>
                 new Promise<string>((resolve) => {
                     const batchRequest: BatchRequest = {
-                        ...props.batchPayload,
+                        ...props.createBatchPayload(),
                         params: { tagId: selectedTag.id },
                     };
 
@@ -370,7 +372,7 @@ function CrmRemoveTagAction(props: CrmRemoveTagActionProps) {
             startJob={() =>
                 new Promise<string>((resolve) => {
                     const batchRequest: BatchRequest = {
-                        ...props.batchPayload,
+                        ...props.createBatchPayload(),
                         params: { tagId: selectedTag.id },
                     };
 
@@ -421,9 +423,11 @@ function CrmRemoveAction(props: CrmExportActionProps) {
             }}
             startJob={() =>
                 new Promise<string>((resolve) => {
-                    request('POST', props.batch.remove, { data: { ...props.batchPayload, params: {} } }).then((res) => {
-                        resolve(res.data.statusUrl);
-                    });
+                    request('POST', props.batch.remove, { data: { ...props.createBatchPayload(), params: {} } }).then(
+                        (res) => {
+                            resolve(res.data.statusUrl);
+                        }
+                    );
                 })
             }
         />
