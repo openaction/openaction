@@ -97,7 +97,11 @@ class CrmDataParser
 
         $file = fopen($filename, 'rb');
         while (false !== ($line = fgets($file))) {
-            $row = array_combine(self::DUMP_HEADER, explode('`', $line));
+            try {
+                $row = array_combine(self::DUMP_HEADER, explode('`', $line));
+            } catch (\Exception $e) {
+                throw new \RuntimeException(message: sprintf('Invalid data format for line "%s": %s (counts: header=%s line=%s)', $line, $e->getMessage(), count(self::DUMP_HEADER), count(explode('`', $line))), previous: $e);
+            }
 
             foreach ($row as $k => $v) {
                 if ('\\N' === trim($v)) {
