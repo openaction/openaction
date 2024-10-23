@@ -131,7 +131,7 @@ export function CrmSearchEngine(props: Props) {
                         <CrmActions
                             nbHits={nbHits}
                             batch={props.batch}
-                            batchPayload={props.searchEngine.getBatchPayload()}
+                            createBatchPayload={() => props.searchEngine.getBatchPayload()}
                             tagsRegistry={props.tagsRegistry}
                             actionsLabels={props.actionsLabels}
                             onActionFinished={() => {
