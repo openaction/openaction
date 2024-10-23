@@ -42,13 +42,10 @@ class PhoningCampaignCallApiPersister
         // If the phone number is valid but should be called again later, mark it as such
         if (PhoningCampaignCall::STATUS_FAILED_NO_ANSWER === $data->status
             || PhoningCampaignCall::STATUS_FAILED_CALL_LATER === $data->status) {
-            // Add call failed tag to target
-            $previousTags = $contact->getMetadataTagsNames();
-            $resolvedNewTags = array_unique(array_merge($previousTags, [
-                'phoning-retry-'.$this->slugger->slug($call->getTarget()->getCampaign()->getName())->lower(),
-            ]));
-
-            $this->em->getRepository(Tag::class)->replaceContactTags($contact, $resolvedNewTags);
+            $this->em->getRepository(Tag::class)->addContactTagByName(
+                $contact,
+                'phoning-retry-'.$this->slugger->slug($call->getTarget()->getCampaign()->getName())->lower()
+            );
 
             return;
         }
@@ -68,12 +65,6 @@ class PhoningCampaignCallApiPersister
 
         $this->em->persist($call->getTarget());
         $this->em->persist($contact);
-
-        // Persist tags resolving duplicates
-        $previousTags = $contact->getMetadataTagsNames();
-        $contact->getMetadataTags()->clear();
         $this->em->flush();
-
-        $this->em->getRepository(Tag::class)->replaceContactTags($contact, $previousTags);
     }
 }

@@ -152,6 +152,23 @@ class TagRepository extends ServiceEntityRepository
         ');
     }
 
+    public function addContactTagByName(Contact $contact, string $name): void
+    {
+        $tag = $this->findOneByName($contact->getOrganization(), $name);
+
+        if (!$tag) {
+            $tag = new Tag($contact->getOrganization(), $name);
+            $this->_em->persist($tag);
+            $this->_em->flush();
+        }
+
+        $this->_em->getConnection()->executeStatement('
+            INSERT INTO community_contacts_tags (contact_id, tag_id) 
+            VALUES ('.$contact->getId().', '.$tag->getId().')
+            ON CONFLICT DO NOTHING
+        ');
+    }
+
     public function replaceContactTags(Contact $contact, array $tagsNames)
     {
         $contact->getMetadataTags()->clear();
