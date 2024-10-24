@@ -5,20 +5,24 @@ namespace App\Controller\Cdn;
 use App\Controller\AbstractController;
 use Intervention\Image\ImageManager;
 use League\Flysystem\FilesystemReader;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServeController extends AbstractController
 {
     private FilesystemReader $storage;
     private ImageManager $imageManager;
+    private Filesystem $filesystem;
 
-    public function __construct(FilesystemReader $cdnStorage, ImageManager $imageManager)
+    public function __construct(FilesystemReader $cdnStorage, ImageManager $imageManager, Filesystem $filesystem)
     {
         $this->storage = $cdnStorage;
         $this->imageManager = $imageManager;
+        $this->filesystem = $filesystem;
     }
 
     #[Route('/serve/{pathname}', requirements: ['pathname' => '.+'], name: 'cdn_deliver', stateless: true)]
@@ -56,11 +60,12 @@ class ServeController extends AbstractController
             return $this->setResponseCache($response);
         }
 
-        // Otherwise serve as a stream
-        $cdnStorage = $this->storage;
-        $response = new StreamedResponse(static function () use ($cdnStorage, $pathname) {
-            stream_copy_to_stream($cdnStorage->readStream($pathname), fopen('php://output', 'wb'));
-        });
+        // Otherwise download and serve as BinaryFileResponse to handle Range requests
+        // (Safari video support requires it)
+        $tmpFilename = $this->filesystem->tempnam(sys_get_temp_dir(), 'serve_');
+        file_put_contents($tmpFilename, $this->storage->readStream($pathname));
+
+        $response = new BinaryFileResponse($tmpFilename, contentDisposition: ResponseHeaderBag::DISPOSITION_INLINE);
 
         // Find file mimetype
         $response->headers->set('Content-Type', $this->storage->mimeType($pathname));
