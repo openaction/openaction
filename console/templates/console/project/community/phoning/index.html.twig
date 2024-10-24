@@ -96,6 +96,12 @@
                                             {{ 'index.list.duplicate'|trans({}, 'project_phoning') }}
                                         </a>
 
+                                        <a href="{{ path('console_community_phoning_crosspost', {'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2">
+                                            <i class="fad fa-share-all mr-1"></i>
+                                            {{ 'index.list.crosspost'|trans({}, 'project_phoning') }}
+                                        </a>
+
                                         <a href="{{ csrf_path('console_community_phoning_delete', { 'projectUuid': project.uuid, 'uuid': draft.uuid }) }}"
                                            data-controller="delete"
                                            data-message="{{ 'index.drafts.delete_confirm'|trans({'%subject%': draft.name}, 'project_phoning') }}"

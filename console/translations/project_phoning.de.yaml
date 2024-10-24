@@ -24,6 +24,7 @@ index:
         preview: 'Ansicht auf der Website'
         edit_form: 'Formular aktualisieren'
         duplicate: 'Duplizieren Sie'
+        crosspost: Croppost
     active:
         title: 'Aktive Kampagnen'
         no_records: 'Keine aktiven Kampagnen'
@@ -58,3 +59,12 @@ metadata:
     to:
         title: Empfänger
         desc: 'Welche Kontakte sollten während dieser Kampagne angerufen werden?'
+crosspost:
+    title: Croppost-Kampagne "%title%"
+    back: Zurück zur Liste
+    help: |
+        Das Cross-Posten einer Kampagne dupliziert sie gleichzeitig in mehreren Projekten. 
+        Die duplizierten Versionen sind unabhängig voneinander und können separat bearbeitet werden. 
+        Sie werden als Entwürfe in den ausgewählten Projekten erstellt.
+    to: In welchen Projekten möchten Sie diese Kampagne crossposten?
+    submit: Crossposten

@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Console\Project\Community;
 
 use App\Entity\Community\PhoningCampaign;
+use App\Entity\Project;
 use App\Repository\AreaRepository;
 use App\Repository\Community\PhoningCampaignRepository;
 use App\Repository\Community\TagRepository;
@@ -179,6 +180,51 @@ class PhoningControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->assertMatchesRegularExpression('~/console/project/'.self::PROJECT_ACME_UUID.'/community/phoning/[0-9a-zA-Z\-]+/metadata~', $client->getResponse()->headers->get('Location'));
         $this->assertSame(4, $repository->count(['project' => $project->getId()]));
+    }
+
+    public function testCrosspost()
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/community/phoning/'.self::CAMPAIGN_DRAFT_UUID.'/crosspost');
+        $this->assertResponseIsSuccessful();
+
+        /** @var Project $citipoProject */
+        $citipoProject = static::getContainer()->get(ProjectRepository::class)->findOneByUuid(self::PROJECT_CITIPO_UUID);
+
+        $form = $crawler->selectButton('Crosspost')->form();
+        $client->submit($form, ['crosspost_entity[intoProjects]' => [$citipoProject->getId()]]);
+
+        // Check original location didn't change
+        /** @var PhoningCampaign $campaign */
+        $campaign = static::getContainer()->get(PhoningCampaignRepository::class)->findOneBy(['uuid' => self::CAMPAIGN_DRAFT_UUID]);
+        $this->assertNotSame($citipoProject->getId(), $campaign->getProject()->getId());
+
+        // Check duplicate location is target project
+        /** @var PhoningCampaign $campaign */
+        $duplicate = static::getContainer()->get(PhoningCampaignRepository::class)->findOneBy([
+            'name' => $campaign->getName(),
+            'project' => $citipoProject,
+        ]);
+        $this->assertInstanceOf(PhoningCampaign::class, $duplicate);
+        $this->assertNotSame($campaign->getId(), $duplicate->getId());
+        $this->assertSame($campaign->getName(), $duplicate->getName());
+        $this->assertSame($campaign->getContactsFilter(), $duplicate->getContactsFilter());
+        $this->assertSame($campaign->getEndAfter(), $duplicate->getEndAfter());
+        $this->assertSame($campaign->getAreasFilterIds(), $duplicate->getAreasFilterIds());
+        $this->assertSame($campaign->getTagsFilterIds(), $duplicate->getTagsFilterIds());
+        $this->assertNotSame($campaign->getForm()->getId(), $duplicate->getForm()->getId());
+        $this->assertSame($citipoProject->getId(), $duplicate->getForm()->getProject()->getId());
+        $this->assertSame($campaign->getForm()->getTitle(), $duplicate->getForm()->getTitle());
+        $this->assertSame($campaign->getForm()->getRedirectUrl(), $duplicate->getForm()->getRedirectUrl());
+        $this->assertSame($campaign->getForm()->getDescription(), $duplicate->getForm()->getDescription());
+        $this->assertSame($campaign->getForm()->getBlocks()->count(), $duplicate->getForm()->getBlocks()->count());
+        $this->assertSame($campaign->getForm()->getTitle(), $duplicate->getForm()->getTitle());
+        $this->assertSame($campaign->getForm()->getTitle(), $duplicate->getForm()->getTitle());
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
     }
 
     public function testView()

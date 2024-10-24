@@ -1,0 +1,51 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'crosspost.title'|trans({'%title%': campaign.name}, 'project_phoning') %}
+
+{% block sidebar_phoning 'current' %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <a href="{{ path('console_community_phoning', {'projectUuid': current_project.uuid}) }}"
+               class="btn btn-outline-primary btn-sm border-0">
+                <i class="fal fa-angle-left"></i>
+                <span>{{ 'crosspost.back'|trans({}, 'project_phoning') }}</span>
+            </a>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="row justify-content-center py-5">
+                <div class="col-12 col-md-9 col-lg-6">
+                    <div class="text-muted mb-3">
+                        {{ 'crosspost.help'|trans({}, 'project_phoning') }}
+                    </div>
+
+                    {{ form_start(form) }}
+
+                    <div class="mb-3" data-controller="checkbox-select-all">
+                        {{ form_label(form.intoProjects, 'crosspost.to'|trans({}, 'project_phoning')) }}
+
+                        <div class="form-check mb-2">
+                            <input type="checkbox" id="select-all" class="form-check-input" data-checkbox-select-all-target="checkboxAll" />
+                            <label class="form-check-label" for="select-all">
+                                {{ 'select_all'|trans({}, 'global') }}
+                            </label>
+                        </div>
+
+                        {% for field in form.intoProjects %}
+                            {{ form_widget(field, {'attr': {'data-checkbox-select-all-target': 'checkbox'}}) }}
+                        {% endfor %}
+
+                        {{ form_errors(form.intoProjects) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'crosspost.submit'|trans({}, 'project_phoning') }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

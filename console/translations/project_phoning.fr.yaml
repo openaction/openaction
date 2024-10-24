@@ -28,6 +28,7 @@ index:
         edit_form: Modifier le questionnaire
         preview: Voir sur le site
         duplicate: Dupliquer
+        crosspost: Crossposter
 
     active:
         title: Campagnes actives
@@ -68,3 +69,13 @@ metadata:
     to:
         title: Destinataires
         desc: Quels contacts doivent être appelés dans le cadre de cette campagne ?
+
+crosspost:
+    title: Crossposter la campagne "%title%"
+    back: Retour à la liste
+    help: |
+        Crossposter une campagne permet de la dupliquer dans plusieurs projets à la fois. Les versions dupliquées
+        seront indépendantes les unes des autres et pourront être modifiées séparément. Elles seront crées commes
+        brouillons sur les projets choisis.
+    to: Dans quels projets souhaitez-vous crossposter cette campagne ?
+    submit: Crossposter
