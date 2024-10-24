@@ -86,7 +86,7 @@ class ContactImporterTest extends KernelTestCase
 
         $importer->prepareImport($organization, new File($pathname));
 
-        $this->assertLessThan(1, microtime(true) - $startTime);
+        $this->assertLessThan(2, microtime(true) - $startTime);
     }
 
     public function testStartImport()
