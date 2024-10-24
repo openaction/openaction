@@ -112,31 +112,54 @@ class CrmDataFactory
                 o.uuid AS organization,
 
                 -- Details
-                c.uuid, c.email,
+                c.uuid, 
+                replace(c.email, \'`\', \'\'\'\'),
                 (
-                    SELECT replace(string_agg(value::text, \'✂\'), \'"\', \'\')
+                    SELECT replace(replace(string_agg(value::text, \'✂\'), \'"\', \'\'), \'`\', \'\'\'\')
                     FROM json_array_elements(c.contact_additional_emails)
                 ) AS contact_additional_emails, 
-                c.contact_phone, c.parsed_contact_phone, c.contact_work_phone, c.parsed_contact_work_phone,
+                replace(c.contact_phone, \'`\', \'\'\'\'),
+                c.parsed_contact_phone, 
+                replace(c.contact_work_phone, \'`\', \'\'\'\'),
+                c.parsed_contact_work_phone,
 
                 -- Profile
-                c.profile_formal_title, c.profile_first_name, c.profile_first_name_slug, 
-                c.profile_middle_name, c.profile_middle_name_slug, c.profile_last_name, c.profile_last_name_slug,
+                replace(c.profile_formal_title, \'`\', \'\'\'\'), 
+                replace(c.profile_first_name, \'`\', \'\'\'\'), 
+                c.profile_first_name_slug, 
+                replace(c.profile_middle_name, \'`\', \'\'\'\'), 
+                c.profile_middle_name_slug, 
+                replace(c.profile_last_name, \'`\', \'\'\'\'), 
+                c.profile_last_name_slug,
                 c.profile_birthdate,
                 replace(profile_birthdate::text, \'-\', \'\')::int as profile_birthdate_int,
                 extract(year from age(now(), profile_birthdate))::int as profile_age,
-                c.profile_gender, c.profile_nationality, c.profile_company, c.profile_company_slug, 
-                c.profile_job_title, c.profile_job_title_slug,
+                c.profile_gender,
+                c.profile_nationality,
+                replace(c.profile_company, \'`\', \'\'\'\'),
+                c.profile_company_slug, 
+                replace(c.profile_job_title, \'`\', \'\'\'\'),
+                c.profile_job_title_slug,
 
                 -- Address
-                c.address_street_line1, c.address_street_line1_slug, c.address_street_line2, c.address_street_line2_slug,
-                c.address_zip_code, c.address_city, UPPER(country.code) AS address_country,
+                replace(c.address_street_line1, \'`\', \'\'\'\'), 
+                c.address_street_line1_slug, 
+                replace(c.address_street_line2, \'`\', \'\'\'\'),
+                c.address_street_line2_slug,
+                replace(c.address_zip_code, \'`\', \'\'\'\'),
+                replace(c.address_city, \'`\', \'\'\'\'),
+                UPPER(country.code) AS address_country,
 
                 -- Socials
-                c.social_facebook, c.social_twitter, c.social_linked_in, c.social_telegram, c.social_whatsapp,
+                replace(c.social_facebook, \'`\', \'\'\'\'), 
+                replace(c.social_twitter, \'`\', \'\'\'\'),
+                replace(c.social_linked_in, \'`\', \'\'\'\'), 
+                replace(c.social_telegram, \'`\', \'\'\'\'),
+                replace(c.social_whatsapp, \'`\', \'\'\'\'),
 
                 -- Picture
-                p.pathname AS picture, md5(c.email) AS email_hash,
+                p.pathname AS picture,
+                md5(c.email) AS email_hash,
 
                 -- Metadata
                 c.settings_receive_newsletters, c.settings_receive_calls, c.settings_receive_sms, c.created_at,
