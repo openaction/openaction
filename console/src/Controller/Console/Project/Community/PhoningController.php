@@ -7,8 +7,11 @@ use App\Community\ContactViewBuilder;
 use App\Controller\AbstractController;
 use App\DataManager\PhoningCampaignDataManager;
 use App\Entity\Community\PhoningCampaign;
+use App\Entity\Project;
 use App\Form\Community\Model\PhoningCampaignMetaData;
 use App\Form\Community\PhoningCampaignMetaDataType;
+use App\Form\Project\CrosspostEntityType;
+use App\Form\Project\Model\CrosspostEntityData;
 use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
 use App\Repository\Community\PhoningCampaignRepository;
@@ -86,12 +89,54 @@ class PhoningController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_PHONING_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($campaign);
 
         $duplicated = $dataManager->duplicate($campaign);
 
         return $this->redirectToRoute('console_community_phoning_metadata', [
             'projectUuid' => $this->getProject()->getUuid(),
             'uuid' => $duplicated->getUuid(),
+        ]);
+    }
+
+    #[Route('/{uuid}/crosspost', name: 'console_community_phoning_crosspost', methods: ['GET', 'POST'])]
+    public function crosspost(PhoningCampaignDataManager $dataManager, PhoningCampaign $campaign, Request $request)
+    {
+        $this->denyAccessUnlessGranted(Permissions::COMMUNITY_PHONING_MANAGE_DRAFTS, $this->getProject());
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($campaign);
+
+        $data = new CrosspostEntityData();
+
+        $form = $this->createForm(CrosspostEntityType::class, $data, [
+            'user' => $this->getUser(),
+            'permission' => Permissions::COMMUNITY_PHONING_MANAGE_DRAFTS,
+            'current_project' => $this->getProject(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Project $project */
+            foreach ($data->intoProjects as $project) {
+                if (!$this->isGranted(Permissions::COMMUNITY_PHONING_MANAGE_DRAFTS, $project)) {
+                    continue;
+                }
+
+                $duplicate = $dataManager->duplicate($campaign);
+                $dataManager->move($duplicate, $project);
+            }
+
+            $this->addFlash('success', 'crosspost.success');
+
+            return $this->redirectToRoute('console_community_phoning', [
+                'projectUuid' => $this->getProject()->getUuid(),
+            ]);
+        }
+
+        return $this->render('console/project/community/phoning/crosspost.html.twig', [
+            'campaign' => $campaign,
+            'form' => $form->createView(),
         ]);
     }
 

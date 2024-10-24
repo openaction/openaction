@@ -28,6 +28,7 @@ index:
         preview: View on the website
         edit_form: Update form
         duplicate: Duplicate
+        crosspost: Crosspost
 
     active:
         title: Active campaigns
@@ -70,3 +71,13 @@ metadata:
     to:
         title: Recipients
         desc: Which contacts should be called during this campaign?
+
+crosspost:
+    title: Croppost campaign "%title%"
+    back: Back to the list
+    help: |
+        Cross-posting a campaign duplicates it in several projects at the same time. Duplicate versions
+        will be independent of each other and can be modified separately. They will be created as
+        drafts on the chosen projects.
+    to: In which projects do you want to crosspost this campaign?
+    submit: Crosspost
