@@ -24,8 +24,8 @@ export interface CrmDocument {
     email_hash: string | null;
     status: string | null;
     settings_receive_newsletters: boolean;
-    settings_receive_calls: boolean;
     settings_receive_sms: boolean;
+    settings_receive_calls: boolean;
     created_at: string | null;
     area_country: number | null;
     area_country_code: string | null;
