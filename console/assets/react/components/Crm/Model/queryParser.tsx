@@ -109,8 +109,8 @@ function normalizeIdentifier(identifier: string): string {
         tags: 'tags_names',
         projects: 'projects_names',
         newsletters: 'settings_receive_newsletters',
-        appels: 'settings_receive_calls',
         sms: 'settings_receive_sms',
+        appels: 'settings_receive_calls',
         date: 'created_at_int',
         statut: 'status',
     };

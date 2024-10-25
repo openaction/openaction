@@ -162,7 +162,7 @@ class CrmDataFactory
                 md5(c.email) AS email_hash,
 
                 -- Metadata
-                c.settings_receive_newsletters, c.settings_receive_calls, c.settings_receive_sms, c.created_at,
+                c.settings_receive_newsletters, c.settings_receive_sms, c.settings_receive_calls, c.created_at,
                 replace(to_char(c.created_at, \'YYYY-MM-DD\'), \'-\', \'\')::int as created_at_int,
 
                 -- Status

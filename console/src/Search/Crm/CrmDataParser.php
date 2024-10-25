@@ -205,8 +205,8 @@ class CrmDataParser
 
             // Metadata
             'settings_receive_newsletters' => in_array($row['settings_receive_newsletters'], [true, 't'], true),
-            'settings_receive_calls' => in_array($row['settings_receive_calls'], [true, 't'], true),
             'settings_receive_sms' => in_array($row['settings_receive_sms'], [true, 't'], true),
+            'settings_receive_calls' => in_array($row['settings_receive_calls'], [true, 't'], true),
             'created_at' => $row['created_at'],
             'created_at_int' => ((int) $row['created_at_int']) ?: null,
 

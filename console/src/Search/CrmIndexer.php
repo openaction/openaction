@@ -80,8 +80,8 @@ class CrmIndexer
 
         // Metadata
         'settings_receive_newsletters',
-        'settings_receive_calls',
         'settings_receive_sms',
+        'settings_receive_calls',
         'created_at',
         'created_at_int',
 
