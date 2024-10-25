@@ -54,7 +54,7 @@ class PhoningController extends AbstractApiController
     {
         $this->denyUnlessAuthorized($request);
         $campaign = $this->findActiveCampaignOrThrow($encodedUuid);
-        $this->denyUnlessSameProject($campaign);
+        $this->denyUnlessSameOrganization($campaign->getProject());
 
         return $this->handleApiItem($campaign, $transformer);
     }
@@ -64,7 +64,7 @@ class PhoningController extends AbstractApiController
     {
         $author = $this->denyUnlessAuthorized($request);
         $campaign = $this->findActiveCampaignOrThrow($encodedUuid);
-        $this->denyUnlessSameProject($campaign);
+        $this->denyUnlessSameOrganization($campaign->getProject());
 
         if (!$target = $this->targetRepository->findPhoningTarget($author, $campaign)) {
             throw $this->createNotFoundException('No target found');
@@ -80,7 +80,7 @@ class PhoningController extends AbstractApiController
     {
         $this->denyUnlessAuthorized($request);
         $campaign = $this->findActiveCampaignOrThrow($encodedUuid);
-        $this->denyUnlessSameProject($campaign);
+        $this->denyUnlessSameOrganization($campaign->getProject());
 
         /** @var PhoningCampaignCall $call */
         if (!$call = $this->callRepository->findOneByBase62Uid($callId)) {
@@ -99,7 +99,7 @@ class PhoningController extends AbstractApiController
     {
         $this->denyUnlessAuthorized($request);
         $campaign = $this->findActiveCampaignOrThrow($encodedUuid);
-        $this->denyUnlessSameProject($campaign);
+        $this->denyUnlessSameOrganization($campaign->getProject());
 
         /** @var PhoningCampaignCall $call */
         if (!$call = $this->callRepository->findOneByBase62Uid($callId)) {
