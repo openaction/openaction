@@ -67,6 +67,7 @@ class ServeController extends AbstractController
 
         $response = new BinaryFileResponse($tmpFilename, contentDisposition: ResponseHeaderBag::DISPOSITION_INLINE);
         $response->prepare($request);
+        $response->deleteFileAfterSend();
 
         // Find file mimetype
         $response->headers->set('Content-Type', $this->storage->mimeType($pathname));
