@@ -11,6 +11,7 @@ use App\Controller\Util\ContentEditorUploadControllerTrait;
 use App\Form\Project\Model\UpdateMembershipMainPageData;
 use App\Form\Project\UpdateMembershipMainPageType;
 use App\Form\Project\UpdateMembershipSettingsType;
+use App\Platform\Features;
 use App\Platform\Permissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +29,7 @@ class MembershipController extends AbstractController
     public function index()
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
+        $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyIfSubscriptionExpired();
 
         return $this->render('console/project/configuration/settings/membership/index.html.twig');
@@ -37,6 +39,7 @@ class MembershipController extends AbstractController
     public function homepage()
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
+        $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyIfSubscriptionExpired();
 
         return $this->render('console/project/configuration/settings/membership/homepage.html.twig', [
@@ -49,6 +52,7 @@ class MembershipController extends AbstractController
     public function homepageUpdate(EntityManagerInterface $em, Request $request)
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
+        $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
 
@@ -74,6 +78,7 @@ class MembershipController extends AbstractController
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, Request $request)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyIfSubscriptionExpired();
 
         $uploadedFile = $this->createContentEditorUploadedFile($request);
@@ -86,6 +91,7 @@ class MembershipController extends AbstractController
     public function form(EntityManagerInterface $manager, Request $request)
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
+        $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyIfSubscriptionExpired();
 
         $project = $this->getProject();

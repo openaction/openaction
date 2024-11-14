@@ -26,7 +26,7 @@ abstract class AbstractController extends BaseController
     public function denyUnlessSameOrganization($entity)
     {
         if (!$entity) {
-            throw $this->createNotFoundException('Entity not found, current organization check couldn\'t be done.');
+            throw $this->createAccessDeniedException('Entity not found, current organization check couldn\'t be done.');
         }
 
         if (!method_exists($entity, 'getOrganization')) {
@@ -56,14 +56,14 @@ abstract class AbstractController extends BaseController
     public function denyUnlessShowPreview()
     {
         if (!($orga = $this->getOrganization()) || !$orga->isShowPreview()) {
-            throw $this->createNotFoundException('This organization is not allowed to preview features.');
+            throw $this->createAccessDeniedException('This organization is not allowed to preview features.');
         }
     }
 
     public function denyUnlessFeatureInPlan(string $feature)
     {
         if (!($orga = $this->getOrganization()) || !$orga->isFeatureInPlan($feature)) {
-            throw $this->createNotFoundException('This organization is not allowed to access this feature.');
+            throw $this->createAccessDeniedException('This organization is not allowed to access this feature.');
         }
     }
 

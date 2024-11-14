@@ -36,7 +36,8 @@ class PlanConstraintsTest extends WebTestCase
             '/website/forms' => [Plans::PREMIUM, Plans::ORGANIZATION],
 
             // Organization
-            '/developers/access' => [Plans::ORGANIZATION],
+            '/configuration/settings/membership/form' => [Plans::ORGANIZATION],
+            '/community/phoning' => [Plans::ORGANIZATION],
         ];
 
         $slugger = new AsciiSlugger();
