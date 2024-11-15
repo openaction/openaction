@@ -3,6 +3,7 @@
 namespace App\Bridge\Cloudflare;
 
 use App\Entity\Model\CloudflareDomainConfig;
+use App\Util\Json;
 use Cloudflare\API\Adapter\Adapter;
 use Cloudflare\API\Adapter\Guzzle;
 use Cloudflare\API\Auth\APIToken;
@@ -14,7 +15,7 @@ use Cloudflare\API\Endpoints\PageRules;
 use Cloudflare\API\Endpoints\SSL;
 use Cloudflare\API\Endpoints\Zones;
 use Cloudflare\API\Endpoints\ZoneSettings;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
 
 class Cloudflare implements CloudflareInterface
 {
@@ -47,10 +48,14 @@ class Cloudflare implements CloudflareInterface
             $zoneId = null;
         }
 
-        if ($zoneId) {
-            $zone = $this->getZonesClient()->getZoneById($zoneId);
-        } else {
-            $zone = $this->getZonesClient()->addZone($domain, false, $this->organizationId);
+        try {
+            if ($zoneId) {
+                $zone = $this->getZonesClient()->getZoneById($zoneId);
+            } else {
+                $zone = $this->getZonesClient()->addZone($domain, false, $this->organizationId);
+            }
+        } catch (\Throwable $e) {
+            $this->handleCloudflareApiError($e);
         }
 
         return new CloudflareDomainConfig($zone->id, $zone->name, $zone->status, $zone->name_servers);
@@ -58,88 +63,100 @@ class Cloudflare implements CloudflareInterface
 
     public function provisionRootDomain(string $zoneId): CloudflareDomainConfig
     {
-        $zone = $this->getZonesClient()->getZoneById($zoneId)->result;
-
-        $dns = $this->getDNSClient();
-
-        // Remove existing conflicting records
-        $hasMXRecords = false;
-        foreach ($dns->listRecords($zone->id)->result as $record) {
-            // Remove root and www A records
-            if ('A' === $record->type && ($zone->name === $record->name || 'www.'.$zone->name === $record->name)) {
-                $dns->deleteRecord($zone->id, $record->id);
-
-                continue;
-            }
-
-            // Remove root and www CNAME records
-            if ('CNAME' === $record->type
-                && ($zone->name === $record->name || 'www.'.$zone->name === $record->name || 'ca.'.$zone->name === $record->name)) {
-                $dns->deleteRecord($zone->id, $record->id);
-
-                continue;
-            }
-
-            if ('MX' === $record->type && $zone->name === $record->name) {
-                $hasMXRecords = true;
-            }
-        }
-
-        // Configure Citipo A and CNAME records
-        $dns->addRecord($zone->id, 'A', $zone->name, '174.138.102.208');
-        $dns->addRecord($zone->id, 'CNAME', 'www', $zone->name);
-        $dns->addRecord($zone->id, 'CNAME', 'ca', 'analytics.citipo.com');
-
-        // Add MX records if no MX records already exist
-        if (!$hasMXRecords) {
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx1.mail.ovh.net', 0, false, '1');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx2.mail.ovh.net', 0, false, '5');
-            $dns->addRecord($zone->id, 'MX', $zone->name, 'mx3.mail.ovh.net', 0, false, '100');
-            $dns->addRecord($zone->id, 'TXT', $zone->name, 'v=spf1 include:mx.ovh.com -all', 0, false);
-        }
-
-        // Configure www redirect page rule
         try {
+            $zone = $this->getZonesClient()->getZoneById($zoneId)->result;
+
+            $dns = $this->getDNSClient();
+
+            // Remove existing conflicting records
+            $hasMXRecords = false;
+            foreach ($dns->listRecords($zone->id)->result as $record) {
+                // Remove root and www A records
+                if ('A' === $record->type && ($zone->name === $record->name || 'www.'.$zone->name === $record->name)) {
+                    $dns->deleteRecord($zone->id, $record->id);
+
+                    continue;
+                }
+
+                // Remove root and www CNAME records
+                if ('CNAME' === $record->type
+                    && ($zone->name === $record->name || 'www.'.$zone->name === $record->name || 'ca.'.$zone->name === $record->name)) {
+                    $dns->deleteRecord($zone->id, $record->id);
+
+                    continue;
+                }
+
+                if ('MX' === $record->type && $zone->name === $record->name) {
+                    $hasMXRecords = true;
+                }
+            }
+
+            // Configure Citipo A and CNAME records
+            $dns->addRecord($zone->id, 'A', $zone->name, '174.138.102.208');
+            $dns->addRecord($zone->id, 'CNAME', 'www', $zone->name);
+            $dns->addRecord($zone->id, 'CNAME', 'ca', 'analytics.citipo.com');
+
+            // Add MX records if no MX records already exist
+            if (!$hasMXRecords) {
+                $dns->addRecord($zone->id, 'MX', $zone->name, 'mx1.mail.ovh.net', 0, false, '1');
+                $dns->addRecord($zone->id, 'MX', $zone->name, 'mx2.mail.ovh.net', 0, false, '5');
+                $dns->addRecord($zone->id, 'MX', $zone->name, 'mx3.mail.ovh.net', 0, false, '100');
+                $dns->addRecord($zone->id, 'TXT', $zone->name, 'v=spf1 include:mx.ovh.com -all', 0, false);
+            }
+
+            // Configure www redirect page rule
             $redirectWww = new PageRulesActions();
             $redirectWww->setForwardingURL(301, 'https://'.$zone->name.'/$1');
             $this->getPageRulesClient()->createPageRule($zone->id, new PageRulesTargets('www.'.$zone->name.'/*'), $redirectWww);
-        } catch (RequestException) {
-            // The page rule may already exist if the domain was added and removed before: if so, ignore
+
+            // Configure SSL
+            $ssl = $this->getSSLClient();
+            $ssl->updateSSLSetting($zone->id, 'flexible');
+            $ssl->updateHTTPSRedirectSetting($zone->id, 'on');
+
+            // Disable email obfuscation
+            $settings = $this->getZoneSettingsClient();
+            $settings->updateEmailObfuscationSetting($zone->id, 'off');
+        } catch (\Throwable $e) {
+            $this->handleCloudflareApiError($e);
         }
-
-        // Configure SSL
-        $ssl = $this->getSSLClient();
-        $ssl->updateSSLSetting($zone->id, 'flexible');
-        $ssl->updateHTTPSRedirectSetting($zone->id, 'on');
-
-        // Disable email obfuscation
-        $settings = $this->getZoneSettingsClient();
-        $settings->updateEmailObfuscationSetting($zone->id, 'off');
 
         return new CloudflareDomainConfig($zone->id, $zone->name, $zone->status, $zone->name_servers);
     }
 
     public function createRootDomainTxt(string $zoneId, string $host, string $content): bool
     {
-        return $this->getDNSClient()->addRecord($zoneId, 'TXT', $host, $content, 0, false);
+        try {
+            return $this->getDNSClient()->addRecord($zoneId, 'TXT', $host, $content, 0, false);
+        } catch (\Throwable $e) {
+            $this->handleCloudflareApiError($e);
+        }
+
+        return false;
     }
 
     public function createRootDomainCname(string $zoneId, string $host, string $target, bool $dnsOnly = true): bool
     {
-        // If the record already exists, update
-        if ($recordId = $this->getDNSClient()->getRecordID($zoneId, 'CNAME', $host)) {
-            $this->getDNSClient()->updateRecordDetails($zoneId, $recordId, [
-                'type' => 'CNAME',
-                'name' => $host,
-                'content' => $target,
-                'proxied' => !$dnsOnly,
-            ]);
+        try {
+            // If the record already exists, update
+            if ($recordId = $this->getDNSClient()->getRecordID($zoneId, 'CNAME', $host)) {
+                $this->getDNSClient()->updateRecordDetails($zoneId, $recordId, [
+                    'type' => 'CNAME',
+                    'name' => $host,
+                    'content' => $target,
+                    'proxied' => !$dnsOnly,
+                ]);
 
-            return true;
+                return true;
+            }
+
+            // Otherwise create
+            return $this->getDNSClient()->addRecord($zoneId, 'CNAME', $host, $target, 0, !$dnsOnly);
+        } catch (\Throwable $e) {
+            $this->handleCloudflareApiError($e);
         }
 
-        // Otherwise create
-        return $this->getDNSClient()->addRecord($zoneId, 'CNAME', $host, $target, 0, !$dnsOnly);
+        return false;
     }
 
     public function getRootDomainConfig(string $zoneId): ?CloudflareDomainConfig
@@ -195,5 +212,35 @@ class Cloudflare implements CloudflareInterface
         }
 
         return $this->httpAdapter;
+    }
+
+    private function handleCloudflareApiError(\Throwable $exception, \Throwable $root = null): void
+    {
+        // Recursive calling to get to the HTTP exception
+        if (!$exception instanceof ClientException) {
+            if ($exception->getPrevious()) {
+                $this->handleCloudflareApiError($exception->getPrevious(), $root);
+
+                return;
+            }
+
+            // Reached the last exception without HTTP exception, throw the root one again
+            throw $root ?: $exception;
+        }
+
+        // Reached a HTTP exception
+        $message = (string) $exception->getResponse()->getBody();
+
+        try {
+            $data = Json::decode($message);
+
+            if (isset($data['messages'])) {
+                $message = Json::encode($data['messages']);
+            }
+        } catch (\Throwable) {
+            // Invalid JSON, keep it as string
+        }
+
+        throw new \RuntimeException(message: 'Cloudflare API error: '.$message, previous: $root ?: $exception);
     }
 }
