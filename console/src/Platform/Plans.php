@@ -52,6 +52,8 @@ final class Plans
             Features::TOOL_COMMUNITY_CONTACTS,
             Features::TOOL_COMMUNITY_EMAILING,
             Features::TOOL_COMMUNITY_TEXTING,
+
+            Features::FEATURE_API,
         ],
         self::STANDARD => [
             Features::TOOL_WEBSITE_POSTS,
@@ -102,7 +104,6 @@ final class Plans
             Features::FEATURE_COMMUNITY_PHONING_STATS,
             Features::FEATURE_COMMUNITY_PHONING_MEMBERS,
 
-            Features::FEATURE_API,
             Features::FEATURE_INTEGRATION_TELEGRAM,
             Features::FEATURE_INTEGRATION_INTEGROMAT,
         ],
