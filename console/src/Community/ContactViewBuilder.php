@@ -329,8 +329,8 @@ class ContactViewBuilder
         }
 
         // Emails
-        if ($this->emailsFilter) {
-            $filterQb->andWhere($filterQb->expr()->in('sc.email', $this->emailsFilter));
+        if ($emails = array_filter(array_map('trim', array_filter($this->emailsFilter)))) {
+            $filterQb->andWhere($filterQb->expr()->in('sc.email', $emails));
         }
 
         // Having a phone
