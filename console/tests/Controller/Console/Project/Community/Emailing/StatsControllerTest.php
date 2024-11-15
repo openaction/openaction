@@ -28,7 +28,7 @@ class StatsControllerTest extends WebTestCase
 
         yield 'Campaign with known stats' => [
             'uuid' => '06afd13a-ede2-4d46-9c8c-3ad80356c41f',
-            'expected' => ['total' => 100, 'sent' => 90, 'opened' => 40, 'clicked' => 10],
+            'expected' => ['total' => 1, 'sent' => 0, 'opened' => 0, 'clicked' => 0],
         ];
     }
 

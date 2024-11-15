@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmailingCampaignMessageRepository::class)]
-#[ORM\Table('community_emailing_campaigns_messages')]
+#[ORM\Table('community_emailing_campaigns_messages', uniqueConstraints: [
+    // Prevent campaigns to be sent more than once per contact
+    new ORM\UniqueConstraint('community_emailing_campaigns_messages_unique_idx', ['campaign_id', 'contact_id']),
+])]
 class EmailingCampaignMessage
 {
     use Util\EntityIdTrait;
