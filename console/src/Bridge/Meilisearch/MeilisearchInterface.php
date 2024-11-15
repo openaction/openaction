@@ -9,6 +9,11 @@ interface MeilisearchInterface
 {
     public function indexExists(string $index): bool;
 
+    /**
+     * @return array<string>
+     */
+    public function listIndexes(): array;
+
     public function createIndex(string $index, array $searchableAttributes, array $filterableAttributes, array $sortableAttributes): Task;
 
     public function deleteIndex(string $index): ?Task;

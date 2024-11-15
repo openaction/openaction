@@ -4,6 +4,8 @@ namespace App\Bridge\Meilisearch;
 
 use App\Bridge\Meilisearch\Model\Task;
 use MeiliSearch\Client;
+use MeiliSearch\Contracts\IndexesQuery;
+use MeiliSearch\Endpoints\Indexes;
 use MeiliSearch\Endpoints\Keys;
 use MeiliSearch\Exceptions\ApiException;
 
@@ -31,6 +33,20 @@ class Meilisearch implements MeilisearchInterface
         } catch (ApiException) {
             return false;
         }
+    }
+
+    public function listIndexes(): array
+    {
+        $indexes = $this->getClient()->getAllIndexes((new IndexesQuery())->setOffset(0)->setLimit(5000))->getResults();
+
+        $names = [];
+
+        /** @var Indexes $index */
+        foreach ($indexes as $index) {
+            $names[] = $index->getUid();
+        }
+
+        return $names;
     }
 
     public function createIndex(string $index, array $searchableAttributes, array $filterableAttributes, array $sortableAttributes): Task

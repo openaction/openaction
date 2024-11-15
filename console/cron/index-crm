@@ -1,3 +1,4 @@
 #!/bin/sh
 
 php /app/bin/console app:search:index-crm
+php /app/bin/console app:search:clean
