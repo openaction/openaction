@@ -38,6 +38,8 @@ class EmailingCampaignMessageRepository extends ServiceEntityRepository
             'nextval(\'community_emailing_campaigns_messages_id_seq\'), c0_.id, '.$campaign->getId().', false, false, false, false'
         );
 
+        $sql .= ' ON CONFLICT DO NOTHING';
+
         $params = [];
         foreach ($contactsQueryBuilder->getParameters() as $param) {
             $params[] = $param->getValue();

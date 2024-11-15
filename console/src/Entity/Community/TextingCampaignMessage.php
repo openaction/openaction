@@ -7,7 +7,10 @@ use App\Repository\Community\TextingCampaignMessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TextingCampaignMessageRepository::class)]
-#[ORM\Table('community_texting_campaigns_messages')]
+#[ORM\Table('community_texting_campaigns_messages', uniqueConstraints: [
+    // Prevent campaigns to be sent more than once per contact
+    new ORM\UniqueConstraint('community_texting_campaigns_messages_unique_idx', ['campaign_id', 'contact_id']),
+])]
 class TextingCampaignMessage
 {
     use Util\EntityIdTrait;

@@ -2934,18 +2934,11 @@ class TestFixtures extends AbstractFixtures
                 'contact' => $this->contacts['38dd80c0-b53e-4c29-806f-d2aeca8edb80'],
                 'bounced' => true,
             ],
-        ];
-
-        for ($i = 0; $i < 100; ++$i) {
-            $items[] = [
+            [
                 'campaign' => $this->emailingCampaigns['06afd13a-ede2-4d46-9c8c-3ad80356c41f'],
                 'contact' => $this->contacts['1f1b67f0-f77d-425c-9195-861b33f19695'],
-                'sent' => $i < 90,
-                'bounced' => $i < 5,
-                'opened' => $i < 40 ? 1 : 0,
-                'clicked' => $i < 10 ? 1 : 0,
-            ];
-        }
+            ],
+        ];
 
         foreach ($items as $data) {
             $this->em->persist(EmailingCampaignMessage::createFixture($data));
@@ -3021,15 +3014,11 @@ class TestFixtures extends AbstractFixtures
                 'contact' => $this->contacts['8d3323fd-e1a9-4eaa-9d4d-714abf1ff238'],
                 'sent' => true,
             ],
-        ];
-
-        for ($i = 0; $i < 100; ++$i) {
-            $items[] = [
+            [
                 'campaign' => $this->textingCampaigns['c5a63aa8-e3b0-4ee8-a61b-087e655f77e7'],
                 'contact' => $this->contacts['1f1b67f0-f77d-425c-9195-861b33f19695'],
-                'sent' => $i < 42,
-            ];
-        }
+            ],
+        ];
 
         foreach ($items as $data) {
             $this->em->persist(TextingCampaignMessage::createFixture($data));
