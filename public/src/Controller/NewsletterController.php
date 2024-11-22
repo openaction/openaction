@@ -32,23 +32,17 @@ class NewsletterController extends AbstractController
 
             $payload = [
                 'email' => $data->email,
-                'addressCountry' => $data->country,
-                'addressZipCode' => $data->zipCode,
                 'settingsReceiveNewsletters' => true,
                 'metadataSource' => 'api:'.$this->getProject()->id,
             ];
 
-            if ($data->firstName) {
-                $payload['profileFirstName'] = $data->firstName;
-            }
-
-            if ($data->lastName) {
-                $payload['profileLastName'] = $data->lastName;
-            }
-
-            if ($data->phone) {
-                $payload['contactPhone'] = $data->phone;
-            }
+            $payload = array_merge($payload, array_filter([
+                'addressCountry' => $data->country,
+                'addressZipCode' => $data->zipCode,
+                'profileFirstName' => $data->firstName,
+                'profileLastName' => $data->lastName,
+                'contactPhone' => $data->phone,
+            ]));
 
             $citipo->persistContact($this->getApiToken(), $payload);
 
