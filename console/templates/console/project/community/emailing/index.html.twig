@@ -181,6 +181,27 @@
                                 <div class="text-muted">
                                     {{ sent.sentAt|format_datetime('medium', 'short') }}
                                 </div>
+                                <div class="text-muted">
+                                    {% set to = 'to' %}
+                                    {% set toParams = {} %}
+
+                                    {% if sent.areasFilter|length > 0 %}
+                                        {% set to = to ~ '_areas' %}
+                                        {% set toParams = toParams|merge({'%areas%': sent.areasFilterNames|join(', ')}) %}
+                                    {% endif %}
+
+                                    {% if sent.tagsFilter|length > 0 %}
+                                        {% set to = to ~ '_tags' %}
+                                        {% set toParams = toParams|merge({'%tags%': sent.tagsFilterNames|join(', ')}) %}
+                                    {% endif %}
+
+                                    {% if sent.contactsFilter is not null %}
+                                        {% set to = to ~ '_contacts' %}
+                                        {% set toParams = toParams|merge({'%contacts%': sent.contactsFilter|length}) %}
+                                    {% endif %}
+
+                                    {{ ('index.drafts.' ~ to)|trans(toParams, 'project_emailings') }}
+                                </div>
                             </td>
                             {% if is_granted('community_emailing_stats', current_project) %}
                                 <td class="world-table-stats text-muted"
