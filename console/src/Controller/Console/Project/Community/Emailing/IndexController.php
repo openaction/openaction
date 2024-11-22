@@ -42,6 +42,7 @@ class IndexController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_MANAGE_DRAFTS, $project);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $currentPage = $request->query->getInt('p', 1);
 

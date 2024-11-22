@@ -15,6 +15,7 @@ class AccessController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_DEVELOPER_ACCESS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         if (!$this->getProject()->getAdminApiToken()) {
             $this->getProject()->generateAdminApiToken();

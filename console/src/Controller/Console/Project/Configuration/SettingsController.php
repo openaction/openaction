@@ -28,6 +28,7 @@ class SettingsController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/configuration/settings/index.html.twig');
     }

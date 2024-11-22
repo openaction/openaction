@@ -56,6 +56,7 @@ class EventController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $currentCategory = $request->query->getInt('c');
         $currentPage = $request->query->getInt('p', 1);

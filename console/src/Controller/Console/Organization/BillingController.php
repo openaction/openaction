@@ -26,6 +26,7 @@ class BillingController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_BILLING_MANAGE, $orga);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $data = UpdateBillingDetailsData::createFromOrganization($orga);
 
@@ -61,6 +62,7 @@ class BillingController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_BILLING_MANAGE, $orga);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/organization/billing/history.html.twig', [
             'invoices' => $repository->findInvoicesHistory($orga),

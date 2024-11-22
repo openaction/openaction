@@ -44,6 +44,7 @@ class FormController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_FORMS_MANAGE, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $project = $this->getProject();
         $currentPage = $request->query->getInt('p', 1);

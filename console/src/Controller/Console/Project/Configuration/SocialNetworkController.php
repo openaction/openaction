@@ -27,6 +27,7 @@ class SocialNetworkController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_SOCIALS, $project);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $data = UpdateMetasData::createFromProject($project);
 

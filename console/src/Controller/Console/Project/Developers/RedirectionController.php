@@ -32,6 +32,7 @@ class RedirectionController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_DEVELOPER_REDIRECTIONS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/developers/redirections/index.html.twig', [
             'redirections' => $this->repository->getProjectRedirections($this->getProject()),

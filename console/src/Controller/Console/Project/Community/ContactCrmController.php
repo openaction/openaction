@@ -35,6 +35,7 @@ class ContactCrmController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_CONTACTS_VIEW, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $orga = $this->getOrganization();
 

@@ -52,6 +52,7 @@ class PageController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $project = $this->getProject();
         $currentCategory = $request->query->getInt('c');

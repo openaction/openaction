@@ -32,6 +32,7 @@ class ProjectsController extends AbstractController
     public function list(DashboardBuilder $dashboardBuilder)
     {
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/organization/projects/list.html.twig', [
             'dashboard' => $dashboardBuilder->createOrganizationDashboard($this->getOrganization(), $this->getUser()),
@@ -44,6 +45,7 @@ class ProjectsController extends AbstractController
         $orga = $this->getOrganization();
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $orga);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         if ($orga->getProjects()->count() >= $orga->getProjectsSlots()) {
             $response = $this->render('console/subscription/not_enough_slots.html.twig');

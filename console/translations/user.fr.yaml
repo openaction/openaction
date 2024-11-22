@@ -37,6 +37,9 @@ confirm_password:
 two_factor:
     status:
         title: Authentification à 2 facteurs
+        forced: |
+            Votre organisation a mis en place une obligation de configurer l'authentification 
+            à 2 facteurs pour accéder à votre compte Citipo.
         desc: |
             Sécurisez votre compte gratuitement grâce à l'authentification à 2 facteurs.
             Une fois active, vous devrez entrer un code de quelques chiffres fourni par

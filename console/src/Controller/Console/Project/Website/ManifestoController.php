@@ -15,6 +15,7 @@ class ManifestoController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_MANIFESTO_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/website/manifesto/index.html.twig', [
             'topics' => $repository->getConsoleTopics($this->getProject()),

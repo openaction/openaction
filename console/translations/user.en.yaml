@@ -37,6 +37,9 @@ confirm_password:
 two_factor:
     status:
         title: Two-factor authentication
+        forced: |
+            Your organization has enforced a requirement to set up two-factor authentication 
+            to access your Citipo account.
         desc: |
             Keep your account extra secure with a second authentication step.
             It's entirely free and greatly increases the security of your account,

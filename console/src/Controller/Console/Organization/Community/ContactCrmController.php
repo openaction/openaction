@@ -43,6 +43,7 @@ class ContactCrmController extends AbstractController
         $orga = $this->getOrganization();
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $orga);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $tagFilter = $request->query->getInt('tag');
 
