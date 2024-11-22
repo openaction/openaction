@@ -19,8 +19,8 @@ class SubscribeNewsletterType extends AbstractType
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('phone', TextType::class, ['required' => false])
-            ->add('country', CountryType::class, ['required' => true])
-            ->add('zipCode', TextType::class, ['required' => true])
+            ->add('country', CountryType::class, ['required' => false])
+            ->add('zipCode', TextType::class, ['required' => false])
             ->add('acceptPolicy', CheckboxType::class, ['required' => true])
         ;
     }

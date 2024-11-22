@@ -29,13 +29,11 @@ class SubscribeNewsletterData
     public ?string $phone = null;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Country()
      */
     public ?string $country = 'FR';
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(min=2, max=30)
      */
     public ?string $zipCode = null;
