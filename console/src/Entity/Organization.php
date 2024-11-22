@@ -115,6 +115,9 @@ class Organization
     #[ORM\OrderBy(['weight' => 'ASC'])]
     private Collection $mainTags;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $forceTwoFactorAuth = false;
+
     /**
      * Whether the contacts main tags in the Community are used for progress
      * (ie when clicking on one, the previous ones are enabled automatically).
@@ -661,9 +664,20 @@ class Organization
         $this->mainTagsIsProgress = $mainTagsIsProgress;
     }
 
+    public function setForceTwoFactorAuth(bool $forceTwoFactorAuth): void
+    {
+        $this->forceTwoFactorAuth = $forceTwoFactorAuth;
+    }
+
     /*
      * Getters
      */
+
+    public function hasForceTwoFactorAuth(): bool
+    {
+        return (bool) $this->forceTwoFactorAuth;
+    }
+
     /**
      * @return OrganizationMainTag[]|Collection
      */

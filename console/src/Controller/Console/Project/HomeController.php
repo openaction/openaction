@@ -12,6 +12,7 @@ class HomeController extends AbstractController
     public function start()
     {
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/home/start.html.twig');
     }

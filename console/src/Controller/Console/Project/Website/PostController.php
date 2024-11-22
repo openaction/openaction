@@ -57,6 +57,7 @@ class PostController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $project = $this->getProject();
         $currentCategory = $request->query->getInt('c');

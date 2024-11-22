@@ -20,6 +20,7 @@ class AccessController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $project);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $data = WebsiteAccessData::createFromProject($project);
 

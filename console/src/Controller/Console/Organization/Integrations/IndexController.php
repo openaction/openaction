@@ -14,6 +14,7 @@ class IndexController extends AbstractController
     {
         $this->denyIfSubscriptionExpired();
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/organization/integrations/index.html.twig');
     }

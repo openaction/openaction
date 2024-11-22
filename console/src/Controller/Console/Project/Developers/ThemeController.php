@@ -30,6 +30,7 @@ class ThemeController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_DEVELOPER_THEME, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/developers/theme.html.twig', [
             'files' => $this->themeManager->getThemeFiles($this->getProject()),

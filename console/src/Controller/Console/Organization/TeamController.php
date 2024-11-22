@@ -34,6 +34,7 @@ class TeamController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_TEAM_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/organization/team/list.html.twig', [
             'organization' => $this->getOrganization(),

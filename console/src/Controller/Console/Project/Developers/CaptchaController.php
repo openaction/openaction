@@ -18,6 +18,7 @@ class CaptchaController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_DEVELOPER_ACCESS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $data = UpdateCaptchaData::createFromProject($this->getProject());
 

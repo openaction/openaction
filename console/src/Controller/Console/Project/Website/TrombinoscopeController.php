@@ -51,6 +51,7 @@ class TrombinoscopeController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/website/trombinoscope/index.html.twig', [
             'persons' => $this->repository->getConsolePersons($this->getProject()),

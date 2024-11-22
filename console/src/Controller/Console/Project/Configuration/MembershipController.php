@@ -31,6 +31,7 @@ class MembershipController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_PROJECT_MANAGE, $this->getOrganization());
         $this->denyUnlessFeatureInPlan(Features::MODULE_MEMBERS_AREA);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/configuration/settings/membership/index.html.twig');
     }

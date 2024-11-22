@@ -15,6 +15,7 @@ class IndexController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::PROJECT_CONFIG_APPEARANCE, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         return $this->render('console/project/configuration/content_import/index.html.twig');
     }

@@ -44,6 +44,7 @@ class DocumentController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_DOCUMENTS_MANAGE, $project);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         if ($this->requestStack->getSession()->has('file_upload')) {
             if (1 === $this->requestStack->getSession()->get('file_upload')) {

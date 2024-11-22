@@ -45,6 +45,7 @@ class PhoningController extends AbstractController
 
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_PHONING_MANAGE_DRAFTS, $project);
         $this->denyIfSubscriptionExpired();
+        $this->requireTwoFactorAuthIfForced();
 
         $activeCampaigns = $this->repository->findAllActive($project);
         $activeCampaignsProgress = $targetRepository->findActiveCampaignsProgress($project);

@@ -28,9 +28,11 @@ class TwoFactorController extends AbstractController
     }
 
     #[Route('', name: 'console_user_2fa', methods: ['GET'])]
-    public function status()
+    public function status(Request $request)
     {
-        return $this->render('console/user/two_factor/status.html.twig');
+        return $this->render('console/user/two_factor/status.html.twig', [
+            'wasForced' => $request->query->getBoolean('forced'),
+        ]);
     }
 
     #[Route('/confirm-password', name: 'console_user_2fa_confirm_password', methods: ['GET', 'POST'])]

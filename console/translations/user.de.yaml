@@ -33,6 +33,9 @@ two_factor:
     status:
         title: Zwei-Faktor-Authentifizierung
         desc: "Machen Sie Ihr Konto mit einem zweiten Authentifizierungsschritt besonders sicher.\nSie ist völlig kostenlos und erhöht die Sicherheit Ihres Kontos erheblich,\nWir empfehlen allen Citipo-Nutzern, sie zu aktivieren.\n"
+        forced: |
+            Ihre Organisation hat die Verpflichtung eingeführt, die Zwei-Faktor-Authentifizierung 
+            einzurichten, um auf Ihr Citipo-Konto zuzugreifen.
         disabled:
             label: 'Die Zwei-Faktor-Authentifizierung ist in Ihrem Konto noch nicht aktiviert.'
             enable: 'Aktivieren Sie die Zwei-Faktor-Authentifizierung'
