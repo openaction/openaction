@@ -39,6 +39,7 @@ class ImportContentControllerTest extends WebTestCase
         $button = $crawler->selectButton('Start the import');
         $client->submit($button->form(), [
             'content_import[postSaveStatus]' => 'save_as_original',
+            'content_import[keepCategories]' => 'keep_categories_yes',
         ]);
 
         self::assertResponseRedirects();

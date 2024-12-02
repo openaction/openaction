@@ -30,6 +30,20 @@ class ContentImportType extends AbstractType
                 ],
             ]);
 
+            $builder->add('keepCategories', ChoiceType::class, [
+                'translation_domain' => 'project_configuration',
+                'choices' => [
+                    'content_import.wordpress.settings.options.keep_categories.yes' => ContentImportSettings::KEEP_CATEGORIES_YES,
+                    'content_import.wordpress.settings.options.keep_categories.no' => ContentImportSettings::KEEP_CATEGORIES_NO,
+                ],
+                'multiple' => false,
+                'expanded' => true,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ]);
+
             $builder->add('postAuthorsIds', HiddenType::class);
 
             return;
