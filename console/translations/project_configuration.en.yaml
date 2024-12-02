@@ -92,6 +92,10 @@ content_import:
                     as_original: |
                         Import the news while keeping their Wordpress status (published if the news was published
                         on Wordpress, draft otherwise)
+                keep_categories:
+                    label: Do you want to create categories from Wordpress labels?
+                    yes: Yes, import the categories
+                    no: No, do not create categories
                 post_author_id:
                     label: |
                         Optionally, you can link an author to all imported posts. If you

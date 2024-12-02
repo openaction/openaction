@@ -79,7 +79,7 @@ class WordpressController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->importer->startImport($import, $form->getData());
+            $this->importer->startImport($import, $data);
 
             return $this->redirectToRoute('console_project_configuration_content_import_wordpress_progress', [
                 'projectUuid' => $this->getProject()->getUuid(),

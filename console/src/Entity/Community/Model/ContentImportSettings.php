@@ -29,7 +29,11 @@ class ContentImportSettings
     public const POST_STATUS_PUBLISH = 'publish';
     public const POST_STATUS_DRAFT = 'draft';
 
+    public const KEEP_CATEGORIES_YES = 'keep_categories_yes';
+    public const KEEP_CATEGORIES_NO = 'keep_categories_no';
+
     public string $postSaveStatus;
+    public string $keepCategories;
     public ?string $postAuthorsIds = null;
 
     public static function createFromImport(ContentImport $import): self

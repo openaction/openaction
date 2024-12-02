@@ -53,7 +53,10 @@ class WordpressContentParser implements ExternalContentParserInterface
         $rawData = $this->prepareRawDataFromXmlFile($import, $filename);
 
         // Create categories registry
-        $categoriesRegistry = $this->createCategoriesRegistry($import, $rawData);
+        $categoriesRegistry = ['posts' => [], 'pages' => []];
+        if (ContentImportSettings::KEEP_CATEGORIES_YES === ($import->getSettings()['keepCategories'] ?? null)) {
+            $categoriesRegistry = $this->createCategoriesRegistry($import, $rawData);
+        }
 
         // Create authors registry
         $postsAuthorsRegistry = [];
