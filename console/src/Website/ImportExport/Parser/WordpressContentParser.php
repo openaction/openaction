@@ -54,7 +54,7 @@ class WordpressContentParser implements ExternalContentParserInterface
 
         // Create categories registry
         $categoriesRegistry = ['posts' => [], 'pages' => []];
-        if (ContentImportSettings::KEEP_CATEGORIES_YES === $import->getSettings()['keepCategories'] ?? null) {
+        if (ContentImportSettings::KEEP_CATEGORIES_YES === ($import->getSettings()['keepCategories'] ?? null)) {
             $categoriesRegistry = $this->createCategoriesRegistry($import, $rawData);
         }
 
