@@ -104,10 +104,14 @@ class Cloudflare implements CloudflareInterface
                 $dns->addRecord($zone->id, 'TXT', $zone->name, 'v=spf1 include:mx.ovh.com -all', 0, false);
             }
 
-            // Configure www redirect page rule
-            $redirectWww = new PageRulesActions();
-            $redirectWww->setForwardingURL(301, 'https://'.$zone->name.'/$1');
-            $this->getPageRulesClient()->createPageRule($zone->id, new PageRulesTargets('www.'.$zone->name.'/*'), $redirectWww);
+            try {
+                // Configure www redirect page rule
+                $redirectWww = new PageRulesActions();
+                $redirectWww->setForwardingURL(301, 'https://'.$zone->name.'/$1');
+                $this->getPageRulesClient()->createPageRule($zone->id, new PageRulesTargets('www.'.$zone->name.'/*'), $redirectWww);
+            } catch (\Throwable) {
+                // Ignore duplicate page rules
+            }
 
             // Configure SSL
             $ssl = $this->getSSLClient();
