@@ -125,6 +125,7 @@ class ProjectTransformer extends AbstractTransformer
             'membershipMainPage' => $project->getMembershipMainPage(),
             'captchaSiteKey' => $project->getWebsiteTurnstileSiteKey(),
             'captchaSecretKey' => $project->getWebsiteTurnstileSecretKey(),
+            'enableGdprFields' => !$project->getWebsiteDisableGdprFields(),
         ];
     }
 

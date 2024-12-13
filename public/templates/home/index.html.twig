@@ -76,9 +76,11 @@
             </div>
         </div>
 
-        <div class="home-blocks-block-newsletter-policy">
-            {{ form_row(newsletter_form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
-        </div>
+        {% if newsletter_form.acceptPolicy is defined %}
+            <div class="home-blocks-block-newsletter-policy">
+                {{ form_row(newsletter_form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
+            </div>
+        {% endif %}
 
         <div class="home-blocks-block-newsletter-submit">
             {% if captcha_challenge %}

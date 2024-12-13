@@ -37,9 +37,13 @@ class PageController extends AbstractController
             return $this->redirectToRoute('page_view', ['id' => $id, 'slug' => $page->slug], Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $form = $this->createForm(SubscribeNewsletterType::class, new SubscribeNewsletterData(), [
+            'enable_gdpr_fields' => $this->getProject()->enableGdprFields,
+        ]);
+
         return $this->render('pages/view.html.twig', [
             'page' => $page,
-            'newsletter_form' => $this->createForm(SubscribeNewsletterType::class, new SubscribeNewsletterData())->createView(),
+            'newsletter_form' => $form->createView(),
         ]);
     }
 }

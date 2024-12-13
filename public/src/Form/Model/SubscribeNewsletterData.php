@@ -37,9 +37,4 @@ class SubscribeNewsletterData
      * @Assert\Length(min=2, max=30)
      */
     public ?string $zipCode = null;
-
-    /**
-     * @Assert\NotBlank()
-     */
-    public ?bool $acceptPolicy = false;
 }

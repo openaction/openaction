@@ -21,8 +21,11 @@ class SubscribeNewsletterType extends AbstractType
             ->add('phone', TextType::class, ['required' => false])
             ->add('country', CountryType::class, ['required' => false])
             ->add('zipCode', TextType::class, ['required' => false])
-            ->add('acceptPolicy', CheckboxType::class, ['required' => true])
         ;
+
+        if ($options['enable_gdpr_fields']) {
+            $builder->add('acceptPolicy', CheckboxType::class, ['required' => true, 'mapped' => false]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -30,6 +33,9 @@ class SubscribeNewsletterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SubscribeNewsletterData::class,
             'csrf_protection' => false,
+            'enable_gdpr_fields' => true,
         ]);
+
+        $resolver->setAllowedTypes('enable_gdpr_fields', 'bool');
     }
 }

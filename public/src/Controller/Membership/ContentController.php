@@ -249,7 +249,7 @@ class ContentController extends AbstractMembershipController
             );
         }
 
-        $form = $builder->createFromBlocks($formData->blocks->data);
+        $form = $builder->createFromBlocks($formData->blocks->data, [], $this->getProject()->enableGdprFields);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

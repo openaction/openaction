@@ -70,7 +70,9 @@
         {{ form_errors(form.country) }}
         {{ form_errors(form.zipCode) }}
 
-        {{ form_row(form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
+        {% if form.acceptPolicy is defined %}
+            {{ form_row(form.acceptPolicy, {'label': current_project.terminology.acceptPrivacy}) }}
+        {% endif %}
 
         <div class="user-form-submit">
             {% if captcha_challenge %}

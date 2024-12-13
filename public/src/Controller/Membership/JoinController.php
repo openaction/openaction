@@ -41,7 +41,11 @@ class JoinController extends AbstractController
 
         $data = new JoinData();
 
-        $form = $this->createForm(JoinType::class, $data, ['membership_settings' => $project->membership]);
+        $form = $this->createForm(JoinType::class, $data, [
+            'membership_settings' => $project->membership,
+            'enable_gdpr_fields' => $this->getProject()->enableGdprFields,
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

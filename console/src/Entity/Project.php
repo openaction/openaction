@@ -178,6 +178,9 @@ class Project implements UserInterface
     #[ORM\Column(type: 'string', length: 64, nullable: true)]
     private ?string $websiteTurnstileSecretKey = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $websiteDisableGdprFields = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $emailingCustomCss = null;
 
@@ -728,6 +731,11 @@ EOT;
         $this->websiteTurnstileSecretKey = $data->secretKey ?: null;
     }
 
+    public function setWebsiteDisableGdprFields(?bool $websiteDisableGdprFields): void
+    {
+        $this->websiteDisableGdprFields = $websiteDisableGdprFields;
+    }
+
     public function getWebsiteLocale(): string
     {
         return $this->websiteLocale;
@@ -836,6 +844,11 @@ EOT;
     public function getWebsiteTurnstileSecretKey(): ?string
     {
         return $this->websiteTurnstileSecretKey;
+    }
+
+    public function getWebsiteDisableGdprFields(): bool
+    {
+        return $this->websiteDisableGdprFields ?: false;
     }
 
     /*
