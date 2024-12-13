@@ -40,7 +40,7 @@ class FormController extends AbstractController
 
         $challenge = $this->turnstile->createCaptchaChallenge($this->getProject());
 
-        $form = $builder->createFromBlocks($formData->blocks->data);
+        $form = $builder->createFromBlocks($formData->blocks->data, [], $this->getProject()->enableGdprFields);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

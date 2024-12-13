@@ -16,9 +16,13 @@ class HomeController extends AbstractController
     {
         $challenge = $turnstile->createCaptchaChallenge($this->getProject());
 
+        $form = $this->createForm(SubscribeNewsletterType::class, new SubscribeNewsletterData(), [
+            'enable_gdpr_fields' => $this->getProject()->enableGdprFields,
+        ]);
+
         return $this->render('home/index.html.twig', [
             'captcha_challenge' => $challenge,
-            'newsletter_form' => $this->createForm(SubscribeNewsletterType::class, new SubscribeNewsletterData())->createView(),
+            'newsletter_form' => $form->createView(),
         ]);
     }
 }

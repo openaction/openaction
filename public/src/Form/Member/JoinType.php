@@ -76,8 +76,11 @@ class JoinType extends AbstractType
             ->add('settingsReceiveNewsletters', CheckboxType::class)
             ->add('settingsReceiveSms', CheckboxType::class)
             ->add('settingsReceiveCalls', CheckboxType::class)
-            ->add('acceptPolicy', CheckboxType::class, ['required' => true])
         ;
+
+        if ($options['enable_gdpr_fields']) {
+            $builder->add('acceptPolicy', CheckboxType::class, ['required' => true, 'mapped' => false]);
+        }
 
         foreach ($options['membership_settings'] as $field => $behavior) {
             switch ($behavior) {
@@ -96,13 +99,16 @@ class JoinType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('membership_settings');
         $resolver->setAllowedTypes('membership_settings', 'array');
 
         $resolver->setDefaults([
             'data_class' => JoinData::class,
+            'enable_gdpr_fields' => true,
         ]);
+
+        $resolver->setAllowedTypes('enable_gdpr_fields', 'bool');
     }
 }

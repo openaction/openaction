@@ -90,9 +90,11 @@
             </div>
         {% endfor %}
 
-        <div class="user-form-field">
-            {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
-        </div>
+        {% if form.privacy is defined %}
+            <div class="user-form-field">
+                {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
+            </div>
+        {% endif %}
 
         <div class="user-form-submit">
             <button type="submit" class="btn btn-primary btn-lg">

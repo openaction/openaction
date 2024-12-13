@@ -22,7 +22,10 @@ class NewsletterController extends AbstractController
 
         $data = new SubscribeNewsletterData();
 
-        $form = $this->createForm(SubscribeNewsletterType::class, $data);
+        $form = $this->createForm(SubscribeNewsletterType::class, $data, [
+            'enable_gdpr_fields' => $this->getProject()->enableGdprFields,
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

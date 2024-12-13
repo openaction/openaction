@@ -132,11 +132,6 @@ class JoinData
 
     public ?bool $settingsReceiveCalls = null;
 
-    /**
-     * @Assert\NotBlank()
-     */
-    public ?bool $acceptPolicy = false;
-
     public function createApiPayload(string $source): array
     {
         return [
