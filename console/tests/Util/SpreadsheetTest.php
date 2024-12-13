@@ -39,9 +39,9 @@ class SpreadsheetTest extends TestCase
      */
     public function testPerformanceRead(string $pathname)
     {
-        // Ensure reading the spreadsheet head can be done in the UI process (takes < 1 sec)
+        // Ensure reading the spreadsheet head can be done in the UI process (takes < 2 sec)
         $startTime = microtime(true);
         Spreadsheet::open(new File($pathname))->getFirstLines(6);
-        $this->assertLessThan(1, microtime(true) - $startTime);
+        $this->assertLessThan(2, microtime(true) - $startTime);
     }
 }

@@ -32,7 +32,7 @@ class TrombinoscopeController extends AbstractApiController
     #[Route('/trombinoscope/{id}', name: 'api_website_trombinoscope_view', methods: ['GET'])]
     public function view(TrombinoscopePersonFullTransformer $transformer, string $id)
     {
-        if (!$person = $this->repository->findOneByBase62Uid($id)) {
+        if (!$person = $this->repository->findOneByBase62UidOrSlug($this->getUser(), $id)) {
             throw $this->createNotFoundException();
         }
 

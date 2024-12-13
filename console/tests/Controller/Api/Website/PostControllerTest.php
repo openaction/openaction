@@ -333,6 +333,13 @@ class PostControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testViewSlug()
+    {
+        $client = self::createClient();
+        $result = $this->apiRequest($client, 'GET', '/api/website/posts/the-eu-must-stand-with-the-people-of-hong-kong-against-china-s-abuse-of-power');
+        $this->assertApiResponse($result, ['id' => '2m4VBvTA1NbUi7acpk7JFy']);
+    }
+
     public function testViewNoToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/website/posts/2m4VBvTA1NbUi7acpk7JFy', null, 401);

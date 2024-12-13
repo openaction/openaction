@@ -181,6 +181,13 @@ class PageControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testViewSlug()
+    {
+        $client = self::createClient();
+        $result = $this->apiRequest($client, 'GET', '/api/website/pages/coronavirus');
+        $this->assertApiResponse($result, ['id' => 'dVZJqhjijMngI6ZIzUV88']);
+    }
+
     public function testViewWithChildren()
     {
         $client = self::createClient();
