@@ -42,7 +42,7 @@ class EventController extends AbstractApiController
     #[Route('/events/{id}', name: 'api_website_events_view', methods: ['GET'])]
     public function view(EventTransformer $transformer, string $id)
     {
-        if (!$event = $this->repository->findOneByBase62Uid($id)) {
+        if (!$event = $this->repository->findOneByBase62UidOrSlug($this->getUser(), $id)) {
             throw $this->createNotFoundException();
         }
 

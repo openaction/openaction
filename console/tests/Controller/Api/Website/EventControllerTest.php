@@ -272,6 +272,13 @@ class EventControllerTest extends ApiTestCase
         ]);
     }
 
+    public function testViewSlug()
+    {
+        $client = self::createClient();
+        $result = $this->apiRequest($client, 'GET', '/api/website/events/event-1');
+        $this->assertApiResponse($result, ['id' => '5BehrTYzzuXwHL9Hc3cZHf']);
+    }
+
     public function testViewNoToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/website/events/5BehrTYzzuXwHL9Hc3cZHf', null, 401);

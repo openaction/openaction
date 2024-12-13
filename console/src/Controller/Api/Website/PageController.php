@@ -32,7 +32,7 @@ class PageController extends AbstractApiController
     #[Route('/pages/{id}', name: 'api_website_pages_view', methods: ['GET'])]
     public function view(PageFullTransformer $transformer, string $id)
     {
-        if (!$page = $this->repository->findOneByBase62Uid($id)) {
+        if (!$page = $this->repository->findOneByBase62UidOrSlug($this->getUser(), $id)) {
             throw $this->createNotFoundException();
         }
 

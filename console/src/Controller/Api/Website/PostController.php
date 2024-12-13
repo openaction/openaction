@@ -42,7 +42,7 @@ class PostController extends AbstractApiController
     #[Route('/posts/{id}', name: 'api_website_posts_view', methods: ['GET'])]
     public function view(PostFullTransformer $transformer, string $id)
     {
-        if (!$post = $this->repository->findOneByBase62Uid($id)) {
+        if (!$post = $this->repository->findOneByBase62UidOrSlug($this->getUser(), $id)) {
             throw $this->createNotFoundException();
         }
 

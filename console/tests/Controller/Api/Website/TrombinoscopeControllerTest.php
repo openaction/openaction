@@ -134,6 +134,7 @@ class TrombinoscopeControllerTest extends ApiTestCase
             ],
             'id' => '29w2ahAQA0Rbaa0FVTBHay',
             'fullName' => 'Nathalie Loiseau',
+            'slug' => 'nathalie-loiseau',
             'role' => 'Tête de liste Renaissance pour les élections européennes. (Île-de-France).',
             'socialEmail' => 'nathalie.loiseau@example.org',
             'socialFacebook' => 'https://facebook.com',
@@ -146,6 +147,13 @@ class TrombinoscopeControllerTest extends ApiTestCase
             'image' => null,
             'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
         ]);
+    }
+
+    public function testViewSlug()
+    {
+        $client = self::createClient();
+        $result = $this->apiRequest($client, 'GET', '/api/website/trombinoscope/nathalie-loiseau', self::ACME_TOKEN);
+        $this->assertApiResponse($result, ['id' => '29w2ahAQA0Rbaa0FVTBHay']);
     }
 
     public function testViewPreviousNext()
