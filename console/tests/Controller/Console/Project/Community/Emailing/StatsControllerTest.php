@@ -2,10 +2,11 @@
 
 namespace App\Tests\Controller\Console\Project\Community\Emailing;
 
+use App\Community\ImportExport\Consumer\ExportEmailingCampaignMessage;
+use App\Entity\Community\EmailingCampaign;
+use App\Repository\Community\EmailingCampaignRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
-use App\Util\Spreadsheet;
-use Symfony\Component\HttpFoundation\File\File;
 
 class StatsControllerTest extends WebTestCase
 {
@@ -378,23 +379,18 @@ class StatsControllerTest extends WebTestCase
 
         $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/95b3f576-c643-45ba-9d5e-c9c44f65fab8/report/export');
 
-        $this->assertEquals(
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            $client->getInternalResponse()->getHeader('Content-Type')
-        );
+        // Should have published message
+        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $this->assertCount(1, $messages = $transport->get());
 
-        $this->assertEquals(
-            'attachment; filename='.date('Y-m-d').'-campaign-without-tracking-report.xlsx',
-            $client->getInternalResponse()->getHeader('Content-Disposition')
-        );
+        /* @var ExportEmailingCampaignMessage $message */
+        $this->assertInstanceOf(ExportEmailingCampaignMessage::class, $message = $messages[0]->getMessage());
 
-        $tempFile = sys_get_temp_dir().'/citipo-tests-export-contacts.xlsx';
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
 
-        try {
-            file_put_contents($tempFile, $client->getInternalResponse()->getContent());
-            $this->assertCount(4, Spreadsheet::open(new File($tempFile)));
-        } finally {
-            unlink($tempFile);
-        }
+        $this->assertSame('en', $message->getLocale());
+        $this->assertSame('titouan.galopin@citipo.com', $message->getEmail());
+        $this->assertSame($campaign->getId(), $message->getCampaignId());
     }
 }

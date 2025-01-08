@@ -102,6 +102,7 @@ framework:
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_importing
             'App\Community\ImportExport\Consumer\ExportMessage': async_priority_high
+            'App\Community\ImportExport\Consumer\ExportEmailingCampaignMessage': async_priority_high
             'App\Website\ImportExport\Consumer\ContentImportMessage': async_importing
 
             # Integrations

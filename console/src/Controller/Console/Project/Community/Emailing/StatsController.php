@@ -9,12 +9,9 @@ use App\Entity\Community\EmailingCampaignMessage;
 use App\Platform\Permissions;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Util\Json;
-use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/console/project/{projectUuid}/community/emailing')]
 class StatsController extends AbstractController
@@ -88,29 +85,19 @@ class StatsController extends AbstractController
     }
 
     #[Route('/{uuid}/report/export', name: 'console_community_emailing_stats_report_export', methods: ['GET'])]
-    public function export(SluggerInterface $slugger, EmailingCampaignExporter $exporter, EmailingCampaign $campaign)
+    public function export(EmailingCampaignExporter $exporter, EmailingCampaign $campaign)
     {
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_STATS, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($campaign);
 
-        $response = new StreamedResponse(static function () use ($exporter, $campaign) {
-            $exporter->export($campaign);
-        });
+        $exporter->requestExport($this->getUser(), $campaign);
 
-        $response->headers->set(
-            'Content-Type',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        );
+        $this->addFlash('success', 'export.success');
 
-        $response->headers->set(
-            'Content-Disposition',
-            HeaderUtils::makeDisposition(
-                HeaderUtils::DISPOSITION_ATTACHMENT,
-                date('Y-m-d').'-'.$slugger->slug($campaign->getSubject())->lower().'-report.xlsx'
-            )
-        );
-
-        return $response;
+        return $this->redirectToRoute('console_community_emailing_stats_report', [
+            'projectUuid' => $campaign->getProject()->getUuid(),
+            'uuid' => $campaign->getUuid(),
+        ]);
     }
 }
