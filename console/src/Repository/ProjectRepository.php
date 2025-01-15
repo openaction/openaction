@@ -10,6 +10,7 @@ use App\Platform\Features;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,8 +24,10 @@ class ProjectRepository extends ServiceEntityRepository
 {
     use RepositoryUuidEncodedTrait;
 
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly DomainRepository $domainRepository,
+    ) {
         parent::__construct($registry, Project::class);
     }
 
@@ -263,5 +266,62 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    /**
+     * @return iterable<Project>
+     */
+    public function findAllForActiveOrganizations(): iterable
+    {
+        $trialDomain = $this->domainRepository->getTrialDomain();
+
+        $activeOrgsQb = $this->_em->createQueryBuilder()
+            ->select('so.id')
+            ->from(Organization::class, 'so')
+            ->where('so.subscriptionTrialing = FALSE')
+            ->andWhere('so.subscriptionCurrentPeriodEnd > :now');
+
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->select('p', 'o', 'd')
+            ->leftJoin('p.organization', 'o')
+            ->leftJoin('p.rootDomain', 'd')
+            ->where('p.rootDomain != :trialDomain')
+            ->setParameter('trialDomain', $trialDomain->getId())
+            ->andWhere($qb->expr()->in('p.organization', $activeOrgsQb->getQuery()->getDQL()))
+            ->setParameter('now', new \DateTime())
+            ->orderBy('d.name', 'ASC')
+            ->addOrderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function updateTurnstileConfigs(array $configsByProject): void
+    {
+        /** @var Connection $db */
+        $db = $this->_em->getConnection();
+
+        $values = [];
+
+        foreach ($configsByProject as $projectId => $config) {
+            if (empty($config['siteKey']) || empty($config['secretKey'])) {
+                $value = implode(', ', [$projectId, 'null', 'null']);
+            } else {
+                $value = implode(', ', [$projectId, $db->quote($config['siteKey']), $db->quote($config['secretKey'])]);
+            }
+
+            $values[] = '('.$value.')';
+        }
+
+        $db->executeStatement('
+            UPDATE projects
+            SET website_turnstile_site_key = data.site_key, website_turnstile_secret_key = data.secret_key
+            FROM (
+                SELECT * 
+                FROM (VALUES '.implode(', ', $values).') AS t (project_id, site_key, secret_key)                
+            ) data
+            WHERE id = data.project_id
+        ');
     }
 }

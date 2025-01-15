@@ -18,22 +18,23 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use OpenSpout\Common\Entity\Style\CellAlignment;
 use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProjectController extends AbstractCrudController
 {
-    private ProjectRepository $repository;
-    private DomainTokenCache $domainTokenCache;
-
-    public function __construct(ProjectRepository $repository, DomainTokenCache $domainTokenCache)
-    {
-        $this->repository = $repository;
-        $this->domainTokenCache = $domainTokenCache;
+    public function __construct(
+        private readonly ProjectRepository $repository,
+        private readonly DomainTokenCache $domainTokenCache,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
+    ) {
     }
 
     public static function getEntityFqcn(): string
@@ -149,7 +150,57 @@ class ProjectController extends AbstractCrudController
         return $response;
     }
 
-    public function refreshDomainsCache()
+    public function manageTurnstile(Request $request): Response
+    {
+        $activeProjects = $this->repository->findAllForActiveOrganizations();
+
+        $data = [];
+        $builder = $this->createFormBuilder();
+
+        foreach ($activeProjects as $project) {
+            $data[$project->getId().'_sitekey'] = $project->getWebsiteTurnstileSiteKey();
+            $data[$project->getId().'_secretkey'] = $project->getWebsiteTurnstileSecretKey();
+
+            $builder->add($project->getId().'_sitekey', TextType::class, ['required' => false]);
+            $builder->add($project->getId().'_secretkey', TextType::class, ['required' => false]);
+        }
+
+        $builder->setData($data);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $batch = [];
+            foreach ($activeProjects as $project) {
+                $id = $project->getId();
+
+                $batch[$id] = [
+                    'siteKey' => $data[$id.'_sitekey'],
+                    'secretKey' => $data[$id.'_secretkey'],
+                ];
+            }
+
+            $this->repository->updateTurnstileConfigs($batch);
+
+            $this->addFlash('success', 'Saved');
+
+            return $this->redirect($this->adminUrlGenerator
+                ->setController(ProjectController::class)
+                ->setAction('manageTurnstile')
+                ->setEntityId(null)
+            );
+        }
+
+        return $this->render('admin/projects/manage_turnstile.html.twig', [
+            'form' => $builder->getForm(),
+            'projects' => $activeProjects,
+        ]);
+    }
+
+    public function refreshDomainsCache(): void
     {
         $this->domainTokenCache->refresh();
     }

@@ -1,6 +1,7 @@
 {% set current_route = app.request.attributes.get('_route') %}
 {% set current_route_params = app.request.attributes.get('_route_params') %}
 {% set current_project = get_current_project() %}
+{% set enable_links_animation = current_project.animateLinks and not (current_project.captchaSiteKey or current_project.captchaSecretKey) %}
 
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
@@ -80,7 +81,7 @@
     <script defer src="{{ current_project.links.javascript_custom }}" data-project="{{ current_project.id }}"></script>
     <script defer async src="https://scripts.qomon.org/forms/v1/setup.js"></script>
 </head>
-<body class="{% block body_class '' %}" data-animate-links="{{ current_project.animateLinks ? '1' : '0' }}">
+<body class="{% block body_class '' %}" data-animate-links="{{ enable_links_animation ? '1' : '0' }}">
     {% block body '' %}
 </body>
 </html>
