@@ -1,0 +1,65 @@
+{% extends ea.templatePath('layout') %}
+
+{% form_theme form with '@EasyAdmin/crud/form_theme.html.twig' only %}
+
+{% block body_class 'ea-edit' %}
+
+{% block content_title 'Manage Turnstile projects config' %}
+
+{% block main %}
+    <style>
+        .hover-background:hover {
+            background: #ecf1f6;
+        }
+    </style>
+
+    <div class="content-panel">
+        <div class="content-panel-body with-background without-header without-footer">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Save
+                </button>
+            </div>
+
+            {% for project in projects %}
+                <div class="row align-items-center p-1 mb-1 hover-background">
+                    <div class="col-4">
+                        <small>
+                            <strong>{{ project.fullDomain }}</strong>
+                            <br />
+                            <span class="text-muted">
+                                {{ project.organization.name }} <i class="fa fa-angle-right"></i> {{ project.name }}
+                            </span>
+                        </small>
+                    </div>
+                    <div class="col-1 text-right">
+                        <small class="text-muted">Site key</small>
+                    </div>
+                    <div class="col-3">
+                        {{ form_widget(form[project.id ~ '_sitekey'], {'attr': {'class': 'form-control-sm'}}) }}
+                    </div>
+                    <div class="col-1 text-right">
+                        <small class="text-muted">Secret key</small>
+                    </div>
+                    <div class="col-3">
+                        {{ form_widget(form[project.id ~ '_secretkey'], {'attr': {'class': 'form-control-sm'}}) }}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="text-center mt-4 mb-4">
+                <button type="submit" class="btn bt-lg btn-primary">
+                    Save
+                </button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

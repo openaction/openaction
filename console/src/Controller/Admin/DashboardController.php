@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,6 +30,7 @@ class DashboardController extends AbstractDashboardController
         private readonly bool $isOnPremise,
         private readonly DashboardStatsResolver $dashboardStatsResolver,
         private readonly EntityManagerInterface $manager,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
     ) {
     }
 
@@ -110,6 +112,11 @@ class DashboardController extends AbstractDashboardController
             ->setBadge($this->manager->getRepository(Project::class)->count([]));
         yield MenuItem::linkToRoute('Export projects', 'fa fa-cloud-download', 'admin_projects_export')
             ->setLinkTarget('_blank');
+        yield MenuItem::linkToUrl('Turnstile', 'fa fa-robot', $this->adminUrlGenerator
+            ->setController(ProjectController::class)
+            ->setAction('manageTurnstile')
+            ->setEntityId(null)
+        );
 
         /*
          * Users
