@@ -7,9 +7,7 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Project;
-use App\Entity\Website\PageCategory;
 use App\Entity\Website\Post;
-use App\Entity\Website\PostCategory;
 use App\Repository\Platform\JobRepository;
 use App\Util\Uid;
 use Doctrine\DBAL\Connection;
@@ -175,123 +173,61 @@ class WordpressContentParser implements ExternalContentParserInterface
 
     private function createCategoriesRegistry(ContentImport $import, array $rawData): array
     {
-        $registry = [];
-        foreach (['posts', 'pages'] as $type) {
-            $registry[$type] = [];
+        return [
+            'posts' => $this->createEntityCategoriesRegistry('posts', $import->getProject(), $rawData['posts']),
+            'pages' => $this->createEntityCategoriesRegistry('pages', $import->getProject(), $rawData['pages']),
+        ];
+    }
 
-            foreach ($rawData[$type] as $item) {
-                foreach ($item['categories_names'] ?? [] as $name) {
-                    if (trim($name ?: '')) {
-                        $registry[$type][trim($name ?: '')] = null;
-                    }
+    private function createEntityCategoriesRegistry(string $entityName, Project $project, array $rawData): array
+    {
+        // Resolve import names
+        $importNames = [];
+        foreach ($rawData as $item) {
+            foreach ($item['categories_names'] ?? [] as $name) {
+                if ($name = trim($name ?: '')) {
+                    $importNames[] = $name;
                 }
             }
         }
 
-        /*
-         * Find existing categories IDs
-         */
-        $rootQb = $this->em->createQueryBuilder()
-            ->select('c.id', 'c.name')
-            ->where('c.project = :project')
-            ->setParameter('project', $import->getProject());
+        // Resolve existing database names
+        $dbNames = array_column(
+            $this->db
+                ->executeQuery('SELECT name FROM website_'.$entityName.'_categories WHERE project_id = ?', [$project->getId()])
+                ->fetchAllAssociative(),
+            'name',
+        );
 
-        // Posts
-        if ($registry['posts']) {
-            $qb = clone $rootQb;
-            $qb->from(PostCategory::class, 'c')->andWhere($qb->expr()->in('c.name', array_keys($registry['posts'])));
+        // Create missing categories
+        $missingCategories = array_diff($importNames, $dbNames);
 
-            foreach ($qb->getQuery()->getArrayResult() as $row) {
-                $registry['posts'][$row['name']] = $row['id'];
-            }
-        }
-
-        // Pages
-        if ($registry['pages']) {
-            $qb = clone $rootQb;
-            $qb->from(PageCategory::class, 'c')->andWhere($qb->expr()->in('c.name', array_keys($registry['pages'])));
-
-            foreach ($qb->getQuery()->getArrayResult() as $row) {
-                $registry['pages'][$row['name']] = $row['id'];
-            }
-        }
-
-        /*
-         * Create missing categories
-         */
-
-        // Posts
         $insertValues = [];
-        foreach ($registry['posts'] as $name => $id) {
-            if (null === $id) {
-                $registry['posts'][$name] = (string) Uid::random();
-
-                $insertValues[] = sprintf(
-                    '(nextval(\'website_posts_categories_id_seq\'), %s, %s, %s, %s, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)',
-                    $this->db->quote($registry['posts'][$name]),
-                    $import->getProject()->getId(),
-                    $this->db->quote(u($name)->slice(0, 40)->toString()),
-                    $this->db->quote($this->slugger->slug($name)->lower()->slice(0, 40)->toString()),
-                );
-            }
+        foreach ($missingCategories as $missingCategoryName) {
+            $insertValues[] = sprintf(
+                '(nextval(\'website_'.$entityName.'_categories_id_seq\'), %s, %s, %s, %s, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)',
+                $this->db->quote(Uid::random()->toRfc4122()),
+                $project->getId(),
+                $this->db->quote(u($missingCategoryName)->slice(0, 40)->toString()),
+                $this->db->quote($this->slugger->slug($missingCategoryName)->lower()->slice(0, 40)->toString()),
+            );
         }
 
         if ($insertValues) {
             $this->db->executeStatement(
-                'INSERT INTO website_posts_categories (id, uuid, project_id, name, slug, weight, created_at, updated_at) VALUES '.
+                'INSERT INTO website_'.$entityName.'_categories (id, uuid, project_id, name, slug, weight, created_at, updated_at) VALUES '.
                 implode(', ', $insertValues)
             );
         }
 
-        // Pages
-        $insertValues = [];
-        foreach ($registry['pages'] as $name => $id) {
-            if (null === $id) {
-                $registry['pages'][$name] = (string) Uid::random();
+        // Create registry
+        $data = $this->db
+            ->executeQuery('SELECT id, name FROM website_'.$entityName.'_categories WHERE project_id = ?', [$project->getId()])
+            ->fetchAllAssociative();
 
-                $insertValues[] = sprintf(
-                    '(nextval(\'website_pages_categories_id_seq\'), %s, %s, %s, %s, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)',
-                    $this->db->quote($registry['pages'][$name]),
-                    $import->getProject()->getId(),
-                    $this->db->quote(u($name)->slice(0, 40)->toString()),
-                    $this->db->quote($this->slugger->slug($name)->lower()->slice(0, 40)->toString()),
-                );
-            }
-        }
-
-        if ($insertValues) {
-            $this->db->executeStatement(
-                'INSERT INTO website_pages_categories (id, uuid, project_id, name, slug, weight, created_at, updated_at) VALUES '.
-                implode(', ', $insertValues)
-            );
-        }
-
-        /*
-         * Populate registry
-         */
-        $rootQb = $this->em->createQueryBuilder()
-            ->select('c.id', 'c.name')
-            ->where('c.project = :project')
-            ->setParameter('project', $import->getProject());
-
-        // Posts
-        if ($registry['posts']) {
-            $qb = clone $rootQb;
-            $qb->from(PostCategory::class, 'c')->andWhere($qb->expr()->in('c.name', array_keys($registry['posts'])));
-
-            foreach ($qb->getQuery()->getArrayResult() as $row) {
-                $registry['posts'][$row['name']] = $row['id'];
-            }
-        }
-
-        // Pages
-        if ($registry['pages']) {
-            $qb = clone $rootQb;
-            $qb->from(PageCategory::class, 'c')->andWhere($qb->expr()->in('c.name', array_keys($registry['pages'])));
-
-            foreach ($qb->getQuery()->getArrayResult() as $row) {
-                $registry['pages'][$row['name']] = $row['id'];
-            }
+        $registry = [];
+        foreach ($data as $row) {
+            $registry[$row['name']] = $row['id'];
         }
 
         return $registry;

@@ -2758,7 +2758,10 @@ class TestFixtures extends AbstractFixtures
                 'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'],
                 'file' => $this->uploads['import-started.xml'],
                 'source' => ContentImportSettings::IMPORT_SOURCE_WORDPRESS,
-                'settings' => ['postSaveStatus' => 'save_as_original'],
+                'settings' => [
+                    'postSaveStatus' => 'save_as_original',
+                    'keepCategories' => ContentImportSettings::KEEP_CATEGORIES_YES,
+                ],
             ],
         ];
 
