@@ -133,24 +133,14 @@ class InternalizeImagesCommand extends Command
             }
 
             $newUrl = $this->cdnRouter->generateUrl($upload);
-            $img->setAttribute('src', $newUrl);
-
+            $content = str_replace($src, $newUrl, $content);
             $imagesUpdated = true;
         }
 
         if ($imagesUpdated) {
-            $newContent = $dom->saveHTML($dom->getElementsByTagName('body')->item(0));
-
-            if (str_starts_with($newContent, '<body>')) {
-                $newContent = substr($newContent, 6);
-            }
-            if (str_ends_with($newContent, '</body>')) {
-                $newContent = substr($newContent, 0, -7);
-            }
-
             $this->db->executeStatement(
                 'UPDATE website_'.$type.' SET content = ? WHERE id = ?',
-                [$newContent, $id],
+                [$content, $id],
             );
         }
     }
