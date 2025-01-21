@@ -11,6 +11,7 @@ use App\Cdn\UploadHandler\ThemeThumbnailHandler;
 use App\Cdn\UploadHandler\WebsiteContentImageHandler;
 use App\Cdn\UploadHandler\WebsiteContentMainImageHandler;
 use App\Cdn\UploadHandler\WebsiteHomeMainImageHandler;
+use App\Cdn\UploadHandler\WebsiteImportedImageHandler;
 use App\Cdn\UploadHandler\WebsiteManifestoMainImageHandler;
 use App\Cdn\UploadHandler\WebsiteTrombinoscopeMainImageHandler;
 use App\Entity\Project;
@@ -76,6 +77,11 @@ class CdnUploadRequest
     public static function createWebsiteContentImageRequest(Project $project, File $file): self
     {
         return new self($file, 'website-content', WebsiteContentImageHandler::class, $project);
+    }
+
+    public static function createWebsiteImportedImageRequest(Project $project, File $file): self
+    {
+        return new self($file, 'website-content', WebsiteImportedImageHandler::class, $project);
     }
 
     public static function createWebsiteContentMainImageRequest(Project $project, File $file): self
