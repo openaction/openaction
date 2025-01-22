@@ -14,6 +14,8 @@ accounts:
     whatsapp: Quelle est l'adresse URL de votre channel WhatsApp ?
     tiktok: Quelle est l'adresse URL de votre compte TikTok ?
     threads: Quelle est l'adresse URL de votre compte Threads ?
+    bluesky: Quelle est l'adresse URL de votre compte Bluesky ?
+    mastodon: Quelle est l'adresse URL de votre compte Mastodon ?
     submit: Enregistrer
 
 sharers:

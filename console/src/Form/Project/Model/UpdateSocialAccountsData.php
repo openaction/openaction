@@ -49,6 +49,14 @@ class UpdateSocialAccountsData
     #[Assert\Url]
     public ?string $threads = '';
 
+    #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
+    #[Assert\Url]
+    public ?string $bluesky = '';
+
+    #[Assert\Length(max: 150, maxMessage: 'console.project.settings.socials.invalid_length')]
+    #[Assert\Url]
+    public ?string $mastodon = '';
+
     public function __construct(
         ?string $email = '',
         ?string $phone = '',
@@ -63,6 +71,8 @@ class UpdateSocialAccountsData
         ?string $whatsapp = '',
         ?string $tiktok = '',
         ?string $threads = '',
+        ?string $bluesky = '',
+        ?string $mastodon = '',
     ) {
         $this->email = $email;
         $this->phone = $phone;
@@ -77,6 +87,8 @@ class UpdateSocialAccountsData
         $this->whatsapp = $whatsapp;
         $this->tiktok = $tiktok;
         $this->threads = $threads;
+        $this->bluesky = $bluesky;
+        $this->mastodon = $mastodon;
     }
 
     public static function createFromProject(Project $project): self
@@ -95,6 +107,8 @@ class UpdateSocialAccountsData
         $data->whatsapp = $project->getSocialWhatsapp();
         $data->tiktok = $project->getSocialTiktok();
         $data->threads = $project->getSocialThreads();
+        $data->bluesky = $project->getSocialBluesky();
+        $data->mastodon = $project->getSocialMastodon();
 
         return $data;
     }

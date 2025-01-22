@@ -14,6 +14,8 @@ accounts:
     whatsapp: 'Wie lautet die URL Ihres WhatsApp-Kontos?'
     tiktok: 'Wie lautet die URL Ihres TikTok-Kontos?'
     threads: 'Wie lautet die URL Ihres Threads-Kontos?'
+    bluesky: 'Wie lautet die URL Ihres Bluesky-Kontos?'
+    mastodon: 'Wie lautet die URL Ihres Mastodon-Kontos?'
     submit: 'Speichern Sie'
 sharers:
     title: 'Tools für den sozialen Austausch'

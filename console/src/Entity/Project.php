@@ -232,6 +232,12 @@ class Project implements UserInterface
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialThreads = null;
 
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialBluesky = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialMastodon = null;
+
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $socialSharers = null;
 
@@ -372,6 +378,8 @@ EOT;
         $self->socialWhatsapp = $this->socialWhatsapp;
         $self->socialTiktok = $this->socialTiktok;
         $self->socialThreads = $this->socialThreads;
+        $self->socialBluesky = $this->socialBluesky;
+        $self->socialMastodon = $this->socialMastodon;
         $self->socialSharers = $this->socialSharers;
 
         foreach ($this->getAreas() as $area) {
@@ -903,6 +911,8 @@ EOT;
         $this->socialWhatsapp = $data->whatsapp;
         $this->socialTiktok = $data->tiktok;
         $this->socialThreads = $data->threads;
+        $this->socialBluesky = $data->bluesky;
+        $this->socialMastodon = $data->mastodon;
     }
 
     public function applySocialSharersUpdate(SocialSharers $socialSharers)
@@ -978,6 +988,16 @@ EOT;
     public function getSocialThreads(): ?string
     {
         return $this->socialThreads;
+    }
+
+    public function getSocialBluesky(): ?string
+    {
+        return $this->socialBluesky;
+    }
+
+    public function getSocialMastodon(): ?string
+    {
+        return $this->socialMastodon;
     }
 
     /*

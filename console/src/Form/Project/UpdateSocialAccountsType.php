@@ -28,6 +28,8 @@ class UpdateSocialAccountsType extends AbstractType
             ->add('whatsapp', UrlType::class, ['required' => false])
             ->add('tiktok', UrlType::class, ['required' => false])
             ->add('threads', UrlType::class, ['required' => false])
+            ->add('bluesky', UrlType::class, ['required' => false])
+            ->add('mastodon', UrlType::class, ['required' => false])
         ;
     }
 
