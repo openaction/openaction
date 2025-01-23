@@ -152,7 +152,7 @@ class PostRepository extends ServiceEntityRepository
             ->leftJoin('p.image', 'pi')
             ->where('p.project = :project')
             ->setParameter('project', $project->getId())
-            ->andWhere('p.onlyForMembers = FALSE')
+            ->andWhere('p.onlyForMembers = false')
             ->andWhere('p.publishedAt IS NOT NULL')
             ->andWhere('p.publishedAt <= :now')
             ->setParameter('now', new \DateTime())
@@ -165,7 +165,7 @@ class PostRepository extends ServiceEntityRepository
                 ->setParameter('category', $category);
         }
 
-        return $qb->getQuery()->getResult();
+        return (new Paginator($qb))->getIterator();
     }
 
     public function getMorePosts(Post $post, int $limit = 3): iterable
