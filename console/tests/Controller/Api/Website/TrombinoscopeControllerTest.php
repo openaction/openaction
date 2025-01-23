@@ -26,6 +26,7 @@ class TrombinoscopeControllerTest extends ApiTestCase
                     'fullName' => 'Nathalie Loiseau',
                     'role' => 'Tête de liste Renaissance pour les élections européennes. (Île-de-France).',
                     'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
+                    'socialWebsite' => null,
                     'socialEmail' => 'nathalie.loiseau@example.org',
                     'socialFacebook' => 'https://facebook.com',
                     'socialTwitter' => 'https://twitter.com',
@@ -34,6 +35,8 @@ class TrombinoscopeControllerTest extends ApiTestCase
                     'socialYoutube' => 'https:/youtube.com',
                     'socialMedium' => 'https://medium.com',
                     'socialTelegram' => 'nathalie.loiseau',
+                    'socialBluesky' => null,
+                    'socialMastodon' => null,
                     'image' => null,
                     'categories' => [
                         'data' => [
@@ -136,6 +139,7 @@ class TrombinoscopeControllerTest extends ApiTestCase
             'fullName' => 'Nathalie Loiseau',
             'slug' => 'nathalie-loiseau',
             'role' => 'Tête de liste Renaissance pour les élections européennes. (Île-de-France).',
+            'socialWebsite' => null,
             'socialEmail' => 'nathalie.loiseau@example.org',
             'socialFacebook' => 'https://facebook.com',
             'socialTwitter' => 'https://twitter.com',
@@ -144,6 +148,8 @@ class TrombinoscopeControllerTest extends ApiTestCase
             'socialYoutube' => 'https:/youtube.com',
             'socialMedium' => 'https://medium.com',
             'socialTelegram' => 'nathalie.loiseau',
+            'socialBluesky' => null,
+            'socialMastodon' => null,
             'image' => null,
             'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
         ]);

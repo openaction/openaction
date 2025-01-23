@@ -48,6 +48,8 @@
         'socialYoutube': person.socialYoutube,
         'socialMedium': person.socialMedium,
         'socialTelegram': person.socialTelegram,
+        'socialBluesky': person.socialBluesky,
+        'socialMastodon': person.socialMastodon,
         'categories': categories,
         'categoryIds': categoryIds,
     }) %}
@@ -85,6 +87,8 @@
                             {{ form_widget(form.socialYoutube, {'attr': {'data-trombinoscope--edit-target': 'socialYoutube'}}) }}
                             {{ form_widget(form.socialMedium, {'attr': {'data-trombinoscope--edit-target': 'socialMedium'}}) }}
                             {{ form_widget(form.socialTelegram, {'attr': {'data-trombinoscope--edit-target': 'socialTelegram'}}) }}
+                            {{ form_widget(form.socialBluesky, {'attr': {'data-trombinoscope--edit-target': 'socialBluesky'}}) }}
+                            {{ form_widget(form.socialMastodon, {'attr': {'data-trombinoscope--edit-target': 'socialMastodon'}}) }}
                             {{ form_widget(form.categories, {'attr': {'data-trombinoscope--edit-target': 'categories'}}) }}
                             {{ form_widget(image_form.file, {'attr': {'data-trombinoscope--edit-target': 'image'}}) }}
                         </div>

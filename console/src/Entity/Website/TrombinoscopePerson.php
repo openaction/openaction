@@ -73,6 +73,12 @@ class TrombinoscopePerson implements Searchable
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $socialTelegram;
 
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialBluesky = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialMastodon = null;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $publishedAt = null;
 
@@ -150,13 +156,15 @@ class TrombinoscopePerson implements Searchable
         $self->content = $this->content;
         $self->socialWebsite = $this->socialWebsite;
         $self->socialEmail = $this->socialEmail;
-        $self->socialFacebook = $this->socialEmail;
-        $self->socialTwitter = $this->socialEmail;
-        $self->socialInstagram = $this->socialEmail;
-        $self->socialLinkedIn = $this->socialEmail;
-        $self->socialYoutube = $this->socialEmail;
-        $self->socialMedium = $this->socialEmail;
-        $self->socialTelegram = $this->socialEmail;
+        $self->socialFacebook = $this->socialFacebook;
+        $self->socialTwitter = $this->socialTwitter;
+        $self->socialInstagram = $this->socialInstagram;
+        $self->socialLinkedIn = $this->socialLinkedIn;
+        $self->socialYoutube = $this->socialYoutube;
+        $self->socialMedium = $this->socialMedium;
+        $self->socialTelegram = $this->socialTelegram;
+        $self->socialBluesky = $this->socialBluesky;
+        $self->socialMastodon = $this->socialMastodon;
 
         return $self;
     }
@@ -258,6 +266,8 @@ class TrombinoscopePerson implements Searchable
         $this->socialYoutube = (string) $data->socialYoutube;
         $this->socialMedium = (string) $data->socialMedium;
         $this->socialTelegram = (string) $data->socialTelegram;
+        $this->socialBluesky = (string) $data->socialBluesky;
+        $this->socialMastodon = (string) $data->socialMastodon;
     }
 
     public function setImage(?Upload $image): void
@@ -372,6 +382,16 @@ class TrombinoscopePerson implements Searchable
     public function getSocialTelegram(): ?string
     {
         return $this->socialTelegram;
+    }
+
+    public function getSocialBluesky(): ?string
+    {
+        return $this->socialBluesky;
+    }
+
+    public function getSocialMastodon(): ?string
+    {
+        return $this->socialMastodon;
     }
 
     public function getPublishedAt(): ?\DateTime

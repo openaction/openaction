@@ -23,6 +23,8 @@ export default class extends Controller {
         'socialYoutube',
         'socialMedium',
         'socialTelegram',
+        'socialBluesky',
+        'socialMastodon',
         'categories',
         'image',
     ];
@@ -55,6 +57,8 @@ export default class extends Controller {
                 socialYoutubeInput={this.socialYoutubeTarget.getAttribute('name')}
                 socialMediumInput={this.socialMediumTarget.getAttribute('name')}
                 socialTelegramInput={this.socialTelegramTarget.getAttribute('name')}
+                socialBlueskyInput={this.socialBlueskyTarget.getAttribute('name')}
+                socialMastodonInput={this.socialMastodonTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 imageInput={this.imageTarget.getAttribute('name')}
             />,

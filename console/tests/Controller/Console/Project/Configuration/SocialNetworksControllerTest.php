@@ -67,15 +67,39 @@ class SocialNetworksControllerTest extends WebTestCase
 
         $client->submit($button->form(), [
             'update_social_accounts[email]' => 'testcase@citipo.com',
-            'update_social_accounts[youtube]' => 'youtube.com/test',
-            'update_social_accounts[snapchat]' => 'snapchatusername',
+            'update_social_accounts[phone]' => '+33101010101',
+            'update_social_accounts[facebook]' => 'https://www.facebook.com/',
+            'update_social_accounts[twitter]' => 'https://twitter.com/',
+            'update_social_accounts[instagram]' => 'https://www.instagram.com/',
+            'update_social_accounts[linkedIn]' => 'https://www.linkedin.com/in/',
+            'update_social_accounts[youtube]' => 'https://www.youtube.com/',
+            'update_social_accounts[medium]' => 'https://medium.com/',
+            'update_social_accounts[telegram]' => 'tgalopin',
+            'update_social_accounts[snapchat]' => 'https://www.snapchat.com/',
+            'update_social_accounts[whatsapp]' => 'https://whatsapp.com',
+            'update_social_accounts[tiktok]' => 'https://www.tiktok.com',
+            'update_social_accounts[threads]' => 'https://www.threads.net/',
+            'update_social_accounts[bluesky]' => 'https://bsky.app/profile/',
+            'update_social_accounts[mastodon]' => 'https://mastodon.online/',
         ]);
 
         /** @var Project $project */
         $project = static::getContainer()->get(ProjectRepository::class)->findOneBy(['uuid' => '151f1340-9ad6-47c7-a8a5-838ff955eae7']);
         $this->assertSame('testcase@citipo.com', $project->getSocialEmail());
-        $this->assertSame('http://youtube.com/test', $project->getSocialYoutube());
-        $this->assertSame('snapchatusername', $project->getSocialSnapchat());
+        $this->assertSame('+33101010101', $project->getSocialPhone());
+        $this->assertSame('https://www.facebook.com/', $project->getSocialFacebook());
+        $this->assertSame('https://twitter.com/', $project->getSocialTwitter());
+        $this->assertSame('https://www.instagram.com/', $project->getSocialInstagram());
+        $this->assertSame('https://www.linkedin.com/in/', $project->getSocialLinkedIn());
+        $this->assertSame('https://www.youtube.com/', $project->getSocialYoutube());
+        $this->assertSame('https://medium.com/', $project->getSocialMedium());
+        $this->assertSame('tgalopin', $project->getSocialTelegram());
+        $this->assertSame('https://www.snapchat.com/', $project->getSocialSnapchat());
+        $this->assertSame('https://whatsapp.com', $project->getSocialWhatsapp());
+        $this->assertSame('https://www.tiktok.com', $project->getSocialTiktok());
+        $this->assertSame('https://www.threads.net/', $project->getSocialThreads());
+        $this->assertSame('https://bsky.app/profile/', $project->getSocialBluesky());
+        $this->assertSame('https://mastodon.online/', $project->getSocialMastodon());
 
         $client->followRedirect();
         $this->assertResponseIsSuccessful();
