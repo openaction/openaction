@@ -81,7 +81,9 @@
     <script defer src="{{ current_project.links.javascript_custom }}" data-project="{{ current_project.id }}"></script>
     <script defer async src="https://scripts.qomon.org/forms/v1/setup.js"></script>
 </head>
-<body class="{% block body_class '' %}" data-animate-links="{{ enable_links_animation ? '1' : '0' }}">
+<body class="{% block body_class '' %}"
+      data-animate-links="{{ enable_links_animation ? '1' : '0' }}"
+      data-current-url="{{ block('meta_canonical') }}">
     {% block body '' %}
 </body>
 </html>
