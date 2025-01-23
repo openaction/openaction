@@ -271,6 +271,36 @@ export function MetadataEditor(props) {
                                 onChange={(e) => handleInputChange(e, 'socialTelegram')}
                             />
                         </div>
+
+                        <div className="mb-1">
+                            <div>
+                                <small className="text-muted">
+                                    {translator.trans('trombinoscope.edit.metadata_modal.socials.socialBluesky')}
+                                </small>
+                            </div>
+
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                defaultValue={props.metadata.socialBluesky}
+                                onChange={(e) => handleInputChange(e, 'socialBluesky')}
+                            />
+                        </div>
+
+                        <div className="mb-1">
+                            <div>
+                                <small className="text-muted">
+                                    {translator.trans('trombinoscope.edit.metadata_modal.socials.socialMastodon')}
+                                </small>
+                            </div>
+
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                defaultValue={props.metadata.socialMastodon}
+                                onChange={(e) => handleInputChange(e, 'socialMastodon')}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

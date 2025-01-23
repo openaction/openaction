@@ -46,6 +46,12 @@ class TrombinoscopePersonData
 
     public ?string $socialTelegram = null;
 
+    #[Assert\Url]
+    public ?string $socialBluesky = null;
+
+    #[Assert\Url]
+    public ?string $socialMastodon = null;
+
     public ?string $categories = null;
 
     public function isPublished()

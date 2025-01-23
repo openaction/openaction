@@ -43,6 +43,8 @@ class TrombinoscopePersonPartialTransformer extends AbstractTransformer
             'socialYoutube' => $person->getSocialYoutube() ?: null,
             'socialMedium' => $person->getSocialMedium() ?: null,
             'socialTelegram' => $person->getSocialTelegram() ?: null,
+            'socialBluesky' => $person->getSocialBluesky() ?: null,
+            'socialMastodon' => $person->getSocialMastodon() ?: null,
             'image' => $person->getImage() ? $this->cdnRouter->generateUrl($person->getImage()) : null,
             'published_at' => $person->getPublishedAt()?->format(\DateTime::ATOM),
         ];

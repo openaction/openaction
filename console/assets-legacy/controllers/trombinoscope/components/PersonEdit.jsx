@@ -64,6 +64,8 @@ export function PersonEdit(props) {
                     [props.socialYoutubeInput]: metadata.socialYoutube ? metadata.socialYoutube : '',
                     [props.socialMediumInput]: metadata.socialMedium ? metadata.socialMedium : '',
                     [props.socialTelegramInput]: metadata.socialTelegram ? metadata.socialTelegram : '',
+                    [props.socialBlueskyInput]: metadata.socialBluesky ? metadata.socialBluesky : '',
+                    [props.socialMastodonInput]: metadata.socialMastodon ? metadata.socialMastodon : '',
                     [props.categoriesInput]: JSON.stringify(metadata.categoryIds ? metadata.categoryIds : []),
                 })
             )

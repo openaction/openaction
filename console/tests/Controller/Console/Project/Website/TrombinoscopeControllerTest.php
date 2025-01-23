@@ -152,6 +152,7 @@ class TrombinoscopeControllerTest extends WebTestCase
         yield [
             [
                 'role' => 'Role',
+                'socialWebsite' => 'https://nathalieloiseau.fr',
                 'socialEmail' => 'email@gmail.com',
                 'socialFacebook' => 'https://facebook.com',
                 'socialTwitter' => 'https://twitter.com',
@@ -160,6 +161,8 @@ class TrombinoscopeControllerTest extends WebTestCase
                 'socialYoutube' => 'https://youtube.com',
                 'socialMedium' => 'https://medium.com',
                 'socialTelegram' => 'username',
+                'socialBluesky' => 'https://bsky.app/',
+                'socialMastodon' => 'https://mastodon.online/',
             ],
         ];
     }
@@ -185,8 +188,10 @@ class TrombinoscopeControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
 
+        /** @var TrombinoscopePerson $person */
         $person = static::getContainer()->get(TrombinoscopePersonRepository::class)->findOneBy(['uuid' => self::PERSON_NLOISEAU_UUID]);
         $this->assertSame($metadata['role'], $person->getRole());
+        $this->assertSame($metadata['socialWebsite'], $person->getSocialWebsite());
         $this->assertSame($metadata['socialEmail'], $person->getSocialEmail());
         $this->assertSame($metadata['socialFacebook'], $person->getSocialFacebook());
         $this->assertSame($metadata['socialTwitter'], $person->getSocialTwitter());
@@ -195,6 +200,8 @@ class TrombinoscopeControllerTest extends WebTestCase
         $this->assertSame($metadata['socialYoutube'], $person->getSocialYoutube());
         $this->assertSame($metadata['socialMedium'], $person->getSocialMedium());
         $this->assertSame($metadata['socialTelegram'], $person->getSocialTelegram());
+        $this->assertSame($metadata['socialBluesky'], $person->getSocialBluesky());
+        $this->assertSame($metadata['socialMastodon'], $person->getSocialMastodon());
     }
 
     public function provideUploadImage(): iterable

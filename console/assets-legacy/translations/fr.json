@@ -339,7 +339,9 @@
                     "socialLinkedIn": "URL LinkedIn",
                     "socialYoutube": "URL Youtube",
                     "socialMedium": "URL Medium",
-                    "socialTelegram": "Nom d'utilisateur Telegram"
+                    "socialTelegram": "Nom d'utilisateur Telegram",
+                    "socialBluesky": "URL Bluesky",
+                    "socialMastodon": "URL Mastodon"
                 },
                 "categories": {
                     "label": "Catégories",

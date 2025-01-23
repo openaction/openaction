@@ -27,6 +27,8 @@ class TrombinoscopePersonType extends AbstractType
             ->add('socialYoutube', HiddenType::class)
             ->add('socialMedium', HiddenType::class)
             ->add('socialTelegram', HiddenType::class)
+            ->add('socialBluesky', HiddenType::class)
+            ->add('socialMastodon', HiddenType::class)
             ->add('categories', HiddenType::class)
         ;
     }
