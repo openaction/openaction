@@ -32,7 +32,7 @@ export default class extends Controller {
 
     qomonPetition(data) {
         const iframe = document.createElement('iframe');
-        iframe.src = data.url;
+        iframe.src = data.url + '?embed=1&sharing_url=' + document.body.getAttribute('data-current-url');
         iframe.frameBorder = '0';
 
         window.QomonIframes.push(iframe);
@@ -46,7 +46,7 @@ export default class extends Controller {
 
     qomonForm(data) {
         const iframe = document.createElement('iframe');
-        iframe.src = data.url + '?embed=1';
+        iframe.src = data.url + '?embed=1&sharing_url=' + document.body.getAttribute('data-current-url');
         iframe.frameBorder = '0';
 
         window.QomonIframes.push(iframe);
