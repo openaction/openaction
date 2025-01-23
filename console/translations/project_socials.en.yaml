@@ -14,6 +14,8 @@ accounts:
     whatsapp: What is the URL of your Whatsapp account?
     tiktok: What is the URL of your TikTok account?
     threads: What is the URL of your Threads account?
+    bluesky: What is the URL of your Bluesky account?
+    mastodon: What is the URL of your Mastodon account?
     submit: Save
 
 sharers:
