@@ -104,7 +104,7 @@
                                 </div>
 
                                 <div class="col-lg-auto">
-                                    <a href="{{ path('console_community_emailing_preview', { 'projectUuid': project.uuid, 'uuid': draft.uuid}) }}"
+                                    <a href="{{ path('shareable_emailing_view', { 'projectId': project.uuid|toBase62, 'id': draft.uuid|toBase62}) }}"
                                        class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
                                         {{ 'index.drafts.preview'|trans({}, 'project_emailings') }}
                                     </a>
@@ -214,7 +214,7 @@
                             <td class="world-table-actions-documents text-muted">
                                 <div class="row no-gutters justify-content-end">
                                     <div class="col-auto">
-                                        <a href="{{ path('console_community_emailing_preview', { 'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                        <a href="{{ path('shareable_emailing_view', { 'projectId': project.uuid|toBase62, 'id': sent.uuid|toBase62}) }}"
                                            class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
                                             {{ 'index.sent.view'|trans({}, 'project_emailings') }}
                                         </a>
