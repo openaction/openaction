@@ -2,11 +2,13 @@
 
 namespace App\Controller\Shareable;
 
+use App\Community\EmailMessageFactory;
 use App\Entity\Project;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/shareable/{projectId}/emailing')]
@@ -36,7 +38,7 @@ class EmailingController extends AbstractController
     }
 
     #[Route('/{id}', name: 'shareable_emailing_view')]
-    public function view(string $projectId, string $id)
+    public function view(EmailMessageFactory $messageFactory, string $projectId, string $id)
     {
         if (!$project = $this->projectRepository->findOneByBase62Uid($projectId)) {
             throw $this->createNotFoundException();
@@ -50,12 +52,7 @@ class EmailingController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('shareable/emailing/view.html.twig', [
-            'project' => $project,
-            'organization' => $project->getOrganization(),
-            'campaign' => $campaign,
-            'preview' => true,
-        ]);
+        return new Response($messageFactory->createCampaignBody($campaign, true));
     }
 
     private function getProject(string $projectId): Project
