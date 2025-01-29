@@ -1379,6 +1379,7 @@ class TestFixtures extends AbstractFixtures
                 'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
                 'publishedAt' => new \DateTime('-5 months'),
                 'externalUrl' => 'https://openaction.eu',
+                'importedUrl' => 'https://example.com/the-eu-must-stand-with-the-people-of-hong-kong-against-chinas-abuse-of-power/',
                 'categories' => [
                     $this->postCategories['29c0b44c-7ed1-44c5-ada9-4622ce77d5bb'],
                 ],

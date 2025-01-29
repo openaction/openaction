@@ -206,4 +206,15 @@ class PostRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    public function getImportedUrlsRedirections(Project $project): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.uuid', 'p.importedUrl')
+            ->where('p.project = :project')
+            ->andWhere('p.importedUrl IS NOT NULL')
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

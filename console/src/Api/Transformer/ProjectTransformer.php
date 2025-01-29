@@ -9,8 +9,10 @@ use App\Entity\Model\SocialSharers;
 use App\Entity\Project;
 use App\Entity\Website\MenuItem;
 use App\Platform\Features;
+use App\Proxy\DomainRouter;
 use App\Repository\Website\MenuItemRepository;
 use App\Repository\Website\PageBlockRepository;
+use App\Repository\Website\PostRepository;
 use App\Repository\Website\RedirectionRepository;
 use App\Theme\ThemeManager;
 use App\Util\Uid;
@@ -31,7 +33,9 @@ class ProjectTransformer extends AbstractTransformer
         private readonly AssetManager $assetManager,
         private readonly CdnLookup $cdnLookup,
         private readonly CdnRouter $cdnRouter,
+        private readonly DomainRouter $domainRouter,
         private readonly RedirectionRepository $redirectionRepository,
+        private readonly PostRepository $postRepository,
         private readonly MenuItemRepository $menuItemRepository,
         private readonly PageBlockRepository $blockRepository,
         private readonly PageBlockTransformer $homeBlockTranformer,
@@ -43,6 +47,29 @@ class ProjectTransformer extends AbstractTransformer
         $uuid = $project->getUuid()->toRfc4122();
         $cssVersion = $this->cdnLookup->getProjectsBaseCssVersion();
         $appearanceVersion = $this->assetManager->resolveWebsiteAppearanceVersion($project);
+
+        $redirections = [];
+
+        // Add manual redirections
+        foreach ($this->redirectionRepository->getApiRedirections($project) as $redirection) {
+            $redirections[] = $redirection;
+        }
+
+        // Add with lower priority the automatic redirections from imports
+        foreach ($this->postRepository->getImportedUrlsRedirections($project) as $post) {
+            try {
+                // Only match path (ignoring host and query params)
+                $path = parse_url($post['importedUrl'], PHP_URL_PATH);
+
+                $redirections[] = [
+                    'source' => $path,
+                    'target' => $this->domainRouter->generateRedirectUrl($project, 'post', Uid::toBase62($post['uuid'])),
+                    'code' => 302,
+                ];
+            } catch (\Throwable) {
+                // Ignore invalid URLs
+            }
+        }
 
         return [
             '_resource' => 'Project',
@@ -85,7 +112,7 @@ class ProjectTransformer extends AbstractTransformer
             'theme' => $this->themeManager->resolveApiTemplates($project),
             'theme_assets' => $this->assetManager->resolveApiThemeAssets($project),
             'project_assets' => $this->assetManager->resolveApiProjectAssets($project),
-            'redirections' => $this->redirectionRepository->getApiRedirections($project),
+            'redirections' => $redirections,
             'tools' => $project->getAccessibleTools(),
             'access' => [
                 'username' => $project->getWebsiteAccessUser(),

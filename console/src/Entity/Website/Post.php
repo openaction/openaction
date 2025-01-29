@@ -51,6 +51,9 @@ class Post implements Searchable
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     private ?Upload $image = null;
 
+    #[ORM\Column(length: 250, nullable: true)]
+    private ?string $importedUrl = null;
+
     /**
      * @var Collection<PostCategory>
      */
@@ -94,6 +97,7 @@ class Post implements Searchable
         $self->publishedAt = $data['publishedAt'] ?? null;
         $self->onlyForMembers = $data['onlyForMembers'] ?? false;
         $self->pageViews = $data['pageViews'] ?? 0;
+        $self->importedUrl = $data['importedUrl'] ?? null;
 
         foreach ($data['categories'] ?? [] as $category) {
             $self->categories[] = $category;
@@ -261,6 +265,16 @@ class Post implements Searchable
         return !$this->publishedAt;
     }
 
+    public function setImportedUrl(?string $importedUrl): void
+    {
+        $this->importedUrl = $importedUrl;
+    }
+
+    public function getImportedUrl(): ?string
+    {
+        return $this->importedUrl;
+    }
+
     /**
      * @return Collection<PostCategory>
      */
@@ -280,6 +294,7 @@ class Post implements Searchable
     /*
      * Getters
      */
+
     public function getTitle(): string
     {
         return $this->title;
