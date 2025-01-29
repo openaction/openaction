@@ -105,6 +105,7 @@ class WordpressContentParser implements ExternalContentParserInterface
             $itemTitle = $this->extractTagByName($entryXml, 'title')[0];
             $itemDescription = $this->extractTagByName($entryXml, 'description')[0];
             $itemStatus = $this->extractTagByName($entryXml, 'wp:status')[0];
+            $itemImportedUrl = $this->extractTagByName($entryXml, 'link')[0];
 
             $itemContent = $this->extractTagByName($entryXml, 'content:encoded', '')[0];
             if ($itemContent) {
@@ -129,6 +130,7 @@ class WordpressContentParser implements ExternalContentParserInterface
                     'created_at' => $itemDate->format('Y-m-h H:i:s'),
                     'updated_at' => $itemDate->format('Y-m-h H:i:s'),
                     'published_at' => $itemPublishedAt?->format('Y-m-h H:i:s'),
+                    'imported_url' => $itemImportedUrl,
 
                     // Relationships
                     'image_url' => null,
@@ -142,6 +144,7 @@ class WordpressContentParser implements ExternalContentParserInterface
                     'content' => $itemContent,
                     'created_at' => $itemDate->format('Y-m-h H:i:s'),
                     'updated_at' => $itemDate->format('Y-m-h H:i:s'),
+                    'imported_url' => $itemImportedUrl,
 
                     // Relationships
                     'image_url' => null,
@@ -251,6 +254,7 @@ class WordpressContentParser implements ExternalContentParserInterface
             'published_at' => $postData['published_at'] ? $this->db->quote($postData['published_at']) : 'null',
             'only_for_members' => 'false',
             'page_views' => '0',
+            'imported_url' => $this->db->quote($postData['imported_url']),
         ];
 
         // Download image if there is one
@@ -261,7 +265,7 @@ class WordpressContentParser implements ExternalContentParserInterface
         // Insert post
         $this->db->executeStatement(
             'INSERT INTO website_posts (id, uuid, project_id, image_id, title, slug, description, content, created_at, '.
-            'updated_at, published_at, only_for_members, page_views) VALUES ('.implode(', ', $insertData).')'
+            'updated_at, published_at, only_for_members, page_views, imported_url) VALUES ('.implode(', ', $insertData).')'
         );
 
         $postId = $this->db->executeQuery('SELECT id FROM website_posts WHERE uuid = ?', [$uuid])->fetchAssociative()['id'];
