@@ -18,7 +18,11 @@ interface CloudflareInterface
 
     public function getRootDomainConfig(string $zoneId): ?CloudflareDomainConfig;
 
+    public function getAllTrialSubdomains(): array;
+
     public function hasTrialSubdomain(string $subdomain): bool;
 
     public function createTrialSubdomain(string $subdomain): bool;
+
+    public function removeTrialSubdomain(string $recordId): void;
 }
