@@ -5,13 +5,22 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\Post;
+use App\Entity\Website\TrombinoscopePerson;
 use App\Util\ReadTime;
 use App\Util\Uid;
+use OpenApi\Annotations\Items;
+use OpenApi\Annotations\Property;
 
 class PostLightTransformer extends AbstractTransformer
 {
-    public function __construct(private readonly CdnRouter $cdnRouter)
-    {
+    protected array $availableIncludes = ['categories', 'authors'];
+    protected array $defaultIncludes = ['categories', 'authors'];
+
+    public function __construct(
+        private readonly CdnRouter $cdnRouter,
+        private readonly PostCategoryTransformer $categoryTransformer,
+        private readonly TrombinoscopePersonLightTransformer $authorTransformer,
+    ) {
     }
 
     public function transform(Post $post)
@@ -61,6 +70,31 @@ class PostLightTransformer extends AbstractTransformer
             'image' => '?string',
             'sharer' => '?string',
             'published_at' => '?string',
+            'categories' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/PostCategory']),
+                ]),
+            ],
+            'authors' => [
+                'data' => new Property([
+                    'type' => 'array',
+                    'items' => new Items(['ref' => '#/components/schemas/TrombinoscopePersonLight']),
+                ]),
+            ],
         ];
+    }
+
+    public function includeCategories(Post $post)
+    {
+        return $this->collection($post->getCategories()->toArray(), $this->categoryTransformer);
+    }
+
+    public function includeAuthors(Post $post)
+    {
+        return $this->collection(
+            $post->getAuthors()->filter(static fn (TrombinoscopePerson $p) => $p->isPublished())->toArray(),
+            $this->authorTransformer,
+        );
     }
 }
