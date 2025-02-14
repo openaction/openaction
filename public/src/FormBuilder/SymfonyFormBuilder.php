@@ -103,7 +103,7 @@ class SymfonyFormBuilder
             }
         }
 
-        $builder = $this->formFactory->createBuilder(FormType::class, $values);
+        $builder = $this->formFactory->createBuilder(FormType::class, $values, ['csrf_protection' => false]);
 
         foreach ($blocksData as $key => $block) {
             if ($block->field) {
