@@ -27,6 +27,7 @@ class ThemeHelperExtension extends AbstractExtension
             new TwigFunction('citipo_theme_asset_url', [$this, 'getThemeAssetUrl']),
             new TwigFunction('citipo_project_asset_url', [$this, 'getProjectAssetUrl']),
             new TwigFunction('citipo_page', [$this, 'getPageContent'], ['is_safe' => ['html']]),
+            new TwigFunction('citipo_page_data', [$this, 'getPageData'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_dump', [$this, 'dump'], ['is_safe' => ['html']]),
         ];
     }
@@ -41,9 +42,14 @@ class ThemeHelperExtension extends AbstractExtension
         return $this->getRequest()?->attributes->get('project')->project_assets[$pathname] ?? null;
     }
 
+    public function getPageData(string $id): ?object
+    {
+        return $this->citipo->getPage($this->getApiToken(), $id);
+    }
+
     public function getPageContent(string $id): ?string
     {
-        return $this->citipo->getPage($this->getApiToken(), $id)?->content;
+        return $this->getPageData($id)?->content;
     }
 
     public function dump(mixed $data): string
