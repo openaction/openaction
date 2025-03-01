@@ -32,6 +32,7 @@ services:
                 - citipo_theme_asset_url
                 - citipo_project_asset_url
                 - citipo_page
+                - citipo_page_data
                 - citipo_dump
                 - hex2rgba
             $allowedFilters:
