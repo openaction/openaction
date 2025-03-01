@@ -42,14 +42,16 @@ class ThemeHelperExtension extends AbstractExtension
         return $this->getRequest()?->attributes->get('project')->project_assets[$pathname] ?? null;
     }
 
-    public function getPageData(string $id): ?object
+    public function getPageData(string $id): ?array
     {
-        return $this->citipo->getPage($this->getApiToken(), $id);
+        return $this->citipo->getPage($this->getApiToken(), $id)?->toArray();
     }
 
     public function getPageContent(string $id): ?string
     {
-        return $this->getPageData($id)?->content;
+        $page = $this->getPageData($id);
+
+        return $page ? $page['content'] : null;
     }
 
     public function dump(mixed $data): string
