@@ -141,6 +141,22 @@ class Organization
     private ?string $textingSenderCode = null;
 
     /*
+     * Emails provider
+     */
+
+    #[ORM\Column(length: 40, nullable: true)]
+    private ?string $emailProvider = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailchimpServerPrefix = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailchimpApiKey = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailchimpAudienceName = null;
+
+    /*
      * White label
      */
 
@@ -779,6 +795,50 @@ class Organization
     public function setTextingSenderCode(?string $textingSenderCode)
     {
         $this->textingSenderCode = $textingSenderCode;
+    }
+
+    /*
+     * Email provider
+     */
+
+    public function getEmailProvider(): ?string
+    {
+        return $this->emailProvider;
+    }
+
+    public function setEmailProvider(?string $emailProvider): void
+    {
+        $this->emailProvider = $emailProvider;
+    }
+
+    public function getMailchimpServerPrefix(): ?string
+    {
+        return $this->mailchimpServerPrefix;
+    }
+
+    public function setMailchimpServerPrefix(?string $mailchimpServerPrefix): void
+    {
+        $this->mailchimpServerPrefix = $mailchimpServerPrefix;
+    }
+
+    public function getMailchimpApiKey(): ?string
+    {
+        return $this->mailchimpApiKey;
+    }
+
+    public function setMailchimpApiKey(?string $mailchimpApiKey): void
+    {
+        $this->mailchimpApiKey = $mailchimpApiKey;
+    }
+
+    public function getMailchimpAudienceName(): ?string
+    {
+        return $this->mailchimpAudienceName;
+    }
+
+    public function setMailchimpAudienceName(?string $mailchimpAudienceName): void
+    {
+        $this->mailchimpAudienceName = $mailchimpAudienceName;
     }
 
     /*

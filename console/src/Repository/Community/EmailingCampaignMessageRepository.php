@@ -24,7 +24,7 @@ class EmailingCampaignMessageRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailingCampaignMessage::class);
     }
 
-    public function createCampaignMessages(EmailingCampaign $campaign, QueryBuilder $contactsQueryBuilder)
+    public function createCampaignMessages(EmailingCampaign $campaign, QueryBuilder $contactsQueryBuilder, bool $sent = false)
     {
         $query = $contactsQueryBuilder->select('c.id')->getQuery();
 
@@ -35,7 +35,7 @@ class EmailingCampaignMessageRepository extends ServiceEntityRepository
 
         $sql .= u($query->getSQL())->replace(
             'c0_.id AS id_0',
-            'nextval(\'community_emailing_campaigns_messages_id_seq\'), c0_.id, '.$campaign->getId().', false, false, false, false'
+            'nextval(\'community_emailing_campaigns_messages_id_seq\'), c0_.id, '.$campaign->getId().', '.($sent ? 'true' : 'false').', false, false, false'
         );
 
         $sql .= ' ON CONFLICT DO NOTHING';
