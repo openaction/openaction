@@ -100,6 +100,28 @@ class OrganizationController extends AbstractCrudController
             yield BooleanField::new('showPreview', 'Show preview features?')
                 ->onlyOnForms();
 
+            yield FormField::addPanel('Email provider')
+                ->setIcon('fa fa-envelope')
+                ->setHelp('Provider to send emails for this organization. By default: Sendgrid.');
+
+            yield ChoiceField::new('emailProvider', 'Email provider')
+                ->setChoices([
+                    'Sendgrid' => null,
+                    'Mailchimp' => 'mailchimp',
+                ]);
+
+            yield TextField::new('mailchimpServerPrefix', 'Mailchimp server prefix')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield TextField::new('mailchimpApiKey', 'Mailchimp API key')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield TextField::new('mailchimpAudienceName', 'Mailchimp audience name')
+                ->setColumns(4)
+                ->onlyOnForms();
+
             yield FormField::addPanel('Integrations')
                 ->setIcon('fa fa-cogs')
                 ->setHelp('Configured native integrations for this organization.');

@@ -81,6 +81,9 @@ class EmailingCampaign implements Searchable
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $resolvedAt;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $externalId = null;
+
     #[ORM\OneToMany(targetEntity: EmailingCampaignMessage::class, mappedBy: 'campaign', cascade: ['remove'])]
     private Collection $messages;
 
@@ -240,6 +243,13 @@ class EmailingCampaign implements Searchable
     public function applyContactsFilterUpdate(array $contactsFilter)
     {
         $this->contactsFilter = $contactsFilter ?: null;
+    }
+
+    public function markSentExternally(string $externalId)
+    {
+        $this->externalId = $externalId;
+        $this->resolvedAt = new \DateTime();
+        $this->sentAt = new \DateTime();
     }
 
     public function markSent()

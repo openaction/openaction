@@ -12,6 +12,7 @@ use App\Repository\AreaRepository;
 use App\Repository\Community\ContactRepository;
 use App\Util\Uid;
 use Doctrine\ORM\Query\Expr\OrderBy;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ContactViewBuilder
@@ -211,7 +212,7 @@ class ContactViewBuilder
         return new Paginator($query, true);
     }
 
-    public function createQueryBuilder()
+    public function createQueryBuilder(): QueryBuilder
     {
         if (!$this->organization) {
             throw new \LogicException('ContactViewBuilder::createQueryBuilder() requires an organization to be provided.');

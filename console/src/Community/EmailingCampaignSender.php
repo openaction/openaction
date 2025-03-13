@@ -5,6 +5,7 @@ namespace App\Community;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Bridge\Sendgrid\SendgridInterface;
 use App\Community\Consumer\SendEmailingCampaignMessage;
+use App\Community\Consumer\SendMailchimpEmailingCampaignMessage;
 use App\Entity\Community\EmailingCampaign;
 use App\Repository\OrganizationRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -50,9 +51,16 @@ class EmailingCampaignSender
     public function sendAll(EmailingCampaign $campaign): bool
     {
         $recipientsCount = $this->contactViewBuilder->forEmailingCampaign($campaign)->count();
+        $organization = $campaign->getProject()->getOrganization();
 
-        if (!$this->organizationRepo->useCredits($campaign->getProject()->getOrganization(), $recipientsCount, 'emailing')) {
+        if (!$this->organizationRepo->useCredits($organization, $recipientsCount, 'emailing')) {
             return false;
+        }
+
+        if ('mailchimp' === $organization->getEmailProvider() && $organization->getMailchimpApiKey()) {
+            $this->bus->dispatch(new SendMailchimpEmailingCampaignMessage($campaign->getId()));
+
+            return true;
         }
 
         $this->bus->dispatch(new SendEmailingCampaignMessage($campaign->getId()));

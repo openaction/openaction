@@ -103,6 +103,16 @@ class EmailMessageFactory
         ]);
     }
 
+    public function createMailchimpCampaignBody(EmailingCampaign $campaign, bool $preview = false): string
+    {
+        return $this->twig->render('emails/community/mailchimp_emailing_campaign.html.twig', [
+            'campaign' => $campaign,
+            'project' => $campaign->getProject(),
+            'organization' => $campaign->getProject()->getOrganization(),
+            'preview' => $preview,
+        ]);
+    }
+
     public function createAutomationBody(EmailAutomation $automation, bool $preview = false): string
     {
         return $this->twig->render('emails/community/email_automation.html.twig', [
