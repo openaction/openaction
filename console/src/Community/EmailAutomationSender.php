@@ -14,15 +14,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class EmailAutomationSender
 {
     private OrganizationRepository $organizationRepo;
-    private EmailMessageFactory $messageFactory;
+    private SendgridMailFactory $messageFactory;
     private EmailAutomationMessageRepository $messageRepository;
     private MessageBusInterface $bus;
 
     public function __construct(
-        OrganizationRepository $organizationRepo,
-        EmailMessageFactory $messageFactory,
+        OrganizationRepository           $organizationRepo,
+        SendgridMailFactory              $messageFactory,
         EmailAutomationMessageRepository $messageRepository,
-        MessageBusInterface $bus
+        MessageBusInterface              $bus
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->messageFactory = $messageFactory;

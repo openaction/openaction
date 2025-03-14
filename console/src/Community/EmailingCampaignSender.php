@@ -14,16 +14,16 @@ class EmailingCampaignSender
 {
     private OrganizationRepository $organizationRepo;
     private ContactViewBuilder $contactViewBuilder;
-    private EmailMessageFactory $messageFactory;
+    private SendgridMailFactory $messageFactory;
     private SendgridInterface $sendgrid;
     private MessageBusInterface $bus;
 
     public function __construct(
         OrganizationRepository $organizationRepo,
-        ContactViewBuilder $contactViewBuilder,
-        EmailMessageFactory $messageFactory,
-        SendgridInterface $sendgrid,
-        MessageBusInterface $bus
+        ContactViewBuilder     $contactViewBuilder,
+        SendgridMailFactory    $messageFactory,
+        SendgridInterface      $sendgrid,
+        MessageBusInterface    $bus
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->contactViewBuilder = $contactViewBuilder;

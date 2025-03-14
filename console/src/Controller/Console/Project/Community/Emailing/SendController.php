@@ -4,7 +4,7 @@ namespace App\Controller\Console\Project\Community\Emailing;
 
 use App\Community\ContactViewBuilder;
 use App\Community\EmailingCampaignSender;
-use App\Community\EmailMessageFactory;
+use App\Community\SendgridMailFactory;
 use App\Controller\AbstractController;
 use App\Entity\Community\EmailingCampaign;
 use App\Platform\Permissions;
@@ -57,7 +57,7 @@ class SendController extends AbstractController
     }
 
     #[Route('/{uuid}/preview', name: 'console_community_emailing_preview')]
-    public function preview(EmailMessageFactory $messageFactory, EmailingCampaign $campaign)
+    public function preview(SendgridMailFactory $messageFactory, EmailingCampaign $campaign)
     {
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_SEND, $this->getProject());
         $this->denyIfSubscriptionExpired();

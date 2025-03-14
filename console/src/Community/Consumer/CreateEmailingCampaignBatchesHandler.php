@@ -2,9 +2,11 @@
 
 namespace App\Community\Consumer;
 
+use App\Bridge\Postmark\Consumer\PostmarkMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Bridge\Sendgrid\Model\Recipient;
-use App\Community\EmailMessageFactory;
+use App\Community\PostmarkMailFactory;
+use App\Community\SendgridMailFactory;
 use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Util\PhoneNumber;
@@ -22,20 +24,23 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
 {
     private EmailingCampaignRepository $campaignRepository;
     private EmailingCampaignMessageRepository $messageRepository;
-    private EmailMessageFactory $messageFactory;
+    private SendgridMailFactory $sendgridMailFactory;
+    private PostmarkMailFactory $postmarkMailFactory;
     private MessageBusInterface $bus;
     private LoggerInterface $logger;
 
     public function __construct(
-        EmailingCampaignRepository $campaignRepository,
+        EmailingCampaignRepository        $campaignRepository,
         EmailingCampaignMessageRepository $messageRepository,
-        EmailMessageFactory $messageFactory,
-        MessageBusInterface $bus,
-        LoggerInterface $logger
+        SendgridMailFactory               $sendgridMailFactory,
+        PostmarkMailFactory               $postmarkMailFactory,
+        MessageBusInterface               $bus,
+        LoggerInterface                   $logger
     ) {
         $this->campaignRepository = $campaignRepository;
         $this->messageRepository = $messageRepository;
-        $this->messageFactory = $messageFactory;
+        $this->sendgridMailFactory = $sendgridMailFactory;
+        $this->postmarkMailFactory = $postmarkMailFactory;
         $this->bus = $bus;
         $this->logger = $logger;
     }
@@ -48,6 +53,7 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
             return true;
         }
 
+        $provider = $campaign->getProject()->getOrganization()->getEmailProvider();
         $batches = $this->messageRepository->buildMessagesBatches($campaign);
 
         foreach ($batches as $batch) {
@@ -85,7 +91,11 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
                 ]);
             }
 
-            $this->bus->dispatch(new SendgridMessage($this->messageFactory->createEmailing($campaign, $recipients, false)));
+            if ('postmark' === $provider) {
+                $this->bus->dispatch(new PostmarkMessage($this->postmarkMailFactory->createEmailing($campaign, $recipients)));
+            } else {
+                $this->bus->dispatch(new SendgridMessage($this->sendgridMailFactory->createEmailing($campaign, $recipients)));
+            }
         }
 
         return true;

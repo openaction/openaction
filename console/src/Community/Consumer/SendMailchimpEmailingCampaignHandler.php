@@ -4,7 +4,7 @@ namespace App\Community\Consumer;
 
 use App\Bridge\Mailchimp\MailchimpInterface;
 use App\Community\ContactViewBuilder;
-use App\Community\EmailMessageFactory;
+use App\Community\SendgridMailFactory;
 use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,18 +20,18 @@ final class SendMailchimpEmailingCampaignHandler implements MessageHandlerInterf
     private EmailingCampaignRepository $campaignRepository;
     private ContactViewBuilder $contactViewBuilder;
     private EmailingCampaignMessageRepository $messageRepository;
-    private EmailMessageFactory $messageFactory;
+    private SendgridMailFactory $messageFactory;
     private MailchimpInterface $mailchimp;
     private LoggerInterface $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
-        EmailingCampaignRepository $campaignRepository,
-        ContactViewBuilder $contactViewBuilder,
+        EntityManagerInterface            $em,
+        EmailingCampaignRepository        $campaignRepository,
+        ContactViewBuilder                $contactViewBuilder,
         EmailingCampaignMessageRepository $messageRepository,
-        EmailMessageFactory $messageFactory,
-        MailchimpInterface $mailchimp,
-        LoggerInterface $logger
+        SendgridMailFactory               $messageFactory,
+        MailchimpInterface                $mailchimp,
+        LoggerInterface                   $logger
     ) {
         $this->em = $em;
         $this->campaignRepository = $campaignRepository;

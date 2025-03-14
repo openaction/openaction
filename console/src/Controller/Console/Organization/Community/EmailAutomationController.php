@@ -6,7 +6,7 @@ use App\Bridge\Unlayer\UnlayerInterface;
 use App\Cdn\CdnRouter;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
-use App\Community\EmailMessageFactory;
+use App\Community\SendgridMailFactory;
 use App\Controller\AbstractController;
 use App\Controller\Util\ApiControllerTrait;
 use App\Entity\Community\EmailAutomation;
@@ -93,7 +93,7 @@ class EmailAutomationController extends AbstractController
     }
 
     #[Route('/{uuid}/preview', name: 'console_organization_community_automation_preview')]
-    public function preview(EmailMessageFactory $messageFactory, EmailAutomation $automation)
+    public function preview(SendgridMailFactory $messageFactory, EmailAutomation $automation)
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();

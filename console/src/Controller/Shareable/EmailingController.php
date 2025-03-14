@@ -2,7 +2,7 @@
 
 namespace App\Controller\Shareable;
 
-use App\Community\EmailMessageFactory;
+use App\Community\SendgridMailFactory;
 use App\Entity\Project;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Repository\ProjectRepository;
@@ -38,7 +38,7 @@ class EmailingController extends AbstractController
     }
 
     #[Route('/{id}', name: 'shareable_emailing_view')]
-    public function view(EmailMessageFactory $messageFactory, string $projectId, string $id)
+    public function view(SendgridMailFactory $messageFactory, string $projectId, string $id)
     {
         if (!$project = $this->projectRepository->findOneByBase62Uid($projectId)) {
             throw $this->createNotFoundException();

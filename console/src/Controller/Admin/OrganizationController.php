@@ -106,7 +106,8 @@ class OrganizationController extends AbstractCrudController
 
             yield ChoiceField::new('emailProvider', 'Email provider')
                 ->setChoices([
-                    'Sendgrid' => null,
+                    'Sendgrid' => 'sendgrid',
+                    'Postmark' => 'postmark',
                     'Mailchimp' => 'mailchimp',
                 ]);
 
