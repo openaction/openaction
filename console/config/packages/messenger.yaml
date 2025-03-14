@@ -87,11 +87,13 @@ framework:
 
             # Community
             'App\Community\Consumer\SendEmailingCampaignMessage': async_priority_high
+            'App\Community\Consumer\SendMailchimpEmailingCampaignMessage': async_priority_high
             'App\Community\Consumer\SendTextingCampaignMessage': async_priority_high
             'App\Community\Consumer\StartPhoningCampaignMessage': async_priority_high
             'App\Community\Consumer\CreateEmailingCampaignBatchesMessage': async_priority_low
             'App\Community\Consumer\CreateTextingCampaignBatchesMessage': async_priority_low
             'App\Bridge\Sendgrid\Consumer\SendgridMessage': async_emailing
+            'App\Bridge\Postmark\Consumer\PostmarkMessage': async_emailing
             'App\Bridge\Twilio\Consumer\TwilioMessage': async_texting
 
             # Analytics

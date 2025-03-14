@@ -16,7 +16,7 @@ use function Symfony\Component\String\u;
 
 use Twig\Environment;
 
-class EmailMessageFactory
+class SendgridMailFactory
 {
     public function __construct(
         private readonly Environment $twig,

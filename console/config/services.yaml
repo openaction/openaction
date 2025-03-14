@@ -73,6 +73,7 @@ services:
         class: 'App\Bridge\Postmark\Postmark'
         arguments:
             $accountToken: '%env(POSTMARK_ACCOUNT_TOKEN)%'
+            $serverToken: '%env(POSTMARK_SERVER_TOKEN)%'
 
     App\Bridge\Twilio\TwilioInterface:
         class: 'App\Bridge\Twilio\Twilio'
