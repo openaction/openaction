@@ -25,13 +25,13 @@ final class SendMailchimpEmailingCampaignHandler implements MessageHandlerInterf
     private LoggerInterface $logger;
 
     public function __construct(
-        EntityManagerInterface            $em,
-        EmailingCampaignRepository        $campaignRepository,
-        ContactViewBuilder                $contactViewBuilder,
+        EntityManagerInterface $em,
+        EmailingCampaignRepository $campaignRepository,
+        ContactViewBuilder $contactViewBuilder,
         EmailingCampaignMessageRepository $messageRepository,
-        SendgridMailFactory               $messageFactory,
-        MailchimpInterface                $mailchimp,
-        LoggerInterface                   $logger
+        SendgridMailFactory $messageFactory,
+        MailchimpInterface $mailchimp,
+        LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->campaignRepository = $campaignRepository;

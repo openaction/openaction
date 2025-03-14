@@ -20,10 +20,10 @@ class EmailingCampaignSender
 
     public function __construct(
         OrganizationRepository $organizationRepo,
-        ContactViewBuilder     $contactViewBuilder,
-        SendgridMailFactory    $messageFactory,
-        SendgridInterface      $sendgrid,
-        MessageBusInterface    $bus
+        ContactViewBuilder $contactViewBuilder,
+        SendgridMailFactory $messageFactory,
+        SendgridInterface $sendgrid,
+        MessageBusInterface $bus
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->contactViewBuilder = $contactViewBuilder;

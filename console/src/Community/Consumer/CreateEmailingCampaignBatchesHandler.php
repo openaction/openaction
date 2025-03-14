@@ -30,12 +30,12 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
     private LoggerInterface $logger;
 
     public function __construct(
-        EmailingCampaignRepository        $campaignRepository,
+        EmailingCampaignRepository $campaignRepository,
         EmailingCampaignMessageRepository $messageRepository,
-        SendgridMailFactory               $sendgridMailFactory,
-        PostmarkMailFactory               $postmarkMailFactory,
-        MessageBusInterface               $bus,
-        LoggerInterface                   $logger
+        SendgridMailFactory $sendgridMailFactory,
+        PostmarkMailFactory $postmarkMailFactory,
+        MessageBusInterface $bus,
+        LoggerInterface $logger
     ) {
         $this->campaignRepository = $campaignRepository;
         $this->messageRepository = $messageRepository;

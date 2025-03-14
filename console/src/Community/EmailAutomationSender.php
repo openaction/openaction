@@ -19,10 +19,10 @@ class EmailAutomationSender
     private MessageBusInterface $bus;
 
     public function __construct(
-        OrganizationRepository           $organizationRepo,
-        SendgridMailFactory              $messageFactory,
+        OrganizationRepository $organizationRepo,
+        SendgridMailFactory $messageFactory,
         EmailAutomationMessageRepository $messageRepository,
-        MessageBusInterface              $bus
+        MessageBusInterface $bus
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->messageFactory = $messageFactory;
