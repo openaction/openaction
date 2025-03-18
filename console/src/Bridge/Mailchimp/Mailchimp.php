@@ -27,7 +27,14 @@ class Mailchimp implements MailchimpInterface
             $citipoListName = $campaign->getProject()->getOrganization()->getMailchimpAudienceName();
             $citipoListId = null;
 
-            foreach ($client->lists->getAllLists(count: 1000)->lists ?? [] as $list) {
+            $offset = 0;
+            $mailchimpLists = [];
+            while ($lists = $client->lists->getAllLists(count: 1000, offset: $offset)->lists ?? []) {
+                $offset += 1000;
+                $mailchimpLists = array_merge($mailchimpLists, $lists);
+            }
+
+            foreach ($mailchimpLists as $list) {
                 if ($citipoListName === $list->name) {
                     $citipoListId = $list->id;
                     break;
@@ -59,7 +66,15 @@ class Mailchimp implements MailchimpInterface
 
             // Find tag ID
             $campaignTagId = null;
-            foreach ($client->lists->listSegments($citipoListId)->segments ?? [] as $tag) {
+
+            $offset = 0;
+            $mailchimpSegments = [];
+            while ($segments = $client->lists->listSegments($citipoListId, count: 1000, offset: $offset)->segments ?? []) {
+                $offset += 1000;
+                $mailchimpSegments = array_merge($mailchimpSegments, $segments);
+            }
+
+            foreach ($mailchimpSegments as $tag) {
                 if ($tag->name === $campaignTag) {
                     $campaignTagId = $tag->id;
                 }
