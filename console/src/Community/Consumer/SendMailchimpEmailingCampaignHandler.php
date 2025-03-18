@@ -56,12 +56,6 @@ final class SendMailchimpEmailingCampaignHandler implements MessageHandlerInterf
             return true;
         }
 
-        if ($campaign->getSentAt()) {
-            $this->logger->warning('Campaign was already sent', ['id' => $message->getCampaignId()]);
-
-            return true;
-        }
-
         // Synchronize campaign contacts with Mailchimp
         $contacts = $this->contactViewBuilder->forEmailingCampaign($campaign)
             ->createQueryBuilder()
