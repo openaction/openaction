@@ -69,5 +69,9 @@ export function StatsView(props) {
         return <div className="d-block">{view}</div>;
     }
 
-    return <a href={props.link} className="d-block">{view}</a>;
+    return (
+        <a href={props.link} className="d-block">
+            {view}
+        </a>
+    );
 }
