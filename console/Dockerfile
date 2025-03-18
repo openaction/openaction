@@ -31,6 +31,9 @@ COPY cron/integration-revue /etc/periodic/15min/
 COPY cron/synchronize-customers /etc/periodic/hourly/
 COPY cron/website-sessions-build /etc/periodic/15min/
 COPY cron/website-sessions-clear /etc/periodic/daily/
+COPY cron/synchronize-24h-mailchimp-campaigns-reports /etc/periodic/1min/
+COPY cron/synchronize-1w-mailchimp-campaigns-reports /etc/periodic/hourly/
+COPY cron/synchronize-6m-mailchimp-campaigns-reports /etc/periodic/daily/
 
 RUN chmod a+x /etc/periodic/15min/check-domains && \
     chmod a+x /etc/periodic/1min/refresh-domains-cache && \
@@ -42,4 +45,7 @@ RUN chmod a+x /etc/periodic/15min/check-domains && \
     chmod a+x /etc/periodic/15min/integration-revue && \
     chmod a+x /etc/periodic/hourly/synchronize-customers && \
     chmod a+x /etc/periodic/15min/website-sessions-build && \
-    chmod a+x /etc/periodic/daily/website-sessions-clear
+    chmod a+x /etc/periodic/daily/website-sessions-clear && \
+    chmod a+x /etc/periodic/1min/synchronize-24h-mailchimp-campaigns-reports && \
+    chmod a+x /etc/periodic/hourly/synchronize-1w-mailchimp-campaigns-reports && \
+    chmod a+x /etc/periodic/daily/synchronize-6m-mailchimp-campaigns-reports

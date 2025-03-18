@@ -37,8 +37,8 @@ export function StatsView(props) {
         );
     }
 
-    return (
-        <a href={props.link} className="d-block">
+    const view = (
+        <>
             <div className="d-inline-block mx-2">
                 <i className="fad fa-users mr-1" />
                 {stats.total}
@@ -62,6 +62,16 @@ export function StatsView(props) {
                     <small className="text-uppercase">{translator.trans('emailing.stats.clicked')}</small>
                 </div>
             </div>
+        </>
+    );
+
+    if (!props.link) {
+        return <div className="d-block">{view}</div>;
+    }
+
+    return (
+        <a href={props.link} className="d-block">
+            {view}
         </a>
     );
 }
