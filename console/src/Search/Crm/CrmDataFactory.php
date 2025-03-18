@@ -4,10 +4,11 @@ namespace App\Search\Crm;
 
 use App\Search\CrmIndexer;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 
 class CrmDataFactory
 {
-    public function __construct(private Connection $db)
+    public function __construct(private Connection $db, private LoggerInterface $logger)
     {
     }
 
@@ -253,14 +254,99 @@ class CrmDataFactory
             LEFT JOIN organizations o ON c.organization_id = o.id
         ';
 
+        $indexingTable = CrmIndexer::INDEXING_TABLE;
+
+        $sql = "
+            INSERT INTO $indexingTable (
+               -- Organization
+                organization, 
+                
+                -- Details
+                uuid, 
+                email,
+                contact_additional_emails, 
+                contact_phone, 
+                parsed_contact_phone, 
+                contact_work_phone, 
+                parsed_contact_work_phone, 
+                
+                -- Profile
+                profile_formal_title, 
+                profile_first_name,
+                profile_first_name_slug, 
+                profile_middle_name, 
+                profile_middle_name_slug,
+                profile_last_name,
+                profile_last_name_slug,
+                profile_birthdate, 
+                profile_birthdate_int, 
+                profile_age,
+                profile_gender,
+                profile_nationality, 
+                profile_company, 
+                profile_company_slug,
+                profile_job_title,
+                profile_job_title_slug, 
+                
+                -- Address
+                address_street_line1, 
+                address_street_line1_slug, 
+                address_street_line2, 
+                address_street_line2_slug, 
+                address_zip_code, 
+                address_city, 
+                address_country, 
+                
+                -- Socials
+                social_facebook,
+                social_twitter,
+                social_linked_in,
+                social_telegram,
+                social_whatsapp,
+                
+                -- Picture
+                picture,
+                email_hash,
+                
+                -- Metadata
+                settings_receive_newsletters,
+                settings_receive_sms,
+                settings_receive_calls,
+                created_at,
+                created_at_int,
+                
+                -- Status
+                status,
+                
+                -- Relationships
+                area,
+                tags,
+                projects,
+                opened_emails,
+                clicked_emails
+            )
+            $selectQuery
+            $filter
+            ON CONFLICT (uuid) DO NOTHING
+        ";
+
+        $this->logger->info('Dumping indexing table', [
+            'query' => $sql,
+            'params' => $params,
+        ]);
+
         // Execute insert ignoring conflicts as they most likely come from another indexing happening in parallel,
         // meaning contact data is the same
-        $this->db->executeQuery(
-            'INSERT INTO '.CrmIndexer::INDEXING_TABLE.'
-            '.$selectQuery.' 
-            '.$filter.'
-            ON CONFLICT (uuid) DO NOTHING',
-            $params
-        );
+        try {
+            $this->db->executeQuery($sql, $params);
+        } catch (\Throwable $e) {
+            $this->logger->error('Dumping indexing table failed', [
+                'exception' => $e,
+                'query' => $sql,
+                'params' => $params,
+            ]);
+
+            throw $e;
+        }
     }
 }
