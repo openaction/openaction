@@ -30,12 +30,13 @@ class EmailingCampaignMessageRepository extends ServiceEntityRepository
 
         $sql = '
             INSERT INTO community_emailing_campaigns_messages
-            (id, contact_id, campaign_id, sent, bounced, opened, clicked)
+            (id, contact_id, campaign_id, sent, sent_at, bounced, opened, clicked)
         ';
 
         $sql .= u($query->getSQL())->replace(
             'c0_.id AS id_0',
-            'nextval(\'community_emailing_campaigns_messages_id_seq\'), c0_.id, '.$campaign->getId().', '.($sent ? 'true' : 'false').', false, false, false'
+            'nextval(\'community_emailing_campaigns_messages_id_seq\'), c0_.id, '.$campaign->getId().', '.
+            ($sent ? 'true' : 'false').', '.($sent ? 'CURRENT_TIMESTAMP' : 'null').', false, false, false'
         );
 
         $sql .= ' ON CONFLICT DO NOTHING';
