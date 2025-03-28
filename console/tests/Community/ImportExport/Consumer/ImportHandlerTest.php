@@ -57,7 +57,7 @@ class ImportHandlerTest extends KernelTestCase
 
         $job = $import->getJob();
         $this->assertFalse($job->isFinished());
-        $this->assertSame(14, $job->getTotal());
+        $this->assertSame(12, $job->getTotal());
 
         // Create uploaded file and handle the message
         static::getContainer()->get('cdn.storage')->write('import-not-started.xlsx', file_get_contents(__DIR__.'/../../../Fixtures/import/contacts-map-columns.xlsx'));

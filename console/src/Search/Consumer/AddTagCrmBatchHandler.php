@@ -2,7 +2,6 @@
 
 namespace App\Search\Consumer;
 
-use App\Repository\Community\ContactRepository;
 use App\Repository\Community\TagRepository;
 use App\Search\CrmIndexer;
 use App\Search\Model\BatchRequest;
@@ -10,7 +9,6 @@ use App\Search\Model\BatchRequest;
 final class AddTagCrmBatchHandler extends AbstractCrmBatchHandler
 {
     public function __construct(
-        private ContactRepository $contactRepository,
         private TagRepository $tagRepository,
         private CrmIndexer $crmIndexer,
     ) {
@@ -52,9 +50,8 @@ final class AddTagCrmBatchHandler extends AbstractCrmBatchHandler
                 $this->tagRepository->addTagToContactsBatch($toUpdate, $message->getTagId());
 
                 // Refresh CRM
-                $contactsIdentifiers = $this->contactRepository->findIdsForUuids($toUpdate);
                 $this->crmIndexer->waitForIndexing(
-                    $this->crmIndexer->updateDocuments($orgaUuid, $orgaIndexVersion, $contactsIdentifiers)
+                    $this->crmIndexer->synchronizeContacts($orgaUuid, $orgaIndexVersion, $toUpdate)
                 );
 
                 // Advance job
@@ -71,9 +68,8 @@ final class AddTagCrmBatchHandler extends AbstractCrmBatchHandler
             $this->tagRepository->addTagToContactsBatch($toUpdate, $message->getTagId());
 
             // Refresh CRM
-            $contactsIdentifiers = $this->contactRepository->findIdsForUuids($toUpdate);
             $this->crmIndexer->waitForIndexing(
-                $this->crmIndexer->updateDocuments($orgaUuid, $orgaIndexVersion, $contactsIdentifiers)
+                $this->crmIndexer->synchronizeContacts($orgaUuid, $orgaIndexVersion, $toUpdate)
             );
         }
 

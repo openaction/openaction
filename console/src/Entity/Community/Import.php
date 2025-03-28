@@ -42,7 +42,7 @@ class Import
         $this->uuid = Uid::random();
         $this->organization = $organization;
         $this->file = $file;
-        $this->job = new Job('import', 0, 14);
+        $this->job = new Job('import', 0, 12);
         $this->head = $head->toArray();
     }
 

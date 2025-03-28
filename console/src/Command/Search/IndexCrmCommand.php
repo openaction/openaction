@@ -34,7 +34,6 @@ class IndexCrmCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $orgaId = null;
         $orgaUuid = null;
 
         if ($uuid = $input->getOption('organization-uuid')) {
@@ -42,31 +41,8 @@ class IndexCrmCommand extends Command
                 throw new \InvalidArgumentException('Organization with UUID '.$uuid.' not found');
             }
 
-            $orgaId = $organization->getId();
             $orgaUuid = $organization->getUuid()->toRfc4122();
         }
-
-        /*
-         * Creating indexing table
-         */
-        $io->write('Resetting temporary table... ');
-        $this->crmIndexer->resetIndexingTable();
-        $io->writeln('OK');
-
-        $io->write('Populating temporary table... ');
-        if ($orgaId) {
-            $this->crmIndexer->populateIndexingTableForOrganization($orgaId);
-        } else {
-            $this->crmIndexer->populateIndexingTableForAllOrganizations();
-        }
-        $io->writeln('OK');
-
-        /*
-         * Dumping indexing data locally
-         */
-        $io->write('Dumping to file... ');
-        $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
-        $io->writeln('OK');
 
         /*
          * Preparing Meilisearch uploads
@@ -76,7 +52,7 @@ class IndexCrmCommand extends Command
         $batches = [];
 
         if ($orgaUuid) {
-            $batches[$orgaUuid] = $this->crmIndexer->createNdJsonBatchesFromFile($dumpedFilename)[$orgaUuid] ?? [];
+            $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid);
         } else {
             // Create empty batches to ensure the creation of an index even without contacts
             foreach ($this->organizationRepo->findAllUuids() as $uuid) {
@@ -84,7 +60,7 @@ class IndexCrmCommand extends Command
             }
 
             // Override with actual batches for organizations with contacts
-            foreach ($this->crmIndexer->createNdJsonBatchesFromFile($dumpedFilename) as $uuid => $filenames) {
+            foreach ($this->crmIndexer->createIndexingBatchesForAllOrganizations() as $uuid => $filenames) {
                 $batches[$uuid] = $filenames;
             }
         }
@@ -105,8 +81,8 @@ class IndexCrmCommand extends Command
 
             // Upload ndjson files
             $tasks = [];
-            foreach ($filenames as $file) {
-                $tasks[] = $this->crmIndexer->indexFile($orgaUuid, $newVersion, $file);
+            foreach ($filenames as $batchFilename) {
+                $tasks[] = $this->crmIndexer->indexBatch($orgaUuid, $newVersion, $batchFilename);
             }
 
             // Wait for indexing to finish
