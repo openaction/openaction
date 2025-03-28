@@ -7,7 +7,8 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Community\EmailingCampaign;
 use App\Mailer\PlatformMailer;
 use App\Repository\Community\EmailingCampaignRepository;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -63,10 +64,10 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
 
     private function doExport(string $filename, EmailingCampaign $campaign)
     {
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile($filename);
 
-        $writer->addRow(WriterEntityFactory::createRowFromArray([
+        $writer->addRow(Row::fromValues([
             'email',
             'opens',
             'clicks',
@@ -103,7 +104,7 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
         ]));
 
         foreach ($this->repository->getExportData($campaign) as $contact) {
-            $writer->addRow(WriterEntityFactory::createRowFromArray($contact));
+            $writer->addRow(Row::fromValues($contact));
         }
 
         $writer->close();
