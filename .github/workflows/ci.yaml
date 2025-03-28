@@ -32,7 +32,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: '8.4'
                   coverage: none
 
             - name: Install composer-normalize
@@ -61,7 +61,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: '8.4'
                   coverage: none
 
             - name: Install translations-checker
@@ -239,7 +239,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: '8.4'
                   coverage: none
 
             - name: Install composer-normalize
@@ -256,7 +256,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: '8.4'
                   coverage: none
 
             - name: Install translations-checker
@@ -338,7 +338,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: '8.4'
                   coverage: none
                   extensions: redis
 
