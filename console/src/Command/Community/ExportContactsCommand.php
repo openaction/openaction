@@ -5,7 +5,8 @@ namespace App\Command\Community;
 use App\Entity\Community\Contact;
 use App\Entity\Organization;
 use Doctrine\ORM\EntityManagerInterface;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -47,17 +48,17 @@ class ExportContactsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->text('Exporting to var/'.$filename.' ...');
 
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile($this->projectDir.'/var/'.$filename);
 
         $headerAdded = false;
         foreach ($this->em->getRepository(Contact::class)->getExportData($orga) as $contact) {
             if (!$headerAdded) {
-                $writer->addRow(WriterEntityFactory::createRowFromArray(array_keys($contact)));
+                $writer->addRow(Row::fromValues(array_keys($contact)));
                 $headerAdded = true;
             }
 
-            $writer->addRow(WriterEntityFactory::createRowFromArray($contact));
+            $writer->addRow(Row::fromValues($contact));
         }
 
         $writer->close();

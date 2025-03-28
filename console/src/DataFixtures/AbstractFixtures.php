@@ -37,7 +37,7 @@ abstract class AbstractFixtures extends Fixture implements FixtureGroupInterface
     /**
      * @param EntityManagerInterface $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->em = $manager;
         $this->doLoad();
