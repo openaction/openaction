@@ -28,11 +28,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    Twig\Extra\CssInliner\CssInlinerExtension: ~
-    Twig\Extra\Inky\InkyExtension: ~
-    Twig\Extra\Intl\IntlExtension: ~
-    Twig\Extra\String\StringExtension: ~
-
     #
     # Twig sandbox
     #
