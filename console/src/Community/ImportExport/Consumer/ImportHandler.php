@@ -370,38 +370,24 @@ final class ImportHandler
          */
         $orgaUuid = $organization->getUuid()->toRfc4122();
 
-        // Creating indexing table
-        $this->jobRepository->setJobStep($jobId, step: 9, payload: ['status' => 'indexing_populating']);
-        $this->crmIndexer->resetIndexingTable();
-        $this->crmIndexer->populateIndexingTableForOrganization($organization->getId());
-
-        // Dumping indexing data locally
-        $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_dumping']);
-        $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
-
         // Creating ndjson batches
-        $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_batching']);
+        $this->jobRepository->setJobStep($jobId, step: 9, payload: ['status' => 'indexing_batching']);
 
         // Create empty batches to ensure the creation of an index of organizations even without contacts
-        $batches = [$orgaUuid => []];
-
-        // Override with actual batches for organizations with contacts
-        foreach ($this->crmIndexer->createNdJsonBatchesFromFile($dumpedFilename) as $uuid => $filenames) {
-            $batches[$uuid] = $filenames;
-        }
+        $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid);
 
         // Create new index version
-        $this->jobRepository->setJobStep($jobId, step: 12, payload: ['status' => 'indexing_uploading']);
+        $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_uploading']);
         $newVersion = $this->crmIndexer->createIndexVersion($orgaUuid);
 
         // Upload ndjson files
         $tasks = [];
-        foreach ($batches[$orgaUuid] as $file) {
-            $tasks[] = $this->crmIndexer->indexFile($orgaUuid, $newVersion, $file);
+        foreach ($batches[$orgaUuid] ?? [] as $file) {
+            $tasks[] = $this->crmIndexer->indexBatch($orgaUuid, $newVersion, $file);
         }
 
         // Wait for indexing to finish
-        $this->jobRepository->setJobStep($jobId, step: 13, payload: ['status' => 'indexing_waiting']);
+        $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_waiting']);
         if ($tasks) {
             $this->crmIndexer->waitForIndexing($tasks);
         }

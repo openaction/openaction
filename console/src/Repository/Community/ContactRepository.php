@@ -35,25 +35,6 @@ class ContactRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')->getQuery()->toIterable();
     }
 
-    public function findIdsForUuids(array $uuid): array
-    {
-        $qb = $this->createQueryBuilder('c');
-
-        $data = $qb
-            ->select('c.id', 'c.uuid')
-            ->where($qb->expr()->in('c.uuid', $uuid))
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        $ids = [];
-        foreach ($data as $row) {
-            $ids[(string) $row['uuid']] = $row['id'];
-        }
-
-        return $ids;
-    }
-
     public function findOneByMainEmail(Organization $orga, string $email): ?Contact
     {
         return $this->findOneBy([

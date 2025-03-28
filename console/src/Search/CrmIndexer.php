@@ -7,7 +7,7 @@ use App\Entity\Area;
 
 class CrmIndexer
 {
-    public const INDEXING_TABLE = 'indexing_crm';
+    public const INDEXING_TABLE = 'indexing_view';
 
     public const INDEX_NAME_FORMAT = 'crm_%s_%s';
 
@@ -118,8 +118,7 @@ class CrmIndexer
     ];
 
     public function __construct(
-        private readonly Crm\CrmDataFactory $dataFactory,
-        private readonly Crm\CrmDataParser $dataParser,
+        private readonly Crm\CrmNdJsonBatchFactory $ndJsonBatchFactory,
         private readonly Crm\CrmDataIndexer $dataIndexer,
     ) {
     }
@@ -130,75 +129,45 @@ class CrmIndexer
     }
 
     /**
-     * Create (or recreate) the indexing table used to export CRM data.
+     * Create indexing batches for all database contacts.
+     *
+     * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function resetIndexingTable(): void
+    public function createIndexingBatchesForAllOrganizations(): array
     {
-        $this->dataFactory->resetIndexingTable();
+        return $this->ndJsonBatchFactory->createForAllOrganizations();
     }
 
     /**
-     * Populate the indexing table with data from the database for all organization.
+     * Create indexing batches for the given organization contacts.
+     *
+     * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function populateIndexingTableForAllOrganizations(): void
+    public function createIndexingBatchesForOrganization(string $organizationUuid): array
     {
-        $this->dataFactory->populateIndexingTableForAllOrganizations();
+        return $this->ndJsonBatchFactory->createForOrganization($organizationUuid);
     }
 
     /**
-     * Populate the indexing table with data from the database for a given organization.
+     * Create indexing batches for the given contacts.
      *
-     * @param int $organizationId Organization ID used to filter the data put in the indexing table.
+     * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function populateIndexingTableForOrganization(int $organizationId): void
+    public function createIndexingBatchesForContacts(array $contactsUuids): array
     {
-        $this->dataFactory->populateIndexingTableForOrganization($organizationId);
+        return $this->ndJsonBatchFactory->createForContacts($contactsUuids);
     }
 
     /**
-     * Dump the indexing table content to a local TXT file that can be processed for indexing.
-     *
-     * @return string The pathname of the dumped file.
-     */
-    public function dumpIndexingTableToFile(): string
-    {
-        return $this->dataParser->dumpIndexingTableToFile();
-    }
-
-    /**
-     * Parse a given dumped local TXT file and create ndjson batch files from it for indexing.
-     *
-     * @param string $filename The pathname of the dumped file.
-     *
-     * @return array<string, string[]> The list of ndjson files, indexed by organization UUID.
-     */
-    public function createNdJsonBatchesFromFile(string $filename): array
-    {
-        return $this->dataParser->createNdJsonBatchesFromFile($filename);
-    }
-
-    /**
-     * Create a new version of the CRM index for the given organization.
-     *
-     * @param string $organizationUuid The organization UUID to create a version for.
-     *
-     * @return string The new version created.
-     */
-    public function createIndexVersion(string $organizationUuid): string
-    {
-        return $this->dataIndexer->createIndexVersion($organizationUuid);
-    }
-
-    /**
-     * Index a given ndjson file in the CRM index of a given organization and version.
+     * Index a given ndjson batch in the CRM index of a given organization and version.
      *
      * @param string $organizationUuid The index organization UUID.
-     * @param string $version          The index version in which to upload the file.
-     * @param string $filename         The pathname of the ndjson file to upload.
+     * @param string $version          The index version in which to upload the batch.
+     * @param string $filename         The pathname of the ndjson batch to upload.
      *
      * @return Task Return quickly a task as the indexing is asynchronous.
      */
-    public function indexFile(string $organizationUuid, string $version, string $filename): Task
+    public function indexBatch(string $organizationUuid, string $version, string $filename): Task
     {
         return $this->dataIndexer->indexFile($organizationUuid, $version, $filename);
     }
@@ -206,23 +175,12 @@ class CrmIndexer
     /**
      * Update contacts in the CRM current index for the organization.
      *
-     * @param array $contactsIdentifiers The map of UUID => ID identifiers of contacts to update.
-     *
      * @return Task[] Return tasks quickly as the indexing is asynchronous.
      */
-    public function updateDocuments(string $orgaUuid, string $indexVersion, array $contactsIdentifiers): array
+    public function synchronizeContacts(string $orgaUuid, string $indexVersion, array $contactsUuids): array
     {
-        $uuids = array_keys($contactsIdentifiers);
-        $ids = array_values($contactsIdentifiers);
-
-        // Remove previous indexing table rows
-        $this->dataFactory->removeContactsBatchIndexing($uuids);
-
-        // Populate indexing table for contacts
-        $this->dataFactory->populateIndexingTableForContactsBatch($ids);
-
         // Extract normalized data for contacts
-        $batches = $this->dataParser->createNdJsonBatchesFromContacts($uuids);
+        $batches = $this->createIndexingBatchesForContacts($contactsUuids);
 
         $tasks = [];
         foreach ($batches[$orgaUuid] as $file) {
@@ -241,7 +199,7 @@ class CrmIndexer
      *
      * @return Task] Return the task quickly as the removal is asynchronous.
      */
-    public function removeDocuments(string $orgaUuid, string $indexVersion, array $contactsUuids): Task
+    public function removeContacts(string $orgaUuid, string $indexVersion, array $contactsUuids): Task
     {
         return $this->dataIndexer->unindexDocuments($orgaUuid, $indexVersion, $contactsUuids);
     }
@@ -254,6 +212,18 @@ class CrmIndexer
     public function waitForIndexing(array $tasks)
     {
         $this->dataIndexer->waitForIndexing($tasks);
+    }
+
+    /**
+     * Create a new version of the CRM index for the given organization.
+     *
+     * @param string $organizationUuid The organization UUID to create a version for.
+     *
+     * @return string The new version created.
+     */
+    public function createIndexVersion(string $organizationUuid): string
+    {
+        return $this->dataIndexer->createIndexVersion($organizationUuid);
     }
 
     /**

@@ -21,26 +21,9 @@ final class ReindexOrganizationCrmHandler implements MessageHandlerInterface
         $orgaUuid = $orga->getUuid()->toRfc4122();
 
         /*
-         * Creating indexing table
-         */
-        $this->crmIndexer->resetIndexingTable();
-        $this->crmIndexer->populateIndexingTableForOrganization($orga->getId());
-
-        /*
-         * Dumping indexing data locally
-         */
-        $dumpedFilename = $this->crmIndexer->dumpIndexingTableToFile();
-
-        /*
          * Creating ndjson batches
          */
-        // Create empty batches to ensure the creation of an index of organizations even without contacts
-        $batches = [$orgaUuid => []];
-
-        // Override with actual batches for organizations with contacts
-        foreach ($this->crmIndexer->createNdJsonBatchesFromFile($dumpedFilename) as $uuid => $filenames) {
-            $batches[$uuid] = $filenames;
-        }
+        $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid);
 
         /*
          * Indexing
@@ -50,8 +33,8 @@ final class ReindexOrganizationCrmHandler implements MessageHandlerInterface
 
         // Upload ndjson files
         $tasks = [];
-        foreach ($batches[$orgaUuid] as $file) {
-            $tasks[] = $this->crmIndexer->indexFile($orgaUuid, $newVersion, $file);
+        foreach ($batches[$orgaUuid] ?? [] as $file) {
+            $tasks[] = $this->crmIndexer->indexBatch($orgaUuid, $newVersion, $file);
         }
 
         // Wait for indexing to finish

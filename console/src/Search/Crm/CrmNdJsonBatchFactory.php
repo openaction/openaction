@@ -8,125 +8,39 @@ use App\Search\CrmIndexer;
 use App\Util\Json;
 use App\Util\Uid;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Uid\Uuid;
 
-class CrmDataParser
+class CrmNdJsonBatchFactory
 {
-    private const DUMP_HEADER = [
-        'organization',
-        'uuid',
-        'email',
-        'contact_additional_emails',
-        'contact_phone',
-        'parsed_contact_phone',
-        'contact_work_phone',
-        'parsed_contact_work_phone',
-        'profile_formal_title',
-        'profile_first_name',
-        'profile_first_name_slug',
-        'profile_middle_name',
-        'profile_middle_name_slug',
-        'profile_last_name',
-        'profile_last_name_slug',
-        'profile_birthdate',
-        'profile_birthdate_int',
-        'profile_age',
-        'profile_gender',
-        'profile_nationality',
-        'profile_company',
-        'profile_company_slug',
-        'profile_job_title',
-        'profile_job_title_slug',
-        'address_street_line1',
-        'address_street_line1_slug',
-        'address_street_line2',
-        'address_street_line2_slug',
-        'address_zip_code',
-        'address_city',
-        'address_country',
-        'social_facebook',
-        'social_twitter',
-        'social_linked_in',
-        'social_telegram',
-        'social_whatsapp',
-        'picture',
-        'email_hash',
-        'settings_receive_newsletters',
-        'settings_receive_sms',
-        'settings_receive_calls',
-        'created_at',
-        'created_at_int',
-        'status',
-        'area',
-        'tags',
-        'projects',
-        'opened_emails',
-        'clicked_emails',
-    ];
-
-    public function __construct(private readonly Connection $db, private readonly string $databaseUrl, private readonly string $cacheDir)
+    public function __construct(private readonly Connection $db, private readonly string $cacheDir)
     {
     }
 
-    public function dumpIndexingTableToFile(): string
+    public function createForAllOrganizations(): array
     {
-        $details = parse_url($this->databaseUrl);
+        return $this->createForSqlFilter('');
+    }
 
-        if (file_exists($filename = $this->cacheDir.'/indexing_crm.txt')) {
-            unlink($filename);
+    public function createForOrganization(string $organizationUuid): array
+    {
+        return $this->createForSqlFilter('WHERE organization = \''.$organizationUuid.'\'');
+    }
+
+    public function createForContacts(array $contactsUuids): array
+    {
+        if (!$contactsUuids) {
+            return [];
         }
 
-        $process = new Process([
-            'psql', '-U', $details['user'], '-h', $details['host'], '-p', $details['port'],
-            '-d', ltrim($details['path'], '/'), '--set=sslmode=require', '-c',
-            '\copy (SELECT * FROM '.CrmIndexer::INDEXING_TABLE.' ORDER BY organization) to \''.$filename.'\' DELIMITER \'`\';',
-        ]);
-
-        $process->setEnv(['PGPASSWORD' => $details['pass']]);
-        $process->setTimeout(null);
-        $process->setIdleTimeout(null);
-        $process->mustRun();
-
-        return $filename;
+        return $this->createForSqlFilter('WHERE uuid IN (\''.implode("', '", $contactsUuids).'\')');
     }
 
-    public function createNdJsonBatchesFromFile(string $filename): array
+    private function createForSqlFilter(string $sqlFilter): array
     {
         $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 15_000);
 
-        $file = fopen($filename, 'rb');
-        while (false !== ($line = fgets($file))) {
-            try {
-                $row = array_combine(self::DUMP_HEADER, explode('`', $line));
-            } catch (\Throwable $e) {
-                throw new \RuntimeException(message: sprintf('Invalid data format for line "%s": %s (counts: header=%s line=%s)', $line, $e->getMessage(), count(self::DUMP_HEADER), count(explode('`', $line))), previous: $e);
-            }
-
-            foreach ($row as $k => $v) {
-                if ('\\N' === trim($v)) {
-                    $row[$k] = null;
-                }
-            }
-
-            // Move cursor
-            $cursor->move($row['organization']);
-
-            // Write in batch file
-            $cursor->write(Json::encode($this->normalizeDumpedIndexedData($row)));
-        }
-
-        return $cursor->getAllFiles();
-    }
-
-    public function createNdJsonBatchesFromContacts(array $contactsUuids): array
-    {
-        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 15_000);
-
-        $stmt = $this->db->executeQuery('
-            SELECT * FROM '.CrmIndexer::INDEXING_TABLE." 
-            WHERE uuid IN ('".implode("', '", $contactsUuids)."')
-        ");
+        $table = CrmIndexer::INDEXING_TABLE;
+        $stmt = $this->db->executeQuery("SELECT * FROM $table $sqlFilter ORDER BY organization");
 
         while ($row = $stmt->fetchAssociative()) {
             // Move organization cursor
