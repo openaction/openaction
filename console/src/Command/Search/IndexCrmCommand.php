@@ -87,7 +87,7 @@ class IndexCrmCommand extends Command
 
             // Wait for indexing to finish
             if ($tasks) {
-                $this->crmIndexer->waitForIndexing($tasks);
+                $this->crmIndexer->waitForIndexing(array_filter($tasks));
             }
             $progress->advance();
 

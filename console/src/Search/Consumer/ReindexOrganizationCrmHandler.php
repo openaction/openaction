@@ -39,7 +39,7 @@ final class ReindexOrganizationCrmHandler implements MessageHandlerInterface
 
         // Wait for indexing to finish
         if ($tasks) {
-            $this->crmIndexer->waitForIndexing($tasks);
+            $this->crmIndexer->waitForIndexing(array_filter($tasks));
         }
 
         // Create organization members search keys and swap live index version

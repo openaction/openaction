@@ -68,13 +68,21 @@ class Meilisearch implements MeilisearchInterface
         }
     }
 
-    public function indexDocumentsBatch(string $index, string $documents): Task
+    public function indexDocumentsBatch(string $index, string $documents): ?Task
     {
+        if (!$documents) {
+            return null;
+        }
+
         return $this->mapToTask($this->getClient()->index($index)->addDocumentsNdjson($documents));
     }
 
-    public function unindexDocuments(string $index, array $documentsIds): Task
+    public function unindexDocuments(string $index, array $documentsIds): ?Task
     {
+        if (!$documentsIds) {
+            return null;
+        }
+
         return $this->mapToTask($this->getClient()->index($index)->deleteDocuments($documentsIds));
     }
 

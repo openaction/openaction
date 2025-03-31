@@ -165,9 +165,9 @@ class CrmIndexer
      * @param string $version          The index version in which to upload the batch.
      * @param string $filename         The pathname of the ndjson batch to upload.
      *
-     * @return Task Return quickly a task as the indexing is asynchronous.
+     * @return ?Task Return quickly a task as the indexing is asynchronous.
      */
-    public function indexBatch(string $organizationUuid, string $version, string $filename): Task
+    public function indexBatch(string $organizationUuid, string $version, string $filename): ?Task
     {
         return $this->dataIndexer->indexFile($organizationUuid, $version, $filename);
     }
@@ -189,7 +189,7 @@ class CrmIndexer
             }
         }
 
-        return $tasks;
+        return array_filter($tasks);
     }
 
     /**
@@ -197,9 +197,9 @@ class CrmIndexer
      *
      * @param array $contactsUuids The list of UUID identifiers of contacts to remove.
      *
-     * @return Task] Return the task quickly as the removal is asynchronous.
+     * @return ?Task Return the task quickly as the removal is asynchronous.
      */
-    public function removeContacts(string $orgaUuid, string $indexVersion, array $contactsUuids): Task
+    public function removeContacts(string $orgaUuid, string $indexVersion, array $contactsUuids): ?Task
     {
         return $this->dataIndexer->unindexDocuments($orgaUuid, $indexVersion, $contactsUuids);
     }
