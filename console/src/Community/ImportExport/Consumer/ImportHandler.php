@@ -389,7 +389,7 @@ final class ImportHandler
         // Wait for indexing to finish
         $this->jobRepository->setJobStep($jobId, step: 11, payload: ['status' => 'indexing_waiting']);
         if ($tasks) {
-            $this->crmIndexer->waitForIndexing($tasks);
+            $this->crmIndexer->waitForIndexing(array_filter($tasks));
         }
 
         // Create organization members search keys and swap live index version

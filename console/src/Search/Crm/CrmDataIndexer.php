@@ -35,15 +35,15 @@ class CrmDataIndexer
         return $version;
     }
 
-    public function indexFile(string $organizationUuid, string $version, string $filename): Task
+    public function indexFile(string $organizationUuid, string $version, string $filename): ?Task
     {
         return $this->meilisearch->indexDocumentsBatch(
             CrmIndexer::getIndexName($organizationUuid, $version),
-            file_get_contents($filename)
+            trim(file_get_contents($filename)),
         );
     }
 
-    public function unindexDocuments(string $organizationUuid, string $version, array $documentsIds): Task
+    public function unindexDocuments(string $organizationUuid, string $version, array $documentsIds): ?Task
     {
         return $this->meilisearch->unindexDocuments(CrmIndexer::getIndexName($organizationUuid, $version), $documentsIds);
     }

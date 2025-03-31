@@ -18,9 +18,9 @@ interface MeilisearchInterface
 
     public function deleteIndex(string $index): ?Task;
 
-    public function indexDocumentsBatch(string $index, string $documents): Task;
+    public function indexDocumentsBatch(string $index, string $documents): ?Task;
 
-    public function unindexDocuments(string $index, array $documentsIds): Task;
+    public function unindexDocuments(string $index, array $documentsIds): ?Task;
 
     public function unindexAllDocuments(string $index): Task;
 

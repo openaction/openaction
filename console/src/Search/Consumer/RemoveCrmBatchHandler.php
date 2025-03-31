@@ -50,9 +50,9 @@ final class RemoveCrmBatchHandler extends AbstractCrmBatchHandler
                 $this->contactRepository->removeBatch($toUpdate);
 
                 // Refresh CRM
-                $this->crmIndexer->waitForIndexing([
+                $this->crmIndexer->waitForIndexing(array_filter([
                     $this->crmIndexer->removeContacts($orgaUuid, $orgaIndexVersion, $toUpdate),
-                ]);
+                ]));
 
                 // Advance job
                 $this->getJobRepository()->advanceJobStep($message->getJobId(), $batchSize);
@@ -68,9 +68,9 @@ final class RemoveCrmBatchHandler extends AbstractCrmBatchHandler
             $this->contactRepository->removeBatch($toUpdate);
 
             // Refresh CRM
-            $this->crmIndexer->waitForIndexing([
+            $this->crmIndexer->waitForIndexing(array_filter([
                 $this->crmIndexer->removeContacts($orgaUuid, $orgaIndexVersion, $toUpdate),
-            ]);
+            ]));
         }
 
         // Finish job
