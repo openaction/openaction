@@ -55,6 +55,7 @@ class Meilisearch implements MeilisearchInterface
         $created->updateSearchableAttributes($searchableAttributes);
         $created->updateFilterableAttributes($filterableAttributes);
         $created->updateSortableAttributes($sortableAttributes);
+        $created->updateFaceting(['maxValuesPerFacet' => 1_000_000]);
 
         return $this->mapToTask($created->updatePagination(['maxTotalHits' => 999_000_000_000]));
     }
