@@ -32,15 +32,15 @@ class RefreshContactsStatsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        foreach ($this->orgaRepo->findAll() as $orga) {
-            if ($io->isVerbose()) {
-                $io->writeln('Dispatching organization '.$orga->getName());
-            }
+        $count = 0;
+        foreach ($this->orgaRepo->findAllActive() as $orga) {
+            $io->writeln('Dispatching organization '.$orga->getName());
+            ++$count;
 
             $this->bus->dispatch(new RefreshContactStatsMessage($orga->getId()));
         }
 
-        $io->success('Stats refresh messages dispatched.');
+        $io->success($count.' stats refresh messages dispatched.');
 
         return Command::SUCCESS;
     }
