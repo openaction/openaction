@@ -130,7 +130,7 @@ crm:
     actions:
         nb_hits: contacts
         clear: Clear
-        apply_label: 'For these contacts:'
+        apply_label: 'Actions'
         export: Export
         exportQuestion: 'Export %nbHits% contacts to the XLSX format'
         exportConfirm: Export
@@ -171,6 +171,7 @@ crm:
             The contacts were successfully removed. The change can take a few more 
             minutes to be reflected on all concerned contacts.
     item:
+        age: yo
         status:
             c: Contact
             m: Member

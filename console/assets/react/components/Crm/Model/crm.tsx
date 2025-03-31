@@ -9,6 +9,13 @@ export interface CrmDocument {
     contact_phone: string | null;
     profile_first_name: string | null;
     profile_last_name: string | null;
+    profile_birthdate: string | null;
+    profile_company: string | null;
+    profile_company_slug: string | null;
+    profile_job_title: string | null;
+    profile_job_title_slug: string | null;
+    profile_age: number | null;
+    profile_gender: string | null;
     address_street_line1: string | null;
     address_street_line2: string | null;
     address_zip_code: string | null;
@@ -19,7 +26,6 @@ export interface CrmDocument {
     social_linked_in: string | null;
     social_telegram: string | null;
     social_whatsapp: string | null;
-    profile_birthdate: string | null;
     picture: string | null;
     email_hash: string | null;
     status: string | null;
@@ -303,6 +309,12 @@ export class SearchEngine {
                 'contact_phone',
                 'profile_first_name',
                 'profile_last_name',
+                'profile_company',
+                'profile_company_slug',
+                'profile_job_title',
+                'profile_birthdate',
+                'profile_age',
+                'profile_gender',
                 'address_street_line1',
                 'address_street_line2',
                 'address_zip_code',
@@ -313,7 +325,6 @@ export class SearchEngine {
                 'social_linked_in',
                 'social_telegram',
                 'social_whatsapp',
-                'profile_birthdate',
                 'picture',
                 'email_hash',
                 'status',

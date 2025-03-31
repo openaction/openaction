@@ -18,6 +18,7 @@ export interface CrmItemLinks {
 }
 
 export interface CrmItemLabels {
+    age: string;
     status: {
         c: string;
         m: string;
@@ -55,18 +56,45 @@ export function CrmItem(props: Props) {
 
     let details: { [key: string]: any } = {
         mainName: item.email,
-        subName: '',
+        subName: [],
         picture: item.picture
             ? '/serve/' + item.picture
             : 'https://www.gravatar.com/avatar/' + item.email_hash + '?d=mp&s=64',
     };
 
     if (item.profile_first_name || item.profile_last_name) {
-        details.mainName = item.profile_first_name + ' ' + item.profile_last_name;
-        details.subName = (
-            <a href={'mailto:' + item.email} target="_blank" onClick={(e) => e.stopPropagation()}>
+        details.mainName = [item.profile_first_name, item.profile_last_name].filter((v) => !!v).join(' ');
+
+        details.subName.push(
+            <a
+                href={`mailto:${item.email}`}
+                target="_blank"
+                className="crm-search-results-item-profile-extradata"
+                key="email"
+            >
+                <i className="far fa-envelope"></i>
                 {item.email}
             </a>
+        );
+    }
+
+    if (item.profile_job_title || item.profile_company) {
+        let label = [item.profile_job_title, item.profile_company].filter((v) => !!v);
+
+        details.subName.push(
+            <span className="crm-search-results-item-profile-extradata" key="job">
+                <i className="far fa-building"></i>
+                {label.join(', ')}
+            </span>
+        );
+    }
+
+    if (item.profile_age) {
+        details.subName.push(
+            <span className="crm-search-results-item-profile-extradata" key="age">
+                <i className="far fa-birthday-cake"></i>
+                {item.profile_age} {props.itemLabels.age}
+            </span>
         );
     }
 

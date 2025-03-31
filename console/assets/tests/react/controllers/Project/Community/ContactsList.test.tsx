@@ -164,6 +164,7 @@ function createControllerComponent() {
                 removeSuccess: 'Remove tag',
             }}
             itemLabels={{
+                age: 'yo',
                 status: {
                     c: 'Contact',
                     m: 'Member',

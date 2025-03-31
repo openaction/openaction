@@ -121,7 +121,7 @@
 
                 &-mainname {
                     font-size: 18px;
-                    margin-bottom: 3px;
+                    margin-bottom: 5px;
 
                     a,
                     a:hover {
@@ -283,6 +283,23 @@
                     border-left: 1px solid #d6f4f3;
                     padding: 20px 30px;
 
+                    &-extradata {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 3px 6px;
+                        margin-right: 3px;
+                        border-radius: 3px;
+                        font-family: 'Open Sans', Segoe UI, Source Sans Pro, Calibri, Candara, Arial, sans-serif;
+                        font-size: 10px;
+                        font-weight: 700;
+                        background: #e8eff6;
+                        color: #33505c !important;
+
+                        i {
+                            margin-right: 5px;
+                        }
+                    }
+
                     &-subscription {
                         display: inline-flex;
                         align-items: center;
@@ -353,8 +370,7 @@
                 margin-bottom: 20px;
 
                 &-buttons {
-                    flex-basis: 0;
-                    flex-grow: 1;
+                    display: inline-block;
 
                     .bp4-button {
                         background: #fff;
@@ -379,12 +395,13 @@
 
             &-row {
                 display: flex;
-                margin-bottom: 20px;
+                align-items: center;
             }
 
             &-nbhits {
-                flex-basis: 0;
                 flex-grow: 1;
+                flex-basis: 0;
+                padding-right: 20px;
                 font-weight: bold;
             }
 

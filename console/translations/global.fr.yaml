@@ -131,7 +131,7 @@ crm:
     actions:
         nb_hits: contacts
         clear: Réinitialiser
-        apply_label: 'Pour ces contacts :'
+        apply_label: 'Actions'
         export: Exporter
         exportQuestion: 'Exporter %nbHits% contacts au format XLSX'
         exportConfirm: Exporter
@@ -172,6 +172,7 @@ crm:
             Les contacts ont bien été supprimés. Le changement peut prendre encore quelques 
             minutes pour s'appliquer à tous les contacts concernés.
     item:
+        age: ans
         status:
             c: Contact
             m: Membre
