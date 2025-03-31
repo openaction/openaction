@@ -114,7 +114,7 @@ crm:
     actions:
         nb_hits: Kontakte
         clear: Klar
-        apply_label: 'Für diese Kontakte:'
+        apply_label: 'Aktien'
         export: Exportieren
         exportQuestion: 'Exportieren von %nbHits%-Kontakten in das XLSX-Format'
         exportConfirm: Exportieren

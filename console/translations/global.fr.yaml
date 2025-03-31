@@ -131,7 +131,7 @@ crm:
     actions:
         nb_hits: contacts
         clear: Réinitialiser
-        apply_label: 'Pour ces contacts :'
+        apply_label: 'Actions'
         export: Exporter
         exportQuestion: 'Exporter %nbHits% contacts au format XLSX'
         exportConfirm: Exporter

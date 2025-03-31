@@ -370,8 +370,7 @@
                 margin-bottom: 20px;
 
                 &-buttons {
-                    flex-basis: 0;
-                    flex-grow: 1;
+                    display: inline-block;
 
                     .bp4-button {
                         background: #fff;
@@ -396,12 +395,13 @@
 
             &-row {
                 display: flex;
-                margin-bottom: 20px;
+                align-items: center;
             }
 
             &-nbhits {
-                flex-basis: 0;
                 flex-grow: 1;
+                flex-basis: 0;
+                padding-right: 20px;
                 font-weight: bold;
             }
 

@@ -2,10 +2,22 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { numberFormat } from '../../../../utils/formatter';
 import { CrmBatchPayload } from '../Model/crm';
 import { SlateButton } from '../../Layout/SlateButton';
-import { AnchorButton, Button, ButtonGroup, Callout, Dialog, Intent, ProgressBar } from '@blueprintjs/core';
+import {
+    AnchorButton,
+    Button,
+    ButtonGroup,
+    Callout,
+    Dialog,
+    Intent,
+    Menu,
+    MenuItem,
+    ProgressBar,
+} from '@blueprintjs/core';
 import { request } from '../../../../utils/http';
 import { SingleTagSelector } from '../../Layout/TagsSelector/SingleTagSelector';
 import { Tag, TagsRegistry } from '../../Layout/TagsSelector/Model/tag';
+import { Popover2 } from '@blueprintjs/popover2';
+import { createLink } from '../../../../utils/createLink';
 
 export interface CrmActionsLabels {
     nbHits: string;
@@ -82,71 +94,53 @@ export function CrmActions(props: Props) {
     return (
         <div className="crm-search-results-row">
             <div className="crm-search-results-nbhits">
-                <div className="mb-1">
-                    {numberFormat(props.nbHits)} {' ' + props.actionsLabels.nbHits}
-                </div>
+                {numberFormat(props.nbHits)} {' ' + props.actionsLabels.nbHits}
+            </div>
 
+            <div className="crm-search-results-actions-buttons">
                 <SlateButton
                     text={props.actionsLabels.clear}
                     icon={<i className="far fa-undo" />}
                     onClick={props.onResetClick}
                     small={true}
                     minimal={true}
+                    className="mr-1"
                 />
-            </div>
 
-            <div className="crm-search-results-actions-buttons">
-                <div className="crm-search-results-actions-buttons-label">{props.actionsLabels.applyLabel}</div>
-
-                <ButtonGroup minimal={false} vertical={true} fill={true}>
-                    {props.batch.export ? (
-                        <SlateButton
-                            text={props.actionsLabels.export}
-                            icon={<i className="far fa-cloud-download" />}
-                            small={true}
-                            fill={true}
-                            onClick={() => setExportOpen(true)}
-                        />
-                    ) : (
-                        ''
-                    )}
-
-                    {props.batch.addTag ? (
-                        <SlateButton
-                            text={props.actionsLabels.addTag}
-                            icon={<i className="far fa-tag" />}
-                            small={true}
-                            fill={true}
-                            onClick={() => setAddTagOpen(true)}
-                        />
-                    ) : (
-                        ''
-                    )}
-
-                    {props.batch.removeTag ? (
-                        <SlateButton
-                            text={props.actionsLabels.removeTag}
-                            icon={<i className="far fa-times" />}
-                            small={true}
-                            fill={true}
-                            onClick={() => setRemoveTagOpen(true)}
-                        />
-                    ) : (
-                        ''
-                    )}
-
-                    {props.batch.remove ? (
-                        <SlateButton
-                            text={props.actionsLabels.remove}
-                            icon={<i className="far fa-times" />}
-                            small={true}
-                            fill={true}
-                            onClick={() => setRemoveOpen(true)}
-                        />
-                    ) : (
-                        ''
-                    )}
-                </ButtonGroup>
+                <Popover2
+                    content={
+                        <Menu>
+                            {props.batch.export ? (
+                                <MenuItem text={props.actionsLabels.export} onClick={() => setExportOpen(true)} />
+                            ) : (
+                                ''
+                            )}
+                            {props.batch.addTag ? (
+                                <MenuItem text={props.actionsLabels.addTag} onClick={() => setAddTagOpen(true)} />
+                            ) : (
+                                ''
+                            )}
+                            {props.batch.removeTag ? (
+                                <MenuItem text={props.actionsLabels.removeTag} onClick={() => setRemoveTagOpen(true)} />
+                            ) : (
+                                ''
+                            )}
+                            {props.batch.remove ? (
+                                <MenuItem text={props.actionsLabels.remove} onClick={() => setRemoveOpen(true)} />
+                            ) : (
+                                ''
+                            )}
+                        </Menu>
+                    }
+                    position="bottom-right"
+                >
+                    <SlateButton
+                        text={props.actionsLabels.applyLabel}
+                        rightIcon={<i className="far fa-ellipsis-v" />}
+                        small={true}
+                        minimal={true}
+                    />
+                </Popover2>
             </div>
 
             {props.batch.export ? (
