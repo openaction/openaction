@@ -2,6 +2,7 @@
 
 namespace App\Dashboard;
 
+use App\Bridge\Meilisearch\MeilisearchInterface;
 use App\Dashboard\Model\OrganizationDashboard;
 use App\Dashboard\Model\OrganizationDashboardItem;
 use App\Dashboard\Model\PartnerDashboard;
@@ -20,13 +21,15 @@ class DashboardBuilder
         private OrganizationRepository $organizationRepository,
         private OrganizationMemberRepository $memberRepository,
         private ProjectRepository $projectRepository,
+        private MeilisearchInterface $meilisearch,
     ) {
     }
 
     public function createOrganizationDashboard(Organization $organization, User $user): OrganizationDashboard
     {
-        // Find stats
-        $stats = $this->contactCreationRepository->getOrganizationDashboardStats($organization);
+        $index = $organization->getCrmIndexName();
+        $contactsStats = $this->meilisearch->findFacetStats($index, 'projects');
+        $membersStats = $this->meilisearch->findFacetStats($index, 'projects', ['filter' => ["status = 'm'"]]);
 
         // Create dashboard model
         $accessibleProjects = $organization->filterAccessibleProjects(
@@ -41,8 +44,8 @@ class DashboardBuilder
         foreach ($accessibleProjects as $project) {
             $item = new OrganizationDashboardItem(
                 $project,
-                $stats[$project->getId()]['contacts'] ?? 0,
-                $stats[$project->getId()]['members'] ?? 0
+                $contactsStats[$project->getUuid()->toRfc4122()] ?? 0,
+                $membersStats[$project->getUuid()->toRfc4122()] ?? 0
             );
 
             if ($project->isLocal()) {

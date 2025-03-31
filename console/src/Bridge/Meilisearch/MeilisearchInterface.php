@@ -36,4 +36,6 @@ interface MeilisearchInterface
     public function createTenantToken(string $parentKeyUid, string $parentKey, array $searchRules): string;
 
     public function search(string $index, ?string $query = null, array $searchParams = [], array $options = []): array;
+
+    public function findFacetStats(string $index, string $facetName, array $searchParams = [], array $options = []): array;
 }
