@@ -361,11 +361,6 @@ final class ImportHandler
         $db->executeStatement('DROP TABLE IF EXISTS '.$tableName);
 
         /*
-         * Stats count
-         */
-        $this->bus->dispatch(new RefreshContactStatsMessage($organization->getId()));
-
-        /*
          * Indexing
          */
         $orgaUuid = $organization->getUuid()->toRfc4122();

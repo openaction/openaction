@@ -11,6 +11,7 @@ use App\Entity\Project;
 use App\Repository\AreaRepository;
 use App\Repository\Community\ContactRepository;
 use App\Util\Uid;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -30,6 +31,8 @@ class ContactViewBuilder
     private array $tagsFilter = [];
     private array $emailsFilter = [];
     private array $phonesFilter = [];
+    private ?\DateTime $startDate = null;
+    private ?\DateTime $endDate = null;
     private bool $havingParsedPhone = false;
     private bool $onlyMembers = false;
     private bool $onlyNewsletter = false;
@@ -104,6 +107,15 @@ class ContactViewBuilder
     {
         $self = clone $this;
         $self->areasFilter = $areasFilter ?: [];
+
+        return $self;
+    }
+
+    public function createdBetween(?\DateTime $startDate, ?\DateTime $endDate): self
+    {
+        $self = clone $this;
+        $self->startDate = $startDate;
+        $self->endDate = $endDate;
 
         return $self;
     }
@@ -212,6 +224,11 @@ class ContactViewBuilder
         return new Paginator($query, true);
     }
 
+    public function toIdsQuery(): Query
+    {
+        return $this->createQueryBuilder()->select('c.id')->getQuery();
+    }
+
     public function createQueryBuilder(): QueryBuilder
     {
         if (!$this->organization) {
@@ -224,6 +241,17 @@ class ContactViewBuilder
         // In organization
         $filterQb->andWhere('sc.organization = :orga');
         $qb->setParameter('orga', $this->organization->getId());
+
+        // Between dates
+        if ($this->startDate) {
+            $filterQb->andWhere('sc.createdAt >= :startDate');
+            $qb->setParameter('startDate', $this->startDate->format('Y-m-d H:i:s'));
+        }
+
+        if ($this->endDate) {
+            $filterQb->andWhere('sc.createdAt <= :endDate');
+            $qb->setParameter('endDate', $this->endDate->format('Y-m-d H:i:s'));
+        }
 
         // In local project or area
         if ($this->areasFilter || ($this->project && $this->project->isLocal())) {

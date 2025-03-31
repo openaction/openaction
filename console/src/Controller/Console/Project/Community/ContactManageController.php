@@ -105,9 +105,6 @@ class ContactManageController extends AbstractController
             // Sync Quorum
             $this->quorum->persist($contact);
 
-            // Compute the stats
-            $bus->dispatch(new RefreshContactStatsMessage($contact->getOrganization()->getId()));
-
             // Redirect to edition
             $this->addFlash('success', 'contacts.updated_success');
 

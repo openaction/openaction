@@ -9,7 +9,6 @@ use App\Dashboard\Model\PartnerDashboard;
 use App\Dashboard\Model\PartnerDashboardItem;
 use App\Entity\Organization;
 use App\Entity\User;
-use App\Repository\Analytics\Community\ContactCreationRepository;
 use App\Repository\OrganizationMemberRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
@@ -17,7 +16,6 @@ use App\Repository\ProjectRepository;
 class DashboardBuilder
 {
     public function __construct(
-        private ContactCreationRepository $contactCreationRepository,
         private OrganizationRepository $organizationRepository,
         private OrganizationMemberRepository $memberRepository,
         private ProjectRepository $projectRepository,
@@ -66,17 +64,12 @@ class DashboardBuilder
         $orgas = $this->organizationRepository->findByPartner($partner);
 
         // Find stats
-        $contactsStats = $this->contactCreationRepository->getPartnerDashboardStats($orgas);
         $projectsStats = $this->projectRepository->getPartnerDashboardStats($orgas);
 
         // Create dashboard model
         $items = [];
         foreach ($orgas as $orga) {
-            $items[] = new PartnerDashboardItem(
-                $orga,
-                $projectsStats[$orga->getId()] ?? 0,
-                $contactsStats[$orga->getId()] ?? 0
-            );
+            $items[] = new PartnerDashboardItem($orga, $projectsStats[$orga->getId()] ?? 0);
         }
 
         return new PartnerDashboard($items);

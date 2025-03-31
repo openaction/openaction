@@ -31,19 +31,6 @@ class OrganizationRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * @return iterable<Organization>
-     */
-    public function findAllActive(): iterable
-    {
-        return $this->createQueryBuilder('o')
-            ->select('o')
-            ->where('o.subscriptionCurrentPeriodEnd > :now')
-            ->setParameter('now', new \DateTime())
-            ->getQuery()
-            ->getResult();
-    }
-
     public function countActiveSubscriptions(): int
     {
         return $this->createQueryBuilder('o')

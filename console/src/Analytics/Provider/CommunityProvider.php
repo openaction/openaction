@@ -3,24 +3,51 @@
 namespace App\Analytics\Provider;
 
 use App\Analytics\Model\CommunityDashboard;
+use App\Community\ContactViewBuilder;
 use App\Entity\Project;
 use App\Repository\Analytics\Community\ContactCreationRepository;
+use App\Repository\Community\ContactRepository;
 use App\Util\Chart;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Parameter;
 
 class CommunityProvider
 {
-    private ContactCreationRepository $repository;
+    private EntityManagerInterface $em;
+    private ContactViewBuilder $viewBuilder;
 
-    public function __construct(ContactCreationRepository $repository)
+    public function __construct(EntityManagerInterface $em, ContactViewBuilder $viewBuilder)
     {
-        $this->repository = $repository;
+        $this->em = $em;
+        $this->viewBuilder = $viewBuilder;
     }
 
     public function createDashboard(Project $project, \DateTime $startDate, int $precision): CommunityDashboard
     {
-        $growth = Chart::createEmptyDateChart($startDate, $precision, [0, 0]);
+        $query = $this->viewBuilder->inProject($project)->createdBetween($startDate, new \DateTime())->toIdsQuery();
+        $sql = $query->getSQL();
+        $params = array_map(fn (Parameter $p) => $p->getValue(), $query->getParameters()->toArray());
 
-        foreach ($this->repository->findProjectCommunityGrowth($project, $startDate, $precision) as $row) {
+        /*
+         * Growth
+         */
+
+        $growthData = $this->em->getConnection()->executeQuery(
+            sql: "
+                SELECT
+                   TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from created_at) / $precision)) * $precision) as period,
+                   COUNT(*) AS new_contacts,
+                   COUNT(CASE WHEN account_password IS NOT NULL THEN 1 END) AS new_members
+                FROM community_contacts
+                WHERE id IN ($sql)
+                GROUP BY period
+                ORDER BY period
+            ",
+            params: $params,
+        );
+
+        $growth = Chart::createEmptyDateChart($startDate, $precision, [0, 0]);
+        foreach ($growthData->fetchAllAssociative() as $row) {
             $growth[Chart::formatDateToPrecision(new \DateTime($row['period']), $precision)] = [
                 $row['new_contacts'],
                 $row['new_members'],
@@ -31,7 +58,26 @@ class CommunityProvider
             $growth[$date] = [$date, $values[0], $values[1]];
         }
 
-        $countries = iterator_to_array($this->repository->findProjectCommunityCountries($project));
+        /*
+         * Countries
+         */
+
+        $countriesData = $this->em->getConnection()->executeQuery(
+            sql: "
+                SELECT a.code, COUNT(*) AS value
+                FROM community_contacts c
+                LEFT JOIN areas a on c.address_country_id = a.id
+                WHERE c.id IN ($sql) AND a.code IS NOT NULL
+                GROUP BY a.code
+                ORDER BY value DESC
+            ",
+            params: $params,
+        );
+
+        $countries = [];
+        foreach ($countriesData->fetchAllAssociative() as $row) {
+            $countries[$row['code']] = $row['value'];
+        }
 
         return new CommunityDashboard(
             $this->repository->findProjectCommunityTotals($project),
