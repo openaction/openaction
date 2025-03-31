@@ -149,6 +149,7 @@ crm:
         removeInProgress: 'Kontakte werden gerade entfernt...'
         removeSuccess: "Die Kontakte wurden erfolgreich gelöscht. Die Umstellung kann noch einige Zeit in Anspruch nehmen Minuten für alle betroffenen Kontakte gelten."
     item:
+        age: ja
         status:
             c: Kontakt
             m: Mitglied

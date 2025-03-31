@@ -172,6 +172,7 @@ crm:
             Les contacts ont bien été supprimés. Le changement peut prendre encore quelques 
             minutes pour s'appliquer à tous les contacts concernés.
     item:
+        age: ans
         status:
             c: Contact
             m: Membre

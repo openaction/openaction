@@ -79,7 +79,6 @@ function CrmItemTagsList(props: CrmItemTagsListProps) {
             <>
                 {props.initialTagsNames.map((name: string) => (
                     <div className="crm-search-results-item-tag" key={name}>
-                        <i className="far fa-check" />
                         {name}
                     </div>
                 ))}
@@ -96,7 +95,6 @@ function CrmItemTagsList(props: CrmItemTagsListProps) {
         <>
             {props.tags.map((tag: Tag) => (
                 <div className="crm-search-results-item-tag" key={tag.id}>
-                    <i className="far fa-check" />
                     {tag.name}
                 </div>
             ))}

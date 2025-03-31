@@ -171,6 +171,7 @@ crm:
             The contacts were successfully removed. The change can take a few more 
             minutes to be reflected on all concerned contacts.
     item:
+        age: yo
         status:
             c: Contact
             m: Member

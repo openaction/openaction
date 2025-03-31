@@ -175,6 +175,7 @@ function createControllerComponent(defaultTagFilter: string | null = null) {
                 removeSuccess: 'Remove tag',
             }}
             itemLabels={{
+                age: 'yo',
                 status: {
                     c: 'Contact',
                     m: 'Member',
