@@ -25,7 +25,7 @@ COPY cron/refresh-domains-cache /etc/periodic/1min/
 COPY cron/admin-stats-refresh /etc/periodic/15min/
 COPY cron/index-crm /etc/periodic/daily/
 COPY cron/index-cms /etc/periodic/daily/
-COPY cron/contacts-resolve-ambiguities /etc/periodic/hourly/
+COPY cron/contacts-resolve-ambiguities /etc/periodic/daily/
 COPY cron/integration-revue /etc/periodic/15min/
 COPY cron/synchronize-customers /etc/periodic/hourly/
 COPY cron/website-sessions-build /etc/periodic/15min/
@@ -39,7 +39,7 @@ RUN chmod a+x /etc/periodic/15min/check-domains && \
     chmod a+x /etc/periodic/15min/admin-stats-refresh && \
     chmod a+x /etc/periodic/daily/index-crm && \
     chmod a+x /etc/periodic/daily/index-cms && \
-    chmod a+x /etc/periodic/hourly/contacts-resolve-ambiguities && \
+    chmod a+x /etc/periodic/daily/contacts-resolve-ambiguities && \
     chmod a+x /etc/periodic/15min/integration-revue && \
     chmod a+x /etc/periodic/hourly/synchronize-customers && \
     chmod a+x /etc/periodic/15min/website-sessions-build && \
