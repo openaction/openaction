@@ -7,7 +7,6 @@ use App\Billing\Stats\SubscriptionsStats;
 use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
-use App\Util\Chart;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -54,8 +53,8 @@ class DashboardStatsResolver
             'users_count' => $this->userRepository->count([]),
             'projects_count' => $this->projectRepository->count([]),
             'live_visitors' => $this->analytics->countAdminLiveVisitors(),
-            'traffic_dashboard' => $this->analytics->createAdminTrafficDashboard($startDate, Chart::PRECISION_DAY),
-            'community_dashboard' => $this->analytics->createAdminCommunityDashboard($startDate, Chart::PRECISION_DAY),
+            'traffic_dashboard' => $this->analytics->createAdminTrafficDashboard($startDate),
+            'community_dashboard' => $this->analytics->createAdminCommunityDashboard($startDate),
         ];
     }
 

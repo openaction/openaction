@@ -2,7 +2,6 @@
 
 namespace App\Community\ImportExport\Consumer;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Entity\Community\Contact;
 use App\Entity\Community\Import;
 use App\Repository\Community\ImportRepository;

@@ -2,7 +2,6 @@
 
 namespace App\Controller\Console\Organization\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Cdn\CdnUploader;

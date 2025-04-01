@@ -37,5 +37,5 @@ interface MeilisearchInterface
 
     public function search(string $index, ?string $query = null, array $searchParams = [], array $options = []): array;
 
-    public function findFacetStats(string $index, string $facetName, array $searchParams = [], array $options = []): array;
+    public function findFacetStats(string $index, array $facets, array $searchParams = [], array $options = []): array;
 }

@@ -4,6 +4,7 @@ namespace App\Repository\Analytics\Website;
 
 use App\Entity\Analytics\Website\Session;
 use App\Entity\Project;
+use App\Util\Date;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -33,11 +34,11 @@ class SessionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findProjectTrafficSessions(Project $project, \DateTime $startDate, int $precision): iterable
+    public function findProjectTrafficSessions(Project $project, \DateTime $startDate): iterable
     {
         $query = $this->_em->getConnection()->prepare("
             SELECT
-               TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from start_date) / ".$precision.')) * '.$precision.') as date,
+               TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from start_date) / ".Date::OneDay->value.')) * '.Date::OneDay->value.') as date,
                COUNT(*) AS users,
                SUM(paths_count) AS page_views
             FROM analytics_website_sessions
@@ -189,11 +190,11 @@ class SessionRepository extends ServiceEntityRepository
         ');
     }
 
-    public function findAdminTrafficSessions(\DateTime $startDate, int $precision): iterable
+    public function findAdminTrafficSessions(\DateTime $startDate): iterable
     {
         $query = $this->_em->getConnection()->prepare("
             SELECT
-               TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from start_date) / ".$precision.')) * '.$precision.') as date,
+               TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from start_date) / ".Date::OneDay->value.')) * '.Date::OneDay->value.') as date,
                COUNT(*) AS users,
                SUM(paths_count) AS page_views
             FROM analytics_website_sessions

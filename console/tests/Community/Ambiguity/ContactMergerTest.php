@@ -3,7 +3,6 @@
 namespace App\Tests\Community\Ambiguity;
 
 use App\Community\Ambiguity\ContactMerger;
-use App\Entity\Analytics\Community\ContactCreation;
 use App\Entity\Area;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\Contact;
@@ -260,7 +259,6 @@ class ContactMergerTest extends KernelTestCase
             ['email' => 'newest@citipo.email'],
             '20e51b91-bdec-495d-854d-85d6e74fc75e',
             1,
-            1,
             0,
             1,
             0,
@@ -270,7 +268,6 @@ class ContactMergerTest extends KernelTestCase
         yield [
             ['email' => 'newest@citipo.email'],
             '75d245dd-c844-4ee7-8f12-a3d611a308b6',
-            0,
             1,
             0,
             1,
@@ -285,7 +282,6 @@ class ContactMergerTest extends KernelTestCase
     public function testMergeUpdateRelationships(
         array $oldest,
         string $newestUuid,
-        int $countContactCreation,
         int $countEmailingCampaignMessage,
         int $countPhoningCampaignCall,
         int $countPhoningCampaignTarget,
@@ -299,7 +295,6 @@ class ContactMergerTest extends KernelTestCase
         $this->em->persist($oldest);
         $ambiguity = $this->createAmbiguity($oldest, $newest, static::CITIPO_ORG, true);
 
-        $this->assertSame($countContactCreation, $this->em->getRepository(ContactCreation::class)->count(['contact' => $newest]));
         $this->assertSame($countEmailingCampaignMessage, $this->em->getRepository(EmailingCampaignMessage::class)->count(['contact' => $newest]));
         $this->assertSame($countPhoningCampaignCall, $this->em->getRepository(PhoningCampaignCall::class)->count(['author' => $newest]));
         $this->assertSame($countPhoningCampaignTarget, $this->em->getRepository(PhoningCampaignTarget::class)->count(['contact' => $newest]));
@@ -309,7 +304,6 @@ class ContactMergerTest extends KernelTestCase
         $this->contactMerger->merge($ambiguity, 'newest');
 
         // check update newest contact
-        $this->assertSame(0, $this->em->getRepository(ContactCreation::class)->count(['contact' => $newest]));
         $this->assertSame(0, $this->em->getRepository(EmailingCampaignMessage::class)->count(['contact' => $newest]));
         $this->assertSame(0, $this->em->getRepository(PhoningCampaignCall::class)->count(['author' => $newest]));
         $this->assertSame(0, $this->em->getRepository(PhoningCampaignTarget::class)->count(['contact' => $newest]));
@@ -317,7 +311,6 @@ class ContactMergerTest extends KernelTestCase
         $this->assertSame(0, $this->em->getRepository(FormAnswer::class)->count(['contact' => $newest]));
 
         // check update oldest contact
-        $this->assertSame(0, $this->em->getRepository(ContactCreation::class)->count(['contact' => $oldest]));
         $this->assertSame($countEmailingCampaignMessage, $this->em->getRepository(EmailingCampaignMessage::class)->count(['contact' => $oldest]));
         $this->assertSame($countPhoningCampaignCall, $this->em->getRepository(PhoningCampaignCall::class)->count(['author' => $oldest]));
         $this->assertSame($countPhoningCampaignTarget, $this->em->getRepository(PhoningCampaignTarget::class)->count(['contact' => $oldest]));

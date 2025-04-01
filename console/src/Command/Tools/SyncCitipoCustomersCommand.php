@@ -2,7 +2,6 @@
 
 namespace App\Command\Tools;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Entity\Community\Contact;

@@ -24,12 +24,12 @@ class TrafficProvider
         $this->sessionRepo = $sessionRepo;
     }
 
-    public function createDashboard(Project $project, \DateTime $startDate, int $precision): TrafficDashboard
+    public function createDashboard(Project $project, \DateTime $startDate): TrafficDashboard
     {
-        $traffic = Chart::createEmptyDateChart($startDate, $precision, [0, 0]);
+        $traffic = Chart::createEmptyDateChart($startDate, [0, 0]);
 
-        foreach ($this->sessionRepo->findProjectTrafficSessions($project, $startDate, $precision) as $row) {
-            $traffic[Chart::formatDateToPrecision(new \DateTime($row['date']), $precision)] = [
+        foreach ($this->sessionRepo->findProjectTrafficSessions($project, $startDate) as $row) {
+            $traffic[(new \DateTime($row['date']))->format('Y-m-d')] = [
                 $row['page_views'],
                 $row['users'],
             ];
@@ -67,18 +67,18 @@ class TrafficProvider
         );
     }
 
-    public function createAdminDashboard(\DateTime $startDate, int $precision): array
+    public function createAdminDashboard(\DateTime $startDate): array
     {
         $dashboard = [];
 
         // Totals
-        $dashboard['totals'] = $this->sessionRepo->findAdminTrafficTotals($startDate, $precision);
+        $dashboard['totals'] = $this->sessionRepo->findAdminTrafficTotals($startDate);
 
         // Traffic
-        $traffic = Chart::createEmptyDateChart($startDate, $precision, [0, 0]);
+        $traffic = Chart::createEmptyDateChart($startDate, [0, 0]);
 
-        foreach ($this->sessionRepo->findAdminTrafficSessions($startDate, $precision) as $row) {
-            $traffic[Chart::formatDateToPrecision(new \DateTime($row['date']), $precision)] = [
+        foreach ($this->sessionRepo->findAdminTrafficSessions($startDate) as $row) {
+            $traffic[(new \DateTime($row['date']))->format('Y-m-d')] = [
                 $row['page_views'],
                 $row['users'],
             ];

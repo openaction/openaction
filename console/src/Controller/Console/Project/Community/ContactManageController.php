@@ -2,7 +2,6 @@
 
 namespace App\Controller\Console\Project\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;

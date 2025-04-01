@@ -2,7 +2,6 @@
 
 namespace App\Api\Persister;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;

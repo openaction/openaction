@@ -2,7 +2,6 @@
 
 namespace App\Bridge\Revue\Consumer;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Bridge\Revue\RevueInterface;

@@ -26,8 +26,8 @@ class DashboardBuilder
     public function createOrganizationDashboard(Organization $organization, User $user): OrganizationDashboard
     {
         $index = $organization->getCrmIndexName();
-        $contactsStats = $this->meilisearch->findFacetStats($index, 'projects');
-        $membersStats = $this->meilisearch->findFacetStats($index, 'projects', ['filter' => ["status = 'm'"]]);
+        $contactsStats = $this->meilisearch->findFacetStats($index, ['projects'])['projects'] ?? [];
+        $membersStats = $this->meilisearch->findFacetStats($index, ['projects'], ['filter' => ["status = 'm'"]])['projects'] ?? [];
 
         // Create dashboard model
         $accessibleProjects = $organization->filterAccessibleProjects(

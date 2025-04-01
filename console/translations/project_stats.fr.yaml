@@ -2,7 +2,6 @@ traffic:
     title: Rapport de trafic
     periods:
         label: 'Période :'
-        1d: 24h
         7d: Semaine
         30d: Mois
         90d: 3 mois
@@ -52,7 +51,6 @@ community:
     title: Rapport de communauté
     periods:
         label: 'Période :'
-        1d: 24h
         7d: Semaine
         30d: Mois
         90d: 3 mois
