@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Client\CitipoInterface;
+use App\Client\Model\ApiResource;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -28,6 +29,7 @@ class ThemeHelperExtension extends AbstractExtension
             new TwigFunction('citipo_project_asset_url', [$this, 'getProjectAssetUrl']),
             new TwigFunction('citipo_page', [$this, 'getPageContent'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_page_data', [$this, 'getPageData'], ['is_safe' => ['html']]),
+            new TwigFunction('citipo_trombinoscope_data', [$this, 'getTrombinoscopeData'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_dump', [$this, 'dump'], ['is_safe' => ['html']]),
         ];
     }
@@ -52,6 +54,18 @@ class ThemeHelperExtension extends AbstractExtension
         $page = $this->getPageData($id);
 
         return $page ? $page['content'] : null;
+    }
+
+    public function getTrombinoscopeData(): array
+    {
+        $data = [];
+
+        /** @var ApiResource $person */
+        foreach ($this->citipo->getTrombinoscope($this->getApiToken()) as $person) {
+            $data[] = $person->toArray();
+        }
+
+        return $data;
     }
 
     public function dump(mixed $data): string
