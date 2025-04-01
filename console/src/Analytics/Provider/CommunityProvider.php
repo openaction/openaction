@@ -74,6 +74,20 @@ class CommunityProvider
             params: $params,
         );
 
+        dd($params);
+
+        echo "
+                SELECT a.code, COUNT(*) AS value
+                FROM community_contacts c
+                LEFT JOIN areas a on c.address_country_id = a.id
+                WHERE c.id IN ($sql) AND a.code IS NOT NULL
+                GROUP BY a.code
+                ORDER BY value DESC
+            ";
+        exit;
+
+        dd($countriesData->fetchAllAssociative());
+
         $countries = [];
         foreach ($countriesData->fetchAllAssociative() as $row) {
             $countries[$row['code']] = $row['value'];

@@ -63,7 +63,7 @@ class ContactCreationRepository extends ServiceEntityRepository
     public function findProjectCommunityTags(Project $project): \Generator
     {
         $query = $this->_em->getConnection()->prepare('
-            SELECT json_array_elements_text(tags) AS tag, COUNT(*) as value
+            SELECT json_array_elements_text(tags) AS tag, COUNT(*) as value 
             FROM analytics_community_contact_creations
             WHERE project_id = ? AND tags IS NOT NULL
             GROUP BY tag
