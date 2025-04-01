@@ -127,12 +127,6 @@ class DevFixtures extends AbstractFixtures
             )
         ');
 
-        // Creation stat query
-        $statQuery = $this->em->getConnection()->prepare('
-            INSERT INTO analytics_community_contact_creations (contact_id, organization_id, project_id, is_member, has_phone, receives_newsletter, receives_sms, date, id)
-            VALUES (?, ?, ?, ?, false, ?, ?, ?, nextval(\'analytics_community_contact_creations_id_seq\'))
-        ');
-
         for ($i = 0; $i < 300000; ++$i) {
             $hasAccount = $faker->boolean(15);
             $receivesNewsletter = $faker->boolean(85);
@@ -160,16 +154,6 @@ class DevFixtures extends AbstractFixtures
                 '[]',
                 $faker->boolean(15) ? $faker->sentence() : null,
                 $date->format('Y-m-d H:i:s'),
-                $date->format('Y-m-d H:i:s'),
-            ]);
-
-            $statQuery->execute([
-                $this->em->getConnection()->lastInsertId(),
-                $orga->getId(),
-                $project->getId(),
-                $hasAccount ? 'true' : 'false',
-                $receivesNewsletter ? 'true' : 'false',
-                $receivesSms ? 'true' : 'false',
                 $date->format('Y-m-d H:i:s'),
             ]);
         }

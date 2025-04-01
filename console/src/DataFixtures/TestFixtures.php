@@ -209,7 +209,6 @@ class TestFixtures extends AbstractFixtures
         $this->loadAnalyticsPageViews();
         $this->loadAnalyticsSessions();
         $this->loadAnalyticsEvents();
-        $this->loadAnalyticsContactsCreations();
     }
 
     private function loadAnnouncements()
@@ -3302,53 +3301,6 @@ class TestFixtures extends AbstractFixtures
                 $row['hash'],
                 $row['name'],
                 $row['date'],
-            ]);
-        }
-    }
-
-    private function loadAnalyticsContactsCreations()
-    {
-        $statQuery = $this->em->getConnection()->prepare('
-            INSERT INTO analytics_community_contact_creations
-                (contact_id, organization_id, project_id, is_member, has_phone, receives_newsletter,
-                 receives_sms, country, tags, gender, date, id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, nextval(\'analytics_community_contact_creations_id_seq\'))
-        ');
-
-        $data = [
-            // olivie.gregoire@gmail.com
-            [
-                'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'], // Global
-                'contact' => $this->contacts['20e51b91-bdec-495d-854d-85d6e74fc75e'],
-            ],
-
-            // a.compagnon@protonmail.com
-            [
-                'project' => $this->projects['e816bcc6-0568-46d1-b0c5-917ce4810a87'], // Global
-                'contact' => $this->contacts['38dd80c0-b53e-4c29-806f-d2aeca8edb80'],
-            ],
-            [
-                'project' => $this->projects['151f1340-9ad6-47c7-a8a5-838ff955eae7'], // Local
-                'contact' => $this->contacts['38dd80c0-b53e-4c29-806f-d2aeca8edb80'],
-            ],
-        ];
-
-        foreach ($data as $item) {
-            /** @var Contact $contact */
-            $contact = $item['contact'];
-
-            $statQuery->execute([
-                $contact->getId(),
-                $contact->getOrganization()->getId(),
-                $item['project']->getId(),
-                $contact->isMember() ? 'true' : 'false',
-                $contact->getParsedContactPhone() ? 'true' : 'false',
-                $contact->hasSettingsReceiveNewsletters() ? 'true' : 'false',
-                $contact->hasSettingsReceiveSms() ? 'true' : 'false',
-                $contact->getAddressCountry()?->getCode(),
-                Json::encode($contact->getMetadataTagsNames()),
-                $contact->getProfileGender(),
-                $contact->getCreatedAt()->format('Y-m-d H:i:s'),
             ]);
         }
     }
