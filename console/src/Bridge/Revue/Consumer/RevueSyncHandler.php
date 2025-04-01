@@ -2,7 +2,6 @@
 
 namespace App\Bridge\Revue\Consumer;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Bridge\Revue\RevueInterface;
@@ -66,7 +65,7 @@ final class RevueSyncHandler implements MessageHandlerInterface
 
         // Persist contacts
         foreach ($toPersist as $data) {
-            $this->contactPersister->persist($data, $account->getOrganization(), false);
+            $this->contactPersister->persist($data, $account->getOrganization());
         }
 
         // Mark account as synced now
@@ -74,9 +73,6 @@ final class RevueSyncHandler implements MessageHandlerInterface
 
         $this->em->persist($account);
         $this->em->flush();
-
-        // Trigger stats computation
-        $this->bus->dispatch(new RefreshContactStatsMessage($account->getOrganization()->getId()));
 
         return true;
     }

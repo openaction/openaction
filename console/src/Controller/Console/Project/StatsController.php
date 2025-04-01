@@ -5,7 +5,6 @@ namespace App\Controller\Console\Project;
 use App\Analytics\Analytics;
 use App\Controller\AbstractController;
 use App\Platform\Permissions;
-use App\Util\Chart;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,26 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatsController extends AbstractController
 {
     private const PERIODS_CONFIG = [
-        '1d' => [
-            'startDate' => 'yesterday 00:00:00',
-            'precision' => Chart::PRECISION_HOUR,
-        ],
-        '7d' => [
-            'startDate' => '7 days ago 00:00:00',
-            'precision' => Chart::PRECISION_DAY,
-        ],
-        '30d' => [
-            'startDate' => '30 days ago 00:00:00',
-            'precision' => Chart::PRECISION_DAY,
-        ],
-        '90d' => [
-            'startDate' => '90 days ago 00:00:00',
-            'precision' => Chart::PRECISION_DAY,
-        ],
-        '1y' => [
-            'startDate' => '1 year ago 00:00:00',
-            'precision' => Chart::PRECISION_DAY,
-        ],
+        '7d' => '7 days ago 00:00:00',
+        '30d' => '30 days ago 00:00:00',
+        '90d' => '90 days ago 00:00:00',
+        '1y' => '1 year ago 00:00:00',
     ];
 
     #[Route('/traffic', name: 'console_stats_traffic')]
@@ -43,19 +26,15 @@ class StatsController extends AbstractController
         $this->denyIfSubscriptionExpired();
 
         $period = $request->query->get('period', '30d');
-        if (!$periodConfig = self::PERIODS_CONFIG[$request->query->get('period', '30d')] ?? null) {
+        if (!$startDate = self::PERIODS_CONFIG[$request->query->get('period', '30d')] ?? null) {
             $period = '30d';
-            $periodConfig = self::PERIODS_CONFIG['30d'];
+            $startDate = self::PERIODS_CONFIG['30d'];
         }
 
         return $this->render('console/project/stats/traffic.html.twig', [
             'periods' => array_keys(self::PERIODS_CONFIG),
             'current_period' => $period,
-            'dashboard' => $analytics->createTrafficDashboard(
-                $this->getProject(),
-                new \DateTime($periodConfig['startDate']),
-                $periodConfig['precision']
-            ),
+            'dashboard' => $analytics->createTrafficDashboard($this->getProject(), new \DateTime($startDate)),
         ]);
     }
 
@@ -75,19 +54,15 @@ class StatsController extends AbstractController
         $this->denyIfSubscriptionExpired();
 
         $period = $request->query->get('period', '30d');
-        if (!$periodConfig = self::PERIODS_CONFIG[$request->query->get('period', '30d')] ?? null) {
+        if (!$startDate = self::PERIODS_CONFIG[$request->query->get('period', '30d')] ?? null) {
             $period = '30d';
-            $periodConfig = self::PERIODS_CONFIG['30d'];
+            $startDate = self::PERIODS_CONFIG['30d'];
         }
 
         return $this->render('console/project/stats/community.html.twig', [
             'periods' => array_keys(self::PERIODS_CONFIG),
             'current_period' => $period,
-            'dashboard' => $analytics->createCommunityDashboard(
-                $this->getProject(),
-                new \DateTime($periodConfig['startDate']),
-                $periodConfig['precision']
-            ),
+            'dashboard' => $analytics->createCommunityDashboard($this->getProject(), new \DateTime($startDate)),
         ]);
     }
 }

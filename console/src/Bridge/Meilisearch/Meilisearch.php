@@ -106,6 +106,22 @@ class Meilisearch implements MeilisearchInterface
         return $this->getClient()->index($index)->search($query, $searchParams, [...$options, 'raw' => true]);
     }
 
+    public function findFacetStats(string $index, array $facets, array $searchParams = [], array $options = []): array
+    {
+        $searchParams['facets'] = $facets;
+
+        // Populate as little hits as possible as we are only interested in the stats
+        $searchParams['attributesToRetrieve'] = ['id'];
+        $searchParams['limit'] = 1;
+
+        $response = $this->search($index, null, $searchParams, $options);
+
+        $stats = $response['facetDistribution'] ?? [];
+        $stats['total'] = $response['nbHits'];
+
+        return $stats;
+    }
+
     public function createApiKey(array $indexes, array $actions, string $description = null): Keys
     {
         return $this->getClient()->createKey([

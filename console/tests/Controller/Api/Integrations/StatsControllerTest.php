@@ -53,7 +53,7 @@ class StatsControllerTest extends ApiTestCase
 
         $this->assertApiResponse($result, [
             '_resource' => 'CommunityDashboard',
-            'totals' => ['contacts' => 0, 'members' => 0, 'newsletter_subscribers' => 0, 'sms_subscribers' => 0],
+            'totals' => ['contacts' => 4, 'members' => 3, 'newsletter_subscribers' => 4, 'sms_subscribers' => 4],
             'tags' => [],
             'countries' => [],
         ]);

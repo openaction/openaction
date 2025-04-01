@@ -2,7 +2,6 @@ traffic:
     title: Website traffic report
     periods:
         label: 'Period:'
-        1d: 24h
         7d: Week
         30d: Month
         90d: 3 months
@@ -50,7 +49,6 @@ community:
     title: Community report
     periods:
         label: 'Period:'
-        1d: 24h
         7d: Week
         30d: Month
         90d: 3 months

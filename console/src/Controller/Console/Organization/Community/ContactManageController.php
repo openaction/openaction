@@ -2,7 +2,6 @@
 
 namespace App\Controller\Console\Organization\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Cdn\CdnUploader;
@@ -105,9 +104,6 @@ class ContactManageController extends AbstractController
             $this->integromat->triggerWebhooks($contact);
             $this->quorum->persist($contact);
 
-            // Compute the stats
-            $this->bus->dispatch(new RefreshContactStatsMessage($contact->getOrganization()->getId()));
-
             // Redirect to edition
             $this->addFlash('success', 'contacts.created_success');
 
@@ -159,9 +155,6 @@ class ContactManageController extends AbstractController
 
             // Sync Quorum
             $this->quorum->persist($contact);
-
-            // Compute the stats
-            $bus->dispatch(new RefreshContactStatsMessage($contact->getOrganization()->getId()));
 
             // Redirect to edition
             $this->addFlash('success', 'contacts.updated_success');

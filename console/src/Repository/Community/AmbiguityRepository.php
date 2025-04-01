@@ -2,7 +2,6 @@
 
 namespace App\Repository\Community;
 
-use App\Entity\Analytics\Community\ContactCreation;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\EmailingCampaignMessage;
 use App\Entity\Community\PhoningCampaignCall;
@@ -83,13 +82,5 @@ class AmbiguityRepository extends ServiceEntityRepository
 
             $qb->getQuery()->execute();
         }
-
-        $this->_em->createQueryBuilder()
-            ->delete(ContactCreation::class, 'cc')
-            ->where('cc.'.$column.' = :newContact')
-            ->setParameter('newContact', $newest)
-            ->getQuery()
-            ->execute()
-        ;
     }
 }

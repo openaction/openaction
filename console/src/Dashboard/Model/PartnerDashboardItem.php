@@ -8,13 +8,11 @@ class PartnerDashboardItem
 {
     private Organization $organization;
     private int $projectsCount;
-    private int $contactsCount;
 
-    public function __construct(Organization $organization, int $projectsCount, int $contactsCount)
+    public function __construct(Organization $organization, int $projectsCount)
     {
         $this->organization = $organization;
         $this->projectsCount = $projectsCount;
-        $this->contactsCount = $contactsCount;
     }
 
     public function getOrganization(): Organization
@@ -25,10 +23,5 @@ class PartnerDashboardItem
     public function getProjectsCount(): int
     {
         return $this->projectsCount;
-    }
-
-    public function getContactsCount(): int
-    {
-        return $this->contactsCount;
     }
 }

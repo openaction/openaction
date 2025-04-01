@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Api\Website;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Entity\Community\Contact;
@@ -359,9 +358,8 @@ class FormControllerTest extends ApiTestCase
          * Check Quorum sync and stats refresh
          */
 
-        $this->assertCount(2, $messages = static::getContainer()->get('messenger.transport.async_priority_low')->get());
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[0]->getMessage());
-        $this->assertInstanceOf(QuorumMessage::class, $messages[1]->getMessage());
+        $this->assertCount(1, $messages = static::getContainer()->get('messenger.transport.async_priority_low')->get());
+        $this->assertInstanceOf(QuorumMessage::class, $messages[0]->getMessage());
 
         // Payload mapping already checked by
         // App\Tests\Controller\Console\Project\Community\ContactControllerTest::testEdit

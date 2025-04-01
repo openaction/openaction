@@ -13,8 +13,8 @@
 
         .chart-table-row-value {
             flex-basis: 0;
-            width: 50px;
-            min-width: 50px;
+            width: 75px;
+            min-width: 75px;
             font-size: 14px;
             font-weight: bold;
             color: #24acfc;
@@ -161,7 +161,7 @@
 
                         <div class="mb-3">
                             <h4>
-                                Most active projects
+                                Most active projects (page views)
                             </h4>
 
                             <div class="p-2">
@@ -265,7 +265,7 @@
 
                         <div class="mb-3">
                             <h4>
-                                Biggest organizations
+                                Biggest organizations (contacts)
                             </h4>
 
                             <div class="p-2">
@@ -286,33 +286,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        {% if community_dashboard.countries %}
-                            <div class="mb-3">
-                                <h4>
-                                    Countries
-                                </h4>
-
-                                <div class="p-2">
-                                    <div class="chart-table">
-                                        {% for country, contacts in community_dashboard.countries %}
-                                            <div class="chart-table-row">
-                                                <div class="chart-table-row-value">
-                                                    {{ contacts|format_number }}
-                                                </div>
-
-                                                <div class="chart-table-row-label">
-                                                    <span class="flag-icon flag-icon-{{ country }}"
-                                                          title="{{ country|upper|country_name }}"></span>
-
-                                                    {{ country|upper|country_name }}
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
 

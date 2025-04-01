@@ -2,7 +2,6 @@
 
 namespace App\Community;
 
-use App\Entity\Area;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Community\PhoningCampaign;
 use App\Entity\Community\TextingCampaign;

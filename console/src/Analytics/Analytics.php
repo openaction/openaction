@@ -27,14 +27,14 @@ class Analytics
         return $this->pageViewRepository->countLiveVisitors($project);
     }
 
-    public function createTrafficDashboard(Project $project, \DateTime $startDate, int $precision): TrafficDashboard
+    public function createTrafficDashboard(Project $project, \DateTime $startDate): TrafficDashboard
     {
-        return $this->trafficProvider->createDashboard($project, $startDate, $precision);
+        return $this->trafficProvider->createDashboard($project, $startDate);
     }
 
-    public function createCommunityDashboard(Project $project, \DateTime $startDate, int $precision): CommunityDashboard
+    public function createCommunityDashboard(Project $project, \DateTime $startDate): CommunityDashboard
     {
-        return $this->communityProvider->createDashboard($project, $startDate, $precision);
+        return $this->communityProvider->createDashboard($project, $startDate);
     }
 
     public function countAdminLiveVisitors(): int
@@ -42,13 +42,13 @@ class Analytics
         return $this->pageViewRepository->countAllLiveVisitors();
     }
 
-    public function createAdminTrafficDashboard(\DateTime $startDate, int $precision): array
+    public function createAdminTrafficDashboard(\DateTime $startDate): array
     {
-        return $this->trafficProvider->createAdminDashboard($startDate, $precision);
+        return $this->trafficProvider->createAdminDashboard($startDate);
     }
 
-    public function createAdminCommunityDashboard(\DateTime $startDate, int $precision): array
+    public function createAdminCommunityDashboard(\DateTime $startDate): array
     {
-        return $this->communityProvider->createAdminDashboard($startDate, $precision);
+        return $this->communityProvider->createAdminDashboard($startDate);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Tests\Community\ImportExport\Consumer;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Community\ImportExport\Consumer\ImportHandler;
 use App\Community\ImportExport\Consumer\ImportMessage;
 use App\DataFixtures\TestFixtures;
@@ -16,7 +15,6 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -106,12 +104,5 @@ class ImportHandlerTest extends KernelTestCase
         $job = $import->getJob();
         static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
         $this->assertTrue($job->isFinished());
-
-        // Should have published stats update
-        /** @var TransportInterface $transport */
-        $transport = static::getContainer()->get('messenger.transport.async_priority_low');
-        $messages = $transport->get();
-        $this->assertCount(1, $messages);
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[0]->getMessage());
     }
 }

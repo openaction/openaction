@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Console\Organization\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Integromat\Consumer\IntegromatWebhookMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
@@ -114,7 +113,7 @@ class ContactManageControllerTest extends WebTestCase
         $transport = static::getContainer()->get('messenger.transport.async_priority_low');
 
         $messages = $transport->get();
-        $this->assertCount(3, $messages);
+        $this->assertCount(2, $messages);
 
         // Integromat
         /* @var IntegromatWebhookMessage $message */
@@ -168,8 +167,6 @@ class ContactManageControllerTest extends WebTestCase
 
         // Payload mapping already checked by
         // App\Tests\Controller\Console\Project\Community\ContactControllerTest::testEdit
-
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[2]->getMessage());
 
         /*
          * Check automation
@@ -467,7 +464,7 @@ class ContactManageControllerTest extends WebTestCase
 
         /** @var TransportInterface $transport */
         $transport = static::getContainer()->get('messenger.transport.async_priority_low');
-        $this->assertCount(2, $messages = $transport->get());
+        $this->assertCount(1, $messages = $transport->get());
         $this->assertInstanceOf(QuorumMessage::class, $message = $messages[0]->getMessage());
 
         // Check the payload
@@ -494,9 +491,6 @@ class ContactManageControllerTest extends WebTestCase
             ],
         ];
         $this->assertSame($expected, $message->getPayload());
-
-        // Check refresh
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[1]->getMessage());
     }
 
     public function testDelete(): void

@@ -9,6 +9,7 @@ use App\Entity\Organization;
 use App\Entity\Project;
 use App\Repository\Util\GridSearchRepositoryTrait;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
+use App\Util\Date;
 use App\Util\Uid;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -61,6 +62,60 @@ class ContactRepository extends ServiceEntityRepository
         )->fetchNumeric();
 
         return $id ? $this->find($id[0]) : null;
+    }
+
+    public function findAdminCommunityTotals(): array
+    {
+        $query = $this->_em->getConnection()->prepare('
+            SELECT 
+               COUNT(*) AS contacts,
+               COUNT(CASE WHEN account_password IS NOT NULL THEN 1 END) AS members,
+               COUNT(CASE WHEN settings_receive_newsletters THEN 1 END) AS newsletter_subscribers,
+               COUNT(CASE WHEN settings_receive_sms THEN 1 END) AS sms_subscribers
+            FROM community_contacts
+        ');
+
+        return $query->executeQuery([])->fetchAssociative();
+    }
+
+    public function findAdminCommunityGrowth(\DateTime $startDate): iterable
+    {
+        $query = $this->_em->getConnection()->prepare("
+            SELECT
+               TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from created_at) / ".Date::OneDay->value.')) * '.Date::OneDay->value.') as period,
+               COUNT(*) AS new_contacts,
+               COUNT(CASE WHEN account_password IS NOT NULL THEN 1 END) AS new_members
+            FROM community_contacts
+            WHERE created_at >= ? AND created_at <= ?
+            GROUP BY period
+            ORDER BY period
+        ');
+
+        $result = $query->executeQuery([
+            $startDate->format('Y-m-d H:i:s'),
+            (new \DateTime())->format('Y-m-d H:i:s'),
+        ]);
+
+        while ($row = $result->fetchAssociative()) {
+            yield $row;
+        }
+    }
+
+    public function findAdminCommunityOrganizations(): \Generator
+    {
+        $query = $this->_em->getConnection()->prepare('
+            SELECT o.name, COUNT(*) AS value
+            FROM community_contacts c
+            LEFT JOIN organizations o ON o.id = c.organization_id
+            GROUP BY o.name
+            ORDER BY value DESC
+        ');
+
+        $result = $query->executeQuery([]);
+
+        while ($row = $result->fetchAssociative()) {
+            yield $row['name'] => $row['value'];
+        }
     }
 
     /**

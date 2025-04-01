@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Api\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Integromat\Consumer\IntegromatWebhookMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
@@ -631,25 +630,24 @@ class ContactControllerTest extends ApiTestCase
         }
 
         /*
-         * Check integrations and stats refresh
+         * Check integrations
          */
 
         /** @var TransportInterface $transport */
         $transport = static::getContainer()->get('messenger.transport.async_priority_low');
-        $this->assertCount(3, $messages = $transport->get());
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[0]->getMessage());
+        $this->assertCount(2, $messages = $transport->get());
 
         // Integromat
         // Payload mapping already checked by
         // App\Tests\Controller\Console\Organization\Community\ContactControllerTest::testCreate
         /* @var IntegromatWebhookMessage $message */
-        $this->assertInstanceOf(IntegromatWebhookMessage::class, $message = $messages[1]->getMessage());
+        $this->assertInstanceOf(IntegromatWebhookMessage::class, $message = $messages[0]->getMessage());
         $this->assertSame('https://hook.integromat.com/swme2wu7n735qcmhbeyfj595c2ey2aju', $message->getUrl());
 
         // Quorum
         // Payload mapping already checked by
         // App\Tests\Controller\Console\Project\Community\ContactControllerTest::testEdit
-        $this->assertInstanceOf(QuorumMessage::class, $messages[2]->getMessage());
+        $this->assertInstanceOf(QuorumMessage::class, $messages[1]->getMessage());
 
         /*
          * Check email
@@ -804,9 +802,8 @@ class ContactControllerTest extends ApiTestCase
 
         /** @var TransportInterface $transport */
         $transport = static::getContainer()->get('messenger.transport.async_priority_low');
-        $this->assertCount(2, $messages = $transport->get());
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[0]->getMessage());
-        $this->assertInstanceOf(QuorumMessage::class, $messages[1]->getMessage());
+        $this->assertCount(1, $messages = $transport->get());
+        $this->assertInstanceOf(QuorumMessage::class, $messages[0]->getMessage());
     }
 
     public function testEditContactTagsOverride()

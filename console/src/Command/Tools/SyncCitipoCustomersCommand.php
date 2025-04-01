@@ -2,7 +2,6 @@
 
 namespace App\Command\Tools;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Entity\Community\Contact;
@@ -101,12 +100,9 @@ class SyncCitipoCustomersCommand extends Command
 
             $output->write('('.implode(', ', $payload->metadataTags).")\n\n");
             if (!$input->getOption('dry-run')) {
-                $this->persister->persist($this->createPayload($user), $mainProject, false);
+                $this->persister->persist($this->createPayload($user), $mainProject);
             }
         }
-
-        // Refresh stats only at the end
-        $this->bus->dispatch(new RefreshContactStatsMessage($citipo->getId()));
 
         return Command::SUCCESS;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Api\Persister;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Api\Model\ContactApiData;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
@@ -59,7 +58,7 @@ class ContactApiPersister
         $this->spallian = $spallian;
     }
 
-    public function persist(ContactApiData $data, Project|Organization $in, bool $computeStats = true): Contact
+    public function persist(ContactApiData $data, Project|Organization $in): Contact
     {
         $inOrganization = $in instanceof Project ? $in->getOrganization() : $in;
 
@@ -91,11 +90,6 @@ class ContactApiPersister
         // If the contact just became a member, start validation process
         if ($in instanceof Project && !$wasMember && $contact->isMember()) {
             $this->organizationMailer->sendRegistrationConfirm($in, $contact);
-        }
-
-        // Compute the stats again
-        if ($computeStats) {
-            $this->bus->dispatch(new RefreshContactStatsMessage($contact->getOrganization()->getId()));
         }
 
         // Update CRM search index

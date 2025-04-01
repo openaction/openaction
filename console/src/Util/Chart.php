@@ -4,10 +4,7 @@ namespace App\Util;
 
 class Chart
 {
-    public const PRECISION_HOUR = 3600;
-    public const PRECISION_DAY = 86400;
-
-    public static function createEmptyDateChart(\DateTime $startDate, int $precision, $defaultValue = 0): array
+    public static function createEmptyDateChart(\DateTime $startDate, $defaultValue = 0): array
     {
         $date = clone $startDate;
         $date->modify('+1 day');
@@ -16,25 +13,11 @@ class Chart
 
         $data = [];
         while ($date->format('Y-m-d') <= $now) {
-            $data[self::formatDateToPrecision($date, $precision)] = $defaultValue;
-
-            if (self::PRECISION_HOUR === $precision) {
-                $date->modify('+1 hour');
-            } else {
-                $date->modify('+1 day');
-            }
+            $data[$date->format('Y-m-d')] = $defaultValue;
+            $date->modify('+1 day');
         }
 
         return $data;
-    }
-
-    public static function formatDateToPrecision(\DateTime $date, int $precision)
-    {
-        if (self::PRECISION_HOUR === $precision) {
-            return $date->format('Y-m-d H:i');
-        }
-
-        return $date->format('Y-m-d');
     }
 
     public static function formatAsPercentages(array $data): array

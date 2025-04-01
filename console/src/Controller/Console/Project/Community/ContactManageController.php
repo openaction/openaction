@@ -2,7 +2,6 @@
 
 namespace App\Controller\Console\Project\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
@@ -104,9 +103,6 @@ class ContactManageController extends AbstractController
 
             // Sync Quorum
             $this->quorum->persist($contact);
-
-            // Compute the stats
-            $bus->dispatch(new RefreshContactStatsMessage($contact->getOrganization()->getId()));
 
             // Redirect to edition
             $this->addFlash('success', 'contacts.updated_success');
