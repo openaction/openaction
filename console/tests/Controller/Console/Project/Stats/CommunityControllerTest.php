@@ -13,9 +13,9 @@ class CommunityControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/stats/community');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(2, (int) trim($crawler->filter('[data-total="contacts"]')->text()));
-        $this->assertSame(1, (int) trim($crawler->filter('[data-total="members"]')->text()));
-        $this->assertSame(2, (int) trim($crawler->filter('[data-total="newsletter_subscribers"]')->text()));
-        $this->assertSame(2, (int) trim($crawler->filter('[data-total="sms_subscribers"]')->text()));
+        $this->assertSame(6, (int) trim($crawler->filter('[data-total="contacts"]')->text()));
+        $this->assertSame(3, (int) trim($crawler->filter('[data-total="members"]')->text()));
+        $this->assertSame(5, (int) trim($crawler->filter('[data-total="newsletter_subscribers"]')->text()));
+        $this->assertSame(5, (int) trim($crawler->filter('[data-total="sms_subscribers"]')->text()));
     }
 }

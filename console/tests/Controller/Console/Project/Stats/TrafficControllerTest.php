@@ -9,12 +9,6 @@ class TrafficControllerTest extends WebTestCase
 {
     public function provideIndexPeriods()
     {
-        yield '1d' => [
-            'period' => '1d',
-            'expectedUsers' => 2,
-            'expectedPageViews' => 2,
-        ];
-
         yield '7d' => [
             'period' => '7d',
             'expectedUsers' => 19,

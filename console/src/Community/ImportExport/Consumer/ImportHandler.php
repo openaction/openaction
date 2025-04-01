@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function Symfony\Component\String\u;
@@ -38,7 +37,6 @@ final class ImportHandler
         private readonly FilesystemReader $cdnStorage,
         private readonly LoggerInterface $logger,
         private readonly EntityManagerInterface $em,
-        private readonly MessageBusInterface $bus,
         private readonly CrmIndexer $crmIndexer,
     ) {
     }

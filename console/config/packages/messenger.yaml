@@ -99,7 +99,6 @@ framework:
             # Analytics
             'App\Analytics\Consumer\BuildWebsiteSessionsMessage': async_priority_low
             'App\Analytics\Consumer\ClearWebsiteSessionsMessage': async_priority_low
-            'App\Analytics\Consumer\RefreshContactStatsMessage': async_priority_low
 
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_importing

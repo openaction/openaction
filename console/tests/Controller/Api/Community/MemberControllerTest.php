@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Api\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Integromat\Consumer\IntegromatWebhookMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Community\MemberAuthenticator;
@@ -54,11 +53,10 @@ class MemberControllerTest extends ApiTestCase
         $confirmReference = $mail->getContext()['reference'] ?? null;
         $this->assertNotNull($confirmReference);
 
-        // Check stats
-        $this->assertCount(3, $messages = static::getContainer()->get('messenger.transport.async_priority_low')->get());
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[0]->getMessage());
-        $this->assertInstanceOf(IntegromatWebhookMessage::class, $messages[1]->getMessage());
-        $this->assertInstanceOf(QuorumMessage::class, $messages[2]->getMessage());
+        // Check integrations
+        $this->assertCount(2, $messages = static::getContainer()->get('messenger.transport.async_priority_low')->get());
+        $this->assertInstanceOf(IntegromatWebhookMessage::class, $messages[0]->getMessage());
+        $this->assertInstanceOf(QuorumMessage::class, $messages[1]->getMessage());
 
         /*
          * Confirm registration

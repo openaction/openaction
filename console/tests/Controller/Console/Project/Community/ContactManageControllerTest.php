@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Console\Project\Community;
 
-use App\Analytics\Consumer\RefreshContactStatsMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Entity\Community\Contact;
 use App\Entity\Community\Tag;
@@ -183,7 +182,7 @@ class ContactManageControllerTest extends WebTestCase
         $transport = static::getContainer()->get('messenger.transport.async_priority_low');
 
         $messages = $transport->get();
-        $this->assertCount(2, $messages);
+        $this->assertCount(1, $messages);
 
         /** @var QuorumMessage $message */
         $message = $messages[0]->getMessage();
@@ -214,7 +213,6 @@ class ContactManageControllerTest extends WebTestCase
         ];
 
         $this->assertSame($expected, $message->getPayload());
-        $this->assertInstanceOf(RefreshContactStatsMessage::class, $messages[1]->getMessage());
     }
 
     public function testDelete(): void
