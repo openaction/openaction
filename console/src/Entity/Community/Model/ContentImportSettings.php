@@ -17,6 +17,7 @@ class ContentImportSettings
         'jpg',
         'jpeg',
         'png',
+        'webp',
     ];
 
     /**
