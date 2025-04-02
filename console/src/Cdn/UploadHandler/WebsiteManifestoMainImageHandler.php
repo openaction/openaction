@@ -26,7 +26,7 @@ class WebsiteManifestoMainImageHandler implements UploadedImageHandlerInterface
         $canvas->insert($data, 'top-left');
         $canvas->fit($this->width, $this->height);
 
-        $canvas->encode('jpg');
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $canvas->encode('webp', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'webp');
     }
 }

@@ -15,24 +15,24 @@ class EmailingContentImageHandlerTest extends UnitTestCase
             'local' => __DIR__.'/../../Fixtures/upload/mario.png',
             'storage' => 'upload/mario',
             'extension' => 'png',
-            'expectedWidth' => 954,
-            'expectedHeight' => 1200,
+            'expectedWidth' => 1473,
+            'expectedHeight' => 1854,
         ];
 
         yield 'image-exif.jpg' => [
             'local' => __DIR__.'/../../Fixtures/upload/image-exif.jpg',
             'storage' => 'upload/image-exif',
             'extension' => 'jpg',
-            'expectedWidth' => 800,
-            'expectedHeight' => 1200,
+            'expectedWidth' => 1200,
+            'expectedHeight' => 1800,
         ];
 
         yield 'image.webp' => [
             'local' => __DIR__.'/../../Fixtures/upload/image.webp',
             'storage' => 'upload/image-webp',
             'extension' => 'webp',
-            'expectedWidth' => 1200,
-            'expectedHeight' => 607,
+            'expectedWidth' => 2000,
+            'expectedHeight' => 1011,
         ];
     }
 

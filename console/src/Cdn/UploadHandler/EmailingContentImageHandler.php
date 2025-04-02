@@ -22,12 +22,12 @@ class EmailingContentImageHandler implements UploadedImageHandlerInterface
         $canvas = $this->imageManager->canvas($data->getWidth(), $data->getHeight(), 'ffffff');
         $canvas->insert($data, 'top-left');
 
-        $canvas->resize(1200, 1200, static function ($constraint) {
+        $canvas->resize(2000, 2000, static function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
 
-        $canvas->encode('jpg');
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $canvas->encode('webp', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'webp');
     }
 }
