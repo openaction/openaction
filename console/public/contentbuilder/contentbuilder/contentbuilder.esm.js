@@ -7521,8 +7521,8 @@ var Ps = function (e) {
                         })), void u.readAsDataURL(e)
                     }
                     var p = 2 * t.clientWidth;
-                    p > 1200 && (p = 1200);
-                    var v = (p = 1200) * d / c, h = !1;
+                    p > 3000 && (p = 3000);
+                    var v = (p = 3000) * d / c, h = !1;
                     d <= v && c > p ? (d <= (v = d * p / c) && (p = d * p / (v = d)), h = !0) : c <= p && d > v ? (c <= (p = c * v / d) && (v = c * v / (p = c)), h = !0) : c <= p && d <= v ? (p = c, v = d) : (v = d * p / c, h = !0), 'image/png' == o && (h = !1);
                     var f = new Vs(n), g = document.getElementById('myTmpCanvasNoCrop');
                     f.render(g, {width: c, height: d, orientation: s}, (function () {
