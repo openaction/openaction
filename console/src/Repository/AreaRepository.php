@@ -123,7 +123,7 @@ class AreaRepository extends ServiceEntityRepository
         return $this->findOneBy([
             'type' => Area::TYPE_ZIP_CODE,
             'treeRoot' => $country,
-            'name' => u($query)->replace(' ', ''),
+            'name' => u($query)->replace(' ', '')->trim()->toString(),
         ]);
     }
 }

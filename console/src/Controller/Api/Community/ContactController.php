@@ -302,9 +302,11 @@ class ContactController extends AbstractApiController
     )]
     public function status(Request $request, string $email)
     {
+        /** @var Project $project */
+        $project = $this->getUser();
         $contact = $this->repository->findOneByAnyEmail(
-            $this->getUser()?->getOrganization(),
-            $email,
+            $project?->getOrganization(),
+            trim($email),
             onlyMainEmail: $request->query->getBoolean('onlyMainEmail'),
         );
 

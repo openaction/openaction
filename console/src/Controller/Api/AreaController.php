@@ -56,7 +56,7 @@ class AreaController extends AbstractApiController
             return new JsonResponse(['_resource' => 'AreaValidation', 'status' => 'country_not_found']);
         }
 
-        if (!$this->repo->searchZipCode($country, $zipCode)) {
+        if (!$this->repo->searchZipCode($country, trim($zipCode))) {
             return new JsonResponse(['_resource' => 'AreaValidation', 'status' => 'zip_code_not_found']);
         }
 
