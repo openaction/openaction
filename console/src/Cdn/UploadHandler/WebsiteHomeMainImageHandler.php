@@ -30,7 +30,7 @@ class WebsiteHomeMainImageHandler implements UploadedImageHandlerInterface
         $canvas = $this->imageManager->canvas($data->getWidth(), $data->getHeight(), 'ffffff');
         $canvas->insert($data, 'center');
 
-        $canvas->encode('jpg', 80);
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $canvas->encode('webp', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'webp');
     }
 }

@@ -15,8 +15,8 @@ class WebsiteContentImageHandlerTest extends UnitTestCase
             'local' => __DIR__.'/../../Fixtures/upload/mario.png',
             'storage' => 'upload/mario',
             'extension' => 'png',
-            'expectedWidth' => 1430,
-            'expectedHeight' => 1800,
+            'expectedWidth' => 1473,
+            'expectedHeight' => 1854,
         ];
 
         yield 'image-exif.jpg' => [
@@ -31,8 +31,8 @@ class WebsiteContentImageHandlerTest extends UnitTestCase
             'local' => __DIR__.'/../../Fixtures/upload/image.webp',
             'storage' => 'upload/image-webp',
             'extension' => 'webp',
-            'expectedWidth' => 1800,
-            'expectedHeight' => 910,
+            'expectedWidth' => 2000,
+            'expectedHeight' => 1011,
         ];
     }
 

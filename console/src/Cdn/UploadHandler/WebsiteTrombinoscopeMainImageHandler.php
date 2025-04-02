@@ -29,7 +29,7 @@ class WebsiteTrombinoscopeMainImageHandler implements UploadedImageHandlerInterf
         $canvas = $this->imageManager->canvas($this->width, $this->height, 'ffffff');
         $canvas->insert($data, 'center');
 
-        $canvas->encode('jpg');
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $canvas->encode('webp', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'webp');
     }
 }

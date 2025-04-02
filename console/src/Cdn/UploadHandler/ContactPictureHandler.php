@@ -26,7 +26,7 @@ class ContactPictureHandler implements UploadedImageHandlerInterface
         $canvas = $this->imageManager->canvas(800, 800, 'ffffff');
         $canvas->insert($data, 'center');
 
-        $canvas->encode('jpg');
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $canvas->encode('webp', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'webp');
     }
 }
