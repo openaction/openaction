@@ -97,6 +97,8 @@ class EmailingCampaign implements Searchable
         $this->fromName = $fromName;
         $this->replyToEmail = $replyToEmail;
         $this->replyToName = $replyToName;
+        $this->trackOpens = $project->getOrganization()->getEmailEnableOpenTracking();
+        $this->trackClicks = $project->getOrganization()->getEmailEnableClickTracking();
         $this->messages = new ArrayCollection();
         $this->areasFilter = new ArrayCollection();
         $this->tagsFilter = new ArrayCollection();

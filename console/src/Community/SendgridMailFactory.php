@@ -74,8 +74,8 @@ class SendgridMailFactory
     {
         $mail = new Mail(new From($automation->getFromEmail(), $automation->getFromName() ?: null));
         $mail->setSubject($automation->getSubject());
-        $mail->setOpenTracking(false);
-        $mail->setClickTracking(false);
+        $mail->setOpenTracking($automation->getOrganization()->getEmailEnableOpenTracking());
+        $mail->setClickTracking($automation->getOrganization()->getEmailEnableClickTracking());
         $mail->setFooter(false);
         $mail->addContent('text/html', $this->createAutomationBody($automation));
 

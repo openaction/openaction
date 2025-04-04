@@ -97,9 +97,9 @@ class Mailchimp implements MailchimpInterface
                     'reply_to' => $campaign->getReplyToEmail() ?: $campaign->getFullFromEmail(),
                 ],
                 'tracking' => [
-                    'opens' => true,
-                    'html_clicks' => true,
-                    'text_clicks' => true,
+                    'opens' => $campaign->hasTrackOpens(),
+                    'html_clicks' => $campaign->hasTrackClicks(),
+                    'text_clicks' => $campaign->hasTrackClicks(),
                 ],
             ]);
 
