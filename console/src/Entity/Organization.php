@@ -144,6 +144,12 @@ class Organization
      * Emails provider
      */
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $emailEnableOpenTracking = true;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $emailEnableClickTracking = true;
+
     #[ORM\Column(length: 40, nullable: true)]
     private ?string $emailProvider = null;
 
@@ -800,6 +806,26 @@ class Organization
     /*
      * Email provider
      */
+
+    public function getEmailEnableOpenTracking(): ?bool
+    {
+        return $this->emailEnableOpenTracking;
+    }
+
+    public function setEmailEnableOpenTracking(?bool $emailEnableOpenTracking): void
+    {
+        $this->emailEnableOpenTracking = $emailEnableOpenTracking;
+    }
+
+    public function getEmailEnableClickTracking(): ?bool
+    {
+        return $this->emailEnableClickTracking;
+    }
+
+    public function setEmailEnableClickTracking(?bool $emailEnableClickTracking): void
+    {
+        $this->emailEnableClickTracking = $emailEnableClickTracking;
+    }
 
     public function getEmailProvider(): ?string
     {

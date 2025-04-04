@@ -100,6 +100,18 @@ class OrganizationController extends AbstractCrudController
             yield BooleanField::new('showPreview', 'Show preview features?')
                 ->onlyOnForms();
 
+            yield FormField::addPanel('Email settings')
+                ->setIcon('fa fa-envelope')
+                ->setHelp('Settings about email sending');
+
+            yield BooleanField::new('emailEnableOpenTracking', 'Enable email opens tracking')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield BooleanField::new('emailEnableClickTracking', 'Enable email clicks tracking')
+                ->setColumns(4)
+                ->onlyOnForms();
+
             yield FormField::addPanel('Email provider')
                 ->setIcon('fa fa-envelope')
                 ->setHelp('Provider to send emails for this organization. By default: Sendgrid.');
