@@ -109,7 +109,14 @@ class EmailingCampaign implements Searchable
      */
     public static function createFixture(array $data): self
     {
-        $self = new EmailingCampaign($data['project'], $data['subject'], $data['fromEmail'] ?? 'noreply', $data['fromName'] ?? 'Citipo', $data['replyToEmail'] ?? null, $data['replyToName'] ?? null);
+        $self = new EmailingCampaign(
+            $data['project'],
+            $data['subject'] ?? '',
+            $data['fromEmail'] ?? 'noreply',
+            $data['fromName'] ?? 'Citipo',
+            $data['replyToEmail'] ?? null,
+            $data['replyToName'] ?? null
+        );
         $self->preview = $data['preview'] ?? null;
         $self->trackOpens = $data['trackOpens'] ?? true;
         $self->trackClicks = $data['trackClicks'] ?? true;

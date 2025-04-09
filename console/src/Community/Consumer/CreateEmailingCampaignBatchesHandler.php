@@ -6,6 +6,7 @@ use App\Bridge\Postmark\Consumer\PostmarkMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Community\PostmarkMailFactory;
+use App\Community\Scheduler\EmailingScheduler;
 use App\Community\SendgridMailFactory;
 use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
@@ -13,7 +14,6 @@ use App\Util\PhoneNumber;
 use App\Util\Uid;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
 
 /*
@@ -22,27 +22,14 @@ use Symfony\Component\Uid\Uuid;
  */
 final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterface
 {
-    private EmailingCampaignRepository $campaignRepository;
-    private EmailingCampaignMessageRepository $messageRepository;
-    private SendgridMailFactory $sendgridMailFactory;
-    private PostmarkMailFactory $postmarkMailFactory;
-    private MessageBusInterface $bus;
-    private LoggerInterface $logger;
-
     public function __construct(
-        EmailingCampaignRepository $campaignRepository,
-        EmailingCampaignMessageRepository $messageRepository,
-        SendgridMailFactory $sendgridMailFactory,
-        PostmarkMailFactory $postmarkMailFactory,
-        MessageBusInterface $bus,
-        LoggerInterface $logger
+        private readonly EmailingCampaignRepository $campaignRepository,
+        private readonly EmailingCampaignMessageRepository $messageRepository,
+        private readonly SendgridMailFactory $sendgridMailFactory,
+        private readonly PostmarkMailFactory $postmarkMailFactory,
+        private readonly EmailingScheduler $emailingScheduler,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->campaignRepository = $campaignRepository;
-        $this->messageRepository = $messageRepository;
-        $this->sendgridMailFactory = $sendgridMailFactory;
-        $this->postmarkMailFactory = $postmarkMailFactory;
-        $this->bus = $bus;
-        $this->logger = $logger;
     }
 
     public function __invoke(CreateEmailingCampaignBatchesMessage $message)
@@ -53,9 +40,12 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
             return true;
         }
 
-        $provider = $campaign->getProject()->getOrganization()->getEmailProvider();
-        $batches = $this->messageRepository->buildMessagesBatches($campaign);
+        $organization = $campaign->getProject()->getOrganization();
 
+        $batchSize = 100;
+        $batches = $this->messageRepository->buildMessagesBatches($campaign, batchSize: $batchSize);
+
+        $messages = [];
         foreach ($batches as $batch) {
             $recipients = [];
 
@@ -91,12 +81,14 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
                 ]);
             }
 
-            if ('postmark' === $provider) {
-                $this->bus->dispatch(new PostmarkMessage($this->postmarkMailFactory->createEmailing($campaign, $recipients)));
+            if ('postmark' === $organization->getEmailProvider()) {
+                $messages[] = new PostmarkMessage($this->postmarkMailFactory->createEmailing($campaign, $recipients));
             } else {
-                $this->bus->dispatch(new SendgridMessage($this->sendgridMailFactory->createEmailing($campaign, $recipients)));
+                $messages[] = new SendgridMessage($this->sendgridMailFactory->createEmailing($campaign, $recipients));
             }
         }
+
+        $this->emailingScheduler->scheduleCampaign($messages, $batchSize, $organization->getEmailThrottlingPerHour());
 
         return true;
     }

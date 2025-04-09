@@ -112,6 +112,11 @@ class OrganizationController extends AbstractCrudController
                 ->setColumns(4)
                 ->onlyOnForms();
 
+            yield NumberField::new('emailThrottlingPerHour', 'Max number of emails sent per hour')
+                ->setHelp('Keep empty for no limit')
+                ->setColumns(4)
+                ->onlyOnForms();
+
             yield FormField::addPanel('Email provider')
                 ->setIcon('fa fa-envelope')
                 ->setHelp('Provider to send emails for this organization. By default: Sendgrid.');

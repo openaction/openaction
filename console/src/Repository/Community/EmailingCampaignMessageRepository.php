@@ -50,7 +50,7 @@ class EmailingCampaignMessageRepository extends ServiceEntityRepository
         $query->executeStatement($params);
     }
 
-    public function buildMessagesBatches(EmailingCampaign $campaign, int $batchSize = 100): iterable
+    public function buildMessagesBatches(EmailingCampaign $campaign, int $batchSize): iterable
     {
         $iterator = $this->createQueryBuilder('m')
             ->select(

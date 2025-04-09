@@ -24,7 +24,7 @@ class CreateEmailingCampaignBatchesHandlerTest extends KernelTestCase
         $this->assertCount(0, $messages);
     }
 
-    public function testConsume()
+    public function testConsumeValid()
     {
         self::bootKernel();
 
