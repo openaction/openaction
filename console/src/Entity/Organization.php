@@ -150,6 +150,9 @@ class Organization
     #[ORM\Column(type: 'boolean')]
     private bool $emailEnableClickTracking = true;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $emailThrottlingPerHour = null;
+
     #[ORM\Column(length: 40, nullable: true)]
     private ?string $emailProvider = null;
 
@@ -288,7 +291,7 @@ class Organization
 
     public static function createFixture(array $data): self
     {
-        $self = new self($data['name']);
+        $self = new self($data['name'] ?? 'Example orga');
         $self->partner = $data['partner'] ?? null;
         $self->showPreview = $data['showPreview'] ?? true;
         $self->quorumToken = $data['quorumToken'] ?? null;
@@ -307,6 +310,7 @@ class Organization
         $self->billingAddressCountry = $data['billingAddressCountry'] ?? null;
         $self->billingTaxId = $data['billingTaxId'] ?? null;
         $self->textingSenderCode = $data['textingSenderCode'] ?? null;
+        $self->emailThrottlingPerHour = $data['emailThrottlingPerHour'] ?? null;
         $self->setProjectsSlots($data['projectsSlots'] ?? 16);
         $self->addCredits($data['credits'] ?? 1000000);
         $self->addTextsCredits($data['textsCredits'] ?? 10);
@@ -825,6 +829,16 @@ class Organization
     public function setEmailEnableClickTracking(?bool $emailEnableClickTracking): void
     {
         $this->emailEnableClickTracking = $emailEnableClickTracking;
+    }
+
+    public function getEmailThrottlingPerHour(): ?int
+    {
+        return $this->emailThrottlingPerHour;
+    }
+
+    public function setEmailThrottlingPerHour(?int $emailThrottlingPerHour): void
+    {
+        $this->emailThrottlingPerHour = $emailThrottlingPerHour;
     }
 
     public function getEmailProvider(): ?string

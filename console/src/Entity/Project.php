@@ -301,12 +301,12 @@ EOT;
 
     public static function createFixture(array $data): self
     {
-        $self = new self($data['orga'], $data['name'], $data['theme']);
+        $self = new self($data['orga'], $data['name'] ?? 'Example project', $data['theme'] ?? '');
         $self->apiToken = $data['apiToken'] ?? $self->apiToken;
         $self->adminApiToken = $data['adminApiToken'] ?? $self->adminApiToken;
         $self->modules = $data['modules'] ?? Features::allModules();
         $self->tools = $data['tools'] ?? Features::allTools();
-        $self->rootDomain = $data['domain'];
+        $self->rootDomain = $data['domain'] ?? 'example';
         $self->subDomain = $data['subdomain'] ?? null;
         $self->websiteLocale = $data['websiteLocale'] ?? 'fr';
         $self->socialEmail = $data['socialEmail'] ?? null;
