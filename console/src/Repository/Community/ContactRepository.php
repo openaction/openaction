@@ -44,6 +44,23 @@ class ContactRepository extends ServiceEntityRepository
         ]);
     }
 
+    public function isEmailAlreadyUsed(Organization $orga, string $email, ?int $currentContactId = null): bool
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.organization = :organization')
+            ->setParameter('organization', $orga)
+            ->andWhere('c.email = :email')
+            ->setParameter('email', Contact::normalizeEmail($email))
+            ->setMaxResults(1);
+
+        if ($currentContactId) {
+            $qb->andWhere('c.id != :current')->setParameter('current', $currentContactId);
+        }
+
+        return !empty($qb->getQuery()->getArrayResult());
+    }
+
     public function findOneByAnyEmail(Organization $orga, string $email, bool $onlyMainEmail = false): ?Contact
     {
         $normalized = Contact::normalizeEmail($email);

@@ -27,11 +27,13 @@ class ContactLocatorTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $data = new ContactData();
+        $organization = new Organization('Citipo');
+
+        $data = new ContactData($organization);
         $data->addressCountry = $country ? static::getContainer()->get(AreaRepository::class)->find($country) : null;
         $data->addressZipCode = $zipCode ?: null;
 
-        $contact = new Contact(new Organization('Citipo'), 'example@citipo.com');
+        $contact = new Contact($organization, 'example@citipo.com');
         $contact->applyDataUpdate($data);
 
         $area = static::getContainer()->get(ContactLocator::class)->findContactArea($contact);
