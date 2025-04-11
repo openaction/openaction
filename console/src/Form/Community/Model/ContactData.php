@@ -4,14 +4,25 @@ namespace App\Form\Community\Model;
 
 use App\Entity\Area;
 use App\Entity\Community\Contact;
+use App\Entity\Organization;
 use App\Util\Json;
+use App\Validator\UniqueContactEmail;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+#[UniqueContactEmail(
+    organizationField: 'inOrganization',
+    contactField: 'updatingContact',
+    emailField: 'email',
+)]
 class ContactData
 {
+    // Store organization ID, and optional contact ID being updated, to check for unicity
+    public readonly Organization $inOrganization;
+    public readonly ?Contact $updatingContact;
+
     #[Assert\Email]
     #[Assert\Length(max: 250)]
     public ?string $email = '';
@@ -95,9 +106,15 @@ class ContactData
     public ?string $metadataComment = '';
     public ?string $metadataTags = null;
 
+    public function __construct(Organization $inOrganization, ?Contact $updatingContact = null)
+    {
+        $this->inOrganization = $inOrganization;
+        $this->updatingContact = $updatingContact;
+    }
+
     public static function createFromContact(Contact $contact): self
     {
-        $self = new self();
+        $self = new self($contact->getOrganization(), $contact);
         $self->email = $contact->getEmail();
         $self->additionalEmails = $contact->getContactAdditionalEmails();
         $self->profileFormalTitle = $contact->getProfileFormalTitle();

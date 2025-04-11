@@ -71,7 +71,7 @@ class ContactManageController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
 
-        $data = new ContactData();
+        $data = new ContactData($this->getOrganization());
 
         $form = $this->createForm(ContactType::class, $data, [
             'allow_edit_tags' => $this->getOrganization()->isFeatureInPlan(Features::FEATURE_COMMUNITY_EMAILING_TAGS),
