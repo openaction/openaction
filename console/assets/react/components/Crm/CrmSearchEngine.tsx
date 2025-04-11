@@ -82,6 +82,7 @@ export function CrmSearchEngine(props: Props) {
         tags_names: (v) => v,
         projects: (v) => (props.facetsRegistries ? props.facetsRegistries.projectsNames[v] || '' : v),
         status: (v) => props.itemLabels.status[v],
+        profile_company: (v) => v,
         area_country_code: (v) => countryName(v),
         area_province_name: (v) => v,
         area_district_name: (v) => v,

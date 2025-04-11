@@ -131,6 +131,7 @@ function createControllerComponent(defaultTagFilter: string | null = null) {
                 area_country_code: 'Country',
                 area_province_name: 'Region / State',
                 area_district_name: 'Departement / District',
+                profile_company: 'Company',
                 includeFilter: 'Add this filter',
                 excludeFilter: 'Exclude this filter',
                 cancelFilter: 'Cancel this filter',

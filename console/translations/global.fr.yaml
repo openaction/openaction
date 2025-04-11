@@ -124,6 +124,7 @@ crm:
         country: Pays
         province: Région
         district: Département
+        company: Entreprise
         include: Inclure ce filtre
         exclude: Exclure ce filtre
         cancel: Annuler

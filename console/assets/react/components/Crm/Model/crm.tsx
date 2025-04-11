@@ -56,6 +56,7 @@ enum CrmFacet {
     area_district_name = 'area_district_name',
     tags_names = 'tags_names',
     status = 'status',
+    profile_company = 'profile_company',
     settings_receive_newsletters = 'settings_receive_newsletters',
     settings_receive_sms = 'settings_receive_sms',
     settings_receive_calls = 'settings_receive_calls',
