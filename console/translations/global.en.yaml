@@ -123,6 +123,7 @@ crm:
         country: Country
         province: Province/State
         district: District/County
+        company: Company
         include: Include this filter
         exclude: Exclude this filter
         cancel: Cancel

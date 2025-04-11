@@ -11,6 +11,7 @@ export interface CrmFacetsLabels {
     tags_names: string;
     projects: string;
     status: string;
+    profile_company: string;
     area_country_code: string;
     area_province_name: string;
     area_district_name: string;
@@ -36,18 +37,17 @@ export function CrmFacetsList(props: Props) {
         return <Spinner size={SpinnerSize.SMALL} />;
     }
 
-    let facetsList: CrmFacetName[];
+    let facetsList: CrmFacetName[] = [
+        'tags_names',
+        'status',
+        'profile_company',
+        'area_country_code',
+        'area_province_name',
+        'area_district_name',
+    ];
+
     if (props.showProjectFacet) {
-        facetsList = [
-            'tags_names',
-            'projects',
-            'status',
-            'area_country_code',
-            'area_province_name',
-            'area_district_name',
-        ];
-    } else {
-        facetsList = ['tags_names', 'status', 'area_country_code', 'area_province_name', 'area_district_name'];
+        facetsList.push('projects');
     }
 
     return (

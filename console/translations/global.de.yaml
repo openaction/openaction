@@ -107,6 +107,7 @@ crm:
         country: Land
         province: Bundesland/Staat
         district: Bezirk/Landkreis
+        company: Geschäft
         include: 'Diesen Filter einbeziehen'
         exclude: 'Diesen Filter ausschließen'
         cancel: Abbrechen
