@@ -39,7 +39,7 @@ The project uses Symfony both for Console and Public, with a HTTP API in between
 It also uses StimulusJS and React when it's useful.
 
 OpenAction uses Docker both in development and production.
-
+  
 ## Setup the development environment
 
 To setup the development environment, you need [Docker](https://docs.docker.com/get-docker/) 
