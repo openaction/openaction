@@ -27,7 +27,7 @@ console:
         menu:
             projects: Projekte
             team: Team
-            contacts: Organisation
+            contacts: Kontaktdatenbank
             integrations: Integrationen
             doc: Dokumentation
             help: Unterstützung
