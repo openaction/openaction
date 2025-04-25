@@ -35,7 +35,7 @@ console:
         menu:
             projects: Projets
             team: Équipe
-            contacts: Organisation
+            contacts: Base de contacts
             integrations: Intégrations
             doc: Documentation
             help: Support
