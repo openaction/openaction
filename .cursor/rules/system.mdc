@@ -49,11 +49,11 @@ The CRM takes the data from Meilisearch, which is populated using a system of in
 When developing on the Console, you can run tests by using the following command to ensure everything works as expected:
 
 ```bash
-docker compose run console bin/phpunit
+docker compose exec console bin/phpunit
 ```
 
 Or if you want to run a single test:
 
 ```bash
-docker compose run console bin/phpunit --filter <TestName>
+docker compose exec console bin/phpunit --filter <TestName>
 ```
