@@ -49,15 +49,11 @@ class SendgridMailFactory
             $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
             $personalization->addTo(new To($email));
             $personalization->addCustomArg(new CustomArg('message-uuid', $recipient->getMessageId()));
-
-            if (!empty($contactUuid = $recipient->getVariables()['-contact-id-'] ?? null)) {
-                $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
-                $personalization->addHeader(new Header('List-Unsubscribe', sprintf(
-                    '<mailto:%s?subject=Unsubscribe>, <%s>',
-                    $fromEmail,
-                    $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $contactUuid]),
-                )));
-            }
+            $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
+            $personalization->addHeader(new Header('List-Unsubscribe', sprintf(
+                '<%s>',
+                $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $recipient->getMessageId()]),
+            )));
 
             foreach ($recipient->getVariables() as $name => $substitute) {
                 $personalization->addSubstitution($name, $substitute);

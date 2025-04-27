@@ -197,6 +197,11 @@ class EmailingCampaignMessage
         return $this->bounced;
     }
 
+    public function isUnsubscribed(): bool
+    {
+        return $this->unsubscribed;
+    }
+
     public function getBouncedAt(): ?\DateTime
     {
         return $this->bouncedAt;
