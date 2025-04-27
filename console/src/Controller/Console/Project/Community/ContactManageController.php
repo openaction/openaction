@@ -3,6 +3,7 @@
 namespace App\Controller\Console\Project\Community;
 
 use App\Bridge\Quorum\QuorumInterface;
+use App\Community\ContactLocator;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Community\History\ContactHistoryBuilder;
@@ -16,10 +17,12 @@ use App\Repository\Community\ContactRepository;
 use App\Search\Consumer\RemoveCrmDocumentMessage;
 use App\Search\Consumer\UpdateCrmDocumentsMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Util\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Api\Transformer\Community\ContactTransformer;
 
 #[Route('/console/project/{projectUuid}/community/contacts')]
 class ContactManageController extends AbstractController
@@ -143,5 +146,74 @@ class ContactManageController extends AbstractController
         return $this->redirectToRoute('console_community_contacts', [
             'projectUuid' => $this->getProject()->getUuid(),
         ]);
+    }
+
+    /**
+     * Get contact data as JSON for the drawer UI.
+     */
+    #[Route('/{uuid}/data', name: 'console_community_contacts_data', methods: ['GET'])]
+    public function getContactJson(Contact $contact, ContactTransformer $transformer): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::COMMUNITY_CONTACTS_VIEW, $this->getProject());
+        $this->denyIfSubscriptionExpired();
+
+        if (!$contact->isInProject($this->getProject())) {
+            throw $this->createNotFoundException();
+        }
+
+        // Use the transformer - settings WILL be included as per user request
+        return new JsonResponse($transformer->transform($contact));
+    }
+
+    /**
+     * Update contact data from the drawer UI.
+     */
+    #[Route('/{uuid}', name: 'console_community_contacts_update', methods: ['PATCH'])]
+    public function updateContactJson(Request $request, Contact $contact, CdnUploader $uploader, ContactLocator $locator): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::COMMUNITY_CONTACTS_UPDATE, $this->getProject());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyIfSubscriptionExpired();
+
+        if (!$contact->isInProject($this->getProject())) {
+            throw $this->createNotFoundException();
+        }
+
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\JsonException) {
+            return $this->json(['error' => 'Invalid JSON provided'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $data = ContactData::createFromContact($contact);
+
+        $form = $this->createForm(ContactType::class, $data, [
+            'allow_edit_tags' => $this->getOrganization()->isFeatureInPlan(Features::FEATURE_COMMUNITY_EMAILING_TAGS),
+            'allow_edit_area' => false, // Project view disallows editing area
+            'allow_edit_settings' => false, // Project view disallows editing settings
+            'method' => 'PATCH',
+            'csrf_protection' => false, // Disabled for JSON API endpoint test
+        ]);
+
+        $form->submit($payload, false); // false for partial updates
+
+        if (!$form->isValid()) {
+            return $this->json(['errors' => $this->getFormErrors($form)], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // Apply data updates
+        $contact->applyDataUpdate($data, 'console:project-update');
+        // Don't update area from project context: $contact->setArea($locator->findContactArea($contact));
+
+        $this->em->persist($contact);
+        $this->em->flush();
+
+        $this->repository->updateTags($contact, $data->parseTags());
+
+        // Update CRM search index, sync quorum
+        $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($contact));
+        $this->quorum->persist($contact);
+
+        return $this->json(['success' => true, 'contact_uuid' => $contact->getUuid()->toRfc4122()]);
     }
 }

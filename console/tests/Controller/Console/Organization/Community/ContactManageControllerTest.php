@@ -21,6 +21,7 @@ use SendGrid\Mail\To;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use function PHPUnit\Framework\assertJsonStringEqualsJsonString;
 
 class ContactManageControllerTest extends WebTestCase
 {
@@ -519,5 +520,151 @@ class ContactManageControllerTest extends WebTestCase
          */
         $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/20e51b91-bdec-495d-854d-85d6e74fc75e/view');
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testGetContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+
+        $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'/data');
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+
+        $responseData = Json::decode($client->getResponse()->getContent());
+
+        $this->assertSame('olivie.gregoire@gmail.com', $responseData['email']);
+        $this->assertSame('Olivie', $responseData['profileFirstName']);
+        $this->assertSame('Gregoire', $responseData['profileLastName']);
+        $this->assertSame(['ExampleTag', 'StartWithTag'], $responseData['metadataTags']);
+        $this->assertTrue($responseData['settingsReceiveNewsletters']);
+        $this->assertIsArray($responseData['settingsByProject']);
+        $this->assertCount(3, $responseData['settingsByProject']); // Check settings are refreshed
+    }
+
+    public function testGetContactJsonForbidden()
+    {
+        $client = static::createClient();
+        $this->authenticate($client); // Authenticate as default user (Citipo orga)
+
+        // Use UUID of contact from another organization (ACME)
+        $contactUuid = '851363e5-c97f-4c04-ba83-d98b802332c6'; // julien.dubois@exampleco.com
+
+        $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'/data');
+
+        // ParamConverter fails to find the entity across orgas, resulting in 404
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    public function testUpdateContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+        $contactRepo = static::getContainer()->get(ContactRepository::class);
+
+        /** @var Contact $contact */
+        $contact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Olivie', $contact->getProfileFirstName());
+        $this->assertNull($contact->getMetadataComment());
+        $this->assertTrue($contact->hasSettingsReceiveCalls());
+
+        // Fetch existing tag details to avoid unique constraint violation
+        /** @var Tag $existingTag */
+        $existingTag = static::getContainer()->get(TagRepository::class)->findOneBy(['name' => 'ExampleTag', 'organization' => $contact->getOrganization()]);
+
+        $payload = [
+            'profileFirstName' => 'Olivia',
+            'metadataComment' => 'Updated comment',
+            'settingsReceiveCalls' => false, // Test toggling the setting off
+            'metadataTags' => Json::encode([[
+                'id' => $existingTag->getId(),
+                'name' => $existingTag->getName(),
+                'slug' => $existingTag->getSlug(),
+            ]]), // Keep only one tag, providing full structure
+        ];
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertTrue($responseData['success']);
+        $this->assertSame($contactUuid, $responseData['contact_uuid']);
+
+        // Refetch and assert changes
+        static::getContainer()->get('doctrine')->getManager()->clear(); // Clear EM cache
+        $updatedContact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Olivia', $updatedContact->getProfileFirstName()); // Updated
+        $this->assertSame('Updated comment', $updatedContact->getMetadataComment()); // Updated
+        $this->assertSame('Gregoire', $updatedContact->getProfileLastName()); // Unchanged
+        $this->assertFalse($updatedContact->hasSettingsReceiveCalls()); // Updated (toggled off)
+        $this->assertSame('ExampleTag', $updatedContact->getMetadataTagsList()); // Tags updated
+    }
+
+    public function testUpdateContactJsonValidationError()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $payload = [
+            'email' => 'invalid-email',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertNotEmpty($responseData['errors']); // Check that some error was returned
+    }
+
+    public function testUpdateContactJsonForbidden()
+    {
+        $client = static::createClient();
+        $this->authenticate($client); // Authenticate as default user (Citipo orga)
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Use UUID of contact from another organization (ACME)
+        $contactUuid = '851363e5-c97f-4c04-ba83-d98b802332c6'; // julien.dubois@exampleco.com
+
+        $payload = [
+            'profileFirstName' => 'ForbiddenUpdate',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            Json::encode($payload)
+        );
+
+        // ParamConverter fails to find the entity across orgas, resulting in 404
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }

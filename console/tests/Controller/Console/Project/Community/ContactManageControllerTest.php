@@ -14,6 +14,7 @@ use App\Util\Json;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use function PHPUnit\Framework\assertJsonStringEqualsJsonString;
 
 class ContactManageControllerTest extends WebTestCase
 {
@@ -239,5 +240,110 @@ class ContactManageControllerTest extends WebTestCase
         // The view page should return 404
         $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts/38dd80c0-b53e-4c29-806f-d2aeca8edb80/view');
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testProjectGetContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = 'e90c2a1c-9504-497d-8354-c9dabc1ff7a2'; // tchalut@yahoo.fr
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts/'.$contactUuid.'/data');
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+
+        $responseData = Json::decode($client->getResponse()->getContent());
+
+        $this->assertSame('tchalut@yahoo.fr', $responseData['email']);
+        $this->assertSame('Théodore', $responseData['profileFirstName']);
+        $this->assertSame('Chalut', $responseData['profileLastName']);
+        $this->assertSame(['ContainsTagInside'], $responseData['metadataTags']);
+        $this->assertArrayHasKey('settingsReceiveNewsletters', $responseData);
+        $this->assertArrayHasKey('settingsByProject', $responseData);
+        $this->assertIsArray($responseData['settingsByProject']);
+    }
+
+    public function testProjectGetContactJsonForbidden()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Contact exists but is not in this project
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts/'.$contactUuid.'/data');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND); // Check for not found as controller checks isInProject()
+    }
+
+    public function testProjectUpdateContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = 'e90c2a1c-9504-497d-8354-c9dabc1ff7a2'; // tchalut@yahoo.fr
+        $contactRepo = static::getContainer()->get(ContactRepository::class);
+
+        /** @var Contact $contact */
+        $contact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Théodore', $contact->getProfileFirstName());
+        $this->assertNull($contact->getAddressZipCode());
+        $this->assertNull($contact->getMetadataComment());
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $payload = [
+            'profileFirstName' => 'Theo',
+            'metadataComment' => 'Updated comment',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertTrue($responseData['success']);
+        $this->assertSame($contactUuid, $responseData['contact_uuid']);
+
+        // Refetch and assert changes
+        static::getContainer()->get('doctrine')->getManager()->clear();
+        $updatedContact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Theo', $updatedContact->getProfileFirstName()); // Updated
+        $this->assertSame('Updated comment', $updatedContact->getMetadataComment()); // Updated
+        $this->assertSame('Chalut', $updatedContact->getProfileLastName()); // Unchanged
+    }
+
+    public function testProjectUpdateContactJsonValidationError()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = 'e90c2a1c-9504-497d-8354-c9dabc1ff7a2'; // tchalut@yahoo.fr
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $payload = [
+            'email' => 'invalid-email',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertArrayHasKey('errors', $responseData);
+        $this->assertNotEmpty($responseData['errors']); // Check that some error was returned
     }
 }

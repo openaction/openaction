@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Util\Json;
+use App\Api\Transformer\Community\ContactTransformer;
 
 #[Route('/console/organization/{organizationUuid}/community/contacts')]
 class ContactManageController extends AbstractController
@@ -193,5 +195,73 @@ class ContactManageController extends AbstractController
         return $this->redirectToRoute('console_organization_community_contacts', [
             'organizationUuid' => $this->getOrganization()->getUuid(),
         ]);
+    }
+
+    /**
+     * Get contact data as JSON for the drawer UI.
+     */
+    #[Route('/{uuid}/data', name: 'console_organization_community_contacts_data', methods: ['GET'])]
+    public function getContactJson(Contact $contact, ContactTransformer $transformer): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyUnlessSameOrganization($contact);
+
+        // Refresh settings before serializing
+        $this->contactRepository->refreshContactSettings($contact);
+
+        return new JsonResponse($transformer->transform($contact));
+    }
+
+    /**
+     * Update contact data from the drawer UI.
+     */
+    #[Route('/{uuid}', name: 'console_organization_community_contacts_update', methods: ['PATCH'])]
+    public function updateContactJson(Request $request, Contact $contact, CdnUploader $uploader): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyUnlessSameOrganization($contact);
+
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\JsonException) {
+            return $this->json(['error' => 'Invalid JSON provided'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $data = ContactData::createFromContact($contact);
+
+        $form = $this->createForm(ContactType::class, $data, [
+            'allow_edit_tags' => $this->getOrganization()->isFeatureInPlan(Features::FEATURE_COMMUNITY_EMAILING_TAGS),
+            'allow_edit_area' => true,
+            'allow_edit_settings' => true,
+            'method' => 'PATCH',
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($payload, false); // false for partial updates
+
+        if (!$form->isValid()) {
+            // Return form errors in a structured way for the frontend
+            return $this->json(['errors' => $this->getFormErrors($form)], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // Skip picture update via JSON PATCH, handle via separate mechanism if needed
+        // $data->picture will likely be null or invalid here
+
+        // Apply data updates
+        $contact->applyDataUpdate($data, 'console:orga-update');
+        $contact->setArea($this->locator->findContactArea($contact));
+
+        $this->em->persist($contact);
+        $this->em->flush();
+
+        $this->contactRepository->updateTags($contact, $data->parseTags());
+
+        // Update CRM search index, trigger integrations
+        $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($contact));
+        $this->quorum->persist($contact);
+        $this->integromat->triggerWebhooks($contact);
+
+        return $this->json(['success' => true, 'contact_uuid' => $contact->getUuid()->toRfc4122()]);
     }
 }
