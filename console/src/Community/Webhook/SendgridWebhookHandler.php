@@ -70,6 +70,7 @@ final class SendgridWebhookHandler implements MessageHandlerInterface
     {
         $this->handleMessageEvent($payload, static function (EmailingCampaignMessage $message) {
             $message->markBounced();
+            $message->markUnsubscribed();
             $message->getContact()->updateNewsletterSubscription(subscribed: false, source: 'sendgrid:bounced');
         });
     }
@@ -87,6 +88,7 @@ final class SendgridWebhookHandler implements MessageHandlerInterface
     public function onMessageUnsubscribe(array $payload)
     {
         $this->handleMessageEvent($payload, static function (EmailingCampaignMessage $message) {
+            $message->markUnsubscribed();
             $message->getContact()->updateNewsletterSubscription(subscribed: false, source: 'sendgrid:unsubscribe');
         });
     }
