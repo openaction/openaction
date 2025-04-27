@@ -30,6 +30,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Util\Json;
 use App\Api\Transformer\Community\ContactTransformer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/console/organization/{organizationUuid}/community/contacts')]
 class ContactManageController extends AbstractController
@@ -268,7 +269,7 @@ class ContactManageController extends AbstractController
     }
 
     #[Route('/{uuid}/picture', name: 'console_organization_community_contacts_update_picture', methods: ['POST'])]
-    public function updatePicture(Request $request, Contact $contact, CdnUploader $uploader, CdnRouter $cdnRouter): JsonResponse
+    public function updatePicture(Request $request, Contact $contact, CdnUploader $uploader, CdnRouter $cdnRouter, ValidatorInterface $validator): JsonResponse
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
         $this->denyUnlessSameOrganization($contact);
@@ -277,10 +278,23 @@ class ContactManageController extends AbstractController
 
         $data = new ContactPictureData();
         $form = $this->createForm(ContactPictureType::class, $data);
-        $form->handleRequest($request); // Handles the uploaded file
 
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            return $this->json(['errors' => $this->getFormErrors($form)], Response::HTTP_UNPROCESSABLE_ENTITY);
+        // Manually handle the file upload
+        $uploadedFile = $request->files->get('file'); // Assuming the input name is 'file'
+
+        // Bind the file to the data object for validation
+        $data->file = $uploadedFile;
+
+        // Validate the data object (which includes the file constraints)
+        $errors = $validator->validate($data);
+
+        if (count($errors) > 0) {
+            // Manually format errors similar to getFormErrors or return a simpler structure
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            return $this->json(['errors' => $errorMessages], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         // Upload new picture and update contact
