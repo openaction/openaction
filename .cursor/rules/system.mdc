@@ -19,6 +19,17 @@ It is based on:
 * Modern frontend (directory `console/assets`): Typescript/React/Stimulus/BlueprintJS
 * Legacy frontend (directory `console/assets-legacy`): Javascript/React/Stimulus/Bootstrap
 
+In the Console, there are two JSON APIs and an HTML back-office:
+1/ The external API (used by other companies and partners of OpenAction), located in `console/src/Controller/Api`
+2/ The internal API endpoints (used by OpenAction frontend code to execute things in the backend), located in many
+   different controllers in `console/src/Controller/Console`
+3/ The HTML back-office controllers (rendering OpenAction HTML/CSS/JS frontend), located in many  different controllers
+   under `console/src/Controller/Console`
+
+When updating the Console to add interactivity or new Typescript behaviors, you will likely need to create new API
+endooints. Unless explicitely requested by the user, never update the external API: always add/update endpoints in
+the internal API (in `console/src/Controller/Console`).
+
 ## Public
 
 The `public` directory stores the Symfony application serving HTML based on the content and configuration of customers projects. It calls the Console using an API and serves many different domains using the same code.
