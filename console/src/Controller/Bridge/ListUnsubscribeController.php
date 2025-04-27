@@ -2,35 +2,51 @@
 
 namespace App\Controller\Bridge;
 
-use App\Community\Webhook\ListUnsubscribeWebhookMessage;
 use App\Controller\AbstractController;
 use App\Proxy\DomainRouter;
 use App\Repository\Community\ContactRepository;
+use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ListUnsubscribeController extends AbstractController
 {
     public function __construct(
-        private readonly ContactRepository $repository,
+        private readonly ContactRepository $contactRepository,
+        private readonly EmailingCampaignMessageRepository $messageRepository,
         private readonly ProjectRepository $projectRepository,
         private readonly DomainRouter $domainRouter,
-        private readonly MessageBusInterface $bus,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
     #[Route('/webhook/list-unsubscribe/{contactUuid}', name: 'webhook_list_unsubscribe', methods: ['POST'], stateless: true)]
     public function webhook(string $contactUuid): Response
     {
-        $contact = $this->repository->findOneByBase62Uid($contactUuid);
+        $contact = $this->contactRepository->findOneByBase62Uid($contactUuid);
+        $message = null;
+
         if (!$contact) {
-            throw $this->createNotFoundException();
+            $message = $this->messageRepository->find($contactUuid);
+            if (!$message) {
+                throw $this->createNotFoundException();
+            }
+
+            $contact = $message->getContact();
         }
 
-        $this->bus->dispatch(new ListUnsubscribeWebhookMessage($contactUuid));
+        $contact->updateNewsletterSubscription(subscribed: false, source: 'list:unsubscribe');
+        $this->em->persist($contact);
+
+        if ($message) {
+            $message->markUnsubscribed();
+            $this->em->persist($message);
+        }
+
+        $this->em->flush();
 
         if ($project = $this->projectRepository->findMainWebsiteProjectForOrganization($contact->getOrganization())) {
             return new RedirectResponse($this->domainRouter->generateUrl($project, '/newsletter?unsubscribe=1'));

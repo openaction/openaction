@@ -51,7 +51,8 @@ class SendgridWebhookHandlerTest extends KernelTestCase
         $message = $this->findMessage([]);
         $this->executeHandler([['event' => 'unsubscribe', 'message-uuid' => $message->getId()]]);
 
-        $this->assertNotNull($this->refreshMessage($message));
+        $this->assertTrue($this->refreshMessage($message)->isUnsubscribed());
+        $this->assertFalse($this->refreshMessage($message)->getContact()->hasSettingsReceiveNewsletters());
     }
 
     public function testSpamreport()
@@ -61,7 +62,8 @@ class SendgridWebhookHandlerTest extends KernelTestCase
         $message = $this->findMessage([]);
         $this->executeHandler([['event' => 'spamreport', 'message-uuid' => $message->getId()]]);
 
-        $this->assertNotNull($this->refreshMessage($message));
+        $this->assertTrue($this->refreshMessage($message)->isUnsubscribed());
+        $this->assertFalse($this->refreshMessage($message)->getContact()->hasSettingsReceiveNewsletters());
     }
 
     public function testBounce()
@@ -72,6 +74,8 @@ class SendgridWebhookHandlerTest extends KernelTestCase
         $this->executeHandler([['event' => 'bounce', 'message-uuid' => $message->getId()]]);
 
         $this->assertTrue($this->refreshMessage($message)->isBounced());
+        $this->assertTrue($this->refreshMessage($message)->isUnsubscribed());
+        $this->assertFalse($this->refreshMessage($message)->getContact()->hasSettingsReceiveNewsletters());
     }
 
     public function testDropped()
@@ -82,6 +86,8 @@ class SendgridWebhookHandlerTest extends KernelTestCase
         $this->executeHandler([['event' => 'dropped', 'message-uuid' => $message->getId()]]);
 
         $this->assertTrue($this->refreshMessage($message)->isBounced());
+        $this->assertTrue($this->refreshMessage($message)->isUnsubscribed());
+        $this->assertFalse($this->refreshMessage($message)->getContact()->hasSettingsReceiveNewsletters());
     }
 
     private function findMessage(array $criteria): ?EmailingCampaignMessage
