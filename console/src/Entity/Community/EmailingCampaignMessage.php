@@ -43,6 +43,9 @@ class EmailingCampaignMessage
     #[ORM\Column(type: 'boolean')]
     private bool $clicked = false;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $unsubscribed = false;
+
     /**
      * @var EmailingCampaignMessageLog[]|Collection
      */
@@ -78,6 +81,10 @@ class EmailingCampaignMessage
             for ($i = 0; $i < $data['clicked']; ++$i) {
                 $self->markClicked();
             }
+        }
+
+        if ($data['unsubscribed'] ?? false) {
+            $self->markBounced();
         }
 
         return $self;
@@ -121,6 +128,16 @@ class EmailingCampaignMessage
 
         $this->clicked = true;
         $this->logs->add(new EmailingCampaignMessageLog($this, EmailingCampaignMessageLog::TYPE_CLICK));
+    }
+
+    public function markUnsubscribed()
+    {
+        if (!$this->sent) {
+            $this->markSent();
+        }
+
+        $this->unsubscribed = true;
+        $this->logs->add(new EmailingCampaignMessageLog($this, EmailingCampaignMessageLog::TYPE_UNSUBSCRIBE));
     }
 
     public function getOpenedAt(): ?\DateTime

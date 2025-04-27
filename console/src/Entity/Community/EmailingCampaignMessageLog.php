@@ -14,6 +14,7 @@ class EmailingCampaignMessageLog
 
     public const TYPE_OPEN = 'open';
     public const TYPE_CLICK = 'click';
+    public const TYPE_UNSUBSCRIBE = 'unsubscribe';
 
     #[ORM\ManyToOne(targetEntity: EmailingCampaignMessage::class, inversedBy: 'logs')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
