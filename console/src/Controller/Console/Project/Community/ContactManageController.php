@@ -201,18 +201,19 @@ class ContactManageController extends AbstractController
             return $this->json(['errors' => $this->getFormErrors($form)], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        // Apply data updates
-        $contact->applyDataUpdate($data, 'console:project-update');
-        // Don't update area from project context: $contact->setArea($locator->findContactArea($contact));
+        // The ContactData object $data now holds the submitted and validated values
+        $contact->applyDataUpdate($data); // Removed source argument
+        // Area updates are disallowed in the project context form config, so no need to call setArea/locator here
 
         $this->em->persist($contact);
         $this->em->flush();
 
+        // Update tags based on ContactData
         $this->repository->updateTags($contact, $data->parseTags());
 
         // Update CRM search index, sync quorum
         $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($contact));
-        $this->quorum->persist($contact);
+        $this->quorum->persist($contact); // Quorum sync might still be relevant in project context
 
         return $this->json(['success' => true, 'contact_uuid' => $contact->getUuid()->toRfc4122()]);
     }

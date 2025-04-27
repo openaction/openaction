@@ -255,13 +255,65 @@ class ContactManageControllerTest extends WebTestCase
 
         $responseData = Json::decode($client->getResponse()->getContent());
 
-        $this->assertSame('tchalut@yahoo.fr', $responseData['email']);
-        $this->assertSame('Théodore', $responseData['profileFirstName']);
-        $this->assertSame('Chalut', $responseData['profileLastName']);
-        $this->assertSame(['ContainsTagInside'], $responseData['metadataTags']);
-        $this->assertArrayHasKey('settingsReceiveNewsletters', $responseData);
-        $this->assertArrayHasKey('settingsByProject', $responseData);
-        $this->assertIsArray($responseData['settingsByProject']);
+        $expectedPayload = [
+            '_resource' => 'Contact',
+            'id' => '75klpBHn7DottVkejf0LDu', // Base62 of e90c2a1c-9504-497d-8354-c9dabc1ff7a2
+            'organizationId' => self::ORGA_CITIPO_UUID,
+            'email' => 'tchalut@yahoo.fr',
+            'additionalEmails' => [],
+            'picture' => 'https://www.gravatar.com/avatar/6a0ee01e6bb5653ed43ad71195571643?d=mp&s=800',
+            'isMember' => false,
+            'profileFormalTitle' => null,
+            'profileFirstName' => 'Théodore',
+            'profileMiddleName' => null,
+            'profileLastName' => 'Chalut',
+            'profileBirthdate' => null,
+            'profileGender' => null,
+            'profileNationality' => null,
+            'profileCompany' => null,
+            'profileJobTitle' => null,
+            'accountLanguage' => 'en',
+            'contactPhone' => '+33 7 57 59 46 29',
+            'contactWorkPhone' => null,
+            'parsedContactPhone' => '+33 7 57 59 46 29',
+            'parsedContactWorkPhone' => null,
+            'socialFacebook' => null,
+            'socialTwitter' => '@theodorechalut',
+            'socialLinkedIn' => 'theodore.chalut',
+            'socialTelegram' => null,
+            'socialWhatsapp' => '+33600000000',
+            'addressStreetNumber' => null,
+            'addressStreetLine1' => null,
+            'addressStreetLine2' => null,
+            'addressZipCode' => null,
+            'addressCity' => null,
+            'addressCountry' => null,
+            'area' => [
+                'id' => '39389989938296926', // 92110 area ID
+                'name' => '92110',
+            ],
+            'settingsReceiveNewsletters' => false, // Fixture data
+            'settingsReceiveSms' => false,         // Fixture data
+            'settingsReceiveCalls' => false,         // Fixture data
+            'settingsByProject' => [], // Project-specific settings not typically loaded by default here
+            'metadataTags' => ['ContainsTagInside'],
+            'metadataSource' => 'Api test',
+            'metadataComment' => null,
+            'metadataCustomFields' => [],
+            'createdAt' => '2021-05-13T09:38:11+00:00', // Assuming fixture data timestamp
+        ];
+
+        // Remove fields that might change dynamically
+        unset($responseData['picture']);
+        unset($responseData['createdAt']);
+        unset($expectedPayload['picture']);
+        unset($expectedPayload['createdAt']);
+
+        // Sort tags for consistent comparison
+        sort($responseData['metadataTags']);
+        sort($expectedPayload['metadataTags']);
+
+        assertJsonStringEqualsJsonString(Json::encode($expectedPayload), Json::encode($responseData));
     }
 
     public function testProjectGetContactJsonForbidden()
@@ -290,13 +342,15 @@ class ContactManageControllerTest extends WebTestCase
         $this->assertNull($contact->getAddressZipCode());
         $this->assertNull($contact->getMetadataComment());
 
-        // Fetch CSRF token from the list page
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts');
         $token = $this->filterGlobalCsrfToken($crawler);
 
         $payload = [
             'profileFirstName' => 'Theo',
             'metadataComment' => 'Updated comment',
+            'additionalEmails' => ['theo.new@example.com'],
+            // Address/Area cannot be updated from project context
+            // Settings cannot be updated from project context
         ];
 
         $client->request(
@@ -317,6 +371,7 @@ class ContactManageControllerTest extends WebTestCase
         $this->assertSame('Theo', $updatedContact->getProfileFirstName()); // Updated
         $this->assertSame('Updated comment', $updatedContact->getMetadataComment()); // Updated
         $this->assertSame('Chalut', $updatedContact->getProfileLastName()); // Unchanged
+        $this->assertSame(['theo.new@example.com'], $updatedContact->getContactAdditionalEmails()); // Additional emails updated
     }
 
     public function testProjectUpdateContactJsonValidationError()
@@ -326,7 +381,6 @@ class ContactManageControllerTest extends WebTestCase
 
         $contactUuid = 'e90c2a1c-9504-497d-8354-c9dabc1ff7a2'; // tchalut@yahoo.fr
 
-        // Fetch CSRF token from the list page
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/contacts');
         $token = $this->filterGlobalCsrfToken($crawler);
 
