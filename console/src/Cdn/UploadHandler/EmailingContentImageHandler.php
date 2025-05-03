@@ -27,7 +27,7 @@ class EmailingContentImageHandler implements UploadedImageHandlerInterface
             $constraint->upsize();
         });
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $canvas->encode('jpg', quality: 80);
+        $file->setStorageContent($canvas->getEncoded(), 'jpg');
     }
 }
