@@ -10,6 +10,7 @@ use App\Security\Csrf\GlobalCsrfTokenManager;
 use App\Security\TwoFactor\TwoFactorAuthRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormInterface;
 
 abstract class AbstractController extends BaseController
 {
@@ -115,5 +116,33 @@ abstract class AbstractController extends BaseController
         return array_merge(parent::getSubscribedServices(), [
             GlobalCsrfTokenManager::class => GlobalCsrfTokenManager::class,
         ]);
+    }
+
+    /**
+     * Helper to extract form errors into a structured array.
+     * Note: This is a simplified version. Getting exact field names reliably
+     * for nested forms and complex errors can be tricky.
+     */
+    protected function getFormErrors(FormInterface $form): array
+    {
+        $errors = [];
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        // Also collect errors from children explicitly
+        foreach ($form->all() as $child) {
+            if ($child instanceof FormInterface) {
+                $childErrors = $this->getFormErrors($child);
+                if (!empty($childErrors)) {
+                    // Prepend child name to make it somewhat identifiable
+                    foreach($childErrors as $childError) {
+                        $errors[] = $child->getName() . ': ' . $childError;
+                    }
+                }
+            }
+        }
+
+        return $errors;
     }
 }
