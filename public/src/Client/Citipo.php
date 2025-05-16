@@ -4,13 +4,10 @@ namespace App\Client;
 
 use App\Client\Model\ApiCollection;
 use App\Client\Model\ApiResource;
-use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Citipo implements CitipoInterface
@@ -19,13 +16,11 @@ class Citipo implements CitipoInterface
 
     private HttpClientInterface $httpClient;
     private RequestStack $requestStack;
-    private CacheItemPoolInterface $cache;
 
-    public function __construct(HttpClientInterface $citipo, RequestStack $requestStack, CacheItemPoolInterface $cache)
+    public function __construct(HttpClientInterface $citipo, RequestStack $requestStack)
     {
         $this->httpClient = $citipo;
         $this->requestStack = $requestStack;
-        $this->cache = $cache;
     }
 
     public function getProject(string $apiToken): ?ApiResource
@@ -40,7 +35,7 @@ class Citipo implements CitipoInterface
 
     public function getPagesCategories(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/pages-categories', $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/pages-categories', $apiToken));
     }
 
     public function getPage(string $apiToken, string $id): ?ApiResource
@@ -50,12 +45,12 @@ class Citipo implements CitipoInterface
 
     public function getPostsCategories(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/posts-categories', $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/posts-categories', $apiToken));
     }
 
     public function getPosts(string $apiToken, int $page, string $category = null, string $author = null): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/posts?page='.$page.'&category='.$category.'&author='.$author, $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/posts?page='.$page.'&category='.$category.'&author='.$author, $apiToken));
     }
 
     public function getPost(string $apiToken, string $id): ?ApiResource
@@ -65,12 +60,12 @@ class Citipo implements CitipoInterface
 
     public function getEventsCategories(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/events-categories', $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/events-categories', $apiToken));
     }
 
     public function getEvents(string $apiToken, int $page, string $category = null, string $participant = null, bool $archived = false): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/events?page='.$page.'&category='.$category.'&participant='.$participant.'&archived='.($archived ? '1' : '0'), $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/events?page='.$page.'&category='.$category.'&participant='.$participant.'&archived='.($archived ? '1' : '0'), $apiToken));
     }
 
     public function getEvent(string $apiToken, string $id): ?ApiResource
@@ -80,7 +75,7 @@ class Citipo implements CitipoInterface
 
     public function getTrombinoscope(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/trombinoscope', $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/trombinoscope', $apiToken));
     }
 
     public function getTrombinoscopePerson(string $apiToken, string $id): ?ApiResource
@@ -90,17 +85,17 @@ class Citipo implements CitipoInterface
 
     public function getManifesto(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/manifesto', $apiToken, nullable: false));
+        return $this->parseCollection($this->request('GET', '/api/website/manifesto', $apiToken));
     }
 
     public function getManifestoTopic(string $apiToken, string $id): ?ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/website/manifesto/'.$id.'?includes=previous,next', $apiToken, nullable: false));
+        return $this->parseResource($this->request('GET', '/api/website/manifesto/'.$id.'?includes=previous,next', $apiToken));
     }
 
     public function getDocument(string $apiToken, string $id): ?ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/website/documents/'.$id, $apiToken, nullable: false));
+        return $this->parseResource($this->request('GET', '/api/website/documents/'.$id, $apiToken));
     }
 
     public function persistContact(string $apiToken, array $payload): ApiResource
@@ -130,7 +125,7 @@ class Citipo implements CitipoInterface
 
     public function validateArea(string $apiToken, string $country, string $zipCode): ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/areas/validate/'.$country.'/'.$zipCode, $apiToken, nullable: false));
+        return $this->parseResource($this->request('GET', '/api/areas/validate/'.$country.'/'.$zipCode, $apiToken));
     }
 
     public function getContact(string $apiToken, string $id): ?ApiResource
@@ -140,7 +135,7 @@ class Citipo implements CitipoInterface
 
     public function getContactStatus(string $apiToken, string $email): ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/community/contacts/status/'.$email, $apiToken, nullable: false));
+        return $this->parseResource($this->request('GET', '/api/community/contacts/status/'.$email, $apiToken));
     }
 
     public function getForm(string $apiToken, string $id): ?ApiResource
@@ -381,38 +376,17 @@ class Citipo implements CitipoInterface
         $options['auth_bearer'] = $apiToken;
         $options['headers']['X-Parent-Ray'] = $ray;
 
-        $consoleFallbackKey = 'content-fallback-'.md5(implode('-', [$apiToken, $url, json_encode($options, flags: \JSON_THROW_ON_ERROR)]));
-
         $response = $this->httpClient->request($method, $url, $options);
 
-        try {
-            $data = $response->toArray();
-
-            if ('GET' === $method) {
-                // Populate Redis fallback for 6 hours
-                $item = $this->cache->getItem($consoleFallbackKey);
-                $item->set($data);
-                $item->expiresAfter(6 * 3600);
-                $this->cache->save($item);
+        if ($response->getStatusCode() >= 300) {
+            if ($nullable) {
+                return null;
             }
 
-            return $data;
-        } catch (ServerExceptionInterface|TransportException $e) {
-            // Server or network HTTP error (5XX or timeout) => try Redis fallback, throw exception if not available
-            if ($this->cache->hasItem($consoleFallbackKey)) {
-                $item = $this->cache->getItem($consoleFallbackKey);
-
-                return $item->get();
-            }
-        } catch (\Throwable $e) {
-            // Client HTTP error (4XX) or any other error => no Redis fallback, throw exception
+            throw new \RuntimeException(sprintf("Citipo API request failed:\nHTTP %s\n%s", $response->getStatusCode(), substr($response->getContent(false), 0, 200)));
         }
 
-        if ($nullable) {
-            return null;
-        }
-
-        throw new \RuntimeException(sprintf("Citipo API request failed:\nHTTP %s\n%s", $response->getStatusCode(), substr($response->getContent(false), 0, 200)), previous: $e);
+        return $response->toArray();
     }
 
     private function parseCollection(array $data): ApiCollection
