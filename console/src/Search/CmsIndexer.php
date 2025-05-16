@@ -73,14 +73,16 @@ class CmsIndexer
 
     public function configureIndex(): void
     {
-        $task = $this->meilisearch->createIndex(
-            self::INDEX_NAME,
-            ['encoded_uuid', 'title', 'content'],
-            ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
-            ['date', 'title', 'status'],
-        );
+        if (!$this->meilisearch->indexExists(self::INDEX_NAME)) {
+            $task = $this->meilisearch->createIndex(
+                self::INDEX_NAME,
+                ['encoded_uuid', 'title', 'content'],
+                ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
+                ['date', 'title', 'status'],
+            );
 
-        $this->meilisearch->waitForTasks([$task], 30_000, 500);
+            $this->meilisearch->waitForTasks([$task], 30_000, 500);
+        }
     }
 
     public function indexDocuments(array $documents): void
