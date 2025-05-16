@@ -1,6 +1,7 @@
 parameters:
     demo_user: '%env(APP_DEMO_USER)%'
     is_on_premise: '%env(bool:APP_ONPREMISE)%'
+    is_in_maintenance: '%env(bool:APP_IN_MAINTENANCE)%'
     default_plan: '%env(APP_DEFAULT_PLAN)%'
     default_party: '%env(APP_DEFAULT_PARTY)%'
     default_partner: '%env(APP_DEFAULT_PARTNER)%'

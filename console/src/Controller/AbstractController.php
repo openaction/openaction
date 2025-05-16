@@ -6,6 +6,7 @@ use App\Billing\Expiration\ExpiredSubscriptionException;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Maintenance\ActiveMaintenanceException;
 use App\Security\Csrf\GlobalCsrfTokenManager;
 use App\Security\TwoFactor\TwoFactorAuthRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
@@ -76,6 +77,10 @@ abstract class AbstractController extends BaseController
 
         if (!$orga->isSubscriptionActive()) {
             throw new ExpiredSubscriptionException($orga);
+        }
+
+        if ($this->getParameter('is_in_maintenance')) {
+            throw new ActiveMaintenanceException();
         }
     }
 

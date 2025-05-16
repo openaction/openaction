@@ -1,0 +1,33 @@
+{% extends 'console/organization/base.html.twig' %}
+
+{% block page_title 'Citipo est en cours de maintenance' %}
+
+{% block content %}
+    <div class="pb-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="text-center mt-5 pt-5 mb-4">
+                    <h4 class="text-center mb-4">
+                        Citipo est en cours de maintenance
+                    </h4>
+
+                    <div class="text-muted mb-2">
+                        Cette intervention est nécessaire pour améliorer la performance et la stabilité de nos services.
+                    </div>
+
+                    <div class="text-muted mb-5">
+                        Nous serons de retour d'ici peu de temps !
+                    </div>
+
+                    <div class="mb-2">
+                        Nous vous remercions pour votre compréhension et restons à votre disposition en cas de question.
+                    </div>
+
+                    <a href="mailto:{{ platform_email }}" class="btn btn-primary">
+                        {{ platform_email }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
