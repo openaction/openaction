@@ -138,6 +138,7 @@ class ProjectTransformer extends AbstractTransformer
             'socialSharers' => [
                 'facebook' => $project->getSocialSharers()->isEnabled(SocialSharers::FACEBOOK),
                 'twitter' => $project->getSocialSharers()->isEnabled(SocialSharers::TWITTER),
+                'bluesky' => $project->getSocialSharers()->isEnabled(SocialSharers::BLUESKY),
                 'linkedin' => $project->getSocialSharers()->isEnabled(SocialSharers::LINKEDIN),
                 'telegram' => $project->getSocialSharers()->isEnabled(SocialSharers::TELEGRAM),
                 'whatsapp' => $project->getSocialSharers()->isEnabled(SocialSharers::WHATSAPP),

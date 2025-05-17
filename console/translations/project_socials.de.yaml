@@ -24,6 +24,7 @@ sharers:
     label_help: 'Soziale Links sind Werkzeuge, die es Ihren Besuchern ermöglichen, Inhalte auf einfache Weise in ihren sozialen Netzwerken zu teilen.'
     facebook: 'Auf Facebook teilen'
     twitter: 'Auf X teilen'
+    bluesky: 'Auf Bluesky teilen'
     linkedin: 'Auf LinkedIn teilen'
     telegram: 'Auf Telegramm teilen'
     whatsapp: 'Auf Whatsapp teilen'
