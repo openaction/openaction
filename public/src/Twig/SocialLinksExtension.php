@@ -20,6 +20,7 @@ class SocialLinksExtension extends AbstractExtension
         return [
             new TwigFunction('facebook_url', [$this, 'generateFacebookUrl']),
             new TwigFunction('twitter_url', [$this, 'generateTwitterUrl']),
+            new TwigFunction('bluesky_url', [$this, 'generateBlueskyUrl']),
             new TwigFunction('linkedin_url', [$this, 'generateLinkedInUrl']),
             new TwigFunction('telegram_url', [$this, 'generateTelegramUrl']),
             new TwigFunction('whatsapp_url', [$this, 'generateWhatsAppUrl']),
@@ -35,6 +36,11 @@ class SocialLinksExtension extends AbstractExtension
     public function generateTwitterUrl(string $name, array $params = []): string
     {
         return 'https://twitter.com/intent/tweet?text='.$this->generateUrlToShare($name, $params);
+    }
+
+    public function generateBlueskyUrl(string $name, array $params = []): string
+    {
+        return 'https://bsky.app/intent/compose?text='.$this->generateUrlToShare($name, $params);
     }
 
     public function generateLinkedInUrl(string $name, array $params = []): string

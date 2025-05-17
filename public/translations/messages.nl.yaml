@@ -80,7 +80,8 @@ gdpr:
 
 share:
     facebook: Deel op Facebook
-    twitter: Deel op Twitter
+    twitter: Deel op X
+    bluesky: Deel op Bluesky
     linkedin: Deel op LinkedIn
     telegram: Deel op Telegram
     whatsapp: Deel op Whatsapp
@@ -89,7 +90,7 @@ share:
 socials:
     rss: RSS-feed
     facebook: Vind ons op Facebook
-    twitter: Vind ons op Twitter
+    twitter: Vind ons op X
     instagram: Vind ons op Instagram
     linkedin: Vind ons op LinkedIn
     youtube: Vind ons op Youtube

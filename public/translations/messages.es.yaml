@@ -79,7 +79,8 @@ gdpr:
 
 share:
     facebook: Compartir en Facebook
-    twitter: Compartir en Twitter
+    twitter: Compartir en X
+    bluesky: Compartir en Bluesky
     linkedin: Compartir en LinkedIn
     telegram: Compartir en Telegram
     whatsapp: Compartir en Whatsapp
@@ -88,7 +89,7 @@ share:
 socials:
     rss: Canal RSS
     facebook: Encuéntranos en Facebook
-    twitter: Encuéntranos en Twitter
+    twitter: Encuéntranos en X
     instagram: Encuéntranos en Instagram
     linkedin: Encuéntranos en LinkedIn
     youtube: Encuéntranos en Youtube

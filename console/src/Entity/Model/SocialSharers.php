@@ -6,6 +6,7 @@ class SocialSharers
 {
     public const FACEBOOK = 'facebook';
     public const TWITTER = 'twitter';
+    public const BLUESKY = 'bluesky';
     public const LINKEDIN = 'linkedin';
     public const TELEGRAM = 'telegram';
     public const WHATSAPP = 'whatsapp';
@@ -33,6 +34,7 @@ class SocialSharers
         return [
             self::FACEBOOK,
             self::TWITTER,
+            self::BLUESKY,
             self::LINKEDIN,
             self::TELEGRAM,
             self::WHATSAPP,
