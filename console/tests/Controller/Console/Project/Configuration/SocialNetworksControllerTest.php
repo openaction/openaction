@@ -115,12 +115,14 @@ class SocialNetworksControllerTest extends WebTestCase
                 false,
                 false,
                 false,
+                false,
                 'email',
             ],
         ];
 
         yield 'message' => [
             [
+                false,
                 false,
                 false,
                 false,
