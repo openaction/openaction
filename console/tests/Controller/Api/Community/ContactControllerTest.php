@@ -315,6 +315,21 @@ class ContactControllerTest extends ApiTestCase
             'expectedTagAutomation' => true,
         ];
 
+        yield 'newContactGeorgianEmail' => [
+            'json' => Json::encode([
+                'email' => 'გი@gpe.de',
+                'metadataSource' => 'API test',
+            ]),
+            'expectedParsedContactPhone' => null,
+            'expectedParsedContactWorkPhone' => null,
+            'expectedCode' => Response::HTTP_OK,
+            'expectedArea' => null,
+            'expectedAdminAutomation' => true,
+            'expectedWelcomeAutomation' => false,
+            'expectedRegisterConfirm' => false,
+            'expectedTagAutomation' => false,
+        ];
+
         yield 'newContactNoEmail' => [
             'json' => Json::encode([
                 'profileFormalTitle' => 'Mr',
@@ -459,7 +474,7 @@ class ContactControllerTest extends ApiTestCase
         ?string $expectedParsedContactPhone,
         ?string $expectedParsedContactWorkPhone,
         int $expectedCode,
-        string $expectedArea,
+        ?string $expectedArea,
         bool $expectedAdminAutomation,
         bool $expectedWelcomeAutomation,
         bool $expectedRegisterConfirm,
@@ -482,36 +497,36 @@ class ContactControllerTest extends ApiTestCase
 
         $this->assertInstanceOf(Contact::class, $contact);
         $this->assertSame(!empty($expectedData['email']) ? strtolower($expectedData['email']) : null, $contact->getEmail());
-        $this->assertSame($expectedData['profileFormalTitle'], $contact->getProfileFormalTitle());
-        $this->assertSame($expectedData['profileFirstName'], $contact->getProfileFirstName());
-        $this->assertSame($expectedData['profileMiddleName'], $contact->getProfileMiddleName());
-        $this->assertSame($expectedData['profileLastName'], $contact->getProfileLastName());
-        $this->assertSame($expectedData['profileBirthdate'], $contact->getProfileBirthdate()->format('Y-m-d'));
-        $this->assertSame($expectedData['profileGender'], $contact->getProfileGender());
-        $this->assertSame($expectedData['profileNationality'], $contact->getProfileNationality());
-        $this->assertSame($expectedData['profileCompany'], $contact->getProfileCompany());
-        $this->assertSame($expectedData['profileJobTitle'], $contact->getProfileJobTitle());
-        $this->assertSame($expectedData['accountLanguage'], $contact->getAccountLanguage());
+        $this->assertSame($expectedData['profileFormalTitle'] ?? null, $contact->getProfileFormalTitle());
+        $this->assertSame($expectedData['profileFirstName'] ?? null, $contact->getProfileFirstName());
+        $this->assertSame($expectedData['profileMiddleName'] ?? null, $contact->getProfileMiddleName());
+        $this->assertSame($expectedData['profileLastName'] ?? null, $contact->getProfileLastName());
+        $this->assertSame($expectedData['profileBirthdate'] ?? null, $contact->getProfileBirthdate()?->format('Y-m-d'));
+        $this->assertSame($expectedData['profileGender'] ?? null, $contact->getProfileGender());
+        $this->assertSame($expectedData['profileNationality'] ?? null, $contact->getProfileNationality());
+        $this->assertSame($expectedData['profileCompany'] ?? null, $contact->getProfileCompany());
+        $this->assertSame($expectedData['profileJobTitle'] ?? null, $contact->getProfileJobTitle());
+        $this->assertSame($expectedData['accountLanguage'] ?? null, $contact->getAccountLanguage());
         $this->assertSame(isset($expectedData['accountPassword']), $contact->isMember());
-        $this->assertSame($expectedData['contactAdditionalEmails'], $contact->getContactAdditionalEmails());
-        $this->assertSame($expectedData['socialFacebook'], $contact->getSocialFacebook());
-        $this->assertSame($expectedData['socialTwitter'], $contact->getSocialTwitter());
-        $this->assertSame($expectedData['socialLinkedIn'], $contact->getSocialLinkedIn());
-        $this->assertSame($expectedData['socialTelegram'], $contact->getSocialTelegram());
-        $this->assertSame($expectedData['socialWhatsapp'], $contact->getSocialWhatsapp());
-        $this->assertSame($expectedData['addressStreetNumber'], $contact->getAddressStreetNumber());
-        $this->assertSame($expectedData['addressStreetLine1'], $contact->getAddressStreetLine1());
-        $this->assertSame($expectedData['addressStreetLine2'], $contact->getAddressStreetLine2());
-        $this->assertSame((string) $expectedData['addressZipCode'], $contact->getAddressZipCode());
-        $this->assertSame(Address::formatCityName($expectedData['addressCity']), $contact->getAddressCity());
-        $this->assertSame(36778547219895752, $contact->getAddressCountry()->getId());
-        $this->assertSame($expectedData['settingsReceiveNewsletters'], $contact->hasSettingsReceiveNewsletters());
-        $this->assertSame($expectedData['settingsReceiveSms'], $contact->hasSettingsReceiveSms());
-        $this->assertSame($expectedData['settingsReceiveCalls'], $contact->hasSettingsReceiveCalls());
-        $this->assertSame($expectedData['metadataCustomFields'], $contact->getMetadataCustomFields());
+        $this->assertSame($expectedData['contactAdditionalEmails'] ?? [], $contact->getContactAdditionalEmails());
+        $this->assertSame($expectedData['socialFacebook'] ?? null, $contact->getSocialFacebook());
+        $this->assertSame($expectedData['socialTwitter'] ?? null, $contact->getSocialTwitter());
+        $this->assertSame($expectedData['socialLinkedIn'] ?? null, $contact->getSocialLinkedIn());
+        $this->assertSame($expectedData['socialTelegram'] ?? null, $contact->getSocialTelegram());
+        $this->assertSame($expectedData['socialWhatsapp'] ?? null, $contact->getSocialWhatsapp());
+        $this->assertSame($expectedData['addressStreetNumber'] ?? null, $contact->getAddressStreetNumber());
+        $this->assertSame($expectedData['addressStreetLine1'] ?? null, $contact->getAddressStreetLine1());
+        $this->assertSame($expectedData['addressStreetLine2'] ?? null, $contact->getAddressStreetLine2());
+        $this->assertSame((string) ($expectedData['addressZipCode'] ?? null), (string) $contact->getAddressZipCode());
+        $this->assertSame(Address::formatCityName($expectedData['addressCity'] ?? ''), $contact->getAddressCity());
+        $this->assertSame(isset($expectedData['addressCountry']) ? 36778547219895752 : null, $contact->getAddressCountry()?->getId());
+        $this->assertSame($expectedData['settingsReceiveNewsletters'] ?? true, $contact->hasSettingsReceiveNewsletters());
+        $this->assertSame($expectedData['settingsReceiveSms'] ?? true, $contact->hasSettingsReceiveSms());
+        $this->assertSame($expectedData['settingsReceiveCalls'] ?? true, $contact->hasSettingsReceiveCalls());
+        $this->assertSame($expectedData['metadataCustomFields'] ?? [], $contact->getMetadataCustomFields());
         $this->assertSame($expectedData['metadataSource'], $contact->getMetadataSource());
-        $this->assertSame($expectedData['metadataComment'], $contact->getMetadataComment());
-        $this->assertSame($expectedArea, (string) $contact->getArea()->getId());
+        $this->assertSame($expectedData['metadataComment'] ?? null, $contact->getMetadataComment());
+        $this->assertSame((string) $expectedArea, (string) $contact->getArea()?->getId());
 
         /*
          * Check tags
@@ -519,7 +534,7 @@ class ContactControllerTest extends ApiTestCase
         $contactTags = array_values($contact->getMetadataTagsNames());
         sort($contactTags);
 
-        $expectedTags = array_values(array_merge($expectedData['metadataTags'], ['Citipo']));
+        $expectedTags = array_values(array_merge($expectedData['metadataTags'] ?? [], ['Citipo']));
         sort($expectedTags);
 
         $this->assertSame($expectedTags, $contactTags);
