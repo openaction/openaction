@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ContactApiData
 {
     #[Assert\Type(['string', 'null'])]
-    #[Assert\Email]
+    #[Assert\Email(mode: 'strict')]
     #[Assert\Length(max: 250)]
     public $email;
 
