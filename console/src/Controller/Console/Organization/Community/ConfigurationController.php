@@ -10,7 +10,6 @@ use App\Form\Community\TagType;
 use App\Platform\Permissions;
 use App\Repository\Community\TagRepository;
 use App\Repository\OrganizationMainTagRepository;
-use App\Search\Consumer\IndexTagContactsCrmMessage;
 use App\Search\Consumer\ReindexOrganizationCrmMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
