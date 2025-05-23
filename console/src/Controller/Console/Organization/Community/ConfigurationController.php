@@ -10,19 +10,21 @@ use App\Form\Community\TagType;
 use App\Platform\Permissions;
 use App\Repository\Community\TagRepository;
 use App\Repository\OrganizationMainTagRepository;
+use App\Search\Consumer\IndexTagContactsCrmMessage;
+use App\Search\Consumer\ReindexOrganizationCrmMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/console/organization/{organizationUuid}/community/configure')]
 class ConfigurationController extends AbstractController
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        private EntityManagerInterface $em,
+        private MessageBusInterface $bus,
+    ) {
     }
 
     #[Route('/main-tags', name: 'console_organization_community_configure_main_tags')]
@@ -74,15 +76,51 @@ class ConfigurationController extends AbstractController
     #[Route('/tags/create', name: 'console_organization_community_configure_tags_create')]
     public function tagsCreate(Request $request)
     {
-        return $this->createOrEdit(new Tag($this->getOrganization(), ''), $request, 'create.html.twig');
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $orga = $this->getOrganization());
+        $this->denyIfSubscriptionExpired();
+
+        $tag = new Tag($this->getOrganization(), '');
+
+        $form = $this->createForm(TagType::class, $tag);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($tag);
+            $this->em->flush();
+
+            return $this->redirectToRoute('console_organization_community_configure_tags', ['organizationUuid' => $orga->getUuid()]);
+        }
+
+        return $this->render('console/organization/community/configuration/tags/create.html.twig', [
+            'form' => $form->createView(),
+            'tag' => $tag,
+        ]);
     }
 
     #[Route('/tags/{id}/edit', name: 'console_organization_community_configure_tags_edit')]
     public function tagsEdit(Tag $tag, Request $request)
     {
         $this->denyUnlessSameOrganization($tag);
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $orga = $this->getOrganization());
+        $this->denyIfSubscriptionExpired();
 
-        return $this->createOrEdit($tag, $request, 'edit.html.twig');
+        $form = $this->createForm(TagType::class, $tag);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($tag);
+            $this->em->flush();
+
+            // Reindex contacts following tag name update
+            $this->bus->dispatch(new ReindexOrganizationCrmMessage($orga->getId()));
+
+            return $this->redirectToRoute('console_organization_community_configure_tags', ['organizationUuid' => $orga->getUuid()]);
+        }
+
+        return $this->render('console/organization/community/configuration/tags/edit.html.twig', [
+            'form' => $form->createView(),
+            'tag' => $tag,
+        ]);
     }
 
     #[Route('/tags/{id}/delete', name: 'console_organization_community_configure_tags_delete')]
@@ -107,26 +145,5 @@ class ConfigurationController extends AbstractController
         }
 
         return $this->redirectToRoute('console_organization_community_configure_tags', ['organizationUuid' => $orga->getUuid()]);
-    }
-
-    private function createOrEdit(Tag $tag, Request $request, string $template)
-    {
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $orga = $this->getOrganization());
-        $this->denyIfSubscriptionExpired();
-
-        $form = $this->createForm(TagType::class, $tag);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($tag);
-            $this->em->flush();
-
-            return $this->redirectToRoute('console_organization_community_configure_tags', ['organizationUuid' => $orga->getUuid()]);
-        }
-
-        return $this->render('console/organization/community/configuration/tags/'.$template, [
-            'form' => $form->createView(),
-            'tag' => $tag,
-        ]);
     }
 }
