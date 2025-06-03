@@ -62,6 +62,7 @@ services:
             $organizationId: '%env(CLOUDFLARE_ORGANIZATION_ID)%'
             $trialZoneId: '%env(CLOUDFLARE_TRIAL_ZONE_ID)%'
             $trialCname: '%env(CLOUDFLARE_TRIAL_CNAME)%'
+            $publicServerIp: '%env(CLOUDFLARE_PUBLIC_SERVER_IP)%'
 
     App\Bridge\Sendgrid\SendgridInterface:
         class: 'App\Bridge\Sendgrid\Sendgrid'

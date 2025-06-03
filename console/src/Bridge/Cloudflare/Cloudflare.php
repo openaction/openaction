@@ -19,19 +19,15 @@ use GuzzleHttp\Exception\ClientException;
 
 class Cloudflare implements CloudflareInterface
 {
-    private string $token;
-    private string $organizationId;
-    private string $trialZoneId;
-    private string $trialCname;
-
     private ?Adapter $httpAdapter = null;
 
-    public function __construct(string $token, string $organizationId, string $trialZoneId, string $trialCname)
-    {
-        $this->token = $token;
-        $this->organizationId = $organizationId;
-        $this->trialZoneId = $trialZoneId;
-        $this->trialCname = $trialCname;
+    public function __construct(
+        private readonly string $token,
+        private readonly string $organizationId,
+        private readonly string $trialZoneId,
+        private readonly string $trialCname,
+        private readonly string $publicServerIp,
+    ) {
     }
 
     public function isEnabled(): bool
@@ -92,7 +88,7 @@ class Cloudflare implements CloudflareInterface
             }
 
             // Configure Citipo A and CNAME records
-            $dns->addRecord($zone->id, 'A', $zone->name, '174.138.102.208');
+            $dns->addRecord($zone->id, 'A', $zone->name, $this->publicServerIp);
             $dns->addRecord($zone->id, 'CNAME', 'www', $zone->name);
             $dns->addRecord($zone->id, 'CNAME', 'ca', 'analytics.citipo.com');
 
