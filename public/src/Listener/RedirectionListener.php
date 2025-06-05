@@ -4,7 +4,9 @@ namespace App\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class RedirectionListener implements EventSubscriberInterface
@@ -13,6 +15,7 @@ class RedirectionListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 1023],
+            KernelEvents::EXCEPTION => ['onKernelException', 1023],
         ];
     }
 
@@ -24,7 +27,34 @@ class RedirectionListener implements EventSubscriberInterface
 
         $path = $event->getRequest()->getPathInfo();
 
+        /*
+         * Manual redirections override all URLs
+         */
         foreach ($project->redirections as $redirection) {
+            if ($target = $this->shouldRedirect($redirection['source'], $path, $redirection['target'])) {
+                $event->setResponse(new RedirectResponse($target, $redirection['code']));
+
+                return;
+            }
+        }
+    }
+
+    public function onKernelException(ExceptionEvent $event)
+    {
+        if (!$project = $event->getRequest()->attributes->get('project')) {
+            return;
+        }
+
+        if (!$event->getThrowable() instanceof NotFoundHttpException) {
+            return;
+        }
+
+        $path = $event->getRequest()->getPathInfo();
+
+        /*
+         * Imported redirections are used only on 404 pages
+         */
+        foreach ($project->importedRedirections as $redirection) {
             if ($target = $this->shouldRedirect($redirection['source'], $path, $redirection['target'])) {
                 $event->setResponse(new RedirectResponse($target, $redirection['code']));
 

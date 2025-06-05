@@ -48,11 +48,12 @@ class ProjectTransformer extends AbstractTransformer
         $cssVersion = $this->cdnLookup->getProjectsBaseCssVersion();
         $appearanceVersion = $this->assetManager->resolveWebsiteAppearanceVersion($project);
 
-        $redirections = [];
+        $manualRedirections = [];
+        $importedRedirections = [];
 
         // Add manual redirections
         foreach ($this->redirectionRepository->getApiRedirections($project) as $redirection) {
-            $redirections[] = $redirection;
+            $manualRedirections[] = $redirection;
         }
 
         // Add with lower priority the automatic redirections from imports
@@ -61,7 +62,7 @@ class ProjectTransformer extends AbstractTransformer
                 // Only match path (ignoring host and query params)
                 $path = parse_url($post['importedUrl'], PHP_URL_PATH);
 
-                $redirections[] = [
+                $importedRedirections[] = [
                     'source' => $path,
                     'target' => $this->domainRouter->generateRedirectUrl($project, 'post', Uid::toBase62($post['uuid'])),
                     'code' => 302,
@@ -112,7 +113,8 @@ class ProjectTransformer extends AbstractTransformer
             'theme' => $this->themeManager->resolveApiTemplates($project),
             'theme_assets' => $this->assetManager->resolveApiThemeAssets($project),
             'project_assets' => $this->assetManager->resolveApiProjectAssets($project),
-            'redirections' => $redirections,
+            'redirections' => $manualRedirections,
+            'importedRedirections' => $importedRedirections,
             'tools' => $project->getAccessibleTools(),
             'access' => [
                 'username' => $project->getWebsiteAccessUser(),

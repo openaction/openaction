@@ -45,7 +45,8 @@ class ProjectControllerTest extends ApiTestCase
             ],
             'theme_assets' => [],
             'project_assets' => [],
-            'redirections' => [
+            'redirections' => [],
+            'importedRedirections' => [
                 [
                     'source' => '/the-eu-must-stand-with-the-people-of-hong-kong-against-chinas-abuse-of-power/',
                     'target' => 'https://exampleco.com/_redirect/post/2m4VBvTA1NbUi7acpk7JFy',
