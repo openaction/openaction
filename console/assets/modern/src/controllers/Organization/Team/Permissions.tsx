@@ -27,6 +27,36 @@ export default function (props: Props) {
     const [allAccess, setAllAccess] = useState<Record<string, boolean>>({});
     const [projectPermissions, setProjectPermissions] = useState<Record<string, Record<string, boolean>>>(initialProjectPermissions);
 
+    // Get all available permissions for checking if all are selected
+    const getAllPermissions = useMemo(() => {
+        const permissions: string[] = [];
+        Object.keys(props.definitions).forEach(section => {
+            Object.keys(props.definitions[section]).forEach(category => {
+                props.definitions[section][category].forEach(permission => {
+                    permissions.push(permission);
+                });
+            });
+        });
+        return permissions;
+    }, [props.definitions]);
+
+    // Check if all permissions for a project are enabled
+    const areAllPermissionsEnabled = (projectId: string): boolean => {
+        const projectPerms = projectPermissions[projectId];
+        if (!projectPerms) return false;
+        
+        return getAllPermissions.every(permission => projectPerms[permission] === true);
+    };
+
+    // Update allAccess state when projectPermissions change
+    useEffect(() => {
+        const newAllAccess: Record<string, boolean> = {};
+        props.projects.forEach(project => {
+            newAllAccess[project.uuid] = areAllPermissionsEnabled(project.uuid);
+        });
+        setAllAccess(newAllAccess);
+    }, [projectPermissions, getAllPermissions, props.projects]);
+
     // Update the hidden input when isAdmin changes
     useEffect(() => {
         const hiddenInput = document.querySelector(`input[name="${props.isAdminField}"]`) as HTMLInputElement;
@@ -50,12 +80,8 @@ export default function (props: Props) {
         if (checked) {
             // Set all permissions to true for this project
             const allPermissions: Record<string, boolean> = {};
-            Object.keys(props.definitions).forEach(section => {
-                Object.keys(props.definitions[section]).forEach(category => {
-                    props.definitions[section][category].forEach(permission => {
-                        allPermissions[permission] = true;
-                    });
-                });
+            getAllPermissions.forEach(permission => {
+                allPermissions[permission] = true;
             });
             
             setProjectPermissions(prev => ({
@@ -65,12 +91,8 @@ export default function (props: Props) {
         } else {
             // Set all permissions to false for this project
             const allPermissions: Record<string, boolean> = {};
-            Object.keys(props.definitions).forEach(section => {
-                Object.keys(props.definitions[section]).forEach(category => {
-                    props.definitions[section][category].forEach(permission => {
-                        allPermissions[permission] = false;
-                    });
-                });
+            getAllPermissions.forEach(permission => {
+                allPermissions[permission] = false;
             });
             
             setProjectPermissions(prev => ({
@@ -131,7 +153,7 @@ export default function (props: Props) {
                             </Label>
                         </div>
 
-                        {!isAdmin && !allAccess[project.uuid] && (
+                        {!isAdmin && (
                             <div className="tw:grid tw:grid-cols-3 tw:gap-3">
                                 {Object.keys(props.definitions).map(section => (
                                     <div key={`${project.uuid}-${section}`} className="tw:space-y-3">
