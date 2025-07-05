@@ -31,7 +31,7 @@ class CdnLookup
 
     public function getProjectsBaseJavaScriptPath(): string
     {
-        return $this->getLookup()->getJavaScriptFiles('bundle')[0];
+        return $this->getLookup()->getJavaScriptFiles('bundle')[0] ?? '';
     }
 
     private function getLookup(): EntrypointLookup

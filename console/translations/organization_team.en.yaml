@@ -119,7 +119,6 @@ invite_member:
             These permissions are simple labels which will be accessible from the API so that you can adapt your
             tools behavior based on them.
     is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
-    permissions: 'Or configure specific permissions per project:'
     button: Send the invite
 
 permission_member:
@@ -127,7 +126,6 @@ permission_member:
     page_title: Update the permissions of %name%
     title: Update the permissions of %name%
     is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
-    permissions: 'Or configure specific permissions per project:'
     button: Save
     button_remove: Remove
     remove_confirm: Are you sure you want to delete the access of %name% to your organization?

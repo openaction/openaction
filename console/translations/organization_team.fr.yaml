@@ -119,7 +119,6 @@ invite_member:
             des permissions externes. Ces permissions sont de simples étiquettes accessibles depuis l'API Citipo
             afin que vous puissiez adapter le comportement de vos outils selon cette information.
     is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
-    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
     button: Envoyer l'invitation
 
 permission_member:
@@ -127,7 +126,6 @@ permission_member:
     page_title: Modifier les permissions de %name%
     title: Modifier les permissions de %name%
     is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
-    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
     button: Enregistrer
     button_remove: Supprimer
     remove_confirm: Voulez-vous vraiment supprimer l'accès de "%user%" à votre organisation ?

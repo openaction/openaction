@@ -95,14 +95,12 @@ invite_member:
         label: 'Benutzerdefinierte externe Berechtigungen'
         help: "Wenn Sie Mitarbeiter in der Citipo-API differenzieren möchten, können Sie ihnen externe Berechtigungen zuweisen.\nDiese Berechtigungen sind einfache Kennzeichnungen, die über die API zugänglich sind, so dass Sie das Verhalten Ihres\nVerhalten Ihrer Tools anpassen können.\n"
     is_admin: 'Dieser Mitarbeiter ist ein Administrator (voller Zugriff auf alle Projekte, Teams und Kontakte).'
-    permissions: 'Oder konfigurieren Sie spezifische Berechtigungen pro Projekt:'
     button: 'Senden Sie die Einladung'
 permission_member:
     back: 'Zurück zu Ihrem Team'
     page_title: 'Aktualisieren Sie die Berechtigungen von %name%'
     title: 'Aktualisieren Sie die Berechtigungen von %name%'
     is_admin: 'Dieser Mitarbeiter ist ein Administrator (voller Zugriff auf alle Projekte, Teams und Kontakte).'
-    permissions: 'Oder konfigurieren Sie spezifische Berechtigungen pro Projekt:'
     button: 'Speichern Sie'
     button_remove: entfernen
     remove_confirm: 'Sind Sie sicher, dass Sie den Zugang von %name% zu Ihrer Organisation löschen möchten?'
