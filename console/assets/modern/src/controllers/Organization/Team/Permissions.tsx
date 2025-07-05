@@ -14,8 +14,13 @@ interface Props {
     labels: {
         is_admin_label: string;
         grant_all_permissions: string;
+        apply_to_all_entities: string;
+        apply_to_specific_categories: string;
     }
 }
+
+// Categories that support category-specific permissions
+const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope'];
 
 export default function (props: Props) {
     const initialProjectPermissions = useMemo(
@@ -26,6 +31,10 @@ export default function (props: Props) {
     const [isAdmin, setIsAdmin] = useState<boolean>(props.isAdminValue === '1');
     const [allAccess, setAllAccess] = useState<Record<string, boolean>>({});
     const [projectPermissions, setProjectPermissions] = useState<Record<string, Record<string, boolean>>>(initialProjectPermissions);
+    
+    // State for category-specific permissions
+    const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>({});
+    const [categoryFilters, setCategoryFilters] = useState<Record<string, Record<string, string>>>({});
 
     // Get all available permissions for checking if all are selected
     const getAllPermissions = useMemo(() => {
@@ -113,6 +122,42 @@ export default function (props: Props) {
         }));
     };
 
+    // Handle category scope change
+    const handleCategoryScopeChange = (projectId: string, category: string, scope: 'all' | 'specific') => {
+        setCategoryScope(prev => ({
+            ...prev,
+            [projectId]: {
+                ...prev[projectId],
+                [category]: scope
+            }
+        }));
+    };
+
+    // Handle category filter change
+    const handleCategoryFilterChange = (projectId: string, category: string, value: string) => {
+        setCategoryFilters(prev => ({
+            ...prev,
+            [projectId]: {
+                ...prev[projectId],
+                [category]: value
+            }
+        }));
+    };
+
+    // Get category display name
+    const getCategoryDisplayName = (category: string): string => {
+        switch (category) {
+            case 'website_posts':
+                return 'actualités';
+            case 'website_pages':
+                return 'pages';
+            case 'website_trombinoscope':
+                return 'fiches de trombinoscope';
+            default:
+                return props.translations[category] || category;
+        }
+    };
+
     return (
         <div className="tw:space-y-6">
             <div className="tw:flex tw:items-center tw:gap-3">
@@ -169,18 +214,72 @@ export default function (props: Props) {
 
                                                 {props.definitions[section][category].map(permission => (
                                                     <div className="tw:flex tw:items-center tw:gap-1" key={`${project.uuid}-${permission}`}>
-                                                        <Checkbox 
+                                                        <Checkbox
                                                             id={`${project.uuid}-${permission}`}
                                                             checked={projectPermissions[project.uuid]?.[permission] || false}
                                                             onCheckedChange={(checked) => handlePermissionChange(project.uuid, permission, true === checked)}
                                                         />
-                                                        <Label 
+                                                        <Label
                                                             htmlFor={`${project.uuid}-${permission}`}
                                                             className="tw:mb-0! tw:font-normal tw:text-slate-600 tw:text-xs">
                                                             {props.translations[permission]}
                                                         </Label>
                                                     </div>
                                                 ))}
+
+                                                {/* Category-specific permissions block */}
+                                                {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
+                                                    <div className="tw:mt-3 tw:p-3 tw:border tw:border-slate-200 tw:rounded-md tw:bg-slate-50">
+                                                        <div className="tw:space-y-2">
+                                                            <div className="tw:flex tw:gap-2 tw:items-start">
+                                                                <input
+                                                                    type="radio"
+                                                                    id={`${project.uuid}-${category}-all`}
+                                                                    name={`${project.uuid}-${category}-scope`}
+                                                                    value="all"
+                                                                    checked={categoryScope[project.uuid]?.[category] !== 'specific'}
+                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'all')}
+                                                                />
+                                                                <Label
+                                                                    htmlFor={`${project.uuid}-${category}-all`}
+                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                >
+                                                                    Appliquer ces permissions à toutes les {getCategoryDisplayName(category)}
+                                                                </Label>
+                                                            </div>
+                                                            <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'tw:opacity-50' : ''}`}>
+                                                                <input
+                                                                    type="radio"
+                                                                    id={`${project.uuid}-${category}-specific`}
+                                                                    name={`${project.uuid}-${category}-scope`}
+                                                                    value="specific"
+                                                                    checked={categoryScope[project.uuid]?.[category] === 'specific'}
+                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'specific')}
+                                                                />
+                                                                <Label
+                                                                    htmlFor={`${project.uuid}-${category}-specific`}
+                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                >
+                                                                    <div>
+                                                                        Appliquer ces permissions uniquement aux catégories suivantes:
+                                                                    </div>
+
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Ex: Actualités, Événements, Communiqués..."
+                                                                        value={categoryFilters[project.uuid]?.[category] || ''}
+                                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryFilterChange(project.uuid, category, e.target.value)}
+                                                                        disabled={categoryScope[project.uuid]?.[category] !== 'specific'}
+                                                                        className="tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
+                                                                    />
+                                                                </Label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
