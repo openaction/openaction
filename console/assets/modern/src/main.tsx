@@ -6,6 +6,7 @@ import {createElement, type FunctionComponent} from "react";
 /*
  * Load all React controllers
  */
+
 const reactControllers: Record<string, { default: FunctionComponent }> = import.meta.glob(['./**/*.tsx'], {
     base: './controllers',
     eager: true,
