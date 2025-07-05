@@ -98,7 +98,7 @@ permissions:
     configuration: Configuration
 
     settings: Paramètres
-    project_config_appearance: Configurer l'apparence du projet (site internet, emails, ...)
+    project_config_appearance: Configurer l'apparence du projet
     project_config_socials: Configurer les réseaux sociaux
 
     developer: Développeurs
