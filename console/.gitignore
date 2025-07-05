@@ -13,6 +13,7 @@ php-cs-fixer.phar
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
+/public/build-legacy/
 /public/build/
 /public/projects/
 npm-debug.log

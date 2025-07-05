@@ -5,7 +5,8 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-Encore.setOutputPath('../public/projects/')
+Encore
+    .setOutputPath('../../public/projects/')
     .setPublicPath('/projects')
     .addEntry('bundle', './index.js')
     .disableSingleRuntimeChunk()

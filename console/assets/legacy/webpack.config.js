@@ -6,13 +6,13 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-    .setOutputPath('public/build/')
-    .setPublicPath('/build')
-    .addStyleEntry('lib', './assets-legacy/styles/lib.scss')
-    .addStyleEntry('app', './assets-legacy/styles/app.scss')
-    .addEntry('bundle', './assets-legacy/kernel.jsx')
-    .addEntry('editor', './assets-legacy/editor.jsx')
-    .addEntry('new-app', './assets/app.ts')
+    .setOutputPath('../../public/build-legacy/')
+    .setPublicPath('/build-legacy')
+    .addStyleEntry('lib', './js-stimulus/styles/lib.scss')
+    .addStyleEntry('app', './js-stimulus/styles/app.scss')
+    .addEntry('bundle', './js-stimulus/kernel.jsx')
+    .addEntry('editor', './js-stimulus/editor.jsx')
+    .addEntry('new-app', './ts-react/app.ts')
     .splitEntryChunks()
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

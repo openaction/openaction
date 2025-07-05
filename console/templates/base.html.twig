@@ -32,6 +32,8 @@
 
     <link type="text/css" href="https://cloud.typography.com/7721118/7470832/css/fonts.css" rel="stylesheet">
     <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    {# Legacy build #}
     {% block base_stylesheets %}
         {{ encore_entry_link_tags('lib') }}
         {{ encore_entry_link_tags('app') }}
@@ -83,6 +85,7 @@
     <script src="https://editor.unlayer.com/embed.js"></script>
     {% block head_javascripts '' %}
 
+    {# Legacy build #}
     {% block base_javascripts %}
         {{ encore_entry_script_tags('new-app') }}
         {{ encore_entry_script_tags('bundle') }}
