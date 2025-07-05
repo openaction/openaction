@@ -116,13 +116,19 @@
 {% endfor %}
 
 <div data-controller="sticky-top">
-    <div {{ react_component('Organization/Team/Permissions', {
+    <div {{ modern_react_component('Organization/Team/Permissions', {
         'definitions': editablePermissions,
+        'projects': transform_collection(projects, 'App\\Api\\Transformer\\ProjectTransformer'),
         'isAdminField': field_name(form.isAdmin),
         'isAdminValue': field_value(form.isAdmin),
         'projectsPermissionsField': field_name(form.projectsPermissions),
         'projectsPermissionsValue': field_value(form.projectsPermissions),
         'translations': permissionsTranslations,
+        'labels': {
+            'is_admin_label': 'invite_member.is_admin'|trans({}, 'organization_team'),
+            'permissions': 'invite_member.permissions'|trans({}, 'organization_team'),
+            'grant_all_permissions': 'permissions.check_all'|trans({}, 'organization_team'),
+        },
     }) }}></div>
 </div>
 

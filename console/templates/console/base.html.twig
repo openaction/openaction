@@ -82,7 +82,7 @@
 
     <div class="world">
         <header class="world-header p-3 mb-4">
-            <div class="tw:flex tw:items-center tw:gap-3">
+            <div class="tw:flex tw:flex-col tw:md:flex-row tw:items-center tw:gap-3">
                 <div>
                     <a href="{{ current_organization ? path('console_organization_projects', {'organizationUuid': current_organization.uuid}) : path('homepage_redirect') }}">
                         <img src="{{ platform_logo }}" class="world-header-logo" />
