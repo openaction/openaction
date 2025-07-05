@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="crm" {{ react_component('Organization/Community/ContactsList', {
+        <div class="crm" {{ legacy_react_component('Organization/Community/ContactsList', {
             'search': {
                 'endpoint': meilisearch_endpoint,
                 'index': current_organization.crmIndexName,

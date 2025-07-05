@@ -1,6 +1,6 @@
 import React from 'react';
 import { clearDOM, mountDOM } from '@symfony/stimulus-testing';
-import ReactController from '../../controllers/react_controller';
+import ReactController from '../../controllers/legacy-react_controller';
 import { startController } from './start-controller';
 import { screen } from '@testing-library/react';
 

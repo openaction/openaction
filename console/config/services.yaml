@@ -118,7 +118,7 @@ services:
     #
     # Assets
     #
-    App\Twig\ReactExtension:
+    App\Twig\AssetExtension:
         arguments:
             $stimulusExtension: '@webpack_encore.twig_stimulus_extension'
 

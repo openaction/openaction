@@ -112,6 +112,8 @@
         }) }}
     </div>
 
+    <div {{ modern_react_component('ModernExample', {'property': 'ok'}) }}></div>
+
     {{ form_widget(form.projectsPermissions, {'attr': {'data-team--permissions-target': 'permissionsInput'}}) }}
 
     <div data-team--permissions-target="permissionsContainer" class="mt-4">

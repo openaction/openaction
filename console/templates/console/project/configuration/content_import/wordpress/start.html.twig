@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="print-uploader" style="height: 40px">
-                        <div {{ react_component('Organization/Community/ImportUploader', {
+                        <div {{ legacy_react_component('Organization/Community/ImportUploader', {
                             uploadKey: uploadKey.toArray,
                             prepareUrl: csrf_path('console_project_configuration_content_import_wordpress_prepare', {'projectUuid': current_project.uuid}),
                             errorLabel: 'content_import.wordpress.upload.file.error'|trans({}, 'project_configuration'),

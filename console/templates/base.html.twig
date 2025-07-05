@@ -82,6 +82,23 @@
         }
     </script>
 
+    {% if app.debug %}
+        <script type="module">
+            import RefreshRuntime from "{{ vite_dev_server }}/@react-refresh"
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="{{ vite_dev_server }}/src/main.tsx"></script>
+    {% else %}
+        {% set manifest = get_modern_manifest() %}
+        <script src="{{ asset('build-modern/' ~ manifest['src/main.tsx'].file) }}"></script>
+        {% for css in manifest['src/main.tsx'].css %}
+            <link href="{{ asset('build-modern/' ~ css) }}" rel="stylesheet">
+        {% endfor %}
+    {% endif %}
+
     <script src="https://editor.unlayer.com/embed.js"></script>
     {% block head_javascripts '' %}
 
