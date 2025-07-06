@@ -120,7 +120,7 @@
         'definitions': editablePermissions,
         'projects': transform_collection(projects, 'App\\Api\\Transformer\\ProjectTransformer'),
         'isAdminField': field_name(form.isAdmin),
-        'isAdminValue': member.isAdmin ? '1' : '0',
+        'isAdminValue': member.isAdmin|default(false) ? '1' : '0',
         'projectsPermissionsField': field_name(form.projectsPermissions),
         'projectsPermissionsValue': field_value(form.projectsPermissions),
         'translations': permissionsTranslations,

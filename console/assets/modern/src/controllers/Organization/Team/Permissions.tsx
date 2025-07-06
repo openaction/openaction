@@ -24,7 +24,7 @@ const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope'];
 
 export default function (props: Props) {
     const initialProjectPermissions = useMemo(
-        () => JSON.parse(props.projectsPermissionsValue),
+        () => props.projectsPermissionsValue ? JSON.parse(props.projectsPermissionsValue) : {},
         [props.projectsPermissionsValue],
     );
 
@@ -147,12 +147,12 @@ export default function (props: Props) {
     // Get category display name
     const getCategoryDisplayName = (category: string): string => {
         switch (category) {
-            case 'website_posts':
+            case 'posts':
                 return 'actualités';
-            case 'website_pages':
+            case 'pages':
                 return 'pages';
-            case 'website_trombinoscope':
-                return 'fiches de trombinoscope';
+            case 'trombinoscope':
+                return 'fiches';
             default:
                 return props.translations[category] || category;
         }
@@ -201,87 +201,93 @@ export default function (props: Props) {
                         {!isAdmin && (
                             <div className="tw:grid tw:grid-cols-3 tw:gap-3">
                                 {Object.keys(props.definitions).map(section => (
-                                    <div key={`${project.uuid}-${section}`} className="tw:space-y-3">
-                                        <div className="tw:uppercase tw:text-slate-500 tw:font-medium tw:text-xs">
+                                    <div key={`${project.uuid}-${section}`}>
+                                        <div className="tw:uppercase tw:text-slate-500 tw:font-medium tw:text-xs tw:mb-2">
                                             {props.translations[section]}
                                         </div>
 
-                                        {Object.keys(props.definitions[section]).map(category => (
-                                            <div className="tw:space-y-1" key={`${project.uuid}-${category}`}>
-                                                <div className="tw:text-slate-400 tw:text-xs">
-                                                    {props.translations[category]}
-                                                </div>
-
-                                                {props.definitions[section][category].map(permission => (
-                                                    <div className="tw:flex tw:items-center tw:gap-1" key={`${project.uuid}-${permission}`}>
-                                                        <Checkbox
-                                                            id={`${project.uuid}-${permission}`}
-                                                            checked={projectPermissions[project.uuid]?.[permission] || false}
-                                                            onCheckedChange={(checked) => handlePermissionChange(project.uuid, permission, true === checked)}
-                                                        />
-                                                        <Label
-                                                            htmlFor={`${project.uuid}-${permission}`}
-                                                            className="tw:mb-0! tw:font-normal tw:text-slate-600 tw:text-xs">
-                                                            {props.translations[permission]}
-                                                        </Label>
+                                        <div className="tw:space-y-6">
+                                            {Object.keys(props.definitions[section]).map(category => (
+                                                <div className="tw:space-y-1" key={`${project.uuid}-${category}`}>
+                                                    <div className="tw:text-slate-400 tw:text-xs">
+                                                        {props.translations[category]}
                                                     </div>
-                                                ))}
 
-                                                {/* Category-specific permissions block */}
-                                                {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
-                                                    <div className="tw:mt-3 tw:p-3 tw:border tw:border-slate-200 tw:rounded-md tw:bg-slate-50">
-                                                        <div className="tw:space-y-2">
-                                                            <div className="tw:flex tw:gap-2 tw:items-start">
-                                                                <input
-                                                                    type="radio"
-                                                                    id={`${project.uuid}-${category}-all`}
-                                                                    name={`${project.uuid}-${category}-scope`}
-                                                                    value="all"
-                                                                    checked={categoryScope[project.uuid]?.[category] !== 'specific'}
-                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'all')}
-                                                                />
-                                                                <Label
-                                                                    htmlFor={`${project.uuid}-${category}-all`}
-                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
-                                                                >
-                                                                    Appliquer ces permissions à toutes les {getCategoryDisplayName(category)}
-                                                                </Label>
-                                                            </div>
-                                                            <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'tw:opacity-50' : ''}`}>
-                                                                <input
-                                                                    type="radio"
-                                                                    id={`${project.uuid}-${category}-specific`}
-                                                                    name={`${project.uuid}-${category}-scope`}
-                                                                    value="specific"
-                                                                    checked={categoryScope[project.uuid]?.[category] === 'specific'}
-                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'specific')}
-                                                                />
-                                                                <Label
-                                                                    htmlFor={`${project.uuid}-${category}-specific`}
-                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
-                                                                >
-                                                                    <div>
-                                                                        Appliquer ces permissions uniquement aux catégories suivantes:
-                                                                    </div>
+                                                    {props.definitions[section][category].map(permission => (
+                                                        <div className="tw:flex tw:items-center tw:gap-1" key={`${project.uuid}-${permission}`}>
+                                                            <Checkbox
+                                                                id={`${project.uuid}-${permission}`}
+                                                                checked={projectPermissions[project.uuid]?.[permission] || false}
+                                                                onCheckedChange={(checked) => handlePermissionChange(project.uuid, permission, true === checked)}
+                                                            />
+                                                            <Label
+                                                                htmlFor={`${project.uuid}-${permission}`}
+                                                                className="tw:mb-0! tw:font-normal tw:text-slate-600 tw:text-xs">
+                                                                {props.translations[permission]}
+                                                            </Label>
+                                                        </div>
+                                                    ))}
 
+                                                    {/* Category-specific permissions block */}
+                                                    {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
+                                                        <div className="tw:mt-3 tw:p-2 tw:border tw:border-slate-200 tw:rounded-sm tw:bg-slate-50">
+                                                            <div className="tw:space-y-2">
+                                                                <div className="tw:text-xs">
+                                                                    Appliquer ces permissions :
+                                                                </div>
+
+                                                                <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'tw:opacity-50' : ''}`}>
                                                                     <input
-                                                                        type="text"
-                                                                        placeholder="Ex: Actualités, Événements, Communiqués..."
-                                                                        value={categoryFilters[project.uuid]?.[category] || ''}
-                                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryFilterChange(project.uuid, category, e.target.value)}
-                                                                        disabled={categoryScope[project.uuid]?.[category] !== 'specific'}
-                                                                        className="tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
+                                                                        type="radio"
+                                                                        id={`${project.uuid}-${category}-all`}
+                                                                        name={`${project.uuid}-${category}-scope`}
+                                                                        value="all"
+                                                                        checked={categoryScope[project.uuid]?.[category] !== 'specific'}
+                                                                        onChange={() => handleCategoryScopeChange(project.uuid, category, 'all')}
                                                                     />
-                                                                </Label>
+                                                                    <Label
+                                                                        htmlFor={`${project.uuid}-${category}-all`}
+                                                                        className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                    >
+                                                                        à toutes les {getCategoryDisplayName(category)}
+                                                                    </Label>
+                                                                </div>
+                                                                <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'tw:opacity-50' : ''}`}>
+                                                                    <input
+                                                                        type="radio"
+                                                                        id={`${project.uuid}-${category}-specific`}
+                                                                        name={`${project.uuid}-${category}-scope`}
+                                                                        value="specific"
+                                                                        checked={categoryScope[project.uuid]?.[category] === 'specific'}
+                                                                        onChange={() => handleCategoryScopeChange(project.uuid, category, 'specific')}
+                                                                    />
+                                                                    <Label
+                                                                        htmlFor={`${project.uuid}-${category}-specific`}
+                                                                        className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                    >
+                                                                        <div className="tw:mb-1">
+                                                                            uniquement aux pages des catégories suivantes:
+                                                                        </div>
+
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Ex: Actualités, Événements, Communiqués..."
+                                                                            value={categoryFilters[project.uuid]?.[category] || ''}
+                                                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryFilterChange(project.uuid, category, e.target.value)}
+                                                                            disabled={categoryScope[project.uuid]?.[category] !== 'specific'}
+                                                                            className="tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
+                                                                        />
+                                                                    </Label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div>
                                                             </div>
                                                         </div>
-
-                                                        <div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
