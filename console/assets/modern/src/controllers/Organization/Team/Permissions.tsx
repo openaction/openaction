@@ -293,9 +293,11 @@ export default function (props: Props) {
                                                                                 { value: "svelte", label: "Svelte" },
                                                                                 { value: "ember", label: "Ember" },
                                                                             ]}
-                                                                            placeholder="Select frameworks"
+                                                                            onValueChange={() => {}}
+                                                                            placeholder="Sélectionnez les catégorie"
                                                                             variant="inverted"
-                                                                            maxCount={3}
+                                                                            maxCount={100}
+                                                                            className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"
                                                                         />
 
                                                                         <input
@@ -304,7 +306,7 @@ export default function (props: Props) {
                                                                             value={categoryFilters[project.uuid]?.[category] || ''}
                                                                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryFilterChange(project.uuid, category, e.target.value)}
                                                                             disabled={categoryScope[project.uuid]?.[category] !== 'specific'}
-                                                                            className="tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
+                                                                            className="tw:hidden tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
                                                                         />
                                                                     </Label>
                                                                 </div>

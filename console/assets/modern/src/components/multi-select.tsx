@@ -2,7 +2,6 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
     CheckIcon,
-    XCircle,
     ChevronDown,
     XIcon,
     WandSparkles,
@@ -32,7 +31,7 @@ import {
  * Uses class-variance-authority (cva) to define different styles based on "variant" prop.
  */
 const multiSelectVariants = cva(
-    "tw:m-1 tw:transition tw:ease-in-out tw:delay-150 tw:hover:-translate-y-1 tw:hover:scale-110 tw:duration-300",
+    "tw:m-0.5 tw:text-[10px]",
     {
         variants: {
             variant: {
@@ -172,12 +171,6 @@ export const MultiSelect = React.forwardRef<
             setIsPopoverOpen((prev) => !prev);
         };
 
-        const clearExtraOptions = () => {
-            const newSelectedValues = selectedValues.slice(0, maxCount);
-            setSelectedValues(newSelectedValues);
-            onValueChange(newSelectedValues);
-        };
-
         const toggleAll = () => {
             if (selectedValues.length === options.length) {
                 handleClear();
@@ -207,7 +200,7 @@ export const MultiSelect = React.forwardRef<
                         {selectedValues.length > 0 ? (
                             <div className="tw:flex tw:justify-between tw:items-center tw:w-full">
                                 <div className="tw:flex tw:flex-wrap tw:items-center">
-                                    {selectedValues.slice(0, maxCount).map((value) => {
+                                    {selectedValues.map((value) => {
                                         const option = options.find((o) => o.value === value);
                                         const IconComponent = option?.icon;
                                         return (
@@ -223,35 +216,9 @@ export const MultiSelect = React.forwardRef<
                                                     <IconComponent className="tw:h-4 tw:w-4 tw:mr-2" />
                                                 )}
                                                 {option?.label}
-                                                <XCircle
-                                                    className="tw:ml-2 tw:h-4 tw:w-4 tw:cursor-pointer"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        toggleOption(value);
-                                                    }}
-                                                />
                                             </Badge>
                                         );
                                     })}
-                                    {selectedValues.length > maxCount && (
-                                        <Badge
-                                            className={cn(
-                                                "tw:bg-transparent tw:text-foreground tw:border-foreground/1 tw:hover:bg-transparent",
-                                                isAnimating ? "tw:animate-bounce" : "",
-                                                multiSelectVariants({ variant })
-                                            )}
-                                            style={{ animationDuration: `${animation}s` }}
-                                        >
-                                            {`+ ${selectedValues.length - maxCount} more`}
-                                            <XCircle
-                                                className="tw:ml-2 tw:h-4 tw:w-4 tw:cursor-pointer"
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    clearExtraOptions();
-                                                }}
-                                            />
-                                        </Badge>
-                                    )}
                                 </div>
                                 <div className="tw:flex tw:items-center tw:justify-between">
                                     <XIcon
@@ -270,9 +237,9 @@ export const MultiSelect = React.forwardRef<
                             </div>
                         ) : (
                             <div className="tw:flex tw:items-center tw:justify-between tw:w-full tw:mx-auto">
-                <span className="tw:text-sm tw:text-muted-foreground tw:mx-3">
-                  {placeholder}
-                </span>
+                                <span className="tw:text-xs tw:text-muted-foreground tw:mx-1">
+                                  {placeholder}
+                                </span>
                                 <ChevronDown className="tw:h-4 tw:cursor-pointer tw:text-muted-foreground tw:mx-2" />
                             </div>
                         )}
