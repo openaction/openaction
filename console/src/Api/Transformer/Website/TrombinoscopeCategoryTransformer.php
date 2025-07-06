@@ -16,6 +16,7 @@ class TrombinoscopeCategoryTransformer extends AbstractTransformer
                 'self' => $this->createLink('api_website_trombinoscope_categories_view', ['id' => Uid::toBase62($category->getUuid())]),
             ],
             'id' => Uid::toBase62($category->getUuid()),
+            'projectId' =>  Uid::toBase62($category->getProject()->getUuid()),
             'name' => $category->getName(),
             'slug' => $category->getSlug(),
         ];

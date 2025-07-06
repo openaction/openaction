@@ -2,6 +2,7 @@
 
 namespace App\Repository\Website;
 
+use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Website\Page;
 use App\Entity\Website\PageCategory;
@@ -39,6 +40,22 @@ class PageCategoryRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult($hydrationMode);
+    }
+
+    /**
+     * @return PageCategory[]
+     */
+    public function getOrganizationCategories(Organization $organization): array
+    {
+        $qb = $this->createQueryBuilder('pc')
+            ->select('pc', 'p')
+            ->leftJoin('pc.project', 'p')
+            ->where('p.organization = :organization')
+            ->setParameter('organization', $organization->getId())
+            ->orderBy('pc.weight')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     public function sort(array $data)

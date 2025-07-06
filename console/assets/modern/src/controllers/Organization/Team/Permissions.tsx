@@ -3,6 +3,13 @@ import type {Project} from "@/types.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Label} from "@/components/ui/label.tsx";
 
+interface Category {
+    id: string;
+    projectId: string;
+    name: string;
+    slug: string;
+}
+
 interface Props {
     definitions: Record<string, Record<string, string[]>>;
     translations: Record<string, string>;
@@ -11,6 +18,9 @@ interface Props {
     projectsPermissionsField: string;
     projectsPermissionsValue: string;
     projects: Project[];
+    pagesCategories: Category[];
+    postsCategories: Category[];
+    trombinoscopeCategories: Category[];
     labels: {
         is_admin_label: string;
         grant_all_permissions: string;
@@ -23,6 +33,11 @@ interface Props {
 const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope'];
 
 export default function (props: Props) {
+    // Log the category props for now
+    console.log('Pages categories:', props.pagesCategories);
+    console.log('Posts categories:', props.postsCategories);
+    console.log('Trombinoscope categories:', props.trombinoscopeCategories);
+
     const initialProjectPermissions = useMemo(
         () => props.projectsPermissionsValue ? JSON.parse(props.projectsPermissionsValue) : {},
         [props.projectsPermissionsValue],

@@ -119,6 +119,9 @@
     <div {{ modern_react_component('Organization/Team/Permissions', {
         'definitions': editablePermissions,
         'projects': transform_collection(projects, 'App\\Api\\Transformer\\ProjectTransformer'),
+        'pagesCategories': transform_collection(pagesCategories, 'App\\Api\\Transformer\\Website\\PageCategoryTransformer'),
+        'postsCategories': transform_collection(postsCategories, 'App\\Api\\Transformer\\Website\\PostCategoryTransformer'),
+        'trombinoscopeCategories': transform_collection(trombinoscopeCategories, 'App\\Api\\Transformer\\Website\\TrombinoscopeCategoryTransformer'),
         'isAdminField': field_name(form.isAdmin),
         'isAdminValue': member.isAdmin|default(false) ? '1' : '0',
         'projectsPermissionsField': field_name(form.projectsPermissions),
