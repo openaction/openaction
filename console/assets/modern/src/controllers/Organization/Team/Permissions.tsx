@@ -2,6 +2,7 @@ import {useMemo, useState, useEffect} from "react";
 import type {Project} from "@/types.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Label} from "@/components/ui/label.tsx";
+import {MultiSelect} from "@/components/multi-select.tsx";
 
 interface Category {
     id: string;
@@ -283,6 +284,19 @@ export default function (props: Props) {
                                                                         <div className="tw:mb-1">
                                                                             uniquement aux pages des catégories suivantes:
                                                                         </div>
+
+                                                                        <MultiSelect
+                                                                            options={[
+                                                                                { value: "react", label: "React" },
+                                                                                { value: "angular", label: "Angular" },
+                                                                                { value: "vue", label: "Vue" },
+                                                                                { value: "svelte", label: "Svelte" },
+                                                                                { value: "ember", label: "Ember" },
+                                                                            ]}
+                                                                            placeholder="Select frameworks"
+                                                                            variant="inverted"
+                                                                            maxCount={3}
+                                                                        />
 
                                                                         <input
                                                                             type="text"
