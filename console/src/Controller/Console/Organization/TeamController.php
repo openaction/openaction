@@ -65,6 +65,7 @@ class TeamController extends AbstractController
                 $data->email,
                 $data->isAdmin,
                 $data->parseProjectPermissions(),
+                $data->parseProjectPermissionsCategories(),
                 $data->locale
             );
 

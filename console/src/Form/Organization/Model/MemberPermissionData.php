@@ -16,12 +16,16 @@ class MemberPermissionData
     #[Assert\Json]
     public ?string $projectsPermissions = '{}';
 
+    #[Assert\Json]
+    public ?string $projectsPermissionsCategories = '{}';
+
     public static function createFromMember(OrganizationMember $member): self
     {
         $self = new self();
         $self->isAdmin = $member->isAdmin();
         $self->labels = implode('|', $member->getLabels());
         $self->projectsPermissions = Json::encode($member->getRawProjectsPermissions());
+        $self->projectsPermissionsCategories = Json::encode($member->getRawProjectsPermissionsCategories() ?? []);
 
         return $self;
     }
@@ -30,6 +34,15 @@ class MemberPermissionData
     {
         try {
             return Json::decode($this->projectsPermissions) ?: [];
+        } catch (\JsonException) {
+            return [];
+        }
+    }
+
+    public function parseProjectPermissionsCategoriesArray(): array
+    {
+        try {
+            return Json::decode($this->projectsPermissionsCategories) ?: [];
         } catch (\JsonException) {
             return [];
         }

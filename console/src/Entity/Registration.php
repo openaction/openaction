@@ -44,6 +44,13 @@ class Registration
     #[ORM\Column(type: 'json')]
     private array $projectsPermissions;
 
+    /**
+     * Organization projects permissions categories for this member. Not used if
+     * the member is admin of the organization.
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $projectsPermissionsCategories = null;
+
     public function __construct(string $email, Organization $organization = null, bool $isAdmin = false, array $projectsPermissions = [], string $locale = 'en')
     {
         $this->populateTimestampable();
@@ -94,6 +101,16 @@ class Registration
     public function getProjectsPermissions(): array
     {
         return $this->projectsPermissions ?? [];
+    }
+
+    public function setProjectsPermissionsCategories(?array $projectsPermissionsCategories)
+    {
+        $this->projectsPermissionsCategories = $projectsPermissionsCategories;
+    }
+
+    public function getProjectsPermissionsCategories(): ?array
+    {
+        return $this->projectsPermissionsCategories;
     }
 
     public function getConfiguredProjectsIds(): array

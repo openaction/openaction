@@ -126,6 +126,8 @@
         'isAdminValue': member.isAdmin|default(false) ? '1' : '0',
         'projectsPermissionsField': field_name(form.projectsPermissions),
         'projectsPermissionsValue': field_value(form.projectsPermissions),
+        'projectsPermissionsCategoriesField': field_name(form.projectsPermissionsCategories),
+        'projectsPermissionsCategoriesValue': field_value(form.projectsPermissionsCategories),
         'translations': permissionsTranslations,
         'labels': {
             'is_admin_label': 'invite_member.is_admin'|trans({}, 'organization_team'),

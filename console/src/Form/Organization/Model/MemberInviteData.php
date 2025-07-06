@@ -22,10 +22,22 @@ class MemberInviteData
     #[Assert\Json]
     public ?string $projectsPermissions = '';
 
+    #[Assert\Json]
+    public ?string $projectsPermissionsCategories = '{}';
+
     public function parseProjectPermissions(): array
     {
         try {
             return Json::decode($this->projectsPermissions) ?: [];
+        } catch (\JsonException) {
+            return [];
+        }
+    }
+
+    public function parseProjectPermissionsCategories(): array
+    {
+        try {
+            return Json::decode($this->projectsPermissionsCategories) ?: [];
         } catch (\JsonException) {
             return [];
         }

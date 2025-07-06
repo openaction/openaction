@@ -29,6 +29,7 @@ class MemberInviteType extends AbstractType
                 ],
             ])
             ->add('projectsPermissions', HiddenType::class)
+            ->add('projectsPermissionsCategories', HiddenType::class)
         ;
     }
 

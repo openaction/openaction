@@ -18,6 +18,8 @@ interface Props {
     isAdminValue: string;
     projectsPermissionsField: string;
     projectsPermissionsValue: string;
+    projectsPermissionsCategoriesField: string;
+    projectsPermissionsCategoriesValue: string;
     projects: Project[];
     pagesCategories: Category[];
     postsCategories: Category[];
@@ -44,16 +46,36 @@ export default function (props: Props) {
         [props.projectsPermissionsValue],
     );
 
+    const initialProjectPermissionsCategories = useMemo(
+        () => props.projectsPermissionsCategoriesValue ? JSON.parse(props.projectsPermissionsCategoriesValue) : {},
+        [props.projectsPermissionsCategoriesValue],
+    );
+
     const [isAdmin, setIsAdmin] = useState<boolean>(props.isAdminValue === '1');
     const [allAccess, setAllAccess] = useState<Record<string, boolean>>({});
     const [projectPermissions, setProjectPermissions] = useState<Record<string, Record<string, boolean>>>(initialProjectPermissions);
     
+    // Initialize category scope based on existing data
+    const initialCategoryScope = useMemo(() => {
+        const scope: Record<string, Record<string, 'all' | 'specific'>> = {};
+        
+        props.projects.forEach(project => {
+            scope[project.uuid] = {};
+            CATEGORY_SPECIFIC_PERMISSIONS.forEach(categoryType => {
+                const hasSpecificCategories = initialProjectPermissionsCategories[project.uuid]?.[categoryType];
+                scope[project.uuid][categoryType] = hasSpecificCategories ? 'specific' : 'all';
+            });
+        });
+        
+        return scope;
+    }, [initialProjectPermissionsCategories, props.projects]);
+
     // State for category-specific permissions
-    const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>({});
+    const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>(initialCategoryScope);
     const [categoryFilters, setCategoryFilters] = useState<Record<string, Record<string, string>>>({});
     
     // State for selected categories for each project and permission
-    const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>({});
+    const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>(initialProjectPermissionsCategories);
 
     // Get all available permissions for checking if all are selected
     const getAllPermissions = useMemo(() => {
@@ -138,6 +160,13 @@ export default function (props: Props) {
         }
     }, [projectPermissions, props.projectsPermissionsField]);
 
+    // Update the hidden input when projectsPermissionsCategories changes
+    useEffect(() => {
+        const hiddenInput = document.querySelector(`input[name="${props.projectsPermissionsCategoriesField}"]`) as HTMLInputElement;
+        if (hiddenInput) {
+            hiddenInput.value = JSON.stringify(projectsPermissionsCategories);
+        }
+    }, [projectsPermissionsCategories, props.projectsPermissionsCategoriesField]);
 
 
     // Handle allAccess change for a project
@@ -244,7 +273,7 @@ export default function (props: Props) {
             </div>
 
             <input type="hidden" name={props.projectsPermissionsField} value={JSON.stringify(projectPermissions)} />
-            <input type="hidden" name="projectsPermissionsCategories" value={JSON.stringify(projectsPermissionsCategories)} />
+            <input type="hidden" name={props.projectsPermissionsCategoriesField} value={JSON.stringify(projectsPermissionsCategories)} />
 
             {props.projects.map(project => {
                 return (
