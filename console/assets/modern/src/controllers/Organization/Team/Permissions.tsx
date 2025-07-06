@@ -51,6 +51,9 @@ export default function (props: Props) {
     // State for category-specific permissions
     const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>({});
     const [categoryFilters, setCategoryFilters] = useState<Record<string, Record<string, string>>>({});
+    
+    // State for selected categories for each project and permission
+    const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>({});
 
     // Get all available permissions for checking if all are selected
     const getAllPermissions = useMemo(() => {
@@ -64,6 +67,20 @@ export default function (props: Props) {
         });
         return permissions;
     }, [props.definitions]);
+
+    // Get categories for a specific project and category type
+    const getCategoriesForProject = (projectId: string, categoryType: string): Category[] => {
+        switch (categoryType) {
+            case 'posts':
+                return props.postsCategories.filter(cat => cat.projectId === projectId);
+            case 'pages':
+                return props.pagesCategories.filter(cat => cat.projectId === projectId);
+            case 'trombinoscope':
+                return props.trombinoscopeCategories.filter(cat => cat.projectId === projectId);
+            default:
+                return [];
+        }
+    };
 
     // Check if all permissions for a project are enabled
     const areAllPermissionsEnabled = (projectId: string): boolean => {
@@ -97,6 +114,38 @@ export default function (props: Props) {
             hiddenInput.value = JSON.stringify(projectPermissions);
         }
     }, [projectPermissions, props.projectsPermissionsField]);
+
+    // Update the hidden input for projects permissions categories
+    useEffect(() => {
+        const hiddenInput = document.querySelector(`input[name="projectsPermissionsCategories"]`) as HTMLInputElement;
+        if (hiddenInput) {
+            const categoriesData: Record<string, Record<string, string[] | null>> = {};
+            
+            props.projects.forEach(project => {
+                categoriesData[project.uuid] = {};
+                
+                Object.keys(props.definitions).forEach(section => {
+                    Object.keys(props.definitions[section]).forEach(category => {
+                        if (CATEGORY_SPECIFIC_PERMISSIONS.includes(category)) {
+                            const scope = categoryScope[project.uuid]?.[category];
+                            const selectedCats = selectedCategories[project.uuid]?.[category];
+                            
+                            // Apply the same category selection to all permissions in this category type
+                            props.definitions[section][category].forEach(permission => {
+                                if (scope === 'specific' && selectedCats) {
+                                    categoriesData[project.uuid][permission] = selectedCats;
+                                } else {
+                                    categoriesData[project.uuid][permission] = null;
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+            
+            hiddenInput.value = JSON.stringify(categoriesData);
+        }
+    }, [selectedCategories, categoryScope, props.projects, props.definitions]);
 
     // Handle allAccess change for a project
     const handleAllAccessChange = (projectId: string, checked: boolean) => {
@@ -160,6 +209,17 @@ export default function (props: Props) {
         }));
     };
 
+    // Handle category selection change
+    const handleCategorySelectionChange = (projectId: string, categoryType: string, selectedValues: string[]) => {
+        setSelectedCategories(prev => ({
+            ...prev,
+            [projectId]: {
+                ...prev[projectId],
+                [categoryType]: selectedValues
+            }
+        }));
+    };
+
     // Get category display name
     const getCategoryDisplayName = (category: string): string => {
         switch (category) {
@@ -191,6 +251,7 @@ export default function (props: Props) {
             </div>
 
             <input type="hidden" name={props.projectsPermissionsField} value={JSON.stringify(projectPermissions)} />
+            <input type="hidden" name="projectsPermissionsCategories" value="{}" />
 
             {props.projects.map(project => {
                 return (
@@ -285,20 +346,19 @@ export default function (props: Props) {
                                                                             uniquement aux pages des catégories suivantes:
                                                                         </div>
 
-                                                                        <MultiSelect
-                                                                            options={[
-                                                                                { value: "react", label: "React" },
-                                                                                { value: "angular", label: "Angular" },
-                                                                                { value: "vue", label: "Vue" },
-                                                                                { value: "svelte", label: "Svelte" },
-                                                                                { value: "ember", label: "Ember" },
-                                                                            ]}
-                                                                            onValueChange={() => {}}
-                                                                            placeholder="Sélectionnez les catégorie"
-                                                                            variant="inverted"
-                                                                            maxCount={100}
-                                                                            className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"
-                                                                        />
+                                                                        {categoryScope[project.uuid]?.[category] === 'specific' && (
+                                                                            <MultiSelect
+                                                                                options={getCategoriesForProject(project.id, category).map(cat => ({
+                                                                                    value: cat.id,
+                                                                                    label: cat.name
+                                                                                }))}
+                                                                                onValueChange={(selectedValues) => handleCategorySelectionChange(project.uuid, category, selectedValues)}
+                                                                                placeholder="Sélectionner"
+                                                                                variant="inverted"
+                                                                                maxCount={100}
+                                                                                className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"
+                                                                            />
+                                                                        )}
 
                                                                         <input
                                                                             type="text"
