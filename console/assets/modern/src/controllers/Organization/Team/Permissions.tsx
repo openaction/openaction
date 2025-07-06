@@ -374,6 +374,7 @@ export default function (props: Props) {
                                                                                     value: cat.id,
                                                                                     label: cat.name
                                                                                 }))}
+                                                                                value={selectedCategories[project.uuid]?.[category] || []}
                                                                                 onValueChange={(selectedValues) => handleCategorySelectionChange(project.uuid, category, selectedValues)}
                                                                                 placeholder="Sélectionner"
                                                                                 variant="inverted"
