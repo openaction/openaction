@@ -68,6 +68,29 @@ export default function (props: Props) {
         return permissions;
     }, [props.definitions]);
 
+    // Compute the projects permissions categories data
+    const projectsPermissionsCategories = useMemo(() => {
+        const categoriesData: Record<string, Record<string, string[] | null>> = {};
+        
+        props.projects.forEach(project => {
+            categoriesData[project.uuid] = {};
+            
+            // Only include category-specific permissions
+            CATEGORY_SPECIFIC_PERMISSIONS.forEach(categoryType => {
+                const scope = categoryScope[project.uuid]?.[categoryType];
+                const selectedCats = selectedCategories[project.uuid]?.[categoryType];
+                
+                if (scope === 'specific' && selectedCats) {
+                    categoriesData[project.uuid][categoryType] = selectedCats;
+                } else {
+                    categoriesData[project.uuid][categoryType] = null;
+                }
+            });
+        });
+        
+        return categoriesData;
+    }, [selectedCategories, categoryScope, props.projects]);
+
     // Get categories for a specific project and category type
     const getCategoriesForProject = (projectId: string, categoryType: string): Category[] => {
         switch (categoryType) {
@@ -115,37 +138,7 @@ export default function (props: Props) {
         }
     }, [projectPermissions, props.projectsPermissionsField]);
 
-    // Update the hidden input for projects permissions categories
-    useEffect(() => {
-        const hiddenInput = document.querySelector(`input[name="projectsPermissionsCategories"]`) as HTMLInputElement;
-        if (hiddenInput) {
-            const categoriesData: Record<string, Record<string, string[] | null>> = {};
-            
-            props.projects.forEach(project => {
-                categoriesData[project.uuid] = {};
-                
-                Object.keys(props.definitions).forEach(section => {
-                    Object.keys(props.definitions[section]).forEach(category => {
-                        if (CATEGORY_SPECIFIC_PERMISSIONS.includes(category)) {
-                            const scope = categoryScope[project.uuid]?.[category];
-                            const selectedCats = selectedCategories[project.uuid]?.[category];
-                            
-                            // Apply the same category selection to all permissions in this category type
-                            props.definitions[section][category].forEach(permission => {
-                                if (scope === 'specific' && selectedCats) {
-                                    categoriesData[project.uuid][permission] = selectedCats;
-                                } else {
-                                    categoriesData[project.uuid][permission] = null;
-                                }
-                            });
-                        }
-                    });
-                });
-            });
-            
-            hiddenInput.value = JSON.stringify(categoriesData);
-        }
-    }, [selectedCategories, categoryScope, props.projects, props.definitions]);
+
 
     // Handle allAccess change for a project
     const handleAllAccessChange = (projectId: string, checked: boolean) => {
@@ -251,7 +244,7 @@ export default function (props: Props) {
             </div>
 
             <input type="hidden" name={props.projectsPermissionsField} value={JSON.stringify(projectPermissions)} />
-            <input type="hidden" name="projectsPermissionsCategories" value="{}" />
+            <input type="hidden" name="projectsPermissionsCategories" value={JSON.stringify(projectsPermissionsCategories)} />
 
             {props.projects.map(project => {
                 return (
