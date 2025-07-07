@@ -66,13 +66,16 @@ jobs:
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
-            - name: Install JavaScript dependencies
+            - name: Install legacy JavaScript dependencies
               run: cd console/assets/legacy && yarn install
 
             - name: Check legacy coding style
               run: cd console/assets/legacy && yarn prettier --check js-stimulus ts-react --config .prettierrc.json
+
+            - name: Install projects JavaScript dependencies
+              run: cd console/assets/projects && yarn install
 
             - name: Check projects coding style
               run: cd console/assets/projects && yarn prettier --check . --config .prettierrc.json
@@ -85,7 +88,7 @@ jobs:
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
             - name: Install JavaScript dependencies
               run: cd console/assets/legacy && yarn install
@@ -101,7 +104,7 @@ jobs:
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
             - name: Install JavaScript dependencies
               run: cd console/assets/legacy && yarn install
@@ -154,7 +157,7 @@ jobs:
               run: docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
-              run: cd console && cp -R tests/Fixtures/assets/build public/build && cp -R tests/Fixtures/assets/projects public/projects
+              run: cd console && cp -R tests/Fixtures/assets/* public/
 
             - name: Prepare database
               run: |
@@ -187,7 +190,7 @@ jobs:
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
             - uses: azure/docker-login@v1
               with:

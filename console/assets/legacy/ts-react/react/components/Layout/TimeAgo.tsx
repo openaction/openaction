@@ -38,8 +38,8 @@ const TRANSLATIONS = {
     },
 };
 
-export function TimeAgo(props: ReactTimeagoProps) {
-    const options: ReactTimeagoProps = Object.assign({}, props, {
+export function TimeAgo(props: ReactTimeagoProps<undefined>) {
+    const options: ReactTimeagoProps<undefined> = Object.assign({}, props, {
         formatter: buildFormatter(TRANSLATIONS[window.Citipo.locale] || TRANSLATIONS['en']),
     });
 

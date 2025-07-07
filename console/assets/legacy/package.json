@@ -20,6 +20,7 @@
         "@symfony/webpack-encore": "^2.1.0",
         "@testing-library/react": "^12.1.5",
         "@types/jest": "^28.1.1",
+        "@types/minimatch": "^6.0.0",
         "@types/react": "^16.14.26",
         "@types/react-dom": "^16.9.16",
         "@types/react-timeago": "^4.1.3",
