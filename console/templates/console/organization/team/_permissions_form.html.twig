@@ -142,7 +142,11 @@
             'select_categories_placeholder': 'permissions.select_categories_placeholder'|trans({}, 'organization_team'),
         },
     }) }}>
-        {{ form_rest(form) }}
+        <div class="d-none">
+            {{ form_widget(form.isAdmin) }}
+            {{ form_widget(form.projectsPermissions) }}
+            {{ form_widget(form.projectsPermissionsCategories) }}
+        </div>
     </div>
 </div>
 
