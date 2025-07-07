@@ -344,12 +344,18 @@ export default function (props: Props) {
 
                                                                 {/* Category-specific permissions block */}
                                                                 {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
-                                                                    <div className="tw:mt-3 tw:p-2 tw:border tw:border-slate-200 tw:rounded-sm tw:bg-slate-50">
-                                                                        <div className="tw:space-y-2">
-                                                                            <div className="tw:text-xs">
-                                                                                {props.labels.apply_permissions_label}
+                                                                    <Collapsible
+                                                                        defaultOpen={categoryScope[project.uuid]?.[category] === 'specific'}
+                                                                        className="tw:mt-3 tw:p-2 tw:border tw:border-slate-200 tw:rounded-sm tw:bg-slate-50"
+                                                                    >
+                                                                        <CollapsibleTrigger>
+                                                                            <div className="tw:text-xs tw:flex tw:items-center tw:gap-1">
+                                                                                <ChevronsUpDown className="tw:size-3" />
+                                                                                <span>{props.labels.apply_permissions_label}</span>
                                                                             </div>
+                                                                        </CollapsibleTrigger>
 
+                                                                        <CollapsibleContent className="tw:space-y-2 mt-1">
                                                                             <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'tw:opacity-50' : ''}`}>
                                                                                 <input
                                                                                     type="radio"
@@ -399,8 +405,8 @@ export default function (props: Props) {
                                                                                     )}
                                                                                 </Label>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
+                                                                        </CollapsibleContent>
+                                                                    </Collapsible>
                                                                 )}
                                                             </div>
                                                         ))}

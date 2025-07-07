@@ -25,13 +25,13 @@ pending:
 permissions:
     check_all: 'Gewährung des vollständigen Zugangs zu diesem Projekt'
     detailed_permissions: 'Detaillierte Genehmigungen'
-    apply_permissions_label: 'Diese Berechtigungen anwenden:'
-    apply_permissions_all_posts: zu allen Beiträgen
-    apply_permissions_all_pages: zu allen Seiten
-    apply_permissions_all_trombinoscope: zu allen Trombinoskop-Einträgen
-    apply_permissions_specific_posts: 'nur zu Beiträgen aus den folgenden Kategorien:'
-    apply_permissions_specific_pages: 'nur zu Seiten aus den folgenden Kategorien:'
-    apply_permissions_specific_trombinoscope: 'nur zu Trombinoskop-Einträgen aus den folgenden Kategorien:'
+    apply_permissions_label: 'Zugangsbeschränkung nach Kategorie'
+    apply_permissions_all_posts: Zugang zu allen Kategorien
+    apply_permissions_all_pages: Zugang zu allen Kategorien
+    apply_permissions_all_trombinoscope: Zugang zu allen Kategorien
+    apply_permissions_specific_posts: 'einschränken auf die folgenden Kategorien:'
+    apply_permissions_specific_pages: 'einschränken auf die folgenden Kategorien:'
+    apply_permissions_specific_trombinoscope: 'einschränken auf die folgenden Kategorien:'
     select_categories_placeholder: Auswählen
     website: Website
     pages: 'Inhalt der Seiten'

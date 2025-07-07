@@ -26,13 +26,13 @@ pending:
 
 permissions:
     check_all: Donner un accès complet à ce projet
-    apply_permissions_label: 'Appliquer ces permissions :'
-    apply_permissions_all_posts: à toutes les actualités
-    apply_permissions_all_pages: à toutes les pages
-    apply_permissions_all_trombinoscope: à tout le trombinoscope
-    apply_permissions_specific_posts: 'uniquement aux catégories suivantes :'
-    apply_permissions_specific_pages: 'uniquement aux catégories suivantes:'
-    apply_permissions_specific_trombinoscope: 'uniquement aux catégories suivantes:'
+    apply_permissions_label: 'Restriction d''accès par catégorie'
+    apply_permissions_all_posts: accès à toutes les catégories
+    apply_permissions_all_pages: accès à toutes les catégories
+    apply_permissions_all_trombinoscope: accès à toutes les catégories
+    apply_permissions_specific_posts: 'restreindre aux catégories suivantes :'
+    apply_permissions_specific_pages: 'restreindre aux catégories suivantes:'
+    apply_permissions_specific_trombinoscope: 'restreindre aux catégories suivantes:'
     select_categories_placeholder: Sélectionner
 
 
