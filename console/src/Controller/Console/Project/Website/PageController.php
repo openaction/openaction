@@ -108,7 +108,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/move', name: 'console_website_page_move', methods: ['GET', 'POST'])]
     public function move(PageDataManager $dataManager, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -147,7 +147,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_page_edit', methods: ['GET'])]
     public function edit(Page $page)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -174,7 +174,7 @@ class PageController extends AbstractController
 
     private function updatePage(Page $page, Request $request, string $groupValidation)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
@@ -220,7 +220,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/update/image', name: 'console_website_page_update_image')]
     public function updateImage(Page $page, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
@@ -246,7 +246,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/content/upload', name: 'console_website_page_upload_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -259,7 +259,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_page_delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);

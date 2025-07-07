@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Website\Page;
 use App\Platform\Permissions;
 use App\Repository\OrganizationMemberRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -13,6 +14,7 @@ class PageVoter extends Voter
 {
     public function __construct(
         private readonly OrganizationMemberRepository $memberRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -39,10 +41,14 @@ class PageVoter extends Voter
             return true;
         }
 
-        return $member->getProjectsPermissions()->hasCategoryPermission(
+        if (!$member->getProjectsPermissions()->hasCategoryPermission(
             projectId: $subject->getProject()->getUuid()->toRfc4122(),
             type: 'pages',
             entityCategoriesUuids: $subject->getCategories()->map(fn ($c) => $c->getUuid()->toRfc4122())->toArray(),
-        );
+        )) {
+            return false;
+        }
+
+        return $this->security->isGranted(Permissions::WEBSITE_PAGES_MANAGE, $subject->getProject());
     }
 }
