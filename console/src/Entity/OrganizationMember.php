@@ -88,6 +88,11 @@ class OrganizationMember
         return $self;
     }
 
+    public function getProjectsPermissions(): ProjectsPermissions
+    {
+        return new ProjectsPermissions($this->isAdmin, $this->projectsPermissions, $this->projectsPermissionsCategories);
+    }
+
     public function applyPermissionsUpdate(MemberPermissionData $data)
     {
         $this->setPermissions($data->isAdmin, $data->isAdmin ? [] : $data->parseProjectPermissionsArray());
@@ -134,11 +139,6 @@ class OrganizationMember
     public function getRawProjectsPermissionsCategories(): ?array
     {
         return $this->projectsPermissionsCategories;
-    }
-
-    public function getProjectsPermissions(): ProjectsPermissions
-    {
-        return new ProjectsPermissions($this->isAdmin, $this->projectsPermissions);
     }
 
     public function getCrmTenantToken(): ?string
