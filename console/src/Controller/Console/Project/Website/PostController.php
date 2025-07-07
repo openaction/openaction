@@ -21,6 +21,7 @@ use App\Form\Website\PostImageType;
 use App\Form\Website\PostType;
 use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
+use App\Repository\OrganizationMemberRepository;
 use App\Repository\Website\PostCategoryRepository;
 use App\Repository\Website\PostRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
@@ -207,7 +208,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_post_create')]
-    public function create(Request $request, TranslatorInterface $translator)
+    public function create(Request $request, OrganizationMemberRepository $memberRepository, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -218,6 +219,11 @@ class PostController extends AbstractController
         $this->em->persist($post);
         $this->em->flush();
 
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'posts')) {
+            $this->categoryRepository->updateCategories($post, $categories);
+        }
+
         return $this->redirectToRoute('console_website_post_edit', [
             'projectUuid' => $this->getProject()->getUuid(),
             'uuid' => $post->getUuid(),
@@ -225,7 +231,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/{uuid}/duplicate', name: 'console_website_post_duplicate', methods: ['GET'])]
-    public function duplicate(PostDataManager $dataManager, Request $request, Post $post)
+    public function duplicate(PostDataManager $dataManager, OrganizationMemberRepository $memberRepository, Request $request, Post $post)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_POSTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -233,6 +239,11 @@ class PostController extends AbstractController
         $this->denyUnlessSameProject($post);
 
         $duplicated = $dataManager->duplicate($post);
+
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'posts')) {
+            $this->categoryRepository->updateCategories($duplicated, $categories);
+        }
 
         return $this->redirectToRoute('console_website_post_edit', [
             'projectUuid' => $this->getProject()->getUuid(),

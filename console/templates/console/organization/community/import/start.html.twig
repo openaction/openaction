@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="print-uploader" style="height: 40px">
-                        <div {{ react_component('Organization/Community/ImportUploader', {
+                        <div {{ legacy_react_component('Organization/Community/ImportUploader', {
                             uploadKey: uploadKey.toArray,
                             prepareUrl: csrf_path('console_organization_community_contacts_import_prepare', {'organizationUuid': current_organization.uuid}),
                             errorLabel: 'contacts.import.upload.file.error'|trans({}, 'organization_community'),

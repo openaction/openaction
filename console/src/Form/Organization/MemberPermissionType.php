@@ -18,6 +18,7 @@ class MemberPermissionType extends AbstractType
             ->add('isAdmin', CheckboxType::class, ['required' => false])
             ->add('labels', HiddenType::class, ['required' => false])
             ->add('projectsPermissions', HiddenType::class)
+            ->add('projectsPermissionsCategories', HiddenType::class)
         ;
     }
 

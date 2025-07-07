@@ -32,6 +32,8 @@
 
     <link type="text/css" href="https://cloud.typography.com/7721118/7470832/css/fonts.css" rel="stylesheet">
     <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    {# Legacy build #}
     {% block base_stylesheets %}
         {{ encore_entry_link_tags('lib') }}
         {{ encore_entry_link_tags('app') }}
@@ -80,9 +82,27 @@
         }
     </script>
 
+    {% if app.debug %}
+        <script type="module">
+            import RefreshRuntime from "{{ vite_dev_server }}/@react-refresh"
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="{{ vite_dev_server }}/src/main.tsx"></script>
+    {% else %}
+        {% set manifest = get_modern_manifest() %}
+        <script src="{{ asset('build-modern/' ~ manifest['src/main.tsx'].file) }}"></script>
+        {% for css in manifest['src/main.tsx'].css %}
+            <link href="{{ asset('build-modern/' ~ css) }}" rel="stylesheet">
+        {% endfor %}
+    {% endif %}
+
     <script src="https://editor.unlayer.com/embed.js"></script>
     {% block head_javascripts '' %}
 
+    {# Legacy build #}
     {% block base_javascripts %}
         {{ encore_entry_script_tags('new-app') }}
         {{ encore_entry_script_tags('bundle') }}

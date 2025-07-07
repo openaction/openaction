@@ -53,7 +53,7 @@
             {{ 'automation.content.title'|trans({'%name%': automation.name}, 'organization_community') }}
         </h3>
 
-        <div {{ react_component('Organization/Community/EmailAutomationEditor', {
+        <div {{ legacy_react_component('Organization/Community/EmailAutomationEditor', {
             projectId: unlayer_project_id,
             design: automation.unlayerDesign,
             saveUrl: path('console_organization_community_automation_content_update', {'organizationUuid': automation.organization.uuid, 'uuid': automation.uuid}),

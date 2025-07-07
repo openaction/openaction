@@ -12,6 +12,10 @@ use App\Form\Organization\Model\MemberPermissionData;
 use App\Platform\Permissions;
 use App\Repository\OrganizationMemberRepository;
 use App\Repository\RegistrationRepository;
+use App\Repository\Website\EventCategoryRepository;
+use App\Repository\Website\PageCategoryRepository;
+use App\Repository\Website\PostCategoryRepository;
+use App\Repository\Website\TrombinoscopeCategoryRepository;
 use App\Search\TenantTokenManager;
 use App\Security\Registration\InviteManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,7 +48,7 @@ class TeamController extends AbstractController
     }
 
     #[Route('/invite/member', name: 'console_organization_team_invite_member')]
-    public function inviteMember(InviteManager $inviteManager, Request $request)
+    public function inviteMember(InviteManager $inviteManager, Request $request, PageCategoryRepository $pageCategoryRepo, PostCategoryRepository $postCategoryRepo, TrombinoscopeCategoryRepository $trombinoscopeCategoryRepo, EventCategoryRepository $eventCategoryRepo)
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_TEAM_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
@@ -62,6 +66,7 @@ class TeamController extends AbstractController
                 $data->email,
                 $data->isAdmin,
                 $data->parseProjectPermissions(),
+                $data->parseProjectPermissionsCategories(),
                 $data->locale
             );
 
@@ -72,15 +77,24 @@ class TeamController extends AbstractController
             ]);
         }
 
+        $pagesCategories = $pageCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $postsCategories = $postCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $trombinoscopeCategories = $trombinoscopeCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $eventsCategories = $eventCategoryRepo->getOrganizationCategories($this->getOrganization());
+
         return $this->render('console/organization/team/invite_member.html.twig', [
             'form' => $form->createView(),
             'organization' => $this->getOrganization(),
             'projects' => $this->getOrganization()->getProjects(),
+            'pagesCategories' => $pagesCategories,
+            'postsCategories' => $postsCategories,
+            'trombinoscopeCategories' => $trombinoscopeCategories,
+            'eventsCategories' => $eventsCategories,
         ]);
     }
 
     #[Route('/{uuid}/permissions', name: 'console_organization_team_permissions')]
-    public function permissions(TenantTokenManager $tenantTokenManager, OrganizationMember $member, Request $request)
+    public function permissions(TenantTokenManager $tenantTokenManager, OrganizationMember $member, Request $request, PageCategoryRepository $pageCategoryRepo, PostCategoryRepository $postCategoryRepo, TrombinoscopeCategoryRepository $trombinoscopeCategoryRepo, EventCategoryRepository $eventCategoryRepo)
     {
         $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_TEAM_MANAGE, $this->getOrganization());
         $this->denyIfSubscriptionExpired();
@@ -102,11 +116,20 @@ class TeamController extends AbstractController
             ]);
         }
 
+        $pagesCategories = $pageCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $postsCategories = $postCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $trombinoscopeCategories = $trombinoscopeCategoryRepo->getOrganizationCategories($this->getOrganization());
+        $eventsCategories = $eventCategoryRepo->getOrganizationCategories($this->getOrganization());
+
         return $this->render('console/organization/team/edit_member.html.twig', [
             'form' => $form->createView(),
             'projects' => $this->getOrganization()->getProjects(),
             'organization' => $this->getOrganization(),
             'member' => $member,
+            'pagesCategories' => $pagesCategories,
+            'postsCategories' => $postsCategories,
+            'trombinoscopeCategories' => $trombinoscopeCategories,
+            'eventsCategories' => $eventsCategories,
         ]);
     }
 

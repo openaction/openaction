@@ -48,6 +48,13 @@ class OrganizationMember
     private array $projectsPermissions;
 
     /**
+     * Organization projects permissions categories for this member. Not used if
+     * the member is admin of the organization.
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $projectsPermissionsCategories = null;
+
+    /**
      * Tenant token to use for search in the organization community. This token contains not only security credentials,
      * but also instructions on which documents within that index the member is allowed to see.
      */
@@ -81,9 +88,15 @@ class OrganizationMember
         return $self;
     }
 
+    public function getProjectsPermissions(): ProjectsPermissions
+    {
+        return new ProjectsPermissions($this->isAdmin, $this->projectsPermissions, $this->projectsPermissionsCategories);
+    }
+
     public function applyPermissionsUpdate(MemberPermissionData $data)
     {
         $this->setPermissions($data->isAdmin, $data->isAdmin ? [] : $data->parseProjectPermissionsArray());
+        $this->setProjectsPermissionsCategories($data->isAdmin ? [] : $data->parseProjectPermissionsCategoriesArray());
         $this->labels = $data->parseLabelsArray();
     }
 
@@ -91,6 +104,11 @@ class OrganizationMember
     {
         $this->isAdmin = $isAdmin;
         $this->projectsPermissions = $projectsPermissions;
+    }
+
+    public function setProjectsPermissionsCategories(?array $projectsPermissionsCategories)
+    {
+        $this->projectsPermissionsCategories = $projectsPermissionsCategories;
     }
 
     public function getOrganization(): Organization
@@ -118,9 +136,9 @@ class OrganizationMember
         return $this->projectsPermissions;
     }
 
-    public function getProjectsPermissions(): ProjectsPermissions
+    public function getRawProjectsPermissionsCategories(): ?array
     {
-        return new ProjectsPermissions($this->isAdmin, $this->projectsPermissions);
+        return $this->projectsPermissionsCategories;
     }
 
     public function getCrmTenantToken(): ?string

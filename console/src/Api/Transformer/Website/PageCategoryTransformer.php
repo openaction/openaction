@@ -16,6 +16,8 @@ class PageCategoryTransformer extends AbstractTransformer
                 'self' => $this->createLink('api_website_pages_categories_view', ['id' => Uid::toBase62($category->getUuid())]),
             ],
             'id' => Uid::toBase62($category->getUuid()),
+            'uuid' => $category->getUuid()->toRfc4122(),
+            'projectId' => Uid::toBase62($category->getProject()->getUuid()),
             'name' => $category->getName(),
             'slug' => $category->getSlug(),
         ];
@@ -34,6 +36,8 @@ class PageCategoryTransformer extends AbstractTransformer
                 'self' => 'string',
             ],
             'id' => 'string',
+            'uuid' => 'string',
+            'projectId' => 'string',
             'name' => 'string',
             'slug' => 'string',
         ];

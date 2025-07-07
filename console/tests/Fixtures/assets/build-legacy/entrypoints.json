@@ -1,0 +1,45 @@
+{
+  "entrypoints": {
+    "bundle": {
+      "js": [
+        "/build-legacy/vendors-node_modules_core-js_modules_es_object_define-property_js-node_modules_core-js_module-8aa63b.js",
+        "/build-legacy/vendors-node_modules_blueprintjs_core_lib_esm_components_hotkeys_hotkeysDialog_js-node_module-e16945.js",
+        "/build-legacy/vendors-node_modules_lodash_get_index_js.js",
+        "/build-legacy/vendors-node_modules_sentry_browser_esm_sdk_js-node_modules_sentry_tracing_esm_index_js-node_-4e94d8.js",
+        "/build-legacy/js-stimulus_editor_ContentBuilderOptions_jsx-js-stimulus_editor_Editor_jsx.js",
+        "/build-legacy/bundle.js"
+      ]
+    },
+    "editor": {
+      "js": [
+        "/build-legacy/vendors-node_modules_core-js_modules_es_object_define-property_js-node_modules_core-js_module-8aa63b.js",
+        "/build-legacy/vendors-node_modules_lodash_get_index_js.js",
+        "/build-legacy/js-stimulus_editor_ContentBuilderOptions_jsx-js-stimulus_editor_Editor_jsx.js",
+        "/build-legacy/editor.js"
+      ]
+    },
+    "new-app": {
+      "js": [
+        "/build-legacy/vendors-node_modules_core-js_modules_es_object_define-property_js-node_modules_core-js_module-8aa63b.js",
+        "/build-legacy/vendors-node_modules_blueprintjs_core_lib_esm_components_hotkeys_hotkeysDialog_js-node_module-e16945.js",
+        "/build-legacy/vendors-node_modules_blueprintjs_popover2_lib_esm_popover2_js-node_modules_blueprintjs_popove-0ede6c.js",
+        "/build-legacy/new-app.js"
+      ],
+      "css": [
+        "/build-legacy/vendors-node_modules_blueprintjs_popover2_lib_esm_popover2_js-node_modules_blueprintjs_popove-0ede6c.css",
+        "/build-legacy/new-app.css"
+      ]
+    },
+    "lib": {
+      "css": [
+        "/build-legacy/vendors-node_modules_ag-grid-community_dist_styles_ag-grid_css-node_modules_ag-grid-community-d28b1f.css",
+        "/build-legacy/lib.css"
+      ]
+    },
+    "app": {
+      "css": [
+        "/build-legacy/app.css"
+      ]
+    }
+  }
+}

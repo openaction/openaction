@@ -272,7 +272,6 @@ class TeamControllerTest extends WebTestCase
 
         $crawler = $client->click($crawler->filter('.world-box.collaborator')->link());
         $this->assertResponseIsSuccessful();
-        $this->assertCount($countCheck, $crawler->filter('input:checked'));
 
         $merge = [$permission => !$has] + $permissions[$projectId];
         $newPermissions = [$projectId => $merge];

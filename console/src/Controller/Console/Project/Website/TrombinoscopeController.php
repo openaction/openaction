@@ -18,6 +18,7 @@ use App\Form\Website\TrombinoscopePersonImageType;
 use App\Form\Website\TrombinoscopePersonType;
 use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
+use App\Repository\OrganizationMemberRepository;
 use App\Repository\Website\TrombinoscopeCategoryRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
 use App\Util\Json;
@@ -200,7 +201,7 @@ class TrombinoscopeController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_trombinoscope_create')]
-    public function create(EntityManagerInterface $manager, Request $request, TranslatorInterface $translator)
+    public function create(EntityManagerInterface $manager, Request $request, OrganizationMemberRepository $memberRepository, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -215,6 +216,11 @@ class TrombinoscopeController extends AbstractController
         $manager->persist($person);
         $manager->flush();
 
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'trombinoscope')) {
+            $this->categoryRepository->updateCategories($person, $categories);
+        }
+
         return $this->redirectToRoute('console_website_trombinoscope_edit', [
             'projectUuid' => $this->getProject()->getUuid(),
             'uuid' => $person->getUuid(),
@@ -222,7 +228,7 @@ class TrombinoscopeController extends AbstractController
     }
 
     #[Route('/{uuid}/duplicate', name: 'console_website_trombinoscope_duplicate', methods: ['GET'])]
-    public function duplicate(TrombinoscopeDataManager $dataManager, Request $request, TrombinoscopePerson $person)
+    public function duplicate(TrombinoscopeDataManager $dataManager, OrganizationMemberRepository $memberRepository, Request $request, TrombinoscopePerson $person)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -230,6 +236,11 @@ class TrombinoscopeController extends AbstractController
         $this->denyUnlessSameProject($person);
 
         $duplicated = $dataManager->duplicate($person);
+
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'trombinoscope')) {
+            $this->categoryRepository->updateCategories($duplicated, $categories);
+        }
 
         return $this->redirectToRoute('console_website_trombinoscope_edit', [
             'projectUuid' => $this->getProject()->getUuid(),

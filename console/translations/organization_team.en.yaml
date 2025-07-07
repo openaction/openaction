@@ -26,7 +26,16 @@ pending:
 
 permissions:
     check_all: Grant full access to this project
-    detailed_permissions: Detailed permissions
+    apply_permissions_label: 'Access restriction by category'
+    apply_permissions_all_posts: access to all categories
+    apply_permissions_all_pages: access to all categories
+    apply_permissions_all_trombinoscope: access to all categories
+    apply_permissions_all_events: access to all categories
+    apply_permissions_specific_posts: 'restrict to the following categories:'
+    apply_permissions_specific_pages: 'restrict to the following categories:'
+    apply_permissions_specific_trombinoscope: 'restrict to the following categories:'
+    apply_permissions_specific_events: 'restrict to the following categories:'
+    select_categories_placeholder: Select
 
     website: Website
 
@@ -119,7 +128,6 @@ invite_member:
             These permissions are simple labels which will be accessible from the API so that you can adapt your
             tools behavior based on them.
     is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
-    permissions: 'Or configure specific permissions per project:'
     button: Send the invite
 
 permission_member:
@@ -127,7 +135,6 @@ permission_member:
     page_title: Update the permissions of %name%
     title: Update the permissions of %name%
     is_admin: This collaborator is an administrator (full access to all the projects, teams, and contacts).
-    permissions: 'Or configure specific permissions per project:'
     button: Save
     button_remove: Remove
     remove_confirm: Are you sure you want to delete the access of %name% to your organization?

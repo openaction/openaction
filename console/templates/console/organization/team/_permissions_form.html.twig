@@ -1,4 +1,4 @@
-{% set permissionsColumns = {
+{% set editablePermissions = {
     'website': {
         'pages': [
             'website_pages_manage',
@@ -94,93 +94,64 @@
     },
 } %}
 
-{% set permissions = [] %}
-{% for col in permissionsColumns %}
-    {% set permissions = permissions|merge(col) %}
+{# Prepare translations #}
+
+{% set permissionsTranslations = {} %}
+{% for section, categories in editablePermissions %}
+    {% set permissionsTranslations = permissionsTranslations|merge({
+        (section): ('permissions.' ~ section)|trans({}, 'organization_team')
+    }) %}
+
+    {% for category, permissions in categories %}
+        {% set permissionsTranslations = permissionsTranslations|merge({
+            (category): ('permissions.' ~ category)|trans({}, 'organization_team')
+        }) %}
+
+        {% for permission in permissions %}
+            {% set permissionsTranslations = permissionsTranslations|merge({
+                (permission): ('permissions.' ~ permission)|trans({}, 'organization_team')
+            }) %}
+        {% endfor %}
+    {% endfor %}
 {% endfor %}
 
-{% do expose('team_metadata_permissions', permissions) %}
-{% do expose('team_metadata_projects', projects|map(p => p.uuid)) %}
+{% set isAdminFieldHtml = form_widget(form.isAdmin) %}
+{% set projectsPermissionsFieldHtml = form_widget(form.projectsPermissions) %}
+{% set projectsPermissionsCategoriesFieldHtml = form_widget(form.projectsPermissionsCategories) %}
 
-<div data-controller="team--permissions">
-    <div class="world-block mt-4 p-3">
-        {{ form_errors(form.isAdmin) }}
-        {{ form_widget(form.isAdmin, {
-            'label': 'invite_member.is_admin'|trans({}, 'organization_team'),
-            'attr': {'data-team--permissions-target': 'isAdmin'},
-            'label_attr': {'class': 'checkbox-custom'},
-        }) }}
-    </div>
-
-    {{ form_widget(form.projectsPermissions, {'attr': {'data-team--permissions-target': 'permissionsInput'}}) }}
-
-    <div data-team--permissions-target="permissionsContainer" class="mt-4">
-        <div class="px-2 mb-2">
-            <strong>
-                {{ 'invite_member.permissions'|trans({}, 'organization_team') }}
-            </strong>
-        </div>
-
-        {% for project in projects %}
-            <div class="world-block p-3 mb-3">
-                <h5 class="mb-2">
-                    {{ project.name }}
-                </h5>
-
-                <div class="custom-control custom-checkbox mb-3">
-                    <input type="checkbox"
-                           class="custom-control-input"
-                           id="{{ project.uuid }}-all"
-                           data-team--permissions-target="permissionAll"
-                           data-project="{{ project.uuid }}" />
-                    <label class="custom-control-label" for="{{ project.uuid }}-all">
-                        {{ 'permissions.check_all'|trans({}, 'organization_team') }}
-                    </label>
-                </div>
-
-                <details>
-                    <summary>{{ 'permissions.detailed_permissions'|trans({}, 'organization_team') }}</summary>
-
-                    <div class="row">
-                        {% for columnLabel, column in permissionsColumns %}
-                            <div class="col-lg-4">
-                                <div class="text-muted text-uppercase">
-                                    {{ ('permissions.' ~ columnLabel)|trans({}, 'organization_team') }}
-                                </div>
-
-                                {% for section, permissions in column %}
-                                    <div class="mt-3 mb-1">
-                                        <small class="text-muted text-uppercase">
-                                            {{ ('permissions.' ~ section)|trans({}, 'organization_team') }}
-                                        </small>
-                                    </div>
-
-                                    {% for permission in permissions %}
-                                        <div class="custom-control custom-checkbox mb-1">
-                                            <input
-                                                    type="checkbox"
-                                                    class="custom-control-input"
-                                                    id="{{ project.uuid }}-{{ permission }}"
-                                                    value="{{ project.uuid }}-{{ permission }}"
-                                                    {% if member is defined
-                                                        and member.projectsPermissions.permission(project.uuid, permission) %}
-                                                        checked="checked"
-                                                    {% endif %}
-                                                    data-team--permissions-target="permissionCheckbox"
-                                                    data-project="{{ project.uuid }}"
-                                                    data-permission="{{ permission }}" />
-                                            <label class="custom-control-label" for="{{ project.uuid }}-{{ permission }}">
-                                                {{ ('permissions.' ~ permission)|trans({}, 'organization_team') }}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </details>
-            </div>
-        {% endfor %}
+<div data-controller="sticky-top">
+    <div {{ modern_react_component('Organization/Team/Permissions', {
+        'definitions': editablePermissions,
+        'projects': transform_collection(projects, 'App\\Api\\Transformer\\ProjectTransformer'),
+        'pagesCategories': transform_collection(pagesCategories, 'App\\Api\\Transformer\\Website\\PageCategoryTransformer'),
+        'postsCategories': transform_collection(postsCategories, 'App\\Api\\Transformer\\Website\\PostCategoryTransformer'),
+        'trombinoscopeCategories': transform_collection(trombinoscopeCategories, 'App\\Api\\Transformer\\Website\\TrombinoscopeCategoryTransformer'),
+        'eventsCategories': transform_collection(eventsCategories, 'App\\Api\\Transformer\\Website\\EventCategoryTransformer'),
+        'isAdminField': field_name(form.isAdmin),
+        'isAdminValue': member.isAdmin|default(false) ? '1' : '0',
+        'projectsPermissionsField': field_name(form.projectsPermissions),
+        'projectsPermissionsValue': field_value(form.projectsPermissions),
+        'projectsPermissionsCategoriesField': field_name(form.projectsPermissionsCategories),
+        'projectsPermissionsCategoriesValue': field_value(form.projectsPermissionsCategories),
+        'translations': permissionsTranslations,
+        'labels': {
+            'is_admin_label': 'invite_member.is_admin'|trans({}, 'organization_team'),
+            'grant_all_permissions': 'permissions.check_all'|trans({}, 'organization_team'),
+            'apply_permissions_label': 'permissions.apply_permissions_label'|trans({}, 'organization_team'),
+            'apply_permissions_all_posts': 'permissions.apply_permissions_all_posts'|trans({}, 'organization_team'),
+            'apply_permissions_all_pages': 'permissions.apply_permissions_all_pages'|trans({}, 'organization_team'),
+            'apply_permissions_all_trombinoscope': 'permissions.apply_permissions_all_trombinoscope'|trans({}, 'organization_team'),
+            'apply_permissions_all_events': 'permissions.apply_permissions_all_events'|trans({}, 'organization_team'),
+            'apply_permissions_specific_posts': 'permissions.apply_permissions_specific_posts'|trans({}, 'organization_team'),
+            'apply_permissions_specific_pages': 'permissions.apply_permissions_specific_pages'|trans({}, 'organization_team'),
+            'apply_permissions_specific_trombinoscope': 'permissions.apply_permissions_specific_trombinoscope'|trans({}, 'organization_team'),
+            'apply_permissions_specific_events': 'permissions.apply_permissions_specific_events'|trans({}, 'organization_team'),
+            'select_categories_placeholder': 'permissions.select_categories_placeholder'|trans({}, 'organization_team'),
+        },
+    }) }}>
+        {{ isAdminFieldHtml|raw }}
+        {{ projectsPermissionsFieldHtml|raw }}
+        {{ projectsPermissionsCategoriesFieldHtml|raw }}
     </div>
 </div>
 

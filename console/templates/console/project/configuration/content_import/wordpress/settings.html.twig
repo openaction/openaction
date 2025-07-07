@@ -35,7 +35,7 @@
                     </div>
 
                     {% set input = form_widget(form.postAuthorsIds) %}
-                    <div {{ react_component('Project/Website/ImportAuthorsSelector', {
+                    <div {{ legacy_react_component('Project/Website/ImportAuthorsSelector', {
                         'choices': availableAuthors,
                         'fieldName': field_name(form.postAuthorsIds),
                     }) }}>{{ input }}</div>

@@ -49,7 +49,7 @@
             </h3>
         </div>
 
-        <div {{ react_component('Project/Community/EmailCampaignEditor', {
+        <div {{ legacy_react_component('Project/Community/EmailCampaignEditor', {
             projectId: unlayer_project_id,
             design: campaign.unlayerDesign,
             saveUrl: path('console_community_emailing_content_update', {'projectUuid': campaign.project.uuid, 'uuid': campaign.uuid}),

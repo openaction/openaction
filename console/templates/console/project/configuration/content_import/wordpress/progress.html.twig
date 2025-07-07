@@ -12,7 +12,7 @@
             </h3>
         </div>
 
-        <div class="bg-light p-5" {{ react_component('Project/Website/ImportProgress', {
+        <div class="bg-light p-5" {{ legacy_react_component('Project/Website/ImportProgress', {
             'statusUrl': path('console_api_job_status', {'id': import.job.id}),
             'postsUrl': path('console_website_posts', {'projectUuid': current_project.uuid}),
             'labels': {

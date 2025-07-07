@@ -18,6 +18,7 @@ use App\Form\Website\PageImageType;
 use App\Form\Website\PageType;
 use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
+use App\Repository\OrganizationMemberRepository;
 use App\Repository\Website\PageCategoryRepository;
 use App\Repository\Website\PageRepository;
 use App\Search\Consumer\RemoveCmsDocumentMessage;
@@ -68,7 +69,7 @@ class PageController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_page_create')]
-    public function create(EntityManagerInterface $manager, Request $request, TranslatorInterface $translator)
+    public function create(EntityManagerInterface $manager, Request $request, OrganizationMemberRepository $memberRepository, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -79,6 +80,11 @@ class PageController extends AbstractController
         $manager->persist($page);
         $manager->flush();
 
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'pages')) {
+            $this->categoryRepository->updateCategories($page, $categories);
+        }
+
         $this->bus->dispatch(UpdateCmsDocumentMessage::forSearchable($page));
 
         return $this->redirectToRoute('console_website_page_edit', [
@@ -88,7 +94,7 @@ class PageController extends AbstractController
     }
 
     #[Route('/{uuid}/duplicate', name: 'console_website_page_duplicate', methods: ['GET'])]
-    public function duplicate(PageDataManager $dataManager, Request $request, Page $page)
+    public function duplicate(PageDataManager $dataManager, OrganizationMemberRepository $memberRepository, Request $request, Page $page)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -96,6 +102,11 @@ class PageController extends AbstractController
         $this->denyUnlessSameProject($page);
 
         $duplicated = $dataManager->duplicate($page);
+
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'pages')) {
+            $this->categoryRepository->updateCategories($duplicated, $categories);
+        }
 
         $this->bus->dispatch(UpdateCmsDocumentMessage::forSearchable($duplicated));
 
@@ -108,7 +119,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/move', name: 'console_website_page_move', methods: ['GET', 'POST'])]
     public function move(PageDataManager $dataManager, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -147,7 +158,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/edit', name: 'console_website_page_edit', methods: ['GET'])]
     public function edit(Page $page)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -174,7 +185,7 @@ class PageController extends AbstractController
 
     private function updatePage(Page $page, Request $request, string $groupValidation)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
@@ -220,7 +231,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/update/image', name: 'console_website_page_update_image')]
     public function updateImage(Page $page, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
@@ -246,7 +257,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/content/upload', name: 'console_website_page_upload_image', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);
 
@@ -259,7 +270,7 @@ class PageController extends AbstractController
     #[Route('/{uuid}/delete', name: 'console_website_page_delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Page $page, Request $request)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PAGES_MANAGE_ENTITY, $page);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($page);

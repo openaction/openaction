@@ -26,7 +26,17 @@ pending:
 
 permissions:
     check_all: Donner un accès complet à ce projet
-    detailed_permissions: Permissions détaillées
+    apply_permissions_label: 'Restriction d''accès par catégorie'
+    apply_permissions_all_posts: accès à toutes les catégories
+    apply_permissions_all_pages: accès à toutes les catégories
+    apply_permissions_all_trombinoscope: accès à toutes les catégories
+    apply_permissions_all_events: accès à toutes les catégories
+    apply_permissions_specific_posts: 'restreindre aux catégories suivantes :'
+    apply_permissions_specific_pages: 'restreindre aux catégories suivantes:'
+    apply_permissions_specific_trombinoscope: 'restreindre aux catégories suivantes:'
+    apply_permissions_specific_events: 'restreindre aux catégories suivantes:'
+    select_categories_placeholder: Sélectionner
+
 
     website: Site internet
 
@@ -98,7 +108,7 @@ permissions:
     configuration: Configuration
 
     settings: Paramètres
-    project_config_appearance: Configurer l'apparence du projet (site internet, emails, ...)
+    project_config_appearance: Configurer l'apparence du projet
     project_config_socials: Configurer les réseaux sociaux
 
     developer: Développeurs
@@ -119,7 +129,6 @@ invite_member:
             des permissions externes. Ces permissions sont de simples étiquettes accessibles depuis l'API Citipo
             afin que vous puissiez adapter le comportement de vos outils selon cette information.
     is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
-    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
     button: Envoyer l'invitation
 
 permission_member:
@@ -127,7 +136,6 @@ permission_member:
     page_title: Modifier les permissions de %name%
     title: Modifier les permissions de %name%
     is_admin: Ce collaborateur est un administrateur (accès complet à tous les projets, à l'équipe et aux contacts).
-    permissions: 'Ou configurez des permissions spécifiques pour ce collaborateur :'
     button: Enregistrer
     button_remove: Supprimer
     remove_confirm: Voulez-vous vraiment supprimer l'accès de "%user%" à votre organisation ?

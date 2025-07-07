@@ -41,6 +41,9 @@ services:
         App\Website\ImportExport\Parser\ExternalContentParserInterface:
             tags: ['app.external_content_parser']
 
+        League\Fractal\TransformerAbstract:
+            tags: ['app.api_transformer']
+
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Util,Kernel.php}'
@@ -116,11 +119,15 @@ services:
             $secretKey: '%env(UPLOADCARE_SECRET_KEY)%'
 
     #
-    # Assets
+    # Twig
     #
-    App\Twig\ReactExtension:
+    App\Twig\AssetExtension:
         arguments:
             $stimulusExtension: '@webpack_encore.twig_stimulus_extension'
+
+    App\Twig\TransformerExtension:
+        arguments:
+            $transformers: !tagged_iterator 'app.api_transformer'
 
     #
     # API

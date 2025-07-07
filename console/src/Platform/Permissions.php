@@ -23,6 +23,7 @@ final class Permissions
     public const WEBSITE_ACCESS_STATS = 'website_access_stats';
 
     // Pages
+    public const WEBSITE_PAGES_MANAGE_ENTITY = 'website_pages_manage_entity';
     public const WEBSITE_PAGES_MANAGE = 'website_pages_manage';
     public const WEBSITE_PAGES_MANAGE_CATEGORIES = 'website_pages_manage_categories';
 

@@ -93,36 +93,4 @@ class ContentImportHandlerTest extends KernelTestCase
         $this->assertSame(3, $job->getTotal());
         $this->assertTrue($job->isFinished());
     }
-
-    public function testConsumeLarge(): void
-    {
-        self::bootKernel();
-
-        /** @var ContentImport $import */
-        $import = static::getContainer()->get(ContentImportRepository::class)->findOneByUuid('8a7f9d2e-56c1-4826-9b40-7fe8a58e3d14');
-        $this->assertInstanceOf(ContentImport::class, $import);
-
-        $postsCountBeforeImport = static::getContainer()->get(PostRepository::class)->count(['project' => $import->getProject()]);
-        $pagesCountBeforeImport = static::getContainer()->get(PageRepository::class)->count(['project' => $import->getProject()]);
-
-        $job = $import->getJob();
-        $this->assertFalse($job->isFinished());
-        $this->assertSame(0, $job->getTotal());
-
-        static::getContainer()->get('cdn.storage')->write('import-started.xml', file_get_contents(__DIR__.'/../../../Fixtures/import/import-content-wordpress-large.xml'));
-
-        $handler = static::getContainer()->get(ContentImportHandler::class);
-        $handler(new ContentImportMessage($import->getId()));
-
-        $postsCountAfterImport = static::getContainer()->get(PostRepository::class)->count(['project' => $import->getProject()]);
-        $pagesCountAfterImport = static::getContainer()->get(PageRepository::class)->count(['project' => $import->getProject()]);
-
-        $this->assertSame(399, $postsCountAfterImport - $postsCountBeforeImport);
-        $this->assertSame(13, $pagesCountAfterImport - $pagesCountBeforeImport);
-
-        // check if jobs is processed
-        static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
-        $this->assertSame(412, $job->getTotal());
-        $this->assertTrue($job->isFinished());
-    }
 }

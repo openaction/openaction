@@ -41,18 +41,6 @@ jobs:
             - name: Check Composer files
               run: cd console && php composer-normalize.phar --dry-run
 
-    # JS coding style
-    console-prettier:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@master
-
-            - name: Install prettier
-              run: yarn global add prettier@2.6.2
-
-            - name: Check coding style
-              run: cd console && prettier --check assets assets-legacy projects --config .prettierrc.json
-
     # Translations
     console-translations:
         runs-on: ubuntu-latest
@@ -70,43 +58,65 @@ jobs:
             - name: Check translations
               run: php checker.phar check console/translations
 
-    # JS tests
-    console-js-tests:
+    # JS coding style
+    console-js-legacy-prettier:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@master
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
-            - name: Install JavaScript dependencies
-              run: cd console && yarn install
+            - name: Install legacy JavaScript dependencies
+              run: cd console/assets/legacy && yarn install
 
-            - name: Jest
-              run: cd console && yarn test
-
-    # JS build
-    console-js-build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@master
-
-            - uses: actions/setup-node@v2
-              with:
-                  node-version: '14'
-
-            - name: Install JavaScript dependencies
-              run: cd console && yarn install
-
-            - name: Build JavaScript
-              run: cd console && yarn build
+            - name: Check legacy coding style
+              run: cd console/assets/legacy && yarn prettier --check js-stimulus ts-react --config .prettierrc.json
 
             - name: Install projects JavaScript dependencies
-              run: cd console/projects && yarn install
+              run: cd console/assets/projects && yarn install
+
+            - name: Check projects coding style
+              run: cd console/assets/projects && yarn prettier --check . --config .prettierrc.json
+
+    # JS tests
+    console-js-legacy-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@master
+
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '22'
+
+            - name: Install JavaScript dependencies
+              run: cd console/assets/legacy && yarn install
+
+            - name: Jest
+              run: cd console/assets/legacy && yarn test
+
+    # JS build
+    console-js-legacy-build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@master
+
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '22'
+
+            - name: Install JavaScript dependencies
+              run: cd console/assets/legacy && yarn install
+
+            - name: Build JavaScript
+              run: cd console/assets/legacy && yarn build
+
+            - name: Install projects JavaScript dependencies
+              run: cd console/assets/projects && yarn install
 
             - name: Build projects JavaScript
-              run: cd console/projects && yarn build
+              run: cd console/assets/projects && yarn build
 
     # PHP tests
     console-php-tests:
@@ -147,7 +157,7 @@ jobs:
               run: docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
-              run: cd console && cp -R tests/Fixtures/assets/build public/build && cp -R tests/Fixtures/assets/projects public/projects
+              run: cd console && cp -R tests/Fixtures/assets/* public/
 
             - name: Prepare database
               run: |
@@ -169,10 +179,10 @@ jobs:
         needs:
             - console-php-cs
             - console-composer-normalize
-            - console-prettier
             - console-translations
-            - console-js-tests
-            - console-js-build
+            - console-js-legacy-prettier
+            - console-js-legacy-tests
+            - console-js-legacy-build
             - console-php-tests
         if: github.ref == 'refs/heads/main'
         steps:
@@ -180,7 +190,7 @@ jobs:
 
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: '22'
 
             - uses: azure/docker-login@v1
               with:
@@ -188,17 +198,23 @@ jobs:
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Install JavaScript dependencies
-              run: cd console && yarn install
+            - name: Install legacy JavaScript dependencies
+              run: cd console/assets/legacy && yarn install
 
-            - name: Build JavaScript
-              run: cd console && yarn build
+            - name: Build legacy JavaScript
+              run: cd console/assets/legacy && yarn build
+
+            - name: Install modern JavaScript dependencies
+              run: cd console/assets/modern && yarn install
+
+            - name: Build modern JavaScript
+              run: cd console/assets/modern && yarn build
 
             - name: Install projects JavaScript dependencies
-              run: cd console/projects && yarn install
+              run: cd console/assets/projects && yarn install
 
             - name: Build projects JavaScript
-              run: cd console/projects && yarn build
+              run: cd console/assets/projects && yarn build
 
             - name: Build and publish console production image
               uses: elgohr/Publish-Docker-Github-Action@master
@@ -309,8 +325,7 @@ jobs:
 
             - name: Setup assets fixtures
               run: |
-                  cp -R console/tests/Fixtures/assets/build console/public/build
-                  cp -R console/tests/Fixtures/assets/projects console/public/projects
+                  cp -R console/tests/Fixtures/assets/* console/public/
                   cp -R public/tests/Fixtures/assets public/public/build
 
             - name: Prepare database

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "esModuleInterop": true,
+        "target": "ES6",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "types": ["jest", "node", "react", "react-dom"]
+    },
+    "exclude": [
+        "node_modules",
+        "var",
+        "vendor"
+    ]
+}

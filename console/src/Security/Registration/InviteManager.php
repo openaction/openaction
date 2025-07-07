@@ -23,7 +23,7 @@ class InviteManager
     ) {
     }
 
-    public function invite(Organization $orga, User $owner, string $email, bool $isAdmin = true, array $permissions = [], string $locale = 'en')
+    public function invite(Organization $orga, User $owner, string $email, bool $isAdmin = true, array $permissions = [], array $permissionsCategories = [], string $locale = 'en')
     {
         $invited = $this->userRepository->findOneByEmail($email);
 
@@ -32,12 +32,14 @@ class InviteManager
             // If the invited is already a member, update the permissions
             if ($member = $this->memberRepository->findMember($invited, $orga)) {
                 $member->setPermissions($isAdmin, array_merge($member->getRawProjectsPermissions(), $permissions));
+                $member->setProjectsPermissionsCategories($permissionsCategories);
                 $this->tenantTokenManager->refreshMemberCrmTenantToken($member, persist: true);
 
                 return $member;
             }
 
             $member = new OrganizationMember($orga, $invited, $isAdmin, $permissions);
+            $member->setProjectsPermissionsCategories($permissionsCategories);
             $this->tenantTokenManager->refreshMemberCrmTenantToken($member, persist: true);
 
             $this->mailer->sendOrganizationInviteToRegisteredUser($orga, $invited, $owner);
@@ -47,6 +49,7 @@ class InviteManager
 
         // Otherwise, create a registration token
         $registration = new Registration($email, $orga, $isAdmin, $permissions, $locale);
+        $registration->setProjectsPermissionsCategories($permissionsCategories);
         $this->em->persist($registration);
         $this->em->flush();
 

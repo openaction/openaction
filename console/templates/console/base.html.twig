@@ -82,223 +82,133 @@
 
     <div class="world">
         <header class="world-header p-3 mb-4">
-            <div class="container-fluid">
-                <div class="row align-items-center no-gutters">
-                    <div class="col-12 col-md-auto mb-3 mb-md-0 mr-md-3">
-                        <a href="{{ current_organization ? path('console_organization_projects', {'organizationUuid': current_organization.uuid}) : path('homepage_redirect') }}">
-                            <img src="{{ platform_logo }}" class="world-header-logo" />
-                        </a>
-                    </div>
+            <div class="tw:flex tw:flex-col tw:md:flex-row tw:items-center tw:gap-3">
+                <div>
+                    <a href="{{ current_organization ? path('console_organization_projects', {'organizationUuid': current_organization.uuid}) : path('homepage_redirect') }}">
+                        <img src="{{ platform_logo }}" class="world-header-logo" />
+                    </a>
+                </div>
 
-                    {% block nav_organization %}
-                        {% if current_organization %}
-                            <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                                <a href="{{ path('console_organization_projects', {'organizationUuid': current_organization.uuid}) }}"
-                                   class="world-user-item world-user-item-projects">
-                                    {{ 'console.header.menu.projects'|trans({}, 'global') }}
-                                </a>
-                            </div>
-
-                            {% if is_granted('organization_team_manage', current_organization) %}
-                                <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                                    <a href="{{ path('console_organization_team', {'organizationUuid': current_organization.uuid}) }}"
-                                       class="world-user-item world-user-item-team">
-                                        {{ 'console.header.menu.team'|trans({}, 'global') }}
-                                    </a>
-                                </div>
-                            {% endif %}
-
-                            {% if is_granted('organization_community_manage', current_organization) %}
-                                <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                                    <a href="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}"
-                                       class="world-user-item world-user-item-contacts">
-                                        {{ 'console.header.menu.contacts'|trans({}, 'global') }}
-                                    </a>
-                                </div>
-                            {% endif %}
-
-                            {% if is_granted('organization_team_manage', current_organization) %}
-                                <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                                    <a href="{{ path('console_organization_integrations', {'organizationUuid': current_organization.uuid}) }}"
-                                       class="world-user-item world-user-item-integrations">
-                                        {{ 'console.header.menu.integrations'|trans({}, 'global') }}
-                                    </a>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endblock %}
-
-                    {% if current_organization
-                        and current_organization.partner
-                        and current_organization.partner.partnerMenu.items|length > 0 %}
-                        {% for item in current_organization.partner.partnerMenu.items %}
-                            <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                                <a href="{{ item.url }}" target="_blank" rel="noreferrer noopener" class="world-user-item">
-                                    {{ item.label }}
-                                </a>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-
-                    <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                        <a href="https://citipo.com/fr/documentation" target="_blank"
-                           class="world-user-item world-user-item-documentation">
-                            {{ 'console.header.menu.doc'|trans({}, 'global') }}
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                        <a href="mailto:contact@citipo.com" target="_blank"
-                           class="world-user-item world-user-item-support">
-                            {{ 'console.header.menu.help'|trans({}, 'global') }}
-                        </a>
-                    </div>
-
-                    {% set whats_new = get_announcements_for(app.user) %}
-
-                    <div class="col-12 col-md-auto mb-3 mb-md-0 mr-auto">
-                        <div class="world-header-menu on-click"
-                             data-controller="whats-new"
-                             data-latest="{{ (whats_new[0] is defined ? whats_new[0].date|date('U') : 0) }}">
-                            <a href="javascript:void(0)" class="world-user-item" data-whats-new-target="button">
-                                <div class="world-user-item-icon">
-                                    <i class="fad fa-signal-stream"></i>
-                                </div>
-                                <div class="world-user-item-label">
-                                    {{ 'console.header.menu.whats_new'|trans({}, 'global') }}
-                                </div>
-                                <div class="world-user-item-dot ml-1" data-whats-new-target="dot" style="display: none"></div>
+                {% block nav_organization %}
+                    {% if current_organization %}
+                        <div>
+                            <a href="{{ path('console_organization_projects', {'organizationUuid': current_organization.uuid}) }}"
+                               class="world-user-item world-user-item-projects">
+                                {{ 'console.header.menu.projects'|trans({}, 'global') }}
                             </a>
-
-                            <div class="world-header-menu-caret" data-whats-new-target="toggle">
-                                <span class="world-header-menu-caret-outer"></span>
-                                <span class="world-header-menu-caret-inner"></span>
-                            </div>
-
-                            <div class="world-header-menu-dropdown world-header-menu-dropdown-lg"
-                                 data-whats-new-target="toggle">
-                                <div class="list-group list-group-flush">
-                                    {% for announcement in whats_new[0:5] %}
-                                        <div class="list-group-item p-3">
-                                            <strong>{{ announcement.title }}</strong>
-
-                                            <div class="mt-1 text-muted">
-                                                {{ announcement.description }}
-                                            </div>
-
-                                            {% if announcement.linkUrl and announcement.linkText %}
-                                                <div class="mt-2">
-                                                    <a href="{{ announcement.linkUrl }}"
-                                                       class="btn btn-secondary btn-sm text-primary">
-                                                        {{ announcement.linkText }}
-                                                    </a>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
                         </div>
-                    </div>
 
-                    {% block menu_organization %}
-                        <div class="col-12 col-md-auto mb-1 mb-md-0 mr-md-3">
-                            <div class="world-header-menu">
-                                <a href="javascript:void(0)" class="world-user-item">
-                                    <div class="world-user-item-icon">
-                                        <i class="fad fa-users"></i>
-                                    </div>
-                                    <div class="world-user-item-label" data-orga>
-                                        {{ current_organization ? current_organization.name : 'console.header.organization.switch'|trans({}, 'global') }}
-                                    </div>
+                        {% if is_granted('organization_team_manage', current_organization) %}
+                            <div>
+                                <a href="{{ path('console_organization_team', {'organizationUuid': current_organization.uuid}) }}"
+                                   class="world-user-item world-user-item-team">
+                                    {{ 'console.header.menu.team'|trans({}, 'global') }}
                                 </a>
+                            </div>
+                        {% endif %}
 
-                                <div class="world-header-menu-caret">
-                                    <span class="world-header-menu-caret-outer"></span>
-                                    <span class="world-header-menu-caret-inner"></span>
-                                </div>
+                        {% if is_granted('organization_community_manage', current_organization) %}
+                            <div>
+                                <a href="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}"
+                                   class="world-user-item world-user-item-contacts">
+                                    {{ 'console.header.menu.contacts'|trans({}, 'global') }}
+                                </a>
+                            </div>
+                        {% endif %}
 
-                                <div class="world-header-menu-dropdown">
-                                    {% if current_organization and is_granted('organization_see_credits', current_organization) %}
-                                        <div class="world-header-menu-dropdown-orga">
-                                            <div class="mb-1">
-                                                <strong>
-                                                    {{ current_organization.name }}
-                                                </strong>
-                                            </div>
+                        {% if is_granted('organization_team_manage', current_organization) %}
+                            <div>
+                                <a href="{{ path('console_organization_integrations', {'organizationUuid': current_organization.uuid}) }}"
+                                   class="world-user-item world-user-item-integrations">
+                                    {{ 'console.header.menu.integrations'|trans({}, 'global') }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endblock %}
 
-                                            <div class="world-header-menu-dropdown-orga-credits">
-                                                <div class="world-header-menu-dropdown-orga-credits-icon">
-                                                    <i class="fad fa-envelope"></i>
-                                                </div>
-                                                <div class="world-header-menu-dropdown-orga-credits-label" data-credits-emails>
-                                                    {{ current_organization.creditsBalance|format_number }}
-                                                    {{ 'console.header.organization.email_credits'|trans({}, 'global') }}
-                                                    {% if is_granted('organization_billing_manage', current_organization) %}
-                                                        <br />
-                                                        <a href="{{ path('console_organization_community_buy_credits_emails', {'organizationUuid': current_organization.uuid}) }}">
-                                                            {{ 'console.header.organization.buy_email_credits'|trans({}, 'global') }}
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
+                {% if current_organization
+                    and current_organization.partner
+                    and current_organization.partner.partnerMenu.items|length > 0 %}
+                    {% for item in current_organization.partner.partnerMenu.items %}
+                        <div>
+                            <a href="{{ item.url }}" target="_blank" rel="noreferrer noopener" class="world-user-item">
+                                {{ item.label }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
-                                            <div class="world-header-menu-dropdown-orga-credits">
-                                                <div class="world-header-menu-dropdown-orga-credits-icon">
-                                                    <i class="fad fa-comment-alt-dots"></i>
-                                                </div>
-                                                <div class="world-header-menu-dropdown-orga-credits-label" data-credits-texts>
-                                                    {{ current_organization.textsCreditsBalance|format_number }}
-                                                    {{ 'console.header.organization.text_credits'|trans({}, 'global') }}
-                                                    {% if is_granted('organization_billing_manage', current_organization) %}
-                                                        <br />
-                                                        <a href="{{ path('console_organization_community_buy_credits_texts', {'organizationUuid': current_organization.uuid}) }}">
-                                                            {{ 'console.header.organization.buy_text_credits'|trans({}, 'global') }}
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
+                <div>
+                    <a href="https://citipo.com/fr/documentation" target="_blank"
+                       class="world-user-item world-user-item-documentation">
+                        {{ 'console.header.menu.doc'|trans({}, 'global') }}
+                    </a>
+                </div>
+
+                <div>
+                    <a href="mailto:contact@citipo.com" target="_blank"
+                       class="world-user-item world-user-item-support">
+                        {{ 'console.header.menu.help'|trans({}, 'global') }}
+                    </a>
+                </div>
+
+                {% set whats_new = get_announcements_for(app.user) %}
+
+                <div class="tw:ml-auto">
+                    <div class="world-header-menu on-click"
+                         data-controller="whats-new"
+                         data-latest="{{ (whats_new[0] is defined ? whats_new[0].date|date('U') : 0) }}">
+                        <a href="javascript:void(0)" class="world-user-item" data-whats-new-target="button">
+                            <div class="world-user-item-icon">
+                                <i class="fad fa-signal-stream"></i>
+                            </div>
+                            <div class="world-user-item-label">
+                                {{ 'console.header.menu.whats_new'|trans({}, 'global') }}
+                            </div>
+                            <div class="world-user-item-dot ml-1" data-whats-new-target="dot" style="display: none"></div>
+                        </a>
+
+                        <div class="world-header-menu-caret" data-whats-new-target="toggle">
+                            <span class="world-header-menu-caret-outer"></span>
+                            <span class="world-header-menu-caret-inner"></span>
+                        </div>
+
+                        <div class="world-header-menu-dropdown world-header-menu-dropdown-lg"
+                             data-whats-new-target="toggle">
+                            <div class="list-group list-group-flush">
+                                {% for announcement in whats_new[0:5] %}
+                                    <div class="list-group-item p-3">
+                                        <strong>{{ announcement.title }}</strong>
+
+                                        <div class="mt-1 text-muted">
+                                            {{ announcement.description }}
                                         </div>
 
-                                        {% if is_granted('organization_billing_manage', current_organization) %}
-                                            <div class="list-group list-group-flush border-bottom mb-4">
-                                                <a href="{{ path('console_organization_billing_details', {'organizationUuid': current_organization.uuid}) }}"
-                                                   class="list-group-item list-group-item-action">
-                                                    {{ 'console.header.organization.billing_details'|trans({}, 'global') }}
-                                                </a>
-                                                <a href="{{ path('console_organization_billing_history', {'organizationUuid': current_organization.uuid}) }}"
-                                                   class="list-group-item list-group-item-action">
-                                                    {{ 'console.header.organization.billing_history'|trans({}, 'global') }}
+                                        {% if announcement.linkUrl and announcement.linkText %}
+                                            <div class="mt-2">
+                                                <a href="{{ announcement.linkUrl }}"
+                                                   class="btn btn-secondary btn-sm text-primary">
+                                                    {{ announcement.linkText }}
                                                 </a>
                                             </div>
                                         {% endif %}
-                                    {% endif %}
-
-                                    <div class="text-muted py-2 px-3 bg-light border-bottom {{ current_organization ? 'border-top' }}">
-                                        <strong>{{ 'console.header.organization.switch'|trans({}, 'global') }}</strong>
                                     </div>
-
-                                    <div class="list-group list-group-flush world-header-menu-orga-chooser" data-orga-chooser>
-                                        {% for organization in get_user_organizations_switcher(app.user) %}
-                                            <a href="{{ path('console_organization_projects', {'organizationUuid': organization.uuid}) }}"
-                                               class="list-group-item list-group-item-action" data-orga-chooser-item>
-                                                {{ organization.name }}
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
-                    {% endblock %}
+                    </div>
+                </div>
 
-                    <div class="col-12 col-md-auto mb-3 mb-md-0 mr-md-3">
+                {% block menu_organization %}
+                    <div>
                         <div class="world-header-menu">
-                            <a href="{{ path('console_user_account_update') }}" class="world-user-item">
+                            <a href="javascript:void(0)" class="world-user-item">
                                 <div class="world-user-item-icon">
-                                    <i class="fad fa-user"></i>
+                                    <i class="fad fa-users"></i>
                                 </div>
-                                <div class="world-user-item-label" data-user>
-                                    {{ app.user.fullName }}
+                                <div class="world-user-item-label" data-orga>
+                                    {{ current_organization ? current_organization.name : 'console.header.organization.switch'|trans({}, 'global') }}
                                 </div>
                             </a>
 
@@ -308,62 +218,150 @@
                             </div>
 
                             <div class="world-header-menu-dropdown">
-                                <div class="list-group list-group-flush">
-                                    <a href="{{ path('console_user_account_update') }}"
-                                       class="list-group-item list-group-item-action">
-                                        {{ 'console.header.user.account'|trans({}, 'global') }}
-                                    </a>
-                                    <a href="{{ path('console_user_password') }}"
-                                       class="list-group-item list-group-item-action">
-                                        {{ 'console.header.user.password'|trans({}, 'global') }}
-                                    </a>
-                                    <a href="{{ path('console_user_2fa') }}"
-                                       class="list-group-item list-group-item-action">
-                                        {{ 'console.header.user.2fa'|trans({}, 'global') }}
-                                    </a>
-                                    <a href="{{ path('console_user_notification_settings') }}"
-                                       class="list-group-item list-group-item-action">
-                                        {{ 'console.header.user.notifications'|trans({}, 'global') }}
-                                    </a>
+                                {% if current_organization and is_granted('organization_see_credits', current_organization) %}
+                                    <div class="world-header-menu-dropdown-orga">
+                                        <div class="mb-1">
+                                            <strong>
+                                                {{ current_organization.name }}
+                                            </strong>
+                                        </div>
 
-                                    {% if app.user.isPartner %}
-                                        <a href="{{ path('console_partner_dashboard') }}"
-                                           class="list-group-item list-group-item-action">
-                                            {{ 'console.header.user.partner'|trans({}, 'global') }}
-                                        </a>
-                                    {% endif %}
+                                        <div class="world-header-menu-dropdown-orga-credits">
+                                            <div class="world-header-menu-dropdown-orga-credits-icon">
+                                                <i class="fad fa-envelope"></i>
+                                            </div>
+                                            <div class="world-header-menu-dropdown-orga-credits-label" data-credits-emails>
+                                                {{ current_organization.creditsBalance|format_number }}
+                                                {{ 'console.header.organization.email_credits'|trans({}, 'global') }}
+                                                {% if is_granted('organization_billing_manage', current_organization) %}
+                                                    <br />
+                                                    <a href="{{ path('console_organization_community_buy_credits_emails', {'organizationUuid': current_organization.uuid}) }}">
+                                                        {{ 'console.header.organization.buy_email_credits'|trans({}, 'global') }}
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
 
-                                    {% if app.user.isAdmin %}
-                                        <a href="{{ path('easyadmin') }}"
-                                           class="list-group-item list-group-item-action">
-                                            Admin
-                                        </a>
-                                    {% endif %}
+                                        <div class="world-header-menu-dropdown-orga-credits">
+                                            <div class="world-header-menu-dropdown-orga-credits-icon">
+                                                <i class="fad fa-comment-alt-dots"></i>
+                                            </div>
+                                            <div class="world-header-menu-dropdown-orga-credits-label" data-credits-texts>
+                                                {{ current_organization.textsCreditsBalance|format_number }}
+                                                {{ 'console.header.organization.text_credits'|trans({}, 'global') }}
+                                                {% if is_granted('organization_billing_manage', current_organization) %}
+                                                    <br />
+                                                    <a href="{{ path('console_organization_community_buy_credits_texts', {'organizationUuid': current_organization.uuid}) }}">
+                                                        {{ 'console.header.organization.buy_text_credits'|trans({}, 'global') }}
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    {% if is_granted('IS_IMPERSONATOR') %}
-                                        <a href="{{ path('homepage_redirect', {'_switch_user': '_exit'}) }}"
-                                           class="list-group-item list-group-item-action">
-                                            Exit impersonation
-                                        </a>
-                                    {% else %}
-                                        <a href="{{ path('security_logout') }}"
-                                           class="list-group-item list-group-item-action">
-                                            {{ 'console.header.user.logout'|trans({}, 'global') }}
-                                        </a>
+                                    {% if is_granted('organization_billing_manage', current_organization) %}
+                                        <div class="list-group list-group-flush border-bottom mb-4">
+                                            <a href="{{ path('console_organization_billing_details', {'organizationUuid': current_organization.uuid}) }}"
+                                               class="list-group-item list-group-item-action">
+                                                {{ 'console.header.organization.billing_details'|trans({}, 'global') }}
+                                            </a>
+                                            <a href="{{ path('console_organization_billing_history', {'organizationUuid': current_organization.uuid}) }}"
+                                               class="list-group-item list-group-item-action">
+                                                {{ 'console.header.organization.billing_history'|trans({}, 'global') }}
+                                            </a>
+                                        </div>
                                     {% endif %}
+                                {% endif %}
+
+                                <div class="text-muted py-2 px-3 bg-light border-bottom {{ current_organization ? 'border-top' }}">
+                                    <strong>{{ 'console.header.organization.switch'|trans({}, 'global') }}</strong>
+                                </div>
+
+                                <div class="list-group list-group-flush world-header-menu-orga-chooser" data-orga-chooser>
+                                    {% for organization in get_user_organizations_switcher(app.user) %}
+                                        <a href="{{ path('console_organization_projects', {'organizationUuid': organization.uuid}) }}"
+                                           class="list-group-item list-group-item-action" data-orga-chooser-item>
+                                            {{ organization.name }}
+                                        </a>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
+                {% endblock %}
 
-                    <div class="col-12 col-md-auto mb-3 mb-md-0 launch-project">
-                        {% if current_organization and is_granted('organization_project_manage', current_organization) %}
-                            <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
-                               class="btn btn-outline-primary border-0">
-                                {{ 'console.header.launch_project'|trans({}, 'global') }}
-                            </a>
-                        {% endif %}
+                <div>
+                    <div class="world-header-menu">
+                        <a href="{{ path('console_user_account_update') }}" class="world-user-item">
+                            <div class="world-user-item-icon">
+                                <i class="fad fa-user"></i>
+                            </div>
+                            <div class="world-user-item-label" data-user>
+                                {{ app.user.fullName }}
+                            </div>
+                        </a>
+
+                        <div class="world-header-menu-caret">
+                            <span class="world-header-menu-caret-outer"></span>
+                            <span class="world-header-menu-caret-inner"></span>
+                        </div>
+
+                        <div class="world-header-menu-dropdown">
+                            <div class="list-group list-group-flush">
+                                <a href="{{ path('console_user_account_update') }}"
+                                   class="list-group-item list-group-item-action">
+                                    {{ 'console.header.user.account'|trans({}, 'global') }}
+                                </a>
+                                <a href="{{ path('console_user_password') }}"
+                                   class="list-group-item list-group-item-action">
+                                    {{ 'console.header.user.password'|trans({}, 'global') }}
+                                </a>
+                                <a href="{{ path('console_user_2fa') }}"
+                                   class="list-group-item list-group-item-action">
+                                    {{ 'console.header.user.2fa'|trans({}, 'global') }}
+                                </a>
+                                <a href="{{ path('console_user_notification_settings') }}"
+                                   class="list-group-item list-group-item-action">
+                                    {{ 'console.header.user.notifications'|trans({}, 'global') }}
+                                </a>
+
+                                {% if app.user.isPartner %}
+                                    <a href="{{ path('console_partner_dashboard') }}"
+                                       class="list-group-item list-group-item-action">
+                                        {{ 'console.header.user.partner'|trans({}, 'global') }}
+                                    </a>
+                                {% endif %}
+
+                                {% if app.user.isAdmin %}
+                                    <a href="{{ path('easyadmin') }}"
+                                       class="list-group-item list-group-item-action">
+                                        Admin
+                                    </a>
+                                {% endif %}
+
+                                {% if is_granted('IS_IMPERSONATOR') %}
+                                    <a href="{{ path('homepage_redirect', {'_switch_user': '_exit'}) }}"
+                                       class="list-group-item list-group-item-action">
+                                        Exit impersonation
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('security_logout') }}"
+                                       class="list-group-item list-group-item-action">
+                                        {{ 'console.header.user.logout'|trans({}, 'global') }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="launch-project">
+                    {% if current_organization and is_granted('organization_project_manage', current_organization) %}
+                        <a href="{{ path('console_project_create', {'organizationUuid': current_organization.uuid}) }}"
+                           class="btn btn-outline-primary border-0">
+                            {{ 'console.header.launch_project'|trans({}, 'global') }}
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </header>
