@@ -115,6 +115,10 @@
     {% endfor %}
 {% endfor %}
 
+{% set isAdminFieldHtml = form_widget(form.isAdmin) %}
+{% set projectsPermissionsFieldHtml = form_widget(form.projectsPermissions) %}
+{% set projectsPermissionsCategoriesFieldHtml = form_widget(form.projectsPermissionsCategories) %}
+
 <div data-controller="sticky-top">
     <div {{ modern_react_component('Organization/Team/Permissions', {
         'definitions': editablePermissions,
@@ -142,11 +146,9 @@
             'select_categories_placeholder': 'permissions.select_categories_placeholder'|trans({}, 'organization_team'),
         },
     }) }}>
-        <div class="d-none">
-            {{ form_widget(form.isAdmin) }}
-            {{ form_widget(form.projectsPermissions) }}
-            {{ form_widget(form.projectsPermissionsCategories) }}
-        </div>
+        {{ isAdminFieldHtml|raw }}
+        {{ projectsPermissionsFieldHtml|raw }}
+        {{ projectsPermissionsCategoriesFieldHtml|raw }}
     </div>
 </div>
 
