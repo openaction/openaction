@@ -27,8 +27,14 @@ interface Props {
     labels: {
         is_admin_label: string;
         grant_all_permissions: string;
-        apply_to_all_entities: string;
-        apply_to_specific_categories: string;
+        apply_permissions_label: string;
+        apply_permissions_all_posts: string;
+        apply_permissions_all_pages: string;
+        apply_permissions_all_trombinoscope: string;
+        apply_permissions_specific_posts: string;
+        apply_permissions_specific_pages: string;
+        apply_permissions_specific_trombinoscope: string;
+        select_categories_placeholder: string;
     }
 }
 
@@ -230,17 +236,31 @@ export default function (props: Props) {
         }));
     };
 
-    // Get category display name
-    const getCategoryDisplayName = (category: string): string => {
+    // Get category-specific label
+    const getCategorySpecificLabel = (category: string): string => {
         switch (category) {
             case 'posts':
-                return 'actualités';
+                return props.labels.apply_permissions_specific_posts;
             case 'pages':
-                return 'pages';
+                return props.labels.apply_permissions_specific_pages;
             case 'trombinoscope':
-                return 'fiches';
+                return props.labels.apply_permissions_specific_trombinoscope;
             default:
-                return props.translations[category] || category;
+                return props.labels.apply_permissions_specific_posts;
+        }
+    };
+
+    // Get category all label
+    const getCategoryAllLabel = (category: string): string => {
+        switch (category) {
+            case 'posts':
+                return props.labels.apply_permissions_all_posts;
+            case 'pages':
+                return props.labels.apply_permissions_all_pages;
+            case 'trombinoscope':
+                return props.labels.apply_permissions_all_trombinoscope;
+            default:
+                return props.labels.apply_permissions_all_posts;
         }
     };
 
@@ -320,7 +340,7 @@ export default function (props: Props) {
                                                         <div className="tw:mt-3 tw:p-2 tw:border tw:border-slate-200 tw:rounded-sm tw:bg-slate-50">
                                                             <div className="tw:space-y-2">
                                                                 <div className="tw:text-xs">
-                                                                    Appliquer ces permissions :
+                                                                    {props.labels.apply_permissions_label}
                                                                 </div>
 
                                                                 <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'tw:opacity-50' : ''}`}>
@@ -336,7 +356,7 @@ export default function (props: Props) {
                                                                         htmlFor={`${project.uuid}-${category}-all`}
                                                                         className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
                                                                     >
-                                                                        à toutes les {getCategoryDisplayName(category)}
+                                                                        {getCategoryAllLabel(category)}
                                                                     </Label>
                                                                 </div>
                                                                 <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'tw:opacity-50' : ''}`}>
@@ -353,7 +373,7 @@ export default function (props: Props) {
                                                                         className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
                                                                     >
                                                                         <div className="tw:mb-1">
-                                                                            uniquement aux pages des catégories suivantes:
+                                                                            {getCategorySpecificLabel(category)}
                                                                         </div>
 
                                                                         {categoryScope[project.uuid]?.[category] === 'specific' && (
@@ -364,7 +384,7 @@ export default function (props: Props) {
                                                                                 }))}
                                                                                 value={selectedCategories[project.uuid]?.[category] || []}
                                                                                 onValueChange={(selectedValues) => handleCategorySelectionChange(project.uuid, category, selectedValues)}
-                                                                                placeholder="Sélectionner"
+                                                                                placeholder={props.labels.select_categories_placeholder}
                                                                                 variant="inverted"
                                                                                 maxCount={100}
                                                                                 className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"

@@ -27,6 +27,14 @@ pending:
 permissions:
     check_all: Grant full access to this project
     detailed_permissions: Detailed permissions
+    apply_permissions_label: 'Apply these permissions:'
+    apply_permissions_all_posts: to all posts
+    apply_permissions_all_pages: to all pages
+    apply_permissions_all_trombinoscope: to all trombinoscope entries
+    apply_permissions_specific_posts: 'only to the following categories:'
+    apply_permissions_specific_pages: 'only to the following categories:'
+    apply_permissions_specific_trombinoscope: 'only to the following categories:'
+    select_categories_placeholder: Select
 
     website: Website
 
