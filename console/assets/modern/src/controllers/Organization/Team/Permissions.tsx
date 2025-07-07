@@ -8,6 +8,7 @@ import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/
 
 interface Category {
     id: string;
+    uuid: string;
     projectId: string;
     name: string;
     slug: string;
@@ -44,11 +45,6 @@ interface Props {
 const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope'];
 
 export default function (props: Props) {
-    // Log the category props for now
-    console.log('Pages categories:', props.pagesCategories);
-    console.log('Posts categories:', props.postsCategories);
-    console.log('Trombinoscope categories:', props.trombinoscopeCategories);
-
     const initialProjectPermissions = useMemo(
         () => props.projectsPermissionsValue ? JSON.parse(props.projectsPermissionsValue) : {},
         [props.projectsPermissionsValue],
@@ -390,10 +386,10 @@ export default function (props: Props) {
                                                                                     {categoryScope[project.uuid]?.[category] === 'specific' && (
                                                                                         <MultiSelect
                                                                                             options={getCategoriesForProject(project.id, category).map(cat => ({
-                                                                                                value: cat.id,
+                                                                                                value: cat.uuid,
                                                                                                 label: cat.name
                                                                                             }))}
-                                                                                            value={selectedCategories[project.uuid]?.[category] || []}
+                                                                                            defaultValue={selectedCategories[project.uuid]?.[category] || []}
                                                                                             onValueChange={(selectedValues) => handleCategorySelectionChange(project.uuid, category, selectedValues)}
                                                                                             placeholder={props.labels.select_categories_placeholder}
                                                                                             variant="inverted"
