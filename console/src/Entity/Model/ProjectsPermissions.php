@@ -48,8 +48,8 @@ class ProjectsPermissions
         return count(array_intersect($this->categoriesPermissions[$projectId][$type], $entityCategoriesUuids)) >= 1;
     }
 
-    public function getCategoryPermissions(string $projectId, string $type): array
+    public function getCategoryPermissions(string $projectId, string $type): ?array
     {
-        return $this->categoriesPermissions[$projectId][$type];
+        return $this->categoriesPermissions[$projectId][$type] ?? null;
     }
 }
