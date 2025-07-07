@@ -141,7 +141,9 @@
             'apply_permissions_specific_trombinoscope': 'permissions.apply_permissions_specific_trombinoscope'|trans({}, 'organization_team'),
             'select_categories_placeholder': 'permissions.select_categories_placeholder'|trans({}, 'organization_team'),
         },
-    }) }}></div>
+    }) }}>
+        {{ form_rest(form) }}
+    </div>
 </div>
 
 {% if form.labels is defined %}

@@ -128,6 +128,7 @@ class ProjectsController extends AbstractController
                         $item->adminEmail,
                         false,
                         [$project->getUuid()->toRfc4122() => $permissions],
+                        [$project->getUuid()->toRfc4122() => ['posts' => null, 'pages' => null, 'trombinoscope' => null]],
                         $this->getUser()->getLocale()
                     );
                 }
