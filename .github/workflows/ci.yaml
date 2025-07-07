@@ -325,8 +325,7 @@ jobs:
 
             - name: Setup assets fixtures
               run: |
-                  cp -R console/tests/Fixtures/assets/build console/public/build
-                  cp -R console/tests/Fixtures/assets/projects console/public/projects
+                  cp -R console/tests/Fixtures/assets/* console/public/
                   cp -R public/tests/Fixtures/assets public/public/build
 
             - name: Prepare database
