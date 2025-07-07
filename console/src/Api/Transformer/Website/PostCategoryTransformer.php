@@ -17,7 +17,7 @@ class PostCategoryTransformer extends AbstractTransformer
             ],
             'id' => Uid::toBase62($category->getUuid()),
             'uuid' => $category->getUuid()->toRfc4122(),
-            'projectId' =>  Uid::toBase62($category->getProject()->getUuid()),
+            'projectId' => Uid::toBase62($category->getProject()->getUuid()),
             'name' => $category->getName(),
             'slug' => $category->getSlug(),
         ];

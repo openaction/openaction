@@ -26,7 +26,6 @@ pending:
 
 permissions:
     check_all: Grant full access to this project
-    detailed_permissions: Detailed permissions
     apply_permissions_label: 'Access restriction by category'
     apply_permissions_all_posts: access to all categories
     apply_permissions_all_pages: access to all categories

@@ -7,7 +7,7 @@ export default {
     preset: 'ts-jest',
 
     // The root directory that Jest should scan for tests and modules within
-    rootDir: 'assets/tests',
+    rootDir: 'ts-react/tests',
 
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
     setupFilesAfterEnv: ['./setup.ts', 'jest-canvas-mock'],

@@ -7,18 +7,17 @@
         "build": "encore production"
     },
     "dependencies": {
-        "@stimulus/polyfills": "^2.0.0",
-        "@ungap/url-search-params": "^0.2.2",
-        "bootstrap": "^4.4.1",
-        "sass": "^1.89.2",
-        "stimulus": "^2.0.0"
-    },
-    "devDependencies": {
         "@babel/core": "^7.13.16",
         "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@stimulus/polyfills": "^2.0.0",
         "@symfony/webpack-encore": "^0.28.2",
+        "@ungap/url-search-params": "^0.2.2",
+        "bootstrap": "^4.4.1",
+        "prettier": "^2.2.1",
         "regenerator-runtime": "^0.13.2",
+        "sass": "^1.89.2",
         "sass-loader": "^7.0.1",
+        "stimulus": "^2.0.0",
         "webpack-bundle-analyzer": "^3.7.0"
     },
     "packageManager": "yarn@1.22.22"

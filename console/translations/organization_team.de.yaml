@@ -24,7 +24,6 @@ pending:
         full_access: 'Zugang zu allen Projekten'
 permissions:
     check_all: 'Gewährung des vollständigen Zugangs zu diesem Projekt'
-    detailed_permissions: 'Detaillierte Genehmigungen'
     apply_permissions_label: 'Zugangsbeschränkung nach Kategorie'
     apply_permissions_all_posts: Zugang zu allen Kategorien
     apply_permissions_all_pages: Zugang zu allen Kategorien

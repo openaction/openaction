@@ -68,14 +68,14 @@ jobs:
               with:
                   node-version: '14'
 
-            - name: Install prettier
-              run: yarn global add prettier@2.6.2
+            - name: Install JavaScript dependencies
+              run: cd console/assets/legacy && yarn install
 
             - name: Check legacy coding style
-              run: cd console/assets/legacy && prettier --check js-stimulus ts-react --config .prettierrc.json
+              run: cd console/assets/legacy && yarn prettier --check js-stimulus ts-react --config .prettierrc.json
 
             - name: Check projects coding style
-              run: cd console/assets/projects && prettier --check projects --config .prettierrc.json
+              run: cd console/assets/projects && yarn prettier --check . --config .prettierrc.json
 
     # JS tests
     console-js-legacy-tests:
