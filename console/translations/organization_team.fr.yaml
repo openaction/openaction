@@ -26,7 +26,11 @@ pending:
 
 permissions:
     check_all: Donner un accès complet à ce projet
-    detailed_permissions: Permissions détaillées
+    apply_permissions_label: 'Appliquer ces permissions :'
+    apply_permissions_all_posts: à toutes les actualitée
+    apply_permissions_all_pages: à toutes les pages
+    apply_permissions_all_trombinoscope: à tout le trombinoscope
+
 
     website: Site internet
 

@@ -72,7 +72,6 @@ export default function (props: Props) {
 
     // State for category-specific permissions
     const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>(initialCategoryScope);
-    const [categoryFilters, setCategoryFilters] = useState<Record<string, Record<string, string>>>({});
     
     // State for selected categories for each project and permission
     const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>(initialProjectPermissionsCategories);
@@ -216,17 +215,6 @@ export default function (props: Props) {
             [projectId]: {
                 ...prev[projectId],
                 [category]: scope
-            }
-        }));
-    };
-
-    // Handle category filter change
-    const handleCategoryFilterChange = (projectId: string, category: string, value: string) => {
-        setCategoryFilters(prev => ({
-            ...prev,
-            [projectId]: {
-                ...prev[projectId],
-                [category]: value
             }
         }));
     };
@@ -382,20 +370,8 @@ export default function (props: Props) {
                                                                                 className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"
                                                                             />
                                                                         )}
-
-                                                                        <input
-                                                                            type="text"
-                                                                            placeholder="Ex: Actualités, Événements, Communiqués..."
-                                                                            value={categoryFilters[project.uuid]?.[category] || ''}
-                                                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryFilterChange(project.uuid, category, e.target.value)}
-                                                                            disabled={categoryScope[project.uuid]?.[category] !== 'specific'}
-                                                                            className="tw:hidden tw:text-xs tw:h-6 tw:w-full tw:p-1 tw:border tw:border-slate-300 tw:rounded tw:bg-white tw:mt-1"
-                                                                        />
                                                                     </Label>
                                                                 </div>
-                                                            </div>
-
-                                                            <div>
                                                             </div>
                                                         </div>
                                                     )}
