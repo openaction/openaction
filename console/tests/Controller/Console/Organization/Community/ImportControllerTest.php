@@ -26,7 +26,7 @@ class ImportControllerTest extends WebTestCase
         // Start upload
         MockUploadcare::setMockFile(__DIR__.'/../../../../Fixtures/import/contacts-map-columns.xlsx');
 
-        $prepareUrl = Json::decode($crawler->filter('[data-react-props-value]')->attr('data-react-props-value'))['prepareUrl'];
+        $prepareUrl = Json::decode($crawler->filter('[data-legacy-react-props-value]')->attr('data-legacy-react-props-value'))['prepareUrl'];
         $client->request('POST', $prepareUrl.'&fileUuid=ece8cee0-7bc4-43da-b923-db3f57af9a9b&fileName=contacts-map-columns.xlsx');
 
         $this->assertResponseIsSuccessful();
