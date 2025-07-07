@@ -27,6 +27,7 @@ interface Props {
     pagesCategories: Category[];
     postsCategories: Category[];
     trombinoscopeCategories: Category[];
+    eventsCategories: Category[];
     labels: {
         is_admin_label: string;
         grant_all_permissions: string;
@@ -34,15 +35,17 @@ interface Props {
         apply_permissions_all_posts: string;
         apply_permissions_all_pages: string;
         apply_permissions_all_trombinoscope: string;
+        apply_permissions_all_events: string;
         apply_permissions_specific_posts: string;
         apply_permissions_specific_pages: string;
         apply_permissions_specific_trombinoscope: string;
+        apply_permissions_specific_events: string;
         select_categories_placeholder: string;
     }
 }
 
 // Categories that support category-specific permissions
-const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope'];
+const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope', 'events'];
 
 export default function (props: Props) {
     const initialProjectPermissions = useMemo(
@@ -125,6 +128,8 @@ export default function (props: Props) {
                 return props.pagesCategories.filter(cat => cat.projectId === projectId);
             case 'trombinoscope':
                 return props.trombinoscopeCategories.filter(cat => cat.projectId === projectId);
+            case 'events':
+                return props.eventsCategories.filter(cat => cat.projectId === projectId);
             default:
                 return [];
         }
@@ -243,6 +248,8 @@ export default function (props: Props) {
                 return props.labels.apply_permissions_specific_pages;
             case 'trombinoscope':
                 return props.labels.apply_permissions_specific_trombinoscope;
+            case 'events':
+                return props.labels.apply_permissions_specific_events;
             default:
                 return props.labels.apply_permissions_specific_posts;
         }
@@ -257,6 +264,8 @@ export default function (props: Props) {
                 return props.labels.apply_permissions_all_pages;
             case 'trombinoscope':
                 return props.labels.apply_permissions_all_trombinoscope;
+            case 'events':
+                return props.labels.apply_permissions_all_events;
             default:
                 return props.labels.apply_permissions_all_posts;
         }

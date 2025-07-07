@@ -2,6 +2,7 @@
 
 namespace App\Repository\Website;
 
+use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Website\Event;
 use App\Entity\Website\EventCategory;
@@ -62,6 +63,22 @@ class EventCategoryRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult($hydrationMode);
+    }
+
+    /**
+     * @return EventCategory[]
+     */
+    public function getOrganizationCategories(Organization $organization): array
+    {
+        $qb = $this->createQueryBuilder('ec')
+            ->select('ec', 'p')
+            ->leftJoin('ec.project', 'p')
+            ->where('p.organization = :organization')
+            ->setParameter('organization', $organization->getId())
+            ->orderBy('ec.weight')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     public function sort(array $data)

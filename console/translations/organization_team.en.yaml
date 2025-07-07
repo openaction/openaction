@@ -30,9 +30,11 @@ permissions:
     apply_permissions_all_posts: access to all categories
     apply_permissions_all_pages: access to all categories
     apply_permissions_all_trombinoscope: access to all categories
+    apply_permissions_all_events: access to all categories
     apply_permissions_specific_posts: 'restrict to the following categories:'
     apply_permissions_specific_pages: 'restrict to the following categories:'
     apply_permissions_specific_trombinoscope: 'restrict to the following categories:'
+    apply_permissions_specific_events: 'restrict to the following categories:'
     select_categories_placeholder: Select
 
     website: Website

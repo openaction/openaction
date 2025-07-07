@@ -28,9 +28,11 @@ permissions:
     apply_permissions_all_posts: Zugang zu allen Kategorien
     apply_permissions_all_pages: Zugang zu allen Kategorien
     apply_permissions_all_trombinoscope: Zugang zu allen Kategorien
+    apply_permissions_all_events: Zugang zu allen Kategorien
     apply_permissions_specific_posts: 'einschränken auf die folgenden Kategorien:'
     apply_permissions_specific_pages: 'einschränken auf die folgenden Kategorien:'
     apply_permissions_specific_trombinoscope: 'einschränken auf die folgenden Kategorien:'
+    apply_permissions_specific_events: 'einschränken auf die folgenden Kategorien:'
     select_categories_placeholder: Auswählen
     website: Website
     pages: 'Inhalt der Seiten'

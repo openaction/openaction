@@ -30,9 +30,11 @@ permissions:
     apply_permissions_all_posts: accès à toutes les catégories
     apply_permissions_all_pages: accès à toutes les catégories
     apply_permissions_all_trombinoscope: accès à toutes les catégories
+    apply_permissions_all_events: accès à toutes les catégories
     apply_permissions_specific_posts: 'restreindre aux catégories suivantes :'
     apply_permissions_specific_pages: 'restreindre aux catégories suivantes:'
     apply_permissions_specific_trombinoscope: 'restreindre aux catégories suivantes:'
+    apply_permissions_specific_events: 'restreindre aux catégories suivantes:'
     select_categories_placeholder: Sélectionner
 
 
