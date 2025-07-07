@@ -10,6 +10,7 @@ use App\Repository\Util\RepositoryUuidEncodedTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @method PostCategory|null find($id, $lockMode = null, $lockVersion = null)
@@ -102,7 +103,22 @@ class PostCategoryRepository extends ServiceEntityRepository
 
     public function updateCategories(Post $post, array $categoriesIds)
     {
-        $this->_em->wrapInTransaction(function () use ($post, $categoriesIds) {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($ids = array_filter($categoriesIds, fn ($id) => !Uuid::isValid($id))) {
+            $qb->orWhere('c.id IN (:ids)')->setParameter('ids', $ids);
+        }
+
+        if ($uuids = array_filter($categoriesIds, fn ($id) => Uuid::isValid($id))) {
+            $qb->orWhere('c.uuid IN (:uuids)')->setParameter('uuids', $uuids);
+        }
+
+        $categories = [];
+        if ($ids || $uuids) {
+            $categories = $qb->getQuery()->getResult();
+        }
+
+        $this->_em->wrapInTransaction(function () use ($post, $categories) {
             $metadata = $this->_em->getClassMetadata(PostCategory::class);
 
             $this->_em->getConnection()->createQueryBuilder()
@@ -113,8 +129,8 @@ class PostCategoryRepository extends ServiceEntityRepository
             ;
 
             $post->getCategories()->clear();
-            foreach ($categoriesIds as $id) {
-                $post->getCategories()->add($this->find($id));
+            foreach ($categories as $category) {
+                $post->getCategories()->add($category);
             }
 
             $this->_em->persist($post);

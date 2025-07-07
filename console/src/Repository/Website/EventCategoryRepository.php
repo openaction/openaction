@@ -11,6 +11,7 @@ use App\Util\Json;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @method EventCategory|null find($id, $lockMode = null, $lockVersion = null)
@@ -99,7 +100,22 @@ class EventCategoryRepository extends ServiceEntityRepository
 
     public function updateCategories(Event $event, array $categoriesIds)
     {
-        $this->_em->wrapInTransaction(function () use ($event, $categoriesIds) {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($ids = array_filter($categoriesIds, fn ($id) => !Uuid::isValid($id))) {
+            $qb->orWhere('c.id IN (:ids)')->setParameter('ids', $ids);
+        }
+
+        if ($uuids = array_filter($categoriesIds, fn ($id) => Uuid::isValid($id))) {
+            $qb->orWhere('c.uuid IN (:uuids)')->setParameter('uuids', $uuids);
+        }
+
+        $categories = [];
+        if ($ids || $uuids) {
+            $categories = $qb->getQuery()->getResult();
+        }
+
+        $this->_em->wrapInTransaction(function () use ($event, $categories) {
             $metadata = $this->_em->getClassMetadata(EventCategory::class);
 
             $this->_em->getConnection()->createQueryBuilder()
@@ -110,8 +126,8 @@ class EventCategoryRepository extends ServiceEntityRepository
             ;
 
             $event->getCategories()->clear();
-            foreach ($categoriesIds as $id) {
-                $event->getCategories()->add($this->find($id));
+            foreach ($categories as $category) {
+                $event->getCategories()->add($category);
             }
 
             $this->_em->persist($event);

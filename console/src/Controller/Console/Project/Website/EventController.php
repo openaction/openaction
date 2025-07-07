@@ -20,6 +20,7 @@ use App\Form\Website\Model\EventImageData;
 use App\Form\Website\UpdateEventType;
 use App\Platform\Permissions;
 use App\Proxy\DomainRouter;
+use App\Repository\OrganizationMemberRepository;
 use App\Repository\Website\EventCategoryRepository;
 use App\Repository\Website\EventRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
@@ -71,7 +72,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_event_create')]
-    public function create(DomainRouter $domainRouter, Request $request)
+    public function create(DomainRouter $domainRouter, OrganizationMemberRepository $memberRepository, Request $request)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
@@ -120,6 +121,11 @@ class EventController extends AbstractController
             $this->em->persist($event);
             $this->em->flush();
 
+            $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+            if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'events')) {
+                $this->categoryRepo->updateCategories($event, $categories);
+            }
+
             return $this->redirectToRoute('console_website_event_edit', [
                 'projectUuid' => $this->getProject()->getUuid(),
                 'uuid' => $event->getUuid(),
@@ -163,7 +169,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/{uuid}/duplicate', name: 'console_website_event_duplicate', methods: ['GET'])]
-    public function duplicate(EventDataManager $dataManager, Event $event, Request $request)
+    public function duplicate(EventDataManager $dataManager, OrganizationMemberRepository $memberRepository, Event $event, Request $request)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -171,6 +177,11 @@ class EventController extends AbstractController
         $this->denyUnlessSameProject($event);
 
         $duplicated = $dataManager->duplicate($event);
+
+        $member = $memberRepository->findMember($this->getUser(), $this->getProject()->getOrganization());
+        if ($categories = $member->getProjectsPermissions()->getCategoryPermissions($this->getProject()->getUuid()->toRfc4122(), 'events')) {
+            $this->categoryRepo->updateCategories($duplicated, $categories);
+        }
 
         return $this->redirectToRoute('console_website_event_edit', [
             'projectUuid' => $this->getProject()->getUuid(),
