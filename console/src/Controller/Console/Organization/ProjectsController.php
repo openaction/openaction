@@ -11,9 +11,11 @@ use App\Form\Organization\Model\CreateBatchProjectData;
 use App\Form\Organization\Model\CreateBatchProjectItemData;
 use App\Form\Organization\Model\CreateProjectData;
 use App\Platform\Permissions;
+use App\Search\Consumer\ReindexOrganizationCrmMessage;
 use App\Security\Registration\InviteManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/console/organization/{organizationUuid}')]
@@ -22,8 +24,11 @@ class ProjectsController extends AbstractController
     private array $defaultModules;
     private array $defaultTools;
 
-    public function __construct(string $defaultModules, string $defaultTools)
-    {
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+        string $defaultModules,
+        string $defaultTools,
+    ) {
         $this->defaultModules = explode(',', $defaultModules);
         $this->defaultTools = explode(',', $defaultTools);
     }
@@ -68,6 +73,9 @@ class ProjectsController extends AbstractController
                 'local' === $data->type ? $data->parseAreasIds() : [],
                 'thematic' === $data->type ? $data->parseTags() : [],
             );
+
+            // Reindex contacts following projects update
+            $this->bus->dispatch(new ReindexOrganizationCrmMessage($orga->getId()));
 
             return $this->redirectToRoute('console_project_home_start', [
                 'projectUuid' => $project->getUuid(),
@@ -133,6 +141,9 @@ class ProjectsController extends AbstractController
                     );
                 }
             }
+
+            // Reindex contacts following projects update
+            $this->bus->dispatch(new ReindexOrganizationCrmMessage($orga->getId()));
 
             return $this->redirectToRoute('console_organization_projects', [
                 'organizationUuid' => $orga->getUuid(),
