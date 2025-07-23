@@ -14,15 +14,22 @@ use App\Form\Project\UpdateLegalitiesType;
 use App\Form\Project\UpdateModulesType;
 use App\Platform\Permissions;
 use App\Repository\ProjectRepository;
+use App\Search\Consumer\ReindexOrganizationCrmMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/console/project/{projectUuid}/configuration/settings')]
 class SettingsController extends AbstractController
 {
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+    ) {
+    }
+
     #[Route('', name: 'console_configuration_settings')]
     public function index()
     {
@@ -152,6 +159,9 @@ class SettingsController extends AbstractController
 
         $dataManager->duplicate($this->getProject());
 
+        // Reindex contacts following projects update
+        $this->bus->dispatch(new ReindexOrganizationCrmMessage($this->getOrganization()->getId()));
+
         return $this->redirectToRoute('console_organization_projects', [
             'organizationUuid' => $this->getOrganization()->getUuid(),
         ]);
@@ -185,6 +195,10 @@ class SettingsController extends AbstractController
 
             $this->addFlash('success', 'move.success');
 
+            // Reindex contacts following projects update
+            $this->bus->dispatch(new ReindexOrganizationCrmMessage($this->getOrganization()->getId()));
+            $this->bus->dispatch(new ReindexOrganizationCrmMessage($data->into->getId()));
+
             return $this->redirectToRoute('console_organization_projects', [
                 'organizationUuid' => $data->into->getUuid(),
             ]);
@@ -204,6 +218,9 @@ class SettingsController extends AbstractController
 
         $manager->remove($this->getProject());
         $manager->flush();
+
+        // Reindex contacts following projects update
+        $this->bus->dispatch(new ReindexOrganizationCrmMessage($this->getOrganization()->getId()));
 
         if ($request->headers->has('X-Ajax-Confirm')) {
             return new JsonResponse(['success' => true]);
