@@ -113,6 +113,7 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.onlyForMembers = FALSE')
             ->andWhere('e.publishedAt IS NOT NULL')
             ->andWhere('e.publishedAt <= :now')
+            ->setParameter('now', new \DateTime())
             ->setMaxResults($limit)
             ->setFirstResult(($currentPage - 1) * $limit)
         ;
@@ -127,10 +128,17 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameter('participant', Uid::fromBase62($participant));
         }
 
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
         if ($archived) {
-            $qb->andWhere('e.beginAt < :now')->setParameter('now', new \DateTime())->orderBy('e.beginAt', 'DESC');
+            $qb->andWhere('e.beginAt < :today')
+                ->setParameter('today', $today)
+                ->orderBy('e.beginAt', 'DESC');
         } else {
-            $qb->andWhere('e.beginAt >= :now')->setParameter('now', new \DateTime())->orderBy('e.beginAt', 'ASC');
+            $qb->andWhere('e.beginAt >= :today')
+                ->setParameter('today', $today)
+                ->orderBy('e.beginAt', 'ASC');
         }
 
         return new Paginator($qb->getQuery(), true);
