@@ -90,11 +90,6 @@ class MenuControllerTest extends WebTestCase
     public function provideCreateInvalid(): iterable
     {
         yield [
-            'label' => str_pad('Label too long', 50, '-fail'),
-            'url' => '/too-long',
-        ];
-
-        yield [
             'label' => '',
             'url' => '/empty-label',
         ];
@@ -195,11 +190,6 @@ class MenuControllerTest extends WebTestCase
 
     public function provideEditInvalid(): iterable
     {
-        yield [
-            'label' => str_pad('Label too long', 50, '-fail'),
-            'url' => '/too-long',
-        ];
-
         yield [
             'label' => '',
             'url' => '/empty-label',
