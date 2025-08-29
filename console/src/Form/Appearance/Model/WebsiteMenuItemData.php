@@ -10,7 +10,6 @@ class WebsiteMenuItemData
     public ?MenuItem $parent = null;
 
     #[Assert\NotBlank]
-    #[Assert\Length(max: 30)]
     public ?string $label = null;
 
     #[Assert\NotBlank]
