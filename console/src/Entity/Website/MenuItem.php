@@ -29,9 +29,9 @@ class MenuItem implements \Stringable
     #[ORM\Column(length: 20)]
     private string $position;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 200)]
     #[Assert\NotBlank]
-    #[Assert\Length(max: 30)]
+    #[Assert\Length(max: 200)]
     private string $label;
 
     #[ORM\Column]
