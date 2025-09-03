@@ -24,7 +24,7 @@
     {% endfor %}
 
     {% set more = [] %}
-    {% for other in (page.children|default([]))[0:3] %}
+    {% for other in page.children|default([]) %}
         {% set more = more|merge([
             {
                 title: other.title,
