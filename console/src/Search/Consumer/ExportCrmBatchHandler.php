@@ -7,7 +7,8 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Repository\Community\TagRepository;
 use App\Repository\ProjectRepository;
 use App\Search\Model\BatchRequest;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -102,7 +103,7 @@ final class ExportCrmBatchHandler extends AbstractCrmBatchHandler
         $filename = sys_get_temp_dir().'/'.date('Y-m-d').'-'.$orgaSlug.'-contacts.xlsx';
         touch($filename);
 
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile($filename);
 
         // Process the export
@@ -157,11 +158,11 @@ final class ExportCrmBatchHandler extends AbstractCrmBatchHandler
             }
 
             if (!$headerAdded) {
-                $writer->addRow(WriterEntityFactory::createRowFromArray(array_keys($row)));
+                $writer->addRow(Row::fromValues(array_keys($row)));
                 $headerAdded = true;
             }
 
-            $writer->addRow(WriterEntityFactory::createRowFromArray($row));
+            $writer->addRow(Row::fromValues($row));
 
             // Advance job
             ++$steps;
