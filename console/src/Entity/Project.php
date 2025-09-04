@@ -256,6 +256,58 @@ class Project implements UserInterface
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $legalPublisherRole = null;
 
+    /*
+     * Mollie payments (per-project) and Donations/Paying Memberships settings
+     */
+
+    // Mollie: profile + optional constraints
+    #[ORM\Column(length: 40, nullable: true)]
+    private ?string $mollieProfileId = null;
+
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $mollieCurrency = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $mollieAllowedMethods = null;
+
+    // Donations settings
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $donationRecommendedAmounts = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $donationAllowCustom = true;
+
+    #[ORM\Column(type: 'bigint', nullable: true, options: ['unsigned' => true])]
+    private ?int $donationCustomMin = null;
+
+    #[ORM\Column(type: 'bigint', nullable: true, options: ['unsigned' => true])]
+    private ?int $donationCustomMax = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $donationShowRecurring = true;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $donationDefaultRecurring = false;
+
+    // Paying memberships (reusing Members Area)
+    #[ORM\Column(type: 'boolean')]
+    private bool $payingMembershipsEnabled = false;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $membershipAllowCustomAmount = false;
+
+    #[ORM\Column(type: 'bigint', nullable: true, options: ['unsigned' => true])]
+    private ?int $membershipCustomMin = null;
+
+    #[ORM\Column(type: 'bigint', nullable: true, options: ['unsigned' => true])]
+    private ?int $membershipCustomMax = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $membershipShowAutoRenew = true;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $membershipDefaultAutoRenew = false;
+
     public function __construct(Organization $organization, string $name, WebsiteTheme $websiteTheme, string $locale = 'fr')
     {
         $this->populateTimestampable();
@@ -297,6 +349,160 @@ EOT;
     public function __toString()
     {
         return $this->name;
+    }
+
+    /*
+     * Payments & Donations/Paying Memberships settings
+     */
+
+    public function getMollieProfileId(): ?string
+    {
+        return $this->mollieProfileId;
+    }
+
+    public function setMollieProfileId(?string $profileId): void
+    {
+        $this->mollieProfileId = $profileId ?: null;
+    }
+
+    public function getMollieCurrency(): ?string
+    {
+        return $this->mollieCurrency;
+    }
+
+    public function setMollieCurrency(?string $currency): void
+    {
+        $this->mollieCurrency = $currency ? strtoupper($currency) : null;
+    }
+
+    public function getMollieAllowedMethods(): array
+    {
+        return $this->mollieAllowedMethods ?: [];
+    }
+
+    public function setMollieAllowedMethods(?array $methods): void
+    {
+        $this->mollieAllowedMethods = $methods ?: null;
+    }
+
+    public function getDonationRecommendedAmounts(): array
+    {
+        return $this->donationRecommendedAmounts ?: [];
+    }
+
+    public function setDonationRecommendedAmounts(?array $amounts): void
+    {
+        $this->donationRecommendedAmounts = $amounts ?: null;
+    }
+
+    public function isDonationAllowCustom(): bool
+    {
+        return $this->donationAllowCustom;
+    }
+
+    public function setDonationAllowCustom(bool $allow): void
+    {
+        $this->donationAllowCustom = $allow;
+    }
+
+    public function getDonationCustomMin(): ?int
+    {
+        return $this->donationCustomMin;
+    }
+
+    public function setDonationCustomMin(?int $min): void
+    {
+        $this->donationCustomMin = $min;
+    }
+
+    public function getDonationCustomMax(): ?int
+    {
+        return $this->donationCustomMax;
+    }
+
+    public function setDonationCustomMax(?int $max): void
+    {
+        $this->donationCustomMax = $max;
+    }
+
+    public function isDonationShowRecurring(): bool
+    {
+        return $this->donationShowRecurring;
+    }
+
+    public function setDonationShowRecurring(bool $show): void
+    {
+        $this->donationShowRecurring = $show;
+    }
+
+    public function isDonationDefaultRecurring(): bool
+    {
+        return $this->donationDefaultRecurring;
+    }
+
+    public function setDonationDefaultRecurring(bool $default): void
+    {
+        $this->donationDefaultRecurring = $default;
+    }
+
+    public function isPayingMembershipsEnabled(): bool
+    {
+        return $this->payingMembershipsEnabled;
+    }
+
+    public function setPayingMembershipsEnabled(bool $enabled): void
+    {
+        $this->payingMembershipsEnabled = $enabled;
+    }
+
+    public function isMembershipAllowCustomAmount(): bool
+    {
+        return $this->membershipAllowCustomAmount;
+    }
+
+    public function setMembershipAllowCustomAmount(bool $allow): void
+    {
+        $this->membershipAllowCustomAmount = $allow;
+    }
+
+    public function getMembershipCustomMin(): ?int
+    {
+        return $this->membershipCustomMin;
+    }
+
+    public function setMembershipCustomMin(?int $min): void
+    {
+        $this->membershipCustomMin = $min;
+    }
+
+    public function getMembershipCustomMax(): ?int
+    {
+        return $this->membershipCustomMax;
+    }
+
+    public function setMembershipCustomMax(?int $max): void
+    {
+        $this->membershipCustomMax = $max;
+    }
+
+    public function isMembershipShowAutoRenew(): bool
+    {
+        return $this->membershipShowAutoRenew;
+    }
+
+    public function setMembershipShowAutoRenew(bool $show): void
+    {
+        $this->membershipShowAutoRenew = $show;
+    }
+
+    public function isMembershipDefaultAutoRenew(): bool
+    {
+        return $this->membershipDefaultAutoRenew;
+    }
+
+    public function setMembershipDefaultAutoRenew(bool $default): void
+    {
+        $this->membershipDefaultAutoRenew = $default;
     }
 
     public static function createFixture(array $data): self

@@ -111,6 +111,13 @@ class Organization
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $billingTaxId = null;
 
+    // Mollie application fee configuration
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    private bool $mollieAppFeeEnabled = true;
+
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, options: ['default' => 1.00])]
+    private string $mollieAppFeePercent = '1.00';
+
     #[ORM\OneToMany(targetEntity: OrganizationMainTag::class, mappedBy: 'organization')]
     #[ORM\OrderBy(['weight' => 'ASC'])]
     private Collection $mainTags;
@@ -423,6 +430,34 @@ class Organization
     public function setCrmSearchKeyUid(string $crmSearchKeyUid)
     {
         $this->crmSearchKeyUid = Uuid::fromString($crmSearchKeyUid);
+    }
+
+    /*
+     * Mollie application fee
+     */
+    public function isMollieAppFeeEnabled(): bool
+    {
+        return $this->mollieAppFeeEnabled;
+    }
+
+    public function setMollieAppFeeEnabled(bool $enabled): void
+    {
+        $this->mollieAppFeeEnabled = $enabled;
+    }
+
+    public function getMollieAppFeePercent(): float
+    {
+        return (float) $this->mollieAppFeePercent;
+    }
+
+    public function setMollieAppFeePercent(float $percent): void
+    {
+        if ($percent < 0) {
+            $percent = 0.0;
+        }
+
+        // Store as string for decimal column
+        $this->mollieAppFeePercent = number_format($percent, 2, '.', '');
     }
 
     /*
