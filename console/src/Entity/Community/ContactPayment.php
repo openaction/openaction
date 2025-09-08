@@ -1,0 +1,178 @@
+<?php
+
+namespace App\Entity\Community;
+
+use App\Entity\Community\Enum\ContactPaymentMethod;
+use App\Entity\Community\Enum\ContactPaymentProvider;
+use App\Entity\Community\Enum\ContactPaymentType;
+use App\Entity\Upload;
+use App\Entity\Util;
+use App\Repository\Community\ContactPaymentRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ContactPaymentRepository::class)]
+#[ORM\Table(name: 'community_contact_payments')]
+#[ORM\Index(columns: ['contact_id'], name: 'community_contact_payments_contact_idx')]
+#[ORM\Index(columns: ['type'], name: 'community_contact_payments_type_idx')]
+class ContactPayment
+{
+    use Util\EntityIdTrait;
+    use Util\EntityTimestampableTrait;
+
+    #[ORM\ManyToOne(targetEntity: Contact::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Contact $contact;
+
+    #[ORM\Column(type: 'string', enumType: ContactPaymentType::class)]
+    private ContactPaymentType $type;
+
+    // Amounts in cents
+    #[ORM\Column(type: 'bigint')]
+    private int $netAmount;
+
+    #[ORM\Column(type: 'bigint')]
+    private int $feesAmount;
+
+    #[ORM\Column(length: 3)]
+    private string $currency;
+
+    #[ORM\Column(type: 'string', enumType: ContactPaymentProvider::class)]
+    private ContactPaymentProvider $paymentProvider;
+
+    // Provider-specific details stored as JSON
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $paymentProviderDetails = null;
+
+    #[ORM\Column(type: 'string', enumType: ContactPaymentMethod::class)]
+    private ContactPaymentMethod $paymentMethod;
+
+    // Lifecycle timestamps
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $capturedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $failedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $refundedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $canceledAt = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $receiptNumber = null;
+
+    #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
+    private ?Upload $receipt = null;
+
+    // Payer details snapshot
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $civility = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 250, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $streetAddressLine1 = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $streetAddressLine2 = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $postalCode = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $countryCode = null;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTime $birthdate = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $nationality = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $fiscalCountryCode = null;
+
+    // Membership specifics
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $membershipStartAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $membershipEndAt = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $membershipNumber = null;
+
+    #[ORM\Column(type: 'jsonb', nullable: true)]
+    private ?array $metadata = null;
+
+    public function __construct(Contact $contact, ContactPaymentType $type, int $netAmount, int $feesAmount, string $currency, ContactPaymentProvider $provider, ContactPaymentMethod $method)
+    {
+        $this->populateTimestampable();
+        $this->contact = $contact;
+        $this->type = $type;
+        $this->netAmount = $netAmount;
+        $this->feesAmount = $feesAmount;
+        $this->currency = strtoupper($currency);
+        $this->paymentProvider = $provider;
+        $this->paymentMethod = $method;
+    }
+
+    public static function createFixture(array $data): self
+    {
+        $self = new self(
+            $data['contact'],
+            $data['type'],
+            $data['netAmount'],
+            $data['feesAmount'],
+            $data['currency'],
+            $data['paymentProvider'],
+            $data['paymentMethod'],
+        );
+
+        $self->paymentProviderDetails = $data['paymentProviderDetails'] ?? null;
+        $self->capturedAt = $data['capturedAt'] ?? null;
+        $self->failedAt = $data['failedAt'] ?? null;
+        $self->refundedAt = $data['refundedAt'] ?? null;
+        $self->canceledAt = $data['canceledAt'] ?? null;
+        $self->receiptNumber = $data['receiptNumber'] ?? null;
+        $self->receipt = $data['receipt'] ?? null;
+        $self->civility = $data['civility'] ?? null;
+        $self->firstName = $data['firstName'] ?? null;
+        $self->lastName = $data['lastName'] ?? null;
+        $self->email = $data['email'] ?? null;
+        $self->streetAddressLine1 = $data['streetAddressLine1'] ?? null;
+        $self->streetAddressLine2 = $data['streetAddressLine2'] ?? null;
+        $self->city = $data['city'] ?? null;
+        $self->postalCode = $data['postalCode'] ?? null;
+        $self->countryCode = $data['countryCode'] ?? null;
+        $self->birthdate = $data['birthdate'] ?? null;
+        $self->phone = $data['phone'] ?? null;
+        $self->nationality = $data['nationality'] ?? null;
+        $self->fiscalCountryCode = $data['fiscalCountryCode'] ?? null;
+        $self->membershipStartAt = $data['membershipStartAt'] ?? null;
+        $self->membershipEndAt = $data['membershipEndAt'] ?? null;
+        $self->membershipNumber = $data['membershipNumber'] ?? null;
+        $self->metadata = $data['metadata'] ?? null;
+
+        return $self;
+    }
+
+    public function getContact(): Contact
+    {
+        return $this->contact;
+    }
+}
+

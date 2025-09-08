@@ -192,6 +192,8 @@ class TestFixtures extends AbstractFixtures
         $this->loadManifestoProposals();
         $this->loadHomeBlocks();
         $this->loadContacts();
+        $this->loadContactPayments();
+        $this->loadContactMandates();
         $this->loadContactsAmbiguous();
         $this->loadImports();
         $this->loadContentImportWordPress();
@@ -209,6 +211,74 @@ class TestFixtures extends AbstractFixtures
         $this->loadAnalyticsPageViews();
         $this->loadAnalyticsSessions();
         $this->loadAnalyticsEvents();
+    }
+
+    private function loadContactPayments(): void
+    {
+        // create a couple of payments for existing contacts
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'type' => \App\Entity\Community\Enum\ContactPaymentType::Donation,
+                'netAmount' => 5000,
+                'feesAmount' => 150,
+                'currency' => 'EUR',
+                'paymentProvider' => \App\Entity\Community\Enum\ContactPaymentProvider::Mollie,
+                'paymentMethod' => \App\Entity\Community\Enum\ContactPaymentMethod::Card,
+                'capturedAt' => new \DateTime('-10 days'),
+                'email' => 'john@lennon.com',
+                'firstName' => 'John',
+                'lastName' => 'Lennon',
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'type' => \App\Entity\Community\Enum\ContactPaymentType::Membership,
+                'netAmount' => 3000,
+                'feesAmount' => 0,
+                'currency' => 'EUR',
+                'paymentProvider' => \App\Entity\Community\Enum\ContactPaymentProvider::Manual,
+                'paymentMethod' => \App\Entity\Community\Enum\ContactPaymentMethod::Wire,
+                'capturedAt' => new \DateTime('-5 days'),
+                'membershipStartAt' => new \DateTime('-1 year'),
+                'membershipEndAt' => new \DateTime('+1 year'),
+                'membershipNumber' => 'M-2024-0001',
+                'email' => 'troycovillon@teleworm.us',
+                'firstName' => 'Troy',
+                'lastName' => 'Covillon',
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(\App\Entity\Community\ContactPayment::createFixture($data));
+        }
+
+        $this->em->flush();
+    }
+
+    private function loadContactMandates(): void
+    {
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'type' => \App\Entity\Community\Enum\ContactMandateType::Internal,
+                'label' => 'Board Member',
+                'startAt' => new \DateTime('-6 months'),
+                'endAt' => new \DateTime('+6 months'),
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'type' => \App\Entity\Community\Enum\ContactMandateType::ElectedOfficial,
+                'label' => 'City Councillor',
+                'startAt' => new \DateTime('-2 years'),
+                'endAt' => new \DateTime('+3 years'),
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(\App\Entity\Community\ContactMandate::createFixture($data));
+        }
+
+        $this->em->flush();
     }
 
     private function loadAnnouncements()
