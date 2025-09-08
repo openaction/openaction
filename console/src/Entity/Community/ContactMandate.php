@@ -57,4 +57,3 @@ class ContactMandate
         return $this->contact;
     }
 }
-

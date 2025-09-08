@@ -175,4 +175,3 @@ class ContactPayment
         return $this->contact;
     }
 }
-

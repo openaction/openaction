@@ -7,4 +7,3 @@ enum ContactMandateType: string
     case Internal = 'Internal';
     case ElectedOfficial = 'ElectedOfficial';
 }
-

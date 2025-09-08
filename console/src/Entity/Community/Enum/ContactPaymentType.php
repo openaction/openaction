@@ -8,4 +8,3 @@ enum ContactPaymentType: string
     case Membership = 'Membership';
     case ElectedOfficialContribution = 'ElectedOfficialContribution';
 }
-

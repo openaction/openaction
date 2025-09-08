@@ -7,4 +7,3 @@ enum ContactPaymentProvider: string
     case Mollie = 'Mollie';
     case Manual = 'Manual';
 }
-

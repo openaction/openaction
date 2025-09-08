@@ -11,4 +11,3 @@ enum ContactPaymentMethod: string
     case Sepa = 'Sepa';
     case Other = 'Other';
 }
-
