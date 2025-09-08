@@ -51,7 +51,7 @@ class MenuItem implements \Stringable
     #[ORM\OrderBy(['weight' => 'ASC'])]
     private Collection $children;
 
-    public function __construct(Project $project, string $position, string $label, string $url, int $weight = 1, self $parent = null)
+    public function __construct(Project $project, string $position, string $label, string $url, int $weight = 1, ?self $parent = null)
     {
         $this->populateTimestampable();
         $this->project = $project;
@@ -63,7 +63,7 @@ class MenuItem implements \Stringable
         $this->children = new ArrayCollection();
     }
 
-    public function duplicate(self $parent = null): self
+    public function duplicate(?self $parent = null): self
     {
         $self = new self($this->project, $this->position, $this->label, $this->url, $this->weight);
         $self->openNewTab = $this->openNewTab;

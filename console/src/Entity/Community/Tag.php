@@ -10,10 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table('community_tags', uniqueConstraints: [
@@ -42,7 +41,7 @@ class Tag
     #[ORM\JoinTable(name: 'projects_tags')]
     private Collection $projects;
 
-    public function __construct(Organization $organization, string $name, string $slug = null)
+    public function __construct(Organization $organization, string $name, ?string $slug = null)
     {
         $this->populateTimestampable();
         $this->organization = $organization;

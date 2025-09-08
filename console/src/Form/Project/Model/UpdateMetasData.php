@@ -17,7 +17,7 @@ class UpdateMetasData
     #[Assert\Image(maxSize: '10M', mimeTypes: ['image/bmp', 'image/x-ms-bmp', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/webp'])]
     public ?UploadedFile $websiteSharer = null;
 
-    public function __construct(string $metaTitle = null, string $metaDescription = null)
+    public function __construct(?string $metaTitle = null, ?string $metaDescription = null)
     {
         $this->websiteMetaTitle = $metaTitle;
         $this->websiteMetaDescription = $metaDescription;

@@ -214,7 +214,7 @@ class Cloudflare implements CloudflareInterface
         return $this->httpAdapter;
     }
 
-    private function handleCloudflareApiError(\Throwable $exception, \Throwable $root = null): void
+    private function handleCloudflareApiError(\Throwable $exception, ?\Throwable $root = null): void
     {
         // Recursive calling to get to the HTTP exception
         if (!$exception instanceof ClientException) {

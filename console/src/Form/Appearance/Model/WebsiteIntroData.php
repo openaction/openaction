@@ -19,7 +19,7 @@ class WebsiteIntroData
     #[Assert\File(maxSize: '5M', mimeTypes: ['video/mp4'])]
     public ?UploadedFile $websiteMainVideo = null;
 
-    public function __construct(string $websiteMainIntroTitle = null, string $websiteMainIntroContent = null)
+    public function __construct(?string $websiteMainIntroTitle = null, ?string $websiteMainIntroContent = null)
     {
         $this->websiteMainIntroTitle = $websiteMainIntroTitle;
         $this->websiteMainIntroContent = $websiteMainIntroContent;

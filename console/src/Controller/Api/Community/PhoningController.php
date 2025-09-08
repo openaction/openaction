@@ -40,7 +40,7 @@ class PhoningController extends AbstractApiController
         PhoningCampaignRepository $campaignRepository,
         PhoningCampaignTargetRepository $targetRepository,
         PhoningCampaignCallRepository $callRepository,
-        PhoningCampaignCallApiPersister $callPersister
+        PhoningCampaignCallApiPersister $callPersister,
     ) {
         $this->authenticator = $authenticator;
         $this->campaignRepository = $campaignRepository;

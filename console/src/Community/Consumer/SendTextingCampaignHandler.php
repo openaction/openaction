@@ -29,7 +29,7 @@ final class SendTextingCampaignHandler implements MessageHandlerInterface
         ContactViewBuilder $contactViewBuilder,
         TextingCampaignMessageRepository $messageRepository,
         MessageBusInterface $bus,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->em = $em;
         $this->campaignRepository = $campaignRepository;

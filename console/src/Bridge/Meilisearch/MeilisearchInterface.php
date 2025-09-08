@@ -29,7 +29,7 @@ interface MeilisearchInterface
      */
     public function waitForTasks(array $tasks, int $timeoutInMs = 5000, int $intervalInMs = 50): void;
 
-    public function createApiKey(array $indexes, array $actions, string $description = null): Keys;
+    public function createApiKey(array $indexes, array $actions, ?string $description = null): Keys;
 
     public function deleteApiKey(string $key): void;
 

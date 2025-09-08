@@ -30,7 +30,7 @@ final class CreateTextingCampaignBatchesHandler implements MessageHandlerInterfa
         TextingCampaignMessageRepository $messageRepository,
         TextingMessageFactory $messageFactory,
         MessageBusInterface $bus,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->campaignRepository = $campaignRepository;
         $this->messageRepository = $messageRepository;

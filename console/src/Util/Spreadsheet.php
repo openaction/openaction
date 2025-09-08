@@ -5,7 +5,6 @@ namespace App\Util;
 use avadim\FastExcelReader\Excel;
 use avadim\FastExcelReader\Sheet;
 use Symfony\Component\HttpFoundation\File\File;
-use Traversable;
 
 class Spreadsheet implements \IteratorAggregate, \Countable
 {
@@ -43,7 +42,7 @@ class Spreadsheet implements \IteratorAggregate, \Countable
         return $rows;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
         $rows = [];
         foreach ($this->sheet->readRows(false, Excel::KEYS_ZERO_BASED) as $row) {

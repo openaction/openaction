@@ -21,7 +21,7 @@ class ContactAmbiguitiesResolver
      *
      * @return array<array<int>>
      */
-    public function resolveAmbiguities(Organization $organization = null): array
+    public function resolveAmbiguities(?Organization $organization = null): array
     {
         $similarities = [
             $this->resolveFullNameSimilarities($organization),
@@ -88,7 +88,7 @@ class ContactAmbiguitiesResolver
         return $ambiguities;
     }
 
-    public function persistResolvedAmbiguities(array $ambiguities, Organization $organization = null)
+    public function persistResolvedAmbiguities(array $ambiguities, ?Organization $organization = null)
     {
         // Clean untreated ambiguities and persist newly detected ones
         $sets = [];
@@ -118,7 +118,7 @@ class ContactAmbiguitiesResolver
         });
     }
 
-    private function resolveFullNameSimilarities(Organization $organization = null): array
+    private function resolveFullNameSimilarities(?Organization $organization = null): array
     {
         $result = $this->db->executeQuery('
             SELECT c.id AS contact_id, c.organization_id, c.created_at,
@@ -151,7 +151,7 @@ class ContactAmbiguitiesResolver
         return $ids;
     }
 
-    private function resolveParsedPhoneSimilarities(Organization $organization = null): array
+    private function resolveParsedPhoneSimilarities(?Organization $organization = null): array
     {
         $result = $this->db->executeQuery('
             SELECT c.id AS contact_id, c.organization_id, c.created_at, c.parsed_contact_phone
@@ -180,7 +180,7 @@ class ContactAmbiguitiesResolver
         return $ids;
     }
 
-    private function findIgnoredAmbiguities(Organization $organization = null): array
+    private function findIgnoredAmbiguities(?Organization $organization = null): array
     {
         $result = $this->db->executeQuery('
             SELECT a.organization_id, a.oldest_id, a.newest_id

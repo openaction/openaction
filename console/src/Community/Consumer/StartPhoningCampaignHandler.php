@@ -25,7 +25,7 @@ final class StartPhoningCampaignHandler implements MessageHandlerInterface
         PhoningCampaignRepository $campaignRepository,
         ContactViewBuilder $contactViewBuilder,
         PhoningCampaignTargetRepository $targetRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->em = $em;
         $this->campaignRepository = $campaignRepository;

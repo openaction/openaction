@@ -17,7 +17,7 @@ class TenantTokenManager
     ) {
     }
 
-    public function refreshMemberCrmTenantToken(OrganizationMember $member, bool $persist = null)
+    public function refreshMemberCrmTenantToken(OrganizationMember $member, ?bool $persist = null)
     {
         $searchFilter = [];
         $permissions = $member->getProjectsPermissions();

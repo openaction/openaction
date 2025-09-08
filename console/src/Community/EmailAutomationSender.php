@@ -22,7 +22,7 @@ class EmailAutomationSender
         OrganizationRepository $organizationRepo,
         SendgridMailFactory $messageFactory,
         EmailAutomationMessageRepository $messageRepository,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->messageFactory = $messageFactory;

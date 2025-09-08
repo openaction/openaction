@@ -248,7 +248,7 @@ class Organization
     /*
      * Factories
      */
-    public static function createTrialing(string $name, string $plan, self $duplicate = null): self
+    public static function createTrialing(string $name, string $plan, ?self $duplicate = null): self
     {
         $self = new self($name);
         $self->subscriptionTrialing = true;

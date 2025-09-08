@@ -8,5 +8,5 @@ interface TwilioInterface
 {
     public function verifySignature(array $payload, string $signature, string $uri): bool;
 
-    public function sendMessage(?string $from, string $to, string $body, string $statusCallbackUrl = null): MessageInstance;
+    public function sendMessage(?string $from, string $to, string $body, ?string $statusCallbackUrl = null): MessageInstance;
 }

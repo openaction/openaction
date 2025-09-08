@@ -22,10 +22,9 @@ use libphonenumber\PhoneNumber as PhoneNumberModel;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
@@ -213,7 +212,7 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     #[ORM\OneToMany(targetEntity: ContactLog::class, mappedBy: 'contact', cascade: ['persist', 'remove'])]
     private Collection $logs;
 
-    public function __construct(Organization $organization, ?string $email = null, Area $area = null)
+    public function __construct(Organization $organization, ?string $email = null, ?Area $area = null)
     {
         $this->populateTimestampable();
         $this->uuid = Uid::random();

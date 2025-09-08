@@ -29,7 +29,7 @@ class ImportExternalProjectCommand extends Command
     public function __construct(
         private HttpClientInterface $httpClient,
         private CdnUploader $uploader,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
     ) {
         parent::__construct();
     }

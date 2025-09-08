@@ -13,4 +13,3 @@ class ContactPaymentRepository extends ServiceEntityRepository
         parent::__construct($registry, ContactPayment::class);
     }
 }
-

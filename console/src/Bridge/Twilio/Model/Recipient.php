@@ -10,7 +10,7 @@ class Recipient
     private ?string $messageId;
     private array $vars;
 
-    public function __construct(PhoneNumber $number, string $messageId = null, array $vars = [])
+    public function __construct(PhoneNumber $number, ?string $messageId = null, array $vars = [])
     {
         $this->number = $number;
         $this->messageId = $messageId;

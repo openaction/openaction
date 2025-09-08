@@ -51,7 +51,7 @@ class Registration
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $projectsPermissionsCategories = null;
 
-    public function __construct(string $email, Organization $organization = null, bool $isAdmin = false, array $projectsPermissions = [], string $locale = 'en')
+    public function __construct(string $email, ?Organization $organization = null, bool $isAdmin = false, array $projectsPermissions = [], string $locale = 'en')
     {
         $this->populateTimestampable();
         $this->uuid = Uid::random();

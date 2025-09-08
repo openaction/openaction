@@ -22,7 +22,7 @@ class StartTrialController extends AbstractController
         private string $defaultTools,
         private ProjectDataManager $dataManager,
         private EntityManagerInterface $em,
-        private CrmIndexer $crmIndexer
+        private CrmIndexer $crmIndexer,
     ) {
     }
 

@@ -13,4 +13,3 @@ class ContactMandateRepository extends ServiceEntityRepository
         parent::__construct($registry, ContactMandate::class);
     }
 }
-

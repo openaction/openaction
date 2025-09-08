@@ -51,7 +51,7 @@ class IndexController extends AbstractController
     }
 
     #[Route('/create/{uuid}', defaults: ['uuid' => null], name: 'console_community_texting_create')]
-    public function create(TranslatorInterface $translator, Request $request, TextingCampaign $toDuplicate = null): Response
+    public function create(TranslatorInterface $translator, Request $request, ?TextingCampaign $toDuplicate = null): Response
     {
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_TEXTING_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);

@@ -54,7 +54,7 @@ class RemoveUploadedFileListenerTest extends KernelTestCase
         string $filename,
         string $originalName,
         string $name,
-        string $projectUuid
+        string $projectUuid,
     ) {
         $project = static::getContainer()->get(ProjectRepository::class)->findOneBy(['uuid' => $projectUuid]);
 
@@ -83,7 +83,7 @@ class RemoveUploadedFileListenerTest extends KernelTestCase
         string $filename,
         string $originalName,
         string $name,
-        string $projectUuid
+        string $projectUuid,
     ) {
         $project = static::getContainer()->get(ProjectRepository::class)->findOneBy(['uuid' => $projectUuid]);
 

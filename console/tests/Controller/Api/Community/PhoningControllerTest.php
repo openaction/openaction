@@ -35,7 +35,7 @@ class PhoningControllerTest extends ApiTestCase
     /**
      * @dataProvider provideViewCampaign
      */
-    public function testViewCampaign(string $encodedUuid, int $expectedStatus, array $expectedContent = null)
+    public function testViewCampaign(string $encodedUuid, int $expectedStatus, ?array $expectedContent = null)
     {
         $client = self::createClient();
         $token = $this->authenticateAsMember($client);

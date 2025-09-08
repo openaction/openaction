@@ -31,7 +31,7 @@ final class SendMailchimpEmailingCampaignHandler implements MessageHandlerInterf
         EmailingCampaignMessageRepository $messageRepository,
         SendgridMailFactory $messageFactory,
         MailchimpInterface $mailchimp,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->em = $em;
         $this->campaignRepository = $campaignRepository;

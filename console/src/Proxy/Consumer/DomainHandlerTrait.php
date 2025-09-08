@@ -28,7 +28,7 @@ trait DomainHandlerTrait
         CloudflareInterface $cloudflare,
         SendgridInterface $sendgrid,
         PostmarkInterface $postmark,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->workflow = $domainConfigurationWorkflow;
         $this->manager = $manager;

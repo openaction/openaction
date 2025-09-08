@@ -87,7 +87,7 @@ class EmailingCampaign implements Searchable
     #[ORM\OneToMany(targetEntity: EmailingCampaignMessage::class, mappedBy: 'campaign', cascade: ['remove'])]
     private Collection $messages;
 
-    public function __construct(Project $project, string $subject, string $fromEmail, string $fromName = null, $replyToEmail = null, $replyToName = null)
+    public function __construct(Project $project, string $subject, string $fromEmail, ?string $fromName = null, $replyToEmail = null, $replyToName = null)
     {
         $this->populateTimestampable();
         $this->uuid = Uid::random();

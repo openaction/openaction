@@ -42,9 +42,9 @@ class Announcement
         string $title = '',
         string $description = '',
         string $linkText = 'En savoir plus',
-        string $linkUrl = null,
+        ?string $linkUrl = null,
         string $locale = 'fr',
-        \DateTime $date = null
+        ?\DateTime $date = null,
     ) {
         $this->title = $title;
         $this->description = $description;

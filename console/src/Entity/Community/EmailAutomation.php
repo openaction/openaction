@@ -92,8 +92,8 @@ class EmailAutomation
         string $trigger,
         string $fromEmail,
         string $subject,
-        string $replyToEmail = null,
-        string $replyToName = null
+        ?string $replyToEmail = null,
+        ?string $replyToName = null,
     ) {
         $this->populateTimestampable();
         $this->uuid = Uid::random();
@@ -113,7 +113,7 @@ class EmailAutomation
         string $fromEmail,
         string $fromName,
         string $subject,
-        int $weight = 1
+        int $weight = 1,
     ): self {
         $self = new self($organization, $name, self::TRIGGER_NEW_CONTACT, $fromEmail, $subject);
         $self->fromName = $fromName;

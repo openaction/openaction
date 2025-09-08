@@ -17,8 +17,8 @@ class UniqueContactEmail extends Constraint
         public readonly string $organizationField,
         public readonly string $contactField,
         public readonly string $emailField,
-        array $options = null,
-        array $groups = null,
+        ?array $options = null,
+        ?array $groups = null,
         $payload = null,
     ) {
         parent::__construct($options, $groups, $payload);

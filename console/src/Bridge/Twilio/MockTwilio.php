@@ -13,7 +13,7 @@ class MockTwilio implements TwilioInterface
         return true;
     }
 
-    public function sendMessage(?string $from, string $to, string $body, string $statusCallbackUrl = null): MessageInstance
+    public function sendMessage(?string $from, string $to, string $body, ?string $statusCallbackUrl = null): MessageInstance
     {
         $this->messages[] = [
             'from' => $from,

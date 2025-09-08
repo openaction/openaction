@@ -44,7 +44,7 @@ class ContactApiPersister
         MessageBusInterface $bus,
         QuorumInterface $quorum,
         IntegromatInterface $integromat,
-        SpallianInterface $spallian
+        SpallianInterface $spallian,
     ) {
         $this->em = $em;
         $this->repository = $repository;
@@ -126,7 +126,7 @@ class ContactApiPersister
         return $contact;
     }
 
-    private function map(Contact $contact, ContactApiData $data, Project $sourceProject = null)
+    private function map(Contact $contact, ContactApiData $data, ?Project $sourceProject = null)
     {
         // Add source project tag
         if ($sourceProject) {

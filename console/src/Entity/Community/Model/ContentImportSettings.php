@@ -3,7 +3,6 @@
 namespace App\Entity\Community\Model;
 
 use App\Entity\Community\ContentImport;
-use RuntimeException;
 
 /**
  * Contains constants and properties needed for settings for content import.
@@ -43,6 +42,6 @@ class ContentImportSettings
             return new self();
         }
 
-        throw new RuntimeException('Missing import source in content import settings');
+        throw new \RuntimeException('Missing import source in content import settings');
     }
 }

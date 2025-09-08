@@ -14,12 +14,12 @@ class ConfirmPasswordType extends AbstractType
     {
         $builder
           ->add('confirmPassword', PasswordType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                    new UserPassword(),
-                ],
-            ])
+              'required' => true,
+              'constraints' => [
+                  new NotBlank(),
+                  new UserPassword(),
+              ],
+          ])
         ;
     }
 }

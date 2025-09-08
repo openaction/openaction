@@ -67,7 +67,7 @@ class Project implements UserInterface
     /**
      * Modules enabled for this project.
      *
-     * @see \App\Platform\Features for available modules.
+     * @see Features for available modules.
      */
     #[ORM\Column(type: 'simple_array')]
     private array $modules = [];
@@ -75,7 +75,7 @@ class Project implements UserInterface
     /**
      * Tools enabled for the modules this project.
      *
-     * @see \App\Platform\Features for available tools for each module.
+     * @see Features for available tools for each module.
      */
     #[ORM\Column(type: 'simple_array')]
     private array $tools = [];
@@ -537,7 +537,7 @@ EOT;
     /*
      * Domain
      */
-    public function updateDomain(Domain $rootDomain, string $subDomain = null)
+    public function updateDomain(Domain $rootDomain, ?string $subDomain = null)
     {
         $this->rootDomain = $rootDomain;
         $this->subDomain = $subDomain;

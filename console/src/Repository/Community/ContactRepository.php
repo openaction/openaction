@@ -196,7 +196,7 @@ class ContactRepository extends ServiceEntityRepository
         });
     }
 
-    public function getExportData(Organization $organization, int $tagId = null): iterable
+    public function getExportData(Organization $organization, ?int $tagId = null): iterable
     {
         $db = $this->_em->getConnection();
 

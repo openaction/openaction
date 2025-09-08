@@ -23,7 +23,7 @@ class EmailingCampaignSender
         ContactViewBuilder $contactViewBuilder,
         SendgridMailFactory $messageFactory,
         SendgridInterface $sendgrid,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->organizationRepo = $organizationRepo;
         $this->contactViewBuilder = $contactViewBuilder;
