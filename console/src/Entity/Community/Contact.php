@@ -22,9 +22,10 @@ use libphonenumber\PhoneNumber as PhoneNumberModel;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
+
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
