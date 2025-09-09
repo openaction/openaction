@@ -9,9 +9,10 @@ use App\Mailer\PlatformMailer;
 use App\Repository\Billing\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class GenerateInvoicePdfHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class GenerateInvoicePdfHandler
 {
     private OrderRepository $orderRepository;
     private PdfGenerator $pdfGenerator;

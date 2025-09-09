@@ -4,9 +4,10 @@ namespace App\Search\Consumer;
 
 use App\Search\CmsIndexer;
 use Symfony\Component\Messenger\Handler\Acknowledger;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class RemoveCmsDocumentHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class RemoveCmsDocumentHandler
 {
     public function __construct(
         private readonly CmsIndexer $cmsIndexer,

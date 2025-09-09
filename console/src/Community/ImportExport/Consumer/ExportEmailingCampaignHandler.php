@@ -10,10 +10,11 @@ use App\Repository\Community\EmailingCampaignRepository;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-final class ExportEmailingCampaignHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ExportEmailingCampaignHandler
 {
     private EmailingCampaignRepository $repository;
     private SluggerInterface $slugger;

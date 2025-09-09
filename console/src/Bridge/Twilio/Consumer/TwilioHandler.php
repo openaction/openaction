@@ -5,9 +5,10 @@ namespace App\Bridge\Twilio\Consumer;
 use App\Bridge\Twilio\Model\Personalization;
 use App\Bridge\Twilio\TwilioInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class TwilioHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class TwilioHandler
 {
     private TwilioInterface $twilio;
     private LoggerInterface $logger;

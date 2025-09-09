@@ -13,9 +13,10 @@ use App\Theme\Source\ThemeManifestValidator;
 use App\Util\Json;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SyncThemeHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SyncThemeHandler
 {
     private EntityManagerInterface $em;
     private GithubInterface $github;

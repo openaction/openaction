@@ -4,9 +4,10 @@ namespace App\Bridge\Postmark\Consumer;
 
 use App\Bridge\Postmark\PostmarkInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class PostmarkHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class PostmarkHandler
 {
     private PostmarkInterface $postmark;
     private LoggerInterface $logger;

@@ -13,14 +13,15 @@ use App\Repository\Community\EmailingCampaignRepository;
 use App\Util\PhoneNumber;
 use App\Util\Uid;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Uuid;
 
 /*
  * Resolve the filters of a given campaign, create entites for each message
  * and send the batch messages through a different consumer.
  */
-final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class CreateEmailingCampaignBatchesHandler
 {
     public function __construct(
         private readonly EmailingCampaignRepository $campaignRepository,

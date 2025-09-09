@@ -7,9 +7,10 @@ use App\Entity\Community\TextingCampaignMessage;
 use App\Repository\Community\TextingCampaignMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class TwilioWebhookHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class TwilioWebhookHandler
 {
     private TwilioInterface $twilio;
     private TextingCampaignMessageRepository $repository;

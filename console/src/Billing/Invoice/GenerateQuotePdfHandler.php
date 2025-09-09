@@ -9,9 +9,10 @@ use App\Mailer\PlatformMailer;
 use App\Repository\Billing\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class GenerateQuotePdfHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class GenerateQuotePdfHandler
 {
     private QuoteRepository $repository;
     private PdfGenerator $pdfGenerator;

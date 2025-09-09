@@ -10,11 +10,7 @@ class ContactUpdateToken extends Constraint
     public const TOKEN_EXPIRE = '8fe3cead-3ae1-4311-8cdd-ca76e8609d8d';
     public const INVALID_INSTANCE = 'f96fb6ac-3cea-4115-ace9-15187d983868';
 
-    protected static $errorNames = [
-        self::INVALID_INSTANCE => 'INVALID_INSTANCE',
-        self::INVALID_TOKEN => 'INVALID_TOKEN',
-        self::TOKEN_EXPIRE => 'TOKEN_EXPIRE',
-    ];
+    // Do not override Constraint::$errorNames (considered final in Symfony >=6.2)
 
     public string $message = 'Token invalid.';
     public ?string $token;

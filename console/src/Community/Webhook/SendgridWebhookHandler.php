@@ -8,9 +8,10 @@ use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Util\Json;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SendgridWebhookHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendgridWebhookHandler
 {
     private SendgridInterface $sendgrid;
     private EmailingCampaignMessageRepository $repository;

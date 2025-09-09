@@ -4,9 +4,10 @@ namespace App\Bridge\Sendgrid\Consumer;
 
 use App\Bridge\Sendgrid\SendgridInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class SendgridHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendgridHandler
 {
     private SendgridInterface $sendgrid;
     private LoggerInterface $logger;

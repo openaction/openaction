@@ -6,9 +6,10 @@ use App\Search\CmsIndexer;
 use App\Search\Model\Searchable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\Acknowledger;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class UpdateCmsDocumentHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UpdateCmsDocumentHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $em,

@@ -4,9 +4,10 @@ namespace App\Search\Consumer;
 
 use App\Bridge\Meilisearch\MeilisearchInterface;
 use App\Repository\OrganizationRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class RemoveCrmDocumentHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class RemoveCrmDocumentHandler
 {
     public function __construct(private OrganizationRepository $repository, private MeilisearchInterface $meilisearch)
     {

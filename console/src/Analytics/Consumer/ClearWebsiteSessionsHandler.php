@@ -6,12 +6,13 @@ use App\Entity\Project;
 use App\Repository\Analytics\Website\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Clear sessions stats older than 3 years.
  */
-final class ClearWebsiteSessionsHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ClearWebsiteSessionsHandler
 {
     private EntityManagerInterface $em;
     private SessionRepository $repo;

@@ -8,7 +8,7 @@ use App\Entity\Project;
 use App\Repository\Analytics\Website\PageViewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -19,7 +19,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * the original page views data and calls itself recursively until
  * all sessions for this project are consumed.
  */
-final class BuildWebsiteSessionsHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class BuildWebsiteSessionsHandler
 {
     private EntityManagerInterface $em;
     private PageViewRepository $pageViewRepo;
