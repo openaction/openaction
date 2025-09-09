@@ -8,8 +8,8 @@ use App\Repository\Community\ContactMandateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactMandateRepository::class)]
-#[ORM\Table(name: 'community_contact_mandates')]
-#[ORM\Index(columns: ['contact_id'], name: 'community_contact_mandates_contact_idx')]
+#[ORM\Table(name: 'community_contacts_mandates')]
+#[ORM\Index(columns: ['contact_id'], name: 'community_contacts_mandates_contact_idx')]
 class ContactMandate
 {
     use Util\EntityIdTrait;

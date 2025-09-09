@@ -11,9 +11,9 @@ use App\Repository\Community\ContactPaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactPaymentRepository::class)]
-#[ORM\Table(name: 'community_contact_payments')]
-#[ORM\Index(columns: ['contact_id'], name: 'community_contact_payments_contact_idx')]
-#[ORM\Index(columns: ['type'], name: 'community_contact_payments_type_idx')]
+#[ORM\Table(name: 'community_contacts_payments')]
+#[ORM\Index(columns: ['contact_id'], name: 'community_contacts_payments_contact_idx')]
+#[ORM\Index(columns: ['type'], name: 'community_contacts_payments_type_idx')]
 class ContactPayment
 {
     use Util\EntityIdTrait;
