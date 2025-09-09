@@ -7,11 +7,11 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20250908144938 extends AbstractMigration
+final class Version20250909082725 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE community_contact_payments (
+        $this->addSql('CREATE TABLE community_contacts_payments (
             id BIGSERIAL NOT NULL,
             contact_id BIGINT NOT NULL,
             type VARCHAR(64) NOT NULL,
@@ -48,13 +48,12 @@ final class Version20250908144938 extends AbstractMigration
             updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
             PRIMARY KEY(id)
         )');
+        $this->addSql('CREATE INDEX community_contacts_payments_contact_idx ON community_contacts_payments (contact_id)');
+        $this->addSql('CREATE INDEX community_contacts_payments_type_idx ON community_contacts_payments (type)');
+        $this->addSql('ALTER TABLE community_contacts_payments ADD CONSTRAINT FK_CCP_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE community_contacts_payments ADD CONSTRAINT FK_CCP_RECEIPT FOREIGN KEY (receipt_id) REFERENCES uploads (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
 
-        $this->addSql('CREATE INDEX community_contact_payments_contact_idx ON community_contact_payments (contact_id)');
-        $this->addSql('CREATE INDEX community_contact_payments_type_idx ON community_contact_payments (type)');
-        $this->addSql('ALTER TABLE community_contact_payments ADD CONSTRAINT FK_CCP_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE community_contact_payments ADD CONSTRAINT FK_CCP_RECEIPT FOREIGN KEY (receipt_id) REFERENCES uploads (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-
-        $this->addSql('CREATE TABLE community_contact_mandates (
+        $this->addSql('CREATE TABLE community_contacts_mandates (
             id BIGSERIAL NOT NULL,
             contact_id BIGINT NOT NULL,
             type VARCHAR(32) NOT NULL,
@@ -66,9 +65,8 @@ final class Version20250908144938 extends AbstractMigration
             updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
             PRIMARY KEY(id)
         )');
-
-        $this->addSql('CREATE INDEX community_contact_mandates_contact_idx ON community_contact_mandates (contact_id)');
-        $this->addSql('ALTER TABLE community_contact_mandates ADD CONSTRAINT FK_CCM_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX community_contacts_mandates_contact_idx ON community_contacts_mandates (contact_id)');
+        $this->addSql('ALTER TABLE community_contacts_mandates ADD CONSTRAINT FK_CCM_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     // No down migration
