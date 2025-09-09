@@ -47,17 +47,17 @@ class ContactPayment
     private ContactPaymentMethod $paymentMethod;
 
     // Lifecycle timestamps
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $capturedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $capturedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $failedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $failedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $refundedAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $refundedAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $canceledAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $canceledAt = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $receiptNumber = null;
@@ -106,11 +106,11 @@ class ContactPayment
     private ?string $fiscalCountryCode = null;
 
     // Membership specifics
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $membershipStartAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $membershipStartAt = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $membershipEndAt = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $membershipEndAt = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $membershipNumber = null;

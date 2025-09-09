@@ -69,6 +69,20 @@ final class Version20250909084406 extends AbstractMigration
         $this->addSql('CREATE INDEX community_contacts_mandates_contact_idx ON community_contacts_mandates (contact_id)');
         $this->addSql('ALTER TABLE community_contacts_mandates ADD CONSTRAINT FK_CCM_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
 
+        // Commitments table
+        $this->addSql('CREATE TABLE community_contacts_commitments (
+            id BIGSERIAL NOT NULL,
+            contact_id BIGINT NOT NULL,
+            label VARCHAR(255) DEFAULT NULL,
+            start_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+            metadata JSON DEFAULT NULL,
+            created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+            updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+            PRIMARY KEY(id)
+        )');
+        $this->addSql('CREATE INDEX community_contacts_commitments_contact_idx ON community_contacts_commitments (contact_id)');
+        $this->addSql('ALTER TABLE community_contacts_commitments ADD CONSTRAINT FK_CCC_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+
         // Alter contacts table
         $this->addSql('ALTER TABLE community_contacts ADD is_deceased BOOLEAN DEFAULT NULL');
         $this->addSql('ALTER TABLE community_contacts ADD recruited_by_id BIGINT DEFAULT NULL');

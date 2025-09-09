@@ -25,16 +25,16 @@ class ContactMandate
     #[ORM\Column(length: 255)]
     private string $label;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $startAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $startAt;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $endAt;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $endAt;
 
     #[ORM\Column(type: 'jsonb', nullable: true)]
     private ?array $metadata = null;
 
-    public function __construct(Contact $contact, ContactMandateType $type, string $label, \DateTime $startAt, \DateTime $endAt)
+    public function __construct(Contact $contact, ContactMandateType $type, string $label, \DateTimeImmutable $startAt, \DateTimeImmutable $endAt)
     {
         $this->populateTimestampable();
         $this->contact = $contact;
