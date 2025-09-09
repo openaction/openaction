@@ -57,7 +57,7 @@ final class ExportHandler implements MessageHandlerInterface
         return true;
     }
 
-    private function doExport(string $filename, Organization $organization, int $tagId = null)
+    private function doExport(string $filename, Organization $organization, ?int $tagId = null)
     {
         $writer = WriterEntityFactory::createXLSXWriter();
         $writer->openToFile($filename);

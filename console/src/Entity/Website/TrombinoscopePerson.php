@@ -240,7 +240,7 @@ class TrombinoscopePerson implements Searchable
     /*
      * Setters
      */
-    public function setPublishedAt(\DateTime $date = null): void
+    public function setPublishedAt(?\DateTime $date = null): void
     {
         $this->publishedAt = $date;
     }

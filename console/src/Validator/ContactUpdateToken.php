@@ -17,16 +17,16 @@ class ContactUpdateToken extends Constraint
     ];
 
     public string $message = 'Token invalid.';
-    public ?string  $token;
+    public ?string $token;
     public ?int $daysToExpire = 2;
 
     public function __construct(
-        array $options = null,
-        string $message = null,
-        string $token = null,
-        int $daysToExpire = null,
-        array $groups = null,
-        $payload = null
+        ?array $options = null,
+        ?string $message = null,
+        ?string $token = null,
+        ?int $daysToExpire = null,
+        ?array $groups = null,
+        $payload = null,
     ) {
         parent::__construct($options, $groups, $payload);
 

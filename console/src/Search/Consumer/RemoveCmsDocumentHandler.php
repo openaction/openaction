@@ -13,7 +13,7 @@ final class RemoveCmsDocumentHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(RemoveCmsDocumentMessage $message, Acknowledger $ack = null)
+    public function __invoke(RemoveCmsDocumentMessage $message, ?Acknowledger $ack = null)
     {
         $this->cmsIndexer->unindexDocument($message->getDocumentId());
     }

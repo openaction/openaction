@@ -219,7 +219,7 @@ class Event implements Searchable
     /*
      * Setters
      */
-    public function setPublishedAt(\DateTime $date = null)
+    public function setPublishedAt(?\DateTime $date = null)
     {
         $this->publishedAt = $date;
     }

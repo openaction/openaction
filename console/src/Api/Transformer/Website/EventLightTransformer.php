@@ -12,7 +12,7 @@ class EventLightTransformer extends AbstractTransformer
 {
     public function __construct(
         private readonly CdnRouter $cdnRouter,
-        private readonly DomainRouter $domainRouter
+        private readonly DomainRouter $domainRouter,
     ) {
     }
 

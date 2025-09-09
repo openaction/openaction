@@ -21,7 +21,7 @@ class PostmarkDomainConfig
         string $dkimContent,
         bool $returnPathVerified,
         string $returnPathHost,
-        string $returnPathTarget
+        string $returnPathTarget,
     ) {
         $this->id = $id;
         $this->name = $name;

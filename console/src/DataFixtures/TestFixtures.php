@@ -14,11 +14,18 @@ use App\Entity\Billing\Order;
 use App\Entity\Billing\Quote;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContactCommitment;
+use App\Entity\Community\ContactMandate;
+use App\Entity\Community\ContactPayment;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\EmailAutomation;
 use App\Entity\Community\EmailAutomationMessage;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Community\EmailingCampaignMessage;
+use App\Entity\Community\Enum\ContactMandateType;
+use App\Entity\Community\Enum\ContactPaymentMethod;
+use App\Entity\Community\Enum\ContactPaymentProvider;
+use App\Entity\Community\Enum\ContactPaymentType;
 use App\Entity\Community\Import;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Community\Model\ImportHead;
@@ -192,6 +199,9 @@ class TestFixtures extends AbstractFixtures
         $this->loadManifestoProposals();
         $this->loadHomeBlocks();
         $this->loadContacts();
+        $this->loadContactPayments();
+        $this->loadContactMandates();
+        $this->loadContactCommitments();
         $this->loadContactsAmbiguous();
         $this->loadImports();
         $this->loadContentImportWordPress();
@@ -209,6 +219,98 @@ class TestFixtures extends AbstractFixtures
         $this->loadAnalyticsPageViews();
         $this->loadAnalyticsSessions();
         $this->loadAnalyticsEvents();
+    }
+
+    private function loadContactPayments(): void
+    {
+        // create a couple of payments for existing contacts
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'type' => ContactPaymentType::Donation,
+                'netAmount' => 5000,
+                'feesAmount' => 150,
+                'currency' => 'EUR',
+                'paymentProvider' => ContactPaymentProvider::Mollie,
+                'paymentMethod' => ContactPaymentMethod::Card,
+                'capturedAt' => new \DateTimeImmutable('-10 days'),
+                'email' => 'john@lennon.com',
+                'firstName' => 'John',
+                'lastName' => 'Lennon',
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'type' => ContactPaymentType::Membership,
+                'netAmount' => 3000,
+                'feesAmount' => 0,
+                'currency' => 'EUR',
+                'paymentProvider' => ContactPaymentProvider::Manual,
+                'paymentMethod' => ContactPaymentMethod::Wire,
+                'capturedAt' => new \DateTimeImmutable('-5 days'),
+                'membershipStartAt' => new \DateTimeImmutable('-1 year'),
+                'membershipEndAt' => new \DateTimeImmutable('+1 year'),
+                'membershipNumber' => 'M-2024-0001',
+                'email' => 'troycovillon@teleworm.us',
+                'firstName' => 'Troy',
+                'lastName' => 'Covillon',
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(ContactPayment::createFixture($data));
+        }
+
+        $this->em->flush();
+    }
+
+    private function loadContactMandates(): void
+    {
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'type' => ContactMandateType::Internal,
+                'label' => 'Board Member',
+                'startAt' => new \DateTimeImmutable('-6 months'),
+                'endAt' => new \DateTimeImmutable('+6 months'),
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'type' => ContactMandateType::ElectedOfficial,
+                'label' => 'City Councillor',
+                'startAt' => new \DateTimeImmutable('-2 years'),
+                'endAt' => new \DateTimeImmutable('+3 years'),
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(ContactMandate::createFixture($data));
+        }
+
+        $this->em->flush();
+    }
+
+    private function loadContactCommitments(): void
+    {
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'label' => 'Volunteer - Local chapter',
+                'startAt' => new \DateTimeImmutable('-3 months'),
+                'metadata' => ['hours_per_week' => 4],
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'label' => 'Fundraising committee',
+                'startAt' => new \DateTimeImmutable('-1 month'),
+                'metadata' => ['role' => 'coordinator'],
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(ContactCommitment::createFixture($data));
+        }
+
+        $this->em->flush();
     }
 
     private function loadAnnouncements()

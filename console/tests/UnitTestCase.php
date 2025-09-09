@@ -52,7 +52,7 @@ abstract class UnitTestCase extends TestCase
         return $orga;
     }
 
-    protected function createProject(int $id, string $name = 'MockProject', Organization $orga = null): Project
+    protected function createProject(int $id, string $name = 'MockProject', ?Organization $orga = null): Project
     {
         $project = new Project($orga ?: $this->createOrganization(-1), $name, new WebsiteTheme(1, 1, 'citipo/theme'));
         $this->setProperty($project, 'id', $id);

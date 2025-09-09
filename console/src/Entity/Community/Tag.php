@@ -42,7 +42,7 @@ class Tag
     #[ORM\JoinTable(name: 'projects_tags')]
     private Collection $projects;
 
-    public function __construct(Organization $organization, string $name, string $slug = null)
+    public function __construct(Organization $organization, string $name, ?string $slug = null)
     {
         $this->populateTimestampable();
         $this->organization = $organization;

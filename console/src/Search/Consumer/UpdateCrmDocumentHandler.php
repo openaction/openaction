@@ -12,7 +12,7 @@ final class UpdateCrmDocumentHandler implements MessageHandlerInterface
     {
     }
 
-    public function __invoke(UpdateCrmDocumentsMessage $message, Acknowledger $ack = null)
+    public function __invoke(UpdateCrmDocumentsMessage $message, ?Acknowledger $ack = null)
     {
         $this->crmIndexer->synchronizeContacts(
             $message->getOrganizationUuid(),

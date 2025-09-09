@@ -3,7 +3,6 @@
 namespace App\Form\Project;
 
 use App\Entity\Community\Model\ContentImportSettings;
-use RuntimeException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -49,7 +48,7 @@ class ContentImportType extends AbstractType
             return;
         }
 
-        throw new RuntimeException('Missing import source in content type!');
+        throw new \RuntimeException('Missing import source in content type!');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

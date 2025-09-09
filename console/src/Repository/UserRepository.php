@@ -88,7 +88,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         string $firstName,
         string $lastName,
         string $password,
-        string $locale = 'en'
+        string $locale = 'en',
     ): User {
         $account = new User($email, $firstName, $lastName, $locale);
         $account->changePassword($this->hasher->hashPassword($account, $password));

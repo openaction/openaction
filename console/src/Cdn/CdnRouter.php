@@ -22,7 +22,7 @@ class CdnRouter
     /**
      * @param string|int|Upload $document
      */
-    public function generateUrl($document, string $type = null): string
+    public function generateUrl($document, ?string $type = null): string
     {
         if (is_int($document)) {
             $document = $this->uploadRepository->find($document);

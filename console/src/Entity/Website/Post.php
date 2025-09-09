@@ -228,7 +228,7 @@ class Post implements Searchable
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTime $date = null): void
+    public function setPublishedAt(?\DateTime $date = null): void
     {
         $this->publishedAt = $date;
     }

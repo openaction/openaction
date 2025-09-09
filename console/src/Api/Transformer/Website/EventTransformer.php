@@ -20,7 +20,7 @@ class EventTransformer extends AbstractTransformer
         private readonly EventCategoryTransformer $categoryTransformer,
         private readonly TrombinoscopePersonLightTransformer $participantTransformer,
         private readonly CdnRouter $cdnRouter,
-        private readonly DomainRouter $domainRouter
+        private readonly DomainRouter $domainRouter,
     ) {
     }
 

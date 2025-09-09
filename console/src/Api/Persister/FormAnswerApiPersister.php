@@ -27,7 +27,7 @@ class FormAnswerApiPersister
         $this->automationDispatcher = $ad;
     }
 
-    public function persist(Form $form, FormAnswerApiData $data, Contact $linkedContact = null): FormAnswer
+    public function persist(Form $form, FormAnswerApiData $data, ?Contact $linkedContact = null): FormAnswer
     {
         $rawFields = array_values($data->fields ?: []);
 

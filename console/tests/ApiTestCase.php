@@ -15,7 +15,7 @@ abstract class ApiTestCase extends WebTestCase
     protected const ACME_ADMIN_TOKEN = 'admin_31cf08f5e0354198a3b26b5b08f59a4ed871cbaec6e4eb8b158fab57a7193b7a';
     protected const ACME_ORG = 'cbeb774c-284c-43e3-923a-5a2388340f91';
 
-    protected function createApiRequest(string $method, string $endpoint, KernelBrowser $client = null): ApiRequestBuilder
+    protected function createApiRequest(string $method, string $endpoint, ?KernelBrowser $client = null): ApiRequestBuilder
     {
         return new ApiRequestBuilder($client ?: self::createClient(), $method, $endpoint);
     }
@@ -26,8 +26,8 @@ abstract class ApiTestCase extends WebTestCase
         string $endpoint,
         ?string $token = self::EXAMPLECO_TOKEN,
         int $expectedStatusCode = 200,
-        string $content = null,
-        array $parameters = []
+        ?string $content = null,
+        array $parameters = [],
     ): array {
         $server = ['HTTP_ACCEPT' => 'application/ld+json'];
         if ($token) {

@@ -8,7 +8,7 @@ class Personalization
     private array $variables;
     private ?string $statusCallbackUrl;
 
-    public function __construct(string $to, array $variables = [], string $statusCallbackUrl = null)
+    public function __construct(string $to, array $variables = [], ?string $statusCallbackUrl = null)
     {
         $this->to = $to;
         $this->variables = $variables;

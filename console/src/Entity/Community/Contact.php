@@ -4,6 +4,9 @@ namespace App\Entity\Community;
 
 use App\Api\Model\ContactApiData;
 use App\Entity\Area;
+use App\Entity\Community\ContactCommitment as ContactCommitmentEntity;
+use App\Entity\Community\ContactMandate as ContactMandateEntity;
+use App\Entity\Community\ContactPayment as ContactPaymentEntity;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Upload;
@@ -145,6 +148,15 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     private ?string $socialLinkedIn = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialInstagram = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialTikTok = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialBluesky = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialTelegram = null;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -201,6 +213,22 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $metadataComment = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $isDeceased = null;
+
+    #[ORM\ManyToOne(targetEntity: Contact::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Contact $recruitedBy = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $birthName = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $birthCity = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $birthCountryCode = null;
+
     #[ORM\OneToMany(targetEntity: EmailingCampaignMessage::class, mappedBy: 'contact', cascade: ['remove'])]
     private Collection $messages;
 
@@ -212,8 +240,16 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
     #[ORM\OneToMany(targetEntity: ContactLog::class, mappedBy: 'contact', cascade: ['persist', 'remove'])]
     private Collection $logs;
+    #[ORM\OneToMany(targetEntity: ContactPaymentEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $payments;
 
-    public function __construct(Organization $organization, ?string $email = null, Area $area = null)
+    #[ORM\OneToMany(targetEntity: ContactMandateEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $mandates;
+
+    #[ORM\OneToMany(targetEntity: ContactCommitmentEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $commitments;
+
+    public function __construct(Organization $organization, ?string $email = null, ?Area $area = null)
     {
         $this->populateTimestampable();
         $this->uuid = Uid::random();
@@ -225,6 +261,9 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->formAnswers = new ArrayCollection();
         $this->updates = new ArrayCollection();
         $this->logs = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->mandates = new ArrayCollection();
+        $this->commitments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -273,8 +312,16 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $self->socialFacebook = $data['socialFacebook'] ?? null;
         $self->socialTwitter = $data['socialTwitter'] ?? null;
         $self->socialLinkedIn = $data['socialLinkedIn'] ?? null;
+        $self->socialInstagram = $data['socialInstagram'] ?? null;
+        $self->socialTikTok = $data['socialTikTok'] ?? null;
+        $self->socialBluesky = $data['socialBluesky'] ?? null;
         $self->socialTelegram = $data['socialTelegram'] ?? null;
         $self->socialWhatsapp = $data['socialWhatsapp'] ?? null;
+        $self->isDeceased = $data['isDeceased'] ?? null;
+        $self->recruitedBy = $data['recruitedBy'] ?? null;
+        $self->birthName = $data['birthName'] ?? null;
+        $self->birthCity = $data['birthCity'] ?? null;
+        $self->birthCountryCode = $data['birthCountryCode'] ?? null;
         $self->addressStreetNumber = $data['addressStreetNumber'] ?? null;
         $self->addressStreetLine1 = $data['addressStreetLine1'] ?? null;
         $self->addressStreetLine2 = $data['addressStreetLine2'] ?? null;
@@ -1078,6 +1125,21 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         return $this->socialLinkedIn;
     }
 
+    public function getSocialInstagram(): ?string
+    {
+        return $this->socialInstagram;
+    }
+
+    public function getSocialTikTok(): ?string
+    {
+        return $this->socialTikTok;
+    }
+
+    public function getSocialBluesky(): ?string
+    {
+        return $this->socialBluesky;
+    }
+
     public function getSocialTelegram(): ?string
     {
         return $this->socialTelegram;
@@ -1086,6 +1148,31 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getSocialWhatsapp(): ?string
     {
         return $this->socialWhatsapp;
+    }
+
+    public function isDeceased(): ?bool
+    {
+        return $this->isDeceased;
+    }
+
+    public function getRecruitedBy(): ?self
+    {
+        return $this->recruitedBy;
+    }
+
+    public function getBirthName(): ?string
+    {
+        return $this->birthName;
+    }
+
+    public function getBirthCity(): ?string
+    {
+        return $this->birthCity;
+    }
+
+    public function getBirthCountryCode(): ?string
+    {
+        return $this->birthCountryCode;
     }
 
     public function getAddressStreetNumber(): ?string
@@ -1221,6 +1308,30 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getLogs(): Collection
     {
         return $this->logs;
+    }
+
+    /**
+     * @return Collection|ContactPaymentEntity[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @return Collection|ContactMandateEntity[]
+     */
+    public function getMandates(): Collection
+    {
+        return $this->mandates;
+    }
+
+    /**
+     * @return Collection|ContactCommitmentEntity[]
+     */
+    public function getCommitments(): Collection
+    {
+        return $this->commitments;
     }
 
     public function getSettingsByProject(): array

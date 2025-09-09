@@ -14,19 +14,19 @@ class Recipient
     private ?string $messageId;
     private array $vars;
 
-    public function __construct(string $email, string $messageId = null, array $vars = [])
+    public function __construct(string $email, ?string $messageId = null, array $vars = [])
     {
         $this->email = $email;
         $this->messageId = $messageId;
         $this->vars = $vars;
     }
 
-    public static function createFromNotification(string $email, string $messageId = null, array $vars = []): self
+    public static function createFromNotification(string $email, ?string $messageId = null, array $vars = []): self
     {
         return new self($email, $messageId, $vars);
     }
 
-    public static function createFromContact(Contact $contact, string $messageId = null, array $additionalVariables = []): self
+    public static function createFromContact(Contact $contact, ?string $messageId = null, array $additionalVariables = []): self
     {
         return new self($contact->getEmail() ?: '', $messageId, [
             '-contact-id-' => Uid::toBase62($contact->getUuid()),

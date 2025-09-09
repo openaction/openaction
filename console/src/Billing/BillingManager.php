@@ -97,7 +97,7 @@ class BillingManager
     /**
      * @param OrderLine[] $lines
      */
-    public function createMollieOrder(string $company, Organization $orga, OrderRecipient $recipient, OrderAction $action, array $lines, string $redirectUrl = null): Order
+    public function createMollieOrder(string $company, Organization $orga, OrderRecipient $recipient, OrderAction $action, array $lines, ?string $redirectUrl = null): Order
     {
         if (!$orga->getMollieCustomerId()) {
             throw new \InvalidArgumentException('Missing customer ID for organization '.$orga->getName());

@@ -16,7 +16,7 @@ final class UpdateCmsDocumentHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(UpdateCmsDocumentMessage $message, Acknowledger $ack = null)
+    public function __invoke(UpdateCmsDocumentMessage $message, ?Acknowledger $ack = null)
     {
         /** @var Searchable|null $entity */
         $entity = $this->em->getRepository($message->getEntityClass())->find($message->getEntityId());

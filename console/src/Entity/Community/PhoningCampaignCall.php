@@ -38,7 +38,7 @@ class PhoningCampaignCall
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $date;
 
-    public function __construct(PhoningCampaignTarget $target, Contact $author, \DateTime $date = null)
+    public function __construct(PhoningCampaignTarget $target, Contact $author, ?\DateTime $date = null)
     {
         $this->uuid = Uid::random();
         $this->target = $target;

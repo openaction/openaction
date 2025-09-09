@@ -37,10 +37,10 @@ class EmailAutomationMessage
     public function __construct(
         EmailAutomation $automation,
         string $email,
-        string $formalTitle = null,
-        string $firstName = null,
-        string $middleName = null,
-        string $lastName = null
+        ?string $formalTitle = null,
+        ?string $firstName = null,
+        ?string $middleName = null,
+        ?string $lastName = null,
     ) {
         $this->automation = $automation;
         $this->email = $email;

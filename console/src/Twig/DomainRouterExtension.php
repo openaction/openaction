@@ -30,7 +30,7 @@ class DomainRouterExtension extends AbstractExtension
         return $this->router->generateShareUrl($project, $type, $id, $slug);
     }
 
-    public function generateRedirectUrl(Project $project, string $type = 'home', string $ref = null): string
+    public function generateRedirectUrl(Project $project, string $type = 'home', ?string $ref = null): string
     {
         return $this->router->generateRedirectUrl($project, $type, $ref);
     }

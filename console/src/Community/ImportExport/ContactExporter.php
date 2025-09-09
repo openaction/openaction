@@ -16,7 +16,7 @@ class ContactExporter
         $this->bus = $bus;
     }
 
-    public function requestExport(User $user, Organization $organization, int $tagId = null)
+    public function requestExport(User $user, Organization $organization, ?int $tagId = null)
     {
         $this->bus->dispatch(new ExportMessage($user->getLocale(), $user->getEmail(), $organization->getId(), $tagId));
     }

@@ -34,7 +34,7 @@ class ContactManageController extends AbstractController
         private ContactRepository $contactRepository,
         private MessageBusInterface $bus,
         private QuorumInterface $quorum,
-        private IntegromatInterface $integromat
+        private IntegromatInterface $integromat,
     ) {
     }
 

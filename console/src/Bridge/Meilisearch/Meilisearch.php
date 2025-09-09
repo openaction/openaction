@@ -122,7 +122,7 @@ class Meilisearch implements MeilisearchInterface
         return $stats;
     }
 
-    public function createApiKey(array $indexes, array $actions, string $description = null): Keys
+    public function createApiKey(array $indexes, array $actions, ?string $description = null): Keys
     {
         return $this->getClient()->createKey([
             'indexes' => $indexes,

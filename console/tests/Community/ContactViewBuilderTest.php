@@ -187,7 +187,7 @@ class ContactViewBuilderTest extends KernelTestCase
     /**
      * @dataProvider provideConfigurators
      */
-    public function testCount(callable $configurator, array $expectedResults, int $expectedCount = null)
+    public function testCount(callable $configurator, array $expectedResults, ?int $expectedCount = null)
     {
         self::bootKernel();
 

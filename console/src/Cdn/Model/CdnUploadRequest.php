@@ -25,7 +25,7 @@ class CdnUploadRequest
     private File $file;
     private ?string $filename;
 
-    public function __construct(File $file, string $directory, string $handler = null, Project $project = null, string $filename = null)
+    public function __construct(File $file, string $directory, ?string $handler = null, ?Project $project = null, ?string $filename = null)
     {
         $this->file = $file;
         $this->directory = $directory;

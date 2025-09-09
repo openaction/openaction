@@ -21,7 +21,7 @@ class WordpressController extends AbstractController
 {
     public function __construct(
         private readonly UploadcareInterface $uploadCare,
-        private readonly ContentImporter $importer
+        private readonly ContentImporter $importer,
     ) {
     }
 

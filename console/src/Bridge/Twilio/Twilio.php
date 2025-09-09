@@ -31,7 +31,7 @@ class Twilio implements TwilioInterface
         return $this->requestValidator->validate($signature, $uri, $payload);
     }
 
-    public function sendMessage(?string $from, string $to, string $body, string $statusCallbackUrl = null): MessageInstance
+    public function sendMessage(?string $from, string $to, string $body, ?string $statusCallbackUrl = null): MessageInstance
     {
         if (!$this->client) {
             $this->client = new Client($this->accountId, $this->token);

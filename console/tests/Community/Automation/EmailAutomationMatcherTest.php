@@ -185,7 +185,7 @@ class EmailAutomationMatcherTest extends UnitTestCase
         $this->assertSame($expected, $matcher->matches($automation, $contact));
     }
 
-    private function createAutomation(string $trigger, string $toEmail = null, array $details = [])
+    private function createAutomation(string $trigger, ?string $toEmail = null, array $details = [])
     {
         return EmailAutomation::createFixture(array_merge($details, [
             'orga' => $this->createOrganization(1),

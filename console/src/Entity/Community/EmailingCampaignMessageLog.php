@@ -26,7 +26,7 @@ class EmailingCampaignMessageLog
     #[ORM\Column(type: 'datetime')]
     private \DateTime $date;
 
-    public function __construct(EmailingCampaignMessage $message, string $type, \DateTime $date = null)
+    public function __construct(EmailingCampaignMessage $message, string $type, ?\DateTime $date = null)
     {
         $this->message = $message;
         $this->type = $type;

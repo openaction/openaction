@@ -11,7 +11,7 @@ class DomainRouter
         return $this->generateUrl($project, '/share/'.$type.'/'.$id.'/'.$slug);
     }
 
-    public function generateRedirectUrl(Project $project, string $type = 'home', string $ref = null): string
+    public function generateRedirectUrl(Project $project, string $type = 'home', ?string $ref = null): string
     {
         return $this->generateUrl($project, '/_redirect/'.$type.($ref ? '/'.$ref : ''));
     }

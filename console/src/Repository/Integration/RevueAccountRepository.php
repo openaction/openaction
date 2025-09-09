@@ -22,7 +22,7 @@ class RevueAccountRepository extends ServiceEntityRepository
     /**
      * @return \Generator|RevueAccount[]
      */
-    public function findToSync(string $orgaUuid = null): \Generator
+    public function findToSync(?string $orgaUuid = null): \Generator
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'o')
