@@ -11,7 +11,6 @@ final class Version20250909084406 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // New tables
         $this->addSql('CREATE TABLE community_contacts_payments (
             id BIGSERIAL NOT NULL,
             contact_id BIGINT NOT NULL,
@@ -95,6 +94,4 @@ final class Version20250909084406 extends AbstractMigration
         $this->addSql('ALTER TABLE community_contacts ADD CONSTRAINT FK_CC_RECRUITED_BY FOREIGN KEY (recruited_by_id) REFERENCES community_contacts (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE INDEX community_contacts_recruited_by_idx ON community_contacts (recruited_by_id)');
     }
-
-    // No down migration
 }

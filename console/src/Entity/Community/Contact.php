@@ -598,8 +598,14 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
             'socialFacebook',
             'socialTwitter',
             'socialLinkedIn',
+            'socialInstagram',
+            'socialTikTok',
+            'socialBluesky',
             'socialTelegram',
             'socialWhatsapp',
+            'birthName',
+            'birthCity',
+            'birthCountryCode',
             'addressStreetNumber',
             'addressStreetLine1',
             'addressStreetLine2',
@@ -624,6 +630,11 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
         if (null !== $data->settingsReceiveCalls) {
             $this->updateCallsSubscription($data->settingsReceiveCalls, $source);
+        }
+
+        // Additional booleans
+        if (null !== $data->isDeceased) {
+            $this->isDeceased = (bool) $data->isDeceased;
         }
 
         // Array fields
@@ -1158,6 +1169,11 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getRecruitedBy(): ?self
     {
         return $this->recruitedBy;
+    }
+
+    public function setRecruitedBy(?self $recruitedBy): void
+    {
+        $this->recruitedBy = $recruitedBy;
     }
 
     public function getBirthName(): ?string

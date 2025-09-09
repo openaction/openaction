@@ -56,4 +56,19 @@ class ContactMandate
     {
         return $this->contact;
     }
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    public function getStartAt(): \DateTimeImmutable
+    {
+        return $this->startAt;
+    }
+
+    public function getEndAt(): \DateTimeImmutable
+    {
+        return $this->endAt;
+    }
 }

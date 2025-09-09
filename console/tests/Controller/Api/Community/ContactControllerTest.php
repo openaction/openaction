@@ -1480,4 +1480,66 @@ class ContactControllerTest extends ApiTestCase
 
         return $contactUpdate;
     }
+
+    public function testPersistNewProfileFields()
+    {
+        $client = self::createClient();
+
+        // Update an existing contact with new fields
+        $payload = [
+            'email' => 'brunella.courtemanche2@orange.fr',
+            'socialInstagram' => 'insta_user',
+            'socialTikTok' => 'tiktok_user',
+            'socialBluesky' => 'bsky_user',
+            'isDeceased' => true,
+            'recruitedBy' => 'a.compagnon@protonmail.com',
+            'birthName' => 'OriginalName',
+            'birthCity' => 'Berlin',
+            'birthCountryCode' => 'DE',
+            'mandates' => [
+                ['label' => 'Councillor', 'startAt' => '2020-01-01', 'endAt' => '2021-01-01'],
+                ['label' => 'Deputy', 'startAt' => '2021-02-01', 'endAt' => '2022-01-01'],
+            ],
+            'commitments' => [
+                ['label' => 'Volunteer', 'startAt' => '2019-05-01'],
+            ],
+        ];
+
+        $this->apiRequest($client, 'POST', '/api/community/contacts', self::CITIPO_TOKEN, 200, Json::encode($payload));
+
+        $contactRepo = static::getContainer()->get(ContactRepository::class);
+        $contact = $contactRepo->findOneBy(['email' => 'brunella.courtemanche2@orange.fr']);
+
+        $this->assertSame('insta_user', $contact->getSocialInstagram());
+        $this->assertSame('tiktok_user', $contact->getSocialTikTok());
+        $this->assertSame('bsky_user', $contact->getSocialBluesky());
+        $this->assertTrue($contact->isDeceased());
+        $this->assertSame('a.compagnon@protonmail.com', $contact->getRecruitedBy()?->getEmail());
+        $this->assertSame('OriginalName', $contact->getBirthName());
+        $this->assertSame('Berlin', $contact->getBirthCity());
+        $this->assertSame('DE', $contact->getBirthCountryCode());
+
+        // Mandates and commitments
+        $this->assertCount(2, $contact->getMandates());
+        $this->assertCount(1, $contact->getCommitments());
+
+        foreach ($contact->getMandates() as $m) {
+            $this->assertContains($m->getLabel(), ['Councillor', 'Deputy']);
+            $this->assertInstanceOf(\DateTimeImmutable::class, $m->getStartAt());
+            $this->assertInstanceOf(\DateTimeImmutable::class, $m->getEndAt());
+        }
+
+        foreach ($contact->getCommitments() as $c) {
+            $this->assertSame('Volunteer', $c->getLabel());
+        }
+
+        // Override with empty lists (clear them)
+        $payload['mandates'] = [];
+        $payload['commitments'] = [];
+        $this->apiRequest($client, 'POST', '/api/community/contacts', self::CITIPO_TOKEN, 200, Json::encode($payload));
+
+        $contact = $contactRepo->findOneBy(['email' => 'brunella.courtemanche2@orange.fr']);
+        $this->assertCount(0, $contact->getMandates());
+        $this->assertCount(0, $contact->getCommitments());
+    }
 }
