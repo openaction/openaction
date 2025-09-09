@@ -73,7 +73,7 @@ final class Version20250909084406 extends AbstractMigration
         $this->addSql('CREATE TABLE community_contacts_commitments (
             id BIGSERIAL NOT NULL,
             contact_id BIGINT NOT NULL,
-            label VARCHAR(255) DEFAULT NULL,
+            label VARCHAR(255) NOT NULL,
             start_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
             metadata JSON DEFAULT NULL,
             created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,

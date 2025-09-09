@@ -4,6 +4,9 @@ namespace App\Entity\Community;
 
 use App\Api\Model\ContactApiData;
 use App\Entity\Area;
+use App\Entity\Community\ContactCommitment as ContactCommitmentEntity;
+use App\Entity\Community\ContactMandate as ContactMandateEntity;
+use App\Entity\Community\ContactPayment as ContactPaymentEntity;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Upload;
@@ -236,6 +239,14 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
     #[ORM\OneToMany(targetEntity: ContactLog::class, mappedBy: 'contact', cascade: ['persist', 'remove'])]
     private Collection $logs;
+    #[ORM\OneToMany(targetEntity: ContactPaymentEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $payments;
+
+    #[ORM\OneToMany(targetEntity: ContactMandateEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $mandates;
+
+    #[ORM\OneToMany(targetEntity: ContactCommitmentEntity::class, mappedBy: 'contact', cascade: ['remove'])]
+    private Collection $commitments;
 
     public function __construct(Organization $organization, ?string $email = null, ?Area $area = null)
     {
@@ -249,6 +260,9 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->formAnswers = new ArrayCollection();
         $this->updates = new ArrayCollection();
         $this->logs = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->mandates = new ArrayCollection();
+        $this->commitments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -1293,6 +1307,30 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getLogs(): Collection
     {
         return $this->logs;
+    }
+
+    /**
+     * @return Collection|ContactPaymentEntity[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @return Collection|ContactMandateEntity[]
+     */
+    public function getMandates(): Collection
+    {
+        return $this->mandates;
+    }
+
+    /**
+     * @return Collection|ContactCommitmentEntity[]
+     */
+    public function getCommitments(): Collection
+    {
+        return $this->commitments;
     }
 
     public function getSettingsByProject(): array

@@ -18,8 +18,8 @@ class ContactCommitment
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Contact $contact;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $label = null;
+    #[ORM\Column(length: 255)]
+    private string $label;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $startAt = null;
@@ -36,7 +36,7 @@ class ContactCommitment
     public static function createFixture(array $data): self
     {
         $self = new self($data['contact']);
-        $self->label = $data['label'] ?? null;
+        $self->label = $data['label'];
         $self->startAt = $data['startAt'] ?? null;
         $self->metadata = $data['metadata'] ?? null;
 
