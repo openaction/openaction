@@ -25,10 +25,9 @@ use libphonenumber\PhoneNumber as PhoneNumberModel;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
@@ -559,6 +558,10 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->socialLinkedIn = $data->socialLinkedIn;
         $this->socialTelegram = $data->socialTelegram;
         $this->socialWhatsapp = $data->socialWhatsapp;
+        // New socials
+        $this->socialInstagram = $data->socialInstagram;
+        $this->socialTikTok = $data->socialTikTok;
+        $this->socialBluesky = $data->socialBluesky;
         $this->addressStreetLine1 = $data->addressStreetLine1;
         $this->addressStreetLine1Slug = $slugger->slug((string) $data->addressStreetLine1, '-')->lower()->toString() ?: null;
         $this->addressStreetLine2 = $data->addressStreetLine2;
@@ -569,6 +572,11 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $this->metadataComment = $data->metadataComment;
         $this->contactPhone = $data->contactPhone;
         $this->contactWorkPhone = $data->contactWorkPhone;
+        // Identity additions
+        $this->isDeceased = null !== $data->isDeceased ? (bool) $data->isDeceased : $this->isDeceased;
+        $this->birthName = $data->birthName;
+        $this->birthCity = $data->birthCity;
+        $this->birthCountryCode = $data->birthCountryCode ? strtoupper((string) $data->birthCountryCode) : $this->birthCountryCode;
         $this->updateNewsletterSubscription($data->settingsReceiveNewsletters, $source);
         $this->updateSmsSubscription($data->settingsReceiveSms, $source);
         $this->updateCallsSubscription($data->settingsReceiveCalls, $source);

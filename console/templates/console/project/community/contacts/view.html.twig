@@ -257,6 +257,9 @@
                         {% if contact.socialFacebook
                             or contact.socialTwitter
                             or contact.socialLinkedIn
+                            or contact.socialInstagram
+                            or contact.socialTikTok
+                            or contact.socialBluesky
                             or contact.socialTelegram
                             or contact.socialWhatsapp %}
                             <div class="mb-2">
@@ -270,6 +273,9 @@
                                     'Facebook': { 'icon': 'fab fa-facebook', 'url': contact.socialFacebook },
                                     'Twitter': { 'icon': 'fab fa-twitter', 'url': contact.socialTwitter },
                                     'LinkedIn': { 'icon': 'fab fa-linkedin', 'url': contact.socialLinkedIn },
+                                    'Instagram': { 'icon': 'fab fa-instagram', 'url': contact.socialInstagram },
+                                    'TikTok': { 'icon': 'fab fa-tiktok', 'url': contact.socialTikTok },
+                                    'Bluesky': { 'icon': 'far fa-square', 'url': contact.socialBluesky },
                                     'Telegram': { 'icon': 'fab fa-telegram-plane', 'url': contact.socialTelegram ? ('https://t.me/' ~ contact.socialTelegram) : null },
                                     'Whatsapp': { 'icon': 'fab fa-whatsapp', 'url': contact.socialWhatsapp ? 'https://wa.me/' ~ contact.socialWhatsapp : null },
                                 } %}
@@ -284,6 +290,31 @@
                                         </a>
                                     {% endif %}
                                 {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if contact.isDeceased %}
+                            <div class="mb-2">
+                                <span class="badge badge-danger">Deceased</span>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.birthName or contact.birthCity or contact.birthCountryCode %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">Birth information</small>
+                                </div>
+                                {% if contact.birthName %}Name: {{ contact.birthName }}<br/>{% endif %}
+                                {% if contact.birthCity %}City: {{ contact.birthCity }}<br/>{% endif %}
+                                {% if contact.birthCountryCode %}Country: {{ contact.birthCountryCode|country_name }}{% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.recruitedBy %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">Recruited by</small>
+                                </div>
+                                {{ contact.recruitedBy }}
                             </div>
                         {% endif %}
                     </div>
@@ -310,6 +341,59 @@
                             }) }}
                         </div>
                     </div>
+
+                    {% if contact.mandates|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">Mandates</h5>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for m in contact.mandates %}
+                                    <div class="mb-2">
+                                        <strong>{{ m.label }}</strong>
+                                        <div class="text-muted">{{ m.type.value }} — {{ m.startAt|format_date }} → {{ m.endAt|format_date }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if contact.commitments|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">Commitments</h5>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for c in contact.commitments %}
+                                    <div class="mb-2">
+                                        <strong>{{ c.label }}</strong>
+                                        {% if c.startAt %}<div class="text-muted">{{ c.startAt|format_date }}</div>{% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if contact.payments|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">Payments</h5>
+                                <div class="text-muted">Overview of known payments.</div>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for p in contact.payments %}
+                                    <div class="mb-3">
+                                        <div>
+                                            <strong>{{ p.type.value }}</strong> — {{ (p.netAmount / 100) | number_format(2, '.', ' ') }} {{ p.currency }}
+                                        </div>
+                                        <div class="text-muted">
+                                            {% if p.capturedAt %}Captured {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}Failed {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}Refunded {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}Canceled {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}Pending{% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
 
                 </div>
             </div>

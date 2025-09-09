@@ -20,9 +20,7 @@ use App\Entity\Upload;
 use App\Mailer\OrganizationMailer;
 use App\Repository\Community\ContactRepository;
 use App\Search\Consumer\UpdateCrmDocumentsMessage;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -205,15 +203,15 @@ class ContactApiPersister
                 $endAt = null;
                 try {
                     if (!empty($m['startAt'])) {
-                        $startAt = new DateTimeImmutable((string) $m['startAt']);
+                        $startAt = new \DateTimeImmutable((string) $m['startAt']);
                     }
-                } catch (Exception) {
+                } catch (\Exception) {
                 }
                 try {
                     if (!empty($m['endAt'])) {
-                        $endAt = new DateTimeImmutable((string) $m['endAt']);
+                        $endAt = new \DateTimeImmutable((string) $m['endAt']);
                     }
-                } catch (Exception) {
+                } catch (\Exception) {
                 }
 
                 if (!$startAt || !$endAt) {
@@ -254,9 +252,9 @@ class ContactApiPersister
                 $startAt = null;
                 try {
                     if (!empty($c['startAt'])) {
-                        $startAt = new DateTimeImmutable((string) $c['startAt']);
+                        $startAt = new \DateTimeImmutable((string) $c['startAt']);
                     }
-                } catch (Exception) {
+                } catch (\Exception) {
                 }
                 $commitment->setLabel($label);
                 $commitment->setStartAt($startAt);
