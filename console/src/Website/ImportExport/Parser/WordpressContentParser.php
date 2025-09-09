@@ -14,10 +14,9 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class WordpressContentParser implements ExternalContentParserInterface
 {

@@ -47,4 +47,24 @@ class ContactCommitment
     {
         return $this->contact;
     }
+
+    public function setLabel(string $label): void
+    {
+        $this->label = $label;
+    }
+
+    public function setStartAt(?\DateTimeImmutable $startAt): void
+    {
+        $this->startAt = $startAt;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    public function getStartAt(): ?\DateTimeImmutable
+    {
+        return $this->startAt;
+    }
 }

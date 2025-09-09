@@ -146,6 +146,13 @@ class ContactApiPersister
         // Apply update
         $contact->applyApiUpdate($data, 'api');
 
+        // Set recruitedBy after base update (if provided email)
+        if ($data->recruitedBy) {
+            if ($recruiter = $this->repository->findOneByAnyEmail($contact->getOrganization(), $data->recruitedBy)) {
+                $contact->setRecruitedBy($recruiter);
+            }
+        }
+
         // Locate the contact if possible
         $contact->setArea($this->locator->findContactArea($contact));
 
@@ -159,20 +166,100 @@ class ContactApiPersister
         $this->em->persist($contact);
         $this->em->flush();
 
-        if (!$data->metadataTags && !$data->metadataTagsOverride) {
-            return;
+        if ($data->metadataTags || $data->metadataTagsOverride) {
+            // Resolve new tags list
+            $previousTags = $contact->getMetadataTagsNames();
+            if ($data->metadataTagsOverride) {
+                $previousTags = $data->metadataTagsOverride;
+            }
+
+            $resolvedNewTags = array_unique(array_merge($previousTags, $data->metadataTags ?: []));
+
+            // Replace current tags with new ones
+            $this->em->getRepository(Tag::class)->replaceContactTags($contact, $resolvedNewTags);
+            $this->em->refresh($contact);
         }
 
-        // Resolve new tags list
-        $previousTags = $contact->getMetadataTagsNames();
-        if ($data->metadataTagsOverride) {
-            $previousTags = $data->metadataTagsOverride;
+        // Mandates override if provided (null means ignore)
+        if (null !== $data->mandates) {
+            // Remove existing
+            foreach ($contact->getMandates() as $mandate) {
+                $this->em->remove($mandate);
+            }
+            // Also clear owning side collection in memory
+            $contact->getMandates()->clear();
+
+            // Recreate from payload
+            foreach ((array) $data->mandates as $m) {
+                $label = (string) ($m['label'] ?? '');
+                if (!$label) {
+                    continue;
+                }
+
+                $startAt = null;
+                $endAt = null;
+                try {
+                    if (!empty($m['startAt'])) {
+                        $startAt = new \DateTimeImmutable((string) $m['startAt']);
+                    }
+                } catch (\Exception) {
+                }
+                try {
+                    if (!empty($m['endAt'])) {
+                        $endAt = new \DateTimeImmutable((string) $m['endAt']);
+                    }
+                } catch (\Exception) {
+                }
+
+                if (!$startAt || !$endAt) {
+                    // Skip invalid date ranges
+                    continue;
+                }
+
+                $mandate = new \App\Entity\Community\ContactMandate(
+                    $contact,
+                    \App\Entity\Community\Enum\ContactMandateType::Internal,
+                    $label,
+                    $startAt,
+                    $endAt,
+                );
+                $this->em->persist($mandate);
+                $contact->getMandates()->add($mandate);
+            }
+
+            $this->em->flush();
         }
 
-        $resolvedNewTags = array_unique(array_merge($previousTags, $data->metadataTags ?: []));
+        // Commitments override if provided (null means ignore)
+        if (null !== $data->commitments) {
+            // Remove existing
+            foreach ($contact->getCommitments() as $commitment) {
+                $this->em->remove($commitment);
+            }
+            $contact->getCommitments()->clear();
 
-        // Replace current tags with new ones
-        $this->em->getRepository(Tag::class)->replaceContactTags($contact, $resolvedNewTags);
-        $this->em->refresh($contact);
+            // Recreate from payload
+            foreach ((array) $data->commitments as $c) {
+                $label = (string) ($c['label'] ?? '');
+                if (!$label) {
+                    continue;
+                }
+
+                $commitment = new \App\Entity\Community\ContactCommitment($contact);
+                $startAt = null;
+                try {
+                    if (!empty($c['startAt'])) {
+                        $startAt = new \DateTimeImmutable((string) $c['startAt']);
+                    }
+                } catch (\Exception) {
+                }
+                $commitment->setLabel($label);
+                $commitment->setStartAt($startAt);
+                $this->em->persist($commitment);
+                $contact->getCommitments()->add($commitment);
+            }
+
+            $this->em->flush();
+        }
     }
 }

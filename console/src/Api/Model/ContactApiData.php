@@ -91,6 +91,18 @@ class ContactApiData
     public $socialWhatsapp;
 
     #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(max: 150)]
+    public $socialInstagram;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(max: 150)]
+    public $socialTikTok;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(max: 150)]
+    public $socialBluesky;
+
+    #[Assert\Type(['string', 'null'])]
     #[Assert\Length(max: 20)]
     public $addressStreetNumber;
 
@@ -113,6 +125,26 @@ class ContactApiData
     #[Assert\Type(['string', 'null'])]
     #[Assert\Length(max: 50)]
     public $addressCountry;
+
+    #[Assert\Type(['bool', 'null'])]
+    public $isDeceased;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Email(mode: 'strict')]
+    #[Assert\Length(max: 250)]
+    public $recruitedBy;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(max: 150)]
+    public $birthName;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(max: 150)]
+    public $birthCity;
+
+    #[Assert\Type(['string', 'null'])]
+    #[Assert\Length(min: 2, max: 2)]
+    public $birthCountryCode;
 
     #[Assert\Type(['bool', 'null'])]
     public $settingsReceiveNewsletters;
@@ -156,6 +188,35 @@ class ContactApiData
 
     #[Assert\Type(['string', 'null'])]
     public $metadataComment;
+
+    #[Assert\Type(['array', 'null'])]
+    #[Assert\All(
+        [
+            new Assert\Collection(
+                fields: [
+                    'label' => new Assert\NotBlank(),
+                    'startAt' => new Assert\Optional([new Assert\Type('string')]),
+                    'endAt' => new Assert\Optional([new Assert\Type('string')]),
+                ],
+                allowMissingFields: true,
+            ),
+        ]
+    )]
+    public $mandates;
+
+    #[Assert\Type(['array', 'null'])]
+    #[Assert\All(
+        [
+            new Assert\Collection(
+                fields: [
+                    'label' => new Assert\NotBlank(),
+                    'startAt' => new Assert\Optional([new Assert\Type('string')]),
+                ],
+                allowMissingFields: true,
+            ),
+        ]
+    )]
+    public $commitments;
 
     public static function createFromPayload(array $data): self
     {
