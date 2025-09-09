@@ -1110,6 +1110,21 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         return $this->socialLinkedIn;
     }
 
+    public function getSocialInstagram(): ?string
+    {
+        return $this->socialInstagram;
+    }
+
+    public function getSocialTikTok(): ?string
+    {
+        return $this->socialTikTok;
+    }
+
+    public function getSocialBluesky(): ?string
+    {
+        return $this->socialBluesky;
+    }
+
     public function getSocialTelegram(): ?string
     {
         return $this->socialTelegram;
@@ -1118,6 +1133,31 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public function getSocialWhatsapp(): ?string
     {
         return $this->socialWhatsapp;
+    }
+
+    public function isDeceased(): ?bool
+    {
+        return $this->isDeceased;
+    }
+
+    public function getRecruitedBy(): ?self
+    {
+        return $this->recruitedBy;
+    }
+
+    public function getBirthName(): ?string
+    {
+        return $this->birthName;
+    }
+
+    public function getBirthCity(): ?string
+    {
+        return $this->birthCity;
+    }
+
+    public function getBirthCountryCode(): ?string
+    {
+        return $this->birthCountryCode;
     }
 
     public function getAddressStreetNumber(): ?string

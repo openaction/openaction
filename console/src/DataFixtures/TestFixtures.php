@@ -14,6 +14,7 @@ use App\Entity\Billing\Order;
 use App\Entity\Billing\Quote;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContactCommitment;
 use App\Entity\Community\ContactMandate;
 use App\Entity\Community\ContactPayment;
 use App\Entity\Community\ContentImport;
@@ -200,6 +201,7 @@ class TestFixtures extends AbstractFixtures
         $this->loadContacts();
         $this->loadContactPayments();
         $this->loadContactMandates();
+        $this->loadContactCommitments();
         $this->loadContactsAmbiguous();
         $this->loadImports();
         $this->loadContentImportWordPress();
@@ -282,6 +284,30 @@ class TestFixtures extends AbstractFixtures
 
         foreach ($items as $data) {
             $this->em->persist(ContactMandate::createFixture($data));
+        }
+
+        $this->em->flush();
+    }
+
+    private function loadContactCommitments(): void
+    {
+        $items = [
+            [
+                'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
+                'label' => 'Volunteer - Local chapter',
+                'startAt' => new \DateTimeImmutable('-3 months'),
+                'metadata' => ['hours_per_week' => 4],
+            ],
+            [
+                'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
+                'label' => 'Fundraising committee',
+                'startAt' => new \DateTimeImmutable('-1 month'),
+                'metadata' => ['role' => 'coordinator'],
+            ],
+        ];
+
+        foreach ($items as $data) {
+            $this->em->persist(ContactCommitment::createFixture($data));
         }
 
         $this->em->flush();
