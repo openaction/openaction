@@ -7,10 +7,11 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20250909082725 extends AbstractMigration
+final class Version20250909084406 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
+        // New tables
         $this->addSql('CREATE TABLE community_contacts_payments (
             id BIGSERIAL NOT NULL,
             contact_id BIGINT NOT NULL,
@@ -67,6 +68,18 @@ final class Version20250909082725 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX community_contacts_mandates_contact_idx ON community_contacts_mandates (contact_id)');
         $this->addSql('ALTER TABLE community_contacts_mandates ADD CONSTRAINT FK_CCM_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+
+        // Alter contacts table
+        $this->addSql('ALTER TABLE community_contacts ADD is_deceased BOOLEAN DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD recruited_by_id BIGINT DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD social_instagram VARCHAR(150) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD social_tik_tok VARCHAR(150) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD social_bluesky VARCHAR(150) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD birth_name VARCHAR(150) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD birth_city VARCHAR(150) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD birth_country_code VARCHAR(2) DEFAULT NULL');
+        $this->addSql('ALTER TABLE community_contacts ADD CONSTRAINT FK_CC_RECRUITED_BY FOREIGN KEY (recruited_by_id) REFERENCES community_contacts (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX community_contacts_recruited_by_idx ON community_contacts (recruited_by_id)');
     }
 
     // No down migration

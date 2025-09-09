@@ -22,10 +22,9 @@ use libphonenumber\PhoneNumber as PhoneNumberModel;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
@@ -145,6 +144,15 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     private ?string $socialLinkedIn = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialInstagram = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialTikTok = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $socialBluesky = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
     private ?string $socialTelegram = null;
 
     #[ORM\Column(length: 150, nullable: true)]
@@ -200,6 +208,22 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $metadataComment = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $isDeceased = null;
+
+    #[ORM\ManyToOne(targetEntity: Contact::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Contact $recruitedBy = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $birthName = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $birthCity = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $birthCountryCode = null;
 
     #[ORM\OneToMany(targetEntity: EmailingCampaignMessage::class, mappedBy: 'contact', cascade: ['remove'])]
     private Collection $messages;
@@ -273,8 +297,16 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         $self->socialFacebook = $data['socialFacebook'] ?? null;
         $self->socialTwitter = $data['socialTwitter'] ?? null;
         $self->socialLinkedIn = $data['socialLinkedIn'] ?? null;
+        $self->socialInstagram = $data['socialInstagram'] ?? null;
+        $self->socialTikTok = $data['socialTikTok'] ?? null;
+        $self->socialBluesky = $data['socialBluesky'] ?? null;
         $self->socialTelegram = $data['socialTelegram'] ?? null;
         $self->socialWhatsapp = $data['socialWhatsapp'] ?? null;
+        $self->isDeceased = $data['isDeceased'] ?? null;
+        $self->recruitedBy = $data['recruitedBy'] ?? null;
+        $self->birthName = $data['birthName'] ?? null;
+        $self->birthCity = $data['birthCity'] ?? null;
+        $self->birthCountryCode = $data['birthCountryCode'] ?? null;
         $self->addressStreetNumber = $data['addressStreetNumber'] ?? null;
         $self->addressStreetLine1 = $data['addressStreetLine1'] ?? null;
         $self->addressStreetLine2 = $data['addressStreetLine2'] ?? null;

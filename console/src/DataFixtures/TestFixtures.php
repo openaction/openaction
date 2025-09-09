@@ -14,11 +14,17 @@ use App\Entity\Billing\Order;
 use App\Entity\Billing\Quote;
 use App\Entity\Community\Ambiguity;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContactMandate;
+use App\Entity\Community\ContactPayment;
 use App\Entity\Community\ContentImport;
 use App\Entity\Community\EmailAutomation;
 use App\Entity\Community\EmailAutomationMessage;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Community\EmailingCampaignMessage;
+use App\Entity\Community\Enum\ContactMandateType;
+use App\Entity\Community\Enum\ContactPaymentMethod;
+use App\Entity\Community\Enum\ContactPaymentProvider;
+use App\Entity\Community\Enum\ContactPaymentType;
 use App\Entity\Community\Import;
 use App\Entity\Community\Model\ContentImportSettings;
 use App\Entity\Community\Model\ImportHead;
@@ -219,12 +225,12 @@ class TestFixtures extends AbstractFixtures
         $items = [
             [
                 'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
-                'type' => \App\Entity\Community\Enum\ContactPaymentType::Donation,
+                'type' => ContactPaymentType::Donation,
                 'netAmount' => 5000,
                 'feesAmount' => 150,
                 'currency' => 'EUR',
-                'paymentProvider' => \App\Entity\Community\Enum\ContactPaymentProvider::Mollie,
-                'paymentMethod' => \App\Entity\Community\Enum\ContactPaymentMethod::Card,
+                'paymentProvider' => ContactPaymentProvider::Mollie,
+                'paymentMethod' => ContactPaymentMethod::Card,
                 'capturedAt' => new \DateTime('-10 days'),
                 'email' => 'john@lennon.com',
                 'firstName' => 'John',
@@ -232,12 +238,12 @@ class TestFixtures extends AbstractFixtures
             ],
             [
                 'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
-                'type' => \App\Entity\Community\Enum\ContactPaymentType::Membership,
+                'type' => ContactPaymentType::Membership,
                 'netAmount' => 3000,
                 'feesAmount' => 0,
                 'currency' => 'EUR',
-                'paymentProvider' => \App\Entity\Community\Enum\ContactPaymentProvider::Manual,
-                'paymentMethod' => \App\Entity\Community\Enum\ContactPaymentMethod::Wire,
+                'paymentProvider' => ContactPaymentProvider::Manual,
+                'paymentMethod' => ContactPaymentMethod::Wire,
                 'capturedAt' => new \DateTime('-5 days'),
                 'membershipStartAt' => new \DateTime('-1 year'),
                 'membershipEndAt' => new \DateTime('+1 year'),
@@ -249,7 +255,7 @@ class TestFixtures extends AbstractFixtures
         ];
 
         foreach ($items as $data) {
-            $this->em->persist(\App\Entity\Community\ContactPayment::createFixture($data));
+            $this->em->persist(ContactPayment::createFixture($data));
         }
 
         $this->em->flush();
@@ -260,14 +266,14 @@ class TestFixtures extends AbstractFixtures
         $items = [
             [
                 'contact' => $this->contacts['25c17b7c-d672-41dc-81f1-7f6d26c20503'],
-                'type' => \App\Entity\Community\Enum\ContactMandateType::Internal,
+                'type' => ContactMandateType::Internal,
                 'label' => 'Board Member',
                 'startAt' => new \DateTime('-6 months'),
                 'endAt' => new \DateTime('+6 months'),
             ],
             [
                 'contact' => $this->contacts['da362047-7abd-40c9-8537-3d3506cb5cdb'],
-                'type' => \App\Entity\Community\Enum\ContactMandateType::ElectedOfficial,
+                'type' => ContactMandateType::ElectedOfficial,
                 'label' => 'City Councillor',
                 'startAt' => new \DateTime('-2 years'),
                 'endAt' => new \DateTime('+3 years'),
@@ -275,7 +281,7 @@ class TestFixtures extends AbstractFixtures
         ];
 
         foreach ($items as $data) {
-            $this->em->persist(\App\Entity\Community\ContactMandate::createFixture($data));
+            $this->em->persist(ContactMandate::createFixture($data));
         }
 
         $this->em->flush();
