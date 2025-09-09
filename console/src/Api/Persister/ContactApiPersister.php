@@ -3,6 +3,9 @@
 namespace App\Api\Persister;
 
 use App\Api\Model\ContactApiData;
+use App\Entity\Community\ContactCommitment;
+use App\Entity\Community\ContactMandate;
+use App\Entity\Community\Enum\ContactMandateType;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Bridge\Spallian\SpallianInterface;
@@ -17,6 +20,8 @@ use App\Entity\Upload;
 use App\Mailer\OrganizationMailer;
 use App\Repository\Community\ContactRepository;
 use App\Search\Consumer\UpdateCrmDocumentsMessage;
+use DateTimeImmutable;
+use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -200,15 +205,15 @@ class ContactApiPersister
                 $endAt = null;
                 try {
                     if (!empty($m['startAt'])) {
-                        $startAt = new \DateTimeImmutable((string) $m['startAt']);
+                        $startAt = new DateTimeImmutable((string) $m['startAt']);
                     }
-                } catch (\Exception) {
+                } catch (Exception) {
                 }
                 try {
                     if (!empty($m['endAt'])) {
-                        $endAt = new \DateTimeImmutable((string) $m['endAt']);
+                        $endAt = new DateTimeImmutable((string) $m['endAt']);
                     }
-                } catch (\Exception) {
+                } catch (Exception) {
                 }
 
                 if (!$startAt || !$endAt) {
@@ -216,9 +221,9 @@ class ContactApiPersister
                     continue;
                 }
 
-                $mandate = new \App\Entity\Community\ContactMandate(
+                $mandate = new ContactMandate(
                     $contact,
-                    \App\Entity\Community\Enum\ContactMandateType::Internal,
+                    ContactMandateType::Internal,
                     $label,
                     $startAt,
                     $endAt,
@@ -245,13 +250,13 @@ class ContactApiPersister
                     continue;
                 }
 
-                $commitment = new \App\Entity\Community\ContactCommitment($contact);
+                $commitment = new ContactCommitment($contact);
                 $startAt = null;
                 try {
                     if (!empty($c['startAt'])) {
-                        $startAt = new \DateTimeImmutable((string) $c['startAt']);
+                        $startAt = new DateTimeImmutable((string) $c['startAt']);
                     }
-                } catch (\Exception) {
+                } catch (Exception) {
                 }
                 $commitment->setLabel($label);
                 $commitment->setStartAt($startAt);
