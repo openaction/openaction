@@ -6,9 +6,10 @@ use App\Bridge\Postmark\Model\Mail;
 use App\Bridge\Postmark\Model\Personalization;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Entity\Community\EmailingCampaign;
-use Twig\Environment;
 
 use function Symfony\Component\String\u;
+
+use Twig\Environment;
 
 class PostmarkMailFactory
 {

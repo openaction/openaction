@@ -10,9 +10,10 @@ use App\Repository\Website\DocumentRepository;
 use App\Util\Uid;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
+
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\Table('website_documents')]

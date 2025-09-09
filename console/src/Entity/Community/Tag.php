@@ -10,9 +10,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\Validator\Constraints as Assert;
 
 use function Symfony\Component\String\u;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table('community_tags', uniqueConstraints: [

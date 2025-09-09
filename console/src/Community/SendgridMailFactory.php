@@ -11,9 +11,10 @@ use SendGrid\Mail\Header;
 use SendGrid\Mail\Mail;
 use SendGrid\Mail\To;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 use function Symfony\Component\String\u;
+
+use Twig\Environment;
 
 class SendgridMailFactory
 {
