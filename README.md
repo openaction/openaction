@@ -45,10 +45,10 @@ OpenAction uses Docker both in development and production.
 To setup the development environment, you need [Docker](https://docs.docker.com/get-docker/) 
 and [Yarn](https://classic.yarnpkg.com/en/docs/install).
 
-### 1. Copy the docker-compose.override.yaml.dist file (optional)
+### 1. Copy the docker compose.override.yaml.dist file (optional)
 
 If you want to access Console and Public using your host native network,
-you can copy the docker-compose.override.yaml.dist file which associate
+you can copy the docker compose.override.yaml.dist file which associate
 various ports to your hosts machine, helping you get started quickly.
 
 You can also use a local reverse proxy if you wish.
@@ -59,7 +59,7 @@ You can also use a local reverse proxy if you wish.
 cd path/to/openaction
 
 # Start Docker services
-docker-compose up -d
+docker compose up -d
 
 # Build assets (Yarn is outside of the containers to ease usage, you should use node 14)
 cd console
@@ -75,8 +75,8 @@ yarn install
 yarn build
 
 # Install PHP dependencies
-docker-compose exec console composer install
-docker-compose exec public composer install
+docker compose exec console composer install
+docker compose exec public composer install
 
 # Update /etc/hosts to add console as localhost
 127.0.0.1 console
@@ -91,20 +91,20 @@ The project uses several services:
 ### 3. Prepare the local database
 
 ```
-docker-compose exec console bin/console d:d:d --force
-docker-compose exec console bin/console d:d:c
-docker-compose exec console bin/console d:m:m -n
-docker-compose exec console bin/console d:f:l --group test
+docker compose exec console bin/console d:d:d --force
+docker compose exec console bin/console d:d:c
+docker compose exec console bin/console d:m:m -n
+docker compose exec console bin/console d:f:l --group test
 
 # Populate the search engine index
-docker-compose exec console bin/console app:search:index-crm
+docker compose exec console bin/console app:search:index-crm
 
 # Load the domains cache in Redis for public to work
-docker-compose exec console bin/console app:proxy:refresh-domains-cache -n
+docker compose exec console bin/console app:proxy:refresh-domains-cache -n
 ```
 
 Once done, you can access the Console on the container console
-(for example, http://localhost if you use the default docker-compose.override.yaml file).
+(for example, http://localhost if you use the default docker compose.override.yaml file).
 
 You can also access the default public website on the container public (http://localhost:9000).
 
@@ -120,7 +120,7 @@ password
 You can configure aliases to ease development using this setup (in your `.bashrc` file):
 
 ```
-alias dc='docker-compose'
+alias dc='docker compose'
 alias dconsole='dc exec console'
 alias dstandard='dc exec standard'
 ```

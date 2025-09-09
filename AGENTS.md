@@ -3,11 +3,11 @@
 ## Project Structure & Module Organization
 - `console/`: Symfony back‑office and API. Code in `src/`, templates in `templates/`, DB migrations in `migrations/`, assets in `assets/{modern,legacy,projects}`, tests in `tests/`.
 - `public/`: Symfony frontend renderer for public websites. Code in `src/`, templates in `templates/`, assets in `assets/`, tests in `tests/`.
-- `docs/`, `docker-compose.yaml`, `bin/`, and `.github/` contain documentation, local stack, binaries, and CI/config.
+- `docs/`, `docker compose.yaml`, `bin/`, and `.github/` contain documentation, local stack, binaries, and CI/config.
 
 ## Build, Test, and Development Commands
-- Start services: `docker-compose up -d`.
-- Install PHP deps: `docker-compose exec console composer install` and `docker-compose exec public composer install`.
+- Start services: `docker compose up -d`.
+- Install PHP deps: `docker compose exec console composer install` and `docker compose exec public composer install`.
 - Build assets:
   - Console (per package):
     - `cd console/assets/modern && yarn install && yarn build`
@@ -15,8 +15,8 @@
     - `cd console/assets/projects && yarn install && yarn build`
   - Public: `cd public && yarn install && yarn build`.
 - Run tests:
-  - Console: `docker-compose exec console bin/phpunit`
-  - Public: `docker-compose exec public bin/phpunit`
+  - Console: `docker compose exec console bin/phpunit`
+  - Public: `docker compose exec public bin/phpunit`
 
 ## Coding Style & Naming Conventions
 - PHP: PSR‑12, 4‑space indentation. Follow Symfony structure (`src/Controller`, `src/Command`, `src/Entity`, etc.).
@@ -33,4 +33,4 @@
 - Pull Requests: provide a clear description, linked issues, and screenshots/GIFs for UI changes. Note DB migrations and data impacts. Ensure tests pass locally and CI is green.
 
 ## Security & Configuration Tips
-- Configure via `.env` and `.env.local`; never commit secrets. Use `docker-compose.override.yaml` to expose ports as needed and map `console` in `/etc/hosts`.
+- Configure via `.env` and `.env.local`; never commit secrets. Use `docker compose.override.yaml` to expose ports as needed and map `console` in `/etc/hosts`.

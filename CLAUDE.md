@@ -8,27 +8,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Install PHP dependencies
-docker-compose exec console composer install
+docker compose exec console composer install
 
 # Database operations
-docker-compose exec console bin/console d:d:d --force  # Drop database
-docker-compose exec console bin/console d:d:c         # Create database
-docker-compose exec console bin/console d:m:m -n      # Run migrations
-docker-compose exec console bin/console d:f:l --group test  # Load fixtures
+docker compose exec console bin/console d:d:d --force  # Drop database
+docker compose exec console bin/console d:d:c         # Create database
+docker compose exec console bin/console d:m:m -n      # Run migrations
+docker compose exec console bin/console d:f:l --group test  # Load fixtures
 
 # Search engine operations
-docker-compose exec console bin/console app:search:index-crm
-docker-compose exec console bin/console app:search:index-cms
+docker compose exec console bin/console app:search:index-crm
+docker compose exec console bin/console app:search:index-cms
 
 # Domain/proxy cache
-docker-compose exec console bin/console app:proxy:refresh-domains-cache -n
+docker compose exec console bin/console app:proxy:refresh-domains-cache -n
 
 # Run tests
-docker-compose exec console bin/phpunit
-docker-compose exec console bin/phpunit --filter <TestName>
+docker compose exec console bin/phpunit
+docker compose exec console bin/phpunit --filter <TestName>
 
 # Generate new controllers/entities
-docker-compose exec console bin/console make:controller
+docker compose exec console bin/console make:controller
 ```
 
 ### Asset Building (Multiple Frontend Stacks)
@@ -63,11 +63,11 @@ yarn build
 
 ```bash
 # Start Docker services
-docker-compose up -d
+docker compose up -d
 
 # Install PHP dependencies for both applications
-docker-compose exec console composer install
-docker-compose exec public composer install
+docker compose exec console composer install
+docker compose exec public composer install
 
 # Add to /etc/hosts for local development
 127.0.0.1 console
@@ -149,6 +149,6 @@ External service integrations in `console/src/Bridge/`:
 
 - **Never modify external API** unless explicitly requested - always use internal API endpoints
 - **Multi-asset stack**: Different parts of the application use different frontend technologies
-- **Docker-based development**: All commands should be run through docker-compose
+- **Docker-based development**: All commands should be run through docker compose
 - **Multi-tenant**: Code must handle multiple organizations/projects correctly
 - **Search indexing**: Changes to entities may require reindexing CRM/CMS data
