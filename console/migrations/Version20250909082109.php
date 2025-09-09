@@ -21,15 +21,5 @@ final class Version20250909082109 extends AbstractMigration
         $this->addSql('ALTER INDEX community_contact_mandates_contact_idx RENAME TO community_contacts_mandates_contact_idx');
     }
 
-    public function down(Schema $schema): void
-    {
-        // Revert mandates table rename
-        $this->addSql('ALTER INDEX community_contacts_mandates_contact_idx RENAME TO community_contact_mandates_contact_idx');
-        $this->addSql('ALTER TABLE community_contacts_mandates RENAME TO community_contact_mandates');
-
-        // Revert payments table rename
-        $this->addSql('ALTER INDEX community_contacts_payments_contact_idx RENAME TO community_contact_payments_contact_idx');
-        $this->addSql('ALTER INDEX community_contacts_payments_type_idx RENAME TO community_contact_payments_type_idx');
-        $this->addSql('ALTER TABLE community_contacts_payments RENAME TO community_contact_payments');
-    }
+    // No down migration
 }

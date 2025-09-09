@@ -71,13 +71,5 @@ final class Version20250908144938 extends AbstractMigration
         $this->addSql('ALTER TABLE community_contact_mandates ADD CONSTRAINT FK_CCM_CONTACT FOREIGN KEY (contact_id) REFERENCES community_contacts (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
-    public function down(Schema $schema): void
-    {
-        $this->addSql('ALTER TABLE community_contact_payments DROP CONSTRAINT FK_CCP_CONTACT');
-        $this->addSql('ALTER TABLE community_contact_payments DROP CONSTRAINT FK_CCP_RECEIPT');
-        $this->addSql('DROP TABLE community_contact_payments');
-
-        $this->addSql('ALTER TABLE community_contact_mandates DROP CONSTRAINT FK_CCM_CONTACT');
-        $this->addSql('DROP TABLE community_contact_mandates');
-    }
+    // No down migration
 }
