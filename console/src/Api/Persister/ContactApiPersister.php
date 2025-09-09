@@ -3,16 +3,16 @@
 namespace App\Api\Persister;
 
 use App\Api\Model\ContactApiData;
-use App\Entity\Community\ContactCommitment;
-use App\Entity\Community\ContactMandate;
-use App\Entity\Community\Enum\ContactMandateType;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Bridge\Spallian\SpallianInterface;
 use App\Community\Automation\EmailAutomationDispatcher;
 use App\Community\ContactLocator;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContactCommitment;
+use App\Entity\Community\ContactMandate;
 use App\Entity\Community\EmailAutomation;
+use App\Entity\Community\Enum\ContactMandateType;
 use App\Entity\Community\Tag;
 use App\Entity\Organization;
 use App\Entity\Project;
@@ -21,8 +21,8 @@ use App\Mailer\OrganizationMailer;
 use App\Repository\Community\ContactRepository;
 use App\Search\Consumer\UpdateCrmDocumentsMessage;
 use DateTimeImmutable;
-use Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
