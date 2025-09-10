@@ -72,7 +72,6 @@ contacts:
             workPhone: Téléphone (professionnel)
             socials: Réseaux sociaux
             deceased: Décédé(e)
-            deceased: Décédé(e)
         history:
             label: Historique des interactions
             help: Interactions que votre organisation a eu avec ce contact.
@@ -115,20 +114,6 @@ contacts:
                 refunded: Remboursé
                 canceled: Annulé
                 pending: En attente
-        birth:
-            label: Informations de naissance
-            name: Nom
-            city: Ville
-            country: Pays
-        recruited_by: Recruté(e) par
-        mandates:
-            label: Mandats
-        commitments:
-            label: Engagements
-        payments:
-            label: Paiements
-            help: Aperçu des paiements connus.
-
     create:
         page_title: Créer un nouveau contact
         title: Créer un nouveau contact
