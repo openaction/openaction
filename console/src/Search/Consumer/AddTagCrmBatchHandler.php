@@ -5,7 +5,9 @@ namespace App\Search\Consumer;
 use App\Repository\Community\TagRepository;
 use App\Search\CrmIndexer;
 use App\Search\Model\BatchRequest;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final class AddTagCrmBatchHandler extends AbstractCrmBatchHandler
 {
     public function __construct(
