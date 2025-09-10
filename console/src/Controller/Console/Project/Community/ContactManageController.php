@@ -128,7 +128,13 @@ class ContactManageController extends AbstractController
                             continue;
                         }
                     }
-                    $mandate = new ContactMandate($contact, $type, $label, $startAt, $endAt);
+                    try {
+                        $start = new \DateTimeImmutable((string) $startAt);
+                        $end = new \DateTimeImmutable((string) $endAt);
+                    } catch (\Exception) {
+                        continue;
+                    }
+                    $mandate = new ContactMandate($contact, $type, $label, $start, $end);
                     $this->em->persist($mandate);
                     $contact->getMandates()->add($mandate);
                 }
@@ -148,7 +154,15 @@ class ContactManageController extends AbstractController
                     }
                     $commitment = new ContactCommitment($contact);
                     $commitment->setLabel($label);
-                    $commitment->setStartAt($c['startAt'] ?? null);
+                    $start = null;
+                    if (!empty($c['startAt'])) {
+                        try {
+                            $start = new \DateTimeImmutable((string) $c['startAt']);
+                        } catch (\Exception) {
+                            $start = null;
+                        }
+                    }
+                    $commitment->setStartAt($start);
                     $this->em->persist($commitment);
                     $contact->getCommitments()->add($commitment);
                 }

@@ -17,7 +17,8 @@ class ContactCommitmentType extends AbstractType
             ->add('startAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'input' => 'datetime_immutable',
+                'input' => 'string',
+                'format' => 'yyyy-MM-dd',
             ])
         ;
     }

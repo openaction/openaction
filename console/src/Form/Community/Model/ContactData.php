@@ -195,8 +195,8 @@ class ContactData
             $self->mandates[] = [
                 'type' => $m->getType() ?? null,
                 'label' => $m->getLabel(),
-                'startAt' => $m->getStartAt()?->format('Y-m-d\TH:i:sP') ?? $m->getStartAt()?->format('Y-m-d') ?? null,
-                'endAt' => $m->getEndAt()?->format('Y-m-d\TH:i:sP') ?? $m->getEndAt()?->format('Y-m-d') ?? null,
+                'startAt' => $m->getStartAt()?->format('Y-m-d'),
+                'endAt' => $m->getEndAt()?->format('Y-m-d'),
             ];
         }
 

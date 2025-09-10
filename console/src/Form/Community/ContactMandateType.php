@@ -25,12 +25,14 @@ class ContactMandateType extends AbstractType
             ->add('startAt', DateType::class, [
                 'required' => true,
                 'widget' => 'single_text',
-                'input' => 'datetime_immutable',
+                'input' => 'string',
+                'format' => 'yyyy-MM-dd',
             ])
             ->add('endAt', DateType::class, [
                 'required' => true,
                 'widget' => 'single_text',
-                'input' => 'datetime_immutable',
+                'input' => 'string',
+                'format' => 'yyyy-MM-dd',
             ])
         ;
     }
