@@ -4,9 +4,11 @@ namespace App\Form\Community;
 
 use App\Entity\Area;
 use App\Entity\Community\Contact;
+use App\Entity\Community\Contact as ContactEntity;
 use App\Form\Community\Model\ContactData;
 use App\Form\CountryType;
 use App\Repository\AreaRepository;
+use App\Repository\Community\ContactRepository as CommunityContactRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -47,17 +49,54 @@ class ContactType extends AbstractType
             ->add('profileNationality', CountryType::class, ['required' => false])
             ->add('profileCompany', TextType::class, ['required' => false])
             ->add('profileJobTitle', TextType::class, ['required' => false])
+            ->add('isDeceased', CheckboxType::class, ['required' => false])
+            ->add('birthName', TextType::class, ['required' => false])
+            ->add('birthCity', TextType::class, ['required' => false])
+            ->add('birthCountryCode', CountryType::class, ['required' => false])
+            ->add('recruitedBy', EntityType::class, [
+                'class' => ContactEntity::class,
+                'required' => false,
+                'choice_label' => fn (ContactEntity $c) => (string) $c,
+                'query_builder' => static function (CommunityContactRepository $repo) use ($builder) {
+                    /** @var ContactData $data */
+                    $data = $builder->getData();
+
+                    return $repo->createQueryBuilder('c')
+                        ->andWhere('c.organization = :orga')
+                        ->setParameter('orga', $data->inOrganization)
+                        ->orderBy('c.profileLastName', 'ASC');
+                },
+            ])
             ->add('contactPhone', TextType::class, ['required' => false])
             ->add('contactWorkPhone', TextType::class, ['required' => false])
             ->add('socialFacebook', TextType::class, ['required' => false])
             ->add('socialTwitter', TextType::class, ['required' => false])
             ->add('socialLinkedIn', TextType::class, ['required' => false])
+            ->add('socialInstagram', TextType::class, ['required' => false])
+            ->add('socialTikTok', TextType::class, ['required' => false])
+            ->add('socialBluesky', TextType::class, ['required' => false])
             ->add('socialTelegram', TextType::class, ['required' => false])
             ->add('socialWhatsapp', TextType::class, ['required' => false])
             ->add('addressStreetLine1', TextType::class, ['required' => false])
             ->add('addressStreetLine2', TextType::class, ['required' => false])
             ->add('addressCity', TextType::class, ['required' => false])
             ->add('metadataComment', TextareaType::class, ['required' => false, 'attr' => ['rows' => 5]])
+
+            // Collections
+            ->add('mandates', CollectionType::class, [
+                'required' => false,
+                'entry_type' => ContactMandateType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('commitments', CollectionType::class, [
+                'required' => false,
+                'entry_type' => ContactCommitmentType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
 
         if ($options['allow_edit_tags']) {

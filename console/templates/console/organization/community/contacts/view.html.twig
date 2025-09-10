@@ -310,6 +310,9 @@
                         {% if contact.socialFacebook
                             or contact.socialTwitter
                             or contact.socialLinkedIn
+                            or contact.socialInstagram
+                            or contact.socialTikTok
+                            or contact.socialBluesky
                             or contact.socialTelegram
                             or contact.socialWhatsapp %}
                             <div class="mb-2">
@@ -323,6 +326,9 @@
                                     'Facebook': { 'icon': 'fab fa-facebook', 'url': contact.socialFacebook },
                                     'Twitter': { 'icon': 'fab fa-twitter', 'url': contact.socialTwitter },
                                     'LinkedIn': { 'icon': 'fab fa-linkedin', 'url': contact.socialLinkedIn },
+                                    'Instagram': { 'icon': 'fab fa-instagram', 'url': contact.socialInstagram },
+                                    'TikTok': { 'icon': 'fab fa-tiktok', 'url': contact.socialTikTok },
+                                    'Bluesky': { 'icon': 'far fa-square', 'url': contact.socialBluesky },
                                     'Telegram': { 'icon': 'fab fa-telegram-plane', 'url': contact.socialTelegram ? ('https://t.me/' ~ contact.socialTelegram) : null },
                                     'Whatsapp': { 'icon': 'fab fa-whatsapp', 'url': contact.socialWhatsapp ? 'https://wa.me/' ~ contact.socialWhatsapp : null },
                                 } %}
@@ -337,6 +343,32 @@
                                         </a>
                                     {% endif %}
                                 {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.isDeceased %}
+                            <div class="mb-2">
+                                <span class="badge badge-danger">{{ 'contacts.view.profile.deceased'|trans({}, 'organization_community') }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.birthName or contact.birthCity or contact.birthCountryCode %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">{{ 'contacts.view.birth.label'|trans({}, 'organization_community') }}</small>
+                                </div>
+                                {% if contact.birthName %}{{ 'contacts.view.birth.name'|trans({}, 'organization_community') }}: {{ contact.birthName }}<br/>{% endif %}
+                                {% if contact.birthCity %}{{ 'contacts.view.birth.city'|trans({}, 'organization_community') }}: {{ contact.birthCity }}<br/>{% endif %}
+                                {% if contact.birthCountryCode %}{{ 'contacts.view.birth.country'|trans({}, 'organization_community') }}: {{ contact.birthCountryCode|country_name }}{% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact.recruitedBy %}
+                            <div class="mb-2">
+                                <div>
+                                    <small class="text-muted">{{ 'contacts.view.recruited_by'|trans({}, 'organization_community') }}</small>
+                                </div>
+                                {{ contact.recruitedBy }}
                             </div>
                         {% endif %}
                     </div>
@@ -383,6 +415,59 @@
 
                             <div class="border-top border-muted p-3">
                                 <pre class="mb-0">{{ contact.metadataCustomFields|json_encode(128) }}</pre>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if contact.mandates|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">{{ 'contacts.view.mandates.label'|trans({}, 'organization_community') }}</h5>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for m in contact.mandates %}
+                                    <div class="mb-2">
+                                        <strong>{{ m.label }}</strong>
+                                        <div class="text-muted">{{ m.type.value }} — {{ m.startAt|format_date }} → {{ m.endAt|format_date }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if contact.commitments|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">{{ 'contacts.view.commitments.label'|trans({}, 'organization_community') }}</h5>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for c in contact.commitments %}
+                                    <div class="mb-2">
+                                        <strong>{{ c.label }}</strong>
+                                        {% if c.startAt %}<div class="text-muted">{{ c.startAt|format_date }}</div>{% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if contact.payments|length > 0 %}
+                        <div class="world-block mb-5">
+                            <div class="p-3">
+                                <h5 class="mb-2">{{ 'contacts.view.payments.label'|trans({}, 'organization_community') }}</h5>
+                                <div class="text-muted">{{ 'contacts.view.payments.help'|trans({}, 'organization_community') }}</div>
+                            </div>
+                            <div class="border-top border-muted p-3">
+                                {% for p in contact.payments %}
+                                    <div class="mb-3">
+                                        <div>
+                                            <strong>{{ p.type.value }}</strong> — {{ (p.netAmount / 100) | number_format(2, '.', ' ') }} {{ p.currency }}
+                                        </div>
+                                        <div class="text-muted">
+                                            {% if p.capturedAt %}{{ 'contacts.view.payments.status.captured'|trans({}, 'organization_community') }} {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}{{ 'contacts.view.payments.status.failed'|trans({}, 'organization_community') }} {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}{{ 'contacts.view.payments.status.refunded'|trans({}, 'organization_community') }} {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}{{ 'contacts.view.payments.status.canceled'|trans({}, 'organization_community') }} {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}{{ 'contacts.view.payments.status.pending'|trans({}, 'organization_community') }}{% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     {% endif %}

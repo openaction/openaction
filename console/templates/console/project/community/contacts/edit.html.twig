@@ -148,6 +148,27 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.isDeceased, {'label': 'form.profile.deceased'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.birthName, {'label': 'form.profile.birthName'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.birthCity, {'label': 'form.profile.birthCity'|trans({}, 'project_contacts')}) }}
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                {{ form_row(form.birthCountryCode, {'label': 'form.profile.birthCountry'|trans({}, 'project_contacts')}) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                {{ form_row(form.recruitedBy, {'label': 'form.profile.recruitedBy'|trans({}, 'project_contacts')}) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-12 col-lg-6">
                                 {{ form_row(form.profileCompany, {'label': 'form.profile.company'|trans({}, 'project_contacts')}) }}
                             </div>
@@ -224,8 +245,81 @@
                         {{ form_row(form.socialFacebook, {'label': 'form.socials.facebook'|trans({}, 'project_contacts')}) }}
                         {{ form_row(form.socialTwitter, {'label': 'form.socials.twitter'|trans({}, 'project_contacts')}) }}
                         {{ form_row(form.socialLinkedIn, {'label': 'form.socials.linkedIn'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialInstagram, {'label': 'form.socials.instagram'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialTikTok, {'label': 'form.socials.tikTok'|trans({}, 'project_contacts')}) }}
+                        {{ form_row(form.socialBluesky, {'label': 'form.socials.bluesky'|trans({}, 'project_contacts')}) }}
                         {{ form_row(form.socialTelegram, {'label': 'form.socials.telegram'|trans({}, 'project_contacts')}) }}
                         {{ form_row(form.socialWhatsapp, {'label': 'form.socials.whatsapp'|trans({}, 'project_contacts')}) }}
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">{{ 'form.mandates.label'|trans({}, 'project_contacts') }}</div>
+                        <div class="text-muted mb-3">{{ 'form.mandates.help'|trans({}, 'project_contacts') }}</div>
+                        <div data-controller="community--additional-emails"
+                             data-prototype="{{ form_widget(form.mandates.vars.prototype)|e('html_attr') }}"
+                             data-index="{{ form.mandates|length > 0 ? form.mandates|last.vars.name + 1 : 0 }}">
+                            <div data-community--additional-emails-target="rows">
+                                {% for field in form.mandates %}
+                                    <div>
+                                        <div class="row no-gutters align-items-center mb-2">
+                                            <div class="col-10">
+                                                {{ form_widget(field, {'label': false}) }}
+                                            </div>
+                                            <div class="col-2 pl-3">
+                                                <button type="button" class="btn btn-secondary btn-block text-danger"
+                                                        data-action="community--additional-emails#removeRow">
+                                                    <i class="fal fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% do field_name(form.mandates) %}
+                            </div>
+
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-2 pr-3">
+                                    <button type="button" class="btn btn-secondary btn-block text-primary"
+                                            data-action="community--additional-emails#addRow">
+                                        <i class="fal fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="col-10"></div>
+                            </div>
+                        </div>
+
+                        <div class="text-uppercase text-muted mt-4 mb-2">{{ 'form.commitments.label'|trans({}, 'project_contacts') }}</div>
+                        <div class="text-muted mb-3">{{ 'form.commitments.help'|trans({}, 'project_contacts') }}</div>
+                        <div data-controller="community--additional-emails"
+                             data-prototype="{{ form_widget(form.commitments.vars.prototype)|e('html_attr') }}"
+                             data-index="{{ form.commitments|length > 0 ? form.commitments|last.vars.name + 1 : 0 }}">
+                            <div data-community--additional-emails-target="rows">
+                                {% for field in form.commitments %}
+                                    <div>
+                                        <div class="row no-gutters align-items-center mb-2">
+                                            <div class="col-10">
+                                                {{ form_widget(field, {'label': false}) }}
+                                            </div>
+                                            <div class="col-2 pl-3">
+                                                <button type="button" class="btn btn-secondary btn-block text-danger"
+                                                        data-action="community--additional-emails#removeRow">
+                                                    <i class="fal fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% do field_name(form.commitments) %}
+                            </div>
+
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-2 pr-3">
+                                    <button type="button" class="btn btn-secondary btn-block text-primary"
+                                            data-action="community--additional-emails#addRow">
+                                        <i class="fal fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="col-10"></div>
+                            </div>
+                        </div>
 
                         <div class="mt-4">
                             {{ form_row(form.metadataComment, {

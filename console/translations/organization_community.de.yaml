@@ -66,6 +66,7 @@ contacts:
             phone: 'Telefonnummer (persönlich)'
             workPhone: 'Telefonnummer (Arbeit)'
             socials: 'Soziale Netzwerke'
+            deceased: Verstorben
         history:
             label: 'Interaktionen Geschichte'
             help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'
@@ -87,6 +88,25 @@ contacts:
         customFields:
             label: 'Benutzerdefinierte Felder (für technische Benutzer)'
             help: "Benutzerdefinierte Felder sind technische Datenfelder, die von Ihrer Website verwendet werden, um\nzusätzliche Informationen zu Ihren Kontakten zu speichern.\n"
+        birth:
+            label: Geburtsinformationen
+            name: Name
+            city: Stadt
+            country: Land
+        recruited_by: Geworben von
+        mandates:
+            label: Mandate
+        commitments:
+            label: Verpflichtungen
+        payments:
+            label: Zahlungen
+            help: Übersicht der bekannten Zahlungen.
+            status:
+                captured: Abgebucht
+                failed: Fehlgeschlagen
+                refunded: Erstattet
+                canceled: Storniert
+                pending: Ausstehend
     create:
         page_title: 'Einen neuen Kontakt erstellen'
         title: 'Einen neuen Kontakt erstellen'
@@ -112,6 +132,11 @@ contacts:
             lastName: Nachname
             birthdate: Geburtsdatum
             gender: Geschlecht
+            deceased: Verstorben
+            birthName: Geburtsname
+            birthCity: Geburtsort
+            birthCountry: Geburtsland
+            recruitedBy: Geworben von
             nationality: Nationalität
             company: Unternehmen
             jobTitle: Berufsbezeichnung
@@ -138,8 +163,17 @@ contacts:
             facebook: 'URL des Facebook-Profils'
             twitter: 'URL des X-Profils'
             linkedIn: 'URL des LinkedIn-Profils'
+            instagram: 'URL des Instagram-Profils'
+            tikTok: 'TikTok-URL oder Handle'
+            bluesky: 'URL des Bluesky-Profils'
             telegram: Telegramm-Kontoname
             whatsapp: Whatsapp-Telefonnummer
+        mandates:
+            label: Mandate
+            help: 'Mandate des Kontakts hinzufügen, bearbeiten oder entfernen.'
+        commitments:
+            label: Verpflichtungen
+            help: 'Verpflichtungen des Kontakts hinzufügen, bearbeiten oder entfernen.'
         metadata:
             label: 'Abonnement für Mitteilungen'
             all_projects: 'Globale Einstellungen'
