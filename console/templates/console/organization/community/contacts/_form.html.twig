@@ -122,26 +122,7 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12 col-lg-3">
-        {{ form_row(form.isDeceased, {'label': 'Deceased'}) }}
-    </div>
-    <div class="col-12 col-lg-3">
-        {{ form_row(form.birthName, {'label': 'Birth name'}) }}
-    </div>
-    <div class="col-12 col-lg-3">
-        {{ form_row(form.birthCity, {'label': 'Birth city'}) }}
-    </div>
-    <div class="col-12 col-lg-3">
-        {{ form_row(form.birthCountryCode, {'label': 'Birth country'}) }}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 col-lg-6">
-        {{ form_row(form.recruitedBy, {'label': 'Recruited by'}) }}
-    </div>
-</div>
+{# removed duplicate fields (isDeceased/birth*/recruitedBy) rendered above with translations #}
 
 <div class="row">
     <div class="col-12 col-lg-6">
