@@ -71,6 +71,7 @@ contacts:
             phone: Phone number (personal)
             workPhone: Phone number (work)
             socials: Social networks
+            deceased: Deceased
         history:
             label: Interactions history
             help: Interactions your organization had with this contact.

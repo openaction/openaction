@@ -46,6 +46,13 @@ view:
         phone: Phone number (personal)
         workPhone: Phone number (work)
         socials: Social networks
+    mandates:
+        label: Mandates
+    commitments:
+        label: Commitments
+    payments:
+        label: Payments
+        help: Overview of known payments.
     history:
         label: Interactions history
         help: Interactions your organization had with this contact.

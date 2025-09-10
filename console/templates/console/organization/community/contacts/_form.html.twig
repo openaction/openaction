@@ -48,6 +48,27 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.isDeceased, {'label': 'contacts.form.profile.deceased'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.birthName, {'label': 'contacts.form.profile.birthName'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.birthCity, {'label': 'contacts.form.profile.birthCity'|trans({}, 'organization_community')}) }}
+    </div>
+    <div class="col-12 col-lg-3">
+        {{ form_row(form.birthCountryCode, {'label': 'contacts.form.profile.birthCountry'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        {{ form_row(form.recruitedBy, {'label': 'contacts.form.profile.recruitedBy'|trans({}, 'organization_community')}) }}
+    </div>
+</div>
+
 <div class="text-uppercase text-muted mt-4 mb-2">
     {{ 'contacts.form.picture.label'|trans({}, 'organization_community') }}
 </div>
@@ -194,14 +215,14 @@
 {{ form_row(form.socialFacebook, {'label': 'contacts.form.socials.facebook'|trans({}, 'organization_community')}) }}
 {{ form_row(form.socialTwitter, {'label': 'contacts.form.socials.twitter'|trans({}, 'organization_community')}) }}
 {{ form_row(form.socialLinkedIn, {'label': 'contacts.form.socials.linkedIn'|trans({}, 'organization_community')}) }}
-{{ form_row(form.socialInstagram, {'label': 'Instagram'}) }}
-{{ form_row(form.socialTikTok, {'label': 'TikTok'}) }}
-{{ form_row(form.socialBluesky, {'label': 'Bluesky'}) }}
+{{ form_row(form.socialInstagram, {'label': 'contacts.form.socials.instagram'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialTikTok, {'label': 'contacts.form.socials.tikTok'|trans({}, 'organization_community')}) }}
+{{ form_row(form.socialBluesky, {'label': 'contacts.form.socials.bluesky'|trans({}, 'organization_community')}) }}
 {{ form_row(form.socialTelegram, {'label': 'contacts.form.socials.telegram'|trans({}, 'organization_community')}) }}
 {{ form_row(form.socialWhatsapp, {'label': 'contacts.form.socials.whatsapp'|trans({}, 'organization_community')}) }}
 
-<div class="text-uppercase text-muted mt-4 mb-2">Mandates</div>
-<div class="text-muted mb-3">Add, edit or remove contact mandates.</div>
+<div class="text-uppercase text-muted mt-4 mb-2">{{ 'contacts.form.mandates.label'|trans({}, 'organization_community') }}</div>
+<div class="text-muted mb-3">{{ 'contacts.form.mandates.help'|trans({}, 'organization_community') }}</div>
 <div data-controller="community--additional-emails"
      data-prototype="{{ form_widget(form.mandates.vars.prototype)|e('html_attr') }}"
      data-index="{{ form.mandates|length > 0 ? form.mandates|last.vars.name + 1 : 0 }}">
@@ -235,8 +256,8 @@
     </div>
 </div>
 
-<div class="text-uppercase text-muted mt-4 mb-2">Commitments</div>
-<div class="text-muted mb-3">Add, edit or remove contact commitments.</div>
+<div class="text-uppercase text-muted mt-4 mb-2">{{ 'contacts.form.commitments.label'|trans({}, 'organization_community') }}</div>
+<div class="text-muted mb-3">{{ 'contacts.form.commitments.help'|trans({}, 'organization_community') }}</div>
 <div data-controller="community--additional-emails"
      data-prototype="{{ form_widget(form.commitments.vars.prototype)|e('html_attr') }}"
      data-index="{{ form.commitments|length > 0 ? form.commitments|last.vars.name + 1 : 0 }}">

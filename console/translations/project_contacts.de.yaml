@@ -38,6 +38,13 @@ view:
         phone: 'Telefonnummer (persönlich)'
         workPhone: 'Telefonnummer (Arbeit)'
         socials: 'Soziale Netzwerke'
+    mandates:
+        label: Mandate
+    commitments:
+        label: Verpflichtungen
+    payments:
+        label: Zahlungen
+        help: Übersicht der bekannten Zahlungen.
     history:
         label: 'Interaktionen Geschichte'
         help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'
@@ -101,8 +108,17 @@ form:
         facebook: 'URL des Facebook-Profils'
         twitter: 'URL des X-Profils'
         linkedIn: 'URL des LinkedIn-Profils'
+        instagram: 'URL des Instagram-Profils'
+        tikTok: 'TikTok-URL oder Handle'
+        bluesky: 'URL des Bluesky-Profils'
         telegram: Telegramm-Kontoname
         whatsapp: 'Name des Whatsapp-Kontos'
+    mandates:
+        label: Mandate
+        help: Mandate des Kontakts hinzufügen, bearbeiten oder entfernen.
+    commitments:
+        label: Verpflichtungen
+        help: Verpflichtungen des Kontakts hinzufügen, bearbeiten oder entfernen.
     metadata:
         comment: 'Interne Notiz'
         commentHelp: "Sie können hier jede beliebige Notiz speichern, die Sie Ihren Mitarbeitern in Zukunft zur Verfügung stellen möchten.\nDiese Notiz wird niemals an den Kontakt weitergegeben.\nSpeichern Sie keine sensiblen Informationen in diesem Feld.\n"

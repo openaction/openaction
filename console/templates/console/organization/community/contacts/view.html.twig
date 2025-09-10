@@ -348,25 +348,25 @@
 
                         {% if contact.isDeceased %}
                             <div class="mb-2">
-                                <span class="badge badge-danger">Deceased</span>
+                                <span class="badge badge-danger">{{ 'contacts.view.profile.deceased'|trans({}, 'organization_community') }}</span>
                             </div>
                         {% endif %}
 
                         {% if contact.birthName or contact.birthCity or contact.birthCountryCode %}
                             <div class="mb-2">
                                 <div>
-                                    <small class="text-muted">Birth information</small>
+                                    <small class="text-muted">{{ 'contacts.view.birth.label'|trans({}, 'organization_community') }}</small>
                                 </div>
-                                {% if contact.birthName %}Name: {{ contact.birthName }}<br/>{% endif %}
-                                {% if contact.birthCity %}City: {{ contact.birthCity }}<br/>{% endif %}
-                                {% if contact.birthCountryCode %}Country: {{ contact.birthCountryCode|country_name }}{% endif %}
+                                {% if contact.birthName %}{{ 'contacts.view.birth.name'|trans({}, 'organization_community') }}: {{ contact.birthName }}<br/>{% endif %}
+                                {% if contact.birthCity %}{{ 'contacts.view.birth.city'|trans({}, 'organization_community') }}: {{ contact.birthCity }}<br/>{% endif %}
+                                {% if contact.birthCountryCode %}{{ 'contacts.view.birth.country'|trans({}, 'organization_community') }}: {{ contact.birthCountryCode|country_name }}{% endif %}
                             </div>
                         {% endif %}
 
                         {% if contact.recruitedBy %}
                             <div class="mb-2">
                                 <div>
-                                    <small class="text-muted">Recruited by</small>
+                                    <small class="text-muted">{{ 'contacts.view.recruited_by'|trans({}, 'organization_community') }}</small>
                                 </div>
                                 {{ contact.recruitedBy }}
                             </div>
@@ -422,7 +422,7 @@
                     {% if contact.mandates|length > 0 %}
                         <div class="world-block mb-5">
                             <div class="p-3">
-                                <h5 class="mb-2">Mandates</h5>
+                                <h5 class="mb-2">{{ 'contacts.view.mandates.label'|trans({}, 'organization_community') }}</h5>
                             </div>
                             <div class="border-top border-muted p-3">
                                 {% for m in contact.mandates %}
@@ -438,7 +438,7 @@
                     {% if contact.commitments|length > 0 %}
                         <div class="world-block mb-5">
                             <div class="p-3">
-                                <h5 class="mb-2">Commitments</h5>
+                                <h5 class="mb-2">{{ 'contacts.view.commitments.label'|trans({}, 'organization_community') }}</h5>
                             </div>
                             <div class="border-top border-muted p-3">
                                 {% for c in contact.commitments %}
@@ -454,8 +454,8 @@
                     {% if contact.payments|length > 0 %}
                         <div class="world-block mb-5">
                             <div class="p-3">
-                                <h5 class="mb-2">Payments</h5>
-                                <div class="text-muted">Overview of known payments.</div>
+                                <h5 class="mb-2">{{ 'contacts.view.payments.label'|trans({}, 'organization_community') }}</h5>
+                                <div class="text-muted">{{ 'contacts.view.payments.help'|trans({}, 'organization_community') }}</div>
                             </div>
                             <div class="border-top border-muted p-3">
                                 {% for p in contact.payments %}

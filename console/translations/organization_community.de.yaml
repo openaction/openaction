@@ -66,6 +66,7 @@ contacts:
             phone: 'Telefonnummer (persönlich)'
             workPhone: 'Telefonnummer (Arbeit)'
             socials: 'Soziale Netzwerke'
+            deceased: Verstorben
         history:
             label: 'Interaktionen Geschichte'
             help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'
@@ -87,6 +88,19 @@ contacts:
         customFields:
             label: 'Benutzerdefinierte Felder (für technische Benutzer)'
             help: "Benutzerdefinierte Felder sind technische Datenfelder, die von Ihrer Website verwendet werden, um\nzusätzliche Informationen zu Ihren Kontakten zu speichern.\n"
+        birth:
+            label: Geburtsinformationen
+            name: Name
+            city: Stadt
+            country: Land
+        recruited_by: Geworben von
+        mandates:
+            label: Mandate
+        commitments:
+            label: Verpflichtungen
+        payments:
+            label: Zahlungen
+            help: Übersicht der bekannten Zahlungen.
     create:
         page_title: 'Einen neuen Kontakt erstellen'
         title: 'Einen neuen Kontakt erstellen'

@@ -46,6 +46,13 @@ view:
         phone: Téléphone (personnel)
         workPhone: Téléphone (professionnel)
         socials: Réseaux sociaux
+    mandates:
+        label: Mandats
+    commitments:
+        label: Engagements
+    payments:
+        label: Paiements
+        help: Aperçu des paiements connus.
     history:
         label: Historique des interactions
         help: Interactions que votre organisation a eu avec ce contact.
