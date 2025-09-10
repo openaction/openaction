@@ -9,9 +9,9 @@ use App\Repository\ProjectRepository;
 use App\Search\Model\BatchRequest;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final class ExportCrmBatchHandler extends AbstractCrmBatchHandler

@@ -3,8 +3,8 @@
 namespace App\Search\Consumer;
 
 use App\Search\CmsIndexer;
-use Symfony\Component\Messenger\Handler\Acknowledger;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Handler\Acknowledger;
 
 #[AsMessageHandler]
 final class RemoveCmsDocumentHandler
