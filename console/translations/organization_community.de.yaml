@@ -132,6 +132,11 @@ contacts:
             lastName: Nachname
             birthdate: Geburtsdatum
             gender: Geschlecht
+            deceased: Verstorben
+            birthName: Geburtsname
+            birthCity: Geburtsort
+            birthCountry: Geburtsland
+            recruitedBy: Geworben von
             nationality: Nationalität
             company: Unternehmen
             jobTitle: Berufsbezeichnung
@@ -158,8 +163,17 @@ contacts:
             facebook: 'URL des Facebook-Profils'
             twitter: 'URL des X-Profils'
             linkedIn: 'URL des LinkedIn-Profils'
+            instagram: 'URL des Instagram-Profils'
+            tikTok: 'TikTok-URL oder Handle'
+            bluesky: 'URL des Bluesky-Profils'
             telegram: Telegramm-Kontoname
             whatsapp: Whatsapp-Telefonnummer
+        mandates:
+            label: Mandate
+            help: 'Mandate des Kontakts hinzufügen, bearbeiten oder entfernen.'
+        commitments:
+            label: Verpflichtungen
+            help: 'Verpflichtungen des Kontakts hinzufügen, bearbeiten oder entfernen.'
         metadata:
             label: 'Abonnement für Mitteilungen'
             all_projects: 'Globale Einstellungen'

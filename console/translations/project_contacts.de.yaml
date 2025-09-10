@@ -28,6 +28,13 @@ view:
             label: 'Telefonanrufe:'
             subscribed: Angenommen
             unsubscribed: Verweigert
+        deceased: Verstorben
+        birth:
+            label: Geburtsinformationen
+            name: Name
+            city: Stadt
+            country: Land
+        recruited_by: Geworben von
         email: 'E-Mail Adresse'
         additional_emails: 'Zusätzliche E-Mail-Adressen'
         name: 'Vollständiger Name'
@@ -91,6 +98,11 @@ form:
         lastName: Nachname
         birthdate: Geburtsdatum
         gender: Geschlecht
+        deceased: Verstorben
+        birthName: Geburtsname
+        birthCity: Geburtsort
+        birthCountry: Geburtsland
+        recruitedBy: Geworben von
         company: Unternehmen
         jobTitle: Berufsbezeichnung
     tags:
