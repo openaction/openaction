@@ -3,12 +3,13 @@
 namespace App\Proxy\Consumer;
 
 use Postmark\Models\PostmarkException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Add a domain to Postmark.
  */
-final class PostmarkConfigureDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class PostmarkConfigureDomainHandler
 {
     use DomainHandlerTrait;
 

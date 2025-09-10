@@ -19,10 +19,9 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\String\UnicodeString;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\String\UnicodeString;
 
 /**
  * Process import files.

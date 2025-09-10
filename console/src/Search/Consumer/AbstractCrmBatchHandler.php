@@ -7,9 +7,8 @@ use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Repository\Platform\JobRepository;
 use App\Search\Model\BatchRequest;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-abstract class AbstractCrmBatchHandler implements MessageHandlerInterface
+abstract class AbstractCrmBatchHandler
 {
     private MeilisearchInterface $meilisearch;
     private OrganizationRepository $organizationRepository;

@@ -7,10 +7,11 @@ use App\Api\Persister\ContactApiPersister;
 use App\Bridge\Revue\RevueInterface;
 use App\Entity\Integration\RevueAccount;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class RevueSyncHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class RevueSyncHandler
 {
     private EntityManagerInterface $em;
     private RevueInterface $revue;

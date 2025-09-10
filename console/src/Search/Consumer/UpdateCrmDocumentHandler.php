@@ -3,10 +3,11 @@
 namespace App\Search\Consumer;
 
 use App\Search\CrmIndexer;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\Acknowledger;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class UpdateCrmDocumentHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class UpdateCrmDocumentHandler
 {
     public function __construct(private CrmIndexer $crmIndexer)
     {

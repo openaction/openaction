@@ -94,6 +94,19 @@ contacts:
             help: |
                 Les champs personnalisés sont des données additionelles stockées par votre site internet
                 sur vos contacts.
+        birth:
+            label: Informations de naissance
+            name: Nom
+            city: Ville
+            country: Pays
+        recruited_by: Recruté(e) par
+        mandates:
+            label: Mandats
+        commitments:
+            label: Engagements
+        payments:
+            label: Paiements
+            help: Aperçu des paiements connus.
 
     create:
         page_title: Créer un nouveau contact
@@ -124,6 +137,11 @@ contacts:
             lastName: Nom
             birthdate: Date de naissance
             gender: Genre
+            deceased: Décédé(e)
+            birthName: Nom de naissance
+            birthCity: Ville de naissance
+            birthCountry: Pays de naissance
+            recruitedBy: Recruté(e) par
             nationality: Nationalité
             company: Entreprise
             jobTitle: Poste
@@ -152,8 +170,17 @@ contacts:
             facebook: URL du profil Facebook
             twitter: URL du profil X
             linkedIn: URL du profil LinkedIn
+            instagram: URL du profil Instagram
+            tikTok: URL ou identifiant TikTok
+            bluesky: URL du profil Bluesky
             telegram: Nom d'utilisateur Telegram
             whatsapp: Numéro de téléphone Whatsapp
+        mandates:
+            label: Mandats
+            help: Ajouter, modifier ou supprimer les mandats du contact.
+        commitments:
+            label: Engagements
+            help: Ajouter, modifier ou supprimer les engagements du contact.
         metadata:
             label: Inscription aux communications
             all_projects: Préférences générales

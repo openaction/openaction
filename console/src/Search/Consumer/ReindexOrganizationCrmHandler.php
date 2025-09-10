@@ -4,9 +4,10 @@ namespace App\Search\Consumer;
 
 use App\Repository\OrganizationRepository;
 use App\Search\CrmIndexer;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class ReindexOrganizationCrmHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ReindexOrganizationCrmHandler
 {
     public function __construct(private OrganizationRepository $repository, private CrmIndexer $crmIndexer)
     {

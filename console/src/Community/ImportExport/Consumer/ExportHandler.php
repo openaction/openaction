@@ -11,10 +11,11 @@ use App\Repository\OrganizationRepository;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-final class ExportHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ExportHandler
 {
     private OrganizationRepository $orgaRepository;
     private ContactRepository $contactRepository;

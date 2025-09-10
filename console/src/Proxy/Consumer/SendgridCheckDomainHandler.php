@@ -2,12 +2,13 @@
 
 namespace App\Proxy\Consumer;
 
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Check a domain's status on Sendgrid.
  */
-final class SendgridCheckDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendgridCheckDomainHandler
 {
     use DomainHandlerTrait;
 

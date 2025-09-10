@@ -9,12 +9,13 @@ use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Send a given email campaign through Mailchimp.
  */
-final class SendMailchimpEmailingCampaignHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendMailchimpEmailingCampaignHandler
 {
     private EntityManagerInterface $em;
     private EmailingCampaignRepository $campaignRepository;

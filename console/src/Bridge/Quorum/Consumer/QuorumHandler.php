@@ -3,10 +3,11 @@
 namespace App\Bridge\Quorum\Consumer;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class QuorumHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class QuorumHandler
 {
     private HttpClientInterface $httpClient;
     private LoggerInterface $logger;

@@ -2,12 +2,13 @@
 
 namespace App\Proxy\Consumer;
 
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Check the status of a domain on Cloudflare and triggers additional configuration when it's ready.
  */
-final class CloudflareCheckDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class CloudflareCheckDomainHandler
 {
     use DomainHandlerTrait;
 

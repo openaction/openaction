@@ -5,9 +5,10 @@ namespace App\Community\Webhook;
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
 use App\Repository\ProjectRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class WingsWebhookHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class WingsWebhookHandler
 {
     public function __construct(
         private ProjectRepository $projectRepository,

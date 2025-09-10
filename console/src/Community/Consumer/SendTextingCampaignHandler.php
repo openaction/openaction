@@ -7,14 +7,15 @@ use App\Repository\Community\TextingCampaignMessageRepository;
 use App\Repository\Community\TextingCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * Resolve the filters of a given campaign, create entites for each message
  * and send the batch messages through a different consumer.
  */
-final class SendTextingCampaignHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendTextingCampaignHandler
 {
     private EntityManagerInterface $em;
     private TextingCampaignRepository $campaignRepository;

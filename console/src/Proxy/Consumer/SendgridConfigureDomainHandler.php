@@ -4,12 +4,13 @@ namespace App\Proxy\Consumer;
 
 use App\Entity\Domain;
 use App\Entity\Model\SendgridDomainConfig;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Add a domain to Sendgrid.
  */
-final class SendgridConfigureDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SendgridConfigureDomainHandler
 {
     use DomainHandlerTrait;
 

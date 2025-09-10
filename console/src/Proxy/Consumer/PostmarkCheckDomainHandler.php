@@ -2,12 +2,13 @@
 
 namespace App\Proxy\Consumer;
 
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Check a domain's status on Postmark.
  */
-final class PostmarkCheckDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class PostmarkCheckDomainHandler
 {
     use DomainHandlerTrait;
 

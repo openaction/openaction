@@ -9,7 +9,7 @@ use App\Repository\Community\TextingCampaignRepository;
 use App\Util\PhoneNumber;
 use App\Util\Uid;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -17,7 +17,8 @@ use Symfony\Component\Uid\Uuid;
  * Resolve the filters of a given campaign, create entities for each message
  * and send the batch messages through a different consumer.
  */
-final class CreateTextingCampaignBatchesHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class CreateTextingCampaignBatchesHandler
 {
     private TextingCampaignRepository $campaignRepository;
     private TextingCampaignMessageRepository $messageRepository;

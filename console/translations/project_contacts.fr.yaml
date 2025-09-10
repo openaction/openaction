@@ -29,6 +29,13 @@ view:
             label: 'Appels :'
             subscribed: Acceptés
             unsubscribed: Refusés
+        deceased: Décédé(e)
+        birth:
+            label: Informations de naissance
+            name: Nom
+            city: Ville
+            country: Pays
+        recruited_by: Recruté(e) par
         email: Email
         additional_emails: Emails additionels
         name: Nom complet
@@ -81,6 +88,11 @@ form:
         lastName: Nom
         birthdate: Date de naissance
         gender: Genre
+        deceased: Décédé(e)
+        birthName: Nom de naissance
+        birthCity: Ville de naissance
+        birthCountry: Pays de naissance
+        recruitedBy: Recruté(e) par
         company: Entreprise
         jobTitle: Poste
     tags:
@@ -108,8 +120,17 @@ form:
         facebook: URL du profil Facebook
         twitter: URL du profil X
         linkedIn: URL du profil LinkedIn
+        instagram: URL du profil Instagram
+        tikTok: URL ou identifiant TikTok
+        bluesky: URL du profil Bluesky
         telegram: Nom d'utilisateur Telegram
         whatsapp: Numéro de téléphone Whatsapp
+    mandates:
+        label: Mandats
+        help: Ajouter, modifier ou supprimer les mandats du contact.
+    commitments:
+        label: Engagements
+        help: Ajouter, modifier ou supprimer les engagements du contact.
     metadata:
         comment: Note interne
         commentHelp: |

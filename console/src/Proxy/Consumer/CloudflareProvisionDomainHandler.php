@@ -2,12 +2,13 @@
 
 namespace App\Proxy\Consumer;
 
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Provision records for a domain on Cloudflare.
  */
-final class CloudflareProvisionDomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class CloudflareProvisionDomainHandler
 {
     use DomainHandlerTrait;
 

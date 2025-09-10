@@ -7,12 +7,13 @@ use App\Repository\Community\PhoningCampaignRepository;
 use App\Repository\Community\PhoningCampaignTargetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Resolve the filters of a given campaign and create entites for each target.
  */
-final class StartPhoningCampaignHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class StartPhoningCampaignHandler
 {
     private EntityManagerInterface $em;
     private PhoningCampaignRepository $campaignRepository;

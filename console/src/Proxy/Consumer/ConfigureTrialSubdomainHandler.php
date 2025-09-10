@@ -3,9 +3,10 @@
 namespace App\Proxy\Consumer;
 
 use App\Bridge\Cloudflare\CloudflareInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class ConfigureTrialSubdomainHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ConfigureTrialSubdomainHandler
 {
     private CloudflareInterface $cloudflare;
 

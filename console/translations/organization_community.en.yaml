@@ -94,6 +94,19 @@ contacts:
             help: |
                 Custom fields are technical data fields that are used by your website to store
                 additional information regarding your contacts.
+        birth:
+            label: Birth information
+            name: Name
+            city: City
+            country: Country
+        recruited_by: Recruited by
+        mandates:
+            label: Mandates
+        commitments:
+            label: Commitments
+        payments:
+            label: Payments
+            help: Overview of known payments.
 
     create:
         page_title: Create a new contact
@@ -124,6 +137,11 @@ contacts:
             lastName: Last name
             birthdate: Birthdate
             gender: Gender
+            deceased: Deceased
+            birthName: Birth name
+            birthCity: Birth city
+            birthCountry: Birth country
+            recruitedBy: Recruited by
             nationality: Nationality
             company: Company
             jobTitle: Job title
@@ -152,8 +170,17 @@ contacts:
             facebook: Facebook profile URL
             twitter: X profile URL
             linkedIn: LinkedIn profile URL
+            instagram: Instagram profile URL
+            tikTok: TikTok profile URL or handle
+            bluesky: Bluesky profile URL
             telegram: Telegram account name
             whatsapp: Whatsapp phone number
+        mandates:
+            label: Mandates
+            help: Add, edit or remove contact mandates.
+        commitments:
+            label: Commitments
+            help: Add, edit or remove contact commitments.
         metadata:
             label: Subscription to communications
             all_projects: Global settings

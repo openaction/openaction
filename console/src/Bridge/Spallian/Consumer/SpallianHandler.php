@@ -3,10 +3,11 @@
 namespace App\Bridge\Spallian\Consumer;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class SpallianHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class SpallianHandler
 {
     private HttpClientInterface $httpClient;
     private LoggerInterface $logger;
