@@ -5,6 +5,7 @@ namespace App\Controller\Console\Organization\Community;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
 use App\Cdn\CdnUploader;
+use App\Cdn\CdnRouter;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Community\Automation\EmailAutomationDispatcher;
 use App\Community\ContactLocator;
@@ -13,7 +14,9 @@ use App\Controller\AbstractController;
 use App\Entity\Community\Contact;
 use App\Entity\Community\EmailAutomation;
 use App\Form\Community\ContactType;
+use App\Form\Community\ContactPictureType;
 use App\Form\Community\Model\ContactData;
+use App\Form\Community\Model\ContactPictureData;
 use App\Platform\Features;
 use App\Platform\Permissions;
 use App\Repository\Community\ContactRepository;
@@ -22,8 +25,12 @@ use App\Search\Consumer\UpdateCrmDocumentsMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Util\Json;
+use App\Api\Transformer\Community\ContactTransformer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/console/organization/{organizationUuid}/community/contacts')]
 class ContactManageController extends AbstractController
@@ -193,5 +200,113 @@ class ContactManageController extends AbstractController
         return $this->redirectToRoute('console_organization_community_contacts', [
             'organizationUuid' => $this->getOrganization()->getUuid(),
         ]);
+    }
+
+    /**
+     * Get contact data as JSON for the drawer UI.
+     */
+    #[Route('/{uuid}/data', name: 'console_organization_community_contacts_data', methods: ['GET'])]
+    public function getContactJson(Contact $contact, ContactTransformer $transformer): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyUnlessSameOrganization($contact);
+
+        // Refresh settings before serializing
+        $this->contactRepository->refreshContactSettings($contact);
+
+        return new JsonResponse($transformer->transform($contact));
+    }
+
+    /**
+     * Update contact data from the drawer UI.
+     */
+    #[Route('/{uuid}', name: 'console_organization_community_contacts_update', methods: ['PATCH'])]
+    public function updateContactJson(Request $request, Contact $contact, CdnUploader $uploader): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyUnlessSameOrganization($contact);
+
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\JsonException) {
+            return $this->json(['error' => 'Invalid JSON provided'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $data = ContactData::createFromContact($contact);
+
+        $form = $this->createForm(ContactType::class, $data, [
+            'allow_edit_tags' => $this->getOrganization()->isFeatureInPlan(Features::FEATURE_COMMUNITY_EMAILING_TAGS),
+            'allow_edit_area' => true,
+            'allow_edit_settings' => true,
+            'method' => 'PATCH',
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($payload, false); // false for partial updates
+
+        if (!$form->isValid()) {
+            // Return form errors in a structured way for the frontend
+            return $this->json(['errors' => $this->getFormErrors($form)], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // The ContactData object $data now holds the submitted and validated values
+        // The ContactType form maps JSON keys to ContactData properties
+        $contact->applyDataUpdate($data); // Removed source argument
+        $contact->setArea($this->locator->findContactArea($contact));
+
+        $this->em->persist($contact);
+        $this->em->flush();
+
+        $this->contactRepository->updateTags($contact, $data->parseTags());
+
+        // Update CRM search index, trigger integrations
+        $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($contact));
+        $this->quorum->persist($contact);
+        $this->integromat->triggerWebhooks($contact);
+
+        return $this->json(['success' => true, 'contact_uuid' => $contact->getUuid()->toRfc4122()]);
+    }
+
+    #[Route('/{uuid}/picture', name: 'console_organization_community_contacts_update_picture', methods: ['POST'])]
+    public function updatePicture(Request $request, Contact $contact, CdnUploader $uploader, CdnRouter $cdnRouter, ValidatorInterface $validator): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
+        $this->denyUnlessSameOrganization($contact);
+        // No CSRF check needed if using sessionless auth or if framework handles it based on config
+        // However, ensure proper authentication and authorization are in place.
+
+        $data = new ContactPictureData();
+        $form = $this->createForm(ContactPictureType::class, $data);
+
+        // Manually handle the file upload
+        $uploadedFile = $request->files->get('file'); // Assuming the input name is 'file'
+
+        // Bind the file to the data object for validation
+        $data->file = $uploadedFile;
+
+        // Validate the data object (which includes the file constraints)
+        $errors = $validator->validate($data);
+
+        if (count($errors) > 0) {
+            // Manually format errors similar to getFormErrors or return a simpler structure
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            return $this->json(['errors' => $errorMessages], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // Upload new picture and update contact
+        $cdnAsset = $uploader->upload(CdnUploadRequest::createContactPictureRequest($data->file));
+        $contact->setPicture($cdnAsset);
+
+        $this->em->persist($contact);
+        $this->em->flush();
+
+        // Update search index
+        $this->bus->dispatch(UpdateCrmDocumentsMessage::forContact($contact));
+
+        return $this->json(['success' => true, 'picture_url' => $cdnRouter->generateUrl($cdnAsset)]);
     }
 }
