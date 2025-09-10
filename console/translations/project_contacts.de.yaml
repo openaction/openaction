@@ -45,6 +45,12 @@ view:
     payments:
         label: Zahlungen
         help: Übersicht der bekannten Zahlungen.
+        status:
+            captured: Abgebucht
+            failed: Fehlgeschlagen
+            refunded: Erstattet
+            canceled: Storniert
+            pending: Ausstehend
     history:
         label: 'Interaktionen Geschichte'
         help: 'Interaktionen, die Ihre Organisation mit diesem Kontakt hatte.'

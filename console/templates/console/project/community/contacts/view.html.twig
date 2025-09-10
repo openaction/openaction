@@ -387,7 +387,7 @@
                                             <strong>{{ p.type.value }}</strong> — {{ (p.netAmount / 100) | number_format(2, '.', ' ') }} {{ p.currency }}
                                         </div>
                                         <div class="text-muted">
-                                            {% if p.capturedAt %}Captured {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}Failed {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}Refunded {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}Canceled {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}Pending{% endif %}
+                                            {% if p.capturedAt %}{{ 'view.payments.status.captured'|trans({}, 'project_contacts') }} {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}{{ 'view.payments.status.failed'|trans({}, 'project_contacts') }} {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}{{ 'view.payments.status.refunded'|trans({}, 'project_contacts') }} {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}{{ 'view.payments.status.canceled'|trans({}, 'project_contacts') }} {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}{{ 'view.payments.status.pending'|trans({}, 'project_contacts') }}{% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}

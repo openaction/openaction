@@ -464,7 +464,7 @@
                                             <strong>{{ p.type.value }}</strong> — {{ (p.netAmount / 100) | number_format(2, '.', ' ') }} {{ p.currency }}
                                         </div>
                                         <div class="text-muted">
-                                            {% if p.capturedAt %}Captured {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}Failed {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}Refunded {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}Canceled {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}Pending{% endif %}
+                                            {% if p.capturedAt %}{{ 'contacts.view.payments.status.captured'|trans({}, 'organization_community') }} {{ p.capturedAt|format_datetime('short', 'short') }}{% elseif p.failedAt %}{{ 'contacts.view.payments.status.failed'|trans({}, 'organization_community') }} {{ p.failedAt|format_datetime('short', 'short') }}{% elseif p.refundedAt %}{{ 'contacts.view.payments.status.refunded'|trans({}, 'organization_community') }} {{ p.refundedAt|format_datetime('short', 'short') }}{% elseif p.canceledAt %}{{ 'contacts.view.payments.status.canceled'|trans({}, 'organization_community') }} {{ p.canceledAt|format_datetime('short', 'short') }}{% else %}{{ 'contacts.view.payments.status.pending'|trans({}, 'organization_community') }}{% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}

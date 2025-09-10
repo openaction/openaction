@@ -53,6 +53,12 @@ view:
     payments:
         label: Paiements
         help: Aperçu des paiements connus.
+        status:
+            captured: Capturé
+            failed: Échoué
+            refunded: Remboursé
+            canceled: Annulé
+            pending: En attente
     history:
         label: Historique des interactions
         help: Interactions que votre organisation a eu avec ce contact.

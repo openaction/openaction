@@ -109,6 +109,12 @@ contacts:
         payments:
             label: Paiements
             help: Aperçu des paiements connus.
+            status:
+                captured: Capturé
+                failed: Échoué
+                refunded: Remboursé
+                canceled: Annulé
+                pending: En attente
         birth:
             label: Informations de naissance
             name: Nom

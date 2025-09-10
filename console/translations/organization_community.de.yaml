@@ -101,6 +101,12 @@ contacts:
         payments:
             label: Zahlungen
             help: Übersicht der bekannten Zahlungen.
+            status:
+                captured: Abgebucht
+                failed: Fehlgeschlagen
+                refunded: Erstattet
+                canceled: Storniert
+                pending: Ausstehend
     create:
         page_title: 'Einen neuen Kontakt erstellen'
         title: 'Einen neuen Kontakt erstellen'

@@ -108,6 +108,12 @@ contacts:
         payments:
             label: Payments
             help: Overview of known payments.
+            status:
+                captured: Captured
+                failed: Failed
+                refunded: Refunded
+                canceled: Canceled
+                pending: Pending
 
     create:
         page_title: Create a new contact
