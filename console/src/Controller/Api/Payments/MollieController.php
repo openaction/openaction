@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Payments;
 
-use App\Bridge\Mollie\MollieConnect;
+use App\Bridge\Mollie\MollieConnectInterface;
 use App\Controller\Api\AbstractApiController;
 use App\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/payments/mollie')]
 class MollieController extends AbstractApiController
 {
-    public function __construct(private readonly MollieConnect $mollieConnect)
+    public function __construct(private readonly MollieConnectInterface $mollieConnect)
     {
     }
 
@@ -66,4 +66,3 @@ class MollieController extends AbstractApiController
         ]);
     }
 }
-

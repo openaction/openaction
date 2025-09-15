@@ -10,4 +10,9 @@ interface MollieConnectInterface
      * @return array{access_token:string, refresh_token:string, expires_in?:int, token_type?:string, scope?:string}
      */
     public function exchangeCodeForTokens(string $code): array;
+
+    /**
+     * @return array{access_token:string, refresh_token:string, expires_in?:int, token_type?:string, scope?:string}
+     */
+    public function refreshAccessToken(string $refreshToken): array;
 }
