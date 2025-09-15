@@ -1066,7 +1066,7 @@ class ContactControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $result = $this->apiRequest($client, 'GET', '/api/community/contacts/status/'.$email, self::CITIPO_TOKEN);
+        $result = $this->apiRequest($client, 'GET', '/api/community/contacts/status/'.trim($email), self::CITIPO_TOKEN);
         $this->assertSame('ContactStatus', $result['_resource']);
         $this->assertSame($expectedStatus, $result['status']);
         $this->assertSame($expectedId, $result['id']);

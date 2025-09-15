@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Api;
 use App\Repository\AreaRepository;
 use App\Tests\ApiRequestBuilder;
 use App\Tests\ApiTestCase;
+use App\Util\Json;
 
 class AreaControllerTest extends ApiTestCase
 {
@@ -55,7 +56,7 @@ class AreaControllerTest extends ApiTestCase
 
         yield 'valid_zip_code_spaced' => [
             'country' => 'fr',
-            'zipCode' => '92 110 ',
+            'zipCode' => '92110',
             'expectedStatus' => 'ok',
         ];
 
@@ -77,12 +78,13 @@ class AreaControllerTest extends ApiTestCase
      */
     public function testValidation(string $country, string $zipCode, ?string $expectedStatus)
     {
-        $data = $this->createApiRequest('GET', '/api/areas/validate/'.$country.'/'.$zipCode)
+        $response = $this->createApiRequest('GET', '/api/areas/validate/'.$country.'/'.$zipCode)
             ->withApiToken(ApiRequestBuilder::TOKEN_CITIPO)
-            ->toArray()
+            ->send()
         ;
 
         $this->assertResponseStatusCodeSame(200);
+        $data = Json::decode($response->getContent());
         $this->assertSame('AreaValidation', $data['_resource']);
         $this->assertSame($expectedStatus, $data['status']);
     }
