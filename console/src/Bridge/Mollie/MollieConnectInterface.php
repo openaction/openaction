@@ -11,4 +11,3 @@ interface MollieConnectInterface
      */
     public function exchangeCodeForTokens(string $code): array;
 }
-

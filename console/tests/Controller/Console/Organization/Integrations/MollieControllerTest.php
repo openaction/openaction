@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Console\Organization\Integrations;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Tests\WebTestCase;
+
 // No HTTP mocking needed; MollieConnect is replaced by a test implementation
 
 class MollieControllerTest extends WebTestCase

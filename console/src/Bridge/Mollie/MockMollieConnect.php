@@ -36,4 +36,3 @@ class MockMollieConnect implements MollieConnectInterface
         ];
     }
 }
-
