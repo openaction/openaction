@@ -22,6 +22,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "donatj/phpuseragentparser": "^1.1",
+        "dunglas/doctrine-json-odm": "^1.4",
         "easycorp/easyadmin-bundle": "^4.0",
         "egulias/email-validator": "^3.2",
         "endroid/qr-code": "^4.0",
@@ -87,8 +88,7 @@
         "twig/string-extra": "^3.0",
         "twilio/sdk": "^6.19",
         "webmozart/assert": "^1.7",
-        "wildbit/postmark-php": "^4.0",
-        "dunglas/doctrine-json-odm": "^1.4"
+        "wildbit/postmark-php": "^4.0"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.0",

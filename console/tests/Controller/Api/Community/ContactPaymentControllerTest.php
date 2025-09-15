@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactPaymentControllerTest extends ApiTestCase
 {
-
     public function testAddPaymentUnauthorized(): void
     {
         $this->apiRequest(self::createClient(), 'POST', '/api/community/contacts/payments', null, 401);
