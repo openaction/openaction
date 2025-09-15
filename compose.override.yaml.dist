@@ -8,6 +8,9 @@ services:
     rabbitmq:
         ports: ['15672:15672']
 
+    gotenberg:
+        ports: ['3000:3000']
+
     meilisearch:
         ports: ['7700:7700']
 
