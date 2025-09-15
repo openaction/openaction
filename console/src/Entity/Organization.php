@@ -93,6 +93,9 @@ class Organization
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mollieConnectRefreshToken = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $mollieConnectAccessTokenExpiresAt = null;
+
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $billingName = null;
 
@@ -706,6 +709,16 @@ class Organization
     public function setMollieConnectRefreshToken(?string $token): void
     {
         $this->mollieConnectRefreshToken = $token;
+    }
+
+    public function getMollieConnectAccessTokenExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->mollieConnectAccessTokenExpiresAt;
+    }
+
+    public function setMollieConnectAccessTokenExpiresAt(?\DateTimeInterface $expiresAt): void
+    {
+        $this->mollieConnectAccessTokenExpiresAt = $expiresAt;
     }
 
     /*
