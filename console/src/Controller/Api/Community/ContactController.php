@@ -4,9 +4,11 @@ namespace App\Controller\Api\Community;
 
 use App\Api\Model\ContactApiData;
 use App\Api\Model\ContactListApiData;
+use App\Api\Model\ContactPaymentApiData;
 use App\Api\Model\ContactPictureApiData;
 use App\Api\Model\ContactUpdateEmailApiData;
 use App\Api\Persister\ContactApiPersister;
+use App\Api\Persister\ContactPaymentApiPersister;
 use App\Api\Transformer\Community\ContactTransformer;
 use App\Bridge\Meilisearch\MeilisearchInterface;
 use App\Cdn\CdnUploader;
@@ -395,5 +397,51 @@ class ContactController extends AbstractApiController
         }
 
         return $contactUpdate;
+    }
+
+    /**
+     * Register a payment for a given contact identified by ID or email.
+     *
+     * Lifecycle timestamps, receipt and number are ignored and populated automatically by the system.
+     * If the payment type is Membership, the membership period will be computed automatically.
+     */
+    #[Route('/payments', name: 'api_contacts_add_payment', methods: ['POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the created payment identifier.',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: '_resource', type: 'string'),
+                new OA\Property(property: 'id', type: 'integer'),
+            ]
+        )
+    )]
+    public function addPayment(ContactPaymentApiPersister $persister, Request $request)
+    {
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\JsonException) {
+            return $this->createJsonApiProblemResponse('Invalid JSON provided as payload', Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = ContactPaymentApiData::createFromPayload($payload);
+
+        $errors = $this->validator->validate($data);
+        if ($errors->count() > 0) {
+            return $this->handleApiConstraintViolations($errors);
+        }
+
+        try {
+            $payment = $persister->persist($data, $this->getUser());
+        } catch (\InvalidArgumentException $e) {
+            return $this->createJsonApiProblemResponse($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\RuntimeException $e) {
+            return $this->createJsonApiProblemResponse($e->getMessage(), Response::HTTP_NOT_FOUND);
+        }
+
+        return new JsonResponse([
+            '_resource' => 'ContactPayment',
+            'id' => $payment->getId(),
+        ]);
     }
 }

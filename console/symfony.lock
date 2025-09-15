@@ -135,6 +135,15 @@
     "donatj/phpuseragentparser": {
         "version": "v1.1.0"
     },
+    "dunglas/doctrine-json-odm": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "c2ab78f625df0c89af5908d50a28602ff8c4919f"
+        }
+    },
     "easycorp/easyadmin-bundle": {
         "version": "2.0",
         "recipe": {

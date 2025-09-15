@@ -196,6 +196,7 @@ services:
         arguments:
             $blocks: !tagged 'app.page_block'
 
+
     #
     # Community
     #

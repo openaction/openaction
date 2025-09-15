@@ -39,9 +39,9 @@ class ContactPayment
     #[ORM\Column(type: 'string', enumType: ContactPaymentProvider::class)]
     private ContactPaymentProvider $paymentProvider;
 
-    // Provider-specific details stored as JSON
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $paymentProviderDetails = null;
+    // Provider-specific details stored as a JSON document (PHP object serialized using dunglas/doctrine-json-odm)
+    #[ORM\Column(type: 'json_document', nullable: true)]
+    private ?object $paymentProviderDetails = null;
 
     #[ORM\Column(type: 'string', enumType: ContactPaymentMethod::class)]
     private ContactPaymentMethod $paymentMethod;
@@ -173,5 +173,53 @@ class ContactPayment
     public function getContact(): Contact
     {
         return $this->contact;
+    }
+
+    public function setPayerSnapshot(?string $civility, ?string $firstName, ?string $lastName, ?string $email, ?string $streetAddressLine1, ?string $streetAddressLine2, ?string $city, ?string $postalCode, ?string $countryCode, ?\DateTime $birthdate, ?string $phone, ?string $nationality, ?string $fiscalCountryCode): void
+    {
+        $this->civility = $civility;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->streetAddressLine1 = $streetAddressLine1;
+        $this->streetAddressLine2 = $streetAddressLine2;
+        $this->city = $city;
+        $this->postalCode = $postalCode;
+        $this->countryCode = $countryCode ? strtoupper($countryCode) : null;
+        $this->birthdate = $birthdate;
+        $this->phone = $phone;
+        $this->nationality = $nationality ? strtoupper($nationality) : null;
+        $this->fiscalCountryCode = $fiscalCountryCode ? strtoupper($fiscalCountryCode) : null;
+    }
+
+    public function setMembershipPeriod(?\DateTimeImmutable $startAt, ?\DateTimeImmutable $endAt): void
+    {
+        $this->membershipStartAt = $startAt;
+        $this->membershipEndAt = $endAt;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
+    }
+
+    public function setPaymentProviderDetails(?object $details): void
+    {
+        $this->paymentProviderDetails = $details;
+    }
+
+    public function getType(): ContactPaymentType
+    {
+        return $this->type;
+    }
+
+    public function getMembershipStartAt(): ?\DateTimeImmutable
+    {
+        return $this->membershipStartAt;
+    }
+
+    public function getMembershipEndAt(): ?\DateTimeImmutable
+    {
+        return $this->membershipEndAt;
     }
 }

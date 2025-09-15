@@ -22,6 +22,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "donatj/phpuseragentparser": "^1.1",
+        "dunglas/doctrine-json-odm": "^1.4",
         "easycorp/easyadmin-bundle": "^4.0",
         "egulias/email-validator": "^3.2",
         "endroid/qr-code": "^4.0",
