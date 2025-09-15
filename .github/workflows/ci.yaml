@@ -117,9 +117,6 @@ jobs:
     # PHP tests
     console-php-tests:
         runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: console
         steps:
             - uses: actions/checkout@master
 
@@ -130,28 +127,29 @@ jobs:
                   tools: symfony-cli
                   extensions: redis
 
+            - name: Prepare services
+              run: cp compose.override.yaml.dist compose.override.yaml
+
             - name: Start services
               run: docker compose up -d
 
             - name: Install PHP dependencies
-              run: symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+              run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
-              run: cp -R tests/Fixtures/assets/* public/
+              run: cd console && cp -R tests/Fixtures/assets/* public/
 
             - name: Prepare database
-              run: |
-                  symfony console doctrine:migrations:migrate -n -e test
-                  symfony console doctrine:fixtures:load -n --group test -e test
+              run: cd console && symfony console doctrine:migrations:migrate -n -e test && symfony console doctrine:fixtures:load -n --group test -e test
 
             - name: Prepare Meilisearch
-              run: symfony console app:search:index-crm
+              run: cd console && symfony console app:search:index-crm
 
             - name: 'PHPUnit (group: transactions enabled)'
-              run: symfony php bin/phpunit --exclude-group without-transaction
+              run: cd console && symfony php bin/phpunit --exclude-group without-transaction
 
             - name: 'PHPUnit (group: transactions disabled)'
-              run: symfony php bin/phpunit --group without-transaction
+              run: cd console && symfony php bin/phpunit --group without-transaction
 
     # Release
     console-release:
@@ -266,10 +264,11 @@ jobs:
             - name: Start services
               run: docker compose up -d
 
-            - name: Install PHP dependencies
-              run: |
-                  cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
-                  cd public && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+            - name: Install Console PHP dependencies
+              run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+
+            - name: Install Public PHP dependencies
+              run: cd public && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
               run: |
@@ -277,9 +276,7 @@ jobs:
                   cp -R public/tests/Fixtures/assets public/public/build
 
             - name: Prepare database
-              run: |
-                  cd console && symfony console doctrine:migrations:migrate -n
-                  cd console && symfony console doctrine:fixtures:load -n --group test
+              run: cd console && symfony console doctrine:migrations:migrate -n && symfony console doctrine:fixtures:load -n --group test
 
             - name: Prepare domains
               run: cd console && symfony console app:proxy:refresh-domains-cache -n
