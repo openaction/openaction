@@ -1,10 +1,4 @@
 services:
-    console:
-        ports: ['80:80']
-
-    public:
-        ports: ['9000:80']
-
     database:
         ports: ['5432:5432']
 

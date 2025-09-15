@@ -1,20 +1,4 @@
 services:
-    console:
-        image: ghcr.io/openaction/docker-php/dev
-        hostname: console
-        volumes:
-            - ./console:/app
-        depends_on:
-            - database
-            - redis
-
-    public:
-        image: ghcr.io/openaction/docker-php/dev
-        volumes:
-            - ./public:/app
-        depends_on:
-            - redis
-
     database:
         image: postgres:13
         ports: ['5432']
