@@ -12,6 +12,7 @@ index:
     help: Connect Citipo to the tools you use every day to simplify your usages.
     configure: Configure
     read_doc: Documentation
+    mollie_connected: Mollie account connected
 
     acquisition:
         title: Acquisition
