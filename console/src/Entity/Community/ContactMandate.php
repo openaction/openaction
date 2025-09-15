@@ -62,6 +62,11 @@ class ContactMandate
         return $this->label;
     }
 
+    public function getType(): ContactMandateType
+    {
+        return $this->type;
+    }
+
     public function getStartAt(): \DateTimeImmutable
     {
         return $this->startAt;

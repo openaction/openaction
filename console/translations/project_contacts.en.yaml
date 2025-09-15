@@ -29,6 +29,13 @@ view:
             label: 'Phone calls:'
             subscribed: Accepted
             unsubscribed: Refused
+        deceased: Deceased
+        birth:
+            label: Birth information
+            name: Name
+            city: City
+            country: Country
+        recruited_by: Recruited by
         email: Email address
         additional_emails: Additional email addresses
         name: Full name
@@ -39,6 +46,19 @@ view:
         phone: Phone number (personal)
         workPhone: Phone number (work)
         socials: Social networks
+    mandates:
+        label: Mandates
+    commitments:
+        label: Commitments
+    payments:
+        label: Payments
+        help: Overview of known payments.
+        status:
+            captured: Captured
+            failed: Failed
+            refunded: Refunded
+            canceled: Canceled
+            pending: Pending
     history:
         label: Interactions history
         help: Interactions your organization had with this contact.
@@ -81,6 +101,11 @@ form:
         lastName: Last name
         birthdate: Birthdate
         gender: Gender
+        deceased: Deceased
+        birthName: Birth name
+        birthCity: Birth city
+        birthCountry: Birth country
+        recruitedBy: Recruited by
         company: Company
         jobTitle: Job title
     tags:
@@ -108,8 +133,17 @@ form:
         facebook: Facebook profile URL
         twitter: X profile URL
         linkedIn: LinkedIn profile URL
+        instagram: Instagram profile URL
+        tikTok: TikTok profile URL or handle
+        bluesky: Bluesky profile URL
         telegram: Telegram account name
         whatsapp: Whatsapp account name
+    mandates:
+        label: Mandates
+        help: Add, edit or remove contact mandates.
+    commitments:
+        label: Commitments
+        help: Add, edit or remove contact commitments.
     metadata:
         comment: Internal note
         commentHelp: |

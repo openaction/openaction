@@ -11,7 +11,10 @@ use App\Community\ContactLocator;
 use App\Community\History\ContactHistoryBuilder;
 use App\Controller\AbstractController;
 use App\Entity\Community\Contact;
+use App\Entity\Community\ContactCommitment;
+use App\Entity\Community\ContactMandate;
 use App\Entity\Community\EmailAutomation;
+use App\Entity\Community\Enum\ContactMandateType;
 use App\Form\Community\ContactType;
 use App\Form\Community\Model\ContactData;
 use App\Platform\Features;
@@ -92,6 +95,75 @@ class ContactManageController extends AbstractController
             $this->em->persist($contact);
             $this->em->flush();
 
+            // Recruited by
+            if ($data->recruitedBy) {
+                $contact->setRecruitedBy($data->recruitedBy);
+            }
+
+            // Mandates (replace all)
+            if (null !== $data->mandates) {
+                foreach ($contact->getMandates() as $m) {
+                    $this->em->remove($m);
+                }
+                $contact->getMandates()->clear();
+
+                foreach ((array) $data->mandates as $m) {
+                    $label = (string) ($m['label'] ?? '');
+                    $type = $m['type'] ?? null;
+                    $startAt = $m['startAt'] ?? null;
+                    $endAt = $m['endAt'] ?? null;
+                    if (!$label || !$type || !$startAt || !$endAt) {
+                        continue;
+                    }
+                    if (!$type instanceof ContactMandateType) {
+                        try {
+                            $type = ContactMandateType::from((string) $type);
+                        } catch (\Throwable) {
+                            continue;
+                        }
+                    }
+                    try {
+                        $start = new \DateTimeImmutable((string) $startAt);
+                        $end = new \DateTimeImmutable((string) $endAt);
+                    } catch (\Exception) {
+                        continue;
+                    }
+                    $mandate = new ContactMandate($contact, $type, $label, $start, $end);
+                    $this->em->persist($mandate);
+                    $contact->getMandates()->add($mandate);
+                }
+            }
+
+            // Commitments (replace all)
+            if (null !== $data->commitments) {
+                foreach ($contact->getCommitments() as $c) {
+                    $this->em->remove($c);
+                }
+                $contact->getCommitments()->clear();
+
+                foreach ((array) $data->commitments as $c) {
+                    $label = (string) ($c['label'] ?? '');
+                    if (!$label) {
+                        continue;
+                    }
+                    $commitment = new ContactCommitment($contact);
+                    $commitment->setLabel($label);
+                    $start = null;
+                    if (!empty($c['startAt'])) {
+                        try {
+                            $start = new \DateTimeImmutable((string) $c['startAt']);
+                        } catch (\Exception) {
+                            $start = null;
+                        }
+                    }
+                    $commitment->setStartAt($start);
+                    $this->em->persist($commitment);
+                    $contact->getCommitments()->add($commitment);
+                }
+            }
+
+            $this->em->flush();
+
             $this->contactRepository->updateTags($contact, $data->parseTags());
 
             // Update CRM search index
@@ -145,6 +217,63 @@ class ContactManageController extends AbstractController
             $contact->setArea($this->locator->findContactArea($contact));
 
             $this->em->persist($contact);
+            $this->em->flush();
+
+            // Recruited by
+            if ($data->recruitedBy) {
+                $contact->setRecruitedBy($data->recruitedBy);
+            } else {
+                $contact->setRecruitedBy(null);
+            }
+
+            // Mandates (replace all)
+            if (null !== $data->mandates) {
+                foreach ($contact->getMandates() as $m) {
+                    $this->em->remove($m);
+                }
+                $contact->getMandates()->clear();
+
+                foreach ((array) $data->mandates as $m) {
+                    $label = (string) ($m['label'] ?? '');
+                    $type = $m['type'] ?? null;
+                    $startAt = $m['startAt'] ?? null;
+                    $endAt = $m['endAt'] ?? null;
+                    if (!$label || !$type || !$startAt || !$endAt) {
+                        continue;
+                    }
+                    if (!$type instanceof ContactMandateType) {
+                        try {
+                            $type = ContactMandateType::from((string) $type);
+                        } catch (\Throwable) {
+                            continue;
+                        }
+                    }
+                    $mandate = new ContactMandate($contact, $type, $label, $startAt, $endAt);
+                    $this->em->persist($mandate);
+                    $contact->getMandates()->add($mandate);
+                }
+            }
+
+            // Commitments (replace all)
+            if (null !== $data->commitments) {
+                foreach ($contact->getCommitments() as $c) {
+                    $this->em->remove($c);
+                }
+                $contact->getCommitments()->clear();
+
+                foreach ((array) $data->commitments as $c) {
+                    $label = (string) ($c['label'] ?? '');
+                    if (!$label) {
+                        continue;
+                    }
+                    $commitment = new ContactCommitment($contact);
+                    $commitment->setLabel($label);
+                    $commitment->setStartAt($c['startAt'] ?? null);
+                    $this->em->persist($commitment);
+                    $contact->getCommitments()->add($commitment);
+                }
+            }
+
             $this->em->flush();
 
             // Update CRM search index

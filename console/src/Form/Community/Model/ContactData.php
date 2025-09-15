@@ -79,6 +79,15 @@ class ContactData
     public ?string $socialLinkedIn = '';
 
     #[Assert\Length(max: 150)]
+    public ?string $socialInstagram = '';
+
+    #[Assert\Length(max: 150)]
+    public ?string $socialTikTok = '';
+
+    #[Assert\Length(max: 150)]
+    public ?string $socialBluesky = '';
+
+    #[Assert\Length(max: 150)]
     public ?string $socialTelegram = '';
 
     #[Assert\Length(max: 150)]
@@ -98,6 +107,21 @@ class ContactData
 
     public ?Area $addressCountry = null;
 
+    // Extended identity fields
+    public ?bool $isDeceased = null;
+
+    #[Assert\Length(max: 150)]
+    public ?string $birthName = '';
+
+    #[Assert\Length(max: 150)]
+    public ?string $birthCity = '';
+
+    #[Assert\Country]
+    public ?string $birthCountryCode = '';
+
+    // Recruiter (same-organization contact)
+    public ?Contact $recruitedBy = null;
+
     public bool $settingsReceiveNewsletters = true;
     public bool $settingsReceiveSms = true;
     public bool $settingsReceiveCalls = false;
@@ -105,6 +129,11 @@ class ContactData
 
     public ?string $metadataComment = '';
     public ?string $metadataTags = null;
+
+    // Collections
+    // For UI binding, we keep these as nullable arrays of scalar data
+    public ?array $mandates = null;
+    public ?array $commitments = null;
 
     public function __construct(Organization $inOrganization, ?Contact $updatingContact = null)
     {
@@ -131,6 +160,9 @@ class ContactData
         $self->socialFacebook = $contact->getSocialFacebook();
         $self->socialTwitter = $contact->getSocialTwitter();
         $self->socialLinkedIn = $contact->getSocialLinkedIn();
+        $self->socialInstagram = $contact->getSocialInstagram();
+        $self->socialTikTok = $contact->getSocialTikTok();
+        $self->socialBluesky = $contact->getSocialBluesky();
         $self->socialTelegram = $contact->getSocialTelegram();
         $self->socialWhatsapp = $contact->getSocialWhatsapp();
         $self->addressStreetLine1 = $contact->getAddressStreetLine1();
@@ -138,6 +170,11 @@ class ContactData
         $self->addressZipCode = $contact->getAddressZipCode();
         $self->addressCity = $contact->getAddressCity();
         $self->addressCountry = $contact->getAddressCountry();
+        $self->isDeceased = $contact->isDeceased();
+        $self->birthName = $contact->getBirthName();
+        $self->birthCity = $contact->getBirthCity();
+        $self->birthCountryCode = $contact->getBirthCountryCode();
+        $self->recruitedBy = $contact->getRecruitedBy();
         $self->settingsReceiveNewsletters = $contact->hasSettingsReceiveNewsletters();
         $self->settingsReceiveSms = $contact->hasSettingsReceiveSms();
         $self->settingsReceiveCalls = $contact->hasSettingsReceiveCalls();
@@ -151,6 +188,25 @@ class ContactData
         }
 
         $self->metadataTags = $tags ? Json::encode($tags) : '';
+
+        // Map collections
+        $self->mandates = [];
+        foreach ($contact->getMandates() as $m) {
+            $self->mandates[] = [
+                'type' => $m->getType() ?? null,
+                'label' => $m->getLabel(),
+                'startAt' => $m->getStartAt()?->format('Y-m-d'),
+                'endAt' => $m->getEndAt()?->format('Y-m-d'),
+            ];
+        }
+
+        $self->commitments = [];
+        foreach ($contact->getCommitments() as $c) {
+            $self->commitments[] = [
+                'label' => $c->getLabel(),
+                'startAt' => $c->getStartAt()?->format('Y-m-d') ?? null,
+            ];
+        }
 
         return $self;
     }
