@@ -196,6 +196,11 @@ services:
         arguments:
             $blocks: !tagged 'app.page_block'
 
+    # Doctrine JSON ODM: inject the serializer into the json_document type
+    Dunglas\DoctrineJsonOdm\Type\JsonDocumentType:
+        calls:
+            - [ setSerializer, [ '@dunglas_doctrine_json_odm.serializer' ] ]
+
     #
     # Community
     #

@@ -20,10 +20,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Uid\Uuid;
 
 /**
  * A user is a person having access to the Console.

@@ -87,7 +87,8 @@
         "twig/string-extra": "^3.0",
         "twilio/sdk": "^6.19",
         "webmozart/assert": "^1.7",
-        "wildbit/postmark-php": "^4.0"
+        "wildbit/postmark-php": "^4.0",
+        "dunglas/doctrine-json-odm": "^1.4"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.0",
