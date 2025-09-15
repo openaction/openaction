@@ -56,8 +56,8 @@ class MollieControllerTest extends WebTestCase
         parse_str(parse_url($location, PHP_URL_QUERY) ?: '', $params);
         $state = $params['state'];
 
-        // Callback
-        $client->request('GET', '/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations/mollie/callback?code=thecode&state='.$state);
+        // Callback goes to Bridge fixed endpoint with state carrying org id
+        $client->request('GET', '/bridge/mollie/connect/callback?code=thecode&state='.$state);
         $this->assertResponseRedirects('/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations');
 
         /** @var Organization $orga */
@@ -67,4 +67,3 @@ class MollieControllerTest extends WebTestCase
         $this->assertSame('refresh_456', $orga->getMollieConnectRefreshToken());
     }
 }
-

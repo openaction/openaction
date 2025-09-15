@@ -30,60 +30,21 @@ class MollieController extends AbstractController
         $state = bin2hex(random_bytes(16));
         $request->getSession()->set('mollie_oauth_state_'.$orga->getId(), $state);
 
-        $redirectUri = $urlGenerator->generate('console_organization_integrations_mollie_callback', [
-            'organizationUuid' => $orga->getUuid()->toRfc4122(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        // Fixed redirect URI (configured in Mollie app) to Bridge controller
+        $redirectUri = $urlGenerator->generate('bridge_mollie_connect_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $authorizationUrl = $this->mollieConnect->getAuthorizationUrl($redirectUri, $state, [
+        // Encode organization in state along with CSRF token
+        $statePayload = base64_encode(json_encode([
+            'o' => $orga->getUuid()->toRfc4122(),
+            's' => $state,
+        ]));
+
+        $authorizationUrl = $this->mollieConnect->getAuthorizationUrl($redirectUri, $statePayload, [
             'organizations.read', 'profiles.read', 'payments.read', 'payments.write',
         ]);
 
         return new RedirectResponse($authorizationUrl);
     }
 
-    #[Route('/callback', name: 'console_organization_integrations_mollie_callback')]
-    public function callback(EntityManagerInterface $em, Request $request)
-    {
-        $this->denyIfSubscriptionExpired();
-        $this->denyAccessUnlessGranted(Permissions::ORGANIZATION_COMMUNITY_MANAGE, $this->getOrganization());
-        $this->requireTwoFactorAuthIfForced();
-
-        $orga = $this->getOrganization();
-
-        $error = $request->query->get('error');
-        if ($error) {
-            $this->addFlash('error', (string) $request->query->get('error_description', $error));
-
-            return $this->redirectToRoute('console_organization_integrations', [
-                'organizationUuid' => $orga->getUuid()->toRfc4122(),
-            ]);
-        }
-
-        $state = (string) $request->query->get('state');
-        $code = (string) $request->query->get('code');
-        $expectedState = (string) $request->getSession()->get('mollie_oauth_state_'.$orga->getId());
-
-        if (!$state || !$code || !hash_equals($expectedState, $state)) {
-            throw $this->createAccessDeniedException('Invalid OAuth state.');
-        }
-
-        $redirectUri = $this->generateUrl('console_organization_integrations_mollie_callback', [
-            'organizationUuid' => $orga->getUuid()->toRfc4122(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $tokens = $this->mollieConnect->exchangeCodeForTokens($code, $redirectUri);
-
-        $orga->setMollieConnectAccessToken($tokens['access_token'] ?? null);
-        $orga->setMollieConnectRefreshToken($tokens['refresh_token'] ?? null);
-
-        $em->persist($orga);
-        $em->flush();
-
-        $this->addFlash('success', 'integrations.updated_success');
-
-        return $this->redirectToRoute('console_organization_integrations', [
-            'organizationUuid' => $orga->getUuid()->toRfc4122(),
-        ]);
-    }
+    // Callback moved to Bridge\MollieConnectController
 }
-
