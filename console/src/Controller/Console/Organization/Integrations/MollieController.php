@@ -30,16 +30,14 @@ class MollieController extends AbstractController
         $state = bin2hex(random_bytes(16));
         $request->getSession()->set('mollie_oauth_state_'.$orga->getId(), $state);
 
-        // Fixed redirect URI (configured in Mollie app) to Bridge controller
-        $redirectUri = $urlGenerator->generate('bridge_mollie_connect_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
-
         // Encode organization in state along with CSRF token
-        $statePayload = base64_encode(json_encode([
+        $statePayloadRaw = json_encode([
             'o' => $orga->getUuid()->toRfc4122(),
             's' => $state,
-        ]));
+        ]);
+        $statePayload = rtrim(strtr(base64_encode($statePayloadRaw), '+/', '-_'), '=');
 
-        $authorizationUrl = $this->mollieConnect->getAuthorizationUrl($redirectUri, $statePayload, [
+        $authorizationUrl = $this->mollieConnect->getAuthorizationUrl($statePayload, [
             'organizations.read', 'profiles.read', 'payments.read', 'payments.write',
         ]);
 

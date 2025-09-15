@@ -26,6 +26,7 @@ services:
             $sizeManifestoMainImage: '%env(APP_SIZE_MANIFESTO_MAIN_IMAGE)%'
             $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
             $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
+            $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
 
     _instanceof:
         App\Cdn\UploadHandler\UploadedImageHandlerInterface:

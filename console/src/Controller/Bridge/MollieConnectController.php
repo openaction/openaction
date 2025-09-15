@@ -54,8 +54,7 @@ class MollieConnectController extends AbstractController
         }
 
         // Exchange code for tokens with the same fixed redirect_uri
-        $redirectUri = $this->generateUrl('bridge_mollie_connect_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $tokens = $this->mollieConnect->exchangeCodeForTokens($code, $redirectUri);
+        $tokens = $this->mollieConnect->exchangeCodeForTokens($code);
 
         $orga->setMollieConnectAccessToken($tokens['access_token'] ?? null);
         $orga->setMollieConnectRefreshToken($tokens['refresh_token'] ?? null);
@@ -69,4 +68,3 @@ class MollieConnectController extends AbstractController
         ]);
     }
 }
-
