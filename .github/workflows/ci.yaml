@@ -284,9 +284,6 @@ jobs:
             - name: Prepare domains
               run: cd console && symfony console app:proxy:refresh-domains-cache -n
 
-            - name: Start Console in background
-              run: cd console && symfony serve -d
-
             - name: PHPUnit
               run: |
                   cd console
