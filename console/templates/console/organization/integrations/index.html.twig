@@ -129,7 +129,12 @@
                         </div>
 
                         <div class="integrations-card-buttons">
-                            {% if current_organization.isFeatureInPlan(details.feature|default('feature_integration_integromat')) %}
+                            {% if integration == 'mollie' and current_organization.mollieConnectAccessToken %}
+                                <div class="text-success">
+                                    <i class="fal fa-check"></i>
+                                    {{ ('index.mollie_connected')|trans({}, 'organization_integrations') }}
+                                </div>
+                            {% elseif current_organization.isFeatureInPlan(details.feature|default('feature_integration_integromat')) %}
                                 {% set link = details.buttonUrl|default(path('console_organization_integrations_integromat', {'organizationUuid': current_organization.uuid, 'section': section, 'integration': integration})) %}
 
                                 <a href="{{ link }}" class="btn btn-sm btn-primary text-white">
