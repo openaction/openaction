@@ -6,7 +6,7 @@ services:
         ports: ['6379:6379']
 
     rabbitmq:
-        ports: ['15672:15672']
+        ports: ['15672:15672', '5672:5672']
 
     gotenberg:
         ports: ['3000:3000']
