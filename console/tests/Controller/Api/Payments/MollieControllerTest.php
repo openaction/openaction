@@ -74,4 +74,3 @@ class MollieControllerTest extends ApiTestCase
         $this->assertNotNull($reloaded->getMollieConnectAccessTokenExpiresAt());
     }
 }
-
