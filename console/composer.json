@@ -37,6 +37,7 @@
         "league/fractal": "^0.20",
         "maennchen/zipstream-php": "^2.1",
         "mailchimp/marketing": "^3.0",
+        "league/oauth2-client": "^2.7",
         "martin-georgiev/postgresql-for-doctrine": "^1.7",
         "meilisearch/meilisearch-php": "^v0.24.1",
         "mollie/mollie-api-php": "^2.39",

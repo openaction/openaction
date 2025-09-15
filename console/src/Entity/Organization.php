@@ -87,6 +87,12 @@ class Organization
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $mollieCustomerId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mollieConnectAccessToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mollieConnectRefreshToken = null;
+
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $billingName = null;
 
@@ -680,6 +686,26 @@ class Organization
     public function setMollieCustomerId(?string $mollieCustomerId)
     {
         $this->mollieCustomerId = $mollieCustomerId;
+    }
+
+    public function getMollieConnectAccessToken(): ?string
+    {
+        return $this->mollieConnectAccessToken;
+    }
+
+    public function setMollieConnectAccessToken(?string $token): void
+    {
+        $this->mollieConnectAccessToken = $token;
+    }
+
+    public function getMollieConnectRefreshToken(): ?string
+    {
+        return $this->mollieConnectRefreshToken;
+    }
+
+    public function setMollieConnectRefreshToken(?string $token): void
+    {
+        $this->mollieConnectRefreshToken = $token;
     }
 
     /*

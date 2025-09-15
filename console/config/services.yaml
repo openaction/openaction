@@ -24,6 +24,8 @@ services:
             $sizeContentMainImage: '%env(APP_SIZE_CONTENT_MAIN_IMAGE)%'
             $sizeTrombinoscopeMainImage: '%env(APP_SIZE_TROMBINOSCOPE_MAIN_IMAGE)%'
             $sizeManifestoMainImage: '%env(APP_SIZE_MANIFESTO_MAIN_IMAGE)%'
+            $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
+            $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
 
     _instanceof:
         App\Cdn\UploadHandler\UploadedImageHandlerInterface:

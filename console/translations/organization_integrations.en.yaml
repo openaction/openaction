@@ -1,6 +1,13 @@
 back: Back to integrations
 
 index:
+    payments:
+        title: Payments
+        description: Connect payment providers for donations and memberships.
+
+        mollie:
+            title: Mollie
+            help: Connect your Mollie account to allow external sites to start payments on your behalf.
     page_title: Integrations
     help: Connect Citipo to the tools you use every day to simplify your usages.
     configure: Configure

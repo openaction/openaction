@@ -18,6 +18,15 @@
     </div>
 
     {% set sections = {
+        'payments': {
+            'mollie': {
+                'integromat': false,
+                'feature': 'feature_api',
+                'url': 'https://www.mollie.com',
+                'docUrl': 'https://docs.mollie.com/oauth/overview',
+                'buttonUrl': path('console_organization_integrations_mollie_connect', {'organizationUuid': current_organization.uuid}),
+            },
+        },
         'acquisition': {
             'twitter_revue': {
                 'integromat': false,
