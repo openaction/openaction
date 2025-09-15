@@ -160,7 +160,7 @@
         },
         "php-cs-fixer-install": "echo 'Installing php-cs-fixer in /tools' && mkdir -p tools/php-cs-fixer && composer require --dev --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer:3.75.*",
         "php-cs-fixer-check": "PHP_CS_FIXER_IGNORE_ENV=1 tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.dist.php",
-        "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1  tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
+        "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
         "phpstan-install": "echo 'Installing phpstan in /tools' && mkdir -p tools/phpstan && composer require --working-dir=tools/phpstan phpstan/phpstan:2.1.22 phpstan/phpstan-doctrine",
         "phpstan": "tools/phpstan/vendor/bin/phpstan --memory-limit=1G"
     }
