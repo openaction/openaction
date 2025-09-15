@@ -288,7 +288,12 @@ jobs:
               run: cd console && symfony serve -d
 
             - name: PHPUnit
-              run: cd public && symfony php bin/phpunit
+              run: |
+                  cd console
+                  symfony server:ca:install
+                  symfony serve -d
+                  cd ../public
+                  symfony php bin/phpunit
 
     # Release
     public-release:
