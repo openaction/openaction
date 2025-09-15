@@ -4,6 +4,14 @@ index:
     help: 'Verbinden Sie Citipo mit den Tools, die Sie täglich verwenden, um Ihre Nutzung zu vereinfachen.'
     configure: 'Konfigurieren Sie'
     read_doc: Dokumentation
+    mollie_connected: Mollie-Konto verbunden
+    payments:
+        title: Zahlungen
+        description: 'Verbinden Sie Zahlungsanbieter für Spenden und Mitgliedsbeiträge.'
+
+        mollie:
+            title: Mollie
+            help: 'Verbinden Sie Ihr Mollie-Konto, damit externe Websites Zahlungen in Ihrem Namen starten können.'
     acquisition:
         title: Akquisition
         description: 'Schneller neue Kontakte knüpfen.'

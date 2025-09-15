@@ -24,6 +24,9 @@ services:
             $sizeContentMainImage: '%env(APP_SIZE_CONTENT_MAIN_IMAGE)%'
             $sizeTrombinoscopeMainImage: '%env(APP_SIZE_TROMBINOSCOPE_MAIN_IMAGE)%'
             $sizeManifestoMainImage: '%env(APP_SIZE_MANIFESTO_MAIN_IMAGE)%'
+            $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
+            $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
+            $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
 
     _instanceof:
         App\Cdn\UploadHandler\UploadedImageHandlerInterface:
@@ -106,6 +109,9 @@ services:
         class: 'App\Bridge\Mollie\Mollie'
         arguments:
             $apiKey: '%env(MOLLIE_API_KEY)%'
+
+    App\Bridge\Mollie\MollieConnectInterface:
+        class: 'App\Bridge\Mollie\MollieConnect'
 
     App\Bridge\Unlayer\UnlayerInterface:
         class: 'App\Bridge\Unlayer\Unlayer'

@@ -38,3 +38,13 @@ services:
 
     App\Bridge\Uploadcare\UploadcareInterface:
         class: 'App\Bridge\Uploadcare\MockUploadcare'
+
+    #
+    # Override Mollie Connect for tests to avoid network
+    #
+    App\Bridge\Mollie\MollieConnectInterface:
+        class: 'App\Bridge\Mollie\MockMollieConnect'
+        arguments:
+            $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
+            $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
+            $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
