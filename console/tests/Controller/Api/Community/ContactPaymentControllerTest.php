@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Api\Community;
 
-use App\DataFixtures\TestFixtures;
 use App\Entity\Community\Contact;
 use App\Entity\Community\ContactPayment;
 use App\Entity\Community\Enum\ContactPaymentType;
@@ -10,30 +9,10 @@ use App\Repository\Community\ContactPaymentRepository;
 use App\Repository\Community\ContactRepository;
 use App\Tests\ApiTestCase;
 use App\Util\Json;
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @group without-transaction
- */
 class ContactPaymentControllerTest extends ApiTestCase
 {
-    private function reloadFixtures(): void
-    {
-        StaticDriver::setKeepStaticConnections(false);
-        $loader = new Loader();
-        $loader->addFixture(new TestFixtures(static::getContainer()->get(UserPasswordHasherInterface::class)));
-        $purger = new ORMPurger();
-        $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
-        $executor = new ORMExecutor(static::getContainer()->get(EntityManagerInterface::class), $purger);
-        $executor->execute($loader->getFixtures());
-        StaticDriver::setKeepStaticConnections(true);
-    }
 
     public function testAddPaymentUnauthorized(): void
     {
@@ -43,7 +22,6 @@ class ContactPaymentControllerTest extends ApiTestCase
     public function testAddMembershipPaymentByEmailComputesDates(): void
     {
         $client = self::createClient();
-        $this->reloadFixtures();
 
         /** @var ContactRepository $contacts */
         $contacts = static::getContainer()->get(ContactRepository::class);
@@ -106,7 +84,6 @@ class ContactPaymentControllerTest extends ApiTestCase
     public function testAddDonationPaymentById(): void
     {
         $client = self::createClient();
-        $this->reloadFixtures();
 
         /** @var ContactRepository $contacts */
         $contacts = static::getContainer()->get(ContactRepository::class);
