@@ -8,6 +8,7 @@ use SendGrid\Mail\Mail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 
 class EmailingSchedulerTest extends KernelTestCase
 {
@@ -90,7 +91,10 @@ class EmailingSchedulerTest extends KernelTestCase
         );
 
         // Should have published batches with appropriate delays
-        $envelopes = static::getContainer()->get('messenger.transport.async_emailing')->get();
+        /** @var InMemoryTransport $transport */
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
+
+        $envelopes = $transport->getSent(); 
         $this->assertCount($batchesCount, $envelopes);
 
         foreach ($expectedDelays as $key => $expectedDelay) {
