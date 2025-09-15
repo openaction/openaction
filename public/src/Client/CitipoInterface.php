@@ -16,13 +16,13 @@ interface CitipoInterface
 
     public function getPage(string $apiToken, string $id): ?ApiResource;
 
-    public function getPosts(string $apiToken, int $page, string $category = null, string $author = null): ApiCollection;
+    public function getPosts(string $apiToken, int $page, ?string $category = null, ?string $author = null): ApiCollection;
 
     public function getPostsCategories(string $apiToken): ApiCollection;
 
     public function getPost(string $apiToken, string $id): ?ApiResource;
 
-    public function getEvents(string $apiToken, int $page, string $category = null, string $participant = null, bool $archived = false): ApiCollection;
+    public function getEvents(string $apiToken, int $page, ?string $category = null, ?string $participant = null, bool $archived = false): ApiCollection;
 
     public function getEventsCategories(string $apiToken): ApiCollection;
 
@@ -70,15 +70,15 @@ interface CitipoInterface
 
     public function authorize(string $apiToken, array $authToken): ?ApiResource;
 
-    public function getMembersPages(string $apiToken, array $authToken, string $category = null): ApiCollection;
+    public function getMembersPages(string $apiToken, array $authToken, ?string $category = null): ApiCollection;
 
     public function getMembersPage(string $apiToken, array $authToken, string $id): ?ApiResource;
 
-    public function getMembersPosts(string $apiToken, array $authToken, int $page, string $category = null): ApiCollection;
+    public function getMembersPosts(string $apiToken, array $authToken, int $page, ?string $category = null): ApiCollection;
 
     public function getMembersPost(string $apiToken, array $authToken, string $id): ?ApiResource;
 
-    public function getMembersEvents(string $apiToken, array $authToken, int $page, string $category = null): ApiCollection;
+    public function getMembersEvents(string $apiToken, array $authToken, int $page, ?string $category = null): ApiCollection;
 
     public function getMembersEvent(string $apiToken, array $authToken, string $id): ?ApiResource;
 
@@ -92,5 +92,5 @@ interface CitipoInterface
 
     public function getPhoningCampaignCall(string $apiToken, array $authToken, string $id, string $callId): ?ApiResource;
 
-    public function persistPhoningCampaignCallResult(string $apiToken, array $authToken, string $id, string $callId, string $status, array $answers = null);
+    public function persistPhoningCampaignCallResult(string $apiToken, array $authToken, string $id, string $callId, string $status, ?array $answers = null);
 }

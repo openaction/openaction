@@ -32,8 +32,8 @@ class EventControllerTest extends ApiTestCase
                     'latitude' => '1.2345000',
                     'longitude' => '6.7890000',
                     'address' => 'Event address',
-                    'image' => 'http://localhost/serve/event-image.png',
-                    'sharer' => 'http://localhost/serve/event-image.png?t=sharer',
+                    'image' => 'https://localhost:8000/serve/event-image.png',
+                    'sharer' => 'https://localhost:8000/serve/event-image.png?t=sharer',
                     'form' => 'https://exampleco.com/_redirect/form/4wxrTbH3IvFqnMdO3L789k',
                     'categories' => [
                         'data' => [
@@ -255,8 +255,8 @@ class EventControllerTest extends ApiTestCase
             'latitude' => '1.2345000',
             'longitude' => '6.7890000',
             'address' => 'Event address',
-            'image' => 'http://localhost/serve/event-image.png',
-            'sharer' => 'http://localhost/serve/event-image.png?t=sharer',
+            'image' => 'https://localhost:8000/serve/event-image.png',
+            'sharer' => 'https://localhost:8000/serve/event-image.png?t=sharer',
             'categories' => [
                 'data' => [
                     [

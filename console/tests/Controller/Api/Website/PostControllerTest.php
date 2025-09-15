@@ -32,8 +32,8 @@ class PostControllerTest extends ApiTestCase
                     'description' => 'Description 1',
                     'externalUrl' => 'https://openaction.eu',
                     'video' => 'youtube:nxaOzonmeic',
-                    'image' => 'http://localhost/serve/post-image.png',
-                    'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+                    'image' => 'https://localhost:8000/serve/post-image.png',
+                    'sharer' => 'https://localhost:8000/serve/post-image.png?t=sharer',
                     'read_time' => 1,
                     'categories' => [
                         'data' => [
@@ -234,8 +234,8 @@ class PostControllerTest extends ApiTestCase
             'slug' => 'the-eu-must-stand-with-the-people-of-hong-kong-against-china-s-abuse-of-power',
             'description' => 'Description 1',
             'video' => 'youtube:nxaOzonmeic',
-            'image' => 'http://localhost/serve/post-image.png',
-            'sharer' => 'http://localhost/serve/post-image.png?t=sharer',
+            'image' => 'https://localhost:8000/serve/post-image.png',
+            'sharer' => 'https://localhost:8000/serve/post-image.png?t=sharer',
             'read_time' => 1,
             'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
             'categories' => [

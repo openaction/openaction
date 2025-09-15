@@ -1,4 +1,4 @@
-docker-compose.override.yaml
+compose.override.yaml
 supervisord.log
 supervisord.pid
 .php-cs-fixer.cache

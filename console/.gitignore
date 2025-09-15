@@ -1,6 +1,7 @@
 /config/secrets/keys/github-citipo-themes.pem
 php-cs-fixer.phar
 php-cs-fixer.phar.*
+tools
 
 ###> symfony/framework-bundle ###
 /.env.local

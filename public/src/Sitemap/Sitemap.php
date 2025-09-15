@@ -29,7 +29,7 @@ class Sitemap
     /**
      * Adds the URL to the urlset.
      */
-    public function add(string $loc, string $lastmod = null, string $changefreq = null, float $priority = null): self
+    public function add(string $loc, ?string $lastmod = null, ?string $changefreq = null, ?float $priority = null): self
     {
         $loc = $this->escapeString($loc);
         $lastmod = !is_null($lastmod) ? $this->formatDate($lastmod) : null;

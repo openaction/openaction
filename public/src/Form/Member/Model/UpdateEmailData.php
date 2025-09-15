@@ -8,6 +8,7 @@ class UpdateEmailData
 {
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Email()
      */
     public string $email;

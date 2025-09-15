@@ -29,9 +29,6 @@ class SentryHandler extends AbstractProcessingHandler
         $this->hub = $hub;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleBatch(array $records): void
     {
         if (!$records) {
@@ -64,9 +61,6 @@ class SentryHandler extends AbstractProcessingHandler
         $this->breadcrumbsBuffer = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function write(array $record): void
     {
         $sentryEvent = Event::createEvent();

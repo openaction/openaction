@@ -54,7 +54,7 @@ class ContactControllerTest extends ApiTestCase
                     '_resource' => 'Contact',
                     'id' => '104SKb9m0xnYyt8OiWn3ks',
                     'email' => 'olivie.gregoire@gmail.com',
-                    'picture' => 'http://localhost/serve/contact-picture.jpg',
+                    'picture' => 'https://localhost:8000/serve/contact-picture.jpg',
                     'isMember' => false,
                     'profileFormalTitle' => null,
                     'profileFirstName' => 'Olivie',

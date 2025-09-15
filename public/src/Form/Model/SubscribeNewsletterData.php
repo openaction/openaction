@@ -8,7 +8,9 @@ class SubscribeNewsletterData
 {
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Email()
+     *
      * @Assert\Length(max=150)
      */
     public ?string $email = null;
