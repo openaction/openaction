@@ -2,8 +2,6 @@
 
 namespace App\Bridge\Mollie;
 
-use Symfony\Component\HttpClient\HttpOptions;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MollieConnect
@@ -55,12 +53,7 @@ class MollieConnect
             $status = $response->getStatusCode();
             $error = is_array($data) ? ($data['error'] ?? 'unknown_error') : 'invalid_response';
             $description = is_array($data) ? ($data['error_description'] ?? 'No description provided') : 'Non-JSON response';
-            throw new \RuntimeException(sprintf(
-                'Mollie token exchange failed (HTTP %d): %s - %s. Check that MOLLIE_CONNECT_REDIRECT_URI exactly matches your Mollie app redirect URL.',
-                $status,
-                (string) $error,
-                (string) $description
-            ));
+            throw new \RuntimeException(sprintf('Mollie token exchange failed (HTTP %d): %s - %s. Check that MOLLIE_CONNECT_REDIRECT_URI exactly matches your Mollie app redirect URL.', $status, (string) $error, (string) $description));
         }
 
         return $data;

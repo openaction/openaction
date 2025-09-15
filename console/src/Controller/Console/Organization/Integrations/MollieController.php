@@ -5,7 +5,6 @@ namespace App\Controller\Console\Organization\Integrations;
 use App\Bridge\Mollie\MollieConnect;
 use App\Controller\AbstractController;
 use App\Platform\Permissions;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

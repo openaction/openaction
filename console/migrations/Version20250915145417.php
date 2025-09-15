@@ -11,8 +11,7 @@ final class Version20250915145417 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql("ALTER TABLE organizations ADD mollie_connect_access_token VARCHAR(255) DEFAULT NULL");
-        $this->addSql("ALTER TABLE organizations ADD mollie_connect_refresh_token VARCHAR(255) DEFAULT NULL");
+        $this->addSql('ALTER TABLE organizations ADD mollie_connect_access_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE organizations ADD mollie_connect_refresh_token VARCHAR(255) DEFAULT NULL');
     }
 }
-
