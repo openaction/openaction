@@ -1,5 +1,3 @@
-version: '3'
-
 services:
     console:
         image: ghcr.io/openaction/docker-php/dev

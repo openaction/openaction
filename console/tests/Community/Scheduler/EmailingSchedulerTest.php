@@ -94,7 +94,7 @@ class EmailingSchedulerTest extends KernelTestCase
         /** @var InMemoryTransport $transport */
         $transport = static::getContainer()->get('messenger.transport.async_emailing');
 
-        $envelopes = $transport->getSent(); 
+        $envelopes = $transport->getSent();
         $this->assertCount($batchesCount, $envelopes);
 
         foreach ($expectedDelays as $key => $expectedDelay) {
