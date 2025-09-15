@@ -2,7 +2,7 @@
 
 namespace App\Controller\Console\Organization\Integrations;
 
-use App\Bridge\Mollie\MollieConnect;
+use App\Bridge\Mollie\MollieConnectInterface;
 use App\Controller\AbstractController;
 use App\Platform\Permissions;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[Route('/console/organization/{organizationUuid}/integrations/mollie')]
 class MollieController extends AbstractController
 {
-    public function __construct(private readonly MollieConnect $mollieConnect)
+    public function __construct(private readonly MollieConnectInterface $mollieConnect)
     {
     }
 

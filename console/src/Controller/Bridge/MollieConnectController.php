@@ -2,7 +2,7 @@
 
 namespace App\Controller\Bridge;
 
-use App\Bridge\Mollie\MollieConnect;
+use App\Bridge\Mollie\MollieConnectInterface;
 use App\Controller\AbstractController;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/bridge/mollie/connect')]
 class MollieConnectController extends AbstractController
 {
-    public function __construct(private readonly MollieConnect $mollieConnect)
+    public function __construct(private readonly MollieConnectInterface $mollieConnect)
     {
     }
 

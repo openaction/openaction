@@ -110,6 +110,9 @@ services:
         arguments:
             $apiKey: '%env(MOLLIE_API_KEY)%'
 
+    App\Bridge\Mollie\MollieConnectInterface:
+        class: 'App\Bridge\Mollie\MollieConnect'
+
     App\Bridge\Unlayer\UnlayerInterface:
         class: 'App\Bridge\Unlayer\Unlayer'
         arguments:

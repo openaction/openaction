@@ -4,7 +4,7 @@ namespace App\Bridge\Mollie;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class MollieConnect
+class MollieConnect implements MollieConnectInterface
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,

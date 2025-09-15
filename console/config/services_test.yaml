@@ -40,17 +40,10 @@ services:
         class: 'App\Bridge\Uploadcare\MockUploadcare'
 
     #
-    # HTTP client test alias to allow replacement in tests
-    #
-    test.Symfony\Contracts\HttpClient\HttpClientInterface:
-        alias: 'Symfony\Contracts\HttpClient\HttpClientInterface'
-        public: true
-
-    #
     # Override Mollie Connect for tests to avoid network
     #
-    App\Bridge\Mollie\MollieConnect:
-        class: 'App\Tests\Stubs\MollieConnectStub'
+    App\Bridge\Mollie\MollieConnectInterface:
+        class: 'App\Bridge\Mollie\MockMollieConnect'
         arguments:
             $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
             $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'

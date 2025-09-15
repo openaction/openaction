@@ -5,16 +5,13 @@ namespace App\Tests\Controller\Console\Organization\Integrations;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Tests\WebTestCase;
-use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+// No HTTP mocking needed; MollieConnect is replaced by a test implementation
 
 class MollieControllerTest extends WebTestCase
 {
     public function testConnectRedirectsToMollie()
     {
         $client = static::createClient();
-        $client->disableReboot();
         $this->authenticate($client);
 
         $client->request('GET', '/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations/mollie/connect');
@@ -35,30 +32,7 @@ class MollieControllerTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client);
 
-        // Mock Mollie token response
-        $mockResponse = new MockResponse(json_encode([
-            'access_token' => 'access_123',
-            'refresh_token' => 'refresh_456',
-            'expires_in' => 3600,
-            'token_type' => 'bearer',
-            'scope' => 'payments.read organizations.read',
-        ]), [
-            'http_code' => 200,
-            'response_headers' => ['content-type' => 'application/json'],
-        ]);
-        $mockClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse) {
-            if ($url === 'https://api.mollie.com/oauth2/tokens') {
-                return $mockResponse;
-            }
-
-            return new MockResponse(json_encode([]), [
-                'http_code' => 200,
-                'response_headers' => ['content-type' => 'application/json'],
-            ]);
-        });
-
-        // In tests, replace via the public test alias
-        static::getContainer()->set('test.'.HttpClientInterface::class, $mockClient);
+        // No HTTP calls in tests; service is overridden by MockMollieConnect
 
         // Start flow to get state
         $client->request('GET', '/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations/mollie/connect');
