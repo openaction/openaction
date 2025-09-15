@@ -33,7 +33,7 @@ class PhoningCampaign implements Searchable
     private ?string $name;
 
     #[ORM\OneToOne(targetEntity: Form::class, inversedBy: 'phoningCampaign', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Form $form;
 
     #[ORM\ManyToMany(targetEntity: Area::class)]
