@@ -14,6 +14,7 @@ class MollieControllerTest extends WebTestCase
     public function testConnectRedirectsToMollie()
     {
         $client = static::createClient();
+        $client->disableReboot();
         $this->authenticate($client);
 
         $client->request('GET', '/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations/mollie/connect');
@@ -45,9 +46,19 @@ class MollieControllerTest extends WebTestCase
             'http_code' => 200,
             'response_headers' => ['content-type' => 'application/json'],
         ]);
-        $mockClient = new MockHttpClient([$mockResponse]);
+        $mockClient = new MockHttpClient(function (string $method, string $url, array $options) use ($mockResponse) {
+            if ($url === 'https://api.mollie.com/oauth2/tokens') {
+                return $mockResponse;
+            }
 
-        static::getContainer()->set(HttpClientInterface::class, $mockClient);
+            return new MockResponse(json_encode([]), [
+                'http_code' => 200,
+                'response_headers' => ['content-type' => 'application/json'],
+            ]);
+        });
+
+        // In tests, replace via the public test alias
+        static::getContainer()->set('test.'.HttpClientInterface::class, $mockClient);
 
         // Start flow to get state
         $client->request('GET', '/console/organization/cbeb774c-284c-43e3-923a-5a2388340f91/integrations/mollie/connect');
