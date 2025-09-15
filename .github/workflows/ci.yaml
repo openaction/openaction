@@ -131,7 +131,7 @@ jobs:
               run: cp compose.override.yaml.dist compose.override.yaml
 
             - name: Start services
-              run: docker compose up -d
+              run: docker compose up -d --quiet-pull
 
             - name: Install PHP dependencies
               run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
@@ -261,8 +261,11 @@ jobs:
                   extensions: redis
                   tools: symfony-cli
 
+            - name: Prepare services
+              run: cp compose.override.yaml.dist compose.override.yaml
+
             - name: Start services
-              run: docker compose up -d
+              run: docker compose up -d --quiet-pull
 
             - name: Install Console PHP dependencies
               run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
