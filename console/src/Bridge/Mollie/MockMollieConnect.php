@@ -35,4 +35,15 @@ class MockMollieConnect implements MollieConnectInterface
             'scope' => 'payments.read organizations.read',
         ];
     }
+
+    public function refreshAccessToken(string $refreshToken): array
+    {
+        return [
+            'access_token' => 'refreshed_access',
+            'refresh_token' => 'refreshed_refresh',
+            'expires_in' => 3600,
+            'token_type' => 'bearer',
+            'scope' => 'payments.read organizations.read',
+        ];
+    }
 }

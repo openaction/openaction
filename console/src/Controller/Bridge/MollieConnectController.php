@@ -57,6 +57,11 @@ class MollieConnectController extends AbstractController
 
         $orga->setMollieConnectAccessToken($tokens['access_token'] ?? null);
         $orga->setMollieConnectRefreshToken($tokens['refresh_token'] ?? null);
+        if (isset($tokens['expires_in']) && is_numeric($tokens['expires_in'])) {
+            $orga->setMollieConnectAccessTokenExpiresAt((new \DateTimeImmutable('now'))->modify('+'.((int) $tokens['expires_in']).' seconds'));
+        } else {
+            $orga->setMollieConnectAccessTokenExpiresAt(null);
+        }
         $em->persist($orga);
         $em->flush();
 
