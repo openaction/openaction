@@ -84,6 +84,9 @@ class OrganizationMemberVoter extends Voter
                     || $this->voteOnAttribute(Permissions::WEBSITE_EVENTS_MANAGE_DRAFTS, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_EVENTS_MANAGE_PUBLISHED, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_FORMS_MANAGE, $project, $token)
+                    || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $project, $token)
+                    || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_PUBLISHED, $project, $token)
+                    || $this->voteOnAttribute(Permissions::WEBSITE_PETITIONS_MANAGE_CATEGORIES, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED, $project, $token)
                     || $this->voteOnAttribute(Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_CATEGORIES, $project, $token)
@@ -162,6 +165,14 @@ class OrganizationMemberVoter extends Voter
                 return $project->isModuleEnabled(Features::MODULE_WEBSITE)
                     && $project->isToolEnabled(Features::TOOL_WEBSITE_FORMS)
                     && $project->isFeatureInPlan(Features::TOOL_WEBSITE_FORMS);
+
+            case Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS:
+            case Permissions::WEBSITE_PETITIONS_MANAGE_PUBLISHED:
+            case Permissions::WEBSITE_PETITIONS_PUBLISH:
+            case Permissions::WEBSITE_PETITIONS_MANAGE_CATEGORIES:
+                return $project->isModuleEnabled(Features::MODULE_WEBSITE)
+                    && $project->isToolEnabled(Features::TOOL_WEBSITE_PETITIONS)
+                    && $project->isFeatureInPlan(Features::TOOL_WEBSITE_PETITIONS);
 
             case Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS:
             case Permissions::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED:

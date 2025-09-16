@@ -53,6 +53,12 @@ permissions:
     documents: Documents
     website_documents_manage: Gérer les documents
 
+    petitions: Pétitions
+    website_petitions_manage_drafts: Gérer les brouillons de pétitions
+    website_petitions_publish: Publier des pétitions
+    website_petitions_manage_published: Gérer les pétitions publiées
+    website_petitions_manage_categories: Gérer les catégories de pétitions
+
     trombinoscope: Trombinoscope
     website_trombinoscope_manage_drafts: Gérer les brouillons de fiches du trombinoscope
     website_trombinoscope_publish: Publier des fiches du trombinoscope
