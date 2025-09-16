@@ -2,27 +2,37 @@
 
 namespace App\Controller\Console\Api;
 
+use App\Api\Model\ContactPaymentApiData;
 use App\Api\Transformer\Community\ContactPaymentListItemTransformer;
 use App\Controller\Api\AbstractApiController;
+use App\Controller\Util\ApiControllerTrait;
+use App\Entity\Community\ContactPayment;
+use App\Entity\Community\Enum\ContactPaymentMethod;
+use App\Entity\Community\Enum\ContactPaymentProvider;
+use App\Entity\Community\Enum\ContactPaymentType;
 use App\Repository\Community\ContactPaymentRepository;
+use App\Repository\Community\ContactRepository;
 use App\Repository\OrganizationMemberRepository;
 use App\Repository\OrganizationRepository;
+use App\Util\Json;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/console/api/{organizationUuid}/payments')]
 class PaymentsController extends AbstractApiController
 {
-    use \App\Controller\Util\ApiControllerTrait;
+    use ApiControllerTrait;
 
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
         private readonly OrganizationMemberRepository $memberRepository,
         private readonly ContactPaymentRepository $payments,
         private readonly ContactPaymentListItemTransformer $transformer,
-        private readonly \Doctrine\ORM\EntityManagerInterface $em,
-        private readonly \App\Repository\Community\ContactRepository $contacts,
-        private readonly \Symfony\Component\Validator\Validator\ValidatorInterface $validator,
+        private readonly EntityManagerInterface $em,
+        private readonly ContactRepository $contacts,
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
@@ -67,20 +77,20 @@ class PaymentsController extends AbstractApiController
         }
 
         try {
-            $payload = \App\Util\Json::decode($request->getContent());
+            $payload = Json::decode($request->getContent());
         } catch (\JsonException) {
             return $this->createJsonApiProblemResponse('Invalid JSON provided as payload', 400);
         }
 
         // Reuse API validation model
-        $data = \App\Api\Model\ContactPaymentApiData::createFromPayload($payload);
+        $data = ContactPaymentApiData::createFromPayload($payload);
         $errors = $this->validator->validate($data);
         if ($errors->count() > 0) {
             return $this->handleApiConstraintViolations($errors);
         }
 
         // Only Manual provider supported in console for now
-        if ($data->paymentProvider !== \App\Entity\Community\Enum\ContactPaymentProvider::Manual->value) {
+        if ($data->paymentProvider !== ContactPaymentProvider::Manual->value) {
             return $this->createJsonApiProblemResponse('Only Manual provider is supported for console payments currently.', 400);
         }
 
@@ -100,14 +110,14 @@ class PaymentsController extends AbstractApiController
         }
 
         // Create payment entity
-        $payment = new \App\Entity\Community\ContactPayment(
+        $payment = new ContactPayment(
             $contact,
-            \App\Entity\Community\Enum\ContactPaymentType::from($data->type),
+            ContactPaymentType::from($data->type),
             (int) $data->netAmount,
             (int) $data->feesAmount,
             strtoupper((string) $data->currency),
-            \App\Entity\Community\Enum\ContactPaymentProvider::Manual,
-            \App\Entity\Community\Enum\ContactPaymentMethod::from($data->paymentMethod),
+            ContactPaymentProvider::Manual,
+            ContactPaymentMethod::from($data->paymentMethod),
         );
 
         // Payer snapshot
@@ -136,14 +146,14 @@ class PaymentsController extends AbstractApiController
         );
 
         // Membership period calculation for membership payments
-        if (\App\Entity\Community\Enum\ContactPaymentType::Membership === $payment->getType()) {
+        if (ContactPaymentType::Membership === $payment->getType()) {
             $today = new \DateTimeImmutable('today');
 
             $qb = $this->payments->createQueryBuilder('p')
                 ->andWhere('p.contact = :contact')
                 ->setParameter('contact', $contact)
                 ->andWhere('p.type = :type')
-                ->setParameter('type', \App\Entity\Community\Enum\ContactPaymentType::Membership)
+                ->setParameter('type', ContactPaymentType::Membership)
                 ->andWhere('p.membershipStartAt <= :now')
                 ->andWhere('p.membershipEndAt >= :now')
                 ->setParameter('now', $today)
@@ -152,7 +162,7 @@ class PaymentsController extends AbstractApiController
             ;
 
             $active = $qb->getQuery()->getOneOrNullResult();
-            if ($active instanceof \App\Entity\Community\ContactPayment && $active->getMembershipEndAt()) {
+            if ($active instanceof ContactPayment && $active->getMembershipEndAt()) {
                 $start = $active->getMembershipEndAt()->modify('+1 day');
             } else {
                 $start = $today;

@@ -6,10 +6,12 @@ use App\Entity\Community\ContactPayment;
 use App\Entity\Community\Enum\ContactPaymentMethod;
 use App\Entity\Community\Enum\ContactPaymentProvider;
 use App\Entity\Community\Enum\ContactPaymentType;
+use App\Repository\Community\ContactPaymentRepository;
 use App\Repository\Community\ContactRepository;
 use App\Repository\OrganizationRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
+use App\Util\Uid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -180,7 +182,7 @@ class PaymentsControllerTest extends WebTestCase
         $this->authenticate($client, 'titouan.galopin@citipo.com');
 
         $container = static::getContainer();
-        $payments = $container->get(\App\Repository\Community\ContactPaymentRepository::class);
+        $payments = $container->get(ContactPaymentRepository::class);
         $contacts = $container->get(ContactRepository::class);
 
         // Use a known contact from the organization and create an active membership
@@ -238,7 +240,7 @@ class PaymentsControllerTest extends WebTestCase
         $contact = $contacts->findOneBy(['email' => 'olivie.gregoire@gmail.com']);
 
         $payload = Json::encode([
-            'contactId' => \App\Util\Uid::toBase62($contact->getUuid()),
+            'contactId' => Uid::toBase62($contact->getUuid()),
             'type' => 'Donation',
             'netAmount' => 1000,
             'feesAmount' => 100,
