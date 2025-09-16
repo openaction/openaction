@@ -44,8 +44,8 @@ class PageControllerTest extends ApiTestCase
                     'title' => 'Coronavirus',
                     'slug' => 'coronavirus',
                     'description' => 'Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.',
-                    'image' => 'http://localhost/serve/page-image.png',
-                    'sharer' => 'http://localhost/serve/page-image.png?t=sharer',
+                    'image' => 'https://localhost:8000/serve/page-image.png',
+                    'sharer' => 'https://localhost:8000/serve/page-image.png?t=sharer',
                     'categories' => [
                         'data' => [
                             [
@@ -163,8 +163,8 @@ class PageControllerTest extends ApiTestCase
             'slug' => 'coronavirus',
             'description' => 'Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.',
             'content' => '<div class="row"><div class="col-md-12"><p>Content</p></div></div>',
-            'image' => 'http://localhost/serve/page-image.png',
-            'sharer' => 'http://localhost/serve/page-image.png?t=sharer',
+            'image' => 'https://localhost:8000/serve/page-image.png',
+            'sharer' => 'https://localhost:8000/serve/page-image.png?t=sharer',
             'categories' => [
                 'data' => [
                     [

@@ -10,6 +10,9 @@ jobs:
     # PHP coding style
     console-php-cs:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
         steps:
             - uses: actions/checkout@master
 
@@ -17,29 +20,13 @@ jobs:
               with:
                   php-version: '8.1'
                   coverage: none
+                  tools: symfony-cli
 
             - name: Install php-cs-fixer
-              run: cd console && wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.12.0/php-cs-fixer.phar -q
+              run: symfony composer php-cs-fixer-install
 
-            - name: Check coding style
-              run: cd console && php php-cs-fixer.phar fix --dry-run --diff
-
-    # Composer normalize
-    console-composer-normalize:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@master
-
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.1'
-                  coverage: none
-
-            - name: Install composer-normalize
-              run: cd console && wget https://github.com/ergebnis/composer-normalize/releases/download/2.24.1/composer-normalize.phar -q
-
-            - name: Check Composer files
-              run: cd console && php composer-normalize.phar --dry-run
+            - name: Run php-cs-fixer
+              run: symfony composer php-cs-fixer-check
 
     # Translations
     console-translations:
@@ -61,6 +48,9 @@ jobs:
     # JS coding style
     console-js-legacy-prettier:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
         steps:
             - uses: actions/checkout@master
 
@@ -69,20 +59,23 @@ jobs:
                   node-version: '22'
 
             - name: Install legacy JavaScript dependencies
-              run: cd console/assets/legacy && yarn install
+              run: cd assets/legacy && yarn install
 
             - name: Check legacy coding style
-              run: cd console/assets/legacy && yarn prettier --check js-stimulus ts-react --config .prettierrc.json
+              run: cd assets/legacy && yarn prettier --check js-stimulus ts-react --config .prettierrc.json
 
             - name: Install projects JavaScript dependencies
-              run: cd console/assets/projects && yarn install
+              run: cd assets/projects && yarn install
 
             - name: Check projects coding style
-              run: cd console/assets/projects && yarn prettier --check . --config .prettierrc.json
+              run: cd assets/projects && yarn prettier --check . --config .prettierrc.json
 
     # JS tests
     console-js-legacy-tests:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
         steps:
             - uses: actions/checkout@master
 
@@ -91,14 +84,17 @@ jobs:
                   node-version: '22'
 
             - name: Install JavaScript dependencies
-              run: cd console/assets/legacy && yarn install
+              run: cd assets/legacy && yarn install
 
             - name: Jest
-              run: cd console/assets/legacy && yarn test
+              run: cd assets/legacy && yarn test
 
     # JS build
     console-js-legacy-build:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
         steps:
             - uses: actions/checkout@master
 
@@ -107,16 +103,16 @@ jobs:
                   node-version: '22'
 
             - name: Install JavaScript dependencies
-              run: cd console/assets/legacy && yarn install
+              run: cd assets/legacy && yarn install
 
             - name: Build JavaScript
-              run: cd console/assets/legacy && yarn build
+              run: cd assets/legacy && yarn build
 
             - name: Install projects JavaScript dependencies
-              run: cd console/assets/projects && yarn install
+              run: cd assets/projects && yarn install
 
             - name: Build projects JavaScript
-              run: cd console/assets/projects && yarn build
+              run: cd assets/projects && yarn build
 
     # PHP tests
     console-php-tests:
@@ -124,61 +120,45 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
-            - uses: azure/docker-login@v1
-              with:
-                  login-server: ghcr.io
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
-
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.1'
                   coverage: none
+                  tools: symfony-cli
                   extensions: redis
 
-            - name: Get Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Mount PHP dependencies cache
-              uses: actions/cache@v4
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('console/composer.lock') }}
-                  restore-keys: ${{ runner.os }}-composer-
-
-            - name: Refresh PHP dependencies cache
-              run: cd console && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
+            - name: Prepare services
+              run: cp compose.override.yaml.dist compose.override.yaml
 
             - name: Start services
-              run: docker compose up -d
+              run: docker compose up -d --quiet-pull
 
             - name: Install PHP dependencies
-              run: docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
+              run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
               run: cd console && cp -R tests/Fixtures/assets/* public/
 
             - name: Prepare database
-              run: |
-                  docker compose exec -T console bin/console doctrine:migrations:migrate -n -e test
-                  docker compose exec -T console bin/console doctrine:fixtures:load -n --group test -e test
+              run: cd console && symfony console doctrine:migrations:migrate -n -e test && symfony console doctrine:fixtures:load -n --group test -e test
 
             - name: Prepare Meilisearch
-              run: docker compose exec -T console bin/console app:search:index-crm
+              run: cd console && symfony console app:search:index-crm
 
             - name: 'PHPUnit (group: transactions enabled)'
-              run: docker compose exec -T console bin/phpunit --exclude-group without-transaction
+              run: cd console && symfony php bin/phpunit --exclude-group without-transaction
 
             - name: 'PHPUnit (group: transactions disabled)'
-              run: docker compose exec -T console bin/phpunit --group without-transaction
+              run: cd console && symfony php bin/phpunit --group without-transaction
 
     # Release
     console-release:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
         needs:
             - console-php-cs
-            - console-composer-normalize
             - console-translations
             - console-js-legacy-prettier
             - console-js-legacy-tests
@@ -199,22 +179,22 @@ jobs:
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Install legacy JavaScript dependencies
-              run: cd console/assets/legacy && yarn install
+              run: cd assets/legacy && yarn install
 
             - name: Build legacy JavaScript
-              run: cd console/assets/legacy && yarn build
+              run: cd assets/legacy && yarn build
 
             - name: Install modern JavaScript dependencies
-              run: cd console/assets/modern && yarn install
+              run: cd assets/modern && yarn install
 
             - name: Build modern JavaScript
-              run: cd console/assets/modern && yarn build
+              run: cd assets/modern && yarn build
 
             - name: Install projects JavaScript dependencies
-              run: cd console/assets/projects && yarn install
+              run: cd assets/projects && yarn install
 
             - name: Build projects JavaScript
-              run: cd console/assets/projects && yarn build
+              run: cd assets/projects && yarn build
 
             - name: Build and publish console production image
               uses: elgohr/Publish-Docker-Github-Action@master
@@ -233,6 +213,9 @@ jobs:
     # PHP coding style
     public-php-cs:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: public
         steps:
             - uses: actions/checkout@master
 
@@ -240,29 +223,13 @@ jobs:
               with:
                   php-version: '8.1'
                   coverage: none
+                  tools: symfony-cli
 
             - name: Install php-cs-fixer
-              run: cd public && wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.4.0/php-cs-fixer.phar -q
+              run: symfony composer php-cs-fixer-install
 
-            - name: Check coding style
-              run: cd public && php php-cs-fixer.phar fix --dry-run --diff
-
-    # Composer normalize
-    public-composer-normalize:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@master
-
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.1'
-                  coverage: none
-
-            - name: Install composer-normalize
-              run: cd public && wget https://github.com/ergebnis/composer-normalize/releases/download/2.24.1/composer-normalize.phar -q
-
-            - name: Check Composer files
-              run: cd public && php composer-normalize.phar --dry-run
+            - name: Run php-cs-fixer
+              run: symfony composer php-cs-fixer-check
 
     # Translations
     public-translations:
@@ -287,41 +254,24 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
-            - uses: azure/docker-login@v1
-              with:
-                  login-server: ghcr.io
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
-
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.1'
                   coverage: none
                   extensions: redis
+                  tools: symfony-cli
 
-            - name: Get Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Mount PHP dependencies cache
-              uses: actions/cache@v4
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('console/composer.lock') }}
-                  restore-keys: ${{ runner.os }}-composer-
-
-            - name: Refresh PHP dependencies cache
-              run: |
-                  cd console && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
-                  cd ../public && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
+            - name: Prepare services
+              run: cp compose.override.yaml.dist compose.override.yaml
 
             - name: Start services
-              run: docker compose up -d
+              run: docker compose up -d --quiet-pull
 
-            - name: Install PHP dependencies
-              run: |
-                  docker compose exec -T console composer install --prefer-dist --no-interaction --no-ansi --no-progress
-                  docker compose exec -T public composer install --prefer-dist --no-interaction --no-ansi --no-progress
+            - name: Install Console PHP dependencies
+              run: cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+
+            - name: Install Public PHP dependencies
+              run: cd public && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
 
             - name: Setup assets fixtures
               run: |
@@ -329,22 +279,27 @@ jobs:
                   cp -R public/tests/Fixtures/assets public/public/build
 
             - name: Prepare database
-              run: |
-                  docker compose exec -T console bin/console doctrine:migrations:migrate -n
-                  docker compose exec -T console bin/console doctrine:fixtures:load -n --group test
+              run: cd console && symfony console doctrine:migrations:migrate -n && symfony console doctrine:fixtures:load -n --group test
 
             - name: Prepare domains
-              run: docker compose exec -T console bin/console app:proxy:refresh-domains-cache -n
+              run: cd console && symfony console app:proxy:refresh-domains-cache -n
 
             - name: PHPUnit
-              run: docker compose exec -T public bin/phpunit
+              run: |
+                  cd console
+                  symfony server:ca:install
+                  symfony serve -d
+                  cd ../public
+                  symfony php bin/phpunit
 
     # Release
     public-release:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: public
         needs:
             - public-php-cs
-            - public-composer-normalize
             - public-translations
             - public-tests
         if: github.ref == 'refs/heads/main'
@@ -356,6 +311,7 @@ jobs:
                   php-version: '8.1'
                   coverage: none
                   extensions: redis
+                  tools: symfony-cli
 
             - uses: azure/docker-login@v1
               with:
@@ -363,25 +319,14 @@ jobs:
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Get Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Mount PHP dependencies cache
-              uses: actions/cache@v4
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('console/composer.lock') }}
-                  restore-keys: ${{ runner.os }}-composer-
-
-            - name: Refresh PHP dependencies cache
-              run: cd public && composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
+            - name: Install PHP dependencies
+              run: symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
 
             - name: Install JavaScript dependencies
-              run: cd public && yarn install
+              run: yarn install
 
             - name: Build JavaScript
-              run: cd public && yarn build
+              run: yarn build
 
             - name: Build and publish public production image
               uses: elgohr/Publish-Docker-Github-Action@master

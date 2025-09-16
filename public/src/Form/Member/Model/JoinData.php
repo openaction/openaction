@@ -13,26 +13,32 @@ class JoinData
 {
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Email()
+     *
      * @Assert\Length(max=150)
+     *
      * @MemberEmailNotAlreadyUsed(message="")
      */
     public string $email = '';
 
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Length(min=8)
      */
     public string $password = '';
 
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Length(max=50)
      */
     public string $profileFirstName = '';
 
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Length(max=50)
      */
     public string $profileLastName = '';

@@ -10,7 +10,7 @@ class RedirectController extends AbstractController
      * @Route("/_redirect/{type}", name="redirect")
      * @Route("/_redirect/{type}/{id}", requirements={"id": ".+"}, name="redirect")
      */
-    public function entityRedirect(string $type, string $id = null)
+    public function entityRedirect(string $type, ?string $id = null)
     {
         switch ($type) {
             case 'home': return $this->redirectToRoute('homepage');

@@ -48,7 +48,7 @@ class Citipo implements CitipoInterface
         return $this->parseCollection($this->request('GET', '/api/website/posts-categories', $apiToken));
     }
 
-    public function getPosts(string $apiToken, int $page, string $category = null, string $author = null): ApiCollection
+    public function getPosts(string $apiToken, int $page, ?string $category = null, ?string $author = null): ApiCollection
     {
         return $this->parseCollection($this->request('GET', '/api/website/posts?page='.$page.'&category='.$category.'&author='.$author, $apiToken));
     }
@@ -63,7 +63,7 @@ class Citipo implements CitipoInterface
         return $this->parseCollection($this->request('GET', '/api/website/events-categories', $apiToken));
     }
 
-    public function getEvents(string $apiToken, int $page, string $category = null, string $participant = null, bool $archived = false): ApiCollection
+    public function getEvents(string $apiToken, int $page, ?string $category = null, ?string $participant = null, bool $archived = false): ApiCollection
     {
         return $this->parseCollection($this->request('GET', '/api/website/events?page='.$page.'&category='.$category.'&participant='.$participant.'&archived='.($archived ? '1' : '0'), $apiToken));
     }
@@ -143,7 +143,7 @@ class Citipo implements CitipoInterface
         return $this->parseResource($this->request('GET', '/api/website/forms/'.$id, $apiToken));
     }
 
-    public function createFormAnswer(string $apiToken, string $id, array $payload, array $authToken = null): ApiResource
+    public function createFormAnswer(string $apiToken, string $id, array $payload, ?array $authToken = null): ApiResource
     {
         if ($authToken) {
             return $this->parseResource(
@@ -269,7 +269,7 @@ class Citipo implements CitipoInterface
         return $this->parseResource($response->toArray());
     }
 
-    public function getMembersPages(string $apiToken, array $authToken, string $category = null): ApiCollection
+    public function getMembersPages(string $apiToken, array $authToken, ?string $category = null): ApiCollection
     {
         return $this->parseCollection(
             $this->memberRequest('GET', '/api/community/area/pages?category='.$category, $apiToken, $authToken, [], false)
@@ -283,7 +283,7 @@ class Citipo implements CitipoInterface
         );
     }
 
-    public function getMembersPosts(string $apiToken, array $authToken, int $page, string $category = null): ApiCollection
+    public function getMembersPosts(string $apiToken, array $authToken, int $page, ?string $category = null): ApiCollection
     {
         return $this->parseCollection(
             $this->memberRequest('GET', '/api/community/area/posts?page='.$page.'&category='.$category, $apiToken, $authToken, [], false)
@@ -297,7 +297,7 @@ class Citipo implements CitipoInterface
         );
     }
 
-    public function getMembersEvents(string $apiToken, array $authToken, int $page, string $category = null): ApiCollection
+    public function getMembersEvents(string $apiToken, array $authToken, int $page, ?string $category = null): ApiCollection
     {
         return $this->parseCollection(
             $this->memberRequest('GET', '/api/community/area/events?page='.$page.'&category='.$category, $apiToken, $authToken, [], false)
@@ -346,7 +346,7 @@ class Citipo implements CitipoInterface
         );
     }
 
-    public function persistPhoningCampaignCallResult(string $apiToken, array $authToken, string $id, string $callId, string $status, array $answers = null)
+    public function persistPhoningCampaignCallResult(string $apiToken, array $authToken, string $id, string $callId, string $status, ?array $answers = null)
     {
         return $this->parseResource(
             $this->memberRequest('POST', '/api/community/area/phoning/'.$id.'/call/'.$callId.'/save', $apiToken, $authToken, [

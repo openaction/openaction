@@ -1,15 +1,15 @@
 services:
-    console:
-        ports: ['80:80']
-
-    public:
-        ports: ['9000:80']
-
     database:
         ports: ['5432:5432']
 
+    redis:
+        ports: ['6379:6379']
+
     rabbitmq:
-        ports: ['15672:15672']
+        ports: ['15672:15672', '5672:5672']
+
+    gotenberg:
+        ports: ['3000:3000']
 
     meilisearch:
         ports: ['7700:7700']

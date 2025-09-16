@@ -24,7 +24,7 @@ class DocumentControllerTest extends ApiTestCase
                     ],
                     'id' => '3XQBlNNIxJqs18qwKppaTx',
                     'name' => 'programme.pdf',
-                    'file' => 'http://localhost/serve/programme.pdf',
+                    'file' => 'https://localhost:8000/serve/programme.pdf',
                 ],
                 [
                     '_resource' => 'Document',
@@ -33,7 +33,7 @@ class DocumentControllerTest extends ApiTestCase
                     ],
                     'id' => '74iRs8hFworgB8paLpySeQ',
                     'name' => 'les-couts-de-la-campagne.pdf',
-                    'file' => 'http://localhost/serve/les-couts-de-la-campagne.pdf',
+                    'file' => 'https://localhost:8000/serve/les-couts-de-la-campagne.pdf',
                 ],
             ],
         ]);
@@ -61,7 +61,7 @@ class DocumentControllerTest extends ApiTestCase
             ],
             'id' => '74iRs8hFworgB8paLpySeQ',
             'name' => 'les-couts-de-la-campagne.pdf',
-            'file' => 'http://localhost/serve/les-couts-de-la-campagne.pdf',
+            'file' => 'https://localhost:8000/serve/les-couts-de-la-campagne.pdf',
         ]);
     }
 

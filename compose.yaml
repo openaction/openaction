@@ -1,20 +1,4 @@
 services:
-    console:
-        image: ghcr.io/openaction/docker-php/dev
-        hostname: console
-        volumes:
-            - ./console:/app
-        depends_on:
-            - database
-            - redis
-
-    public:
-        image: ghcr.io/openaction/docker-php/dev
-        volumes:
-            - ./public:/app
-        depends_on:
-            - redis
-
     database:
         image: postgres:13
         ports: ['5432']
@@ -22,26 +6,38 @@ services:
             POSTGRES_USER: main
             POSTGRES_PASSWORD: main
             POSTGRES_DB: main
+        labels:
+            com.symfony.server.service-ignore: true
 
     redis:
         image: redis:6.2-alpine
+        labels:
+            com.symfony.server.service-ignore: true
 
     rabbitmq:
         image: rabbitmq:3.9-management-alpine
         environment:
             RABBITMQ_DEFAULT_USER: guest
             RABBITMQ_DEFAULT_PASS: guest
+        labels:
+            com.symfony.server.service-ignore: true
 
     meilisearch:
         image: getmeili/meilisearch:v0.28.1
         ports: ['7700']
         environment:
             MEILI_MASTER_KEY: secret
+        labels:
+            com.symfony.server.service-ignore: true
 
     gotenberg:
         image: gotenberg/gotenberg:7
         ports: ['3000']
+        labels:
+            com.symfony.server.service-ignore: true
 
     mailcatcher:
         image: schickling/mailcatcher
         ports: ['1025', '1080']
+        labels:
+            com.symfony.server.service-ignore: true

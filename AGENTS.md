@@ -1,36 +1,113 @@
-# Repository Guidelines
+# Agent Playbook: Reproduce CI Locally (Symfony CLI)
 
-## Project Structure & Module Organization
-- `console/`: Symfony back‑office and API. Code in `src/`, templates in `templates/`, DB migrations in `migrations/`, assets in `assets/{modern,legacy,projects}`, tests in `tests/`.
-- `public/`: Symfony frontend renderer for public websites. Code in `src/`, templates in `templates/`, assets in `assets/`, tests in `tests/`.
-- `docs/`, `docker compose.yaml`, `bin/`, and `.github/` contain documentation, local stack, binaries, and CI/config.
+This guide describes how to replicate the CI pipeline defined in `.github/workflows/ci.yaml` on your machine using Symfony CLI for running the PHP applications locally. Follow it before pushing to ensure your changes pass CI.
 
-## Build, Test, and Development Commands
-- Start services: `docker compose up -d`.
-- Install PHP deps: `docker compose exec console composer install` and `docker compose exec public composer install`.
-- Build assets:
-  - Console (per package):
-    - `cd console/assets/modern && yarn install && yarn build`
-    - `cd console/assets/legacy && yarn install && yarn build`
-    - `cd console/assets/projects && yarn install && yarn build`
-  - Public: `cd public && yarn install && yarn build`.
-- Run tests:
-  - Console: `docker compose exec console bin/phpunit`
-  - Public: `docker compose exec public bin/phpunit`
+## Prerequisites
+- PHP 8.1 with Composer v2 and Redis extension.
+- Symfony CLI installed (`symfony -v`).
+- Node.js 22 + Yarn (`corepack enable` sets up Yarn 4 on Node 22).
+- Docker (services only) to run dependencies (PostgreSQL, Redis, Meilisearch).
+- GitHub CLI (`gh`) logged in (`gh auth login`). Always use `gh` for PRs and CI checks.
 
-## Coding Style & Naming Conventions
-- PHP: PSR‑12, 4‑space indentation. Follow Symfony structure (`src/Controller`, `src/Command`, `src/Entity`, etc.).
-- JS/TS: ESLint in `console/assets/modern` (`yarn lint`); Prettier used in legacy/projects. React components in PascalCase; other files kebab‑case.
-- Formatting: PHP-CS-Fixer configs are provided (`.php-cs-fixer.dist.php`). Example: `cd console && php php-cs-fixer.phar fix`.
+## Services (Postgres, Redis, Meilisearch)
+The CI brings up services with Docker. Locally, do the same:
+```
+cp compose.override.yaml.dist compose.override.yaml
+docker compose up -d --quiet-pull
+```
 
-## Testing Guidelines
-- Framework: PHPUnit. Place tests under `tests/` and name files `*Test.php`.
-- Coverage is configured via `phpunit.xml.dist` (includes `src/`).
-- Console tests use `DAMA\\DoctrineTestBundle` for DB isolation; avoid hitting real services—mock external clients.
+## PHP Dependencies
+Install Composer deps with Symfony CLI (runs PHP locally, not in Docker):
+```
+cd console && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+cd ../public && symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+cd ..
+```
 
-## Commit & Pull Request Guidelines
-- Commits: short, imperative subject; include scope or area when helpful; reference issues/PRs like `(#201)`.
-- Pull Requests: provide a clear description, linked issues, and screenshots/GIFs for UI changes. Note DB migrations and data impacts. Ensure tests pass locally and CI is green.
+## Coding Style and Translations
+- Console PHP CS:
+  - `cd console && symfony composer php-cs-fixer-install && symfony composer php-cs-fixer-check`
+- Public PHP CS:
+  - `cd public && symfony composer php-cs-fixer-install && symfony composer php-cs-fixer-check`
+- Translations checker (same as CI):
+  - `wget https://github.com/tgalopin/symfony-translations-checker/releases/download/1.0.0/checker.phar`
+  - `php checker.phar check console/translations`
+  - `php checker.phar check public/translations`
 
-## Security & Configuration Tips
-- Configure via `.env` and `.env.local`; never commit secrets. Use `docker compose.override.yaml` to expose ports as needed and map `console` in `/etc/hosts`.
+## JavaScript (Console)
+- Legacy coding style:
+  - `cd console/assets/legacy && yarn install`
+  - `yarn prettier --check js-stimulus ts-react --config .prettierrc.json`
+- Projects coding style:
+  - `cd console/assets/projects && yarn install`
+  - `yarn prettier --check . --config .prettierrc.json`
+- Legacy tests:
+  - `cd console/assets/legacy && yarn install && yarn test`
+- Builds (matches CI build jobs):
+  - `cd console/assets/legacy && yarn install && yarn build`
+  - `cd console/assets/projects && yarn install && yarn build`
+  - Optional (release parity): `cd console/assets/modern && yarn install && yarn build`
+
+## JavaScript (Public)
+For release parity: `cd public && yarn install && yarn build`.
+
+## Console: Database, Fixtures, Search, Tests
+Run everything with Symfony CLI and align to CI behavior. Use truncate purge for idempotency locally.
+```
+cd console
+
+# Assets fixtures used by functional tests
+cp -R tests/Fixtures/assets/* public/
+
+# Prepare database (test env)
+symfony console doctrine:migrations:migrate -n -e test
+symfony console doctrine:fixtures:load -n --group test --purge-with-truncate -e test
+
+# Prepare Meilisearch index used by tests
+symfony console app:search:index-crm
+
+# PHPUnit (match CI default group: transactions enabled)
+symfony php bin/phpunit --exclude-group without-transaction
+
+# Optional: also run transactions-disabled group (CI runs it in a second job)
+symfony php bin/phpunit --group without-transaction
+```
+
+## Public: Fixtures, Domains Cache, Tests
+```
+# Ensure PHP deps installed as above for console and public
+
+# Copy test assets like CI
+cp -R console/tests/Fixtures/assets/* console/public/
+cp -R public/tests/Fixtures/assets public/public/build
+
+# Prepare DB and domains cache
+cd console
+symfony console doctrine:migrations:migrate -n
+symfony console doctrine:fixtures:load -n --group test --purge-with-truncate
+symfony console app:proxy:refresh-domains-cache -n
+
+# Run Symfony local web server for public tests
+symfony server:ca:install
+symfony serve -d
+
+# Run Public tests
+cd ../public
+symfony php bin/phpunit
+```
+
+## GitHub Workflow Using `gh`
+- Create or update your branch and push:
+  - `git checkout -b my-branch` (if needed)
+  - `git add -A && git commit -m "chore: update docs and cleanup"`
+  - `git push -u origin my-branch`
+- Open a PR (base: `main`):
+  - `gh pr create --fill --base main --head my-branch`
+- Check PR and CI status:
+  - `gh pr status`
+  - `gh pr checks --watch`
+
+## Notes
+- Always run PHP via Symfony CLI locally; use Docker only for infra services.
+- Tests must not hit real external services; mock them. Console tests rely on `DAMA\DoctrineTestBundle` for DB isolation.
+- Keep PHP PSR-12 and existing project conventions. Use provided `.php-cs-fixer.dist.php` configs.

@@ -11,12 +11,14 @@ class UpdateAccountData
 
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Length(max=50)
      */
     public string $profileFirstName = '';
 
     /**
      * @Assert\NotBlank()
+     *
      * @Assert\Length(max=50)
      */
     public string $profileLastName = '';

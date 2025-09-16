@@ -146,10 +146,10 @@ class ProjectControllerTest extends ApiTestCase
                 'trombinoscope-view.html.twig' => file_get_contents($themeDir.'/trombinoscope/view.html.twig'),
             ],
             'theme_assets' => [
-                'theme-asset.png' => 'http://localhost/serve/theme-asset.png',
+                'theme-asset.png' => 'https://localhost:8000/serve/theme-asset.png',
             ],
             'project_assets' => [
-                'asset.png' => 'http://localhost/serve/asset.png',
+                'asset.png' => 'https://localhost:8000/serve/asset.png',
             ],
             'redirections' => [
                 ['source' => '/redirection/dynamic/*/foo', 'target' => '/redirection/$1/1-target', 'code' => 301],

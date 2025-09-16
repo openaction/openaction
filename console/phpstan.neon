@@ -1,0 +1,10 @@
+parameters:
+    level: 5
+    excludePaths:
+        - vendor
+    paths:
+        - src
+
+includes:
+    - tools/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
+    - tools/phpstan/vendor/phpstan/phpstan-doctrine/rules.neon
