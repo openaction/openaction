@@ -35,4 +35,41 @@ class PetitionCategoryRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult($hydrationMode);
     }
+
+    /**
+     * @return int[]
+     */
+    public function countPetitionsByProjectCategory(Project $project): array
+    {
+        $data = $this->_em->getConnection()->executeQuery('
+            SELECT c.id, COUNT(*)
+            FROM website_petitions_localized_petitions_localized_categories plc
+            LEFT JOIN website_petitions_localized_categories c ON plc.petition_category_id = c.id
+            WHERE c.project_id = ?
+            GROUP BY c.id
+        ', [$project->getId()]);
+
+        $counts = [];
+        foreach ($data->fetchAllAssociative() as $row) {
+            $counts[$row['id']] = $row['count'];
+        }
+
+        return $counts;
+    }
+
+    public function sort(array $data): void
+    {
+        $connection = $this->_em->getConnection();
+        $tableName = $this->_class->getTableName();
+
+        $connection->transactional(static function () use ($connection, $tableName, $data) {
+            foreach ($data as $item) {
+                if (!isset($item['order'], $item['id'])) {
+                    throw new \InvalidArgumentException('Invalid params order');
+                }
+
+                $connection->update($tableName, ['weight' => (int) $item['order']], ['uuid' => $item['id']]);
+            }
+        });
+    }
 }

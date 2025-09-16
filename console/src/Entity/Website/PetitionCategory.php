@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PetitionCategoryRepository::class)]
 #[ORM\Table('website_petitions_localized_categories')]
@@ -22,6 +23,8 @@ class PetitionCategory
     use Util\EntityProjectTrait;
 
     #[ORM\Column(length: 40)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 40)]
     private string $name;
 
     #[ORM\Column(length: 50)]
@@ -59,6 +62,12 @@ class PetitionCategory
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = (string) $name;
+        $this->slug = (new AsciiSlugger())->slug($this->name)->lower();
     }
 
     public function getSlug(): string
