@@ -45,6 +45,13 @@ permissions:
     website_posts_manage_categories: 'Verwalten Sie die Beitragskategorien'
     documents: Dokumente
     website_documents_manage: 'Verwalten der Dokumente'
+
+    petitions: Petitionen
+    website_petitions_manage_drafts: 'Verwalten von Petitionsentwürfen'
+    website_petitions_publish: 'Petitionen veröffentlichen'
+    website_petitions_manage_published: 'Veröffentlichte Petitionen verwalten'
+    website_petitions_manage_categories: 'Verwalten der Petitionskategorien'
+
     trombinoscope: Trombinoskop
     website_trombinoscope_manage_drafts: 'Verwalten von Trombinoskopentwürfen'
     website_trombinoscope_publish: 'Veröffentlichen trombinoscope Personen'

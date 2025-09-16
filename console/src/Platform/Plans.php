@@ -72,6 +72,7 @@ final class Plans
         self::PREMIUM => [
             Features::TOOL_WEBSITE_EVENTS,
             Features::TOOL_WEBSITE_FORMS,
+            Features::TOOL_WEBSITE_PETITIONS,
 
             Features::FEATURE_WEBSITE_STATS,
             Features::FEATURE_WEBSITE_SOCIAL_IFRAMES,

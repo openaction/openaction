@@ -47,6 +47,13 @@ final class Permissions
     public const WEBSITE_FORMS_MANAGE = 'website_forms_manage';
     public const WEBSITE_FORMS_ACCESS_RESULTS = 'website_forms_access_results';
 
+    // Petitions
+    public const WEBSITE_PETITIONS_MANAGE_ENTITY = 'website_petitions_manage_entity';
+    public const WEBSITE_PETITIONS_MANAGE_DRAFTS = 'website_petitions_manage_drafts';
+    public const WEBSITE_PETITIONS_MANAGE_PUBLISHED = 'website_petitions_manage_published';
+    public const WEBSITE_PETITIONS_PUBLISH = 'website_petitions_publish';
+    public const WEBSITE_PETITIONS_MANAGE_CATEGORIES = 'website_petitions_manage_categories';
+
     // Trombinoscope
     public const WEBSITE_TROMBINOSCOPE_MANAGE_ENTITY = 'website_trombinoscope_manage_entity';
     public const WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS = 'website_trombinoscope_manage_drafts';
@@ -115,6 +122,11 @@ final class Permissions
 
             self::WEBSITE_FORMS_MANAGE,
             self::WEBSITE_FORMS_ACCESS_RESULTS,
+
+            self::WEBSITE_PETITIONS_MANAGE_DRAFTS,
+            self::WEBSITE_PETITIONS_MANAGE_PUBLISHED,
+            self::WEBSITE_PETITIONS_PUBLISH,
+            self::WEBSITE_PETITIONS_MANAGE_CATEGORIES,
 
             self::WEBSITE_TROMBINOSCOPE_MANAGE_DRAFTS,
             self::WEBSITE_TROMBINOSCOPE_MANAGE_PUBLISHED,

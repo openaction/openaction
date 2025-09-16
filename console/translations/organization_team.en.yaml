@@ -52,6 +52,12 @@ permissions:
     documents: Documents
     website_documents_manage: Manage the documents
 
+    petitions: Petitions
+    website_petitions_manage_drafts: Manage draft petitions
+    website_petitions_publish: Publish petitions
+    website_petitions_manage_published: Manage published petitions
+    website_petitions_manage_categories: Manage petition categories
+
     trombinoscope: Trombinoscope
     website_trombinoscope_manage_drafts: Manage trombinoscope drafts
     website_trombinoscope_publish: Publish trombinoscope persons
