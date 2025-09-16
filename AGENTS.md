@@ -80,6 +80,10 @@ symfony console app:search:index-crm
 symfony php bin/phpunit --exclude-group without-transaction
 
 # Optional: also run transactions-disabled group (CI runs it in a second job)
+# Careful: when running this, the database will be altered (without reset) and 
+# fixtures will need to be reloaded for tests to passe afterwares
+# You don't need to use this command often, most likely if the transaction-enabled tests 
+# pass this one will too
 symfony php bin/phpunit --group without-transaction
 ```
 
