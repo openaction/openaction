@@ -99,4 +99,12 @@ class LocalizedPetition
     {
         return $this->image;
     }
+
+    /**
+     * @return Collection<PetitionCategory>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
 }
