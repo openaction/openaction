@@ -173,4 +173,122 @@ class PaymentsControllerTest extends WebTestCase
             $this->assertGreaterThanOrEqual(strtotime($dateMin), strtotime($row['date']));
         }
     }
+
+    public function testAddManualMembershipByEmailComputesDates(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $container = static::getContainer();
+        $payments = $container->get(\App\Repository\Community\ContactPaymentRepository::class);
+        $contacts = $container->get(ContactRepository::class);
+
+        // Use a known contact from the organization and create an active membership
+        $contact = $contacts->findOneBy(['email' => 'olivie.gregoire@gmail.com']);
+        $this->assertNotNull($contact);
+
+        $today = new \DateTimeImmutable('today');
+        $prev = ContactPayment::createFixture([
+            'contact' => $contact,
+            'type' => ContactPaymentType::Membership,
+            'netAmount' => 1000,
+            'feesAmount' => 0,
+            'currency' => 'EUR',
+            'paymentProvider' => ContactPaymentProvider::Manual,
+            'paymentMethod' => ContactPaymentMethod::Card,
+            'membershipStartAt' => $today->modify('-10 days'),
+            'membershipEndAt' => $today->modify('+20 days'),
+        ]);
+        static::getContainer()->get(EntityManagerInterface::class)->persist($prev);
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $expectedStart = $today->modify('+21 days');
+        $expectedEnd = $expectedStart->modify('+1 year');
+
+        $payload = Json::encode([
+            'email' => 'olivie.gregoire@gmail.com',
+            'type' => 'Membership',
+            'netAmount' => 3500,
+            'feesAmount' => 0,
+            'currency' => 'EUR',
+            'paymentProvider' => 'Manual',
+            'paymentMethod' => 'Card',
+        ]);
+
+        $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments', server: [], content: $payload);
+        $this->assertResponseIsSuccessful();
+
+        $created = $payments->createQueryBuilder('p')
+            ->andWhere('p.contact = :c')->setParameter('c', $contact)
+            ->andWhere('p.type = :t')->setParameter('t', ContactPaymentType::Membership)
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()->getSingleResult();
+
+        $this->assertEquals($expectedStart->format('Y-m-d'), $created->getMembershipStartAt()->format('Y-m-d'));
+        $this->assertEquals($expectedEnd->format('Y-m-d'), $created->getMembershipEndAt()->format('Y-m-d'));
+    }
+
+    public function testAddManualDonationById(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $contacts = static::getContainer()->get(ContactRepository::class);
+        $contact = $contacts->findOneBy(['email' => 'olivie.gregoire@gmail.com']);
+
+        $payload = Json::encode([
+            'contactId' => \App\Util\Uid::toBase62($contact->getUuid()),
+            'type' => 'Donation',
+            'netAmount' => 1000,
+            'feesAmount' => 100,
+            'currency' => 'EUR',
+            'paymentProvider' => 'Manual',
+            'paymentMethod' => 'Wire',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'payerEmail' => 'john.doe@example.com',
+        ]);
+
+        $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments', server: [], content: $payload);
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testRejectNonManualProvider(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $payload = Json::encode([
+            'email' => 'troycovillon@teleworm.us',
+            'type' => 'Donation',
+            'netAmount' => 100,
+            'feesAmount' => 0,
+            'currency' => 'EUR',
+            'paymentProvider' => 'Mollie',
+            'paymentMethod' => 'Card',
+        ]);
+
+        $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments', server: [], content: $payload);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    public function testForbiddenOrganizationNotMemberOnCreate(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'ema.anderson@away.com');
+
+        $payload = Json::encode([
+            'email' => 'troycovillon@teleworm.us',
+            'type' => 'Donation',
+            'netAmount' => 100,
+            'feesAmount' => 0,
+            'currency' => 'EUR',
+            'paymentProvider' => 'Manual',
+            'paymentMethod' => 'Card',
+        ]);
+
+        $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments', server: [], content: $payload);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
 }
