@@ -11,7 +11,7 @@ class PetitionControllerTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client);
 
-        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_CITIPO_UUID.'/website/petitions');
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions');
         $this->assertResponseIsSuccessful();
 
         // Should list petitions from fixtures
@@ -19,4 +19,3 @@ class PetitionControllerTest extends WebTestCase
         $this->assertStringContainsString('Save the Park', $crawler->filter('.petitions-title')->text());
     }
 }
-
