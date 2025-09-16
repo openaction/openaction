@@ -222,4 +222,49 @@ class ContactPayment
     {
         return $this->membershipEndAt;
     }
+
+    public function getNetAmount(): int
+    {
+        return $this->netAmount;
+    }
+
+    public function getFeesAmount(): int
+    {
+        return $this->feesAmount;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function getPaymentProvider(): ContactPaymentProvider
+    {
+        return $this->paymentProvider;
+    }
+
+    public function getPaymentMethod(): ContactPaymentMethod
+    {
+        return $this->paymentMethod;
+    }
+
+    public function getCapturedAt(): ?\DateTimeImmutable
+    {
+        return $this->capturedAt;
+    }
+
+    public function getFailedAt(): ?\DateTimeImmutable
+    {
+        return $this->failedAt;
+    }
+
+    public function getRefundedAt(): ?\DateTimeImmutable
+    {
+        return $this->refundedAt;
+    }
+
+    public function getCanceledAt(): ?\DateTimeImmutable
+    {
+        return $this->canceledAt;
+    }
 }
