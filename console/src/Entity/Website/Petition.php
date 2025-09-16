@@ -91,8 +91,21 @@ class Petition
         return $this->slug;
     }
 
+    public function getPublishedAt(): ?\DateTime
+    {
+        return $this->publishedAt;
+    }
+
     public function setPublishedAt(?\DateTime $date = null): void
     {
         $this->publishedAt = $date;
+    }
+
+    /**
+     * @return Collection<LocalizedPetition>
+     */
+    public function getLocalizations(): Collection
+    {
+        return $this->localizations;
     }
 }
