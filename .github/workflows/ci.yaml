@@ -41,10 +41,10 @@ jobs:
                   tools: symfony-cli
 
             - name: Install translations-checker
-              run: symfony composer translations-checker-install
+              run: cd console && symfony composer translations-checker-install
 
             - name: Run translations-checker
-              run: symfony composer translations-checker-check
+              run: cd console && symfony composer translations-checker-check
 
     # JS coding style
     console-js-legacy-prettier:
@@ -245,10 +245,10 @@ jobs:
                   tools: symfony-cli
 
             - name: Install translations-checker
-              run: symfony composer translations-checker-install
+              run: cd public && symfony composer translations-checker-install
 
             - name: Run translations-checker
-              run: symfony composer translations-checker-check
+              run: cd public && symfony composer translations-checker-check
 
     # Tests
     public-tests:
