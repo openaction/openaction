@@ -105,6 +105,14 @@ class TrombinoscopePerson implements Searchable
     #[ORM\OrderBy(['publishedAt' => 'DESC'])]
     private Collection $events;
 
+    /**
+     * @var Collection<Petition>
+     */
+    #[ORM\ManyToMany(targetEntity: Petition::class, mappedBy: 'authors')]
+    #[ORM\JoinTable(name: 'website_petitions_authors')]
+    #[ORM\OrderBy(['publishedAt' => 'DESC'])]
+    private Collection $petitions;
+
     public function __construct(Project $project, string $fullName, int $weight)
     {
         $this->populateTimestampable();
@@ -116,6 +124,7 @@ class TrombinoscopePerson implements Searchable
         $this->categories = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->petitions = new ArrayCollection();
     }
 
     /*
