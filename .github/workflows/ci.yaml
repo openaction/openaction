@@ -38,12 +38,13 @@ jobs:
               with:
                   php-version: '8.1'
                   coverage: none
+                  tools: symfony-cli
 
             - name: Install translations-checker
-              run: wget https://github.com/tgalopin/symfony-translations-checker/releases/download/1.0.0/checker.phar
+              run: cd console && symfony composer translations-checker-install
 
-            - name: Check translations
-              run: php checker.phar check console/translations
+            - name: Run translations-checker
+              run: cd console && symfony composer translations-checker-check
 
     # JS coding style
     console-js-legacy-prettier:
@@ -241,12 +242,13 @@ jobs:
               with:
                   php-version: '8.1'
                   coverage: none
+                  tools: symfony-cli
 
             - name: Install translations-checker
-              run: wget https://github.com/tgalopin/symfony-translations-checker/releases/download/1.0.0/checker.phar
+              run: cd public && symfony composer translations-checker-install
 
-            - name: Check translations
-              run: php checker.phar check public/translations
+            - name: Run translations-checker
+              run: cd public && symfony composer translations-checker-check
 
     # Tests
     public-tests:

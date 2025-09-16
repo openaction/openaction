@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c35f1adc2f19f93e4e8cbb27fb9a704",
+    "content-hash": "f425b25a3c701473e19a6267581427ca",
     "packages": [
         {
             "name": "async-aws/core",
@@ -14755,7 +14755,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -14772,6 +14772,6 @@
         "ext-zip": "*",
         "composer-runtime-api": "^2.0"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

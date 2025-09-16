@@ -16,37 +16,37 @@
         "nyholm/psr7": "^1.3",
         "sensio/framework-extra-bundle": "^6.2",
         "sentry/sentry": "^3.3",
-        "symfony/console": "6.4.*",
-        "symfony/debug-bundle": "6.4.*",
-        "symfony/dotenv": "6.4.*",
+        "symfony/console": "~6.4.0",
+        "symfony/debug-bundle": "~6.4.0",
+        "symfony/dotenv": "~6.4.0",
         "symfony/flex": "^2.0",
-        "symfony/form": "6.4.*",
-        "symfony/framework-bundle": "6.4.*",
-        "symfony/http-client": "6.4.*",
-        "symfony/mime": "6.4.*",
+        "symfony/form": "~6.4.0",
+        "symfony/framework-bundle": "~6.4.0",
+        "symfony/http-client": "~6.4.0",
+        "symfony/mime": "~6.4.0",
         "symfony/monolog-bundle": "^3.5",
-        "symfony/runtime": "6.4.*",
-        "symfony/security-csrf": "6.4.*",
-        "symfony/string": "6.4.*",
-        "symfony/translation": "6.4.*",
-        "symfony/twig-bundle": "6.4.*",
-        "symfony/validator": "6.4.*",
+        "symfony/runtime": "~6.4.0",
+        "symfony/security-csrf": "~6.4.0",
+        "symfony/string": "~6.4.0",
+        "symfony/translation": "~6.4.0",
+        "symfony/twig-bundle": "~6.4.0",
+        "symfony/validator": "~6.4.0",
         "symfony/webpack-encore-bundle": "^1.12",
-        "symfony/yaml": "6.4.*",
+        "symfony/yaml": "~6.4.0",
         "twig/intl-extra": "^3.0",
         "twig/string-extra": "^3.0"
     },
     "require-dev": {
-        "symfony/browser-kit": "6.4.*",
-        "symfony/css-selector": "6.4.*",
+        "symfony/browser-kit": "~6.4.0",
+        "symfony/css-selector": "~6.4.0",
         "symfony/maker-bundle": "^1.20",
-        "symfony/phpunit-bridge": "6.4.*",
-        "symfony/stopwatch": "6.4.*",
-        "symfony/var-dumper": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*"
+        "symfony/phpunit-bridge": "~6.4.0",
+        "symfony/stopwatch": "~6.4.0",
+        "symfony/var-dumper": "~6.4.0",
+        "symfony/web-profiler-bundle": "~6.4.0"
     },
     "replace": {
-        "paragonie/random_compat": "2.*",
+        "paragonie/random_compat": "^2.0",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php72": "*",
@@ -69,9 +69,9 @@
     },
     "config": {
         "allow-plugins": {
+            "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "php-http/discovery": true
+            "symfony/runtime": true
         },
         "optimize-autoloader": true,
         "preferred-install": {
@@ -96,10 +96,15 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
-        "php-cs-fixer-install": "echo 'Installing php-cs-fixer in /tools' && mkdir -p tools/php-cs-fixer && composer require --dev --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer:3.75.*",
+        "composer-normalizer": "php ./tools/composer-normalize.phar",
+        "composer-normalizer-check": "php ./tools/composer-normalize.phar --dry-run",
+        "composer-normalizer-install": "mkdir -p tools && echo 'Installing composer-normalizer in /tools' && cd tools && curl -LO https://github.com/ergebnis/composer-normalize/releases/download/2.48.2/composer-normalize.phar",
+        "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
         "php-cs-fixer-check": "PHP_CS_FIXER_IGNORE_ENV=1 tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.dist.php",
-        "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1  tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
-        "phpstan-install": "echo 'Installing phpstan in /tools' && mkdir -p tools/phpstan && composer require --working-dir=tools/phpstan phpstan/phpstan:2.1.22",
-        "phpstan": "tools/phpstan/vendor/bin/phpstan --memory-limit=1G"
+        "php-cs-fixer-install": "echo 'Installing php-cs-fixer in /tools' && mkdir -p tools/php-cs-fixer && composer require --dev --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer:3.75.*",
+        "phpstan-check": "tools/phpstan/vendor/bin/phpstan --memory-limit=1G",
+        "phpstan-install": "echo 'Installing phpstan in /tools' && mkdir -p tools/phpstan && composer require --working-dir=tools/phpstan phpstan/phpstan:2.1.22 phpstan/phpstan-doctrine",
+        "translations-checker-check": "php ./tools/checker.phar check translations",
+        "translations-checker-install": "mkdir -p tools && echo 'Installing translations-checker in /tools' && cd tools && curl -LO https://github.com/tgalopin/symfony-translations-checker/releases/download/1.0.0/checker.phar"
     }
 }
