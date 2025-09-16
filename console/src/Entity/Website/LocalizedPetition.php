@@ -89,4 +89,14 @@ class LocalizedPetition
 
         return $self;
     }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getImage(): ?Upload
+    {
+        return $this->image;
+    }
 }
