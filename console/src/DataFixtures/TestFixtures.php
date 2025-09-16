@@ -2131,8 +2131,8 @@ class TestFixtures extends AbstractFixtures
 
     private function loadPetitionsCategories(): void
     {
-        // Create a couple of categories in Citipo project
-        $project = $this->projects[self::PROJECT_CITIPO_ID];
+        // Create a couple of categories in Acme project
+        $project = $this->projects['2c720420-65fd-4360-9d77-731758008497'];
         foreach ([['uuid' => 'f9b7bd2a-9e6e-49d4-9f3c-5f2f20b2f901', 'name' => 'General'], ['uuid' => 'c3a9d5b1-45ce-4d2f-8c6f-4b2e1a9dd202', 'name' => 'Policy']] as $data) {
             $this->em->persist($this->petitionCategories[] = PetitionCategory::createFixture(array_merge($data, [
                 'project' => $project,
@@ -2143,8 +2143,7 @@ class TestFixtures extends AbstractFixtures
 
     private function loadPetitions(): void
     {
-        $project = $this->projects[self::PROJECT_CITIPO_ID];
-        $form = $this->forms[0] ?? null;
+        $project = $this->projects['2c720420-65fd-4360-9d77-731758008497'];
         $authors = array_slice($this->trombinoscopePersons, 0, 1);
 
         $petition = Petition::createFixture([
@@ -2163,7 +2162,6 @@ class TestFixtures extends AbstractFixtures
             'locale' => 'en',
             'title' => 'Save the Park',
             'description' => 'Protect our green spaces',
-            'form' => $form,
             'categories' => [$this->petitionCategories[0]],
             'uuid' => 'd1a1a1a1-a1a1-4b4b-8c8c-aaaaaaaaaaaa',
         ]);
