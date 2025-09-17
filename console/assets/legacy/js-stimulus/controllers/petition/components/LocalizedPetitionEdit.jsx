@@ -124,6 +124,11 @@ export function LocalizedPetitionEdit(props) {
         });
     }, []);
 
+    let uploaderViewStyle = { cursor: uploadStatus === 'saving' ? 'default' : 'pointer' };
+    if (metadata.image && uploadStatus !== 'saving') {
+        uploaderViewStyle.backgroundImage = 'url(' + metadata.image + ')';
+    }
+
     return (
         <div>
             <div className="row align-items-center justify-content-end">
@@ -180,7 +185,7 @@ export function LocalizedPetitionEdit(props) {
                                 <strong>Image</strong>
                             </div>
                             <div className="content-metadata-image mb-1">
-                                <div className="content-metadata-image-view text-center">
+                                <div className="content-metadata-image-view text-center" style={uploaderViewStyle}>
                                     {!metadata.image ? (
                                         uploadStatus === 'saving' ? (
                                             <div>
