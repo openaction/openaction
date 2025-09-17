@@ -14,6 +14,7 @@ index:
   view: Anzeigen
   edit: Bearbeiten
   delete: Löschen
+  remove_confirm: 'Sind Sie sicher, dass Sie die Petition „%name%“ löschen möchten?'
   create_locale: 'Erstellen %locale%'
 
 edit:

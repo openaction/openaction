@@ -14,6 +14,7 @@ index:
   view: View
   edit: Edit
   delete: Delete
+  remove_confirm: 'Are you sure you want to delete the petition "%name%"?'
   create_locale: 'Create %locale%'
 
 edit:

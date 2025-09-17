@@ -9,6 +9,7 @@ use App\Platform\Permissions;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\PetitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -68,6 +69,26 @@ class PetitionController extends AbstractController
         return $this->redirectToRoute('console_website_petition_localized_edit', [
             'projectUuid' => $project->getUuid(),
             'uuid' => $localized->getUuid(),
+        ]);
+    }
+
+    #[Route('/{uuid}/delete', name: 'console_website_petition_delete', methods: ['GET'])]
+    public function delete(Petition $petition, Request $request)
+    {
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
+        $this->denyUnlessValidCsrf($request);
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($petition);
+
+        $this->em->remove($petition);
+        $this->em->flush();
+
+        if ($request->headers->has('X-Ajax-Confirm')) {
+            return new JsonResponse(['success' => true]);
+        }
+
+        return $this->redirectToRoute('console_website_petitions', [
+            'projectUuid' => $this->getProject()->getUuid(),
         ]);
     }
 }

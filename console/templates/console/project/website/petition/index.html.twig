@@ -134,10 +134,16 @@
                                         </ul>
                                     </div>
 
-                                    <a href="#" class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete" aria-disabled="true">
-                                        <i class="fad fa-trash mr-1"></i>
-                                        {{ 'index.delete'|trans({}, 'project_petitions') }}
-                                    </a>
+                                    {% if is_granted('website_petitions_manage_entity', petition) %}
+                                        <a href="{{ csrf_path('console_website_petition_delete', {'uuid': petition.uuid, 'projectUuid': project.uuid}) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': (loc ? loc.title : petition.slug)}, 'project_petitions') }}"
+                                           data-target="#petition-{{ petition.id }}"
+                                           class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.delete'|trans({}, 'project_petitions') }}
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
