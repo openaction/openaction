@@ -245,6 +245,69 @@ export function LocalizedPetitionEdit(props) {
                         </div>
                     </div>
                     <div className="col-12 col-lg-6">
+                        {/* Parent petition details */}
+                        <div className="p-3">
+                            <div className="mb-2">
+                                <strong>Slug</strong>
+                            </div>
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                defaultValue={parent.slug}
+                                onChange={(e) => saveParentMetadata({ ...parent, slug: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="p-3">
+                            <div className="mb-2">
+                                <strong>Start at</strong>
+                            </div>
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                placeholder="YYYY-MM-DDTHH:mm:ssZ"
+                                defaultValue={parent.startAt || ''}
+                                onChange={(e) => saveParentMetadata({ ...parent, startAt: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="p-3">
+                            <div className="mb-2">
+                                <strong>End at</strong>
+                            </div>
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                placeholder="YYYY-MM-DDTHH:mm:ssZ"
+                                defaultValue={parent.endAt || ''}
+                                onChange={(e) => saveParentMetadata({ ...parent, endAt: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="p-3">
+                            <div className="mb-2">
+                                <strong>Signatures goal</strong>
+                            </div>
+                            <input
+                                type="number"
+                                className="bp4-input bp4-fill"
+                                min="0"
+                                defaultValue={parent.signaturesGoal || ''}
+                                onChange={(e) => saveParentMetadata({ ...parent, signaturesGoal: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="p-3">
+                            <div className="mb-2">
+                                <strong>Authors</strong>
+                            </div>
+                            <AuthorsSelector
+                                choices={parent.availableAuthors}
+                                selectedIds={parent.authorsIds}
+                                onChange={(authors) => saveParentMetadata({ ...parent, authorsIds: authors })}
+                            />
+                        </div>
+
                         <div className="p-3">
                             <div className="mb-2">
                                 <strong>Description</strong>
