@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: 'website_petitions', uniqueConstraints: [
     new ORM\UniqueConstraint(name: 'website_petitions_project_slug_unique', columns: ['project_id', 'slug']),
 ])]
-#[UniqueEntity(fields: ['project', 'slug'], message: 'console.project.website.petitions.slug_unique')]
+#[UniqueEntity(fields: ['project', 'slug'], errorPath: 'slug', message: 'console.project.website.petitions.slug_unique')]
 class Petition
 {
     use Util\EntityIdTrait;

@@ -268,10 +268,12 @@ export function LocalizedPetitionEdit(props) {
                                 defaultValue={parent.slug}
                                 onChange={(e) => saveParentMetadata({ ...parent, slug: e.target.value })}
                             />
-                            {parentErrors[props.parentSlugInput] && (
-                                <div className="text-danger mt-2">
-                                    {parentErrors[props.parentSlugInput].join(' ')}
-                                </div>
+                            {(() => {
+                                const slugErrors = parentErrors['slug'] || parentErrors[props.parentSlugInput];
+                                return slugErrors ? (
+                                    <div className="text-danger mt-2">{slugErrors.join(' ')}</div>
+                                ) : null;
+                            })()}
                             )}
                         </div>
 
