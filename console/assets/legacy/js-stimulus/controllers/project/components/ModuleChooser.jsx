@@ -4,13 +4,14 @@ import { translator } from '../../../services/translator';
 const platform = {
     website: [
         'website_pages',
-        'website_newsletter',
         'website_posts',
         'website_documents',
-        'website_trombinoscope',
-        'website_manifesto',
         'website_events',
         'website_forms',
+        'website_petitions',
+        'website_newsletter',
+        'website_trombinoscope',
+        'website_manifesto',
     ],
     community: ['community_contacts', 'community_emailing', 'community_texting', 'community_phoning'],
     members_area: [

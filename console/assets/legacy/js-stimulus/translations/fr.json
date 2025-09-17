@@ -149,6 +149,10 @@
                         "label": "Formulaires",
                         "help": "Collectez des informations auprès de vos visiteurs."
                     },
+                    "website_petitions": {
+                        "label": "Pétitions",
+                        "help": "Créez et publiez des pétitions."
+                    },
                     "website_newsletter": {
                         "label": "Formulaire de newsletter",
                         "help": "Affichez un formulaire de newsletter pour collecter des adresses emails sur votre site."
