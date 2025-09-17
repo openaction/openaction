@@ -23,3 +23,6 @@ edit:
   switch_language: Switch language
   untitled: Untitled
   create_locale: 'Create %locale%'
+
+create:
+  default_title: '(Untitled petition)'

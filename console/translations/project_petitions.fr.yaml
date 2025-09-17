@@ -23,3 +23,6 @@ edit:
   switch_language: Changer de langue
   untitled: Sans titre
   create_locale: 'Créer %locale%'
+
+create:
+  default_title: '(Pétition sans titre)'

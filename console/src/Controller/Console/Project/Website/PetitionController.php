@@ -11,6 +11,7 @@ use App\Repository\Website\PetitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/website/petitions')]
 class PetitionController extends AbstractController
@@ -45,7 +46,7 @@ class PetitionController extends AbstractController
     }
 
     #[Route('/create', name: 'console_website_petition_create')]
-    public function create(Request $request)
+    public function create(Request $request, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -53,9 +54,12 @@ class PetitionController extends AbstractController
 
         $project = $this->getProject();
 
-        // Create empty petition and a first localization using current locale
-        $petition = new Petition($project, 'petition');
-        $localized = new LocalizedPetition($petition, $request->getLocale(), '');
+        // Create empty petition with default slug and a first localization with default title
+        $count = $this->repository->count(['project' => $project]);
+        $defaultSlug = 'petition-sans-titre-'.($count + 1);
+        $petition = new Petition($project, $defaultSlug);
+        $defaultTitle = $translator->trans('create.default_title', [], 'project_petitions');
+        $localized = new LocalizedPetition($petition, $request->getLocale(), $defaultTitle);
 
         $this->em->persist($petition);
         $this->em->persist($localized);
