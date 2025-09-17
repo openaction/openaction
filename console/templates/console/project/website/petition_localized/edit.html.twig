@@ -8,9 +8,11 @@
     'content': path('console_website_petition_localized_update_content', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
     'metadata': path('console_website_petition_localized_update_metadata', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
     'image': path('console_website_petition_localized_update_image', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
+    'parent': path('console_website_petition_localized_update_parent', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
 }) %}
 
 {% set categoriesIds = localized.categories|map(c => c.id) %}
+{% set authorsIds = petition.authors|map(a => a.id ~ '') %}
 
 {% do expose('petition_localized_metadata', {
     'description': localized.description,
@@ -20,6 +22,15 @@
     'image': localized.image ? cdn_image_url(localized.image) : localized.image,
     'categories': categories,
     'categoryIds': categoriesIds,
+}) %}
+
+{% do expose('petition_parent_metadata', {
+    'slug': petition.slug,
+    'startAt': petition.startAt ? petition.startAt.format('Y-m-d\\TH:i:sP') : null,
+    'endAt': petition.endAt ? petition.endAt.format('Y-m-d\\TH:i:sP') : null,
+    'signaturesGoal': petition.signaturesGoal,
+    'availableAuthors': availableAuthors,
+    'authorsIds': authorsIds,
 }) %}
 
 {% block stylesheets %}
@@ -62,6 +73,11 @@
                             {{ form_widget(form.addressedTo) }}
                             {{ form_widget(form.categories) }}
                             {{ form_widget(image_form.file) }}
+                            {{ form_widget(parent_form.slug) }}
+                            {{ form_widget(parent_form.startAt) }}
+                            {{ form_widget(parent_form.endAt) }}
+                            {{ form_widget(parent_form.signaturesGoal) }}
+                            {{ form_widget(parent_form.authors) }}
                         </div>
                     </div>
                 </div>
@@ -80,4 +96,3 @@
         </div>
     </div>
 {% endblock %}
-

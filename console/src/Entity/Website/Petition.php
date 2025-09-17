@@ -91,6 +91,11 @@ class Petition
         return $this->slug;
     }
 
+    public function setSlug(string $slug): void
+    {
+        $this->slug = (new AsciiSlugger())->slug($slug)->lower();
+    }
+
     public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
@@ -99,6 +104,44 @@ class Petition
     public function setPublishedAt(?\DateTime $date = null): void
     {
         $this->publishedAt = $date;
+    }
+
+    public function getStartAt(): ?\DateTime
+    {
+        return $this->startAt;
+    }
+
+    public function setStartAt(?\DateTime $date = null): void
+    {
+        $this->startAt = $date;
+    }
+
+    public function getEndAt(): ?\DateTime
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTime $date = null): void
+    {
+        $this->endAt = $date;
+    }
+
+    public function getSignaturesGoal(): ?int
+    {
+        return $this->signaturesGoal;
+    }
+
+    public function setSignaturesGoal(?int $goal): void
+    {
+        $this->signaturesGoal = $goal;
+    }
+
+    /**
+     * @return Collection<TrombinoscopePerson>
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
     }
 
     /**

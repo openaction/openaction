@@ -162,6 +162,28 @@ class TrombinoscopePersonRepository extends ServiceEntityRepository
         });
     }
 
+    public function updateAuthorsForPetition(\App\Entity\Website\Petition $petition, array $authorsIds)
+    {
+        $this->_em->wrapInTransaction(function () use ($petition, $authorsIds) {
+            $metadata = $this->_em->getClassMetadata(TrombinoscopePerson::class);
+
+            $this->_em->getConnection()->createQueryBuilder()
+                ->delete($metadata->associationMappings['petitions']['joinTable']['name'])
+                ->where('petition_id = :petition')
+                ->setParameter('petition', $petition->getId())
+                ->execute()
+            ;
+
+            $petition->getAuthors()->clear();
+            foreach ($authorsIds as $id) {
+                $petition->getAuthors()->add($this->find($id));
+            }
+
+            $this->_em->persist($petition);
+            $this->_em->flush();
+        });
+    }
+
     public function updateParticipants(Event $event, array $participantsIds)
     {
         $this->_em->wrapInTransaction(function () use ($event, $participantsIds) {
