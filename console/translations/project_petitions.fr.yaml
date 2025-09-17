@@ -29,3 +29,24 @@ edit:
 
 create:
   default_title: '(Pétition sans titre)'
+
+categories:
+  title: Catégories de pétitions
+  back_to_petitions: Retour aux pétitions
+  back_to_list: Retour aux catégories
+  new: Nouvelle catégorie
+  empty:
+    title: Aucune catégorie
+    help: Créez votre première catégorie pour organiser les pétitions.
+  table:
+    order: Ordre
+    name: Nom
+    count: '# Pétitions'
+    created: Créée le
+  actions:
+    edit: Éditer
+    delete: Supprimer
+    delete_confirm: "Êtes-vous sûr de vouloir supprimer la catégorie '%name%' ?"
+  form:
+    name: Nom
+    save: Enregistrer

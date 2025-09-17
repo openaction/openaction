@@ -116,6 +116,75 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertGreaterThanOrEqual(1, $petition->getAuthors()->count());
     }
 
+    public function testUpdateParentPublishToggle()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Open edit page to get global CSRF token
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/edit');
+        $this->assertResponseIsSuccessful();
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Publish now
+        $now = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d\TH:i:sP');
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/parent?_token='.$token,
+            [
+                'petition' => [
+                    'publishedAt' => $now,
+                ],
+            ]
+        );
+        $this->assertResponseIsSuccessful();
+
+        /** @var LocalizedPetitionRepository $locRepo */
+        $locRepo = static::getContainer()->get(LocalizedPetitionRepository::class);
+        /** @var LocalizedPetition $loc */
+        $loc = $locRepo->findOneBy(['uuid' => self::LOCALIZED_EN_UUID]);
+        $this->assertNotNull($loc->getPetition()->getPublishedAt());
+
+        // Unpublish
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/parent?_token='.$token,
+            [
+                'petition' => [
+                    'publishedAt' => '',
+                ],
+            ]
+        );
+        $this->assertResponseIsSuccessful();
+
+        $loc = $locRepo->findOneBy(['uuid' => self::LOCALIZED_EN_UUID]);
+        $this->assertNull($loc->getPetition()->getPublishedAt());
+    }
+
+    public function testUpdateContentOnPublishedPetition()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Open edit page to get CSRF token
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/edit');
+        $this->assertResponseIsSuccessful();
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Update localized content
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/content?_token='.$token,
+            [
+                'localized_petition' => [
+                    'title' => 'Updated Title',
+                    'content' => '<p>Updated</p>',
+                ],
+            ]
+        );
+        $this->assertResponseIsSuccessful();
+    }
+
     public function testDeleteLocalized()
     {
         $client = static::createClient();
