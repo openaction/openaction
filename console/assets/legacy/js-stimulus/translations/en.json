@@ -10,6 +10,39 @@
         "saved": "Saved",
         "error": "An error occured"
     },
+    "petition": {
+        "edit": {
+            "metadata_modal": {
+                "image": {
+                    "label": "Image",
+                    "uploading": "Uploading...",
+                    "placeholder": "Drop an image"
+                },
+                "categories": {
+                    "label": "Categories"
+                },
+                "parent": {
+                    "slug": "Slug",
+                    "startAt": "Start at",
+                    "endAt": "End at",
+                    "signaturesGoal": "Signatures goal",
+                    "authors": "Authors"
+                },
+                "description": {
+                    "label": "Description"
+                },
+                "submitButtonLabel": {
+                    "label": "Submit button label"
+                },
+                "optinLabel": {
+                    "label": "Opt-in label"
+                },
+                "addressedTo": {
+                    "label": "Addressed to"
+                }
+            }
+        }
+    },
     "published_at_view": {
         "draft": "Draft",
         "published": "Published",
