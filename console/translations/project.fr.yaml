@@ -12,6 +12,7 @@ sidebar:
         documents: Documents
         trombinoscope: Trombinoscope
         manifesto: Propositions
+        petitions: Pétitions
 
     community:
         label: Communauté
@@ -22,7 +23,6 @@ sidebar:
         print: Campagnes d'imprimés
         events: Évènements
         forms: Questionnaires
-        petitions: Pétitions
 
     socials:
         label: Réseaux sociaux
