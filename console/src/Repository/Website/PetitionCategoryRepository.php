@@ -91,10 +91,11 @@ class PetitionCategoryRepository extends ServiceEntityRepository
         }
 
         $this->_em->wrapInTransaction(function () use ($localized, $categories) {
-            $metadata = $this->_em->getClassMetadata(PetitionCategory::class);
+            $lpMeta = $this->_em->getClassMetadata(\App\Entity\Website\LocalizedPetition::class);
+            $joinTable = $lpMeta->associationMappings['categories']['joinTable']['name'];
 
             $this->_em->getConnection()->createQueryBuilder()
-                ->delete($metadata->associationMappings['petitions']['joinTable']['name'])
+                ->delete($joinTable)
                 ->where('localized_petition_id = :lp')
                 ->setParameter('lp', $localized->getId())
                 ->execute()

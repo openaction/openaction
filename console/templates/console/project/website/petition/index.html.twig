@@ -36,7 +36,7 @@
                         Categories
                     </a>
 
-                    <a href="#" class="btn btn-primary petitions-list-action-create" aria-disabled="true">
+                    <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-primary petitions-list-action-create">
                         <i class="far fa-plus mr-1"></i>
                         Create petition
                     </a>
@@ -52,7 +52,7 @@
                             No petitions found
                         </h4>
 
-                        <a href="#" class="btn btn-lg btn-primary petitions-list-action-create" aria-disabled="true">
+                        <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-lg btn-primary petitions-list-action-create">
                             <i class="far fa-plus mr-1"></i>
                             Create your first petition
                         </a>
@@ -121,8 +121,8 @@
                                     {% set all_locales = ['fr','en','de','it','nl','pt'] %}
                                     {% set missing_locales = all_locales|filter(l => l not in existing_locales) %}
 
-                                    <div class="btn-group mr-2">
-                                        <button type="button" class="btn btn-sm btn-outline-primary border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="dropdown mr-2 d-inline-block">
+                                        <button type="button" class="btn btn-sm btn-outline-primary border-0 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <i class="fad fa-edit mr-1"></i>
                                             Edit
                                         </button>

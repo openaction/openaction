@@ -31,4 +31,5 @@ application.register('checkbox-select-all', CheckboxSelectAll);
 
 // Launch Bootstrap
 require('bootstrap/js/src/modal');
+require('bootstrap/js/src/dropdown');
 require('bs-custom-file-input').init();

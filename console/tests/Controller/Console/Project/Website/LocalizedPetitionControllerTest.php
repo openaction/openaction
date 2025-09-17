@@ -66,4 +66,50 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertEquals('fr', $created->getLocale());
         $this->assertEquals(self::PETITION_UUID, (string) $created->getPetition()->getUuid());
     }
+
+    public function testUpdateParentDetails()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Open edit page to get global CSRF token
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/edit');
+        $this->assertResponseIsSuccessful();
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Pick one author from project
+        $project = static::getContainer()->get(\App\Repository\ProjectRepository::class)
+            ->findOneBy(['uuid' => self::PROJECT_ACME_UUID]);
+        $persons = static::getContainer()->get(\App\Repository\Website\TrombinoscopePersonRepository::class)
+            ->getProjectPersonsList($project);
+        $authorId = $persons[0]['id'] ?? null;
+
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/parent?_token='.$token,
+            [
+                'petition' => [
+                    'slug' => 'save-the-lake',
+                    'startAt' => '2020-01-01T00:00:00+00:00',
+                    'endAt' => '2020-02-01T00:00:00+00:00',
+                    'signaturesGoal' => 1000,
+                    'authors' => json_encode([$authorId]),
+                ],
+            ]
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        /** @var LocalizedPetitionRepository $locRepo */
+        $locRepo = static::getContainer()->get(LocalizedPetitionRepository::class);
+        /** @var LocalizedPetition $loc */
+        $loc = $locRepo->findOneBy(['uuid' => self::LOCALIZED_EN_UUID]);
+        $petition = $loc->getPetition();
+
+        $this->assertSame('save-the-lake', $petition->getSlug());
+        $this->assertNotNull($petition->getStartAt());
+        $this->assertNotNull($petition->getEndAt());
+        $this->assertSame(1000, $petition->getSignaturesGoal());
+        $this->assertGreaterThanOrEqual(1, $petition->getAuthors()->count());
+    }
 }

@@ -14,9 +14,12 @@ use App\Form\Website\LocalizedPetitionImageType;
 use App\Form\Website\LocalizedPetitionType;
 use App\Form\Website\Model\LocalizedPetitionData;
 use App\Form\Website\Model\LocalizedPetitionImageData;
+use App\Form\Website\Model\PetitionData;
+use App\Form\Website\PetitionType;
 use App\Platform\Permissions;
 use App\Repository\Website\LocalizedPetitionRepository;
 use App\Repository\Website\PetitionCategoryRepository;
+use App\Repository\Website\TrombinoscopePersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +37,7 @@ class PetitionLocalizedController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly LocalizedPetitionRepository $localizedRepository,
         private readonly PetitionCategoryRepository $categoryRepository,
+        private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
     ) {
     }
 
@@ -51,6 +55,8 @@ class PetitionLocalizedController extends AbstractController
             'categories' => $this->categoryRepository->getProjectCategories($this->getProject(), Query::HYDRATE_ARRAY),
             'form' => $this->createForm(LocalizedPetitionType::class, new LocalizedPetitionData())->createView(),
             'image_form' => $this->createForm(LocalizedPetitionImageType::class, new LocalizedPetitionImageData())->createView(),
+            'parent_form' => $this->createForm(PetitionType::class, new PetitionData())->createView(),
+            'availableAuthors' => $this->trombinoscopePersonRepository->getProjectPersonsList($this->getProject(), Query::HYDRATE_ARRAY),
         ]);
     }
 
@@ -76,7 +82,7 @@ class PetitionLocalizedController extends AbstractController
 
         $data = new LocalizedPetitionData();
         $form = $this->createForm(LocalizedPetitionType::class, $data, ['validation_groups' => $groupValidation]);
-        $form->handleRequest($request);
+        $form->submit($request->request->all($form->getName()), false);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -94,6 +100,41 @@ class PetitionLocalizedController extends AbstractController
         if ('Metadata' === $groupValidation) {
             $this->categoryRepository->updateCategoriesForLocalized($localized, $data->getCategoriesArray());
         }
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    #[Route('/localized/{uuid}/update/parent', name: 'console_website_petition_localized_update_parent', methods: ['POST'])]
+    public function updateParent(LocalizedPetition $localized, Request $request)
+    {
+        $petition = $localized->getPetition();
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($petition);
+
+        $data = new PetitionData();
+        $form = $this->createForm(PetitionType::class, $data);
+        $form->submit($request->request->all($form->getName()), false);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (null !== $data->slug) {
+            $petition->setSlug($data->slug);
+        }
+        $petition->setStartAt($data->startAt ? new \DateTime($data->startAt) : null);
+        $petition->setEndAt($data->endAt ? new \DateTime($data->endAt) : null);
+        $petition->setSignaturesGoal($data->signaturesGoal);
+        if (null !== $data->publishedAt) {
+            $petition->setPublishedAt($data->publishedAt ? new \DateTime($data->publishedAt) : null);
+        }
+
+        $this->em->persist($petition);
+        $this->em->flush();
+
+        $this->trombinoscopePersonRepository->updateAuthorsForPetition($petition, $data->getAuthorsArray());
 
         return new JsonResponse(['success' => true]);
     }
