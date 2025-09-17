@@ -274,7 +274,6 @@ export function LocalizedPetitionEdit(props) {
                                     <div className="text-danger mt-2">{slugErrors.join(' ')}</div>
                                 ) : null;
                             })()}
-                            )}
                         </div>
 
                         <div className="p-3">
