@@ -115,6 +115,11 @@ class LocalizedPetition
         return $this->petition;
     }
 
+    public function getForm(): ?Form
+    {
+        return $this->form;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;

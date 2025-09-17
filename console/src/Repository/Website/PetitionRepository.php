@@ -5,6 +5,7 @@ namespace App\Repository\Website;
 use App\Entity\Project;
 use App\Entity\Website\Petition;
 use App\Repository\Util\RepositoryUuidEncodedTrait;
+use App\Util\Uid;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,5 +50,45 @@ class PetitionRepository extends ServiceEntityRepository
         }
 
         return new Paginator($qb->getQuery(), true);
+    }
+
+    /**
+     * @return Petition[]
+     */
+    public function getApiPetitions(Project $project, ?string $category): iterable
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p', 'lp', 'lpc')
+            ->leftJoin('p.localizations', 'lp')
+            ->leftJoin('lp.categories', 'lpc')
+            ->where('p.project = :project')
+            ->setParameter('project', $project->getId())
+            ->andWhere('p.onlyForMembers = FALSE')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->addOrderBy('p.updatedAt', 'DESC')
+        ;
+
+        if ($category) {
+            // Filter petitions that have at least one localized with given category uuid
+            $qb->andWhere('lpc.uuid = :category')
+                ->setParameter('category', Uid::fromBase62($category));
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findOneBySlug(Project $project, string $slug): ?Petition
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'lp', 'lpc')
+            ->leftJoin('p.localizations', 'lp')
+            ->leftJoin('lp.categories', 'lpc')
+            ->where('p.project = :project')
+            ->setParameter('project', $project->getId())
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }
