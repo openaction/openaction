@@ -110,7 +110,7 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             {% for loc in petition.localizations %}
-                                                <li>
+                                                <li id="localized-petition-{{ loc.id }}">
                                                     <a class="dropdown-item" href="{{ path('console_website_petition_localized_edit', {
                                                         'projectUuid': project.uuid,
                                                         'uuid': loc.uuid
@@ -119,6 +119,23 @@
                                                     </a>
                                                 </li>
                                             {% endfor %}
+                                            {% if petition.localizations|length > 0 %}
+                                                <li><hr class="dropdown-divider"></li>
+                                                {% for loc in petition.localizations %}
+                                                    <li id="localized-petition-delete-{{ loc.id }}">
+                                                        <a class="dropdown-item text-danger"
+                                                           href="{{ csrf_path('console_website_petition_localized_delete', {
+                                                                'projectUuid': project.uuid,
+                                                                'uuid': loc.uuid
+                                                           }) }}"
+                                                           data-controller="delete"
+                                                           data-message="{{ 'index.remove_localized_confirm'|trans({'%locale%': loc.locale|upper, '%title%': loc.title}, 'project_petitions') }}"
+                                                           data-target="#localized-petition-{{ loc.id }}">
+                                                            {{ 'index.delete_locale'|trans({'%locale%': loc.locale|upper}, 'project_petitions') }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            {% endif %}
                                             {% if petition.localizations|length > 0 %}
                                                 <li><hr class="dropdown-divider"></li>
                                             {% endif %}
@@ -134,10 +151,16 @@
                                         </ul>
                                     </div>
 
-                                    <a href="#" class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete" aria-disabled="true">
-                                        <i class="fad fa-trash mr-1"></i>
-                                        {{ 'index.delete'|trans({}, 'project_petitions') }}
-                                    </a>
+                                    {% if is_granted('website_petitions_manage_entity', petition) %}
+                                        <a href="{{ csrf_path('console_website_petition_delete', {'uuid': petition.uuid, 'projectUuid': project.uuid}) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': (loc ? loc.title : petition.slug)}, 'project_petitions') }}"
+                                           data-target="#petition-{{ petition.id }}"
+                                           class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.delete'|trans({}, 'project_petitions') }}
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

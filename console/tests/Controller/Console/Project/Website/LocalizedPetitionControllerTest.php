@@ -29,6 +29,9 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertStringContainsString('Create IT', $menu->text());
         $this->assertStringContainsString('Create NL', $menu->text());
         $this->assertStringContainsString('Create PT', $menu->text());
+
+        // Delete option for existing EN localization should be visible in dropdown
+        $this->assertStringContainsString('Delete EN', $menu->text());
     }
 
     public function testEditPageRendersExisting()
@@ -111,5 +114,27 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertNotNull($petition->getEndAt());
         $this->assertSame(1000, $petition->getSignaturesGoal());
         $this->assertGreaterThanOrEqual(1, $petition->getAuthors()->count());
+    }
+
+    public function testDeleteLocalized()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Open list and click Delete EN
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions');
+        $this->assertResponseIsSuccessful();
+
+        $link = $crawler->selectLink('Delete EN');
+        $this->assertGreaterThan(0, $link->count());
+        $client->click($link->link());
+
+        $this->assertResponseRedirects();
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+
+        // Ensure the EN localization no longer exists
+        $repo = static::getContainer()->get(LocalizedPetitionRepository::class);
+        $this->assertNull($repo->findOneBy(['uuid' => self::LOCALIZED_EN_UUID]));
     }
 }
