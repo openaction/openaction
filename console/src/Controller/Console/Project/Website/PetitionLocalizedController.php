@@ -127,6 +127,9 @@ class PetitionLocalizedController extends AbstractController
         $petition->setStartAt($data->startAt ? new \DateTime($data->startAt) : null);
         $petition->setEndAt($data->endAt ? new \DateTime($data->endAt) : null);
         $petition->setSignaturesGoal($data->signaturesGoal);
+        if (null !== $data->publishedAt) {
+            $petition->setPublishedAt($data->publishedAt ? new \DateTime($data->publishedAt) : null);
+        }
 
         $this->em->persist($petition);
         $this->em->flush();

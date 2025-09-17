@@ -18,6 +18,7 @@ class PetitionType extends AbstractType
             ->add('endAt', HiddenType::class, ['required' => false])
             ->add('signaturesGoal', HiddenType::class, ['required' => false])
             ->add('authors', HiddenType::class, ['required' => false])
+            ->add('publishedAt', HiddenType::class, ['required' => false])
         ;
     }
 

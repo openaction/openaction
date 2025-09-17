@@ -17,6 +17,8 @@ class PetitionData
 
     public ?string $authors = null;
 
+    public ?string $publishedAt = null;
+
     public function getAuthorsArray()
     {
         return Json::decode($this->authors) ?: [];
