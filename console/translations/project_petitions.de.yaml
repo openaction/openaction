@@ -1,0 +1,25 @@
+index:
+  title: Petitionen
+  help: Verwalten Sie die Petitionen für dieses Projekt.
+  edit_categories: Kategorien
+  create: Petition erstellen
+  no_result: Keine Petitionen gefunden
+  no_result_create: Erstellen Sie Ihre erste Petition
+  scheduled: Geplant
+  scheduled_for: 'Geplant für %datetime%'
+  published: Veröffentlicht
+  published_at: 'Veröffentlicht am %datetime%'
+  draft: Entwurf
+  visits: Aufrufe
+  view: Anzeigen
+  edit: Bearbeiten
+  delete: Löschen
+  create_locale: 'Erstellen %locale%'
+
+edit:
+  title: 'Petition bearbeiten (%locale%)'
+  back: Zurück zu den Petitionen
+  view: Auf der Website ansehen
+  switch_language: Sprache wechseln
+  untitled: Ohne Titel
+  create_locale: 'Erstellen %locale%'

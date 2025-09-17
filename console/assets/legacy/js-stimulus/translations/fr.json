@@ -5,6 +5,31 @@
         "no": "Non, annuler",
         "error": "Une erreur est survenue. Pouvez-vous réessayer ? Si le problème persiste, essayez de charger la page à nouveau ou contactez-nous"
     },
+    "petition": {
+        "edit": {
+            "metadata_modal": {
+                "image": {
+                    "label": "Image",
+                    "uploading": "Chargement...",
+                    "placeholder": "Déposer une image"
+                },
+                "categories": {
+                    "label": "Catégories"
+                },
+                "parent": {
+                    "slug": "Slug",
+                    "startAt": "Débute le",
+                    "endAt": "Se termine le",
+                    "signaturesGoal": "Objectif de signatures",
+                    "authors": "Auteurs"
+                },
+                "description": { "label": "Description" },
+                "submitButtonLabel": { "label": "Texte du bouton de soumission" },
+                "optinLabel": { "label": "Texte d'opt-in" },
+                "addressedTo": { "label": "Adressée à" }
+            }
+        }
+    },
     "status_view": {
         "saving": " Sauvegarde en cours...",
         "saved": "Sauvegardé",

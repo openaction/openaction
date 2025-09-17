@@ -1,6 +1,6 @@
 {% extends 'console/project/base.html.twig' %}
 
-{% block page_title 'Edit petition (' ~ localized.locale ~ ')' %}
+{% block page_title 'edit.title'|trans({'%locale%': localized.locale}, 'project_petitions') %}
 
 {% block sidebar_posts '' %}
 
@@ -58,12 +58,12 @@
                     <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
                        class="btn btn-outline-primary btn-sm border-0">
                         <i class="fal fa-angle-left"></i>
-                        <span>Back to petitions</span>
+                        <span>{{ 'edit.back'|trans({}, 'project_petitions') }}</span>
                     </a>
 
                     <a href="#" class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true">
                         <i class="fas fa-eye mr-1"></i>
-                        View on website
+                        {{ 'edit.view'|trans({}, 'project_petitions') }}
                     </a>
 
                     {# Switch language dropdown #}
@@ -74,7 +74,7 @@
                     <div class="dropdown d-inline-block ml-2">
                         <button type="button" class="btn btn-outline-primary btn-sm border-0 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <i class="fad fa-language mr-1"></i>
-                            {{ localized.locale|upper }}
+                            {{ 'edit.switch_language'|trans({}, 'project_petitions') }}
                         </button>
                         <ul class="dropdown-menu">
                             {% for loc in petition.localizations %}
@@ -84,7 +84,7 @@
                                             'projectUuid': current_project.uuid,
                                             'uuid': loc.uuid
                                         }) }}">
-                                            {{ loc.locale|upper }} — {{ loc.title ?: 'Untitled' }}
+                                            {{ loc.locale|upper }} — {{ loc.title ?: ('edit.untitled'|trans({}, 'project_petitions')) }}
                                         </a>
                                     </li>
                                 {% endif %}
@@ -97,7 +97,7 @@
                                             'projectUuid': current_project.uuid,
                                             'uuid': petition.uuid,
                                             'locale': l
-                                        }) }}">Create {{ l|upper }}</a>
+                                        }) }}">{{ 'edit.create_locale'|trans({'%locale%': l|upper}, 'project_petitions') }}</a>
                                     </li>
                                 {% endfor %}
                             {% endif %}
