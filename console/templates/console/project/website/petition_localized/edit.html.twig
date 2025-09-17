@@ -65,6 +65,44 @@
                         <i class="fas fa-eye mr-1"></i>
                         View on website
                     </a>
+
+                    {# Switch language dropdown #}
+                    {% set existing_locales = petition.localizations|map(l => l.locale) %}
+                    {% set all_locales = ['fr','en','de','it','nl','pt'] %}
+                    {% set missing_locales = all_locales|filter(l => l not in existing_locales) %}
+
+                    <div class="dropdown d-inline-block ml-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm border-0 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fad fa-language mr-1"></i>
+                            Switch language
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for loc in petition.localizations %}
+                                {% if loc.uuid != localized.uuid %}
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('console_website_petition_localized_edit', {
+                                            'projectUuid': current_project.uuid,
+                                            'uuid': loc.uuid
+                                        }) }}">
+                                            {{ loc.locale|upper }} — {{ loc.title ?: 'Untitled' }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if missing_locales|length > 0 %}
+                                <li><hr class="dropdown-divider"></li>
+                                {% for l in missing_locales %}
+                                    <li>
+                                        <a class="dropdown-item" href="{{ csrf_path('console_website_petition_localized_create', {
+                                            'projectUuid': current_project.uuid,
+                                            'uuid': petition.uuid,
+                                            'locale': l
+                                        }) }}">Create {{ l|upper }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-12 col-lg-auto ml-lg-auto">
                     <div data-petition--edit-target="topbar">
