@@ -220,4 +220,25 @@ class PetitionLocalizedController extends AbstractController
             'uuid' => $localized->getUuid(),
         ]);
     }
+
+    #[Route('/localized/{uuid}/delete', name: 'console_website_petition_localized_delete', methods: ['GET'])]
+    public function delete(LocalizedPetition $localized, Request $request)
+    {
+        $petition = $localized->getPetition();
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyUnlessValidCsrf($request);
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($petition);
+
+        $this->em->remove($localized);
+        $this->em->flush();
+
+        if ($request->headers->has('X-Ajax-Confirm')) {
+            return new JsonResponse(['success' => true]);
+        }
+
+        return $this->redirectToRoute('console_website_petitions', [
+            'projectUuid' => $this->getProject()->getUuid(),
+        ]);
+    }
 }

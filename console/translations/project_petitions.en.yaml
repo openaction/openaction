@@ -16,6 +16,8 @@ index:
   delete: Delete
   remove_confirm: 'Are you sure you want to delete the petition "%name%"?'
   create_locale: 'Create %locale%'
+  delete_locale: 'Delete %locale%'
+  remove_localized_confirm: 'Are you sure you want to delete the %locale% localization "%title%"?'
 
 edit:
   title: 'Edit petition (%locale%)'
