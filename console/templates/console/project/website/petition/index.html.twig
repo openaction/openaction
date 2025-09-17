@@ -36,7 +36,7 @@
                         Categories
                     </a>
 
-                    <a href="#" class="btn btn-primary petitions-list-action-create" aria-disabled="true">
+                    <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-primary petitions-list-action-create">
                         <i class="far fa-plus mr-1"></i>
                         Create petition
                     </a>
@@ -52,7 +52,7 @@
                             No petitions found
                         </h4>
 
-                        <a href="#" class="btn btn-lg btn-primary petitions-list-action-create" aria-disabled="true">
+                        <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-lg btn-primary petitions-list-action-create">
                             <i class="far fa-plus mr-1"></i>
                             Create your first petition
                         </a>
