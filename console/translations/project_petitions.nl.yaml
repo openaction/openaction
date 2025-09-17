@@ -1,0 +1,25 @@
+index:
+  title: Petities
+  help: Beheer de petities voor dit project.
+  edit_categories: Categorieën
+  create: Petitie maken
+  no_result: Geen petities gevonden
+  no_result_create: Maak je eerste petitie
+  scheduled: Gepland
+  scheduled_for: 'Gepland voor %datetime%'
+  published: Gepubliceerd
+  published_at: 'Gepubliceerd op %datetime%'
+  draft: Concept
+  visits: Bezoeken
+  view: Bekijken
+  edit: Bewerken
+  delete: Verwijderen
+  create_locale: 'Maak %locale%'
+
+edit:
+  title: 'Petitie bewerken (%locale%)'
+  back: Terug naar petities
+  view: Bekijken op website
+  switch_language: Taal wijzigen
+  untitled: Geen titel
+  create_locale: 'Maak %locale%'
