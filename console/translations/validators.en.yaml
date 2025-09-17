@@ -47,3 +47,6 @@ console:
                     invalid_length: This value is too long. It should have {{ limit }} characters or less.
                     invalid_facebook: This link doesn't seem to be a Facebook one.
                     invalid_twitter: This link doesn't seem to be a X one.
+        website:
+            petitions:
+                slug_unique: This slug is already used by another petition in this project.

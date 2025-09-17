@@ -36,3 +36,6 @@ console:
                     invalid_length: 'Dieser Wert ist zu lang. Er sollte {{ limit }} Zeichen oder weniger haben.'
                     invalid_facebook: 'Dieser Link scheint kein Facebook-Link zu sein.'
                     invalid_twitter: 'Dieser Link scheint kein X-Link zu sein.'
+        website:
+            petitions:
+                slug_unique: 'Dieser Slug wird bereits von einer anderen Petition in diesem Projekt verwendet.'

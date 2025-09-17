@@ -21,6 +21,7 @@ export function LocalizedPetitionEdit(props) {
     const [metadata, setMetadata] = useState(exposedDataReader.read('petition_localized_metadata'));
     const [parent, setParent] = useState(exposedDataReader.read('petition_parent_metadata'));
     const [status, setStatus] = useState('saved');
+    const [parentErrors, setParentErrors] = useState({});
     const [uploadStatus, setUploadStatus] = useState('saved');
     const [detailsModalOpened, setDetailsModalOpened] = useState(false);
     const [publishModalOpened, setPublishModalOpened] = useState(false);
@@ -83,8 +84,19 @@ export function LocalizedPetitionEdit(props) {
                     [props.parentPublishedAtInput]: data.publishedAt ? data.publishedAt : '',
                 })
             )
-            .then(() => setStatus('saved'))
-            .catch(() => setStatus('error'));
+            .then(() => {
+                setParentErrors({});
+                setStatus('saved');
+            })
+            .catch((err) => {
+                try {
+                    const details = err?.response?.data?.details || {};
+                    setParentErrors(details);
+                } catch (e) {
+                    setParentErrors({});
+                }
+                setStatus('error');
+            });
     }
 
     function uploadImage(file) {
@@ -256,6 +268,12 @@ export function LocalizedPetitionEdit(props) {
                                 defaultValue={parent.slug}
                                 onChange={(e) => saveParentMetadata({ ...parent, slug: e.target.value })}
                             />
+                            {(() => {
+                                const slugErrors = parentErrors['slug'] || parentErrors[props.parentSlugInput];
+                                return slugErrors ? (
+                                    <div className="text-danger mt-2">{slugErrors.join(' ')}</div>
+                                ) : null;
+                            })()}
                         </div>
 
                         <div className="p-3">

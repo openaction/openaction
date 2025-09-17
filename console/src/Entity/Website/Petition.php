@@ -9,11 +9,15 @@ use App\Util\Uid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PetitionRepository::class)]
-#[ORM\Table('website_petitions')]
+#[ORM\Table(name: 'website_petitions', uniqueConstraints: [
+    new ORM\UniqueConstraint(name: 'website_petitions_project_slug_unique', columns: ['project_id', 'slug']),
+])]
+#[UniqueEntity(fields: ['project', 'slug'], errorPath: 'slug', message: 'console.project.website.petitions.slug_unique')]
 class Petition
 {
     use Util\EntityIdTrait;

@@ -22,10 +22,13 @@ use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/website/petitions')]
 class PetitionLocalizedController extends AbstractController
@@ -105,7 +108,7 @@ class PetitionLocalizedController extends AbstractController
     }
 
     #[Route('/localized/{uuid}/update/parent', name: 'console_website_petition_localized_update_parent', methods: ['POST'])]
-    public function updateParent(LocalizedPetition $localized, Request $request)
+    public function updateParent(LocalizedPetition $localized, Request $request, ValidatorInterface $validator)
     {
         $petition = $localized->getPetition();
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
@@ -129,6 +132,19 @@ class PetitionLocalizedController extends AbstractController
         $petition->setSignaturesGoal($data->signaturesGoal);
         if (null !== $data->publishedAt) {
             $petition->setPublishedAt($data->publishedAt ? new \DateTime($data->publishedAt) : null);
+        }
+
+        // Validate petition (unique slug per project) and return form error if invalid
+        $violations = $validator->validate($petition);
+        if (\count($violations) > 0) {
+            foreach ($violations as $violation) {
+                // Attach all violations to slug field for this update
+                if ($form->has('slug')) {
+                    $form->get('slug')->addError(new FormError($violation->getMessage()));
+                }
+            }
+
+            return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $this->em->persist($petition);
@@ -178,7 +194,7 @@ class PetitionLocalizedController extends AbstractController
     }
 
     #[Route('/{uuid}/localized/{locale}/create', name: 'console_website_petition_localized_create', methods: ['GET'])]
-    public function create(Petition $petition, string $locale, Request $request)
+    public function create(Petition $petition, string $locale, Request $request, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -194,7 +210,8 @@ class PetitionLocalizedController extends AbstractController
             }
         }
 
-        $localized = new LocalizedPetition($petition, $locale, '');
+        $defaultTitle = $translator->trans('create.default_title', [], 'project_petitions');
+        $localized = new LocalizedPetition($petition, $locale, $defaultTitle);
         $this->em->persist($localized);
         $this->em->flush();
 
