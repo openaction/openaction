@@ -29,3 +29,24 @@ edit:
 
 create:
   default_title: '(Unbetitelte Petition)'
+
+categories:
+  title: Petitionskategorien
+  back_to_petitions: Zurück zu den Petitionen
+  back_to_list: Zurück zu den Kategorien
+  new: Neue Kategorie
+  empty:
+    title: Keine Kategorien
+    help: Erstellen Sie Ihre erste Kategorie, um Petitionen zu organisieren.
+  table:
+    order: Reihenfolge
+    name: Name
+    count: '# Petitionen'
+    created: Erstellt am
+  actions:
+    edit: Bearbeiten
+    delete: Löschen
+    delete_confirm: "Sind Sie sicher, dass Sie die Kategorie '%name%' löschen möchten?"
+  form:
+    name: Name
+    save: Speichern

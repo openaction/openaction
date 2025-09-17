@@ -48,7 +48,7 @@ class PetitionLocalizedController extends AbstractController
     public function edit(LocalizedPetition $localized)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
 
@@ -78,7 +78,7 @@ class PetitionLocalizedController extends AbstractController
     private function applyUpdate(LocalizedPetition $localized, Request $request, string $groupValidation)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
@@ -111,7 +111,7 @@ class PetitionLocalizedController extends AbstractController
     public function updateParent(LocalizedPetition $localized, Request $request, ValidatorInterface $validator)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
@@ -130,8 +130,17 @@ class PetitionLocalizedController extends AbstractController
         $petition->setStartAt($data->startAt ? new \DateTime($data->startAt) : null);
         $petition->setEndAt($data->endAt ? new \DateTime($data->endAt) : null);
         $petition->setSignaturesGoal($data->signaturesGoal);
-        if (null !== $data->publishedAt) {
-            $petition->setPublishedAt($data->publishedAt ? new \DateTime($data->publishedAt) : null);
+        $raw = $request->request->all($form->getName());
+        if (\array_key_exists('publishedAt', $raw)) {
+            $currentPublished = null !== $petition->getPublishedAt();
+            $nextPublishedAt = $data->publishedAt ? new \DateTime($data->publishedAt) : null;
+            $nextPublished = null !== $nextPublishedAt;
+
+            if ($currentPublished !== $nextPublished) {
+                $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_PUBLISH, $this->getProject());
+            }
+
+            $petition->setPublishedAt($nextPublishedAt);
         }
 
         // Validate petition (unique slug per project) and return form error if invalid
@@ -159,7 +168,7 @@ class PetitionLocalizedController extends AbstractController
     public function updateImage(LocalizedPetition $localized, CdnUploader $uploader, CdnRouter $cdnRouter, Request $request)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
@@ -183,7 +192,7 @@ class PetitionLocalizedController extends AbstractController
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, LocalizedPetition $localized, Request $request)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
 
@@ -196,7 +205,7 @@ class PetitionLocalizedController extends AbstractController
     #[Route('/{uuid}/localized/{locale}/create', name: 'console_website_petition_localized_create', methods: ['GET'])]
     public function create(Petition $petition, string $locale, Request $request, TranslatorInterface $translator)
     {
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $this->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);
@@ -225,7 +234,7 @@ class PetitionLocalizedController extends AbstractController
     public function delete(LocalizedPetition $localized, Request $request)
     {
         $petition = $localized->getPetition();
-        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_DRAFTS, $petition->getProject());
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
         $this->denyUnlessValidCsrf($request);
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($petition);

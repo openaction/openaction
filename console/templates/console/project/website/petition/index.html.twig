@@ -66,7 +66,10 @@
 
                                 <div class="col-lg">
                                     <h5 class="mb-2 petitions-title">
-                                        <a href="#" aria-disabled="true">
+                                        <a href="{{ loc ? path('console_website_petition_localized_edit', {
+                                            'projectUuid': project.uuid,
+                                            'uuid': loc.uuid
+                                        }) : '#' }}"{% if not loc %} aria-disabled="true"{% endif %}>
                                             {{ loc ? loc.title : petition.slug }}
                                         </a>
                                     </h5>

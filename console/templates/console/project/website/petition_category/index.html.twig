@@ -1,6 +1,6 @@
 {% extends 'console/project/base.html.twig' %}
 
-{% block page_title 'Petition categories' %}
+{% block page_title 'categories.title'|trans({}, 'project_petitions') %}
 
 {% block sidebar_posts '' %}
 
@@ -10,20 +10,20 @@
             <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
                class="btn btn-outline-primary btn-sm border-0 mb-2">
                 <i class="fal fa-angle-left"></i>
-                <span>Back to petitions</span>
+                <span>{{ 'categories.back_to_petitions'|trans({}, 'project_petitions') }}</span>
             </a>
 
             <br />
 
             <div class="row align-items-center">
                 <div class="col-lg-4 mb-3 mb-lg-0">
-                    Petition categories
+                    {{ 'categories.title'|trans({}, 'project_petitions') }}
                 </div>
                 <div class="col-lg-8 text-lg-right">
                     <a href="{{ path('console_website_petition_category_create', { 'projectUuid': current_project.uuid }) }}"
                        class="btn btn-primary">
                         <i class="far fa-plus mr-1"></i>
-                        New category
+                        {{ 'categories.new'|trans({}, 'project_petitions') }}
                     </a>
                 </div>
             </div>
@@ -34,17 +34,17 @@
                 <div class="text-center p-5">
                     <div class="my-4">
                         <h4 class="mb-3">
-                            No categories yet
+                            {{ 'categories.empty.title'|trans({}, 'project_petitions') }}
                         </h4>
 
                         <div class="text-muted mb-4">
-                            Create your first category to organize petitions.
+                            {{ 'categories.empty.help'|trans({}, 'project_petitions') }}
                         </div>
 
                         <a href="{{ path('console_website_petition_category_create', { 'projectUuid': current_project.uuid }) }}"
                            class="btn btn-lg btn-primary">
                             <i class="far fa-plus mr-1"></i>
-                            New category
+                            {{ 'categories.new'|trans({}, 'project_petitions') }}
                         </a>
                     </div>
                 </div>
@@ -54,10 +54,10 @@
                        data-endpoint="{{ path('console_website_petition_category_sort', { 'projectUuid': current_project.uuid }) }}">
                     <thead>
                     <tr>
-                        <th scope="col" class="world-table-sortable">Order</th>
-                        <th scope="col">Name</th>
-                        <th scope="col" class="world-table-number d-none d-lg-table-cell"># Petitions</th>
-                        <th scope="col" class="world-table-date d-none d-lg-table-cell">Created</th>
+                        <th scope="col" class="world-table-sortable">{{ 'categories.table.order'|trans({}, 'project_petitions') }}</th>
+                        <th scope="col">{{ 'categories.table.name'|trans({}, 'project_petitions') }}</th>
+                        <th scope="col" class="world-table-number d-none d-lg-table-cell">{{ 'categories.table.count'|trans({}, 'project_petitions') }}</th>
+                        <th scope="col" class="world-table-date d-none d-lg-table-cell">{{ 'categories.table.created'|trans({}, 'project_petitions') }}</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -81,16 +81,16 @@
                                 <a href="{{ path('console_website_petition_category_edit', { 'uuid': category.uuid, 'projectUuid': current_project.uuid }) }}"
                                    class="btn btn-sm btn-outline-primary border-0 mr-2">
                                     <i class="fad fa-edit mr-1"></i>
-                                    <span>Edit</span>
+                                    <span>{{ 'categories.actions.edit'|trans({}, 'project_petitions') }}</span>
                                 </a>
 
                                 <a href="{{ csrf_path('console_website_petition_category_delete', { 'uuid': category.uuid, 'projectUuid': current_project.uuid }) }}"
                                    data-controller="delete"
-                                   data-message="Are you sure you want to remove category '{{ category.name }}'?"
+                                   data-message="{{ 'categories.actions.delete_confirm'|trans({'%name%': category.name}, 'project_petitions') }}"
                                    data-target="#category-{{ category.uuid }}"
                                    class="btn btn-sm btn-outline-danger border-0">
                                     <i class="fad fa-trash mr-1"></i>
-                                    <span>Delete</span>
+                                    <span>{{ 'categories.actions.delete'|trans({}, 'project_petitions') }}</span>
                                 </a>
                             </td>
                         </tr>
@@ -101,4 +101,3 @@
         </div>
     </div>
 {% endblock %}
-
