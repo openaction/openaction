@@ -22,6 +22,7 @@ sidebar:
         print: Print campaigns
         events: Events
         forms: Forms
+        petitions: Petitions
 
     socials:
         label: Social networks

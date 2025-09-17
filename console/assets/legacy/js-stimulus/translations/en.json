@@ -157,6 +157,10 @@
                         "label": "Forms",
                         "help": "Collect and organize information from your visitors."
                     },
+                    "website_petitions": {
+                        "label": "Petitions",
+                        "help": "Launch and manage petitions."
+                    },
                     "website_newsletter": {
                         "label": "Newsletter form",
                         "help": "Display a form on your website to register to your newsletter."

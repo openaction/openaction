@@ -157,6 +157,10 @@
                         "label": "Formulare",
                         "help": "Sammeln und organisieren Sie Informationen von Ihren Besuchern."
                     },
+                    "website_petitions": {
+                        "label": "Petitionen",
+                        "help": "Erstellen und veröffentlichen Sie Petitionen."
+                    },
                     "website_newsletter": {
                         "label": "Newsletter-Formular",
                         "help": "Zeigen Sie ein Formular auf Ihrer Website an, um sich für Ihren Newsletter anzumelden."
