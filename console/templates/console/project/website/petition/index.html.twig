@@ -110,7 +110,7 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             {% for loc in petition.localizations %}
-                                                <li>
+                                                <li id="localized-petition-{{ loc.id }}">
                                                     <a class="dropdown-item" href="{{ path('console_website_petition_localized_edit', {
                                                         'projectUuid': project.uuid,
                                                         'uuid': loc.uuid
@@ -122,7 +122,7 @@
                                             {% if petition.localizations|length > 0 %}
                                                 <li><hr class="dropdown-divider"></li>
                                                 {% for loc in petition.localizations %}
-                                                    <li>
+                                                    <li id="localized-petition-delete-{{ loc.id }}">
                                                         <a class="dropdown-item text-danger"
                                                            href="{{ csrf_path('console_website_petition_localized_delete', {
                                                                 'projectUuid': project.uuid,
@@ -130,7 +130,7 @@
                                                            }) }}"
                                                            data-controller="delete"
                                                            data-message="{{ 'index.remove_localized_confirm'|trans({'%locale%': loc.locale|upper, '%title%': loc.title}, 'project_petitions') }}"
-                                                           data-target="#petition-{{ petition.id }} .dropdown">
+                                                           data-target="#localized-petition-{{ loc.id }}">
                                                             {{ 'index.delete_locale'|trans({'%locale%': loc.locale|upper}, 'project_petitions') }}
                                                         </a>
                                                     </li>

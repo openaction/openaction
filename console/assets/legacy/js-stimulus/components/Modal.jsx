@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export function Modal(props) {
     useEffect(() => {
@@ -9,7 +10,7 @@ export function Modal(props) {
         }
     }, [props.opened]);
 
-    return (
+    return createPortal(
         <div>
             {props.opened ? <div className="modal-backdrop show"></div> : ''}
 
@@ -49,6 +50,7 @@ export function Modal(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
