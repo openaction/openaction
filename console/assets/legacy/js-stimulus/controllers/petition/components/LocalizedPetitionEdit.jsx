@@ -198,7 +198,7 @@ export function LocalizedPetitionEdit(props) {
                     <div className="col-12 col-lg-6">
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Image</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.image.label')}</strong>
                             </div>
                             <div className="content-metadata-image mb-1">
                                 <div className="content-metadata-image-view text-center" style={uploaderViewStyle}>
@@ -208,14 +208,14 @@ export function LocalizedPetitionEdit(props) {
                                                 <div className="mb-2">
                                                     <i className="fal fa-circle-notch fa-spin"></i>
                                                 </div>
-                                                Uploading...
+                                                {translator.trans('petition.edit.metadata_modal.image.uploading')}
                                             </div>
                                         ) : (
                                             <div>
                                                 <div className="mb-2">
                                                     <i className="fal fa-cloud-upload"></i>
                                                 </div>
-                                                Drop an image
+                                                {translator.trans('petition.edit.metadata_modal.image.placeholder')}
                                             </div>
                                         )
                                     ) : (
@@ -232,7 +232,7 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Categories</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.categories.label')}</strong>
                             </div>
                             <CategoriesCheckbox
                                 items={metadata.categories}
@@ -248,7 +248,7 @@ export function LocalizedPetitionEdit(props) {
                         {/* Parent petition details */}
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Slug</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.parent.slug')}</strong>
                             </div>
                             <input
                                 type="text"
@@ -260,7 +260,7 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Start at</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.parent.startAt')}</strong>
                             </div>
                             <input
                                 type="text"
@@ -273,7 +273,7 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>End at</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.parent.endAt')}</strong>
                             </div>
                             <input
                                 type="text"
@@ -286,7 +286,9 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Signatures goal</strong>
+                                <strong>
+                                    {translator.trans('petition.edit.metadata_modal.parent.signaturesGoal')}
+                                </strong>
                             </div>
                             <input
                                 type="number"
@@ -299,7 +301,7 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Authors</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.parent.authors')}</strong>
                             </div>
                             <AuthorsSelector
                                 choices={parent.availableAuthors}
@@ -310,7 +312,7 @@ export function LocalizedPetitionEdit(props) {
 
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Description</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.description.label')}</strong>
                             </div>
                             <textarea
                                 className="bp4-input bp4-fill"
@@ -321,7 +323,9 @@ export function LocalizedPetitionEdit(props) {
                         </div>
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Submit button label</strong>
+                                <strong>
+                                    {translator.trans('petition.edit.metadata_modal.submitButtonLabel.label')}
+                                </strong>
                             </div>
                             <input
                                 type="text"
@@ -334,7 +338,7 @@ export function LocalizedPetitionEdit(props) {
                         </div>
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Opt-in label</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.optinLabel.label')}</strong>
                             </div>
                             <input
                                 type="text"
@@ -345,7 +349,7 @@ export function LocalizedPetitionEdit(props) {
                         </div>
                         <div className="p-3">
                             <div className="mb-2">
-                                <strong>Addressed to</strong>
+                                <strong>{translator.trans('petition.edit.metadata_modal.addressedTo.label')}</strong>
                             </div>
                             <input
                                 type="text"

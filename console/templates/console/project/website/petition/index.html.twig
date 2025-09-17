@@ -1,6 +1,6 @@
 {% extends 'console/project/base.html.twig' %}
 
-{% block page_title 'Petitions' %}
+{% block page_title 'index.title'|trans({}, 'project_petitions') %}
 
 {% block sidebar_posts '' %}
 
@@ -11,13 +11,9 @@
         <div class="world-box-title">
             <div class="row align-items-center">
                 <div class="col-lg mb-3 mb-lg-0">
-                    <h3>
-                        Petitions
-                    </h3>
+                    <h3>{{ 'index.title'|trans({}, 'project_petitions') }}</h3>
 
-                    <div class="text-muted">
-                        Manage petitions for this project.
-                    </div>
+                    <div class="text-muted">{{ 'index.help'|trans({}, 'project_petitions') }}</div>
                 </div>
                 <div class="col-lg-2 text-lg-right">
                     <form method="get">
@@ -33,12 +29,12 @@
                 <div class="col-lg-auto text-lg-right">
                     <a href="{{ path('console_website_petitions_categories', {'projectUuid': current_project.uuid}) }}" class="btn btn-secondary mr-2">
                         <i class="fad fa-cogs mr-1"></i>
-                        Categories
+                        {{ 'index.edit_categories'|trans({}, 'project_petitions') }}
                     </a>
 
                     <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-primary petitions-list-action-create">
                         <i class="far fa-plus mr-1"></i>
-                        Create petition
+                        {{ 'index.create'|trans({}, 'project_petitions') }}
                     </a>
                 </div>
             </div>
@@ -48,13 +44,11 @@
             {% if petitions|length == 0 %}
                 <div class="text-center p-5">
                     <div class="my-4">
-                        <h4 class="mb-4">
-                            No petitions found
-                        </h4>
+                        <h4 class="mb-4">{{ 'index.no_result'|trans({}, 'project_petitions') }}</h4>
 
                         <a href="{{ csrf_path('console_website_petition_create', { 'projectUuid': project.uuid }) }}" class="btn btn-lg btn-primary petitions-list-action-create">
                             <i class="far fa-plus mr-1"></i>
-                            Create your first petition
+                            {{ 'index.no_result_create'|trans({}, 'project_petitions') }}
                         </a>
                     </div>
                 </div>
@@ -79,41 +73,29 @@
 
                                     <div>
                                         {% if petition.publishedAt and petition.publishedAt >= date() %}
-                                            <div class="world-badge world-badge-info mr-2">
-                                                Scheduled
-                                            </div>
-                                            <small class="text-muted">
-                                                Scheduled for {{ petition.publishedAt|format_datetime('short', 'short') }}
-                                            </small>
+                                            <div class="world-badge world-badge-info mr-2">{{ 'index.scheduled'|trans({}, 'project_petitions') }}</div>
+                                            <small class="text-muted">{{ 'index.scheduled_for'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
 
                                             <span class="mx-1">|</span>
                                         {% elseif petition.publishedAt and petition.publishedAt < date() %}
-                                            <div class="world-badge world-badge-success mr-2">
-                                                Published
-                                            </div>
-                                            <small class="text-muted">
-                                                Published on {{ petition.publishedAt|format_datetime('short', 'short') }}
-                                            </small>
+                                            <div class="world-badge world-badge-success mr-2">{{ 'index.published'|trans({}, 'project_petitions') }}</div>
+                                            <small class="text-muted">{{ 'index.published_at'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
 
                                             <span class="mx-1">|</span>
                                         {% else %}
-                                            <div class="world-badge world-badge-warning mr-2">
-                                                Draft
-                                            </div>
+                                            <div class="world-badge world-badge-warning mr-2">{{ 'index.draft'|trans({}, 'project_petitions') }}</div>
 
                                             <span class="mx-1">|</span>
                                         {% endif %}
 
-                                        <small class="text-muted">
-                                            {{ petition.pageViews }} views
-                                        </small>
+                                        <small class="text-muted">{{ 'index.visits'|trans({}, 'project_petitions') }}</small>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 text-lg-right">
                                     <a href="#" class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-view" aria-disabled="true">
                                         <i class="fad fa-eye mr-1"></i>
-                                        View
+                                        {{ 'index.view'|trans({}, 'project_petitions') }}
                                     </a>
 
                                     {# Edit dropdown: existing localizations + create for missing locales #}
@@ -124,7 +106,7 @@
                                     <div class="dropdown mr-2 d-inline-block">
                                         <button type="button" class="btn btn-sm btn-outline-primary border-0 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <i class="fad fa-edit mr-1"></i>
-                                            Edit
+                                            {{ 'index.edit'|trans({}, 'project_petitions') }}
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             {% for loc in petition.localizations %}
@@ -146,7 +128,7 @@
                                                         'projectUuid': project.uuid,
                                                         'uuid': petition.uuid,
                                                         'locale': l
-                                                    }) }}">Create {{ l|upper }}</a>
+                                                    }) }}">{{ 'index.create_locale'|trans({'%locale%': l|upper}, 'project_petitions') }}</a>
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -154,7 +136,7 @@
 
                                     <a href="#" class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete" aria-disabled="true">
                                         <i class="fad fa-trash mr-1"></i>
-                                        Delete
+                                        {{ 'index.delete'|trans({}, 'project_petitions') }}
                                     </a>
                                 </div>
                             </div>
