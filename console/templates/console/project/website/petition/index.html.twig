@@ -116,10 +116,41 @@
                                         View
                                     </a>
 
-                                    <a href="#" class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-edit" aria-disabled="true">
-                                        <i class="fad fa-edit mr-1"></i>
-                                        Edit
-                                    </a>
+                                    {# Edit dropdown: existing localizations + create for missing locales #}
+                                    {% set existing_locales = petition.localizations|map(l => l.locale) %}
+                                    {% set all_locales = ['fr','en','de','it','nl','pt'] %}
+                                    {% set missing_locales = all_locales|filter(l => l not in existing_locales) %}
+
+                                    <div class="btn-group mr-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fad fa-edit mr-1"></i>
+                                            Edit
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            {% for loc in petition.localizations %}
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('console_website_petition_localized_edit', {
+                                                        'projectUuid': project.uuid,
+                                                        'uuid': loc.uuid
+                                                    }) }}">
+                                                        {{ loc.locale|upper }} — {{ loc.title ?: 'Untitled' }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                            {% if petition.localizations|length > 0 %}
+                                                <li><hr class="dropdown-divider"></li>
+                                            {% endif %}
+                                            {% for l in missing_locales %}
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ csrf_path('console_website_petition_localized_create', {
+                                                        'projectUuid': project.uuid,
+                                                        'uuid': petition.uuid,
+                                                        'locale': l
+                                                    }) }}">Create {{ l|upper }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
 
                                     <a href="#" class="btn btn-sm btn-outline-danger border-0 petitions-list-action-delete" aria-disabled="true">
                                         <i class="fad fa-trash mr-1"></i>

@@ -72,4 +72,41 @@ class PetitionCategoryRepository extends ServiceEntityRepository
             }
         });
     }
+
+    public function updateCategoriesForLocalized(\App\Entity\Website\LocalizedPetition $localized, array $categoriesIds): void
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($ids = array_filter($categoriesIds, fn ($id) => !\Symfony\Component\Uid\Uuid::isValid($id))) {
+            $qb->orWhere('c.id IN (:ids)')->setParameter('ids', $ids);
+        }
+
+        if ($uuids = array_filter($categoriesIds, fn ($id) => \Symfony\Component\Uid\Uuid::isValid($id))) {
+            $qb->orWhere('c.uuid IN (:uuids)')->setParameter('uuids', $uuids);
+        }
+
+        $categories = [];
+        if ($ids || $uuids) {
+            $categories = $qb->getQuery()->getResult();
+        }
+
+        $this->_em->wrapInTransaction(function () use ($localized, $categories) {
+            $metadata = $this->_em->getClassMetadata(PetitionCategory::class);
+
+            $this->_em->getConnection()->createQueryBuilder()
+                ->delete($metadata->associationMappings['petitions']['joinTable']['name'])
+                ->where('localized_petition_id = :lp')
+                ->setParameter('lp', $localized->getId())
+                ->execute()
+            ;
+
+            $localized->getCategories()->clear();
+            foreach ($categories as $category) {
+                $localized->getCategories()->add($category);
+            }
+
+            $this->_em->persist($localized);
+            $this->_em->flush();
+        });
+    }
 }

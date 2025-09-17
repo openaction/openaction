@@ -100,6 +100,60 @@ class LocalizedPetition
         return $this->image;
     }
 
+    public function setImage(?Upload $image): void
+    {
+        $this->image = $image;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function getPetition(): Petition
+    {
+        return $this->petition;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function getSubmitButtonLabel(): ?string
+    {
+        return $this->submitButtonLabel;
+    }
+
+    public function getOptinLabel(): ?string
+    {
+        return $this->optinLabel;
+    }
+
+    public function getAddressedTo(): ?string
+    {
+        return $this->addressedTo;
+    }
+
+    public function applyContentUpdate(\App\Form\Website\Model\LocalizedPetitionData $data): void
+    {
+        $this->title = (string) ($data->title ?? '');
+        $this->content = (string) ($data->content ?? '');
+    }
+
+    public function applyMetadataUpdate(\App\Form\Website\Model\LocalizedPetitionData $data): void
+    {
+        $this->description = (string) ($data->description ?? '');
+        $this->submitButtonLabel = $data->submitButtonLabel ?: null;
+        $this->optinLabel = $data->optinLabel ?: null;
+        $this->addressedTo = $data->addressedTo ?: null;
+    }
+
     /**
      * @return Collection<PetitionCategory>
      */

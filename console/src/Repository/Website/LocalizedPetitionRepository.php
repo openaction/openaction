@@ -18,4 +18,17 @@ class LocalizedPetitionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, LocalizedPetition::class);
     }
+
+    public function replaceImage(LocalizedPetition $localized, \App\Entity\Upload $upload): void
+    {
+        $oldImage = $localized->getImage();
+        $localized->setImage($upload);
+        $this->_em->persist($localized);
+        $this->_em->flush();
+
+        if ($oldImage) {
+            $this->_em->remove($oldImage);
+            $this->_em->flush();
+        }
+    }
 }

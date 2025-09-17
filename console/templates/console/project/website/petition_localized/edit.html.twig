@@ -1,0 +1,83 @@
+{% extends 'console/project/base.html.twig' %}
+
+{% block page_title 'Edit petition (' ~ localized.locale ~ ')' %}
+
+{% block sidebar_posts '' %}
+
+{% do expose('endpoints', {
+    'content': path('console_website_petition_localized_update_content', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
+    'metadata': path('console_website_petition_localized_update_metadata', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
+    'image': path('console_website_petition_localized_update_image', {'projectUuid': petition.project.uuid, 'uuid': localized.uuid}),
+}) %}
+
+{% set categoriesIds = localized.categories|map(c => c.id) %}
+
+{% do expose('petition_localized_metadata', {
+    'description': localized.description,
+    'submitButtonLabel': localized.submitButtonLabel,
+    'optinLabel': localized.optinLabel,
+    'addressedTo': localized.addressedTo,
+    'image': localized.image ? cdn_image_url(localized.image) : localized.image,
+    'categories': categories,
+    'categoryIds': categoriesIds,
+}) %}
+
+{% block stylesheets %}
+    <link href="https://fonts.citipo.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('contentbuilder/contentbuilder/contentbuilder.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('contentbuilder/assets/ionicons/css/ionicons.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src="{{ asset('contentbuilder/contentbuilder/contentbuilder.min.js') }}?v2"></script>
+    <script type="text/javascript" src="{{ asset('contentbuilder/assets/minimalist-blocks/content.js') }}"></script>
+{% endblock %}
+
+{% block javascripts encore_entry_script_tags('editor') %}
+
+{% block content %}
+    <div class="world-box mb-3">
+        <div class="world-box-status">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-auto">
+                    <a href="{{ path('console_website_petitions', {'projectUuid': current_project.uuid}) }}"
+                       class="btn btn-outline-primary btn-sm border-0">
+                        <i class="fal fa-angle-left"></i>
+                        <span>Back to petitions</span>
+                    </a>
+
+                    <a href="#" class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true">
+                        <i class="fas fa-eye mr-1"></i>
+                        View on website
+                    </a>
+                </div>
+                <div class="col-12 col-lg-auto ml-lg-auto">
+                    <div>
+                        <div class="d-none">
+                            {{ form_widget(form.title) }}
+                            {{ form_widget(form.content) }}
+                            {{ form_widget(form.description) }}
+                            {{ form_widget(form.submitButtonLabel) }}
+                            {{ form_widget(form.optinLabel) }}
+                            {{ form_widget(form.addressedTo) }}
+                            {{ form_widget(form.categories) }}
+                            {{ form_widget(image_form.file) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 p-lg-5">
+            <div class="text-center">
+                <input type="text" class="editor-title" value="{{ localized.title }}" id="petition-title" />
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-content"
+                     data-upload-url="{{ path('console_website_petition_localized_upload_image', {'projectUuid': current_project.uuid, 'uuid': localized.uuid}) }}"
+                     id="petition-editor">{{ localized.content|raw }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
