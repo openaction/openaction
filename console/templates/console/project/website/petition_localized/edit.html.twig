@@ -74,7 +74,7 @@
                     <div class="dropdown d-inline-block ml-2">
                         <button type="button" class="btn btn-outline-primary btn-sm border-0 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <i class="fad fa-language mr-1"></i>
-                            Switch language
+                            {{ localized.locale|upper }}
                         </button>
                         <ul class="dropdown-menu">
                             {% for loc in petition.localizations %}

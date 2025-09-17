@@ -139,22 +139,34 @@ export function LocalizedPetitionEdit(props) {
                     <PublishedAtView date={parent.publishedAt ? createDate(parent.publishedAt) : null} />
                 </div>
                 <div className="col-auto">
-                    <button type="button" className="btn btn-secondary btn-sm" onClick={() => setDetailsModalOpened(true)}>
+                    <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => setDetailsModalOpened(true)}
+                    >
                         <i className="fad fa-cogs mr-2"></i>
                         {translator.trans('post.edit.update_metadata')}
                     </button>
 
                     <button
                         type="button"
-                        className={'btn btn-sm ml-2 publish-button ' + (parent.publishedAt ? 'btn-secondary' : 'btn-primary')}
+                        className={
+                            'btn btn-sm ml-2 publish-button ' + (parent.publishedAt ? 'btn-secondary' : 'btn-primary')
+                        }
                         onClick={() => setPublishModalOpened(true)}
                     >
                         <i className={'mr-2 far ' + (parent.publishedAt ? 'fa-eye-slash' : 'fa-eye')}></i>
-                        {parent.publishedAt ? translator.trans('post.edit.unpublish') : translator.trans('post.edit.publish')}
+                        {parent.publishedAt
+                            ? translator.trans('post.edit.unpublish')
+                            : translator.trans('post.edit.publish')}
                     </button>
 
                     {props.features.sharer && parent.publishedAt ? (
-                        <button type="button" className="btn btn-primary btn-sm ml-2" onClick={() => setShareModalOpened(true)}>
+                        <button
+                            type="button"
+                            className="btn btn-primary btn-sm ml-2"
+                            onClick={() => setShareModalOpened(true)}
+                        >
                             <i className="fad fa-share-alt mr-2"></i>
                             {translator.trans('post.edit.social_share')}
                         </button>
@@ -172,7 +184,11 @@ export function LocalizedPetitionEdit(props) {
                 footer={
                     <div className="modal-footer">
                         <StatusView status={status} />
-                        <button type="button" className="btn btn-secondary ml-3" onClick={() => setDetailsModalOpened(false)}>
+                        <button
+                            type="button"
+                            className="btn btn-secondary ml-3"
+                            onClick={() => setDetailsModalOpened(false)}
+                        >
                             {translator.trans('post.edit.metadata_modal.close')}
                         </button>
                     </div>
@@ -206,7 +222,11 @@ export function LocalizedPetitionEdit(props) {
                                         ''
                                     )}
                                 </div>
-                                <input type="file" className="content-metadata-image-input" onChange={(e) => uploadImage(e.target.files[0])} />
+                                <input
+                                    type="file"
+                                    className="content-metadata-image-input"
+                                    onChange={(e) => uploadImage(e.target.files[0])}
+                                />
                             </div>
                         </div>
 
@@ -218,7 +238,9 @@ export function LocalizedPetitionEdit(props) {
                                 items={metadata.categories}
                                 ids={metadata.categoryIds}
                                 field="id"
-                                handleCategories={(categories) => saveLocalizedMetadata({ ...metadata, categoryIds: categories })}
+                                handleCategories={(categories) =>
+                                    saveLocalizedMetadata({ ...metadata, categoryIds: categories })
+                                }
                             />
                         </div>
                     </div>
@@ -242,7 +264,9 @@ export function LocalizedPetitionEdit(props) {
                                 type="text"
                                 className="bp4-input bp4-fill"
                                 defaultValue={metadata.submitButtonLabel}
-                                onChange={(e) => saveLocalizedMetadata({ ...metadata, submitButtonLabel: e.target.value })}
+                                onChange={(e) =>
+                                    saveLocalizedMetadata({ ...metadata, submitButtonLabel: e.target.value })
+                                }
                             />
                         </div>
                         <div className="p-3">
@@ -300,15 +324,23 @@ export function LocalizedPetitionEdit(props) {
                 title={translator.trans('post.edit.social_share_modal.title')}
                 footer={
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary ml-3" onClick={() => setShareModalOpened(false)}>
+                        <button
+                            type="button"
+                            className="btn btn-secondary ml-3"
+                            onClick={() => setShareModalOpened(false)}
+                        >
                             {translator.trans('post.edit.social_share_modal.close')}
                         </button>
                     </div>
                 }
             >
-                <SocialSharer url={shareUrl} title={currentTitle} description={metadata.description} imageUrl={metadata.image} />
+                <SocialSharer
+                    url={shareUrl}
+                    title={currentTitle}
+                    description={metadata.description}
+                    imageUrl={metadata.image}
+                />
             </Modal>
         </div>
     );
 }
-
