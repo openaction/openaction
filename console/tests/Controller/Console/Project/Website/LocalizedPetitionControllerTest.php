@@ -88,11 +88,13 @@ class LocalizedPetitionControllerTest extends WebTestCase
             'POST',
             '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/parent?_token='.$token,
             [
-                'slug' => 'save-the-lake',
-                'startAt' => '2020-01-01T00:00:00+00:00',
-                'endAt' => '2020-02-01T00:00:00+00:00',
-                'signaturesGoal' => 1000,
-                'authors' => json_encode([$authorId]),
+                'petition' => [
+                    'slug' => 'save-the-lake',
+                    'startAt' => '2020-01-01T00:00:00+00:00',
+                    'endAt' => '2020-02-01T00:00:00+00:00',
+                    'signaturesGoal' => 1000,
+                    'authors' => json_encode([$authorId]),
+                ],
             ]
         );
 

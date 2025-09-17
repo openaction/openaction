@@ -82,7 +82,7 @@ class PetitionLocalizedController extends AbstractController
 
         $data = new LocalizedPetitionData();
         $form = $this->createForm(LocalizedPetitionType::class, $data, ['validation_groups' => $groupValidation]);
-        $form->submit($request->request->all(), false);
+        $form->submit($request->request->all($form->getName()), false);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -115,7 +115,7 @@ class PetitionLocalizedController extends AbstractController
 
         $data = new PetitionData();
         $form = $this->createForm(PetitionType::class, $data);
-        $form->submit($request->request->all(), false);
+        $form->submit($request->request->all($form->getName()), false);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             return $this->createJsonApiFormProblemResponse($form, Response::HTTP_UNPROCESSABLE_ENTITY);
