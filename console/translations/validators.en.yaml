@@ -49,4 +49,4 @@ console:
                     invalid_twitter: This link doesn't seem to be a X one.
         website:
             petitions:
-                slug_unique: This slug is already used by another petition in this project.
+                slug_unique: This URL is already used by another petition in this project.

@@ -110,6 +110,11 @@ class LocalizedPetition
         return $this->locale;
     }
 
+    public function getLocaleFlag(): string
+    {
+        return 'en' === $this->locale ? 'gb' : $this->locale;
+    }
+
     public function getPetition(): Petition
     {
         return $this->petition;

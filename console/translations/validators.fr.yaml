@@ -50,4 +50,4 @@ console:
                     invalid_twitter: Cette URL n'est pas une URL X valide.
         website:
             petitions:
-                slug_unique: Ce slug est déjà utilisé par une autre pétition de ce projet.
+                slug_unique: Cette URL est déjà utilisé par une autre pétition de ce projet.

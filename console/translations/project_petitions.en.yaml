@@ -15,17 +15,17 @@ index:
   edit: Edit
   delete: Delete
   remove_confirm: 'Are you sure you want to delete the petition "%name%"?'
-  create_locale: 'Create %locale%'
-  delete_locale: 'Delete %locale%'
+  create_locale: 'Create version in'
+  delete_locale: 'Delete version in'
+  last_modified: Last edited on %datetime%
   remove_localized_confirm: 'Are you sure you want to delete the %locale% localization "%title%"?'
 
 edit:
   title: 'Edit petition (%locale%)'
-  back: Back to petitions
-  view: View on website
+  back: Back
+  view: View
   switch_language: Switch language
   untitled: Untitled
-  create_locale: 'Create %locale%'
 
 create:
   default_title: '(Untitled petition)'

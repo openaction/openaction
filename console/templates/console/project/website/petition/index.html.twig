@@ -56,6 +56,7 @@
                 <div class="world-list">
                     {% for petition in petitions %}
                         {% set loc = petition.localizations|first %}
+
                         <div class="world-list-row py-2 px-3" id="petition-{{ petition.id }}" data-id="{{ petition.id }}">
                             <div class="row align-items-center">
                                 <div class="col-lg-auto d-none d-lg-block">
@@ -70,28 +71,36 @@
                                             'projectUuid': project.uuid,
                                             'uuid': loc.uuid
                                         }) : '#' }}"{% if not loc %} aria-disabled="true"{% endif %}>
-                                            {{ loc ? loc.title : petition.slug }}
+                                            {{ (loc ? loc.title : petition.slug)|u.truncate(65, '...') }}
                                         </a>
                                     </h5>
 
                                     <div>
-                                        {% if petition.publishedAt and petition.publishedAt >= date() %}
-                                            <div class="world-badge world-badge-info mr-2">{{ 'index.scheduled'|trans({}, 'project_petitions') }}</div>
-                                            <small class="text-muted">{{ 'index.scheduled_for'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
+                                        <small class="text-muted">
+                                            {% if petition.publishedAt and petition.publishedAt >= date() %}
+                                                <div class="world-badge world-badge-info mr-2">{{ 'index.scheduled'|trans({}, 'project_petitions') }}</div>
+                                                <small class="text-muted">{{ 'index.scheduled_for'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
+                                            {% elseif petition.publishedAt and petition.publishedAt < date() %}
+                                                <div class="world-badge world-badge-success mr-2">{{ 'index.published'|trans({}, 'project_petitions') }}</div>
+                                                <small class="text-muted">{{ 'index.published_at'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
+                                            {% else %}
+                                                <div class="world-badge world-badge-warning mr-2">{{ 'index.draft'|trans({}, 'project_petitions') }}</div>
+                                            {% endif %}
 
                                             <span class="mx-1">|</span>
-                                        {% elseif petition.publishedAt and petition.publishedAt < date() %}
-                                            <div class="world-badge world-badge-success mr-2">{{ 'index.published'|trans({}, 'project_petitions') }}</div>
-                                            <small class="text-muted">{{ 'index.published_at'|trans({'%datetime%': petition.publishedAt|format_datetime('short', 'short')}, 'project_petitions') }}</small>
+                                        </small>
 
-                                            <span class="mx-1">|</span>
-                                        {% else %}
-                                            <div class="world-badge world-badge-warning mr-2">{{ 'index.draft'|trans({}, 'project_petitions') }}</div>
+                                        <small class="text-muted">
+                                            {% if is_granted('website_access_stats', current_project) %}
+                                                <i class="fad fa-chart-area mr-1"></i>
+                                                {{ petition.pageViews }}
+                                                {{ 'index.visits'|trans({}, 'project_petitions') }}
 
-                                            <span class="mx-1">|</span>
-                                        {% endif %}
+                                                <span class="mx-1">|</span>
+                                            {% endif %}
 
-                                        <small class="text-muted">{{ 'index.visits'|trans({}, 'project_petitions') }}</small>
+                                            {{ 'index.last_modified'|trans({'%datetime%': petition.updatedAt|format_datetime('medium', 'short')}, 'project_petitions') }}
+                                        </small>
                                     </div>
                                 </div>
 
@@ -114,19 +123,21 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             {% for loc in petition.localizations %}
                                                 <li id="localized-petition-{{ loc.id }}">
-                                                    <a class="dropdown-item" href="{{ path('console_website_petition_localized_edit', {
-                                                        'projectUuid': project.uuid,
-                                                        'uuid': loc.uuid
-                                                    }) }}">
-                                                        {{ loc.locale|upper }} — {{ loc.title ?: 'Untitled' }}
+                                                    <a class="dropdown-item flex! items-center gap-2"
+                                                       href="{{ path('console_website_petition_localized_edit', {
+                                                            'projectUuid': project.uuid,
+                                                            'uuid': loc.uuid
+                                                       }) }}">
+                                                        <span class="fi fi-{{ loc.localeFlag }} h-3"></span>
+                                                        <span>{{ (loc.title ?: '(Pétition sans titre)')|u.truncate(25, '...') }}</span>
                                                     </a>
                                                 </li>
                                             {% endfor %}
-                                            {% if petition.localizations|length > 0 %}
+                                            {% if petition.localizations|length > 1 %}
                                                 <li><hr class="dropdown-divider"></li>
                                                 {% for loc in petition.localizations %}
                                                     <li id="localized-petition-delete-{{ loc.id }}">
-                                                        <a class="dropdown-item text-danger"
+                                                        <a class="dropdown-item text-danger flex! items-center gap-2"
                                                            href="{{ csrf_path('console_website_petition_localized_delete', {
                                                                 'projectUuid': project.uuid,
                                                                 'uuid': loc.uuid
@@ -134,7 +145,8 @@
                                                            data-controller="delete"
                                                            data-message="{{ 'index.remove_localized_confirm'|trans({'%locale%': loc.locale|upper, '%title%': loc.title}, 'project_petitions') }}"
                                                            data-target="#localized-petition-{{ loc.id }}">
-                                                            {{ 'index.delete_locale'|trans({'%locale%': loc.locale|upper}, 'project_petitions') }}
+                                                            <span>{{ 'index.delete_locale'|trans({}, 'project_petitions') }}</span>
+                                                            <span class="fi fi-{{ loc.localeFlag }} h-3"></span>
                                                         </a>
                                                     </li>
                                                 {% endfor %}
@@ -144,11 +156,15 @@
                                             {% endif %}
                                             {% for l in missing_locales %}
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ csrf_path('console_website_petition_localized_create', {
-                                                        'projectUuid': project.uuid,
-                                                        'uuid': petition.uuid,
-                                                        'locale': l
-                                                    }) }}">{{ 'index.create_locale'|trans({'%locale%': l|upper}, 'project_petitions') }}</a>
+                                                    <a class="dropdown-item flex! items-center gap-2"
+                                                       href="{{ csrf_path('console_website_petition_localized_create', {
+                                                            'projectUuid': project.uuid,
+                                                            'uuid': petition.uuid,
+                                                            'locale': l
+                                                       }) }}">
+                                                        <span>{{ 'index.create_locale'|trans({}, 'project_petitions') }}</span>
+                                                        <span class="fi fi-{{ l == 'en' ? 'gb' : l }} h-3"></span>
+                                                    </a>
                                                 </li>
                                             {% endfor %}
                                         </ul>

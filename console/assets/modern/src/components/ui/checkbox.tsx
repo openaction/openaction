@@ -12,16 +12,16 @@ function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "tw:peer tw:border-input tw:dark:bg-input/30 tw:data-[state=unchecked]:bg-white tw:data-[state=checked]:bg-blue-500 tw:data-[state=checked]:text-primary-foreground tw:dark:data-[state=checked]:bg-primary tw:data-[state=checked]:border-blue-500 tw:focus-visible:border-ring tw:focus-visible:ring-ring/50 tw:aria-invalid:ring-destructive/20 tw:dark:aria-invalid:ring-destructive/40 tw:aria-invalid:border-destructive tw:size-4 tw:shrink-0 tw:rounded-[4px] tw:border tw:shadow-xs tw:transition-shadow tw:outline-none tw:focus-visible:ring-[3px] tw:disabled:cursor-not-allowed tw:disabled:opacity-50",
+        "peer border-input dark:bg-input/30 data-[state=unchecked]:bg-white data-[state=checked]:bg-blue-500 data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-blue-500 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="tw:flex tw:items-center tw:justify-center tw:text-current tw:transition-none"
+        className="flex items-center justify-center text-current transition-none"
       >
-        <CheckIcon className="tw:size-3.5" />
+        <CheckIcon className="size-3.5" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

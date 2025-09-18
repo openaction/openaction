@@ -83,6 +83,9 @@
     }
 }
 
-#_cbhtml .is-rte-tool button svg {
-    display: inline-block;
+#_cbhtml svg,
+.editor-container svg,
+#_cbhtml img,
+.editor-container img {
+    display: inline !important;
 }

@@ -17,15 +17,15 @@
                     "label": "Catégories"
                 },
                 "parent": {
-                    "slug": "Slug",
+                    "slug": "URL à utiliser pour cette pétition",
                     "startAt": "Débute le",
                     "endAt": "Se termine le",
                     "signaturesGoal": "Objectif de signatures",
                     "authors": "Auteurs"
                 },
                 "description": { "label": "Description" },
-                "submitButtonLabel": { "label": "Texte du bouton de soumission" },
-                "optinLabel": { "label": "Texte d'opt-in" },
+                "submitButtonLabel": { "label": "Libellé du bouton de signature" },
+                "optinLabel": { "label": "Libellé du consentement légal RGPD" },
                 "addressedTo": { "label": "Adressée à" }
             }
         }

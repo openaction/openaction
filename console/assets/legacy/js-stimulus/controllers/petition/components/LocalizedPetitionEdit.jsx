@@ -10,6 +10,7 @@ import { PublicationEditor } from '../../../components/PublicationEditor';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { AuthorsSelector } from '../../post/components/AuthorsSelector';
 import { SocialSharer } from '../../../components/SocialSharer/SocialSharer';
+import { IMaskInput } from 'react-imask';
 
 let contentSaveTimeout = null;
 
@@ -206,12 +207,169 @@ export function LocalizedPetitionEdit(props) {
                     </div>
                 }
             >
+                <h6 className="mb-0">Configuration de la pétition</h6>
+
+                <hr className="my-2" />
+
                 <div className="row">
                     <div className="col-12 col-lg-6">
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.image.label')}</strong>
+                        <div className="p-2">
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.parent.slug')}</div>
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                defaultValue={parent.slug}
+                                onChange={(e) => saveParentMetadata({ ...parent, slug: e.target.value })}
+                            />
+                            {(() => {
+                                const slugErrors = parentErrors['slug'] || parentErrors[props.parentSlugInput];
+                                return slugErrors ? (
+                                    <div className="text-danger mt-2">{slugErrors.join(' ')}</div>
+                                ) : null;
+                            })()}
+                        </div>
+
+                        <div className="p-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.parent.signaturesGoal')}
                             </div>
+                            <input
+                                type="number"
+                                className="bp4-input bp4-fill"
+                                min="0"
+                                defaultValue={parent.signaturesGoal || ''}
+                                onChange={(e) => saveParentMetadata({ ...parent, signaturesGoal: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="p-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.parent.authors')}
+                            </div>
+                            <AuthorsSelector
+                                choices={parent.availableAuthors}
+                                selectedIds={parent.authorsIds}
+                                onChange={(authors) => saveParentMetadata({ ...parent, authorsIds: authors })}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="col-12 col-lg-6">
+                        <div className="p-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.parent.startAt')}
+                            </div>
+
+                            <IMaskInput
+                                lazy={false}
+                                mask={Date}
+                                pattern="DD/MM/YYYY HH:mm"
+                                format={(date) => createDate(date).format('DD/MM/YYYY HH:mm')}
+                                parse={(str) => createDate(str, 'DD/MM/YYYY HH:mm')}
+                                className="form-control"
+                                value={parent.startAt ? createDate(parent.startAt).format('DD/MM/YYYY HH:mm') : ''}
+                                onInput={(e) => {
+                                    if (e.target.value.indexOf('_') === -1) {
+                                        saveParentMetadata({
+                                            ...parent,
+                                            startAt: createDate(e.target.value, 'DD/MM/YYYY HH:mm').format(),
+                                        });
+                                    }
+                                }}
+                                blocks={{
+                                    YYYY: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1970,
+                                        to: 2030,
+                                    },
+                                    MM: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1,
+                                        to: 12,
+                                    },
+                                    DD: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1,
+                                        to: 31,
+                                    },
+                                    HH: {
+                                        mask: IMask.MaskedRange,
+                                        from: 0,
+                                        to: 23,
+                                    },
+                                    mm: {
+                                        mask: IMask.MaskedRange,
+                                        from: 0,
+                                        to: 59,
+                                    },
+                                }}
+                            />
+                        </div>
+
+                        <div className="p-2">
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.parent.endAt')}</div>
+
+                            <IMaskInput
+                                lazy={false}
+                                mask={Date}
+                                pattern="DD/MM/YYYY HH:mm"
+                                format={(date) => createDate(date).format('DD/MM/YYYY HH:mm')}
+                                parse={(str) => createDate(str, 'DD/MM/YYYY HH:mm')}
+                                className="form-control"
+                                value={parent.endAt ? createDate(parent.endAt).format('DD/MM/YYYY HH:mm') : ''}
+                                onInput={(e) => {
+                                    if (e.target.value.indexOf('_') === -1) {
+                                        saveParentMetadata({
+                                            ...parent,
+                                            endAt: createDate(e.target.value, 'DD/MM/YYYY HH:mm').format(),
+                                        });
+                                    }
+                                }}
+                                blocks={{
+                                    YYYY: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1970,
+                                        to: 2030,
+                                    },
+                                    MM: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1,
+                                        to: 12,
+                                    },
+                                    DD: {
+                                        mask: IMask.MaskedRange,
+                                        from: 1,
+                                        to: 31,
+                                    },
+                                    HH: {
+                                        mask: IMask.MaskedRange,
+                                        from: 0,
+                                        to: 23,
+                                    },
+                                    mm: {
+                                        mask: IMask.MaskedRange,
+                                        from: 0,
+                                        to: 59,
+                                    },
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-5">
+                    <h6 className="flex items-center gap-2 mb-1">
+                        Paramètres de la version
+                        <span className={`h-3 fi fi-${metadata['locale'] === 'en' ? 'gb' : metadata['locale']}`}></span>
+                    </h6>
+                </div>
+
+                <hr className="my-2" />
+
+                <div className="row">
+                    <div className="col-12 col-lg-6">
+                        <div className="p-1 mb-2">
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.image.label')}</div>
                             <div className="content-metadata-image mb-1">
                                 <div className="content-metadata-image-view text-center" style={uploaderViewStyle}>
                                     {!metadata.image ? (
@@ -242,9 +400,9 @@ export function LocalizedPetitionEdit(props) {
                             </div>
                         </div>
 
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.categories.label')}</strong>
+                        <div className="p-1 mb-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.categories.label')}
                             </div>
                             <CategoriesCheckbox
                                 items={metadata.categories}
@@ -255,82 +413,22 @@ export function LocalizedPetitionEdit(props) {
                                 }
                             />
                         </div>
+                        <div className="p-1">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.addressedTo.label')}
+                            </div>
+                            <input
+                                type="text"
+                                className="bp4-input bp4-fill"
+                                defaultValue={metadata.addressedTo}
+                                onChange={(e) => saveLocalizedMetadata({ ...metadata, addressedTo: e.target.value })}
+                            />
+                        </div>
                     </div>
                     <div className="col-12 col-lg-6">
-                        {/* Parent petition details */}
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.parent.slug')}</strong>
-                            </div>
-                            <input
-                                type="text"
-                                className="bp4-input bp4-fill"
-                                defaultValue={parent.slug}
-                                onChange={(e) => saveParentMetadata({ ...parent, slug: e.target.value })}
-                            />
-                            {(() => {
-                                const slugErrors = parentErrors['slug'] || parentErrors[props.parentSlugInput];
-                                return slugErrors ? (
-                                    <div className="text-danger mt-2">{slugErrors.join(' ')}</div>
-                                ) : null;
-                            })()}
-                        </div>
-
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.parent.startAt')}</strong>
-                            </div>
-                            <input
-                                type="text"
-                                className="bp4-input bp4-fill"
-                                placeholder="YYYY-MM-DDTHH:mm:ssZ"
-                                defaultValue={parent.startAt || ''}
-                                onChange={(e) => saveParentMetadata({ ...parent, startAt: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.parent.endAt')}</strong>
-                            </div>
-                            <input
-                                type="text"
-                                className="bp4-input bp4-fill"
-                                placeholder="YYYY-MM-DDTHH:mm:ssZ"
-                                defaultValue={parent.endAt || ''}
-                                onChange={(e) => saveParentMetadata({ ...parent, endAt: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>
-                                    {translator.trans('petition.edit.metadata_modal.parent.signaturesGoal')}
-                                </strong>
-                            </div>
-                            <input
-                                type="number"
-                                className="bp4-input bp4-fill"
-                                min="0"
-                                defaultValue={parent.signaturesGoal || ''}
-                                onChange={(e) => saveParentMetadata({ ...parent, signaturesGoal: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.parent.authors')}</strong>
-                            </div>
-                            <AuthorsSelector
-                                choices={parent.availableAuthors}
-                                selectedIds={parent.authorsIds}
-                                onChange={(authors) => saveParentMetadata({ ...parent, authorsIds: authors })}
-                            />
-                        </div>
-
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.description.label')}</strong>
+                        <div className="p-1 mb-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.description.label')}
                             </div>
                             <textarea
                                 className="bp4-input bp4-fill"
@@ -339,41 +437,30 @@ export function LocalizedPetitionEdit(props) {
                                 onChange={(e) => saveLocalizedMetadata({ ...metadata, description: e.target.value })}
                             />
                         </div>
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>
-                                    {translator.trans('petition.edit.metadata_modal.submitButtonLabel.label')}
-                                </strong>
+                        <div className="p-1 mb-2">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.submitButtonLabel.label')}
                             </div>
                             <input
                                 type="text"
                                 className="bp4-input bp4-fill"
+                                placeholder="Je soutiens cette pétition"
                                 defaultValue={metadata.submitButtonLabel}
                                 onChange={(e) =>
                                     saveLocalizedMetadata({ ...metadata, submitButtonLabel: e.target.value })
                                 }
                             />
                         </div>
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.optinLabel.label')}</strong>
+                        <div className="p-1">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.optinLabel.label')}
                             </div>
-                            <input
-                                type="text"
+                            <textarea
                                 className="bp4-input bp4-fill"
+                                rows={3}
+                                placeholder="J’accepte que mes données soient utilisées par ..."
                                 defaultValue={metadata.optinLabel}
                                 onChange={(e) => saveLocalizedMetadata({ ...metadata, optinLabel: e.target.value })}
-                            />
-                        </div>
-                        <div className="p-3">
-                            <div className="mb-2">
-                                <strong>{translator.trans('petition.edit.metadata_modal.addressedTo.label')}</strong>
-                            </div>
-                            <input
-                                type="text"
-                                className="bp4-input bp4-fill"
-                                defaultValue={metadata.addressedTo}
-                                onChange={(e) => saveLocalizedMetadata({ ...metadata, addressedTo: e.target.value })}
                             />
                         </div>
                     </div>

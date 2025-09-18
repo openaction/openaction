@@ -22,7 +22,7 @@
                     "label": "Categories"
                 },
                 "parent": {
-                    "slug": "Slug",
+                    "slug": "URL to use for this petition",
                     "startAt": "Start at",
                     "endAt": "End at",
                     "signaturesGoal": "Signatures goal",
