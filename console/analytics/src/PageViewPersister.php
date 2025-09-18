@@ -11,6 +11,7 @@ class PageViewPersister
         'event' => 'website_events',
         'manifesto' => 'website_manifestos_topics',
         'trombinoscope' => 'website_trombinoscope_persons',
+        'petition' => 'website_petitions',
     ];
 
     private string $dsn;

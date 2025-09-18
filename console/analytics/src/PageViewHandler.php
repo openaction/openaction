@@ -17,6 +17,10 @@ class PageViewHandler
 
     public function handle(Request $request): Response
     {
+        if ($request->getMethod() === 'OPTIONS') {
+            return $this->createEmptyResponse();
+        }
+
         try {
             $payload = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\Exception) {
