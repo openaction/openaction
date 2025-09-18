@@ -255,3 +255,9 @@ phoning:
         failed_unregister: Ze willen zich afmelden
         failed_call_later: Ze willen later opnieuw gebeld worden
         accepted: Ze stemmen ermee in om vragen te beantwoorden
+
+petition:
+    signatures: handtekeningen
+    success: Uw handtekening is succesvol geregistreerd
+    sign_title: Teken deze petitie
+    next_goal: Volgende doel

@@ -255,3 +255,9 @@ phoning:
         failed_unregister: They wish to unregister
         failed_call_later: They wish to be called again later
         accepted: They accept to answer questions
+
+petition:
+    signatures: signatures
+    success: Your signature has been successfully recorded
+    sign_title: Sign this petition
+    next_goal: Next goal

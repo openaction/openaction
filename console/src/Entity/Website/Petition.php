@@ -140,6 +140,11 @@ class Petition
         $this->signaturesGoal = $goal;
     }
 
+    public function getSignaturesCount(): ?int
+    {
+        return $this->signaturesCount;
+    }
+
     /**
      * @return Collection<TrombinoscopePerson>
      */

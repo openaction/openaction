@@ -33,6 +33,7 @@ class PetitionPartialTransformer extends AbstractTransformer
             'start_at' => $petition->getStartAt() ? $petition->getStartAt()->format(DATE_ATOM) : null,
             'end_at' => $petition->getEndAt() ? $petition->getEndAt()->format(DATE_ATOM) : null,
             'signatures_goal' => $petition->getSignaturesGoal(),
+            'signatures_count' => $petition->getSignaturesCount() ?: 0,
             'external_url' => $petition->getExternalUrl(),
         ];
 
