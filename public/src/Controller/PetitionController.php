@@ -71,6 +71,10 @@ class PetitionController extends AbstractController
         return $this->render('petitions/view.html.twig', [
             'petition' => $petition,
             'localized' => $localized,
+            'formData' => $localized->form,
+            'form' => $form->createView(),
+            'captcha_challenge' => $challenge,
+            'success' => $request->query->getBoolean('s'),
         ]);
     }
 }
