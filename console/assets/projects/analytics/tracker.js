@@ -18,6 +18,7 @@ export default function registerStats() {
             /^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$/.test(loc.hostname) ||
             loc.protocol === 'file:'
         ) {
+            console.log(eventName, options);
             return warn('localhost');
         }
 
