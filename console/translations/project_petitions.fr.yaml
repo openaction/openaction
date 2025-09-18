@@ -26,6 +26,7 @@ edit:
   view: Voir
   switch_language: Changer de langue
   untitled: Sans titre
+  update_form: Modifier le questionnaire
 
 create:
   default_title: '(Pétition sans titre)'

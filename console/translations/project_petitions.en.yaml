@@ -26,6 +26,7 @@ edit:
   view: View
   switch_language: Switch language
   untitled: Untitled
+  update_form: Update form
 
 create:
   default_title: '(Untitled petition)'

@@ -26,6 +26,7 @@ edit:
   view: Ansehen
   switch_language: Sprache wechseln
   untitled: Ohne Titel
+  update_form: Fragebogen bearbeiten
 
 create:
   default_title: '(Unbetitelte Petition)'

@@ -17,6 +17,7 @@ export default class extends Controller {
                 data={data}
                 refreshStatus={(status) => this.refreshStatus(status)}
                 updateUrl={this.contentTarget.getAttribute('data-update-url')}
+                isPetition={this.contentTarget.getAttribute('data-is-petition') === '1'}
             />,
             this.contentTarget
         );

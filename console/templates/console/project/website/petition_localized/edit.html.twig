@@ -68,12 +68,6 @@
                         {{ 'edit.view'|trans({}, 'project_petitions') }}
                     </a>
 
-                    <a href="{{ path('console_website_petition_localized_view', { 'projectUuid': current_project.uuid, 'uuid': localized.uuid }) }}"
-                       class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true" target="_blank">
-                        <i class="fas fa-eye mr-1"></i>
-                        {{ 'edit.view'|trans({}, 'project_petitions') }}
-                    </a>
-
                     {# Switch language dropdown #}
                     {% set existing_locales = petition.localizations|map(l => l.locale) %}
                     {% set all_locales = ['fr','en','de','it','nl','pt'] %}
@@ -120,6 +114,14 @@
                             {% endif %}
                         </ul>
                     </div>
+
+                    {% if localized.form %}
+                        <a href="{{ path('console_website_forms_edit', { 'projectUuid': current_project.uuid, 'uuid': localized.form.uuid }) }}"
+                           class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true" target="_blank">
+                            <i class="fas fa-edit mr-1"></i>
+                            {{ 'edit.update_form'|trans({}, 'project_petitions') }}
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="col-12 col-lg-auto ml-lg-auto">
                     <div data-petition--edit-target="topbar">
