@@ -102,12 +102,16 @@ class PetitionLocalizedController extends AbstractController
             $localized->applyMetadataUpdate($data);
         }
 
-        // Sync form title with localized title
-        $localized->getForm()->setTitle($localized->getTitle());
-        $localized->getForm()->setDescription($localized->getDescription());
+        // Sync form title with localized title when a form is linked
+        if (null !== $localized->getForm()) {
+            $localized->getForm()->setTitle($localized->getTitle());
+            $localized->getForm()->setDescription($localized->getDescription());
+        }
 
         $this->em->persist($localized);
-        $this->em->persist($localized->getForm());
+        if (null !== $localized->getForm()) {
+            $this->em->persist($localized->getForm());
+        }
         $this->em->flush();
 
         if ('Metadata' === $groupValidation) {

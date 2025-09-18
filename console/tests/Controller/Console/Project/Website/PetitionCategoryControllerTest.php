@@ -52,7 +52,7 @@ class PetitionCategoryControllerTest extends WebTestCase
         $project = static::getContainer()->get(ProjectRepository::class)->findOneBy(['uuid' => self::PROJECT_CITIPO_UUID]);
 
         $petition = new Petition($project, 'petition-title');
-        $loc = new LocalizedPetition($petition, 'en', 'Petition Title');
+        $loc = new LocalizedPetition($petition, null, 'en', 'Petition Title', '', '', '');
 
         $petitionCategory = new PetitionCategory($project, 'Category', 3);
         $loc->getCategories()->add($petitionCategory);
