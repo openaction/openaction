@@ -149,6 +149,11 @@ class LocalizedPetition
         return $this->optinLabel;
     }
 
+    public function getLegalities(): ?string
+    {
+        return $this->legalities;
+    }
+
     public function getAddressedTo(): ?string
     {
         return $this->addressedTo;
@@ -165,6 +170,7 @@ class LocalizedPetition
         $this->description = (string) ($data->description ?? '');
         $this->submitButtonLabel = $data->submitButtonLabel ?: null;
         $this->optinLabel = $data->optinLabel ?: null;
+        $this->legalities = $data->legalities ?: null;
         $this->addressedTo = $data->addressedTo ?: null;
     }
 

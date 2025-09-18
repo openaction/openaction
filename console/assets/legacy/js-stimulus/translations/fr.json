@@ -26,6 +26,7 @@
                 "description": { "label": "Description" },
                 "submitButtonLabel": { "label": "Libellé du bouton de signature" },
                 "optinLabel": { "label": "Libellé du consentement légal RGPD" },
+                "legalities": { "label": "Conditions légales" },
                 "addressedTo": { "label": "Adressée à" }
             }
         }

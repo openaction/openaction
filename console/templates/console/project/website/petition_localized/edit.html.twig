@@ -19,6 +19,7 @@
     'description': localized.description,
     'submitButtonLabel': localized.submitButtonLabel,
     'optinLabel': localized.optinLabel,
+    'legalities': localized.legalities,
     'addressedTo': localized.addressedTo,
     'image': localized.image ? cdn_image_url(localized.image) : localized.image,
     'categories': categories,
@@ -131,6 +132,7 @@
                             {{ form_widget(form.description, {'attr': {'data-petition--edit-target': 'description'}}) }}
                             {{ form_widget(form.submitButtonLabel, {'attr': {'data-petition--edit-target': 'submitButtonLabel'}}) }}
                             {{ form_widget(form.optinLabel, {'attr': {'data-petition--edit-target': 'optinLabel'}}) }}
+                            {{ form_widget(form.legalities, {'attr': {'data-petition--edit-target': 'legalities'}}) }}
                             {{ form_widget(form.addressedTo, {'attr': {'data-petition--edit-target': 'addressedTo'}}) }}
                             {{ form_widget(form.categories, {'attr': {'data-petition--edit-target': 'categories'}}) }}
                             {{ form_widget(image_form.file, {'attr': {'data-petition--edit-target': 'image'}}) }}

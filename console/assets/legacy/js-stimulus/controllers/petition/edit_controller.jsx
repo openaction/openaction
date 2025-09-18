@@ -14,6 +14,7 @@ export default class extends Controller {
         'description',
         'submitButtonLabel',
         'optinLabel',
+        'legalities',
         'addressedTo',
         'categories',
         'image',
@@ -47,6 +48,7 @@ export default class extends Controller {
                 descriptionInput={this.descriptionTarget.getAttribute('name')}
                 submitButtonLabelInput={this.submitButtonLabelTarget.getAttribute('name')}
                 optinLabelInput={this.optinLabelTarget.getAttribute('name')}
+                legalitiesInput={this.legalitiesTarget.getAttribute('name')}
                 addressedToInput={this.addressedToTarget.getAttribute('name')}
                 categoriesInput={this.categoriesTarget.getAttribute('name')}
                 imageInput={this.imageTarget.getAttribute('name')}

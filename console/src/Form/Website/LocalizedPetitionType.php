@@ -18,6 +18,7 @@ class LocalizedPetitionType extends AbstractType
             ->add('description', HiddenType::class, ['required' => false])
             ->add('submitButtonLabel', HiddenType::class, ['required' => false])
             ->add('optinLabel', HiddenType::class, ['required' => false])
+            ->add('legalities', HiddenType::class, ['required' => false])
             ->add('addressedTo', HiddenType::class, ['required' => false])
             ->add('categories', HiddenType::class, ['required' => false])
         ;
