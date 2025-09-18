@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Client\CitipoInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * Public petitions pages.
- */
 class PetitionController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -17,10 +15,8 @@ class PetitionController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("/pe/{slug}/{locale}", name="petition_view")
-     */
-    public function view(string $slug, string $locale)
+    #[Route("/petition/{slug}", name: "petition_view")]
+    public function view(Request $request, string $slug)
     {
         $this->denyUnlessToolEnabled('website_petitions');
 
@@ -29,10 +25,12 @@ class PetitionController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        // Expect localized content keyed by locale, e.g. $petition->localized['fr']
+        $locale = $request->query->get('locale');
         $localized = null;
-        if (isset($petition->localized) && is_array($petition->localized) && isset($petition->localized[$locale])) {
-            $localized = $petition->localized[$locale];
+        foreach ($petition->localizations as $l) {
+            if ($l->locale === $locale) {
+                $localized = $l;
+            }
         }
 
         if (!$localized) {

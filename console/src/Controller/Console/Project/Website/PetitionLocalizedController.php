@@ -10,6 +10,7 @@ use App\Controller\Util\ApiControllerTrait;
 use App\Controller\Util\ContentEditorUploadControllerTrait;
 use App\Entity\Website\LocalizedPetition;
 use App\Entity\Website\Petition;
+use App\Entity\Website\Post;
 use App\Form\Website\LocalizedPetitionImageType;
 use App\Form\Website\LocalizedPetitionType;
 use App\Form\Website\Model\LocalizedPetitionData;
@@ -17,9 +18,11 @@ use App\Form\Website\Model\LocalizedPetitionImageData;
 use App\Form\Website\Model\PetitionData;
 use App\Form\Website\PetitionType;
 use App\Platform\Permissions;
+use App\Proxy\DomainRouter;
 use App\Repository\Website\LocalizedPetitionRepository;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
+use App\Util\Uid;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Symfony\Component\Form\FormError;
@@ -249,5 +252,18 @@ class PetitionLocalizedController extends AbstractController
         return $this->redirectToRoute('console_website_petitions', [
             'projectUuid' => $this->getProject()->getUuid(),
         ]);
+    }
+
+    #[Route('/localized/{uuid}/view', name: 'console_website_petition_localized_view', methods: ['GET'])]
+    public function view(DomainRouter $domainRouter, LocalizedPetition $localized)
+    {
+        $petition = $localized->getPetition();
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($petition);
+
+        return $this->redirect(
+            $domainRouter->generateRedirectUrl($this->getProject(), 'petition', $petition->getSlug()).'?locale='.$localized->getLocale()
+        );
     }
 }

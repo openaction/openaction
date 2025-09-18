@@ -6,6 +6,8 @@ use App\Api\Transformer\AbstractTransformer;
 use App\Cdn\CdnRouter;
 use App\Entity\Website\LocalizedPetition;
 use App\Entity\Website\Petition;
+use App\Util\ReadTime;
+use App\Util\Uid;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
 
@@ -25,7 +27,7 @@ class PetitionPartialTransformer extends AbstractTransformer
                 'self' => $this->createLink('api_website_petitions_view', ['id' => $petition->getSlug()]),
             ],
             // Petitions identifier is the slug
-            'id' => $petition->getSlug(),
+            'id' => Uid::toBase62($petition->getUuid()),
             'slug' => $petition->getSlug(),
             'published_at' => $petition->getPublishedAt() ? $petition->getPublishedAt()->format(DATE_ATOM) : null,
             'start_at' => $petition->getStartAt() ? $petition->getStartAt()->format(DATE_ATOM) : null,
@@ -45,9 +47,11 @@ class PetitionPartialTransformer extends AbstractTransformer
     private function transformLocalized(LocalizedPetition $localized, bool $includeContentAndForm): array
     {
         $data = [
+            'id' => Uid::toBase62($localized->getUuid()),
             'locale' => $localized->getLocale(),
             'title' => $localized->getTitle(),
             'description' => $localized->getDescription() ?: null,
+            'read_time' => ReadTime::inMinutes($localized->getContent()),
             'image' => $localized->getImage() ? $this->cdnRouter->generateUrl($localized->getImage()) : null,
             'sharer' => $localized->getImage() ? $this->cdnRouter->generateUrl($localized->getImage(), 'sharer') : null,
         ];

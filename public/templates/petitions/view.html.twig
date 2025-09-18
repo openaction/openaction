@@ -5,9 +5,45 @@
 {% block body_class 'body-petitions-view' %}
 
 {% block page %}
-    <main class="container">
-        <h1>{{ localized.title }}</h1>
-        <p>{{ localized.description|default('') }}</p>
-    </main>
+    <div data-controller="citipo-contentview"
+         data-citipo-contentview-type-value="petition"
+         data-citipo-contentview-id-value="{{ localized.id }}"></div>
+
+    {% set social_sharers = include('_include/social_sharers.html.twig', {
+        'route': 'petition_view',
+        'params': {'slug': petition.slug, 'locale': localized.locale}
+    }) %}
+
+    {% set categories = {} %}
+    {% for category in localized.categories %}
+        {% set categories = categories|merge({ (category.name): true }) %}
+    {% endfor %}
+
+    {% set payload = {
+        'item': petition.toArray,
+        'petition': petition.toArray,
+        'localized': localized.toArray,
+        'current_url': url('petition_view', {'slug': petition.slug, 'locale': localized.locale}),
+        'current_project': current_project.toArray,
+        'force_embed_consent': force_embed_consent,
+        'title': localized.title,
+        'description': localized.description|default(''),
+        'social_sharers': social_sharers,
+        'image': localized.image,
+        'categories': categories,
+        'read_time': localized.read_time,
+        'content': '<div class="user-content">'~ localized.content|apply_embed_consent ~'</div>',
+        'titleLabel': 'base.embed-consent.title'|trans,
+        'descriptionLabel': 'base.embed-consent.description'|trans,
+        'acceptLabel': 'base.embed-consent.accept'|trans,
+        'externalLabel': 'base.embed-consent.external'|trans,
+        'cancelLabel': 'base.embed-consent.cancel'|trans,
+        'section_id': 'petitions',
+        'default_list_image': asset('res/default.jpg'),
+    } %}
+
+    {% sandbox %}
+        {% include '@theme/content.html.twig' with payload %}
+    {% endsandbox %}
 {% endblock %}
 

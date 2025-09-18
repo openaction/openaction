@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RedirectController extends AbstractController
@@ -10,7 +11,7 @@ class RedirectController extends AbstractController
      * @Route("/_redirect/{type}", name="redirect")
      * @Route("/_redirect/{type}/{id}", requirements={"id": ".+"}, name="redirect")
      */
-    public function entityRedirect(string $type, ?string $id = null)
+    public function entityRedirect(Request $request, string $type, ?string $id = null)
     {
         switch ($type) {
             case 'home': return $this->redirectToRoute('homepage');
@@ -20,6 +21,7 @@ class RedirectController extends AbstractController
             case 'form': return $this->redirectToRoute('form_view', ['id' => $id, 'slug' => 'redirect']);
             case 'manifesto': return $this->redirectToRoute('manifesto_view', ['id' => $id, 'slug' => 'redirect']);
             case 'trombinoscope': return $this->redirectToRoute('trombinoscope_view', ['id' => $id, 'slug' => 'redirect']);
+            case 'petition': return $this->redirectToRoute('petition_view', ['slug' => $id, 'locale' => $request->query->get('locale', 'fr')]);
             case 'manage-gdpr': return $this->redirectToRoute('manage_gdpr', ['id' => $id]);
             case 'phoning': return $this->redirectToRoute('membership_phoning_start', ['id' => $id]);
             case 'register-confirm':

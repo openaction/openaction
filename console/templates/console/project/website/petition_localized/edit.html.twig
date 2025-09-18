@@ -62,7 +62,8 @@
                         <span>{{ 'edit.back'|trans({}, 'project_petitions') }}</span>
                     </a>
 
-                    <a href="#" class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true">
+                    <a href="{{ path('console_website_petition_localized_view', { 'projectUuid': current_project.uuid, 'uuid': localized.uuid }) }}"
+                       class="btn btn-outline-primary btn-sm border-0 ml-2" aria-disabled="true" target="_blank">
                         <i class="fas fa-eye mr-1"></i>
                         {{ 'edit.view'|trans({}, 'project_petitions') }}
                     </a>

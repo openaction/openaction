@@ -105,7 +105,8 @@
                                 </div>
 
                                 <div class="col-lg-4 text-lg-right">
-                                    <a href="#" class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-view" aria-disabled="true">
+                                    <a href="{{ path('console_website_petition_localized_view', { 'projectUuid': project.uuid, 'uuid': loc.uuid }) }}"
+                                       class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-view" aria-disabled="true" target="_blank">
                                         <i class="fad fa-eye mr-1"></i>
                                         {{ 'index.view'|trans({}, 'project_petitions') }}
                                     </a>
