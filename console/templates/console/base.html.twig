@@ -82,7 +82,7 @@
 
     <div class="world">
         <header class="world-header p-3 mb-4">
-            <div class="tw:flex tw:flex-col tw:md:flex-row tw:items-center tw:gap-3">
+            <div class="flex flex-col md:flex-row items-center gap-3">
                 <div>
                     <a href="{{ current_organization ? path('console_organization_projects', {'organizationUuid': current_organization.uuid}) : path('homepage_redirect') }}">
                         <img src="{{ platform_logo }}" class="world-header-logo" />
@@ -155,7 +155,7 @@
 
                 {% set whats_new = get_announcements_for(app.user) %}
 
-                <div class="tw:ml-auto">
+                <div class="ml-auto">
                     <div class="world-header-menu on-click"
                          data-controller="whats-new"
                          data-latest="{{ (whats_new[0] is defined ? whats_new[0].date|date('U') : 0) }}">

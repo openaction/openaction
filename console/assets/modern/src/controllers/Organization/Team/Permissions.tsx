@@ -272,15 +272,15 @@ export default function (props: Props) {
     };
 
     return (
-        <div className="tw:space-y-6">
-            <div className="tw:flex tw:items-center tw:gap-3">
+        <div className="space-y-6">
+            <div className="flex items-center gap-3">
                 <Checkbox
                     id="isAdmin"
                     checked={isAdmin}
                     onCheckedChange={(checked) => setIsAdmin(true === checked)}
                 />
 
-                <Label htmlFor="isAdmin" className="tw:mb-0!">
+                <Label htmlFor="isAdmin" className="mb-0!">
                     {props.labels.is_admin_label}
                 </Label>
 
@@ -294,19 +294,19 @@ export default function (props: Props) {
                 return (
                     <div key={project.uuid} className="world-block p-3 mb-3">
                         <Collapsible defaultOpen={props.projects.length <= 5}>
-                            <CollapsibleTrigger className="tw:w-full">
-                                <div className="tw:flex tw:items-center tw:gap-2 tw:hover:underline">
+                            <CollapsibleTrigger className="w-full">
+                                <div className="flex items-center gap-2 hover:underline">
                                     <div>
-                                        <ChevronsUpDown className="tw:size-4" />
+                                        <ChevronsUpDown className="size-4" />
                                     </div>
-                                    <h5 className="tw:mb-0!">
+                                    <h5 className="mb-0!">
                                         {project.name}
                                     </h5>
                                 </div>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
-                                <div className="tw:space-y-4 tw:mt-2">
-                                    <div className="tw:flex tw:items-center tw:gap-1">
+                                <div className="space-y-4 mt-2">
+                                    <div className="flex items-center gap-1">
                                         <Checkbox
                                             id={`${project.uuid}-all`}
                                             disabled={isAdmin}
@@ -316,28 +316,28 @@ export default function (props: Props) {
 
                                         <Label
                                             htmlFor={`${project.uuid}-all`}
-                                            className="tw:mb-0! tw:font-normal tw:text-slate-600 tw:text-xs">
+                                            className="mb-0! font-normal text-slate-600 text-xs">
                                             {props.labels.grant_all_permissions}
                                         </Label>
                                     </div>
 
                                     {!isAdmin && (
-                                        <div className="tw:grid tw:grid-cols-3 tw:gap-3">
+                                        <div className="grid grid-cols-3 gap-3">
                                             {Object.keys(props.definitions).map(section => (
                                                 <div key={`${project.uuid}-${section}`}>
-                                                    <div className="tw:uppercase tw:text-slate-500 tw:font-medium tw:text-xs tw:mb-2">
+                                                    <div className="uppercase text-slate-500 font-medium text-xs mb-2">
                                                         {props.translations[section]}
                                                     </div>
 
-                                                    <div className="tw:space-y-6">
+                                                    <div className="space-y-6">
                                                         {Object.keys(props.definitions[section]).map(category => (
-                                                            <div className="tw:space-y-1" key={`${project.uuid}-${category}`}>
-                                                                <div className="tw:text-slate-400 tw:text-xs">
+                                                            <div className="space-y-1" key={`${project.uuid}-${category}`}>
+                                                                <div className="text-slate-400 text-xs">
                                                                     {props.translations[category]}
                                                                 </div>
 
                                                                 {props.definitions[section][category].map(permission => (
-                                                                    <div className="tw:flex tw:items-center tw:gap-1" key={`${project.uuid}-${permission}`}>
+                                                                    <div className="flex items-center gap-1" key={`${project.uuid}-${permission}`}>
                                                                         <Checkbox
                                                                             id={`${project.uuid}-${permission}`}
                                                                             checked={projectPermissions[project.uuid]?.[permission] || false}
@@ -345,7 +345,7 @@ export default function (props: Props) {
                                                                         />
                                                                         <Label
                                                                             htmlFor={`${project.uuid}-${permission}`}
-                                                                            className="tw:mb-0! tw:font-normal tw:text-slate-600 tw:text-xs">
+                                                                            className="mb-0! font-normal text-slate-600 text-xs">
                                                                             {props.translations[permission]}
                                                                         </Label>
                                                                     </div>
@@ -355,17 +355,17 @@ export default function (props: Props) {
                                                                 {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
                                                                     <Collapsible
                                                                         defaultOpen={categoryScope[project.uuid]?.[category] === 'specific'}
-                                                                        className="tw:mt-3 tw:p-2 tw:border tw:border-slate-200 tw:rounded-sm tw:bg-slate-50"
+                                                                        className="mt-3 p-2 border border-slate-200 rounded-sm bg-slate-50"
                                                                     >
                                                                         <CollapsibleTrigger>
-                                                                            <div className="tw:text-xs tw:flex tw:items-center tw:gap-1">
-                                                                                <ChevronsUpDown className="tw:size-3" />
+                                                                            <div className="text-xs flex items-center gap-1">
+                                                                                <ChevronsUpDown className="size-3" />
                                                                                 <span>{props.labels.apply_permissions_label}</span>
                                                                             </div>
                                                                         </CollapsibleTrigger>
 
-                                                                        <CollapsibleContent className="tw:space-y-2 mt-1">
-                                                                            <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'tw:opacity-50' : ''}`}>
+                                                                        <CollapsibleContent className="space-y-2 mt-1">
+                                                                            <div className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'opacity-50' : ''}`}>
                                                                                 <input
                                                                                     type="radio"
                                                                                     id={`${project.uuid}-${category}-all`}
@@ -376,12 +376,12 @@ export default function (props: Props) {
                                                                                 />
                                                                                 <Label
                                                                                     htmlFor={`${project.uuid}-${category}-all`}
-                                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                                    className="text-xs font-normal m-0! -mt-0.5!"
                                                                                 >
                                                                                     {getCategoryAllLabel(category)}
                                                                                 </Label>
                                                                             </div>
-                                                                            <div className={`tw:flex tw:gap-2 tw:items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'tw:opacity-50' : ''}`}>
+                                                                            <div className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'opacity-50' : ''}`}>
                                                                                 <input
                                                                                     type="radio"
                                                                                     id={`${project.uuid}-${category}-specific`}
@@ -392,9 +392,9 @@ export default function (props: Props) {
                                                                                 />
                                                                                 <Label
                                                                                     htmlFor={`${project.uuid}-${category}-specific`}
-                                                                                    className="tw:text-xs tw:font-normal tw:m-0! tw:-mt-0.5!"
+                                                                                    className="text-xs font-normal m-0! -mt-0.5!"
                                                                                 >
-                                                                                    <div className="tw:mb-1">
+                                                                                    <div className="mb-1">
                                                                                         {getCategorySpecificLabel(category)}
                                                                                     </div>
 
@@ -409,7 +409,7 @@ export default function (props: Props) {
                                                                                             placeholder={props.labels.select_categories_placeholder}
                                                                                             variant="inverted"
                                                                                             maxCount={100}
-                                                                                            className="tw:min-h-8! tw:bg-white tw:hover:bg-white!"
+                                                                                            className="min-h-8! bg-white hover:bg-white!"
                                                                                         />
                                                                                     )}
                                                                                 </Label>
