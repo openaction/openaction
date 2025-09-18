@@ -471,7 +471,6 @@ export function LocalizedPetitionEdit(props) {
                             <textarea
                                 className="bp4-input bp4-fill"
                                 rows={3}
-                                placeholder="Conditions légales..."
                                 defaultValue={metadata.legalities}
                                 onChange={(e) => saveLocalizedMetadata({ ...metadata, legalities: e.target.value })}
                             />
