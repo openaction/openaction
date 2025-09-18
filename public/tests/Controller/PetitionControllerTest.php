@@ -2,10 +2,11 @@
 
 namespace App\Tests\Controller;
 
+use App\Client\Citipo;
 use App\Client\CitipoInterface;
-use App\Client\Model\ApiResource;
-use App\Client\PassKey\TokenResolver;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 class PetitionControllerTest extends WebTestCase
 {
@@ -13,67 +14,75 @@ class PetitionControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
-        // Stub token resolver to always resolve a token for localhost
-        $tokenResolver = new class extends TokenResolver {
-            public function __construct()
-            {
-            }
+        $container = static::getContainer();
 
-            public function resolveProjectToken(string $domain): ?string
-            {
-                return 'TEST_TOKEN';
-            }
-        };
-        static::getContainer()->set(TokenResolver::class, $tokenResolver);
-
-        // Mock Citipo client
-        $citipo = $this->createMock(CitipoInterface::class);
-
-        $project = new ApiResource();
-        $project->name = 'Test Project';
-        $project->locale = 'fr';
-        $project->tools = ['website_petitions'];
-        $project->access = ['username' => null, 'password' => null];
-        $project->redirections = [];
-        $project->importedRedirections = [];
-        $project->animateLinks = false;
-        $project->captchaSiteKey = null;
-        $project->captchaSecretKey = null;
-        $project->metaTitle = 'Test';
-        $project->fontTitle = 'Inter';
-        $project->fontText = 'Inter';
-        $project->links = [
-            'stylesheet' => '/css/theme.css',
-            'javascript' => '/js/bundle.js',
-            'analytics' => '/stats',
-            'javascript_custom' => '/js/custom.js',
-        ];
-        $project->id = 'proj1';
-        $project->animateElements = false;
-        $project->icon = null;
-        $project->favicon = null;
-        $project->primary = '000000';
-        $project->terminology = ['posts' => 'Posts'];
-        $project->sharer = null;
-        $project->theme = [
+        // Prepare a fake Console API using MockHttpClient and keep the real client class.
+        $theme = [
             'head.html.twig' => file_get_contents(__DIR__.'/../Fixtures/theme/head.html.twig'),
             'header.html.twig' => file_get_contents(__DIR__.'/../Fixtures/theme/header.html.twig'),
             'footer.html.twig' => file_get_contents(__DIR__.'/../Fixtures/theme/footer.html.twig'),
             'layout.html.twig' => file_get_contents(__DIR__.'/../Fixtures/theme/layout.html.twig'),
         ];
-        $project->theme_assets = [];
-        $project->project_assets = [];
-        $citipo->method('getProject')->willReturn($project);
 
-        $petition = new ApiResource();
-        $petition->slug = 'stop-foo';
-        $petition->localized = [
-            'fr' => ['title' => 'Titre FR', 'description' => 'Description FR'],
-            'en' => ['title' => 'Title EN', 'description' => 'Description EN'],
+        $projectPayload = [
+            '_resource' => 'project',
+            'id' => 'proj1',
+            'name' => 'Test Project',
+            'locale' => 'fr',
+            'metaTitle' => 'Test',
+            'metaDescription' => 'Test Project',
+            'fontTitle' => 'Inter',
+            'fontText' => 'Inter',
+            'tools' => ['website_petitions'],
+            'access' => ['username' => null, 'password' => null],
+            'links' => [
+                'stylesheet' => '/css/theme.css',
+                'javascript' => '/js/bundle.js',
+                'analytics' => '/stats',
+                'javascript_custom' => '/js/custom.js',
+            ],
+            'animateLinks' => false,
+            'animateElements' => false,
+            'captchaSiteKey' => null,
+            'captchaSecretKey' => null,
+            'icon' => null,
+            'favicon' => null,
+            'primary' => '000000',
+            'terminology' => ['posts' => 'Posts'],
+            'sharer' => null,
+            'theme' => $theme,
+            'theme_assets' => [],
+            'project_assets' => [],
+            'redirections' => [],
+            'importedRedirections' => [],
+            'pages' => [],
+            'posts' => [],
+            'home' => [],
         ];
-        $citipo->method('getPetition')->willReturn($petition);
 
-        static::getContainer()->set(CitipoInterface::class, $citipo);
+        $petitionPayload = [
+            '_resource' => 'website_petition_full',
+            'slug' => 'stop-foo',
+            'localized' => [
+                'fr' => ['title' => 'Titre FR', 'description' => 'Description FR'],
+                'en' => ['title' => 'Title EN', 'description' => 'Description EN'],
+            ],
+        ];
+
+        $mock = new MockHttpClient(function (string $method, string $url) use ($projectPayload, $petitionPayload) {
+            $path = parse_url($url, PHP_URL_PATH) ?: '';
+            if ('GET' === $method && '/api/project' === $path) {
+                return new MockResponse(json_encode($projectPayload, JSON_THROW_ON_ERROR), ['response_headers' => ['content-type' => 'application/json']]);
+            }
+            if ('GET' === $method && preg_match('~^/api/website/petitions/[^/]+$~', $path)) {
+                return new MockResponse(json_encode($petitionPayload, JSON_THROW_ON_ERROR), ['response_headers' => ['content-type' => 'application/json']]);
+            }
+
+            return new MockResponse('', ['http_code' => 404]);
+        });
+
+        $citipo = new Citipo($mock, $container->get('request_stack'));
+        $container->set(CitipoInterface::class, $citipo);
 
         $client->request('GET', '/pe/stop-foo/fr');
         $this->assertResponseIsSuccessful();
