@@ -15,6 +15,7 @@ index:
     last_modified: Dernière modification à %datetime%
     visits: visites
     remove_confirm: Êtes-vous sûr de vouloir supprimer le questionnaire "%name%" ?
+    linked_petition: Lié à la pétition
 
 create:
     title: '(Questionnaire sans titre)'

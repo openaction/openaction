@@ -15,6 +15,7 @@ index:
     last_modified: 'Zuletzt bearbeitet am %datetime%'
     visits: besucht
     remove_confirm: 'Sind Sie sicher, dass Sie das Formular "%name%" löschen wollen?'
+    linked_petition: 'Mit Petition verknüpft'
 create:
     title: '(Unbenanntes Formular)'
     question_email: 'E-Mail Adresse'

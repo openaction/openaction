@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
+use App\FormBuilder\SymfonyFormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class PetitionController extends AbstractController
 {
-    private CitipoInterface $citipo;
-
-    public function __construct(CitipoInterface $citipo)
-    {
-        $this->citipo = $citipo;
+    public function __construct(
+        private readonly Turnstile $turnstile,
+        private readonly SymfonyFormBuilder $formBuilder,
+        private readonly CitipoInterface $citipo,
+    ) {
     }
 
     #[Route("/petition/{slug}", name: "petition_view")]
@@ -36,6 +38,8 @@ class PetitionController extends AbstractController
         if (!$localized) {
             throw $this->createNotFoundException();
         }
+
+        dd($localized);
 
         return $this->render('petitions/view.html.twig', [
             'petition' => $petition,

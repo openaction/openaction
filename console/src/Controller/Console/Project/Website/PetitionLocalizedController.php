@@ -8,9 +8,10 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Controller\AbstractController;
 use App\Controller\Util\ApiControllerTrait;
 use App\Controller\Util\ContentEditorUploadControllerTrait;
+use App\DataManager\PetitionDataManager;
+use App\Entity\Website\Form;
 use App\Entity\Website\LocalizedPetition;
 use App\Entity\Website\Petition;
-use App\Entity\Website\Post;
 use App\Form\Website\LocalizedPetitionImageType;
 use App\Form\Website\LocalizedPetitionType;
 use App\Form\Website\Model\LocalizedPetitionData;
@@ -22,7 +23,6 @@ use App\Proxy\DomainRouter;
 use App\Repository\Website\LocalizedPetitionRepository;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
-use App\Util\Uid;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Symfony\Component\Form\FormError;
@@ -44,6 +44,8 @@ class PetitionLocalizedController extends AbstractController
         private readonly LocalizedPetitionRepository $localizedRepository,
         private readonly PetitionCategoryRepository $categoryRepository,
         private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
+        private readonly PetitionDataManager $dataManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -222,10 +224,7 @@ class PetitionLocalizedController extends AbstractController
             }
         }
 
-        $defaultTitle = $translator->trans('create.default_title', [], 'project_petitions');
-        $localized = new LocalizedPetition($petition, $locale, $defaultTitle);
-        $this->em->persist($localized);
-        $this->em->flush();
+        $localized = $this->dataManager->createEmptyLocalizedPetition($petition, locale: $locale);
 
         return $this->redirectToRoute('console_website_petition_localized_edit', [
             'projectUuid' => $this->getProject()->getUuid(),

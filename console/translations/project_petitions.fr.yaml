@@ -29,6 +29,17 @@ edit:
 
 create:
   default_title: '(Pétition sans titre)'
+  formBlocks:
+    first_name: 'Prénom'
+    last_name: 'Nom'
+    email: 'Email'
+    phone: 'Numéro de téléphone'
+    zip_code: 'Code postal'
+    city: 'Ville'
+    country: 'Pays'
+  submitLabel: Je soutiens cette pétition
+  optinLabel: Je souhaite recevoir les informations et mises à jour en lien avec l'organisateur de cette pétition
+  legalities: Les données collectées via ce formulaire sont traitées par l'organisateur afin de prendre en compte votre soutien à la pétition. Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la Politique de confidentialité.
 
 categories:
   title: Catégories de pétitions

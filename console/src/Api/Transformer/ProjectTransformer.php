@@ -311,7 +311,7 @@ class ProjectTransformer extends AbstractTransformer
     private function createAssetUrl(Project $project, string $route, array $params = []): string
     {
         $cdnDomain = 'https://ca.'.$project->getRootDomain()->getName();
-        if ($project->getRootDomain()->getName() === 'localhost') {
+        if ('localhost' === $project->getRootDomain()->getName()) {
             $cdnDomain = 'https://localhost:8000';
         }
 

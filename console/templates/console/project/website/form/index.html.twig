@@ -52,11 +52,27 @@
                                 <div class="col-lg">
                                     <h5 class="mb-1 pages-title">
                                         <a href="{{ path('console_website_forms_edit', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}">
-                                            {{ form.title }}
+                                            {% if form.localizedPetition %}
+                                                {{ form.localizedPetition.title }}
+                                            {% else %}
+                                                {{ form.title }}
+                                            {% endif %}
                                         </a>
                                     </h5>
 
                                     <div>
+                                        {% if form.localizedPetition %}
+                                            <div>
+                                                <small class="text-muted">
+                                                    <i class="fad fa-link mr-1"></i>
+                                                    {{ 'index.linked_petition'|trans({}, 'project_forms') }}
+                                                    <a href="{{ path('console_website_petition_localized_edit', { 'projectUuid': current_project.uuid, 'uuid': form.localizedPetition.uuid }) }}">
+                                                        {{ form.localizedPetition.title }}
+                                                    </a>
+                                                </small>
+                                            </div>
+                                        {% endif %}
+
                                         <small class="text-muted">
                                             {{ 'index.created_at'|trans({'%datetime%': form.createdAt|format_datetime('medium', 'short')}, 'project_forms') }}
 
@@ -82,11 +98,19 @@
                                         </a>
                                     {% endif %}
 
-                                    <a href="{{ path('console_website_forms_view', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
-                                       class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-view" target="_blank">
-                                        <i class="fas fa-eye mr-1"></i>
-                                        {{ 'index.view'|trans({}, 'project_forms') }}
-                                    </a>
+                                    {% if form.localizedPetition %}
+                                        <a href="{{ path('console_website_petition_localized_view', { 'projectUuid': project.uuid, 'uuid': form.localizedPetition.uuid }) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 petitions-list-action-view" aria-disabled="true" target="_blank">
+                                            <i class="fad fa-eye mr-1"></i>
+                                            {{ 'index.view'|trans({}, 'project_forms') }}
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('console_website_forms_view', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-view" target="_blank">
+                                            <i class="fas fa-eye mr-1"></i>
+                                            {{ 'index.view'|trans({}, 'project_forms') }}
+                                        </a>
+                                    {% endif %}
 
                                     <a href="{{ path('console_website_forms_edit', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
                                        class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-edit">
@@ -94,36 +118,38 @@
                                         {{ 'index.edit'|trans({}, 'project_forms') }}
                                     </a>
 
-                                    <a href="{{ csrf_path('console_website_forms_duplicate', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
-                                       class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-duplicate">
-                                        <i class="fad fa-copy mr-1"></i>
-                                        {{ 'index.duplicate'|trans({}, 'project_forms') }}
-                                    </a>
+                                    {% if not form.localizedPetition %}
+                                        <a href="{{ csrf_path('console_website_forms_duplicate', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-duplicate">
+                                            <i class="fad fa-copy mr-1"></i>
+                                            {{ 'index.duplicate'|trans({}, 'project_forms') }}
+                                        </a>
 
-                                    {% if is_granted('website_forms_manage', current_project) %}
-                                        {% if form.answers|length > 0 %}
-                                            <button title="{{ 'index.move_cant_answers'|trans({}, 'project_forms') }}"
-                                                    disabled class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
-                                                <i class="fad fa-share mr-1"></i>
-                                                {{ 'index.move'|trans({}, 'project_forms') }}
-                                            </button>
-                                        {% else %}
-                                            <a href="{{ path('console_website_forms_move', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
-                                               class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
-                                                <i class="fad fa-share mr-1"></i>
-                                                {{ 'index.move'|trans({}, 'project_forms') }}
-                                            </a>
+                                        {% if is_granted('website_forms_manage', current_project) %}
+                                            {% if form.answers|length > 0 %}
+                                                <button title="{{ 'index.move_cant_answers'|trans({}, 'project_forms') }}"
+                                                        disabled class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
+                                                    <i class="fad fa-share mr-1"></i>
+                                                    {{ 'index.move'|trans({}, 'project_forms') }}
+                                                </button>
+                                            {% else %}
+                                                <a href="{{ path('console_website_forms_move', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                                   class="btn btn-sm btn-outline-primary border-0 mr-2 forms-list-action-move">
+                                                    <i class="fad fa-share mr-1"></i>
+                                                    {{ 'index.move'|trans({}, 'project_forms') }}
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
 
-                                    <a href="{{ csrf_path('console_website_forms_delete', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
-                                       data-controller="delete"
-                                       data-message="{{ 'index.remove_confirm'|trans({'%name%': form.title}, 'project_forms') }}"
-                                       data-target="#form-{{ form.id }}"
-                                       class="btn btn-sm btn-outline-danger border-0 forms-list-action-delete">
-                                        <i class="fad fa-trash mr-1"></i>
-                                        {{ 'index.delete'|trans({}, 'project_forms') }}
-                                    </a>
+                                        <a href="{{ csrf_path('console_website_forms_delete', {'uuid': form.uuid, 'projectUuid': project.uuid}) }}"
+                                           data-controller="delete"
+                                           data-message="{{ 'index.remove_confirm'|trans({'%name%': form.title}, 'project_forms') }}"
+                                           data-target="#form-{{ form.id }}"
+                                           class="btn btn-sm btn-outline-danger border-0 forms-list-action-delete">
+                                            <i class="fad fa-trash mr-1"></i>
+                                            {{ 'index.delete'|trans({}, 'project_forms') }}
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

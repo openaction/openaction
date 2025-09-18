@@ -55,6 +55,9 @@ class Form implements Searchable
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private ?Collection $answers;
 
+    #[ORM\OneToOne(targetEntity: LocalizedPetition::class, mappedBy: 'form')]
+    private ?LocalizedPetition $localizedPetition = null;
+
     public function __construct(Project $project, string $title, int $weight = 1)
     {
         $this->populateTimestampable();
@@ -233,5 +236,10 @@ class Form implements Searchable
     public function getAnswers(): Collection
     {
         return $this->answers;
+    }
+
+    public function getLocalizedPetition(): ?LocalizedPetition
+    {
+        return $this->localizedPetition;
     }
 }
