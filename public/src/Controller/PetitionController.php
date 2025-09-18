@@ -106,7 +106,7 @@ class PetitionController extends AbstractController
         }
 
         // Arrondi au multiple supérieur
-        $next = (int)(ceil($max / $step) * $step);
+        $next = (int) (ceil($max / $step) * $step);
 
         // Ne pas dépasser l'objectif final
         return min($next, $signaturesGoal);
