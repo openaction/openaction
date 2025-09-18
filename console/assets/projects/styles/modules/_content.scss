@@ -49,7 +49,7 @@
                 margin: 0 5px;
             }
 
-            &-categories::before {
+            &-has-date .content-splash-metadata-categories::before {
                 content: '•';
                 margin: 0 5px 0 15px;
             }

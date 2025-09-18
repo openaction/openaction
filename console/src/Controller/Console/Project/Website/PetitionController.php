@@ -3,7 +3,7 @@
 namespace App\Controller\Console\Project\Website;
 
 use App\Controller\AbstractController;
-use App\Entity\Website\LocalizedPetition;
+use App\DataManager\PetitionDataManager;
 use App\Entity\Website\Petition;
 use App\Platform\Permissions;
 use App\Repository\Website\PetitionCategoryRepository;
@@ -21,6 +21,7 @@ class PetitionController extends AbstractController
         private readonly PetitionRepository $repository,
         private readonly PetitionCategoryRepository $categoryRepository,
         private readonly EntityManagerInterface $em,
+        private readonly PetitionDataManager $dataManager,
     ) {
     }
 
@@ -54,17 +55,7 @@ class PetitionController extends AbstractController
         $this->denyIfSubscriptionExpired();
 
         $project = $this->getProject();
-
-        // Create empty petition with default slug and a first localization with default title
-        $count = $this->repository->count(['project' => $project]);
-        $defaultSlug = 'petition-sans-titre-'.($count + 1);
-        $petition = new Petition($project, $defaultSlug);
-        $defaultTitle = $translator->trans('create.default_title', [], 'project_petitions');
-        $localized = new LocalizedPetition($petition, $request->getLocale(), $defaultTitle);
-
-        $this->em->persist($petition);
-        $this->em->persist($localized);
-        $this->em->flush();
+        $localized = $this->dataManager->createEmptyPetition($project, firstLocale: $request->getLocale());
 
         return $this->redirectToRoute('console_website_petition_localized_edit', [
             'projectUuid' => $project->getUuid(),

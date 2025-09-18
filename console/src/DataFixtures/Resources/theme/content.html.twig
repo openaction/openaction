@@ -23,7 +23,7 @@
         </h1>
 
         {% if date|default(null) or categories|default([])|length > 0 %}
-            <div class="content-splash-metadata">
+            <div class="content-splash-metadata {% if date|default(null) %}content-splash-metadata-has-date{% endif %}">
                 {% if date|default(null) %}
                     <div class="content-splash-metadata-published-at">
                         {{ date }}

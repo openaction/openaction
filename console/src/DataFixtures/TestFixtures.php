@@ -2157,8 +2157,16 @@ class TestFixtures extends AbstractFixtures
         ]);
         $this->em->persist($this->petitions[] = $petition);
 
+        // Link a dedicated form to the localized petition (controller syncs form title/description)
+        $petitionForm = Form::createFixture([
+            'project' => $project,
+            'title' => 'Save the Park Form',
+        ]);
+        $this->em->persist($petitionForm);
+
         $localized = LocalizedPetition::createFixture([
             'petition' => $petition,
+            'form' => $petitionForm,
             'locale' => 'en',
             'title' => 'Save the Park',
             'description' => 'Protect our green spaces',
@@ -2166,6 +2174,8 @@ class TestFixtures extends AbstractFixtures
             'uuid' => 'd1a1a1a1-a1a1-4b4b-8c8c-aaaaaaaaaaaa',
         ]);
         $this->em->persist($localized);
+        // Ensure associations are persisted for tests relying on form linkage
+        $this->em->flush();
     }
 
     private function loadFormsBlocks()

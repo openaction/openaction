@@ -5,9 +5,151 @@
 {% block body_class 'body-petitions-view' %}
 
 {% block page %}
-    <main class="container">
-        <h1>{{ localized.title }}</h1>
-        <p>{{ localized.description|default('') }}</p>
-    </main>
-{% endblock %}
+    <style>
+        .petition .content-splash-title, .petition .content-splash-social-sharers {
+            text-align: left;
+        }
+        .petition .content-splash-title {
+            font-size: 24px;
+        }
+        .petition .content-splash-image {
+            border-radius: 10px;
+        }
+        .petition-form {
+            margin-top: 50px;
+            padding: 30px 15px;
+            box-shadow: 0 0 5px #ccc;
+            border-radius: 10px;
+        }
+        .petition-form .user-form .form-group {
+            padding: 0;
+            background: transparent !important;
+            border: 0 !important;
+        }
+    </style>
 
+    <div data-controller="citipo-contentview"
+         data-citipo-contentview-type-value="petition"
+         data-citipo-contentview-id-value="{{ localized.id }}"></div>
+
+    <div class="petition container">
+        <div class="row">
+            <div class="col-lg-8">
+                {% set social_sharers = include('_include/social_sharers.html.twig', {
+                    'route': 'petition_view',
+                    'params': {'slug': petition.slug, 'locale': localized.locale}
+                }) %}
+
+                {% set categories = {} %}
+                {% for category in localized.categories %}
+                    {% set categories = categories|merge({ (category.name): true }) %}
+                {% endfor %}
+
+                {% set payload = {
+                    'item': petition.toArray,
+                    'petition': petition.toArray,
+                    'localized': localized.toArray,
+                    'current_url': url('petition_view', {'slug': petition.slug, 'locale': localized.locale}),
+                    'current_project': current_project.toArray,
+                    'force_embed_consent': force_embed_consent,
+                    'title': localized.title,
+                    'description': localized.description|default(''),
+                    'social_sharers': social_sharers,
+                    'image': localized.image,
+                    'categories': categories,
+                    'read_time': localized.read_time,
+                    'content': '<div class="user-content">'~ localized.content|apply_embed_consent ~'</div>',
+                    'titleLabel': 'base.embed-consent.title'|trans,
+                    'descriptionLabel': 'base.embed-consent.description'|trans,
+                    'acceptLabel': 'base.embed-consent.accept'|trans,
+                    'externalLabel': 'base.embed-consent.external'|trans,
+                    'cancelLabel': 'base.embed-consent.cancel'|trans,
+                    'section_id': 'petitions',
+                    'default_list_image': asset('res/default.jpg'),
+                } %}
+
+                {% sandbox %}
+                    {% include '@theme/content.html.twig' with payload %}
+                {% endsandbox %}
+            </div>
+            <div class="col-lg-4">
+                <div class="petition-form" data-aos="fade-up" data-aos-duration="600">
+                    <div class="user-form user-form-{{ formData.id }}">
+                        {% if success %}
+                            <div class="user-form-success">
+                                <span>{{ 'forms.success'|trans }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if formData.description %}
+                            <div class="user-form-description">
+                                {{ formData.description|nl2br }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+                        {{ form_errors(form) }}
+
+                        {% for key, block in formData.blocks %}
+                            <div class="user-form-field user-form-field-{{ block.type }}">
+                                {% if 'header' == block.type %}
+                                    <h4 class="m-0">
+                                        {{ block.content|nl2br }}
+                                    </h4>
+
+                                {% elseif 'paragraph' == block.type %}
+                                    <div class="user-content m-0">
+                                        {{ block.content|nl2br }}
+                                    </div>
+
+                                {% elseif 'html' == block.type %}
+                                    <div class="user-content m-0">
+                                        {{ block.content|apply_embed_consent|raw }}
+                                    </div>
+
+                                {% elseif 'textarea' == block.type %}
+                                    {{ form_row(form['field'~key], {'attr': {'rows': 5}}) }}
+
+                                {% elseif 'rating' == block.type %}
+                                    {{ form_row(form['field'~key], {
+                                        'attr': {'class': 'form-rating'},
+                                    }) }}
+
+                                {% elseif 'newsletter' == block.type %}
+                                    {{ form_row(form['field'~key], {'label': 'forms.newsletter'|trans}) }}
+
+                                {% else %}
+                                    {{ form_row(form['field'~key]) }}
+
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {% if form.privacy is defined %}
+                            <div class="user-form-field">
+                                {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="user-form-submit">
+                            {% if captcha_challenge %}
+                                <div class="cf-turnstile mb-2" data-sitekey="{{ captcha_challenge.siteKey }}"></div>
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                {{ 'forms.submit'|trans }}
+                            </button>
+                        </div>
+
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+
+                        <div class="form-legalities user-form-legalities">
+                            {{ 'base.form_legalities'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

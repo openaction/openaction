@@ -8,6 +8,8 @@ use App\Cdn\Model\CdnUploadRequest;
 use App\Controller\AbstractController;
 use App\Controller\Util\ApiControllerTrait;
 use App\Controller\Util\ContentEditorUploadControllerTrait;
+use App\DataManager\PetitionDataManager;
+use App\Entity\Website\Form;
 use App\Entity\Website\LocalizedPetition;
 use App\Entity\Website\Petition;
 use App\Form\Website\LocalizedPetitionImageType;
@@ -17,6 +19,7 @@ use App\Form\Website\Model\LocalizedPetitionImageData;
 use App\Form\Website\Model\PetitionData;
 use App\Form\Website\PetitionType;
 use App\Platform\Permissions;
+use App\Proxy\DomainRouter;
 use App\Repository\Website\LocalizedPetitionRepository;
 use App\Repository\Website\PetitionCategoryRepository;
 use App\Repository\Website\TrombinoscopePersonRepository;
@@ -41,6 +44,8 @@ class PetitionLocalizedController extends AbstractController
         private readonly LocalizedPetitionRepository $localizedRepository,
         private readonly PetitionCategoryRepository $categoryRepository,
         private readonly TrombinoscopePersonRepository $trombinoscopePersonRepository,
+        private readonly PetitionDataManager $dataManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -97,7 +102,16 @@ class PetitionLocalizedController extends AbstractController
             $localized->applyMetadataUpdate($data);
         }
 
+        // Sync form title with localized title when a form is linked
+        if (null !== $localized->getForm()) {
+            $localized->getForm()->setTitle($localized->getTitle());
+            $localized->getForm()->setDescription($localized->getDescription());
+        }
+
         $this->em->persist($localized);
+        if (null !== $localized->getForm()) {
+            $this->em->persist($localized->getForm());
+        }
         $this->em->flush();
 
         if ('Metadata' === $groupValidation) {
@@ -219,10 +233,7 @@ class PetitionLocalizedController extends AbstractController
             }
         }
 
-        $defaultTitle = $translator->trans('create.default_title', [], 'project_petitions');
-        $localized = new LocalizedPetition($petition, $locale, $defaultTitle);
-        $this->em->persist($localized);
-        $this->em->flush();
+        $localized = $this->dataManager->createEmptyLocalizedPetition($petition, locale: $locale);
 
         return $this->redirectToRoute('console_website_petition_localized_edit', [
             'projectUuid' => $this->getProject()->getUuid(),
@@ -249,5 +260,18 @@ class PetitionLocalizedController extends AbstractController
         return $this->redirectToRoute('console_website_petitions', [
             'projectUuid' => $this->getProject()->getUuid(),
         ]);
+    }
+
+    #[Route('/localized/{uuid}/view', name: 'console_website_petition_localized_view', methods: ['GET'])]
+    public function view(DomainRouter $domainRouter, LocalizedPetition $localized)
+    {
+        $petition = $localized->getPetition();
+        $this->denyAccessUnlessGranted(Permissions::WEBSITE_PETITIONS_MANAGE_ENTITY, $petition);
+        $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($petition);
+
+        return $this->redirect(
+            $domainRouter->generateRedirectUrl($this->getProject(), 'petition', $petition->getSlug()).'?locale='.$localized->getLocale()
+        );
     }
 }

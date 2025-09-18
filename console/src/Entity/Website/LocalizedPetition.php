@@ -23,9 +23,9 @@ class LocalizedPetition
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Petition $petition;
 
-    #[ORM\ManyToOne(targetEntity: Form::class)]
+    #[ORM\OneToOne(targetEntity: Form::class, inversedBy: 'localizedPetition')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?Form $form = null;
+    private ?Form $form;
 
     #[ORM\OneToOne(targetEntity: Upload::class)]
     private ?Upload $image = null;
@@ -36,22 +36,22 @@ class LocalizedPetition
     #[ORM\Column(length: 200)]
     private string $title;
 
-    #[ORM\Column(length: 200, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $submitButtonLabel = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $optinLabel = null;
+    #[ORM\Column(length: 200, nullable: true)]
+    private ?string $submitButtonLabel;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $legalities = null;
+    private ?string $optinLabel;
 
-    #[ORM\Column(length: 200, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $legalities;
+
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $addressedTo = null;
 
     /**
@@ -61,19 +61,23 @@ class LocalizedPetition
     #[ORM\JoinTable(name: 'website_petitions_localized_petitions_localized_categories')]
     private Collection $categories;
 
-    public function __construct(Petition $petition, string $locale, string $title)
+    public function __construct(Petition $petition, ?Form $form, string $locale, string $title, string $submitButtonLabel, string $optinLabel, string $legalities)
     {
         $this->populateTimestampable();
         $this->petition = $petition;
         $this->uuid = Uid::random();
+        $this->categories = new ArrayCollection();
+        $this->form = $form;
         $this->locale = $locale;
         $this->title = $title;
-        $this->categories = new ArrayCollection();
+        $this->submitButtonLabel = $submitButtonLabel;
+        $this->optinLabel = $optinLabel;
+        $this->legalities = $legalities;
     }
 
     public static function createFixture(array $data): self
     {
-        $self = new self($data['petition'], $data['locale'], $data['title']);
+        $self = new self($data['petition'], $data['form'] ?? null, $data['locale'], $data['title'], '', '', '');
         $self->uuid = isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Uid::fixed($data['title']);
         $self->description = $data['description'] ?? null;
         $self->content = $data['content'] ?? null;

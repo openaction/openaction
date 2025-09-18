@@ -5,6 +5,8 @@ namespace App\Api\Transformer\Website;
 use App\Api\Transformer\AbstractTransformer;
 use App\Entity\Website\LocalizedPetition;
 use App\Entity\Website\Petition;
+use App\Util\ReadTime;
+use App\Util\Uid;
 use App\Website\CustomBlockParser;
 use OpenApi\Annotations\Items;
 use OpenApi\Annotations\Property;
@@ -34,9 +36,11 @@ class PetitionFullTransformer extends AbstractTransformer
     private function transformLocalized(LocalizedPetition $localized): array
     {
         $data = [
+            'id' => Uid::toBase62($localized->getUuid()),
             'locale' => $localized->getLocale(),
             'title' => $localized->getTitle(),
             'description' => $localized->getDescription() ?: null,
+            'read_time' => ReadTime::inMinutes($localized->getContent()),
             'content' => $this->customBlockParser->normalizeCustomBlocksIn($localized->getContent() ?? ''),
         ];
 

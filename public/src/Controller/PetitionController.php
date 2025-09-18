@@ -2,25 +2,23 @@
 
 namespace App\Controller;
 
+use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use App\FormBuilder\SymfonyFormBuilder;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * Public petitions pages.
- */
 class PetitionController extends AbstractController
 {
-    private CitipoInterface $citipo;
-
-    public function __construct(CitipoInterface $citipo)
-    {
-        $this->citipo = $citipo;
+    public function __construct(
+        private readonly Turnstile $turnstile,
+        private readonly SymfonyFormBuilder $formBuilder,
+        private readonly CitipoInterface $citipo,
+    ) {
     }
 
-    /**
-     * @Route("/pe/{slug}/{locale}", name="petition_view")
-     */
-    public function view(string $slug, string $locale)
+    #[Route('/petition/{slug}', name: 'petition_view')]
+    public function view(Request $request, string $slug)
     {
         $this->denyUnlessToolEnabled('website_petitions');
 
@@ -29,19 +27,54 @@ class PetitionController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        // Expect localized content keyed by locale, e.g. $petition->localized['fr']
+        $locale = $request->query->get('locale');
         $localized = null;
-        if (isset($petition->localized) && is_array($petition->localized) && isset($petition->localized[$locale])) {
-            $localized = $petition->localized[$locale];
+        foreach ($petition->localizations as $l) {
+            if ($l->locale === $locale) {
+                $localized = $l;
+            }
         }
 
         if (!$localized) {
             throw $this->createNotFoundException();
         }
 
+        $challenge = $this->turnstile->createCaptchaChallenge($this->getProject());
+
+        $form = $this->formBuilder->createFromBlocks($localized->form->blocks->data, [], $this->getProject()->enableGdprFields);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($challenge && !$challenge->isValidResponse($request->request->get('cf-turnstile-response'))) {
+                return $this->redirectToRoute('petition_view', ['slug' => $slug, 'locale' => $locale]);
+            }
+
+            // Persist answer
+            $answers = $this->formBuilder->normalizeFormData($localized->form->blocks->data, $form->getData());
+            $this->citipo->createFormAnswer($this->getApiToken(), $localized->form->id, $answers);
+
+            // Persist picture if requested
+            $email = $this->formBuilder->getEmailValue($localized->form->blocks->data, $form->getData());
+            $picture = $this->formBuilder->getPictureValue($localized->form->blocks->data, $form->getData());
+
+            if ($email && $picture) {
+                $this->citipo->persistContactPicture(
+                    $this->getApiToken(),
+                    $this->citipo->getContactStatus($this->getApiToken(), $email)->id,
+                    $picture
+                );
+            }
+
+            return $this->redirectToRoute('petition_view', ['slug' => $slug, 'locale' => $locale, 's' => '1']);
+        }
+
         return $this->render('petitions/view.html.twig', [
             'petition' => $petition,
             'localized' => $localized,
+            'formData' => $localized->form,
+            'form' => $form->createView(),
+            'captcha_challenge' => $challenge,
+            'success' => $request->query->getBoolean('s'),
         ]);
     }
 }

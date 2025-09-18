@@ -19,7 +19,8 @@ class PetitionControllerTest extends ApiTestCase
             'data' => [
                 [
                     '_resource' => 'Petition',
-                    'id' => 'save-the-park',
+                    // IDs are now base62(uuid), slug is separate
+                    'id' => '1KDLCoLgcMqJS6ghQV7DvS',
                     'slug' => 'save-the-park',
                 ],
             ],
@@ -51,7 +52,7 @@ class PetitionControllerTest extends ApiTestCase
 
         $this->assertApiResponse($result, [
             '_resource' => 'Petition',
-            'id' => 'save-the-park',
+            'id' => '1KDLCoLgcMqJS6ghQV7DvS',
             'slug' => 'save-the-park',
         ]);
 

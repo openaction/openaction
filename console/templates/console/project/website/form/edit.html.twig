@@ -37,6 +37,7 @@
         </div>
         <div class="p-4">
             <div data-form--edit-target="content"
+                 data-is-petition="{{ form.localizedPetition ? '1' : '0' }}"
                  data-update-url="{{ path('console_website_forms_update', {'projectUuid': current_project.uuid, 'uuid': form.uuid}) }}"></div>
         </div>
     </div>

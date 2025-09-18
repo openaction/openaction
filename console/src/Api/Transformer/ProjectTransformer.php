@@ -310,7 +310,12 @@ class ProjectTransformer extends AbstractTransformer
 
     private function createAssetUrl(Project $project, string $route, array $params = []): string
     {
-        return rtrim('//ca.'.$project->getRootDomain()->getName().$this->urlGenerator->generate($route, $params), '/');
+        $cdnDomain = 'https://ca.'.$project->getRootDomain()->getName();
+        if ('localhost' === $project->getRootDomain()->getName()) {
+            $cdnDomain = 'https://localhost:8000';
+        }
+
+        return rtrim($cdnDomain.$this->urlGenerator->generate($route, $params), '/');
     }
 
     private function resolveProjectMenu(Project $project, string $position): iterable

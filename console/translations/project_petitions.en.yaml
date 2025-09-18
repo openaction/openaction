@@ -26,9 +26,21 @@ edit:
   view: View
   switch_language: Switch language
   untitled: Untitled
+  update_form: Update form
 
 create:
   default_title: '(Untitled petition)'
+  formBlocks:
+    first_name: 'First name'
+    last_name: 'Last name'
+    email: 'Email'
+    phone: 'Phone number'
+    zip_code: 'Postal code'
+    city: 'City'
+    country: 'Country'
+  submitLabel: I support this petition
+  optinLabel: I wish to receive information and updates related to the organizer of this petition
+  legalities: The data collected through this form is processed by the organizer to take into account your support for the petition. To learn more about the management of your personal data and to exercise your rights, please refer to the Privacy Policy.
 
 categories:
   title: Petition categories

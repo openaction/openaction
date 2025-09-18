@@ -147,39 +147,43 @@ export function FormBlocksEditor(props) {
 
     return (
         <div className="form-blocks p-4">
-            <div
-                className={'form-block mb-3 ' + (focused === 0 ? 'form-block-focused' : '')}
-                onClick={() => setFocused(0)}
-            >
-                <MetadataView
-                    focused={focused === 0}
-                    title={title}
-                    setTitle={(newTitle) => {
-                        setTitle(newTitle);
-                        save(newTitle, description, proposeNewsletter, onlyForMembers, redirectUrl, blocks);
-                    }}
-                    description={description}
-                    setDescription={(newDescription) => {
-                        setDescription(newDescription);
-                        save(title, newDescription, proposeNewsletter, onlyForMembers, redirectUrl, blocks);
-                    }}
-                    proposeNewsletter={proposeNewsletter}
-                    setProposeNewsletter={(newProposeNewsletter) => {
-                        setProposeNewsletter(newProposeNewsletter);
-                        save(title, description, newProposeNewsletter, onlyForMembers, redirectUrl, blocks);
-                    }}
-                    onlyForMembers={onlyForMembers}
-                    setOnlyForMembers={(newOnlyForMembers) => {
-                        setOnlyForMembers(newOnlyForMembers);
-                        save(title, description, proposeNewsletter, newOnlyForMembers, redirectUrl, blocks);
-                    }}
-                    redirectUrl={redirectUrl}
-                    setRedirectUrl={(newRedirectUrl) => {
-                        setRedirectUrl(newRedirectUrl);
-                        save(title, description, proposeNewsletter, onlyForMembers, newRedirectUrl, blocks);
-                    }}
-                />
-            </div>
+            {props.isPetition ? (
+                <h3 className="mb-4">{title}</h3>
+            ) : (
+                <div
+                    className={'form-block mb-3 ' + (focused === 0 ? 'form-block-focused' : '')}
+                    onClick={() => setFocused(0)}
+                >
+                    <MetadataView
+                        focused={focused === 0}
+                        title={title}
+                        setTitle={(newTitle) => {
+                            setTitle(newTitle);
+                            save(newTitle, description, proposeNewsletter, onlyForMembers, redirectUrl, blocks);
+                        }}
+                        description={description}
+                        setDescription={(newDescription) => {
+                            setDescription(newDescription);
+                            save(title, newDescription, proposeNewsletter, onlyForMembers, redirectUrl, blocks);
+                        }}
+                        proposeNewsletter={proposeNewsletter}
+                        setProposeNewsletter={(newProposeNewsletter) => {
+                            setProposeNewsletter(newProposeNewsletter);
+                            save(title, description, newProposeNewsletter, onlyForMembers, redirectUrl, blocks);
+                        }}
+                        onlyForMembers={onlyForMembers}
+                        setOnlyForMembers={(newOnlyForMembers) => {
+                            setOnlyForMembers(newOnlyForMembers);
+                            save(title, description, proposeNewsletter, newOnlyForMembers, redirectUrl, blocks);
+                        }}
+                        redirectUrl={redirectUrl}
+                        setRedirectUrl={(newRedirectUrl) => {
+                            setRedirectUrl(newRedirectUrl);
+                            save(title, description, proposeNewsletter, onlyForMembers, newRedirectUrl, blocks);
+                        }}
+                    />
+                </div>
+            )}
 
             <SortableList
                 items={blocks}

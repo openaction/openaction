@@ -14,13 +14,11 @@ class LocalizedPetitionData
 
     public ?string $description = '';
 
-    #[Assert\Length(max: 30, groups: ['Metadata'])]
+    #[Assert\Length(max: 200, groups: ['Metadata'])]
     public ?string $submitButtonLabel = null;
 
-    #[Assert\Length(max: 30, groups: ['Metadata'])]
     public ?string $optinLabel = null;
 
-    #[Assert\Length(max: 200, groups: ['Metadata'])]
     public ?string $addressedTo = null;
 
     public ?string $categories = null;
