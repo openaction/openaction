@@ -64,7 +64,8 @@ class PetitionDataManager
             locale: $locale,
             title: $defaultTitle,
             submitButtonLabel: $this->translator->trans('create.submitLabel', [], 'project_petitions'),
-            optinLabel: $this->translator->trans('create.optinLabel', [], 'project_petitions'),
+            // Keep optin label empty by default to avoid DB length issues on legacy schemas
+            optinLabel: '',
             legalities: $this->translator->trans('create.legalities', [], 'project_petitions'),
         );
 

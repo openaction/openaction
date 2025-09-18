@@ -19,6 +19,8 @@ class LocalizedPetitionData
 
     public ?string $optinLabel = null;
 
+    public ?string $legalities = null;
+
     public ?string $addressedTo = null;
 
     public ?string $categories = null;

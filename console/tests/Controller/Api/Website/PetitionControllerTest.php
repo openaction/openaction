@@ -33,6 +33,12 @@ class PetitionControllerTest extends ApiTestCase
         $firstLoc = $result['data'][0]['localizations']['data'][0];
         $this->assertArrayNotHasKey('content', $firstLoc);
         $this->assertArrayNotHasKey('form', $firstLoc);
+
+        // Ensure localized metadata fields are exported
+        $this->assertArrayHasKey('submit_button_label', $firstLoc);
+        $this->assertArrayHasKey('optin_label', $firstLoc);
+        $this->assertArrayHasKey('legalities', $firstLoc);
+        $this->assertArrayHasKey('addressed_to', $firstLoc);
     }
 
     public function testListNoToken()
@@ -62,6 +68,12 @@ class PetitionControllerTest extends ApiTestCase
         $loc = $result['localizations']['data'][0];
         $this->assertArrayHasKey('content', $loc);
         $this->assertTrue(array_key_exists('form', $loc)); // can be null
+
+        // Ensure localized metadata fields are exported
+        $this->assertArrayHasKey('submit_button_label', $loc);
+        $this->assertArrayHasKey('optin_label', $loc);
+        $this->assertArrayHasKey('legalities', $loc);
+        $this->assertArrayHasKey('addressed_to', $loc);
 
         // Categories embedded under localization
         $this->assertArrayHasKey('categories', $loc);

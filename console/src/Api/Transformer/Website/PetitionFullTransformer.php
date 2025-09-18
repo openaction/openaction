@@ -40,6 +40,10 @@ class PetitionFullTransformer extends AbstractTransformer
             'locale' => $localized->getLocale(),
             'title' => $localized->getTitle(),
             'description' => $localized->getDescription() ?: null,
+            'submit_button_label' => $localized->getSubmitButtonLabel(),
+            'optin_label' => $localized->getOptinLabel(),
+            'legalities' => $localized->getLegalities(),
+            'addressed_to' => $localized->getAddressedTo(),
             'read_time' => ReadTime::inMinutes($localized->getContent()),
             'content' => $this->customBlockParser->normalizeCustomBlocksIn($localized->getContent() ?? ''),
         ];

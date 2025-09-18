@@ -37,6 +37,9 @@
                 "optinLabel": {
                     "label": "Opt-in-Label"
                 },
+                "legalities": {
+                    "label": "Rechtliche Hinweise"
+                },
                 "addressedTo": {
                     "label": "Adressiert an"
                 }

@@ -61,6 +61,7 @@ export function LocalizedPetitionEdit(props) {
                     [props.descriptionInput]: data.description ? data.description : '',
                     [props.submitButtonLabelInput]: data.submitButtonLabel ? data.submitButtonLabel : '',
                     [props.optinLabelInput]: data.optinLabel ? data.optinLabel : '',
+                    [props.legalitiesInput]: data.legalities ? data.legalities : '',
                     [props.addressedToInput]: data.addressedTo ? data.addressedTo : '',
                     [props.categoriesInput]: JSON.stringify(data.categoryIds ? data.categoryIds : []),
                 })
@@ -461,6 +462,18 @@ export function LocalizedPetitionEdit(props) {
                                 placeholder="J’accepte que mes données soient utilisées par ..."
                                 defaultValue={metadata.optinLabel}
                                 onChange={(e) => saveLocalizedMetadata({ ...metadata, optinLabel: e.target.value })}
+                            />
+                        </div>
+                        <div className="p-1">
+                            <div className="mb-1">
+                                {translator.trans('petition.edit.metadata_modal.legalities.label')}
+                            </div>
+                            <textarea
+                                className="bp4-input bp4-fill"
+                                rows={3}
+                                placeholder="Conditions légales..."
+                                defaultValue={metadata.legalities}
+                                onChange={(e) => saveLocalizedMetadata({ ...metadata, legalities: e.target.value })}
                             />
                         </div>
                     </div>

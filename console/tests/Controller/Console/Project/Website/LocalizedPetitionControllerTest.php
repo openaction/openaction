@@ -194,6 +194,44 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    public function testUpdateLocalizedMetadataWithLegalities()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        // Open edit page to get CSRF token
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/edit');
+        $this->assertResponseIsSuccessful();
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Update localized metadata including legalities
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions/localized/'.self::LOCALIZED_EN_UUID.'/update/metadata?_token='.$token,
+            [
+                'localized_petition' => [
+                    'description' => 'New description',
+                    'submitButtonLabel' => 'Sign now',
+                    'optinLabel' => 'I agree to be contacted',
+                    'legalities' => '<p>Some legalities</p>',
+                    'addressedTo' => 'City Council',
+                    'categories' => json_encode([]),
+                ],
+            ]
+        );
+        $this->assertResponseIsSuccessful();
+
+        /** @var LocalizedPetitionRepository $repo */
+        $repo = static::getContainer()->get(LocalizedPetitionRepository::class);
+        /** @var LocalizedPetition $loc */
+        $loc = $repo->findOneBy(['uuid' => self::LOCALIZED_EN_UUID]);
+        $this->assertSame('New description', $loc->getDescription());
+        $this->assertSame('Sign now', $loc->getSubmitButtonLabel());
+        $this->assertSame('I agree to be contacted', $loc->getOptinLabel());
+        $this->assertSame('<p>Some legalities</p>', $loc->getLegalities());
+        $this->assertSame('City Council', $loc->getAddressedTo());
+    }
+
     public function testDeleteLocalized()
     {
         $client = static::createClient();
