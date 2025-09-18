@@ -4,6 +4,19 @@
 
 {% block body_class 'body-petitions-view' %}
 
+{% block petition_content %}
+    <div class="user-content">
+        <div class="petition-addressed-to">
+            <div class="petition-addressed-to-label">
+                {{ 'petition.addressed_to'|trans }}
+            </div>
+            {{ localized.addressed_to }}
+        </div>
+
+        {{ localized.content|apply_embed_consent }}
+    </div>
+{% endblock %}
+
 {% block page %}
     <style>
         .petition .content-splash-title, .petition .content-splash-social-sharers {
@@ -14,6 +27,9 @@
         }
         .petition .content-splash-image {
             border-radius: 10px;
+        }
+        .petition .content-splash {
+            padding-bottom: 0;
         }
         .petition-form {
             margin-top: 50px;
@@ -59,6 +75,19 @@
             min-width: 12px;
             border-radius: 10px;
         }
+        .petition-addressed-to {
+            background: #f5f5f5;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 20px;
+            border-radius: 10px;
+        }
+        .petition-addressed-to-label {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 10px;
+            color: #999;
+        }
     </style>
 
     <div data-controller="citipo-contentview"
@@ -91,7 +120,7 @@
                     'image': localized.image,
                     'categories': categories,
                     'read_time': localized.read_time,
-                    'content': '<div class="user-content">'~ localized.content|apply_embed_consent ~'</div>',
+                    'content': block('petition_content'),
                     'titleLabel': 'base.embed-consent.title'|trans,
                     'descriptionLabel': 'base.embed-consent.description'|trans,
                     'acceptLabel': 'base.embed-consent.accept'|trans,
@@ -164,7 +193,7 @@
                                     }) }}
 
                                 {% elseif 'newsletter' == block.type %}
-                                    {{ form_row(form['field'~key], {'label': 'forms.newsletter'|trans}) }}
+                                    {{ form_row(form['field'~key], {'label': localized.optin_label}) }}
 
                                 {% else %}
                                     {{ form_row(form['field'~key]) }}
@@ -185,15 +214,15 @@
                             {% endif %}
 
                             <button type="submit" class="btn btn-primary btn-lg">
-                                {{ 'forms.submit'|trans }}
+                                {{ localized.submit_button_label }}
                             </button>
                         </div>
 
                         {{ form_rest(form) }}
                         {{ form_end(form) }}
 
-                        <div class="form-legalities user-form-legalities">
-                            {{ 'base.form_legalities'|trans }}
+                        <div class="form-legalities user-form-legalities text-center">
+                            {{ localized.legalities }}
                         </div>
                     </div>
                 </div>
