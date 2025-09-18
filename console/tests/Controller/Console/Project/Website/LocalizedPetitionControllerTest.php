@@ -23,15 +23,22 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $this->assertGreaterThan(0, $crawler->filter('.dropdown-menu')->count());
         $menu = $crawler->filter('.dropdown-menu')->first();
 
-        $this->assertStringContainsString('EN', $menu->text());
-        $this->assertStringContainsString('Create FR', $menu->text());
-        $this->assertStringContainsString('Create DE', $menu->text());
-        $this->assertStringContainsString('Create IT', $menu->text());
-        $this->assertStringContainsString('Create NL', $menu->text());
-        $this->assertStringContainsString('Create PT', $menu->text());
+        // Existing EN localization should have an edit link (by UUID)
+        $this->assertGreaterThan(
+            0,
+            $menu->filter(sprintf('a[href*="%s"]', self::LOCALIZED_EN_UUID))->count()
+        );
 
-        // Delete option for existing EN localization should be visible in dropdown
-        $this->assertStringContainsString('Delete EN', $menu->text());
+        // Create buttons for other locales should be present (identified by locale in path)
+        foreach (['fr', 'de', 'it', 'nl', 'pt'] as $locale) {
+            $this->assertGreaterThan(
+                0,
+                $menu->filter(sprintf("a.dropdown-item[href*='/localized/%s/create']", $locale))->count(),
+                sprintf('Expected create link for locale %s', $locale)
+            );
+        }
+
+        // Deletion options are only visible when multiple localizations exist; not asserted here
     }
 
     public function testEditPageRendersExisting()
@@ -53,8 +60,10 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions');
         $this->assertResponseIsSuccessful();
 
-        $link = $crawler->selectLink('Create FR')->link();
-        $crawler = $client->click($link);
+        // Click on the create FR link (identified by locale in path)
+        $createFr = $crawler->filter(".dropdown-menu a.dropdown-item[href*='/localized/fr/create']")->first();
+        $this->assertGreaterThan(0, $createFr->count());
+        $crawler = $client->click($createFr->link());
         $this->assertResponseRedirects();
 
         $crawler = $client->followRedirect();
@@ -190,11 +199,20 @@ class LocalizedPetitionControllerTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client);
 
-        // Open list and click Delete EN
+        // Ensure there are at least 2 localizations (create FR first)
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions');
         $this->assertResponseIsSuccessful();
+        $createFr = $crawler->filter(".dropdown-menu a.dropdown-item[href*='/localized/fr/create']")->first();
+        $this->assertGreaterThan(0, $createFr->count());
+        $client->click($createFr->link());
+        $this->assertResponseRedirects();
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
 
-        $link = $crawler->selectLink('Delete EN');
+        // Back to list and click Delete EN (link identified by localized UUID)
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/petitions');
+        $this->assertResponseIsSuccessful();
+        $link = $crawler->filter(sprintf('a.text-danger[href*="%s"]', self::LOCALIZED_EN_UUID))->first();
         $this->assertGreaterThan(0, $link->count());
         $client->click($link->link());
 
