@@ -40,6 +40,11 @@ interface CitipoInterface
 
     public function getForm(string $apiToken, string $id): ?ApiResource;
 
+    // Website Petitions
+    public function getPetitions(string $apiToken, int $page, ?string $category = null): ApiCollection;
+
+    public function getPetition(string $apiToken, string $slug): ?ApiResource;
+
     public function validateArea(string $apiToken, string $country, string $zipCode): ApiResource;
 
     public function persistContact(string $apiToken, array $payload): ApiResource;
