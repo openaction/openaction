@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title localized.title %}
+
+{% block body_class 'body-petitions-view' %}
+
+{% block page %}
+    <main class="container">
+        <h1>{{ localized.title }}</h1>
+        <p>{{ localized.description|default('') }}</p>
+    </main>
+{% endblock %}
+

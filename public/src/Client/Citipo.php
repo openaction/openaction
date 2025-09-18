@@ -143,6 +143,16 @@ class Citipo implements CitipoInterface
         return $this->parseResource($this->request('GET', '/api/website/forms/'.$id, $apiToken));
     }
 
+    public function getPetitions(string $apiToken, int $page, ?string $category = null): ApiCollection
+    {
+        return $this->parseCollection($this->request('GET', '/api/website/petitions?page='.$page.'&category='.$category, $apiToken));
+    }
+
+    public function getPetition(string $apiToken, string $slug): ?ApiResource
+    {
+        return $this->parseResource($this->request('GET', '/api/website/petitions/'.$slug, $apiToken));
+    }
+
     public function createFormAnswer(string $apiToken, string $id, array $payload, ?array $authToken = null): ApiResource
     {
         if ($authToken) {
