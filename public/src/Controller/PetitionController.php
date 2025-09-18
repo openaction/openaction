@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Bridge\Turnstile\Turnstile;
 use App\Client\CitipoInterface;
 use App\FormBuilder\SymfonyFormBuilder;
-use App\Util\Url;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -18,7 +17,7 @@ class PetitionController extends AbstractController
     ) {
     }
 
-    #[Route("/petition/{slug}", name: "petition_view")]
+    #[Route('/petition/{slug}', name: 'petition_view')]
     public function view(Request $request, string $slug)
     {
         $this->denyUnlessToolEnabled('website_petitions');
