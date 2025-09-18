@@ -38,4 +38,4 @@ console:
                     invalid_twitter: 'Dieser Link scheint kein X-Link zu sein.'
         website:
             petitions:
-                slug_unique: 'Dieser Slug wird bereits von einer anderen Petition in diesem Projekt verwendet.'
+                slug_unique: 'Dieser URL wird bereits von einer anderen Petition in diesem Projekt verwendet.'

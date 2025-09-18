@@ -22,7 +22,7 @@
                     "label": "Kategorien"
                 },
                 "parent": {
-                    "slug": "Slug",
+                    "slug": "URL",
                     "startAt": "Startet am",
                     "endAt": "Endet am",
                     "signaturesGoal": "Unterschriftenziel",

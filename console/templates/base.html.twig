@@ -45,6 +45,8 @@
 
     {% block organization_stylesheet '' %}
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+
     <link rel="canonical" href="{% block meta_canonical current_route ? url(current_route, current_route_params) : '' %}" />
     <meta name="description" content="{% block meta_description 'meta.description'|trans({}, 'global') %}" />
 

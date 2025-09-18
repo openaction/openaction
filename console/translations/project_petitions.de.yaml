@@ -15,17 +15,17 @@ index:
   edit: Bearbeiten
   delete: Löschen
   remove_confirm: 'Sind Sie sicher, dass Sie die Petition „%name%“ löschen möchten?'
-  create_locale: 'Erstellen %locale%'
-  delete_locale: 'Löschen %locale%'
+  create_locale: 'Erstellen'
+  delete_locale: 'Löschen'
+  last_modified: 'Zuletzt bearbeitet am %datetime%'
   remove_localized_confirm: 'Sind Sie sicher, dass Sie die %locale%-Version „%title%“ löschen möchten?'
 
 edit:
   title: 'Petition bearbeiten (%locale%)'
-  back: Zurück zu den Petitionen
-  view: Auf der Website ansehen
+  back: Zurück
+  view: Ansehen
   switch_language: Sprache wechseln
   untitled: Ohne Titel
-  create_locale: 'Erstellen %locale%'
 
 create:
   default_title: '(Unbetitelte Petition)'
