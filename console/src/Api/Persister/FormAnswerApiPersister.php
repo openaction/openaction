@@ -10,21 +10,19 @@ use App\Entity\Community\EmailAutomation;
 use App\Entity\Website\Form;
 use App\Entity\Website\FormAnswer;
 use App\Entity\Website\FormBlock;
+use App\Repository\Website\PetitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 use function Symfony\Component\String\u;
 
 class FormAnswerApiPersister
 {
-    private ContactApiPersister $contactPersister;
-    private EntityManagerInterface $em;
-    private EmailAutomationDispatcher $automationDispatcher;
-
-    public function __construct(ContactApiPersister $contactPersister, EntityManagerInterface $em, EmailAutomationDispatcher $ad)
-    {
-        $this->contactPersister = $contactPersister;
-        $this->em = $em;
-        $this->automationDispatcher = $ad;
+    public function __construct(
+        private readonly ContactApiPersister $contactPersister,
+        private readonly EntityManagerInterface $em,
+        private readonly EmailAutomationDispatcher $automationDispatcher,
+        private readonly PetitionRepository $petitionRepository,
+    ) {
     }
 
     public function persist(Form $form, FormAnswerApiData $data, ?Contact $linkedContact = null): FormAnswer
@@ -83,6 +81,11 @@ class FormAnswerApiPersister
         // Persist the answer
         $this->em->persist($answer = new FormAnswer($form, $contact, $mappedFields));
         $this->em->flush();
+
+        // Update petition signature count if linked
+        if ($form->getLocalizedPetition()) {
+            $this->petitionRepository->synchronizeSignaturesCount($form->getLocalizedPetition()->getPetition());
+        }
 
         // Trigger automations
         $orga = $form->getProject()->getOrganization();

@@ -91,4 +91,21 @@ class PetitionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function synchronizeSignaturesCount(Petition $petition): void
+    {
+        $this->getEntityManager()->getConnection()->executeStatement(
+            sql: '
+                UPDATE website_petitions
+                SET signatures_count = (
+                    SELECT COUNT(*) 
+                    FROM website_forms_answers a
+                    LEFT JOIN website_petitions_localized pl ON pl.form_id = a.form_id
+                    WHERE pl.petition_id = ?
+                )
+                WHERE id = ?
+            ',
+            params: [$petition->getId(), $petition->getId()],
+        );
+    }
 }
