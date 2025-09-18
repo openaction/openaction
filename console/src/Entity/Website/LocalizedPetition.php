@@ -112,7 +112,7 @@ class LocalizedPetition
 
     public function getLocaleFlag(): string
     {
-        return $this->locale === 'en' ? 'gb' : $this->locale;
+        return 'en' === $this->locale ? 'gb' : $this->locale;
     }
 
     public function getPetition(): Petition

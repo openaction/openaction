@@ -10,7 +10,7 @@ import { PublicationEditor } from '../../../components/PublicationEditor';
 import { CategoriesCheckbox } from '../../../components/CategoriesCheckbox';
 import { AuthorsSelector } from '../../post/components/AuthorsSelector';
 import { SocialSharer } from '../../../components/SocialSharer/SocialSharer';
-import {IMaskInput} from "react-imask";
+import { IMaskInput } from 'react-imask';
 
 let contentSaveTimeout = null;
 
@@ -214,9 +214,7 @@ export function LocalizedPetitionEdit(props) {
                 <div className="row">
                     <div className="col-12 col-lg-6">
                         <div className="p-2">
-                            <div className="mb-1">
-                                {translator.trans('petition.edit.metadata_modal.parent.slug')}
-                            </div>
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.parent.slug')}</div>
                             <input
                                 type="text"
                                 className="bp4-input bp4-fill"
@@ -309,9 +307,7 @@ export function LocalizedPetitionEdit(props) {
                         </div>
 
                         <div className="p-2">
-                            <div className="mb-1">
-                                {translator.trans('petition.edit.metadata_modal.parent.endAt')}
-                            </div>
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.parent.endAt')}</div>
 
                             <IMaskInput
                                 lazy={false}
@@ -373,9 +369,7 @@ export function LocalizedPetitionEdit(props) {
                 <div className="row">
                     <div className="col-12 col-lg-6">
                         <div className="p-1 mb-2">
-                            <div className="mb-1">
-                                {translator.trans('petition.edit.metadata_modal.image.label')}
-                            </div>
+                            <div className="mb-1">{translator.trans('petition.edit.metadata_modal.image.label')}</div>
                             <div className="content-metadata-image mb-1">
                                 <div className="content-metadata-image-view text-center" style={uploaderViewStyle}>
                                     {!metadata.image ? (
