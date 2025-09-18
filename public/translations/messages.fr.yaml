@@ -258,3 +258,9 @@ phoning:
         failed_unregister: Souhaite désadhérer
         failed_call_later: Souhaite être rappelé plus tard
         accepted: Accepte de répondre aux questions
+
+petition:
+    signatures: signatures
+    success: Votre signature a bien été enregistrée
+    sign_title: Signer cette pétition
+    next_goal: Prochain objectif

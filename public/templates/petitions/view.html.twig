@@ -10,14 +10,13 @@
             text-align: left;
         }
         .petition .content-splash-title {
-            font-size: 24px;
+            font-size: 30px;
         }
         .petition .content-splash-image {
             border-radius: 10px;
         }
         .petition-form {
             margin-top: 50px;
-            padding: 30px 15px;
             box-shadow: 0 0 5px #ccc;
             border-radius: 10px;
         }
@@ -26,11 +25,45 @@
             background: transparent !important;
             border: 0 !important;
         }
+        .petition-progress {
+            text-align: center;
+            margin-bottom: 15px;
+            background: #444;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+        }
+        .petition-count-number {
+            font-size: 42px;
+        }
+        .petition-success {
+            background: #e9f1e7;
+            color: #30970d;
+            padding: 7px 14px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .petition-form .user-form {
+            padding: 0 20px 20px 20px;
+        }
+        .petition-progress-bar {
+            background: #fff;
+            height: 16px;
+            border-radius: 10px;
+            padding: 2px;
+        }
+        .petition-progress-bar-value {
+            background: #fff;
+            height: 12px;
+            min-width: 12px;
+            border-radius: 10px;
+        }
     </style>
 
     <div data-controller="citipo-contentview"
          data-citipo-contentview-type-value="petition"
-         data-citipo-contentview-id-value="{{ localized.id }}"></div>
+         data-citipo-contentview-id-value="{{ petition.id }}"></div>
 
     <div class="petition container">
         <div class="row">
@@ -74,16 +107,31 @@
             </div>
             <div class="col-lg-4">
                 <div class="petition-form" data-aos="fade-up" data-aos-duration="600">
-                    <div class="user-form user-form-{{ formData.id }}">
-                        {% if success %}
-                            <div class="user-form-success">
-                                <span>{{ 'forms.success'|trans }}</span>
-                            </div>
-                        {% endif %}
+                    <div class="petition-progress">
+                        <div class="petition-count mb-3">
+                            <span class="petition-count-number">{{ petition.signatures_count|format_number }}</span>
+                            <span class="petition-count-label">{{ 'petition.signatures'|trans }}</span>
+                        </div>
 
-                        {% if formData.description %}
-                            <div class="user-form-description">
-                                {{ formData.description|nl2br }}
+                        <div>
+                            <div class="mb-1">
+                                {{ 'petition.next_goal'|trans }} : {{ nextGoal|format_number }}
+                            </div>
+                            <div class="petition-progress-bar">
+                                <div class="petition-progress-bar-value bg-primary"
+                                     style="width: {{ ((petition.signatures_count / nextGoal) * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-form user-form-{{ formData.id }}">
+                        <h5>
+                            {{ 'petition.sign_title'|trans }}
+                        </h5>
+
+                        {% if success %}
+                            <div class="petition-success">
+                                <span>{{ 'petition.success'|trans }}</span>
                             </div>
                         {% endif %}
 

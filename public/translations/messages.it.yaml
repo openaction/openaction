@@ -255,3 +255,9 @@ phoning:
         failed_unregister: Desiderano disiscriversi
         failed_call_later: Desiderano essere chiamati di nuovo più tardi
         accepted: Accettano di rispondere alle domande
+
+petition:
+    signatures: firme
+    success: La sua firma è stata registrata con successo
+    sign_title: Firma questa petizione
+    next_goal: Prossimo obiettivo

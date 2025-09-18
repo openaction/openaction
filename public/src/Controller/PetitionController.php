@@ -71,10 +71,44 @@ class PetitionController extends AbstractController
         return $this->render('petitions/view.html.twig', [
             'petition' => $petition,
             'localized' => $localized,
+            'nextGoal' => $this->computeNextGoal($petition->signatures_count, $petition->signatures_goal),
             'formData' => $localized->form,
             'form' => $form->createView(),
             'captcha_challenge' => $challenge,
             'success' => $request->query->getBoolean('s'),
         ]);
+    }
+
+    private function computeNextGoal(int $signaturesCount, int $signaturesGoal): int
+    {
+        // Cas de départ : quasi zéro signature
+        if ($signaturesCount <= 2) {
+            return min(10, $signaturesGoal);
+        }
+
+        // Si proche du but (moins de 10% restant), viser directement le but
+        if ($signaturesCount >= 0.9 * $signaturesGoal) {
+            return $signaturesGoal;
+        }
+
+        // Calcul de la limite max = min(double des signatures, but final)
+        $max = min($signaturesGoal, 2 * $signaturesCount);
+
+        // Choix du pas d'arrondi en fonction de l'ordre de grandeur
+        if ($signaturesCount < 100) {
+            $step = 10;
+        } elseif ($signaturesCount < 1000) {
+            $step = 100;
+        } elseif ($signaturesCount < 100000) {
+            $step = 1000;
+        } else {
+            $step = 5000; // ou 10000 si tu veux encore plus rond
+        }
+
+        // Arrondi au multiple supérieur
+        $next = (int) (ceil($max / $step) * $step);
+
+        // Ne pas dépasser l'objectif final
+        return min($next, $signaturesGoal);
     }
 }

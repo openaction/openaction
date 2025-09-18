@@ -255,3 +255,9 @@ phoning:
         failed_unregister: Sie möchten sich abmelden
         failed_call_later: Sie möchten später erneut angerufen werden
         accepted: Sie stimmen zu, Fragen zu beantworten
+
+petition:
+    signatures: Unterschriften
+    success: Ihre Unterschrift wurde erfolgreich registriert
+    sign_title: Diese Petition unterschreiben
+    next_goal: Nächstes Ziel
