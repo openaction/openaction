@@ -78,6 +78,21 @@ class SitemapController extends AbstractController
             }
         }
 
+        // Add petitions (slug + project default locale)
+        if (isset($data->petitions)) {
+            foreach ($data->petitions as $petition) {
+                $sitemap->add(
+                    $this->generateUrl('petition_view', [
+                        'slug' => $petition['slug'],
+                        'locale' => $this->getProject()->locale,
+                    ], UrlGeneratorInterface::ABSOLUTE_URL),
+                    $petition['updatedAt'] ?? null,
+                    ChangeFrequency::DAILY,
+                    0.8
+                );
+            }
+        }
+
         // Add subpages
         $sitemap->add($this->generateUrl('contact_newsletter', [], UrlGeneratorInterface::ABSOLUTE_URL), null, ChangeFrequency::WEEKLY, 0.4);
         $sitemap->add($this->generateUrl('legalities', [], UrlGeneratorInterface::ABSOLUTE_URL), null, ChangeFrequency::WEEKLY, 0.2);
