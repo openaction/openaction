@@ -24,7 +24,7 @@ class FormControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/forms');
         $this->assertResponseIsSuccessful();
-        $this->assertCount(6, $crawler->filter('.world-list-row'));
+        $this->assertCount(7, $crawler->filter('.world-list-row'));
     }
 
     public function testCreate()
@@ -34,7 +34,7 @@ class FormControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/forms');
         $this->assertResponseIsSuccessful();
-        $this->assertCount(6, $crawler->filter('.world-list-row'));
+        $this->assertCount(7, $crawler->filter('.world-list-row'));
 
         $link = $crawler->filter('a:contains("New form")');
         $this->assertCount(1, $link);
@@ -147,18 +147,18 @@ class FormControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/console/project/'.self::PROJECT_ACME_UUID.'/website/forms');
         $this->assertResponseIsSuccessful();
-        $this->assertCount(6, $crawler->filter('.world-list-row'));
+        $this->assertCount(7, $crawler->filter('.world-list-row'));
 
         $project = static::getContainer()->get(ProjectRepository::class)->findOneByUuid('2c720420-65fd-4360-9d77-731758008497');
         $repository = static::getContainer()->get(FormRepository::class);
-        $this->assertSame(9, $repository->count(['project' => $project->getId()]));
+        $this->assertSame(10, $repository->count(['project' => $project->getId()]));
 
         $client->click($crawler->filter('.world-list-row:contains("Our Sustainable Europe") a:contains("Delete")')->link());
         $this->assertResponseRedirects();
 
         $crawler = $client->followRedirect();
-        $this->assertCount(5, $crawler->filter('.world-list-row'));
-        $this->assertSame(8, $repository->count(['project' => $project->getId()]));
+        $this->assertCount(6, $crawler->filter('.world-list-row'));
+        $this->assertSame(9, $repository->count(['project' => $project->getId()]));
     }
 
     public function testDuplicate()
@@ -171,12 +171,12 @@ class FormControllerTest extends WebTestCase
 
         $project = static::getContainer()->get(ProjectRepository::class)->findOneByUuid(self::PROJECT_ACME_UUID);
         $repository = static::getContainer()->get(FormRepository::class);
-        $this->assertSame(9, $repository->count(['project' => $project->getId()]));
+        $this->assertSame(10, $repository->count(['project' => $project->getId()]));
 
         $client->clickLink('Duplicate');
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->assertMatchesRegularExpression('~/console/project/'.self::PROJECT_ACME_UUID.'/website/forms/[0-9a-zA-Z\-]+/edit~', $client->getResponse()->headers->get('Location'));
-        $this->assertSame(10, $repository->count(['project' => $project->getId()]));
+        $this->assertSame(11, $repository->count(['project' => $project->getId()]));
     }
 
     public function testMove()
