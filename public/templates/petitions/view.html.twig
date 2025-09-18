@@ -4,63 +4,20 @@
 
 {% block body_class 'body-petitions-view' %}
 
-{% block page %}
-    <style>
-        .petition .content-splash-title, .petition .content-splash-social-sharers {
-            text-align: left;
-        }
-        .petition .content-splash-title {
-            font-size: 30px;
-        }
-        .petition .content-splash-image {
-            border-radius: 10px;
-        }
-        .petition-form {
-            margin-top: 50px;
-            box-shadow: 0 0 5px #ccc;
-            border-radius: 10px;
-        }
-        .petition-form .user-form .form-group {
-            padding: 0;
-            background: transparent !important;
-            border: 0 !important;
-        }
-        .petition-progress {
-            text-align: center;
-            margin-bottom: 15px;
-            background: #444;
-            color: #fff;
-            border-radius: 10px 10px 0 0;
-            padding: 20px;
-        }
-        .petition-count-number {
-            font-size: 42px;
-        }
-        .petition-success {
-            background: #e9f1e7;
-            color: #30970d;
-            padding: 7px 14px;
-            margin: 15px 0;
-            font-weight: bold;
-            text-align: center;
-        }
-        .petition-form .user-form {
-            padding: 0 20px 20px 20px;
-        }
-        .petition-progress-bar {
-            background: #fff;
-            height: 16px;
-            border-radius: 10px;
-            padding: 2px;
-        }
-        .petition-progress-bar-value {
-            background: #fff;
-            height: 12px;
-            min-width: 12px;
-            border-radius: 10px;
-        }
-    </style>
+{% block petition_content %}
+    <div class="user-content">
+        <div class="petition-addressed-to">
+            <div class="petition-addressed-to-label">
+                {{ 'petition.addressed_to'|trans }}
+            </div>
+            {{ localized.addressed_to }}
+        </div>
 
+        {{ localized.content|apply_embed_consent }}
+    </div>
+{% endblock %}
+
+{% block page %}
     <div data-controller="citipo-contentview"
          data-citipo-contentview-type-value="petition"
          data-citipo-contentview-id-value="{{ petition.id }}"></div>
@@ -91,7 +48,7 @@
                     'image': localized.image,
                     'categories': categories,
                     'read_time': localized.read_time,
-                    'content': '<div class="user-content">'~ localized.content|apply_embed_consent ~'</div>',
+                    'content': block('petition_content'),
                     'titleLabel': 'base.embed-consent.title'|trans,
                     'descriptionLabel': 'base.embed-consent.description'|trans,
                     'acceptLabel': 'base.embed-consent.accept'|trans,
@@ -164,7 +121,7 @@
                                     }) }}
 
                                 {% elseif 'newsletter' == block.type %}
-                                    {{ form_row(form['field'~key], {'label': 'forms.newsletter'|trans}) }}
+                                    {{ form_row(form['field'~key], {'label': localized.optin_label}) }}
 
                                 {% else %}
                                     {{ form_row(form['field'~key]) }}
@@ -185,15 +142,15 @@
                             {% endif %}
 
                             <button type="submit" class="btn btn-primary btn-lg">
-                                {{ 'forms.submit'|trans }}
+                                {{ localized.submit_button_label }}
                             </button>
                         </div>
 
                         {{ form_rest(form) }}
                         {{ form_end(form) }}
 
-                        <div class="form-legalities user-form-legalities">
-                            {{ 'base.form_legalities'|trans }}
+                        <div class="form-legalities user-form-legalities text-center">
+                            {{ localized.legalities }}
                         </div>
                     </div>
                 </div>
