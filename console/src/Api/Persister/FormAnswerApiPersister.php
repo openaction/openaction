@@ -75,6 +75,7 @@ class FormAnswerApiPersister
         // Persist the contact if possible
         $contact = null;
         if ($contactData->email) {
+            $contactData->metadataTags[] = $form->getTitle();
             $contact = $this->contactPersister->persist($contactData, $form->getProject());
         }
 

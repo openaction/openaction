@@ -352,7 +352,10 @@ class FormControllerTest extends ApiTestCase
         $contactTags = array_values($contact->getMetadataTagsNames());
         sort($contactTags);
 
-        $this->assertSame(['Acme Inc', 'TagB', 'TagF', 'TagG', 'TagH'], $contact->getMetadataTagsNames());
+        $this->assertSame(
+            ['Acme Inc', 'Our Sustainable Europe', 'TagB', 'TagF', 'TagG', 'TagH'],
+            $contact->getMetadataTagsNames(),
+        );
 
         /*
          * Check Quorum sync and stats refresh
