@@ -81,6 +81,10 @@ class PetitionController extends AbstractController
 
     private function computeNextGoal(int $signaturesCount, int $signaturesGoal): int
     {
+        if (!$signaturesGoal) {
+            $signaturesGoal = PHP_INT_MAX;
+        }
+
         // Cas de départ : quasi zéro signature
         if ($signaturesCount <= 2) {
             return min(10, $signaturesGoal);

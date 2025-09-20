@@ -6,12 +6,14 @@
 
 {% block petition_content %}
     <div class="user-content">
-        <div class="petition-addressed-to">
-            <div class="petition-addressed-to-label">
-                {{ 'petition.addressed_to'|trans }}
+        {% if localized.addressed_to %}
+            <div class="petition-addressed-to">
+                <div class="petition-addressed-to-label">
+                    {{ 'petition.addressed_to'|trans }}
+                </div>
+                {{ localized.addressed_to }}
             </div>
-            {{ localized.addressed_to }}
-        </div>
+        {% endif %}
 
         {{ localized.content|apply_embed_consent }}
     </div>
