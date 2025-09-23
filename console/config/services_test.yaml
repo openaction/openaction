@@ -48,3 +48,10 @@ services:
             $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
             $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
             $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
+
+    App\Bridge\Mollie\MollieConnectApiInterface:
+        class: 'App\Tests\Stubs\MockMollieConnectApi'
+
+    # Expose the persister service for direct retrieval in tests
+    App\Community\Payment\MollieTransactionPersister:
+        public: true
