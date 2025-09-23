@@ -2,6 +2,10 @@
 
 namespace App\Bridge\Mollie;
 
+use App\Entity\Organization;
+use App\Util\Json;
+use Doctrine\ORM\EntityManagerInterface;
+use Mollie\Api\MollieApiClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MollieConnect implements MollieConnectInterface
@@ -89,5 +93,48 @@ class MollieConnect implements MollieConnectInterface
         }
 
         return $data;
+    }
+
+    public function getTransaction(string $apiKey, string $paymentId): ?array
+    {
+        $client = $this->getAuthorizedClient($apiKey);
+        $payment = $client->payments->get($paymentId);
+
+        return $this->normalizePayment($payment);
+    }
+
+    public function listTransactionsSince(string $apiKey, \DateTimeImmutable $since): array
+    {
+        $client = $this->getAuthorizedClient($apiKey);
+
+        $normalized = [];
+        try {
+            $collection = $client->payments->page(null, 250); // fetch first page (max limit)
+        } catch (\Throwable) {
+            return $normalized;
+        }
+
+        foreach ($collection as $payment) {
+            $createdAt = $payment->createdAt ? new \DateTimeImmutable($payment->createdAt) : null;
+            if ($createdAt && $createdAt >= $since) {
+                $normalized[] = $this->normalizePayment($payment);
+            }
+        }
+
+        return $normalized;
+    }
+
+    private function getAuthorizedClient(string $apiKey): MollieApiClient
+    {
+        $client = new MollieApiClient();
+        $client->setApiKey($apiKey);
+
+        return $client;
+    }
+
+    private function normalizePayment(object $payment): array
+    {
+        // cast stdClass to array recursively
+        return Json::decode(Json::encode($payment));
     }
 }

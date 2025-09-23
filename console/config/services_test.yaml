@@ -42,9 +42,13 @@ services:
     #
     # Override Mollie Connect for tests to avoid network
     #
-    App\Bridge\Mollie\MollieConnectInterface:
-        class: 'App\Bridge\Mollie\MockMollieConnect'
-        arguments:
-            $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
-            $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
-            $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
+#    App\Bridge\Mollie\MollieConnectInterface:
+#        class: 'App\Bridge\Mollie\MockMollieConnect'
+#        arguments:
+#            $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
+#            $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
+#            $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
+
+    # Expose the persister service for direct retrieval in tests
+    App\Community\Payment\MollieTransactionPersister:
+        public: true

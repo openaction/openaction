@@ -3,10 +3,12 @@
 namespace App\Controller\Bridge;
 
 use App\Bridge\Mollie\MollieConnectInterface;
+use App\Community\Payment\MollieTransactionPersister;
 use App\Controller\AbstractController;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,7 +20,7 @@ class MollieConnectController extends AbstractController
     }
 
     #[Route('/callback', name: 'bridge_mollie_connect_callback')]
-    public function callback(Request $request, OrganizationRepository $organizations, EntityManagerInterface $em)
+    public function oauthCallback(Request $request, OrganizationRepository $organizations, EntityManagerInterface $em)
     {
         $error = $request->query->get('error');
         if ($error) {
@@ -70,5 +72,17 @@ class MollieConnectController extends AbstractController
         return $this->redirectToRoute('console_organization_integrations', [
             'organizationUuid' => $orga->getUuid()->toRfc4122(),
         ]);
+    }
+
+    #[Route('/{uuid}/webhook', name: 'bridge_mollie_connect_transaction_webhook', methods: ['POST'])]
+    public function transactionWebhook(MollieTransactionPersister $transactionPersister, Request $request, Organization $organization)
+    {
+        if (!$transactionId = $request->request->get('id')) {
+            throw $this->createNotFoundException();
+        }
+
+        $transactionPersister->syncTransaction($organization, $transactionId);
+
+        return new JsonResponse(['status' => 'ok']);
     }
 }
