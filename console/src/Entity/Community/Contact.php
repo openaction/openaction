@@ -7,6 +7,8 @@ use App\Entity\Area;
 use App\Entity\Community\ContactCommitment as ContactCommitmentEntity;
 use App\Entity\Community\ContactMandate as ContactMandateEntity;
 use App\Entity\Community\ContactPayment as ContactPaymentEntity;
+use App\Entity\Community\Enum\ContactPaymentType;
+use App\Entity\Community\Model\ContactPaymentMollieDetails;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Upload;
@@ -996,6 +998,24 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         }
 
         return false;
+    }
+
+    public function getMolliePaymentByTransactionId(string $transactionId, ContactPaymentType $type, int $netAmount, string $currency): ?ContactPayment
+    {
+        foreach ($this->getPayments() as $existing) {
+            $details = $existing->getPaymentProviderDetails();
+
+            if ($details instanceof ContactPaymentMollieDetails
+                && $details->transactionId === $transactionId
+                && $existing->getType() === $type
+                && $existing->getNetAmount() === $netAmount
+                && $existing->getCurrency() === $currency
+            ) {
+                return $existing;
+            }
+        }
+
+        return null;
     }
 
     public function getEmail(): ?string

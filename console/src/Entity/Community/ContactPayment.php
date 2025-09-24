@@ -208,6 +208,31 @@ class ContactPayment
         $this->paymentProviderDetails = $details;
     }
 
+    public function setCapturedAt(?\DateTimeImmutable $capturedAt): void
+    {
+        $this->capturedAt = $capturedAt;
+    }
+
+    public function setFailedAt(?\DateTimeImmutable $failedAt): void
+    {
+        $this->failedAt = $failedAt;
+    }
+
+    public function setRefundedAt(?\DateTimeImmutable $refundedAt): void
+    {
+        $this->refundedAt = $refundedAt;
+    }
+
+    public function setCanceledAt(?\DateTimeImmutable $canceledAt): void
+    {
+        $this->canceledAt = $canceledAt;
+    }
+
+    public function getPaymentProviderDetails(): ?object
+    {
+        return $this->paymentProviderDetails;
+    }
+
     public function getType(): ContactPaymentType
     {
         return $this->type;
