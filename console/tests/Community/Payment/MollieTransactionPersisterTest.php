@@ -4,9 +4,11 @@ namespace App\Tests\Community\Payment;
 
 use App\Bridge\Mollie\MollieConnectApiInterface;
 use App\Community\Payment\MollieTransactionPersister;
+use App\Entity\Community\Contact;
 use App\Entity\Community\Enum\ContactPaymentProvider;
 use App\Entity\Community\Enum\ContactPaymentType;
 use App\Entity\Organization;
+use App\Repository\Community\ContactRepository;
 use App\Repository\OrganizationRepository;
 use App\Tests\KernelTestCase;
 
@@ -14,8 +16,29 @@ class MollieTransactionPersisterTest extends KernelTestCase
 {
     public function testSyncSingleTransactionAndIgnoreDuplicate(): void
     {
-        self::ensureKernelShutdown();
         static::bootKernel();
+
+        /** @var Organization $orga */
+        $orga = self::getContainer()->get(OrganizationRepository::class)->findOneBy(['name' => 'Example Co']);
+        $orga->setMollieConnectAccessToken('test_EFQB5UmyNQxbzUVwSQFrp2Jj47KHsv');
+        $orga->setMollieConnectRefreshToken('refresh');
+        $orga->setMollieConnectAccessTokenExpiresAt((new \DateTimeImmutable('now'))->modify('+30 minutes'));
+
+        $em = self::getContainer()->get('doctrine')->getManager();
+        $em->persist($orga);
+        $em->flush();
+
+        /** @var MollieTransactionPersister $persister */
+        $persister = self::getContainer()->get(MollieTransactionPersister::class);
+        $persister->syncTransaction($orga, 'tr_p3JfBgnNu7GpsiHo6GaEJ');
+
+        /** @var Contact $contact */
+        $contact = self::getContainer()->get(ContactRepository::class)->findOneBy(['email' => 'titouan.galopin@citipo.com']);
+
+        dd($contact, $contact->getPayments()->toArray());
+
+        // Test key: test_EFQB5UmyNQxbzUVwSQFrp2Jj47KHsv
+
 
         $container = static::getContainer();
         /** @var OrganizationRepository $orgas */

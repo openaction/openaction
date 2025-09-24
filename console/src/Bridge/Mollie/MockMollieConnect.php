@@ -2,8 +2,13 @@
 
 namespace App\Bridge\Mollie;
 
+use App\Entity\Organization;
+
 class MockMollieConnect implements MollieConnectInterface
 {
+    /** @var array<string, array> */
+    private array $payments = [];
+
     public function __construct(
         private readonly string $mollieConnectClientId,
         private readonly string $mollieConnectClientSecret = '',
@@ -45,5 +50,33 @@ class MockMollieConnect implements MollieConnectInterface
             'token_type' => 'bearer',
             'scope' => 'payments.read organizations.read',
         ];
+    }
+
+    public function seed(array $payments): void
+    {
+        foreach ($payments as $p) {
+            $id = (string) ($p['id'] ?? '');
+            if ($id) {
+                $this->payments[$id] = $p;
+            }
+        }
+    }
+
+    public function getTransaction(string $apiKey, string $paymentId): ?array
+    {
+        return $this->payments[$paymentId] ?? null;
+    }
+
+    public function listTransactionsSince(string $apiKey, \DateTimeImmutable $since): array
+    {
+        $res = [];
+        foreach ($this->payments as $p) {
+            $createdAt = isset($p['createdAt']) ? new \DateTimeImmutable((string) $p['createdAt']) : null;
+            if ($createdAt && $createdAt >= $since) {
+                $res[] = $p;
+            }
+        }
+
+        return $res;
     }
 }

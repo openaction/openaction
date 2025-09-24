@@ -4,7 +4,7 @@ namespace App\Community\Payment;
 
 use App\Api\Model\ContactApiData;
 use App\Api\Persister\ContactApiPersister;
-use App\Bridge\Mollie\MollieConnectApiInterface;
+use App\Bridge\Mollie\MollieConnectInterface;
 use App\Entity\Community\Contact;
 use App\Entity\Community\ContactPayment;
 use App\Entity\Community\Enum\ContactPaymentMethod;
@@ -21,7 +21,7 @@ class MollieTransactionPersister
         private readonly EntityManagerInterface $em,
         private readonly ContactApiPersister $contactPersister,
         private readonly ContactPaymentRepository $payments,
-        private readonly MollieConnectApiInterface $mollieConnectApi,
+        private readonly MollieConnectInterface $mollieConnect,
     ) {
     }
 
@@ -33,25 +33,25 @@ class MollieTransactionPersister
      */
     public function syncTransaction(Organization $organization, string $transactionId): array
     {
-        $payment = $this->mollieConnectApi->getPayment($organization, $transactionId);
-        if (!$payment) {
+        $transactionData = $this->mollieConnect->getTransaction($this->getAccessToken($organization), $transactionId);
+        if (!$transactionData) {
             return [];
         }
 
-        $metadata = (array) ($payment['metadata'] ?? []);
+        $metadata = (array) ($transactionData['metadata'] ?? []);
         $contactPayload = (array) ($metadata['contact'] ?? []);
         $paymentsPayload = (array) ($metadata['payments'] ?? []);
-
         if (!$paymentsPayload) {
             return [];
         }
 
-        $contact = $this->persistContact($organization, $contactPayload);
+        $contact = $this->contactPersister->persist(ContactApiData::createFromPayload($contactPayload), $organization);
+        $method = $this->mapMethod((string) ($transactionData['method'] ?? ''));
 
         $created = [];
-        foreach ($paymentsPayload as $p) {
-            $typeStr = (string) ($p['type'] ?? '');
-            $amount = (array) ($p['amount'] ?? []);
+        foreach ($paymentsPayload as $paymentData) {
+            $typeStr = (string) ($paymentData['type'] ?? '');
+            $amount = (array) ($paymentData['amount'] ?? []);
             $currency = strtoupper((string) ($amount['currency'] ?? ''));
             $value = (string) ($amount['value'] ?? '0');
             $netAmount = (int) round(((float) $value) * 100);
@@ -60,53 +60,52 @@ class MollieTransactionPersister
                 continue;
             }
 
-            // Skip duplicates
-            if ($this->hasDuplicate($contact, $transactionId, $typeStr, $netAmount, $currency)) {
-                continue;
+            $type = ContactPaymentType::from($typeStr);
+
+            // Fetch potentially existing payment for this transaction or create a new one otherwise
+            $payment = $contact->getMolliePaymentByTransactionId($transactionId, $type, $netAmount, $currency);
+
+            if (!$payment) {
+                $payment = new ContactPayment(
+                    contact: $contact,
+                    type: $type,
+                    netAmount: $netAmount,
+                    feesAmount: 0,
+                    currency: $currency,
+                    provider: ContactPaymentProvider::Mollie,
+                    method: $method,
+                );
+
+                $created[] = $payment;
             }
 
-            $type = ContactPaymentType::from($typeStr);
-            $method = $this->mapMethod((string) ($payment['method'] ?? ''));
+            // Update provider details
+            $payment->setPaymentProviderDetails(new ContactPaymentMollieDetails($transactionId, $transactionData));
 
-            $entity = new ContactPayment(
-                $contact,
-                $type,
-                $netAmount,
-                0,
-                $currency,
-                ContactPaymentProvider::Mollie,
-                $method
-            );
+            // Update payment status
+            $payment->setCapturedAt(!empty($transactionData['paidAt']) ? new \DateTimeImmutable($transactionData['paidAt']) : null);
+            $payment->setFailedAt(!empty($transactionData['failedAt']) ? new \DateTimeImmutable($transactionData['failedAt']) : null);
+            $payment->setCanceledAt(!empty($transactionData['canceledAt']) ? new \DateTimeImmutable($transactionData['canceledAt']) : null);
+
+            if (0.0 !== ((float) $transactionData['amountRefunded']['value']) && !$payment->getRefundedAt()) {
+                $payment->setRefundedAt(new \DateTimeImmutable());
+            }
 
             // Payer snapshot from metadata contact
-            $this->applyPayerSnapshot($entity, $contactPayload);
+            $this->applyPayerSnapshot($payment, $contactPayload);
 
-            // Membership period
-            if (ContactPaymentType::Membership === $type) {
-                $this->applyMembershipPeriod($entity, $contact);
+            // Append membership to the current one if paid
+            if (ContactPaymentType::Membership === $type && 'paid' === $transactionData['status'] ?? '') {
+                $this->applyMembershipPeriod($payment, $contact);
             }
 
-            // Capture time if paid
-            $status = (string) ($payment['status'] ?? '');
-            if ('paid' === $status && !empty($payment['paidAt'])) {
-                try {
-                    $entity->setMembershipPeriod($entity->getMembershipStartAt(), $entity->getMembershipEndAt()); // keep as-is
-                } catch (\Throwable) {
-                }
-            }
-
-            // Provider details
-            $entity->setPaymentProviderDetails(new ContactPaymentMollieDetails($transactionId, $payment));
-
-            $this->em->persist($entity);
             // Keep contact payments collection in sync to help idempotency within same request
-            $contact->getPayments()->add($entity);
-            $created[] = $entity;
+            $contact->getPayments()->add($payment);
+            $this->em->persist($payment);
         }
 
-        if ($created) {
-            $this->em->flush();
-        }
+        // Flush all at once to never comit sync a transaction partially
+        $this->em->flush();
 
         return $created;
     }
@@ -116,10 +115,12 @@ class MollieTransactionPersister
      *
      * @return int Number of payments created
      */
-    public function syncRecentTransactions(Organization $organization): int
+    public function syncRecentTransactions(Organization $organization, string $since = '-7 days'): int
     {
-        $since = (new \DateTimeImmutable('now'))->modify('-7 days');
-        $payments = $this->mollieConnectApi->listPaymentsSince($organization, $since);
+        $payments = $this->mollieConnect->listTransactionsSince(
+            apiKey: $this->getAccessToken($organization),
+            since: (new \DateTimeImmutable('now'))->modify($since),
+        );
 
         $created = 0;
         foreach ($payments as $p) {
@@ -129,37 +130,35 @@ class MollieTransactionPersister
         return $created;
     }
 
-    private function persistContact(Organization $organization, array $payload): Contact
+    private function getAccessToken(Organization $organization): string
     {
-        $data = ContactApiData::createFromPayload($payload);
+        $accessToken = $organization->getMollieConnectAccessToken();
+        $refreshToken = $organization->getMollieConnectRefreshToken();
 
-        return $this->contactPersister->persist($data, $organization);
-    }
-
-    private function hasDuplicate(Contact $contact, string $transactionId, string $type, int $amount, string $currency): bool
-    {
-        foreach ($contact->getPayments() as $existing) {
-            if (
-                ContactPaymentProvider::Mollie === $existing->getPaymentProvider()
-                && $existing->getType()->value === $type
-                && $existing->getNetAmount() === $amount
-                && strtoupper($existing->getCurrency()) === strtoupper($currency)
-            ) {
-                $details = null;
-                try {
-                    $ref = new \ReflectionProperty($existing, 'paymentProviderDetails');
-                    $ref->setAccessible(true);
-                    $details = $ref->getValue($existing);
-                } catch (\Throwable) {
-                }
-
-                if ($details instanceof ContactPaymentMollieDetails && $details->transactionId === $transactionId) {
-                    return true;
-                }
-            }
+        if (!$accessToken || !$refreshToken) {
+            throw new \RuntimeException('Mollie Connect is not configured for this organization.');
         }
 
-        return false;
+        $expiresAt = $organization->getMollieConnectAccessTokenExpiresAt();
+        $nowPlus5 = (new \DateTimeImmutable('now'))->modify('+5 minutes');
+
+        if ($expiresAt instanceof \DateTimeInterface && $expiresAt > $nowPlus5) {
+            return $accessToken;
+        }
+
+        $tokens = $this->mollieConnect->refreshAccessToken($refreshToken);
+        $organization->setMollieConnectAccessToken($tokens['access_token'] ?? null);
+        $organization->setMollieConnectRefreshToken($tokens['refresh_token'] ?? null);
+        $organization->setMollieConnectAccessTokenExpiresAt(
+            isset($tokens['expires_in']) && is_numeric($tokens['expires_in'])
+                ? (new \DateTimeImmutable('now'))->modify('+'.((int) $tokens['expires_in']).' seconds')
+                : null
+        );
+
+        $this->em->persist($organization);
+        $this->em->flush();
+
+        return (string) $organization->getMollieConnectAccessToken();
     }
 
     private function applyPayerSnapshot(ContactPayment $payment, array $contactPayload): void
