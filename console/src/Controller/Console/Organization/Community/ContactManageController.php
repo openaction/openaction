@@ -112,9 +112,11 @@ class ContactManageController extends AbstractController
                     $type = $m['type'] ?? null;
                     $startAt = $m['startAt'] ?? null;
                     $endAt = $m['endAt'] ?? null;
+
                     if (!$label || !$type || !$startAt || !$endAt) {
                         continue;
                     }
+
                     if (!$type instanceof ContactMandateType) {
                         try {
                             $type = ContactMandateType::from((string) $type);
@@ -122,13 +124,16 @@ class ContactManageController extends AbstractController
                             continue;
                         }
                     }
+
+                    // Convert string dates to DateTimeImmutable objects
                     try {
-                        $start = new \DateTimeImmutable((string) $startAt);
-                        $end = new \DateTimeImmutable((string) $endAt);
-                    } catch (\Exception) {
+                        $startAt = new \DateTimeImmutable((string) $startAt);
+                        $endAt = new \DateTimeImmutable((string) $endAt);
+                    } catch (\Throwable) {
                         continue;
                     }
-                    $mandate = new ContactMandate($contact, $type, $label, $start, $end);
+
+                    $mandate = new ContactMandate($contact, $type, $label, $startAt, $endAt);
                     $this->em->persist($mandate);
                     $contact->getMandates()->add($mandate);
                 }
@@ -143,12 +148,16 @@ class ContactManageController extends AbstractController
 
                 foreach ((array) $data->commitments as $c) {
                     $label = (string) ($c['label'] ?? '');
+
                     if (!$label) {
                         continue;
                     }
+
                     $commitment = new ContactCommitment($contact);
                     $commitment->setLabel($label);
+
                     $start = null;
+
                     if (!empty($c['startAt'])) {
                         try {
                             $start = new \DateTimeImmutable((string) $c['startAt']);
@@ -156,6 +165,7 @@ class ContactManageController extends AbstractController
                             $start = null;
                         }
                     }
+
                     $commitment->setStartAt($start);
                     $this->em->persist($commitment);
                     $contact->getCommitments()->add($commitment);
@@ -238,9 +248,11 @@ class ContactManageController extends AbstractController
                     $type = $m['type'] ?? null;
                     $startAt = $m['startAt'] ?? null;
                     $endAt = $m['endAt'] ?? null;
+
                     if (!$label || !$type || !$startAt || !$endAt) {
                         continue;
                     }
+
                     if (!$type instanceof ContactMandateType) {
                         try {
                             $type = ContactMandateType::from((string) $type);
@@ -248,6 +260,15 @@ class ContactManageController extends AbstractController
                             continue;
                         }
                     }
+
+                    // Convert string dates to DateTimeImmutable objects
+                    try {
+                        $startAt = new \DateTimeImmutable((string) $startAt);
+                        $endAt = new \DateTimeImmutable((string) $endAt);
+                    } catch (\Throwable) {
+                        continue;
+                    }
+
                     $mandate = new ContactMandate($contact, $type, $label, $startAt, $endAt);
                     $this->em->persist($mandate);
                     $contact->getMandates()->add($mandate);
