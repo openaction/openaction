@@ -127,13 +127,13 @@ class ContactManageController extends AbstractController
 
                     // Convert string dates to DateTimeImmutable objects
                     try {
-                        $startAt = new \DateTimeImmutable($startAt);
-                        $endAt = new \DateTimeImmutable($endAt);
+                        $startAt = new \DateTimeImmutable((string) $startAt);
+                        $endAt = new \DateTimeImmutable((string) $endAt);
                     } catch (\Throwable) {
                         continue;
                     }
 
-                    $mandate = new ContactMandate($contact, $type, $label, $start, $end);
+                    $mandate = new ContactMandate($contact, $type, $label, $startAt, $endAt);
                     $this->em->persist($mandate);
                     $contact->getMandates()->add($mandate);
                 }
@@ -263,8 +263,8 @@ class ContactManageController extends AbstractController
 
                     // Convert string dates to DateTimeImmutable objects
                     try {
-                        $startAt = new \DateTimeImmutable($startAt);
-                        $endAt = new \DateTimeImmutable($endAt);
+                        $startAt = new \DateTimeImmutable((string) $startAt);
+                        $endAt = new \DateTimeImmutable((string) $endAt);
                     } catch (\Throwable) {
                         continue;
                     }
