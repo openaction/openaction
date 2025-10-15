@@ -39,8 +39,12 @@ create:
     city: 'City'
     country: 'Country'
   submitLabel: I support this petition
-  optinLabel: I wish to receive information and updates related to the organizer of this petition
-  legalities: The data collected through this form is processed by the organizer to take into account your support for the petition. To learn more about the management of your personal data and to exercise your rights, please refer to the Privacy Policy.
+  optinLabel: I wish to receive information and updates related to the organizer of this petition.
+  legalities: |
+    I consent to the processing of my data and accept the Data Protection Policy. 
+    The data collected through this form is processed by the organizer to take into
+    account your support for the petition. To exercise your rights, please refer 
+    to the Data Protection Policy.
 
 categories:
   title: Petition categories

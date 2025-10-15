@@ -39,8 +39,11 @@ create:
     city: 'Stadt'
     country: 'Land'
   submitLabel: Ich unterstütze diese Petition
-  optinLabel: Ich möchte Informationen und Updates im Zusammenhang mit dem Organisator dieser Petition erhalten
-  legalities: Die über dieses Formular gesammelten Daten werden vom Organisator verarbeitet, um Ihre Unterstützung für die Petition zu berücksichtigen. Um mehr über die Verwaltung Ihrer personenbezogenen Daten zu erfahren und Ihre Rechte auszuüben, lesen Sie bitte die Datenschutzrichtlinie.
+  optinLabel: Ich möchte Informationen und Updates im Zusammenhang mit dem Organisator dieser Petition erhalten.
+  legalities: |
+    Ich willige in die Verarbeitung meiner Daten ein und akzeptiere die Datenschutzrichtlinie.
+    Die über dieses Formular erhobenen Daten werden vom Veranstalter verarbeitet, um Ihre Unterstützung
+    für die Petition zu berücksichtigen. Um Ihre Rechte auszuüben, lesen Sie bitte die Datenschutzrichtlinie.
 
 categories:
   title: Petitionskategorien

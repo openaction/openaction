@@ -34,7 +34,7 @@ class PetitionDataManager
 
     public function createEmptyLocalizedPetition(Petition $petition, string $locale): LocalizedPetition
     {
-        $defaultTitle = $this->translator->trans('create.default_title', [], 'project_petitions');
+        $defaultTitle = $this->translator->trans('create.default_title', domain: 'project_petitions', locale: $locale);
 
         // Create form
         $form = new Form($petition->getProject(), $defaultTitle);
@@ -51,7 +51,7 @@ class PetitionDataManager
         ];
 
         foreach ($blocks as $block) {
-            $content = $this->translator->trans($block['content'], [], 'project_petitions');
+            $content = $this->translator->trans($block['content'], domain: 'project_petitions', locale: $locale);
             $this->em->persist(new FormBlock($form, $block['type'], $content, true));
         }
 
@@ -63,9 +63,9 @@ class PetitionDataManager
             form: $form,
             locale: $locale,
             title: $defaultTitle,
-            submitButtonLabel: $this->translator->trans('create.submitLabel', [], 'project_petitions'),
-            optinLabel: $this->translator->trans('create.optinLabel', [], 'project_petitions'),
-            legalities: $this->translator->trans('create.legalities', [], 'project_petitions'),
+            submitButtonLabel: $this->translator->trans('create.submitLabel', domain: 'project_petitions', locale: $locale),
+            optinLabel: $this->translator->trans('create.optinLabel', domain: 'project_petitions', locale: $locale),
+            legalities: $this->translator->trans('create.legalities', domain: 'project_petitions', locale: $locale),
         );
 
         $this->em->persist($localized);

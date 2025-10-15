@@ -39,8 +39,12 @@ create:
     city: 'Ville'
     country: 'Pays'
   submitLabel: Je soutiens cette pétition
-  optinLabel: Je souhaite recevoir les informations et mises à jour en lien avec l'organisateur de cette pétition
-  legalities: Les données collectées via ce formulaire sont traitées par l'organisateur afin de prendre en compte votre soutien à la pétition. Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits, reportez-vous à la Politique de confidentialité.
+  optinLabel: Je souhaite recevoir les informations et mises à jour en lien avec l'organisateur de cette pétition.
+  legalities: |
+    Je consens au traitement de mes données et j’accepte la Politique de protection des données.
+    Les données collectées via ce formulaire sont traitées par l’organisateur afin de prendre en compte
+    votre soutien à la pétition. Pour exercer vos droits, veuillez vous référer à la Politique de 
+    protection des données.
 
 categories:
   title: Catégories de pétitions

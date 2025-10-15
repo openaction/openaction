@@ -9,7 +9,7 @@
         {% if localized.addressed_to %}
             <div class="petition-addressed-to">
                 <div class="petition-addressed-to-label">
-                    {{ 'petition.addressed_to'|trans }}
+                    {{ 'petition.addressed_to'|trans(locale=localized.locale) }}
                 </div>
                 {{ localized.addressed_to }}
             </div>
@@ -51,11 +51,11 @@
                     'categories': categories,
                     'read_time': localized.read_time,
                     'content': block('petition_content'),
-                    'titleLabel': 'base.embed-consent.title'|trans,
-                    'descriptionLabel': 'base.embed-consent.description'|trans,
-                    'acceptLabel': 'base.embed-consent.accept'|trans,
-                    'externalLabel': 'base.embed-consent.external'|trans,
-                    'cancelLabel': 'base.embed-consent.cancel'|trans,
+                    'titleLabel': 'base.embed-consent.title'|trans(locale=localized.locale),
+                    'descriptionLabel': 'base.embed-consent.description'|trans(locale=localized.locale),
+                    'acceptLabel': 'base.embed-consent.accept'|trans(locale=localized.locale),
+                    'externalLabel': 'base.embed-consent.external'|trans(locale=localized.locale),
+                    'cancelLabel': 'base.embed-consent.cancel'|trans(locale=localized.locale),
                     'section_id': 'petitions',
                     'default_list_image': asset('res/default.jpg'),
                 } %}
@@ -69,12 +69,14 @@
                     <div class="petition-progress">
                         <div class="petition-count mb-3">
                             <span class="petition-count-number">{{ petition.signatures_count|format_number }}</span>
-                            <span class="petition-count-label">{{ 'petition.signatures'|trans }}</span>
+                            <span class="petition-count-label">{{ 'petition.signatures'|trans(locale=localized.locale) }}</span>
                         </div>
 
                         <div>
                             <div class="mb-1">
-                                {{ 'petition.next_goal'|trans }} : {{ nextGoal|format_number }}
+                                {{ 'petition.next_goal'|trans(locale=localized.locale) }}
+                                :
+                                {{ nextGoal|format_number }}
                             </div>
                             <div class="petition-progress-bar">
                                 <div class="petition-progress-bar-value bg-primary"
@@ -85,12 +87,12 @@
 
                     <div class="user-form user-form-{{ formData.id }}">
                         <h5>
-                            {{ 'petition.sign_title'|trans }}
+                            {{ 'petition.sign_title'|trans(locale=localized.locale) }}
                         </h5>
 
                         {% if success %}
                             <div class="petition-success">
-                                <span>{{ 'petition.success'|trans }}</span>
+                                <span>{{ 'petition.success'|trans(locale=localized.locale) }}</span>
                             </div>
                         {% endif %}
 
@@ -134,7 +136,7 @@
 
                         {% if form.privacy is defined %}
                             <div class="user-form-field">
-                                {{ form_row(form.privacy, {'label': current_project.terminology.acceptPrivacy}) }}
+                                {{ form_row(form.privacy, {'label': localized.legalities}) }}
                             </div>
                         {% endif %}
 
@@ -150,10 +152,6 @@
 
                         {{ form_rest(form) }}
                         {{ form_end(form) }}
-
-                        <div class="form-legalities user-form-legalities text-center">
-                            {{ localized.legalities }}
-                        </div>
                     </div>
                 </div>
             </div>
