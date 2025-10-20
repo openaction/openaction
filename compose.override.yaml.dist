@@ -16,3 +16,6 @@ services:
 
     mailcatcher:
         ports: ['1025:1025', '1080:1080']
+
+    keycloak:
+        ports: ['8080:8080']
