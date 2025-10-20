@@ -73,14 +73,19 @@ class Citipo implements CitipoInterface
         return $this->parseResource($this->request('GET', '/api/website/events/'.$id, $apiToken));
     }
 
-    public function getTrombinoscope(string $apiToken): ApiCollection
+    public function getTrombinoscopeCategories(string $apiToken): ApiCollection
     {
-        return $this->parseCollection($this->request('GET', '/api/website/trombinoscope', $apiToken));
+        return $this->parseCollection($this->request('GET', '/api/website/trombinoscope-categories', $apiToken));
+    }
+
+    public function getTrombinoscope(string $apiToken, ?string $category = null): ApiCollection
+    {
+        return $this->parseCollection($this->request('GET', '/api/website/trombinoscope?category='.$category, $apiToken));
     }
 
     public function getTrombinoscopePerson(string $apiToken, string $id): ?ApiResource
     {
-        return $this->parseResource($this->request('GET', '/api/website/trombinoscope/'.$id.'?includes=previous,next', $apiToken));
+        return $this->parseResource($this->request('GET', '/api/website/trombinoscope/'.$id.'?includes=previous,next,posts,categories', $apiToken));
     }
 
     public function getManifesto(string $apiToken): ApiCollection

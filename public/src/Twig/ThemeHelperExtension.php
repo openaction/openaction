@@ -30,6 +30,7 @@ class ThemeHelperExtension extends AbstractExtension
             new TwigFunction('citipo_page', [$this, 'getPageContent'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_page_data', [$this, 'getPageData'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_trombinoscope_data', [$this, 'getTrombinoscopeData'], ['is_safe' => ['html']]),
+            new TwigFunction('citipo_extract_main_image', [$this, 'extractMainImage'], ['is_safe' => ['html']]),
             new TwigFunction('citipo_dump', [$this, 'dump'], ['is_safe' => ['html']]),
         ];
     }
@@ -54,6 +55,22 @@ class ThemeHelperExtension extends AbstractExtension
         $page = $this->getPageData($id);
 
         return $page ? $page['content'] : null;
+    }
+
+    public function extractMainImage(string $content, bool $removeFromContent = true): array
+    {
+        $mainImage = null;
+        preg_match_all('/<img.*src="(.+)".*>/isU', $content, $matches);
+
+        if (!empty($matches[1])) {
+            $mainImage = $matches[1][0];
+
+            if ($removeFromContent) {
+                $content = preg_replace('/<img.*src=".+".*>/isU', '', $content);
+            }
+        }
+
+        return ['main_image' => $mainImage, 'html_content' => $content];
     }
 
     public function getTrombinoscopeData(): array

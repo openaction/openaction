@@ -35,6 +35,7 @@ services:
                 - citipo_page
                 - citipo_page_data
                 - citipo_trombinoscope_data
+                - citipo_extract_main_image
                 - citipo_dump
                 - hex2rgba
             $allowedFilters:

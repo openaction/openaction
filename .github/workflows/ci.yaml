@@ -289,9 +289,9 @@ jobs:
             - name: PHPUnit
               run: |
                   cd console
-                  symfony server:ca:install
-                  symfony serve -d
+                  symfony serve -d --no-tls
                   cd ../public
+                  echo "APP_CONSOLE_ENDPOINT=http://localhost:8000" >> .env.test
                   symfony php bin/phpunit
 
     # Release
