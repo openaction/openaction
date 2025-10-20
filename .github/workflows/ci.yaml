@@ -291,7 +291,8 @@ jobs:
                   cd console
                   symfony serve -d --no-tls
                   cd ../public
-                  APP_CONSOLE_ENDPOINT=http://localhost:8000 symfony php bin/phpunit
+                  echo "APP_CONSOLE_ENDPOINT=http://localhost:8000" >> .env.test
+                  symfony php bin/phpunit
 
     # Release
     public-release:
