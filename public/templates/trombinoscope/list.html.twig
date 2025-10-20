@@ -15,12 +15,31 @@
         {% set trombinoscopePayload = trombinoscopePayload|merge([personPayload]) %}
     {% endfor %}
 
+    {% set filters = [
+        {
+            'name': 'base.show_all'|trans,
+            'url': path('trombinoscope_list'),
+            'isActive': current_category == null
+        }
+    ] %}
+
+    {% for category in categories %}
+        {% set filters = filters|merge([
+            {
+                'name': category.name,
+                'url': path('trombinoscope_list', {'c': category.id}),
+                'isActive': current_category == category.id
+            }
+        ]) %}
+    {% endfor %}
+
     {% set payload = {
         'current_url': url(current_route, current_route_params),
         'current_project': current_project.toArray,
         'force_embed_consent': force_embed_consent,
         'trombinoscope_title': current_project.terminology.trombinoscope,
         'social_sharers': include('_include/social_sharers.html.twig', {'route': 'trombinoscope_list'}),
+        'categories': filters,
         'trombinoscope': trombinoscopePayload,
         'no_elements': 'base.no_element'|trans,
     } %}

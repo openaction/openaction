@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Client\CitipoInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,14 +22,16 @@ class TrombinoscopeController extends AbstractController
     /**
      * @Route("", name="trombinoscope_list")
      */
-    public function list()
+    public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_trombinoscope');
 
-        $trombinoscope = $this->citipo->getTrombinoscope($this->getApiToken());
+        $category = $request->query->get('c');
 
         return $this->render('trombinoscope/list.html.twig', [
-            'trombinoscope' => $trombinoscope,
+            'current_category' => $category,
+            'trombinoscope' => $this->citipo->getTrombinoscope($this->getApiToken(), $category),
+            'categories' => $this->citipo->getTrombinoscopeCategories($this->getApiToken()),
         ]);
     }
 
