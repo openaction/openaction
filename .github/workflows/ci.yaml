@@ -289,7 +289,7 @@ jobs:
             - name: PHPUnit
               run: |
                   cd console
-                  symfony server:ca:install
+                  symfony server:ca:install --renew
                   symfony serve -d
                   cd ../public
                   symfony php bin/phpunit
