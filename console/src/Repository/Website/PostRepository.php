@@ -41,6 +41,7 @@ class PostRepository extends ServiceEntityRepository
                 ->andWhere('p.onlyForMembers = FALSE')
                 ->andWhere('po.rootDomain IS NOT NULL')
                 ->andWhere('p.publishedAt <= :now')
+                ->orderBy('p.createdAt', 'DESC')
                 ->setParameter('now', new \DateTime())
                 ->getQuery()
         );

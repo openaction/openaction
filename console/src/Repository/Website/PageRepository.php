@@ -53,6 +53,7 @@ class PageRepository extends ServiceEntityRepository
                 ->leftJoin('po.organization', 'o')
                 ->andWhere('p.onlyForMembers = FALSE')
                 ->andWhere('po.rootDomain IS NOT NULL')
+                ->orderBy('p.createdAt', 'DESC')
                 ->getQuery()
         );
 
