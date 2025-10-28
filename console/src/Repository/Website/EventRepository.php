@@ -39,6 +39,7 @@ class EventRepository extends ServiceEntityRepository
                 ->andWhere('e.onlyForMembers = FALSE')
                 ->andWhere('ep.rootDomain IS NOT NULL')
                 ->andWhere('e.publishedAt <= :now')
+                ->orderBy('e.createdAt', 'DESC')
                 ->setParameter('now', new \DateTime())
                 ->getQuery()
         );

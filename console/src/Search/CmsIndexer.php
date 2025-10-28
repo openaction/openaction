@@ -56,46 +56,34 @@ class CmsIndexer
         }
     }
 
-    public function getAllDocumentsIds(): array
+    public function resetIndex(): void
     {
-        $data = $this->meilisearch->search(self::INDEX_NAME, '', [
-            'limit' => 999_999_999,
-            'attributesToRetrieve' => ['id'],
-        ]);
+        $this->meilisearch->waitForTasks(
+            tasks: [
+                $this->meilisearch->deleteIndex(self::INDEX_NAME),
+            ],
+            timeoutInMs: 30_000,
+            intervalInMs: 500,
+        );
 
-        $ids = [];
-        foreach ($data['hits'] as $row) {
-            $ids[] = $row['id'];
-        }
-
-        return $ids;
-    }
-
-    public function configureIndex(): void
-    {
-        if (!$this->meilisearch->indexExists(self::INDEX_NAME)) {
-            $task = $this->meilisearch->createIndex(
-                self::INDEX_NAME,
-                ['encoded_uuid', 'title', 'content'],
-                ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
-                ['date', 'title', 'status'],
-            );
-
-            $this->meilisearch->waitForTasks([$task], 30_000, 500);
-        }
+        $this->meilisearch->waitForTasks(
+            tasks: [
+                $this->meilisearch->createIndex(
+                    self::INDEX_NAME,
+                    ['encoded_uuid', 'title', 'content'],
+                    ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
+                    ['date', 'title', 'status'],
+                ),
+            ],
+            timeoutInMs: 30_000,
+            intervalInMs: 500,
+        );
     }
 
     public function indexDocuments(array $documents): void
     {
         foreach (array_chunk($documents, 1500) as $batch) {
             $this->meilisearch->indexDocumentsBatch(self::INDEX_NAME, implode("\n", $batch));
-        }
-    }
-
-    public function unindexDocuments(array $documentsIds): void
-    {
-        foreach (array_chunk($documentsIds, 1500) as $batch) {
-            $this->meilisearch->unindexDocuments(self::INDEX_NAME, $batch);
         }
     }
 }

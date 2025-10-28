@@ -73,17 +73,11 @@ class IndexCmsCommand extends Command
          * Indexing
          */
 
-        $io->writeln('Configuring index... ');
-        $this->cmsIndexer->configureIndex();
-
-        $io->writeln('Fetching already indexed documents... ');
-        $ids = $this->cmsIndexer->getAllDocumentsIds();
+        $io->writeln('Resetting index... ');
+        $this->cmsIndexer->resetIndex();
 
         $io->writeln('Indexing public documents... ');
         $this->cmsIndexer->indexDocuments($documents);
-
-        $io->writeln('Removing old documents... ');
-        $this->cmsIndexer->unindexDocuments(array_diff($ids, array_keys($documents)));
 
         $io->success('Indexing done');
 
