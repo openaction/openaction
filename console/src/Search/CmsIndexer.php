@@ -73,7 +73,7 @@ class CmsIndexer
                     ['encoded_uuid', 'title', 'content'],
                     ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
                     ['date', 'title', 'status'],
-                )
+                ),
             ],
             timeoutInMs: 30_000,
             intervalInMs: 500,
