@@ -4,11 +4,9 @@ namespace App\Form\Community;
 
 use App\Entity\Area;
 use App\Entity\Community\Contact;
-use App\Entity\Community\Contact as ContactEntity;
 use App\Form\Community\Model\ContactData;
 use App\Form\CountryType;
 use App\Repository\AreaRepository;
-use App\Repository\Community\ContactRepository as CommunityContactRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
