@@ -119,9 +119,6 @@ class ContactData
     #[Assert\Country]
     public ?string $birthCountryCode = '';
 
-    // Recruiter (same-organization contact)
-    public ?Contact $recruitedBy = null;
-
     public bool $settingsReceiveNewsletters = true;
     public bool $settingsReceiveSms = true;
     public bool $settingsReceiveCalls = false;
@@ -174,7 +171,6 @@ class ContactData
         $self->birthName = $contact->getBirthName();
         $self->birthCity = $contact->getBirthCity();
         $self->birthCountryCode = $contact->getBirthCountryCode();
-        $self->recruitedBy = $contact->getRecruitedBy();
         $self->settingsReceiveNewsletters = $contact->hasSettingsReceiveNewsletters();
         $self->settingsReceiveSms = $contact->hasSettingsReceiveSms();
         $self->settingsReceiveCalls = $contact->hasSettingsReceiveCalls();
