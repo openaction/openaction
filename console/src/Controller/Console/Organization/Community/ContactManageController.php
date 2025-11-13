@@ -95,11 +95,6 @@ class ContactManageController extends AbstractController
             $this->em->persist($contact);
             $this->em->flush();
 
-            // Recruited by
-            if ($data->recruitedBy) {
-                $contact->setRecruitedBy($data->recruitedBy);
-            }
-
             // Mandates (replace all)
             if (null !== $data->mandates) {
                 foreach ($contact->getMandates() as $m) {
@@ -228,13 +223,6 @@ class ContactManageController extends AbstractController
 
             $this->em->persist($contact);
             $this->em->flush();
-
-            // Recruited by
-            if ($data->recruitedBy) {
-                $contact->setRecruitedBy($data->recruitedBy);
-            } else {
-                $contact->setRecruitedBy(null);
-            }
 
             // Mandates (replace all)
             if (null !== $data->mandates) {

@@ -4,11 +4,9 @@ namespace App\Form\Community;
 
 use App\Entity\Area;
 use App\Entity\Community\Contact;
-use App\Entity\Community\Contact as ContactEntity;
 use App\Form\Community\Model\ContactData;
 use App\Form\CountryType;
 use App\Repository\AreaRepository;
-use App\Repository\Community\ContactRepository as CommunityContactRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -53,20 +51,6 @@ class ContactType extends AbstractType
             ->add('birthName', TextType::class, ['required' => false])
             ->add('birthCity', TextType::class, ['required' => false])
             ->add('birthCountryCode', CountryType::class, ['required' => false])
-            ->add('recruitedBy', EntityType::class, [
-                'class' => ContactEntity::class,
-                'required' => false,
-                'choice_label' => fn (ContactEntity $c) => (string) $c,
-                'query_builder' => static function (CommunityContactRepository $repo) use ($builder) {
-                    /** @var ContactData $data */
-                    $data = $builder->getData();
-
-                    return $repo->createQueryBuilder('c')
-                        ->andWhere('c.organization = :orga')
-                        ->setParameter('orga', $data->inOrganization)
-                        ->orderBy('c.profileLastName', 'ASC');
-                },
-            ])
             ->add('contactPhone', TextType::class, ['required' => false])
             ->add('contactWorkPhone', TextType::class, ['required' => false])
             ->add('socialFacebook', TextType::class, ['required' => false])
