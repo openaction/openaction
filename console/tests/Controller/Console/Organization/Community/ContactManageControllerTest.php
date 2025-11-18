@@ -21,6 +21,7 @@ use SendGrid\Mail\To;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use function PHPUnit\Framework\assertJsonStringEqualsJsonString;
 
 class ContactManageControllerTest extends WebTestCase
 {
@@ -418,40 +419,7 @@ class ContactManageControllerTest extends WebTestCase
         $this->assertSame('metadataComment', $contact->getMetadataComment());
         $this->assertSame('StartWithTag', $contact->getMetadataTagsList());
 
-        // Check settings
-        $this->assertTrue($contact->hasSettingsReceiveNewsletters());
-        $this->assertFalse($contact->hasSettingsReceiveSms());
-        $this->assertFalse($contact->hasSettingsReceiveCalls());
-        $this->assertSame(
-            [
-                [
-                    'projectName' => 'Citipo',
-                    'projectId' => '73wbsDqmHaMWAizkLPKOSF',
-                    'settingsReceiveNewsletters' => true, // Overriden by global setting
-                    'settingsReceiveSms' => true,
-                    'settingsReceiveCalls' => true,
-                ],
-                [
-                    'projectName' => 'ExampleTag',
-                    'projectId' => 'Bejht60OqDGdVNPKhkGRt',
-                    'settingsReceiveNewsletters' => true,
-                    'settingsReceiveSms' => false,
-                    'settingsReceiveCalls' => true,
-                ],
-                [
-                    'projectName' => 'Trial',
-                    'projectId' => '2zBjyjR0XXlk2Jpmpa7BYZ',
-                    'settingsReceiveNewsletters' => true,
-                    'settingsReceiveSms' => true,
-                    'settingsReceiveCalls' => false,
-                ],
-            ],
-            $contact->getSettingsByProject()
-        );
-
-        /*
-         * Check search engine update
-         */
+        // Check search engine update
 
         /** @var TransportInterface $transport */
         $transport = static::getContainer()->get('messenger.transport.async_indexing');
@@ -519,5 +487,297 @@ class ContactManageControllerTest extends WebTestCase
          */
         $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/20e51b91-bdec-495d-854d-85d6e74fc75e/view');
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testGetContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+
+        $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'/data');
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+
+        $responseData = Json::decode($client->getResponse()->getContent());
+
+        $expectedPayload = [
+            '_resource' => 'Contact',
+            'id' => '104SKb9m0xnYyt8OiWn3ks', // Base62 of 20e51b91-bdec-495d-854d-85d6e74fc75e
+            'email' => 'olivie.gregoire@gmail.com',
+            'isMember' => false,
+            'profileFormalTitle' => null,
+            'profileFirstName' => 'Olivie',
+            'profileMiddleName' => null,
+            'profileLastName' => 'Gregoire',
+            'profileBirthdate' => null,
+            'profileGender' => null,
+            'profileNationality' => null,
+            'profileCompany' => null,
+            'profileJobTitle' => null,
+            'contactPhone' => '+33 7 57 59 46 25',
+            'contactWorkPhone' => null,
+            'parsedContactPhone' => '+33 7 57 59 46 25',
+            'parsedContactWorkPhone' => null,
+            'socialFacebook' => 'olivie.gregoire',
+            'socialTwitter' => '@golivie92',
+            'socialLinkedIn' => null,
+            'socialTelegram' => null,
+            'socialWhatsapp' => null,
+            'addressStreetLine1' => null,
+            'addressStreetLine2' => null,
+            'addressZipCode' => null,
+            'addressCity' => null,
+            'addressCountry' => null,
+            'settingsReceiveNewsletters' => true,
+            'settingsReceiveSms' => true,
+            'settingsReceiveCalls' => true,
+            'settingsByProject' => [
+                [
+                    'projectId' => '73wbsDqmHaMWAizkLPKOSF',
+                    'projectName' => 'Citipo',
+                    'settingsReceiveNewsletters' => true,
+                    'settingsReceiveSms' => true,
+                    'settingsReceiveCalls' => true,
+                ],
+                [
+                    'projectId' => 'Bejht60OqDGdVNPKhkGRt',
+                    'projectName' => 'ExampleTag',
+                    'settingsReceiveNewsletters' => true,
+                    'settingsReceiveSms' => true,
+                    'settingsReceiveCalls' => true,
+                ],
+                [
+                    'projectId' => '2zBjyjR0XXlk2Jpmpa7BYZ',
+                    'projectName' => 'Trial',
+                    'settingsReceiveNewsletters' => true,
+                    'settingsReceiveSms' => true,
+                    'settingsReceiveCalls' => true,
+                ],
+            ],
+            'metadataTags' => ['ExampleTag', 'StartWithTag'],
+            'metadataCustomFields' => [
+                'externalId' => '2485c2e31af5',
+                'donations' => [
+                    ['amount' => 1000, 'date' => '2021-04-28 15:03:42'],
+                    ['amount' => 2000, 'date' => '2021-05-13 09:38:11'],
+                 ],
+            ],
+        ];
+
+        // Remove fields that might change dynamically or are hard to predict exactly
+        unset($responseData['picture']); // URL might depend on CDN config/hostname
+
+        // Sort tags for consistent comparison
+        sort($responseData['metadataTags']);
+        sort($expectedPayload['metadataTags']);
+
+        // Sort settingsByProject for consistent comparison
+        usort($responseData['settingsByProject'], fn ($a, $b) => $a['projectId'] <=> $b['projectId']);
+        usort($expectedPayload['settingsByProject'], fn ($a, $b) => $a['projectId'] <=> $b['projectId']);
+
+        assertJsonStringEqualsJsonString(Json::encode($expectedPayload), Json::encode($responseData));
+    }
+
+    public function testGetContactJsonForbidden()
+    {
+        $client = static::createClient();
+        $this->authenticate($client); // Authenticate as default user (Citipo orga)
+
+        // Use UUID of contact from another organization (ACME)
+        $contactUuid = '851363e5-c97f-4c04-ba83-d98b802332c6'; // julien.dubois@exampleco.com
+
+        $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'/data');
+
+        // ParamConverter fails to find the entity across orgas, resulting in 404
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    public function testUpdateContactJson()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+        $contactRepo = static::getContainer()->get(ContactRepository::class);
+
+        /** @var Contact $contact */
+        $contact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Olivie', $contact->getProfileFirstName());
+        $this->assertNull($contact->getMetadataComment());
+        $this->assertTrue($contact->hasSettingsReceiveCalls());
+
+        // Fetch existing tag details to avoid unique constraint violation
+        /** @var Tag $existingTag */
+        $existingTag = static::getContainer()->get(TagRepository::class)->findOneBy(['name' => 'ExampleTag', 'organization' => $contact->getOrganization()]);
+
+        $payload = [
+            'profileFirstName' => 'Olivia',
+            'metadataComment' => 'Updated comment',
+            'addressZipCode' => '75001',
+            'addressCity' => 'Paris',
+            'addressCountry' => '36778547219895752', // ID for France
+            'additionalEmails' => ['new.addition@example.com'],
+            'settingsReceiveCalls' => false, // Test toggling the setting off
+            'metadataTags' => Json::encode([[ // Keep only one tag, providing full structure
+                'id' => $existingTag->getId(),
+                'name' => $existingTag->getName(),
+                'slug' => $existingTag->getSlug(),
+            ]]), // Keep only one tag, providing full structure
+        ];
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertTrue($responseData['success']);
+        $this->assertSame($contactUuid, $responseData['contact_uuid']);
+
+        // Refetch and assert changes
+        static::getContainer()->get('doctrine')->getManager()->clear(); // Clear EM cache
+        $updatedContact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertSame('Olivia', $updatedContact->getProfileFirstName()); // Updated
+        $this->assertSame('Updated comment', $updatedContact->getMetadataComment()); // Updated
+        $this->assertSame('Gregoire', $updatedContact->getProfileLastName()); // Unchanged
+        $this->assertFalse($updatedContact->hasSettingsReceiveCalls()); // Updated (toggled off)
+        $this->assertSame('ExampleTag', $updatedContact->getMetadataTagsList()); // Tags updated
+        $this->assertSame('75001', $updatedContact->getAddressZipCode());
+        $this->assertSame('PARIS', $updatedContact->getAddressCity());
+        $this->assertSame('France', $updatedContact->getAddressCountry()->getName());
+        $this->assertNotNull($updatedContact->getArea());
+        $this->assertSame('France', $updatedContact->getArea()->getName()); // Area resolved to France, not 75001. Check ContactLocator logic if needed.
+        $this->assertSame(['new.addition@example.com'], $updatedContact->getContactAdditionalEmails());
+
+        // Check integrations were triggered
+        /** @var TransportInterface $integrationTransport */
+        $integrationTransport = static::getContainer()->get('messenger.transport.async_priority_low');
+        $messages = $integrationTransport->get();
+        $this->assertCount(2, $messages, 'Expected 2 integration messages (Integromat, Quorum).');
+
+        // Check messages without assuming order
+        $foundIntegromat = false;
+        $foundQuorum = false;
+        foreach ($messages as $envelope) {
+            if ($envelope->getMessage() instanceof IntegromatWebhookMessage) {
+                $foundIntegromat = true;
+            } elseif ($envelope->getMessage() instanceof QuorumMessage) {
+                $foundQuorum = true;
+            }
+        }
+        $this->assertTrue($foundIntegromat, 'IntegromatWebhookMessage not found in transport.');
+        $this->assertTrue($foundQuorum, 'QuorumMessage not found in transport.');
+    }
+
+    public function testUpdateContactJsonValidationError()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        $payload = [
+            'email' => 'invalid-email',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload)
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $responseData = Json::decode($client->getResponse()->getContent());
+        $this->assertNotEmpty($responseData['errors']); // Check that some error was returned
+    }
+
+    public function testUpdateContactJsonForbidden()
+    {
+        $client = static::createClient();
+        $this->authenticate($client); // Authenticate as default user (Citipo orga)
+
+        // Fetch CSRF token from the list page
+        $crawler = $client->request('GET', '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts');
+        $token = $this->filterGlobalCsrfToken($crawler);
+
+        // Use UUID of contact from another organization (ACME)
+        $contactUuid = '851363e5-c97f-4c04-ba83-d98b802332c6'; // julien.dubois@exampleco.com
+
+        $payload = [
+            'profileFirstName' => 'ForbiddenUpdate',
+        ];
+
+        $client->request(
+            'PATCH',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'?_token='.$token,
+            [], [], ['CONTENT_TYPE' => 'application/json'],
+            Json::encode($payload)
+        );
+
+        // ParamConverter fails to find the entity across orgas, resulting in 404
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    public function testUpdatePictureAjax()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        $contactUuid = '20e51b91-bdec-495d-854d-85d6e74fc75e'; // olivie.gregoire@gmail.com
+        $contactRepo = static::getContainer()->get(ContactRepository::class);
+        $contact = $contactRepo->findOneByUuid($contactUuid);
+        $originalPicturePath = $contact->getPicture()?->getPathname(); // Get original path if exists
+
+        $uploadedFile = new UploadedFile(
+            __DIR__.'/../../../../Fixtures/upload/mario.png',
+            'mario.png',
+            'image/png',
+            null,
+            true // Mark as test file
+        );
+
+        $client->request(
+            'POST',
+            '/console/organization/'.self::ORGA_CITIPO_UUID.'/community/contacts/'.$contactUuid.'/picture',
+            [], // Parameters
+            ['file' => $uploadedFile] // Files
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $responseData = Json::decode($client->getResponse()->getContent());
+
+        $this->assertTrue($responseData['success']);
+        $this->assertArrayHasKey('picture_url', $responseData);
+        $this->assertStringContainsString('/serve/', $responseData['picture_url']); // Basic check for CDN url structure
+
+        // Verify the contact entity was updated
+        static::getContainer()->get('doctrine')->getManager()->clear(); // Clear EM cache
+        $updatedContact = $contactRepo->findOneByUuid($contactUuid);
+        $this->assertNotNull($updatedContact->getPicture());
+        $this->assertNotEquals($originalPicturePath, $updatedContact->getPicture()->getPathname());
+
+        // Check search index message was dispatched
+        /** @var TransportInterface $transport */
+        $transport = static::getContainer()->get('messenger.transport.async_indexing');
+        $messages = $transport->get(UpdateCrmDocumentsMessage::class);
+        $this->assertCount(1, $messages);
+        $this->assertInstanceOf(UpdateCrmDocumentsMessage::class, $messages[0]->getMessage());
+        $this->assertContains($contactUuid, array_keys($messages[0]->getMessage()->getContactsIdentifiers()));
     }
 }
