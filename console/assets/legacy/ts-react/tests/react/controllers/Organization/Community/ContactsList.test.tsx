@@ -205,6 +205,7 @@ function createControllerComponent(defaultTagFilter: string | null = null) {
                 socials: 'Social networks',
                 projects: 'Projects',
             }}
+            fakeEmailSuffix="@noemail.citipo.com"
         />
     );
 }

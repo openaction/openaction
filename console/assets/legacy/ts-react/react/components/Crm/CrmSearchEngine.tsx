@@ -30,6 +30,7 @@ interface Props {
     itemLabels: CrmItemLabels;
     tagsLabels: CrmItemTagsLabels;
     profileLabels: CrmItemProfileLabels;
+    fakeEmailSuffix: string;
 }
 
 export function CrmSearchEngine(props: Props) {

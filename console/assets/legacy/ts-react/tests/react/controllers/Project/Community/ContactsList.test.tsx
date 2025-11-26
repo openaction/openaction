@@ -194,6 +194,7 @@ function createControllerComponent() {
                 socials: 'Social networks',
                 projects: 'Projects',
             }}
+            fakeEmailSuffix="@noemail.citipo.com"
         />
     );
 }

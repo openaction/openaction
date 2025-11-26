@@ -35,6 +35,7 @@ interface Props {
     itemLabels: CrmItemLabels;
     tagsLabels: CrmItemTagsLabels;
     profileLabels: CrmItemProfileLabels;
+    fakeEmailSuffix: string;
 }
 
 export default function (props: Props) {

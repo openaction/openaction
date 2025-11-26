@@ -100,14 +100,21 @@ final class ImportHandler
             }
         }
 
+        $emailColumnProvided = isset($columnsMapping['email']);
+        if (!$emailColumnProvided) {
+            $columnsMapping['email'] = null;
+        }
+
+        $columnsMappingWithUuid = ['uuid' => null] + $columnsMapping;
+
         // Remove data import table if it already exists
         $tableName = 'community_imports_data_'.$import->getId();
         $db->executeStatement('DROP TABLE IF EXISTS '.$tableName);
 
         // Create data import table
         $table = new Table($tableName);
-        foreach (array_keys($columnsMapping) as $column) {
-            $table->addColumn(strtolower($column), 'text', ['notnull' => false]);
+        foreach (array_keys($columnsMappingWithUuid) as $column) {
+            $table->addColumn(strtolower($column), 'uuid' === $column ? 'guid' : 'text', ['notnull' => false]);
         }
 
         foreach ($db->getDatabasePlatform()->getCreateTableSQL($table) as $sql) {
@@ -137,7 +144,13 @@ final class ImportHandler
             }
 
             $rowValues = [];
-            foreach ($columnsMapping as $type => $key) {
+            foreach ($columnsMappingWithUuid as $type => $key) {
+                if ('uuid' === $type) {
+                    $rowValues[] = 'gen_random_uuid()';
+
+                    continue;
+                }
+
                 if (empty($row[$key])) {
                     $rowValues[] = 'null';
 
@@ -164,13 +177,13 @@ final class ImportHandler
 
         foreach (array_chunk($sqlValues, 10_000) as $chunk) {
             $columnsNames = [];
-            foreach (array_keys($columnsMapping) as $column) {
+            foreach (array_keys($columnsMappingWithUuid) as $column) {
                 $columnsNames[] = strtolower($column);
             }
 
             $db->executeStatement(
                 'INSERT INTO '.$tableName.' ('.implode(',', $columnsNames).') '.
-                'VALUES '.implode(',', $sqlValues)
+                'VALUES '.implode(',', $chunk)
             );
 
             // Update status
@@ -188,7 +201,7 @@ final class ImportHandler
         // Static mapping to be used on inserts (and not on conflict updates)
         $insertMapping = [
             'id' => 'nextval(\'community_contacts_id_seq\')',
-            'uuid' => 'gen_random_uuid()',
+            'uuid' => 'uuid',
             'organization_id' => $organization->getId(),
             'contact_additional_emails' => $db->quote('[]'),
             'account_confirmed' => 'false',
@@ -213,8 +226,8 @@ final class ImportHandler
         $selectColumns = array_merge(array_values($insertMapping), array_values($valuesMapping));
 
         $selectDistinct = '';
-        if (isset($columnsMapping['email'])) {
-            $selectDistinct = ' DISTINCT ON (email) ';
+        if ($emailColumnProvided) {
+            $selectDistinct = ' DISTINCT ON ('.$this->getEmailSelectExpression().') ';
         }
 
         $conflictUpdateSet = ['updated_at = CURRENT_TIMESTAMP'];
@@ -290,11 +303,11 @@ final class ImportHandler
                 INSERT INTO community_contacts_tags (tag_id, contact_id) 
                 SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
                 FROM (
-                    SELECT email, metadatatag AS tag
+                    SELECT uuid, metadatatag AS tag
                     FROM '.$tableName.'
                 ) i
                 LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
-                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.uuid = i.uuid
                 WHERE t.id IS NOT NULL AND c.id IS NOT NULL
                 ON CONFLICT DO NOTHING
             ');
@@ -305,11 +318,11 @@ final class ImportHandler
                 INSERT INTO community_contacts_tags (tag_id, contact_id) 
                 SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
                 FROM (
-                    SELECT email, regexp_split_to_table(metadatatagslist, \',\') AS tag
+                    SELECT uuid, regexp_split_to_table(metadatatagslist, \',\') AS tag
                     FROM '.$tableName.'
                 ) i
                 LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
-                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.email = i.email
+                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.uuid = i.uuid
                 WHERE t.id IS NOT NULL AND c.id IS NOT NULL
                 ON CONFLICT DO NOTHING
             ');
@@ -324,8 +337,8 @@ final class ImportHandler
         $db->executeStatement('
             UPDATE community_contacts c
             SET area_id = (SELECT id FROM areas WHERE tree_root = c.address_country_id AND name = c.address_zip_code)
-            WHERE c.organization_id = '.$organization->getId().' AND c.address_country_id IS NOT NULL AND c.address_zip_code IS NOT NULL AND c.email IN (
-                SELECT DISTINCT email FROM '.$tableName.'
+            WHERE c.organization_id = '.$organization->getId().' AND c.address_country_id IS NOT NULL AND c.address_zip_code IS NOT NULL AND c.uuid IN (
+                SELECT uuid FROM '.$tableName.'
             )
         ');
 
@@ -333,8 +346,8 @@ final class ImportHandler
         $db->executeStatement('
             UPDATE community_contacts c
             SET area_id = address_country_id
-            WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.address_country_id IS NOT NULL AND c.email IN (
-                SELECT DISTINCT email FROM '.$tableName.'
+            WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.address_country_id IS NOT NULL AND c.uuid IN (
+                SELECT uuid FROM '.$tableName.'
             )
         ');
 
@@ -343,8 +356,8 @@ final class ImportHandler
             $db->executeStatement('
                 UPDATE community_contacts c
                 SET area_id = '.$default->getId().'
-                WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.email IN (
-                    SELECT DISTINCT email FROM '.$tableName.'
+                WHERE c.organization_id = '.$organization->getId().' AND c.area_id IS NULL AND c.uuid IN (
+                    SELECT uuid FROM '.$tableName.'
                 )
             ');
         }
@@ -530,7 +543,6 @@ final class ImportHandler
                 $mapping['contact_work_phone'] = '(CASE WHEN parsedcontactworkphone IS NOT NULL THEN parsedcontactworkphone ELSE contactworkphone END)';
                 break;
 
-            case 'email':
             case 'profileFormalTitle':
             case 'profileFirstName':
             case 'profileMiddleName':
@@ -559,8 +571,17 @@ final class ImportHandler
             case 'addressStreetLine2Slug':
                 $mapping[$classMetadata->getColumnName($type)] = strtolower($type);
                 break;
+
+            case 'email':
+                $mapping[$classMetadata->getColumnName($type)] = $this->getEmailSelectExpression();
+                break;
         }
 
         return $mapping;
+    }
+
+    private function getEmailSelectExpression(): string
+    {
+        return 'LOWER(COALESCE(NULLIF(email, \'\'), uuid::text || \''.Contact::NO_EMAIL_SUFFIX.'\'))';
     }
 }
