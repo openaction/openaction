@@ -81,10 +81,7 @@ final class SendgridConfigureDomainHandler implements MessageHandlerInterface
             // Use the first one
             $domainConfig = array_shift($configs);
             if (null === ($domainConfig['id'] ?? null)) {
-                throw new \RuntimeException(sprintf(
-                    'Sendgrid returned a domain without id for "%s".',
-                    $domain->getName()
-                ));
+                throw new \RuntimeException(sprintf('Sendgrid returned a domain without id for "%s".', $domain->getName()));
             }
             $config->setId($domainConfig['id']);
 
