@@ -207,7 +207,7 @@ class ContactViewBuilderTest extends KernelTestCase
                 Organization $orga,
                 Project $localProject,
                 Project $thematicProject,
-                array $tagsRegistry
+                array $tagsRegistry,
             ) => $builder->inOrganization($orga)->excludeFakeEmails()
         )->createQueryBuilder();
 

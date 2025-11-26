@@ -29,6 +29,10 @@ use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
 
+if (class_exists(__NAMESPACE__.'\Contact', false)) {
+    throw new \RuntimeException('Contact already declared', 1);
+}
+
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
     new ORM\UniqueConstraint('community_contacts_email_organization_unique_idx', ['email', 'organization_id']),
