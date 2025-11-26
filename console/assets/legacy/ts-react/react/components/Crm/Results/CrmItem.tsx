@@ -42,10 +42,15 @@ interface Props {
     itemLabels: CrmItemLabels;
     tagsLabels: CrmItemTagsLabels;
     profileLabels: CrmItemProfileLabels;
+    fakeEmailSuffix: string;
 }
 
 export function CrmItem(props: Props) {
     const item = props.result;
+    const fakeEmailSuffix = props.fakeEmailSuffix;
+    const hasVisibleEmail = (email?: string | null) =>
+        !!email && (!fakeEmailSuffix || email.indexOf(fakeEmailSuffix) === -1);
+    const visibleEmail = hasVisibleEmail(item.email) ? item.email : null;
 
     const [tags, setTags] = useState<Tag[] | null>(null);
 
@@ -55,7 +60,7 @@ export function CrmItem(props: Props) {
     };
 
     let details: { [key: string]: any } = {
-        mainName: item.email,
+        mainName: visibleEmail || '(-)',
         subName: [],
         picture: item.picture
             ? '/serve/' + item.picture
@@ -65,17 +70,19 @@ export function CrmItem(props: Props) {
     if (item.profile_first_name || item.profile_last_name) {
         details.mainName = [item.profile_first_name, item.profile_last_name].filter((v) => !!v).join(' ');
 
-        details.subName.push(
-            <a
-                href={`mailto:${item.email}`}
-                target="_blank"
-                className="crm-search-results-item-profile-extradata"
-                key="email"
-            >
-                <i className="far fa-envelope"></i>
-                {item.email}
-            </a>
-        );
+        if (visibleEmail) {
+            details.subName.push(
+                <a
+                    href={`mailto:${visibleEmail}`}
+                    target="_blank"
+                    className="crm-search-results-item-profile-extradata"
+                    key="email"
+                >
+                    <i className="far fa-envelope"></i>
+                    {visibleEmail}
+                </a>
+            );
+        }
     }
 
     if (item.profile_job_title || item.profile_company) {

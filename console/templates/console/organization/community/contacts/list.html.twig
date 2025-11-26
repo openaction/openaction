@@ -4,6 +4,8 @@
 
 {% block sidebar_contacts 'current' %}
 
+{% set fakeEmailSuffix = constant('App\\Entity\\Community\\Contact::NO_EMAIL_SUFFIX') %}
+
 {% block content %}
     <div class="world-box">
         <div class="world-box-title border-0">
@@ -155,6 +157,7 @@
                 'socials': 'crm.profile.socials'|trans({}, 'global'),
                 'projects': 'crm.profile.projects'|trans({}, 'global'),
             },
+            'fakeEmailSuffix': fakeEmailSuffix,
         }) }}>
             <div class="py-5 text-center">
                 <div class="h2 my-5">

@@ -29,6 +29,10 @@ use Symfony\Component\Uid\Uuid;
 
 use function Symfony\Component\String\u;
 
+if (class_exists(__NAMESPACE__.'\Contact', false)) {
+    throw new \RuntimeException('Contact already declared', 1);
+}
+
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\Table('community_contacts', uniqueConstraints: [
     new ORM\UniqueConstraint('community_contacts_email_organization_unique_idx', ['email', 'organization_id']),
@@ -47,6 +51,8 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
         'non_binary',
         'other',
     ];
+
+    public const NO_EMAIL_SUFFIX = '@noemail.citipo.com';
 
     #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -267,7 +273,7 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
 
     public function __toString(): string
     {
-        return trim($this->profileFirstName.' '.$this->profileLastName) ?: $this->email ?: $this->contactPhone ?: '(-)';
+        return trim($this->profileFirstName.' '.$this->profileLastName) ?: $this->getDisplayEmail() ?: $this->contactPhone ?: '(-)';
     }
 
     public function __serialize(): array
@@ -284,6 +290,21 @@ class Contact implements UserInterface, PasswordAuthenticatedUserInterface, Sear
     public static function normalizeEmail(?string $email): ?string
     {
         return u(trim($email ?: ''))->lower()->toString() ?: null;
+    }
+
+    public static function isFakeEmail(?string $email): bool
+    {
+        return (bool) ($email && str_contains($email, self::NO_EMAIL_SUFFIX));
+    }
+
+    public function hasRealEmail(): bool
+    {
+        return null !== $this->email && !self::isFakeEmail($this->email);
+    }
+
+    public function getDisplayEmail(): ?string
+    {
+        return $this->hasRealEmail() ? $this->email : null;
     }
 
     /*

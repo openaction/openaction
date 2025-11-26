@@ -197,6 +197,23 @@ class ContactViewBuilderTest extends KernelTestCase
         );
     }
 
+    public function testExcludeFakeEmailsAddsFilter(): void
+    {
+        self::bootKernel();
+
+        $queryBuilder = $this->createConfiguredBuilder(
+            static fn (
+                ContactViewBuilder $builder,
+                Organization $orga,
+                Project $localProject,
+                Project $thematicProject,
+                array $tagsRegistry,
+            ) => $builder->inOrganization($orga)->excludeFakeEmails()
+        )->createQueryBuilder();
+
+        $this->assertStringContainsString('LOWER(sc.email) NOT LIKE', $queryBuilder->getDQL());
+    }
+
     private function createConfiguredBuilder(callable $configurator): ContactViewBuilder
     {
         $orga = self::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');

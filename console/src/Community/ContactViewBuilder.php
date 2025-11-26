@@ -2,6 +2,7 @@
 
 namespace App\Community;
 
+use App\Entity\Community\Contact;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Community\PhoningCampaign;
 use App\Entity\Community\TextingCampaign;
@@ -34,6 +35,7 @@ class ContactViewBuilder
     private bool $onlyNewsletter = false;
     private bool $onlySms = false;
     private bool $onlyCalls = false;
+    private bool $excludeFakeEmails = false;
     private ?OrderBy $orderBy = null;
     private ?int $offset = null;
     private ?int $limit = null;
@@ -48,6 +50,7 @@ class ContactViewBuilder
     {
         return $this
             ->onlyNewsletterSubscribers()
+            ->excludeFakeEmails()
             ->inProject($campaign->getProject())
             ->onlyMembers($campaign->isOnlyForMembers())
             ->inAreas($campaign->getAreasFilterIds())
@@ -168,6 +171,14 @@ class ContactViewBuilder
     {
         $self = clone $this;
         $self->onlyCalls = $onlyCalls;
+
+        return $self;
+    }
+
+    public function excludeFakeEmails(bool $excludeFakeEmails = true): self
+    {
+        $self = clone $this;
+        $self->excludeFakeEmails = $excludeFakeEmails;
 
         return $self;
     }
@@ -331,6 +342,11 @@ class ContactViewBuilder
         // Emails
         if ($emails = array_filter(array_map('trim', array_filter($this->emailsFilter)))) {
             $filterQb->andWhere($filterQb->expr()->in('sc.email', $emails));
+        }
+
+        if ($this->excludeFakeEmails) {
+            $filterQb->andWhere('(sc.email IS NULL OR LOWER(sc.email) NOT LIKE :fakeEmailSuffix)');
+            $qb->setParameter('fakeEmailSuffix', '%'.Contact::NO_EMAIL_SUFFIX.'%');
         }
 
         // Having a phone

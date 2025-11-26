@@ -5,6 +5,7 @@
 {% block sidebar_contacts 'current' %}
 
 {% block content %}
+    {% set contactDisplayEmail = contact.displayEmail %}
     <div class="world-box">
         <div class="world-box-title">
             <div class="row align-items-center">
@@ -30,7 +31,7 @@
                         <a href="{{ csrf_path('console_organization_community_contacts_delete', {'organizationUuid': current_organization.uuid, 'uuid': contact.uuid}) }}"
                            class="btn btn-secondary text-danger mr-3"
                            data-controller="delete"
-                           data-message="{{ 'contacts.edit.delete_message'|trans({'%email%': contact.email}, 'organization_community') }}"
+                           data-message="{{ 'contacts.edit.delete_message'|trans({'%email%': contactDisplayEmail ?? (contact.uuid|toBase62)}, 'organization_community') }}"
                            data-target-url="{{ path('console_organization_community_contacts', {'organizationUuid': current_organization.uuid}) }}">
                             <i class="fad fa-trash mr-1"></i>
                             {{ 'contacts.view.delete'|trans({}, 'organization_community') }}
@@ -192,16 +193,18 @@
                             </div>
                         {% endif %}
 
-                        <div class="mt-4 mb-2">
-                            <div>
-                                <small class="text-muted">
-                                    {{ 'contacts.view.profile.email'|trans({}, 'organization_community') }}
-                                </small>
+                        {% if contactDisplayEmail %}
+                            <div class="mt-4 mb-2">
+                                <div>
+                                    <small class="text-muted">
+                                        {{ 'contacts.view.profile.email'|trans({}, 'organization_community') }}
+                                    </small>
+                                </div>
+                                <a href="mailto:{{ contactDisplayEmail }}" target="_blank">
+                                    {{ contactDisplayEmail }}
+                                </a>
                             </div>
-                            <a href="mailto:{{ contact.email }}" target="_blank">
-                                {{ contact.email }}
-                            </a>
-                        </div>
+                        {% endif %}
 
                         {% if contact.contactAdditionalEmails %}
                             <div class="mb-2">
