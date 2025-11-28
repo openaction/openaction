@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Economica';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/economica/v17/Qw3ZZQZaHCLgIWa29ZBbM8IE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Economica';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/economica/v17/Qw3EZQZaHCLgIWa29ZBbM_q4D3x9.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/economica/v17/Qw3fZQZaHCLgIWa29ZBrMQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Economica';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/economica/v17/Qw3aZQZaHCLgIWa29ZBTjeckCg.ttf) format('truetype');
+}

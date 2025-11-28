@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/vollkorn/v30/0ybuGDoxxrvAnPhYGxksckM2WMCpRjDj-DJGWmmZ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/vollkorn/v30/0ybuGDoxxrvAnPhYGxksckM2WMCpRjDj-DKhXWmZ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/vollkorn/v30/0ybgGDoxxrvAnPhYGzMlQLzuMasz6Df2MHGuGQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/vollkorn/v30/0ybgGDoxxrvAnPhYGzMlQLzuMasz6Df213auGQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/vollkorn/v30/0ybgGDoxxrvAnPhYGzMlQLzuMasz6Df2sHauGQ.ttf) format('truetype');
+}

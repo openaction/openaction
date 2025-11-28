@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Georama';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/georama/v15/MCo_zAn438bIEyxFVaIC0ZMQ72G6xnvmodYVPOBB5nuzMdWs0rvF2gEP.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Georama';
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/georama/v15/MCo_zAn438bIEyxFVaIC0ZMQ72G6xnvmodYVPOBB5nuzMdWs0rsi3QEP.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Georama';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/georama/v15/MCo5zAn438bIEyxFf6swMnNpvPcUwW4u4yRcDh-ZjxApn9K5GvgtmQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Georama';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/georama/v15/MCo5zAn438bIEyxFf6swMnNpvPcUwW4u4yRcDh-ZjxApn9K5_f8tmQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Georama';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(files/s/georama/v15/MCo5zAn438bIEyxFf6swMnNpvPcUwW4u4yRcDh-ZjxApn9K5mv8tmQ.ttf) format('truetype');
+}

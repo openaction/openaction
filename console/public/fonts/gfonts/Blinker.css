@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Blinker';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/blinker/v14/cIf9MaFatEE-VTaPxCk.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Blinker';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/blinker/v14/cIf4MaFatEE-VTaP_JWERGE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Blinker';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/blinker/v14/cIf4MaFatEE-VTaP_ImHRGE.ttf) format('truetype');
+}

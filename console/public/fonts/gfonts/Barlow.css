@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/barlow/v13/7cHrv4kjgoGqM7E_Ccs8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/barlow/v13/7cHsv4kjgoGqM7E_CfOA5Vop.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/barlow/v13/7cHpv4kjgoGqM7EPCw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/barlow/v13/7cHqv4kjgoGqM7E3t-4c4A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/barlow/v13/7cHqv4kjgoGqM7E3q-0c4A.ttf) format('truetype');
+}

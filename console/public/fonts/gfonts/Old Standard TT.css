@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/oldstandardtt/v22/MwQsbh3o1vLImiwAVvYawgcf2eVer1q9.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/oldstandardtt/v22/MwQubh3o1vLImiwAVvYawgcf2eVurQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/oldstandardtt/v22/MwQrbh3o1vLImiwAVvYawgcf2eVWEX-dTA.ttf) format('truetype');
+}

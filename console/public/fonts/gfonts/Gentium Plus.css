@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/gentiumplus/v2/IurD6Ytw-oSPaZ00r2bNe8VZjpFI.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/gentiumplus/v2/IurA6Ytw-oSPaZ00r2bNe8VZjqn05Uw1.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/gentiumplus/v2/Iurd6Ytw-oSPaZ00r2bNe8VpjA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gentium Plus';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/gentiumplus/v2/IurC6Ytw-oSPaZ00r2bNe8VRMLRo4A.ttf) format('truetype');
+}

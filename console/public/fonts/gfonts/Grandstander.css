@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Grandstander';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/grandstander/v20/ga6ZawtA-GpSsTWrnNHPCSImbyq1fDGZrzwXGpf95zvcsg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Grandstander';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/grandstander/v20/ga6ZawtA-GpSsTWrnNHPCSImbyq1fDGZrzwXGpf9ADzcsg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Grandstander';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/grandstander/v20/ga6fawtA-GpSsTWrnNHPCSIMZhhKpFjyNZIQD1--D3g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Grandstander';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/grandstander/v20/ga6fawtA-GpSsTWrnNHPCSIMZhhKpFjyNZIQD7i5D3g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Grandstander';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/grandstander/v20/ga6fawtA-GpSsTWrnNHPCSIMZhhKpFjyNZIQD9-5D3g.ttf) format('truetype');
+}

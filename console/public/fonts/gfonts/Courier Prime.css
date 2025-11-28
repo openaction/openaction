@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/courierprime/v11/u-4n0q2lgwslOqpF_6gQ8kELawRpXw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/courierprime/v11/u-4i0q2lgwslOqpF_6gQ8kELawRR4-Lfrg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/courierprime/v11/u-450q2lgwslOqpF_6gQ8kELWwY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/courierprime/v11/u-4k0q2lgwslOqpF_6gQ8kELY7pMf-c.ttf) format('truetype');
+}

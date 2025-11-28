@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Aleo';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/aleo/v16/c4m81nF8G8_swAjT3z2dShrG-7e_WYu-Foo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Aleo';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/aleo/v16/c4m81nF8G8_swAjT3z2dShrG-7e_WWy5Foo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Aleo';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/aleo/v16/c4m61nF8G8_s6gHhIOX0IYBo_KJ3GmP9.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Aleo';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/aleo/v16/c4m61nF8G8_s6gHhIOX0IYBo_KKQHWP9.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Aleo';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/aleo/v16/c4m61nF8G8_s6gHhIOX0IYBo_KL3HWP9.ttf) format('truetype');
+}

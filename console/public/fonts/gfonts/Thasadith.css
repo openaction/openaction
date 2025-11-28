@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Thasadith';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/thasadith/v13/mtG-4_1TIqPYrd_f5R1oskMQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Thasadith';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/thasadith/v13/mtGj4_1TIqPYrd_f5R1osnus3QS2.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Thasadith';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/thasadith/v13/mtG44_1TIqPYrd_f5R1YsA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Thasadith';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/thasadith/v13/mtG94_1TIqPYrd_f5R1gDGYw2A.ttf) format('truetype');
+}

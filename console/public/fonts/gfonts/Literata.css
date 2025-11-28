@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Literata';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/literata/v40/or3NQ6P12-iJxAIgLYT1PLs1Zd0nfUwAbeGVKoRYzNiCp1OUedn8_7XWSQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Literata';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/literata/v40/or3NQ6P12-iJxAIgLYT1PLs1Zd0nfUwAbeGVKoRYzNiCp1OUedn8GLLWSQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Literata';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/literata/v40/or3PQ6P12-iJxAIgLa78DkrbXsDgk0oVDaDPYLanFLHpPf2TbBG_F_Y.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Literata';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/literata/v40/or3PQ6P12-iJxAIgLa78DkrbXsDgk0oVDaDPYLanFLHpPf2TbPa4F_Y.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Literata';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/literata/v40/or3PQ6P12-iJxAIgLa78DkrbXsDgk0oVDaDPYLanFLHpPf2TbJG4F_Y.ttf) format('truetype');
+}

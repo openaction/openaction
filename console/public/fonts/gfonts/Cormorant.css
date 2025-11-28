@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/cormorant/v24/H4c0BXOCl9bbnla_nHIq6oGzilJm9otsA9kQq_dq6A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/cormorant/v24/H4c0BXOCl9bbnla_nHIq6oGzilJm9otsA9kQTPBq6A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/cormorant/v24/H4c2BXOCl9bbnla_nHIA47NMUjsNbCVrFhFTQ7Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/cormorant/v24/H4c2BXOCl9bbnla_nHIA47NMUjsNbCVrFvZUQ7Q.ttf) format('truetype');
+}

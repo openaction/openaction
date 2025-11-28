@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Charis SIL';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/charissil/v2/oPWI_kV3l-s-Q8govXvKnPjsZg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Charis SIL';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/charissil/v2/oPWX_kV3l-s-Q8govXvKnPjU2jtXRg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Charis SIL';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/charissil/v2/oPWK_kV3l-s-Q8govXvKrPo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Charis SIL';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/charissil/v2/oPWJ_kV3l-s-Q8govXvKlEbJRj4.ttf) format('truetype');
+}

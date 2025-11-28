@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Kanit';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/kanit/v17/nKKX-Go6G5tXcraQGwU.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/kanit/v17/nKKS-Go6G5tXcraQI7mlVaQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/kanit/v17/nKKZ-Go6G5tXcoaS.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/kanit/v17/nKKU-Go6G5tXcr4uPiWg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/kanit/v17/nKKU-Go6G5tXcr4yPSWg.ttf) format('truetype');
+}

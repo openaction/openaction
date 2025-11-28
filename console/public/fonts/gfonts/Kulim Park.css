@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Kulim Park';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/kulimpark/v15/fdN59secq3hflz1Uu3IwhFws4Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kulim Park';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/kulimpark/v15/fdNm9secq3hflz1Uu3IwhFwUXatQYQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kulim Park';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/kulimpark/v15/fdN79secq3hflz1Uu3IwtF4.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kulim Park';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/kulimpark/v15/fdN49secq3hflz1Uu3IwjOIJwa4.ttf) format('truetype');
+}

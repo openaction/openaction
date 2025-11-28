@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Averia Libre';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/averialibre/v16/2V0EKIcMGZEnV6xygz7eNjESAKnN.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Averia Libre';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/averialibre/v16/2V0HKIcMGZEnV6xygz7eNjESAJFxakTp.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Averia Libre';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/averialibre/v16/2V0aKIcMGZEnV6xygz7eNjEiAg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Averia Libre';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/averialibre/v16/2V0FKIcMGZEnV6xygz7eNjEavoztbw.ttf) format('truetype');
+}

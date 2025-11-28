@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Epilogue';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/epilogue/v20/O4ZCFGj5hxF0EhjimlIhqAYaY7EBcUSC-HAKT5_R.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Epilogue';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/epilogue/v20/O4ZCFGj5hxF0EhjimlIhqAYaY7EBcUSC-HDtSJ_R.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Epilogue';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/epilogue/v20/O4ZMFGj5hxF0EhjimngomvnCCtqb30OXMDPiDA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Epilogue';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/epilogue/v20/O4ZMFGj5hxF0EhjimngomvnCCtqb30OX1zTiDA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Epilogue';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/epilogue/v20/O4ZMFGj5hxF0EhjimngomvnCCtqb30OXsDTiDA.ttf) format('truetype');
+}

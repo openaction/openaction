@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Prompt';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/prompt/v12/-W_9XJnvUD7dzB2KZdoY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Prompt';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/prompt/v12/-W_6XJnvUD7dzB2KZeKka2Mr.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/prompt/v12/-W__XJnvUD7dzB26Zw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/prompt/v12/-W_8XJnvUD7dzB2C2_84bg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/prompt/v12/-W_8XJnvUD7dzB2Cx_w4bg.ttf) format('truetype');
+}

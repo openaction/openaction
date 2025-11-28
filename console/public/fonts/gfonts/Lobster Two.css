@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/lobstertwo/v22/BngOUXZGTXPUvIoyV6yN5-fI5qA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/lobstertwo/v22/BngTUXZGTXPUvIoyV6yN5-fI3hyEwRg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/lobstertwo/v22/BngMUXZGTXPUvIoyV6yN59fK.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/lobstertwo/v22/BngRUXZGTXPUvIoyV6yN5-92w4CB.ttf) format('truetype');
+}

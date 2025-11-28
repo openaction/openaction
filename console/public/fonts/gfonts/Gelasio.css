@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Gelasio';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/gelasio/v14/cIfsMaFfvUQxTTqS9Cu7b2nySBfeR6rA1M9v8zQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gelasio';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/gelasio/v14/cIfsMaFfvUQxTTqS9Cu7b2nySBfeR6rA1Cho8zQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gelasio';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/gelasio/v14/cIfiMaFfvUQxTTqS3iKJkLGbI41wQL8Ilycs.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gelasio';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/gelasio/v14/cIfiMaFfvUQxTTqS3iKJkLGbI41wQL_vkCcs.ttf) format('truetype');
+}

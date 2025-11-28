@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Noto Sans Display';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/notosansdisplay/v30/RLpZK4fy6r6tOBEJg0IAKzqdFZVZxrktbnDB5UzBIup9PwAcHtEsOFNBZqyu6r9JvXKa3g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Sans Display';
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/notosansdisplay/v30/RLpZK4fy6r6tOBEJg0IAKzqdFZVZxrktbnDB5UzBIup9PwAcHtEsOFNBZqyu6r9JWnWa3g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Sans Display';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/notosansdisplay/v30/RLpbK4fy6r6tOBEJg0IAKzqdFZVZxpMkXJMhnB9XjO1o90LuV-PT4Doq_AKp_3cKVTE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Sans Display';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/notosansdisplay/v30/RLpbK4fy6r6tOBEJg0IAKzqdFZVZxpMkXJMhnB9XjO1o90LuV-PT4Doq_AKp_5ANVTE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Sans Display';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(files/s/notosansdisplay/v30/RLpbK4fy6r6tOBEJg0IAKzqdFZVZxpMkXJMhnB9XjO1o90LuV-PT4Doq_AKp__cNVTE.ttf) format('truetype');
+}

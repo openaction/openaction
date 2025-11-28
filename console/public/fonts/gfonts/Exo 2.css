@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Exo 2';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/exo2/v26/7cH3v4okm5zmbtYtMeA0FKq0Jjg2drF0fdC6.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/exo2/v26/7cH3v4okm5zmbtYtMeA0FKq0Jjg2drGTetC6.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/exo2/v26/7cH1v4okm5zmbvwkAx_sfcEuiD8jvvKcPg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/exo2/v26/7cH1v4okm5zmbvwkAx_sfcEuiD8jWfWcPg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/exo2/v26/7cH1v4okm5zmbvwkAx_sfcEuiD8jPvWcPg.ttf) format('truetype');
+}

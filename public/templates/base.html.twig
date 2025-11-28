@@ -13,8 +13,9 @@
 
     <title>{% block title %}{% block page_title '' %} | {{ current_project.metaTitle|default(current_project.name) }}{% endblock %}</title>
 
+    {% set fonts_base = console_endpoint|trim('/') ~ '/fonts/gfonts/' %}
     {% for font in [current_project.fontTitle, current_project.fontText] %}
-        <link href="https://fonts.citipo.com/css2?family={{ font|url_encode }}:ital,wght@0,400;0,700;0,800;1,400;1,700" rel="stylesheet" crossorigin="anonymous" />
+        <link href="{{ fonts_base ~ font|url_encode ~ '.css' }}" rel="stylesheet" crossorigin="anonymous" />
     {% endfor %}
 
     <link rel="stylesheet" href="{{ current_project.links.stylesheet }}" />

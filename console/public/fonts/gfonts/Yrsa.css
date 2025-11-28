@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Yrsa';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/yrsa/v25/wlptgwnQFlxs1QnF94zlCfv0bz1WCzsW_LA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Yrsa';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/yrsa/v25/wlptgwnQFlxs1QnF94zlCfv0bz1WC9wR_LA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Yrsa';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/yrsa/v25/wlprgwnQFlxs_wD3CFSMYmFaaCieSNNV.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Yrsa';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/yrsa/v25/wlprgwnQFlxs_wD3CFSMYmFaaCh5T9NV.ttf) format('truetype');
+}

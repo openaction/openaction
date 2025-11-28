@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/jost/v20/92zJtBhPNqw73oHH7BbQp4-B6XlrZu0FNI0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/jost/v20/92zJtBhPNqw73oHH7BbQp4-B6XlrZgoCNI0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/jost/v20/92zPtBhPNqw79Ij1E865zBUv7myjJQVG.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/jost/v20/92zPtBhPNqw79Ij1E865zBUv7mxEIgVG.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/jost/v20/92zPtBhPNqw79Ij1E865zBUv7mwjIgVG.ttf) format('truetype');
+}

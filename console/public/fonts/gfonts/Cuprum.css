@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Cuprum';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/cuprum/v29/dg47_pLmvrkcOkBNI_FMh0j91rkhli25jn_YIg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cuprum';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/cuprum/v29/dg47_pLmvrkcOkBNI_FMh0j91rkhli25aXjYIg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cuprum';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/cuprum/v29/dg45_pLmvrkcOkBnKsOzXyGWTBcmg-X6Zjw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cuprum';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/cuprum/v29/dg45_pLmvrkcOkBnKsOzXyGWTBcmgwL9Zjw.ttf) format('truetype');
+}

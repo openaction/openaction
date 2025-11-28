@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Tourney';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/tourney/v16/AlZc_ztDtYzv1tzq_Q47flUUvI2wpXz29ilymEMLMNc3XHnT8UKaJjBx.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tourney';
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/tourney/v16/AlZc_ztDtYzv1tzq_Q47flUUvI2wpXz29ilymEMLMNc3XHnT8UJ9ITBx.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tourney';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/tourney/v16/AlZa_ztDtYzv1tzq1wcJnbVt7xseomk-tNs7qrzTWbyt8n7GOQFyZQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tourney';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/tourney/v16/AlZa_ztDtYzv1tzq1wcJnbVt7xseomk-tNs7qrzTWbyt8n7G3gZyZQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tourney';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(files/s/tourney/v16/AlZa_ztDtYzv1tzq1wcJnbVt7xseomk-tNs7qrzTWbyt8n7GuQZyZQ.ttf) format('truetype');
+}

@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Anybody';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/anybody/v13/VuJddNvK2Ib2ppdWSKTHN4GOiYrmuF7VpPiuQ9r6sTRMJGkcHyMn7c_H.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Anybody';
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/anybody/v13/VuJddNvK2Ib2ppdWSKTHN4GOiYrmuF7VpPiuQ9r6sTRMJGkcHyPA6s_H.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Anybody';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/anybody/v13/VuJbdNvK2Ib2ppdWYq311GH32hxIv0sd5grncSUi2F_Wim4J12DPrg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Anybody';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/anybody/v13/VuJbdNvK2Ib2ppdWYq311GH32hxIv0sd5grncSUi2F_Wim4JMGfPrg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Anybody';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: normal;
+  src: url(files/s/anybody/v13/VuJbdNvK2Ib2ppdWYq311GH32hxIv0sd5grncSUi2F_Wim4JV2fPrg.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Neuton';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/neuton/v24/UMBRrPtMoH62xUZCyog_.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Neuton';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/neuton/v24/UMBTrPtMoH62xUZyyA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Neuton';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/neuton/v24/UMBQrPtMoH62xUZKdK0feg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Neuton';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/neuton/v24/UMBQrPtMoH62xUZKaK4feg.ttf) format('truetype');
+}

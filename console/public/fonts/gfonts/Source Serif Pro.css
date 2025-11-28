@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/sourceserifpro/v18/neIWzD-0qpwxpaWvjeD0X88SAOeauXE-pQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/sourceserifpro/v18/neIVzD-0qpwxpaWvjeD0X88SAOeauXEGGS6qwQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/sourceserifpro/v18/neIQzD-0qpwxpaWvjeD0X88SAOeaiXM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/sourceserifpro/v18/neIXzD-0qpwxpaWvjeD0X88SAOeasc8bhSs.ttf) format('truetype');
+}

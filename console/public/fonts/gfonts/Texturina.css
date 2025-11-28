@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Texturina';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/texturina/v32/c4mO1nxpEtL3pXiAulR5mL129FhZmLj7I4oiSUJyfYDu7sB5zHJQWR1j0Z4.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Texturina';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/texturina/v32/c4mO1nxpEtL3pXiAulR5mL129FhZmLj7I4oiSUJyfYDu7sB5zHJQWfpk0Z4.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Texturina';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/texturina/v32/c4mM1nxpEtL3pXiAulRTkY-HGmNEX1b9NspjMwhAgliHhVrXy2eYGvUg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Texturina';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/texturina/v32/c4mM1nxpEtL3pXiAulRTkY-HGmNEX1b9NspjMwhAgliHhVrXy2d_HfUg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Texturina';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/texturina/v32/c4mM1nxpEtL3pXiAulRTkY-HGmNEX1b9NspjMwhAgliHhVrXy2cYHfUg.ttf) format('truetype');
+}

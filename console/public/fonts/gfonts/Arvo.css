@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Arvo';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/arvo/v23/tDbN2oWUg0MKqSIQ6A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arvo';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/arvo/v23/tDbO2oWUg0MKqSIoVLHK9g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arvo';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/arvo/v23/tDbD2oWUg0MKmSA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arvo';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/arvo/v23/tDbM2oWUg0MKoZw1yLQ.ttf) format('truetype');
+}

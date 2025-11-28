@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Piazzolla';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/piazzolla/v40/N0b72SlTPu5rIkWIZjVgI-TckS03oGpPETyEJ88Rbvi0_TzOzKcQhZqx3gU.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Piazzolla';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/piazzolla/v40/N0b72SlTPu5rIkWIZjVgI-TckS03oGpPETyEJ88Rbvi0_TzOzKcQhX223gU.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Piazzolla';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/piazzolla/v40/N0b52SlTPu5rIkWIZjVKKtYtfxYqZ4RJBFzFfYUjkSDdlqZgy7LYxnLy.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Piazzolla';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/piazzolla/v40/N0b52SlTPu5rIkWIZjVKKtYtfxYqZ4RJBFzFfYUjkSDdlqZgy7I_wXLy.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Piazzolla';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/piazzolla/v40/N0b52SlTPu5rIkWIZjVKKtYtfxYqZ4RJBFzFfYUjkSDdlqZgy7JYwXLy.ttf) format('truetype');
+}

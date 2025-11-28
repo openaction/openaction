@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/sansita/v12/QldMNTRRphEb_-V7LBuxSQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sansita';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/sansita/v12/QldJNTRRphEb_-V7LBuJ9Xx-xg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/sansita/v12/QldONTRRphEb_-V7HBk.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/sansita/v12/QldLNTRRphEb_-V7JKWUaXk.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sansita';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/sansita/v12/QldLNTRRphEb_-V7JLmXaXk.ttf) format('truetype');
+}

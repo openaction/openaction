@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Zilla Slab';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/zillaslab/v12/dFa4ZfeM_74wlPZtksIFaj86-A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/zillaslab/v12/dFanZfeM_74wlPZtksIFaj8CRHGpXg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/zillaslab/v12/dFa6ZfeM_74wlPZtksIFWj0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/zillaslab/v12/dFa5ZfeM_74wlPZtksIFYoEf2HQ.ttf) format('truetype');
+}

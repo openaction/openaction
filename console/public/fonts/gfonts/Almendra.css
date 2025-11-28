@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Almendra';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/almendra/v28/H4ciBXKAlMnTn0CskxY4yLs.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Almendra';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/almendra/v28/H4chBXKAlMnTn0CskxY48Ae9oqY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Almendra';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/almendra/v28/H4ckBXKAlMnTn0CskyY6.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Almendra';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/almendra/v28/H4cjBXKAlMnTn0Cskx6G7Zu4.ttf) format('truetype');
+}

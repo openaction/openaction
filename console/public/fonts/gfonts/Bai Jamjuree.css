@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Bai Jamjuree';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/baijamjuree/v13/LDIrapSCOBt_aeQQ7ftydoa8W8LO.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bai Jamjuree';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/baijamjuree/v13/LDIoapSCOBt_aeQQ7ftydoa8W_pylpox.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/baijamjuree/v13/LDI1apSCOBt_aeQQ7ftydoaMWQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/baijamjuree/v13/LDIqapSCOBt_aeQQ7ftydoa05efukw.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Puritan';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/puritan/v25/845aNMgkAJ2VTtIoxJj6QQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Puritan';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/puritan/v25/845fNMgkAJ2VTtIoxJjC_dup_w.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Puritan';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/puritan/v25/845YNMgkAJ2VTtIo9Jo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Puritan';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/puritan/v25/845dNMgkAJ2VTtIozCbfYd4.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'KoHo';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/koho/v18/K2FwfZ5fmddNNisUeA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'KoHo';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/koho/v18/K2FzfZ5fmddNNissxJvzIg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'KoHo';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/koho/v18/K2F-fZ5fmddNBik.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'KoHo';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/koho/v18/K2FxfZ5fmddNPpUxWJ4.ttf) format('truetype');
+}

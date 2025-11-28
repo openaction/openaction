@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Caladea';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/caladea/v8/kJExBugZ7AAjhybUvR19_w.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Caladea';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/caladea/v8/kJE0BugZ7AAjhybUvR1FQ98SrA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Caladea';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/caladea/v8/kJEzBugZ7AAjhybUjR8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Caladea';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/caladea/v8/kJE2BugZ7AAjhybUtaNY39o.ttf) format('truetype');
+}

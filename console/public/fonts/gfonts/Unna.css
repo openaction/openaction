@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Unna';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/unna/v25/AYCKpXzofN0NOpoLkA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Unna';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/unna/v25/AYCJpXzofN0NOpozLGzjQA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Unna';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/unna/v25/AYCEpXzofN0NCpg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Unna';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/unna/v25/AYCLpXzofN0NMiQusGk.ttf) format('truetype');
+}

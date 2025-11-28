@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Kufam';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/kufam/v26/C8c84cY7pG7w_q6APDMZN6kY3hbiXurT6gqN.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kufam';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/kufam/v26/C8c84cY7pG7w_q6APDMZN6kY3hbiXuo07QqN.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kufam';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/kufam/v26/C8c-4cY7pG7w_oSJDszBXsKCcBH3lqk7qQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kufam';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/kufam/v26/C8c-4cY7pG7w_oSJDszBXsKCcBH3ca47qQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kufam';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/kufam/v26/C8c-4cY7pG7w_oSJDszBXsKCcBH3Fq47qQ.ttf) format('truetype');
+}

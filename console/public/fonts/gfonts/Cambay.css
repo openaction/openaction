@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Cambay';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/cambay/v14/SLXLc1rY6H0_ZDs2bL6M.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cambay';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/cambay/v14/SLXMc1rY6H0_ZDs2bIYwwvN0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cambay';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/cambay/v14/SLXJc1rY6H0_ZDsGbg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cambay';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/cambay/v14/SLXKc1rY6H0_ZDs-0pusxw.ttf) format('truetype');
+}

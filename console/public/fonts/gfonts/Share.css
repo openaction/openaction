@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/share/v20/i7dKIFliZjKNF6VPFr4.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Share';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/share/v20/i7dPIFliZjKNF6VPLgK7UEY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/share/v20/i7dEIFliZjKNF5VN.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Share';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/share/v20/i7dJIFliZjKNF63xM56-.ttf) format('truetype');
+}

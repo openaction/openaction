@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Tinos';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/tinos/v25/buE2poGnedXvwjX-fmE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tinos';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/tinos/v25/buEzpoGnedXvwjX-Rt1s0Co.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tinos';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/tinos/v25/buE4poGnedXvwgX8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tinos';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/tinos/v25/buE1poGnedXvwj1AW0Fp.ttf) format('truetype');
+}

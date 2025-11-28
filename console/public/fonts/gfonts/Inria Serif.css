@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Inria Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/inriaserif/v18/fC1nPYxPY3rXxEndZJAzN3Sudyg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Inria Serif';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/inriaserif/v18/fC16PYxPY3rXxEndZJAzN3SuT5TAjlg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Inria Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/inriaserif/v18/fC1lPYxPY3rXxEndZJAzN0Ss.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Inria Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/inriaserif/v18/fC14PYxPY3rXxEndZJAzN3wQUgjF.ttf) format('truetype');
+}

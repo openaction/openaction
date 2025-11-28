@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Petrona';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/petrona/v36/mtGr4_NXL7bZo9XXgXdCu2vkCLkNEVtF8uwCFYo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Petrona';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/petrona/v36/mtGr4_NXL7bZo9XXgXdCu2vkCLkNEVtF8gsFFYo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Petrona';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/petrona/v36/mtGl4_NXL7bZo9XXq35wRLONYyOjFk6NsQRB.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Petrona';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/petrona/v36/mtGl4_NXL7bZo9XXq35wRLONYyOjFk5qtgRB.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Petrona';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/petrona/v36/mtGl4_NXL7bZo9XXq35wRLONYyOjFk4NtgRB.ttf) format('truetype');
+}

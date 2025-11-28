@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Nobile';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/nobile/v19/m8JRjflSeaOVl1iGXK3T.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nobile';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/nobile/v19/m8JWjflSeaOVl1iGXJVvdZRF.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nobile';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/nobile/v19/m8JTjflSeaOVl1i2Xg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nobile';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/nobile/v19/m8JQjflSeaOVl1iO4ojzcA.ttf) format('truetype');
+}

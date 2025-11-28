@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Rasa';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/rasa/v27/xn78YHIn1mWmfqBOmQhln0Bne8uOZoZ2d88.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rasa';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/rasa/v27/xn78YHIn1mWmfqBOmQhln0Bne8uOZmFxd88.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rasa';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/rasa/v27/xn76YHIn1mWmVKl8ZtAM9NrJfN5GJW41.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rasa';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/rasa/v27/xn76YHIn1mWmVKl8ZtAM9NrJfN6hIm41.ttf) format('truetype');
+}

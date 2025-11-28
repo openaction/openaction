@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Judson';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/judson/v20/FeVTS0Fbvbc14VxhDblw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Judson';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/judson/v20/FeVRS0Fbvbc14VxRDw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Judson';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/judson/v20/FeVSS0Fbvbc14Vxps5xQ3Q.ttf) format('truetype');
+}

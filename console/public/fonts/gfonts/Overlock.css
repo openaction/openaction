@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Overlock';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/overlock/v19/Z9XTDmdMWRiN1_T9Z7Tc6Ok.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Overlock';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/overlock/v19/Z9XQDmdMWRiN1_T9Z7Tc0FWJtrk.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Overlock';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/overlock/v19/Z9XVDmdMWRiN1_T9Z4Te.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Overlock';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/overlock/v19/Z9XSDmdMWRiN1_T9Z7xizcmM.ttf) format('truetype');
+}

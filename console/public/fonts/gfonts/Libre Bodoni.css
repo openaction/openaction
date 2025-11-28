@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Libre Bodoni';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/librebodoni/v9/_Xm4-H45qDWDYULr5OfyZud9xBKfuwNnnsVZ_UUcKS_TdA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Libre Bodoni';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/librebodoni/v9/_Xm4-H45qDWDYULr5OfyZud9xBKfuwNnnsVZ_UUczijTdA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Libre Bodoni';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/librebodoni/v9/_Xm--H45qDWDYULr5OfyZudXzSBgY2oMBGte6I1fwWw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Libre Bodoni';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/librebodoni/v9/_Xm--H45qDWDYULr5OfyZudXzSBgY2oMBGte6GpYwWw.ttf) format('truetype');
+}

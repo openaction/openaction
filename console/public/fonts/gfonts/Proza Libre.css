@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Proza Libre';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/prozalibre/v9/LYjEdGHgj0k1DIQRyUEyyEotdN8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Proza Libre';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/prozalibre/v9/LYjZdGHgj0k1DIQRyUEyyEotTGPaeJQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Proza Libre';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/prozalibre/v9/LYjGdGHgj0k1DIQRyUEyyHov.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Proza Libre';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/prozalibre/v9/LYjbdGHgj0k1DIQRyUEyyEKTUf_f.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Proza Libre';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/prozalibre/v9/LYjbdGHgj0k1DIQRyUEyyEKPUv_f.ttf) format('truetype');
+}
