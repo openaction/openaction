@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Mali';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/mali/v13/N0bU2SRONuN4SCjECg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mali';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/mali/v13/N0bX2SRONuN4SCj8tlFQIQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mali';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/mali/v13/N0ba2SRONuN4eCo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mali';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/mali/v13/N0bV2SRONuN4QJbhKlQ.ttf) format('truetype');
+}

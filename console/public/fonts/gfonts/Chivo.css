@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Chivo';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/chivo/v21/va9Z4kzIxd1KFrBtW-13ZHhT-jDqdFwG1GrW.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Chivo';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/chivo/v21/va9Z4kzIxd1KFrBtW-13ZHhT-jDqdFzh02rW.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Chivo';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/chivo/v21/va9b4kzIxd1KFppkaRKvDRPJVDf_vB_ulw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Chivo';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/chivo/v21/va9b4kzIxd1KFppkaRKvDRPJVDf_Wxjulw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Chivo';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/chivo/v21/va9b4kzIxd1KFppkaRKvDRPJVDf_PBjulw.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Bellota Text';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/bellotatext/v20/0FlNVP2VnlWS4f3-UE9hHXMx-9kK.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bellota Text';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/bellotatext/v20/0FlOVP2VnlWS4f3-UE9hHXMx--G2eA_0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bellota Text';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/bellotatext/v20/0FlTVP2VnlWS4f3-UE9hHXMB-Q.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Bellota Text';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/bellotatext/v20/0FlMVP2VnlWS4f3-UE9hHXM5RfwqfQ.ttf) format('truetype');
+}

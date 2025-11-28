@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Kodchasan';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/kodchasan/v20/1cX3aUPOAJv9sG4I-DJWjXGA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kodchasan';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/kodchasan/v20/1cXqaUPOAJv9sG4I-DJWjUk8hOCs.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kodchasan';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/kodchasan/v20/1cXxaUPOAJv9sG4I-DJmjw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Kodchasan';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/kodchasan/v20/1cX0aUPOAJv9sG4I-DJeM1SggQ.ttf) format('truetype');
+}

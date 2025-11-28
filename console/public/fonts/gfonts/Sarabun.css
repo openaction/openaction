@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Sarabun';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/sarabun/v17/DtVhJx26TKEr37c9aBBJmg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sarabun';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/sarabun/v17/DtVkJx26TKEr37c9aBBxJlks7g.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/sarabun/v17/DtVjJx26TKEr37c9WBI.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/sarabun/v17/DtVmJx26TKEr37c9YK5sulw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/sarabun/v17/DtVmJx26TKEr37c9YLJvulw.ttf) format('truetype');
+}

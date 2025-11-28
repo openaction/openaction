@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Arsenal';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/arsenal/v13/wXKpE3kQtZQ4pF3D513cBQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arsenal';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/arsenal/v13/wXKsE3kQtZQ4pF3D513kueEKnQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arsenal';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/arsenal/v13/wXKrE3kQtZQ4pF3D118.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Arsenal';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/arsenal/v13/wXKuE3kQtZQ4pF3D7-P5JeQ.ttf) format('truetype');
+}

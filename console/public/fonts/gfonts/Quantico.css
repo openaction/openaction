@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Quantico';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/quantico/v19/rax4HiSdp9cPL3KIF7xuJDg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quantico';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/quantico/v19/rax7HiSdp9cPL3KIF7xuHIRfu0o.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quantico';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/quantico/v19/rax-HiSdp9cPL3KIF4xs.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quantico';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/quantico/v19/rax5HiSdp9cPL3KIF7TQARha.ttf) format('truetype');
+}

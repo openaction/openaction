@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Genos';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/genos/v16/SlGPmQqPqpUOYRwqWzksdKTv0zsAYgsA7ki-.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Genos';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/genos/v16/SlGPmQqPqpUOYRwqWzksdKTv0zsAYgvn6Ui-.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Genos';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/genos/v16/SlGNmQqPqpUOYTYjacb0Hc91fTwVqkjorQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Genos';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/genos/v16/SlGNmQqPqpUOYTYjacb0Hc91fTwVTU_orQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Genos';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/genos/v16/SlGNmQqPqpUOYTYjacb0Hc91fTwVKk_orQ.ttf) format('truetype');
+}

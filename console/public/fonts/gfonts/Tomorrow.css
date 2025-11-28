@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Tomorrow';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/tomorrow/v19/WBLgrETNbFtZCeGqgRXXe2U.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tomorrow';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/tomorrow/v19/WBLjrETNbFtZCeGqgRXXQ9nNDMA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tomorrow';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/tomorrow/v19/WBLmrETNbFtZCeGqgSXV.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tomorrow';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/tomorrow/v19/WBLhrETNbFtZCeGqgR1pXkXI.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Tomorrow';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/tomorrow/v19/WBLhrETNbFtZCeGqgR11XUXI.ttf) format('truetype');
+}

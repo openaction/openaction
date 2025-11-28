@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Livvic';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/livvic/v15/rnCr-x1S2hzjrlfXbeM-.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Livvic';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/livvic/v15/rnCs-x1S2hzjrlfXbduCt13G.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Livvic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/livvic/v15/rnCp-x1S2hzjrlfnbw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Livvic';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/livvic/v15/rnCq-x1S2hzjrlff08Yesg.ttf) format('truetype');
+}

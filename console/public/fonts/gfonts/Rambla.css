@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Rambla';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/rambla/v14/snfps0ip98hx6mrEIbgK.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rambla';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/rambla/v14/snfus0ip98hx6mrEIYC2O_l8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rambla';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/rambla/v14/snfrs0ip98hx6mr0Iw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Rambla';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/rambla/v14/snfos0ip98hx6mrMn50qPg.ttf) format('truetype');
+}

@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Gudea';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/gudea/v16/neILzCqgsI0mp9CN_oU.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gudea';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/gudea/v16/neIFzCqgsI0mp-CP.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Gudea';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/gudea/v16/neIIzCqgsI0mp9gz26WG.ttf) format('truetype');
+}

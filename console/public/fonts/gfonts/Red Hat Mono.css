@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Red Hat Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/redhatmono/v16/jVye7nDnA2uf2zVvFAhhzEsUXfZc_vk45Kb3VJWLE_LHvQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Mono';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/redhatmono/v16/jVye7nDnA2uf2zVvFAhhzEsUXfZc_vk45Kb3VJWL9PXHvQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/redhatmono/v16/jVyY7nDnA2uf2zVvFAhhzEs-VMSjJpBTfgjwQV3I-7E.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/redhatmono/v16/jVyY7nDnA2uf2zVvFAhhzEs-VMSjJpBTfgjwQbrP-7E.ttf) format('truetype');
+}

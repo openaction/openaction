@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Shippori Mincho';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/shipporimincho/v17/VdGGAZweH5EbgHY6YExcZfDoj0BA2w.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Shippori Mincho';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/shipporimincho/v17/VdGDAZweH5EbgHY6YExcZfDoj0B4Z9Cm5A.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Shippori Mincho';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/shipporimincho/v17/VdGDAZweH5EbgHY6YExcZfDoj0B4e9Om5A.ttf) format('truetype');
+}

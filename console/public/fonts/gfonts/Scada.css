@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Scada';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/scada/v16/RLp_K5Pv5qumeVJqzTE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Scada';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/scada/v16/RLp6K5Pv5qumeVJq9Y0lT1M.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Scada';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/scada/v16/RLpxK5Pv5qumeWJo.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Scada';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/scada/v16/RLp8K5Pv5qumeVrU6BEg.ttf) format('truetype');
+}

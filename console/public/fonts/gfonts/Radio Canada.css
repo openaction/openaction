@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Radio Canada';
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/radiocanada/v26/XRX33ISXn0dBMcibU6jlAqrdcwAMBJuK9IgQn4bfnSrKcMQM2cGQ1WSE0uuLLuM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Radio Canada';
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/radiocanada/v26/XRX33ISXn0dBMcibU6jlAqrdcwAMBJuK9IgQn4bfnSrKcMQM2cGQ1WSE0gyMLuM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Radio Canada';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src: url(files/s/radiocanada/v26/XRX13ISXn0dBMcibU6jlAqr3ejLv5OLZYiYXik6db2P4jxxlsls-0nFMkQPI.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Radio Canada';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src: url(files/s/radiocanada/v26/XRX13ISXn0dBMcibU6jlAqr3ejLv5OLZYiYXik6db2P4jxxlsls-0nGrlgPI.ttf) format('truetype');
+}

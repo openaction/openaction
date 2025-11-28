@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Trochut';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/trochut/v24/CHyhV-fDDlP9bDIw1naCeQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Trochut';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/trochut/v24/CHyjV-fDDlP9bDIw5nQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Trochut';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/trochut/v24/CHymV-fDDlP9bDIw3sinWVo.ttf) format('truetype');
+}

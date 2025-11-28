@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Alegreya SC';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/alegreyasc/v26/taiMGmRtCJ62-O0HhNEa-Z6q2ZU.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Alegreya SC';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/alegreyasc/v26/taiRGmRtCJ62-O0HhNEa-Z6q4Sk0SK8.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Alegreya SC';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/alegreyasc/v26/taiOGmRtCJ62-O0HhNEa-a6o.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Alegreya SC';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/alegreyasc/v26/taiTGmRtCJ62-O0HhNEa-ZYU_LUx.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Alegreya SC';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/alegreyasc/v26/taiTGmRtCJ62-O0HhNEa-ZYI_7Ux.ttf) format('truetype');
+}

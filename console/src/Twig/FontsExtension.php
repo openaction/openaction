@@ -17,6 +17,6 @@ class FontsExtension extends AbstractExtension
 
     public function getPlatformFonts(): array
     {
-        return Fonts::FAMILIES;
+        return Fonts::getLocalCss();
     }
 }

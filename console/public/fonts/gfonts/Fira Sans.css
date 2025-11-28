@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/firasans/v18/va9C4kDNxMZdWfMOD5VvkojO.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/firasans/v18/va9f4kDNxMZdWfMOD5VvkrByRBf_.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/firasans/v18/va9E4kDNxMZdWfMOD5VfkA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/firasans/v18/va9B4kDNxMZdWfMOD5VnLK3uQQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/firasans/v18/va9B4kDNxMZdWfMOD5VnMK7uQQ.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/crimsontext/v19/wlpogwHKFkZgtmSR3NB0oRJfaghW.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/crimsontext/v19/wlprgwHKFkZgtmSR3NB0oRJfajDqDtNV.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/crimsontext/v19/wlp2gwHKFkZgtmSR3NB0oRJvaA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/crimsontext/v19/wlppgwHKFkZgtmSR3NB0oRJX1C12Cw.ttf) format('truetype');
+}

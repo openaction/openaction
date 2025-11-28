@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/b612mono/v16/kmK5Zq85QVWbN1eW6lJV1Q7Y.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/b612mono/v16/kmKkZq85QVWbN1eW6lJV1TZkp8VL.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/b612mono/v16/kmK_Zq85QVWbN1eW6lJl1w.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/b612mono/v16/kmK6Zq85QVWbN1eW6lJdayv4og.ttf) format('truetype');
+}

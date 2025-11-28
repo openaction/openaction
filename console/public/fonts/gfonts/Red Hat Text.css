@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Red Hat Text';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/redhattext/v19/RrQEbohi_ic6B3yVSzGBrMxQbb0jEzlRoOOLOnAzvvXQdQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Text';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/redhattext/v19/RrQEbohi_ic6B3yVSzGBrMxQbb0jEzlRoOOLOnAzWfLQdQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Text';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/redhattext/v19/RrQCbohi_ic6B3yVSzGBrMx6ZI_cy1A6Ok2ML7hwVrY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Red Hat Text';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/redhattext/v19/RrQCbohi_ic6B3yVSzGBrMx6ZI_cy1A6Ok2ML193VrY.ttf) format('truetype');
+}

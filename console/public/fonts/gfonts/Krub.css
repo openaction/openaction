@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Krub';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/krub/v11/sZlFdRyC6CRYbkQaCA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Krub';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/krub/v11/sZlGdRyC6CRYbkQitLRyQw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Krub';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/krub/v11/sZlLdRyC6CRYXkY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Krub';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/krub/v11/sZlEdRyC6CRYZvo_KLE.ttf) format('truetype');
+}

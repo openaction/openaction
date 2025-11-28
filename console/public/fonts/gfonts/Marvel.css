@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Marvel';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/marvel/v17/nwpXtKeoNgBV0qa4k1TA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Marvel';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/marvel/v17/nwpQtKeoNgBV0qa4k2x8Al-i.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Marvel';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/marvel/v17/nwpVtKeoNgBV0qaIkQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Marvel';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/marvel/v17/nwpWtKeoNgBV0qawLXHgBw.ttf) format('truetype');
+}

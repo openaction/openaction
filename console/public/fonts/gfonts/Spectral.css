@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Spectral';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/spectral/v15/rnCt-xNNww_2s0amA9M8kn0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spectral';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/spectral/v15/rnCu-xNNww_2s0amA9M8qsHDafM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/spectral/v15/rnCr-xNNww_2s0amA-M-.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/spectral/v15/rnCs-xNNww_2s0amA9uCt13G.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/spectral/v15/rnCs-xNNww_2s0amA9uetF3G.ttf) format('truetype');
+}

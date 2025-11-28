@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/splinesansmono/v13/R70yjzAei_CDNLfgZxrW6wrZOF2WX5eDlm1vIsHjv3WqcVMWwYM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/splinesansmono/v13/R70yjzAei_CDNLfgZxrW6wrZOF2WX5eDlm1vIsHjv3WqcbQRwYM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/splinesansmono/v13/R70MjzAei_CDNLfgZxrW6wrZOF2WdZ6xabUGSVtNuGBiMrtV.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/splinesansmono/v13/R70MjzAei_CDNLfgZxrW6wrZOF2WdZ6xabUGSVtNuGCFNbtV.ttf) format('truetype');
+}

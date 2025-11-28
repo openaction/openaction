@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Besley';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/besley/v22/PlIjFlO1MaNwaNG8WR2J-IiUAH-_aH6CoZdiEA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Besley';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/besley/v22/PlIjFlO1MaNwaNG8WR2J-IiUAH-_aH6CRpBiEA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Besley';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/besley/v22/PlIhFlO1MaNwaNGWUC92IOH_mtG4fbbBSdQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Besley';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/besley/v22/PlIhFlO1MaNwaNGWUC92IOH_mtG4fVHGSdQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Besley';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/besley/v22/PlIhFlO1MaNwaNGWUC92IOH_mtG4fTbGSdQ.ttf) format('truetype');
+}

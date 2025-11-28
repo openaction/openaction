@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Volkhov';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/volkhov/v18/SlGSmQieoJcKemNecTAEgA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Volkhov';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/volkhov/v18/SlGXmQieoJcKemNecTA8PHFSaA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Volkhov';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/volkhov/v18/SlGQmQieoJcKemNeQTI.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Volkhov';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/volkhov/v18/SlGVmQieoJcKemNeeY4hoHQ.ttf) format('truetype');
+}

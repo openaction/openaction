@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Finlandica';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/finlandica/v10/-nFuOGk-8vAc7lEtg0aS45mfNAn722rq0MXz76Cy_Co.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Finlandica';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/finlandica/v10/-nFuOGk-8vAc7lEtg0aS45mfNAn722rq0MXz70e1_Co.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Finlandica';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/finlandica/v10/-nFsOGk-8vAc7lEtg0aSyZCty9GSsPBE19A7rEjx.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Finlandica';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/finlandica/v10/-nFsOGk-8vAc7lEtg0aSyZCty9GSsPBE19Dcq0jx.ttf) format('truetype');
+}

@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Andada Pro';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/andadapro/v24/HhyGU5Qi9-SuOEhPe4LtAIxwRrn9L22O2yYBRmdfHrg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Andada Pro';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/andadapro/v24/HhyGU5Qi9-SuOEhPe4LtAIxwRrn9L22O2yYBRoBYHrg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Andada Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/andadapro/v24/HhyEU5Qi9-SuOEhPe4LtKoVCuWGURPcg3DPJBY8c.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Andada Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/andadapro/v24/HhyEU5Qi9-SuOEhPe4LtKoVCuWGURPcg3DMuAo8c.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Andada Pro';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/andadapro/v24/HhyEU5Qi9-SuOEhPe4LtKoVCuWGURPcg3DNJAo8c.ttf) format('truetype');
+}

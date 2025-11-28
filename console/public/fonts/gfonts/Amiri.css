@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Amiri';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/amiri/v30/J7afnpd8CGxBHpUrtLY.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/amiri/v30/J7aanpd8CGxBHpUrjAo9zps.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/amiri/v30/J7aRnpd8CGxBHqUp.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/amiri/v30/J7acnpd8CGxBHp2VkZY4.ttf) format('truetype');
+}

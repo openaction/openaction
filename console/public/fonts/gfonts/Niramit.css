@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Niramit';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/niramit/v12/I_usMpWdvgLdNxVLXbZalg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Niramit';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/niramit/v12/I_upMpWdvgLdNxVLXbZiKi2Oqw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Niramit';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/niramit/v12/I_uuMpWdvgLdNxVLbbQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Niramit';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/niramit/v12/I_urMpWdvgLdNxVLVQh_tig.ttf) format('truetype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Mohave';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/mohave/v13/7cH2v4ksjJunKqM_CdE36I75AIQkY7G89rOapg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mohave';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/mohave/v13/7cH2v4ksjJunKqM_CdE36I75AIQkY7G8EbSapg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mohave';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/mohave/v13/7cH0v4ksjJunKqMVAOPIMOeSmiojdnn_HvA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Mohave';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/mohave/v13/7cH0v4ksjJunKqMVAOPIMOeSmiojdp74HvA.ttf) format('truetype');
+}

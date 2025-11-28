@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Fira Sans Condensed';
+  font-style: italic;
+  font-weight: 400;
+  src: url(files/s/firasanscondensed/v11/wEOjEADFm8hSaQTFG18FErVhsC9x-tarUfPtqA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans Condensed';
+  font-style: italic;
+  font-weight: 700;
+  src: url(files/s/firasanscondensed/v11/wEOuEADFm8hSaQTFG18FErVhsC9x-tarUfPVFMZ0dw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url(files/s/firasanscondensed/v11/wEOhEADFm8hSaQTFG18FErVhsC9x-tarYfE.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url(files/s/firasanscondensed/v11/wEOsEADFm8hSaQTFG18FErVhsC9x-tarWU3IiMM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Fira Sans Condensed';
+  font-style: normal;
+  font-weight: 800;
+  src: url(files/s/firasanscondensed/v11/wEOsEADFm8hSaQTFG18FErVhsC9x-tarWVHLiMM.ttf) format('truetype');
+}
