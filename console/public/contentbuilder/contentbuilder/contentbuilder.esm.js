@@ -11785,7 +11785,7 @@ var xd = function (e, t) {
                 }
                 if (!v) {
                     for (var g = n; !eu.hasClass(g, "is-builder");) g = g.parentNode;
-                    eu.appendHtml(g, '<link href="//fonts.citipo.com/css?family=' + p + u + '" rel="stylesheet" property="stylesheet" type="text/css">')
+                    eu.appendHtml(g, '<link href="//fonts.citipo.com/'+p+'/fontface.css" rel="stylesheet" property="stylesheet" type="text/css">')
                 }
             }
             if (!this.builder.inspectedElement) {
@@ -11846,7 +11846,7 @@ var xd = function (e, t) {
                 }
                 if (!y) {
                     for (var w = o; !eu.hasClass(w, "is-builder");) w = w.parentNode;
-                    eu.appendHtml(w, '<link href="//fonts.citipo.com/css?family=' + m + g + f + '" rel="stylesheet" property="stylesheet" type="text/css">')
+                    eu.appendHtml(w, '<link href="//fonts.citipo.com/' + m + '/fontface.css" rel="stylesheet" property="stylesheet" type="text/css">')
                 }
             }
             if (!this.builder.inspectedElement) {
