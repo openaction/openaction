@@ -14,7 +14,7 @@
     <title>{% block title %}{% block page_title '' %} | {{ current_project.metaTitle|default(current_project.name) }}{% endblock %}</title>
 
     {% for font in [current_project.fontTitle, current_project.fontText] %}
-        <link href="https://fonts.citipo.com/css2?family={{ font|url_encode }}:ital,wght@0,400;0,700;0,800;1,400;1,700" rel="stylesheet" crossorigin="anonymous" />
+        <link href="https://fonts.citipo.com/{{ font|url_encode }}/fontface.css" rel="stylesheet" crossorigin="anonymous" />
     {% endfor %}
 
     <link rel="stylesheet" href="{{ current_project.links.stylesheet }}" />
@@ -38,7 +38,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="msapplication-tap-highlight" content="no" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="v   iewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="referrer" content="origin" />
     {% block metas '' %}
 
