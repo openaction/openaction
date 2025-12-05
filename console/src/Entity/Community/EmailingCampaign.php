@@ -349,6 +349,11 @@ class EmailingCampaign implements Searchable
         return $this->resolvedAt;
     }
 
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
     /**
      * @return Collection|EmailingCampaignMessage[]
      */

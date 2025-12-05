@@ -48,3 +48,6 @@ services:
             $mollieConnectClientId: '%env(MOLLIE_CONNECT_CLIENT_ID)%'
             $mollieConnectClientSecret: '%env(MOLLIE_CONNECT_CLIENT_SECRET)%'
             $mollieConnectRedirectUri: '%env(MOLLIE_CONNECT_REDIRECT_URI)%'
+
+    App\Bridge\Brevo\BrevoInterface:
+        class: 'App\Bridge\Brevo\MockBrevo'

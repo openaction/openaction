@@ -108,6 +108,11 @@ class SendgridMailFactory
         ]);
     }
 
+    public function createBrevoCampaignBody(EmailingCampaign $campaign, bool $preview = false): string
+    {
+        return $this->createMailchimpCampaignBody($campaign, $preview);
+    }
+
     public function createAutomationBody(EmailAutomation $automation, bool $preview = false): string
     {
         return $this->twig->render('emails/community/email_automation.html.twig', [

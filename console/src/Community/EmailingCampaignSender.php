@@ -4,32 +4,25 @@ namespace App\Community;
 
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Bridge\Sendgrid\SendgridInterface;
+use App\Community\Consumer\SendBrevoEmailingCampaignMessage;
 use App\Community\Consumer\SendEmailingCampaignMessage;
 use App\Community\Consumer\SendMailchimpEmailingCampaignMessage;
 use App\Entity\Community\EmailingCampaign;
+use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class EmailingCampaignSender
 {
-    private OrganizationRepository $organizationRepo;
-    private ContactViewBuilder $contactViewBuilder;
-    private SendgridMailFactory $messageFactory;
-    private SendgridInterface $sendgrid;
-    private MessageBusInterface $bus;
-
     public function __construct(
-        OrganizationRepository $organizationRepo,
-        ContactViewBuilder $contactViewBuilder,
-        SendgridMailFactory $messageFactory,
-        SendgridInterface $sendgrid,
-        MessageBusInterface $bus,
+        private readonly OrganizationRepository $organizationRepo,
+        private readonly ContactViewBuilder $contactViewBuilder,
+        private readonly SendgridMailFactory $messageFactory,
+        private readonly SendgridInterface $sendgrid,
+        private readonly MessageBusInterface $bus,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->organizationRepo = $organizationRepo;
-        $this->contactViewBuilder = $contactViewBuilder;
-        $this->messageFactory = $messageFactory;
-        $this->sendgrid = $sendgrid;
-        $this->bus = $bus;
     }
 
     public function sendPreview(EmailingCampaign $campaign, array $to): bool
@@ -53,6 +46,24 @@ class EmailingCampaignSender
         $recipientsCount = $this->contactViewBuilder->forEmailingCampaign($campaign)->count();
         $organization = $campaign->getProject()->getOrganization();
 
+        if ('brevo' === $organization->getEmailProvider()) {
+            if (!$this->isBrevoConfigured($organization)) {
+                $this->logger->error('Brevo provider selected but configuration is incomplete', [
+                    'organization' => $organization->getId(),
+                ]);
+
+                return false;
+            }
+
+            if (!$this->organizationRepo->useCredits($organization, $recipientsCount, 'emailing')) {
+                return false;
+            }
+
+            $this->bus->dispatch(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+
+            return true;
+        }
+
         if (!$this->organizationRepo->useCredits($organization, $recipientsCount, 'emailing')) {
             return false;
         }
@@ -66,5 +77,12 @@ class EmailingCampaignSender
         $this->bus->dispatch(new SendEmailingCampaignMessage($campaign->getId()));
 
         return true;
+    }
+
+    private function isBrevoConfigured(Organization $organization): bool
+    {
+        return (bool) $organization->getBrevoApiKey()
+            && (bool) $organization->getBrevoListId()
+            && ($organization->getBrevoSenderId() || $organization->getBrevoSenderEmail());
     }
 }

@@ -174,6 +174,24 @@ class Organization
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mailchimpAudienceName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $brevoApiKey = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $brevoSenderId = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $brevoSenderEmail = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $brevoListId = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $brevoCampaignFolderId = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $brevoCampaignTag = null;
+
     /*
      * White label
      */
@@ -320,6 +338,18 @@ class Organization
         $self->billingTaxId = $data['billingTaxId'] ?? null;
         $self->textingSenderCode = $data['textingSenderCode'] ?? null;
         $self->emailThrottlingPerHour = $data['emailThrottlingPerHour'] ?? null;
+        $self->emailProvider = $data['emailProvider'] ?? $self->emailProvider;
+        $self->emailEnableOpenTracking = $data['emailEnableOpenTracking'] ?? $self->emailEnableOpenTracking;
+        $self->emailEnableClickTracking = $data['emailEnableClickTracking'] ?? $self->emailEnableClickTracking;
+        $self->mailchimpServerPrefix = $data['mailchimpServerPrefix'] ?? $self->mailchimpServerPrefix;
+        $self->mailchimpApiKey = $data['mailchimpApiKey'] ?? $self->mailchimpApiKey;
+        $self->mailchimpAudienceName = $data['mailchimpAudienceName'] ?? $self->mailchimpAudienceName;
+        $self->brevoApiKey = $data['brevoApiKey'] ?? $self->brevoApiKey;
+        $self->brevoSenderId = $data['brevoSenderId'] ?? $self->brevoSenderId;
+        $self->brevoSenderEmail = $data['brevoSenderEmail'] ?? $self->brevoSenderEmail;
+        $self->brevoListId = $data['brevoListId'] ?? $self->brevoListId;
+        $self->brevoCampaignFolderId = $data['brevoCampaignFolderId'] ?? $self->brevoCampaignFolderId;
+        $self->brevoCampaignTag = $data['brevoCampaignTag'] ?? $self->brevoCampaignTag;
         $self->setProjectsSlots($data['projectsSlots'] ?? 16);
         $self->addCredits($data['credits'] ?? 1000000);
         $self->addTextsCredits($data['textsCredits'] ?? 10);
@@ -918,6 +948,66 @@ class Organization
     public function setMailchimpAudienceName(?string $mailchimpAudienceName): void
     {
         $this->mailchimpAudienceName = $mailchimpAudienceName;
+    }
+
+    public function getBrevoApiKey(): ?string
+    {
+        return $this->brevoApiKey;
+    }
+
+    public function setBrevoApiKey(?string $brevoApiKey): void
+    {
+        $this->brevoApiKey = $brevoApiKey;
+    }
+
+    public function getBrevoSenderId(): ?int
+    {
+        return $this->brevoSenderId;
+    }
+
+    public function setBrevoSenderId(?int $brevoSenderId): void
+    {
+        $this->brevoSenderId = $brevoSenderId;
+    }
+
+    public function getBrevoSenderEmail(): ?string
+    {
+        return $this->brevoSenderEmail;
+    }
+
+    public function setBrevoSenderEmail(?string $brevoSenderEmail): void
+    {
+        $this->brevoSenderEmail = $brevoSenderEmail;
+    }
+
+    public function getBrevoListId(): ?int
+    {
+        return $this->brevoListId;
+    }
+
+    public function setBrevoListId(?int $brevoListId): void
+    {
+        $this->brevoListId = $brevoListId;
+    }
+
+    public function getBrevoCampaignFolderId(): ?int
+    {
+        return $this->brevoCampaignFolderId;
+    }
+
+    public function setBrevoCampaignFolderId(?int $brevoCampaignFolderId): void
+    {
+        $this->brevoCampaignFolderId = $brevoCampaignFolderId;
+    }
+
+    public function getBrevoCampaignTag(): ?string
+    {
+        return $this->brevoCampaignTag;
+    }
+
+    public function setBrevoCampaignTag(?string $brevoCampaignTag): void
+    {
+        $this->brevoCampaignTag = $brevoCampaignTag;
     }
 
     /*

@@ -206,9 +206,9 @@
                             {% if is_granted('community_emailing_stats', current_project) %}
                                 <td class="world-table-stats text-muted"
                                     data-controller="emailing--stats"
-                                    data-sent-at="{{ sent.sentAt|date('Y-m-d\TH:i:sP') }}"
+                                    data-sent-at="{{ sent.sentAt|date('Y-m-d\\TH:i:sP') }}"
                                     data-url="{{ path('console_community_emailing_stats', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
-                                    data-link="{{ current_organization.emailProvider != 'mailchimp' ? path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}">
+                                    data-link="{{ current_organization.emailProvider not in ['mailchimp', 'brevo'] ? path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}">
                                 </td>
                             {% endif %}
                             <td class="world-table-actions-documents text-muted">

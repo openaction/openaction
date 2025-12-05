@@ -113,6 +113,9 @@ services:
     App\Bridge\Mollie\MollieConnectInterface:
         class: 'App\Bridge\Mollie\MollieConnect'
 
+    App\Bridge\Brevo\BrevoInterface:
+        class: 'App\Bridge\Brevo\Brevo'
+
     App\Bridge\Unlayer\UnlayerInterface:
         class: 'App\Bridge\Unlayer\Unlayer'
         arguments:
