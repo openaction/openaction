@@ -88,8 +88,8 @@ index:
             help: Synchronize your contacts between Citipo and Sendgrid.
 
         sendinblue:
-            title: Sendinblue
-            help: Synchronize your contacts between Citipo and Sendinblue.
+            title: Brevo (formerly Sendinblue)
+            help: Synchronize your contacts between Citipo and Brevo.
 
         shopify:
             title: Shopify

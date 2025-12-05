@@ -65,8 +65,8 @@ index:
             title: Sendgrid
             help: 'Synchronisieren Sie Ihre Kontakte zwischen Citipo und Sendgrid.'
         sendinblue:
-            title: Sendinblue
-            help: 'Synchronisieren Sie Ihre Kontakte zwischen Citipo und Sendinblue.'
+            title: 'Brevo (früher Sendinblue)'
+            help: 'Synchronisieren Sie Ihre Kontakte zwischen Citipo und Brevo.'
         shopify:
             title: Shopify
             help: 'Synchronisieren Sie Ihre Kontakte zwischen Citipo und Shopify.'

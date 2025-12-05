@@ -126,6 +126,7 @@ class OrganizationController extends AbstractCrudController
                     'Sendgrid' => 'sendgrid',
                     'Postmark' => 'postmark',
                     'Mailchimp' => 'mailchimp',
+                    'Brevo' => 'brevo',
                 ]);
 
             yield TextField::new('mailchimpServerPrefix', 'Mailchimp server prefix')
@@ -137,6 +138,32 @@ class OrganizationController extends AbstractCrudController
                 ->onlyOnForms();
 
             yield TextField::new('mailchimpAudienceName', 'Mailchimp audience name')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield TextField::new('brevoApiKey', 'Brevo API key')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield NumberField::new('brevoSenderId', 'Brevo sender ID')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield TextField::new('brevoSenderEmail', 'Brevo sender email')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield NumberField::new('brevoListId', 'Brevo marketing list ID')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield NumberField::new('brevoCampaignFolderId', 'Brevo folder ID')
+                ->setHelp('Optional folder identifier to store campaigns')
+                ->setColumns(4)
+                ->onlyOnForms();
+
+            yield TextField::new('brevoCampaignTag', 'Brevo campaign tag')
+                ->setHelp('Optional tag applied to campaigns')
                 ->setColumns(4)
                 ->onlyOnForms();
 

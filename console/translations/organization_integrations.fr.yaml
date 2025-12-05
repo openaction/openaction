@@ -94,8 +94,8 @@ index:
             help: Synchronisez vos contacts entre Citipo et Sendgrid.
 
         sendinblue:
-            title: Sendinblue
-            help: Synchronisez vos contacts entre Citipo et Sendinblue.
+            title: Brevo (anciennement Sendinblue)
+            help: Synchronisez vos contacts entre Citipo et Brevo.
 
         shopify:
             title: Shopify

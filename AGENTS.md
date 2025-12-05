@@ -10,6 +10,7 @@ using Symfony CLI for running the PHP applications locally. Follow it before pus
 - Node.js 22 + Yarn (`corepack enable` sets up Yarn 4 on Node 22).
 - Docker (services only) to run dependencies (PostgreSQL, Redis, Meilisearch).
 - GitHub CLI (`gh`) logged in (`gh auth login`). Always use `gh` for PRs and CI checks.
+- Brevo marketing SDK installed via Composer (`getbrevo/brevo-php`).
 
 ## Services (Postgres, Redis, Meilisearch)
 
@@ -128,3 +129,4 @@ symfony php bin/phpunit
 - Always run PHP via Symfony CLI locally; use Docker only for infra services.
 - Tests must not hit real external services; mock them. Console tests rely on `DAMA\DoctrineTestBundle` for DB isolation.
 - Keep PHP PSR-12 and existing project conventions. Use provided `.php-cs-fixer.dist.php` configs.
+- Brevo campaigns: sync marketing stats with `symfony console app:community:sync-brevo-campaigns-reports "YYYY-MM-DD"` when needed.
