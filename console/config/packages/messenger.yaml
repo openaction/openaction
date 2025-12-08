@@ -88,6 +88,7 @@ framework:
             # Community
             'App\Community\Consumer\SendEmailingCampaignMessage': async_priority_high
             'App\Community\Consumer\SendMailchimpEmailingCampaignMessage': async_priority_high
+            'App\Community\Consumer\SendBrevoEmailingCampaignMessage': async_priority_high
             'App\Community\Consumer\SendTextingCampaignMessage': async_priority_high
             'App\Community\Consumer\StartPhoningCampaignMessage': async_priority_high
             'App\Community\Consumer\CreateEmailingCampaignBatchesMessage': async_priority_low

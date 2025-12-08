@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Console\Project\Community\Emailing;
 
 use App\Bridge\Sendgrid\MockSendgrid;
 use App\Bridge\Sendgrid\SendgridInterface;
+use App\Community\Consumer\SendBrevoEmailingCampaignMessage;
 use App\Community\Consumer\SendEmailingCampaignMessage;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Organization;
@@ -12,6 +13,7 @@ use App\Repository\Community\TagRepository;
 use App\Repository\OrganizationRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
+use Doctrine\ORM\EntityManagerInterface;
 use SendGrid\Mail\To;
 
 class SendControllerTest extends WebTestCase
@@ -263,6 +265,43 @@ class SendControllerTest extends WebTestCase
 
         /** @var EmailingCampaign $campaign */
         $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneBy(['uuid' => '45b9ea9c-4e62-4d7d-acf1-d7da009f657a']);
+        $this->assertSame($campaign->getId(), $messages[0]->getMessage()->getCampaignId());
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testSendAllBrevo()
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        /** @var Organization $orga */
+        $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
+        $orga->setEmailProvider('brevo');
+        $orga->setBrevoApiKey('brevo_api_key');
+        $orga->setBrevoListId(4242);
+        $orga->setBrevoSenderEmail('brevo@citipo.com');
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/10808026-bbae-4db5-a8ab-8abecb50102c/send-all');
+        $this->assertResponseIsSuccessful();
+
+        $button = $crawler->selectButton('Send the campaign');
+        $client->submit($button->form());
+        $this->assertResponseRedirects('/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+
+        /** @var Organization $orga */
+        $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
+        $this->assertSame(999997, $orga->getCreditsBalance());
+
+        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $messages = $transport->get();
+        $this->assertCount(1, $messages);
+        $this->assertInstanceOf(SendBrevoEmailingCampaignMessage::class, $messages[0]->getMessage());
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneBy(['uuid' => '10808026-bbae-4db5-a8ab-8abecb50102c']);
         $this->assertSame($campaign->getId(), $messages[0]->getMessage()->getCampaignId());
 
         $client->followRedirect();

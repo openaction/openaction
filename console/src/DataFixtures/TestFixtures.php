@@ -479,6 +479,10 @@ class TestFixtures extends AbstractFixtures
                 'textingSenderCode' => 'CPGT',
                 'billingPricePerMonth' => 13900,
                 'currentPeriodEnd' => new \DateTime('+19 days'),
+                'brevoApiKey' => 'brevo_api_key',
+                'brevoListId' => 42,
+                'brevoSenderEmail' => 'brevo@citipo.com',
+                'brevoCampaignTag' => 'citipo-tests',
                 'subscriptionNotifications' => (new SubscriptionNotifications([]))
                     // 30 days expiration notification
                     ->withMarkedNotified(SubscriptionNotifications::TYPE_EXPIRATION, new \DateTime('-11 days')),
