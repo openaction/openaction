@@ -98,6 +98,11 @@ class UserController extends AbstractCrudController
                 Action::new('password', 'Reset password')
                     ->linkToRoute('admin_user_password', fn (User $user) => ['id' => $user->getId()])
             )
+            ->add(Crud::PAGE_INDEX,
+                Action::new('remove_memberships', 'Remove org memberships')
+                    ->linkToRoute('admin_user_remove_memberships', fn (User $user) => ['id' => $user->getId()])
+                    ->displayIf(fn (User $user) => !$user->getMemberships()->isEmpty())
+            )
         ;
     }
 
@@ -127,6 +132,28 @@ class UserController extends AbstractCrudController
             $urlGenerator->setController(__CLASS__)
                 ->setAction('detail')
                 ->setEntityId($user->getId())
+                ->generateUrl()
+        );
+    }
+
+    #[Route('/admin/users/{id}/memberships', name: 'admin_user_remove_memberships', methods: ['GET'])]
+    public function removeMemberships(UserRepository $repository, EntityManagerInterface $em, AdminUrlGenerator $urlGenerator, int $id)
+    {
+        if (!$user = $repository->find($id)) {
+            throw $this->createNotFoundException();
+        }
+
+        foreach ($user->getMemberships() as $membership) {
+            $em->remove($membership);
+        }
+
+        $em->flush();
+
+        $this->addFlash('success', 'User organization memberships were removed.');
+
+        return $this->redirect(
+            $urlGenerator->setController(__CLASS__)
+                ->setAction(Action::INDEX)
                 ->generateUrl()
         );
     }
