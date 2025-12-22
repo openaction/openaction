@@ -221,6 +221,30 @@ services:
         arguments:
             $sources: !tagged 'app.contact_history_source'
 
+    cache.pdo.connection:
+        class: PDO
+        arguments:
+            - '%env(resolve:CACHE_DSN)%'
+            - null
+            - null
+            - { !php/const PDO::ATTR_ERRMODE: !php/const PDO::ERRMODE_EXCEPTION }
+
+    #
+    # Session
+    #
+    session.handler.pdo:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - '%env(resolve:SESSION_DSN)%'
+            - {
+                lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_ADVISORY,
+                db_table: 'sessions',
+                db_id_col: 'sess_id',
+                db_data_col: 'sess_data',
+                db_lifetime_col: 'sess_lifetime',
+                db_time_col: 'sess_time'
+            }
+
     #
     # Billing
     #

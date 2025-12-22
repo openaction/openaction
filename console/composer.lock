@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "121a48173327749e132cad674bdb2bae",
+    "content-hash": "2e557016794f9339e602de597101dc17",
     "packages": [
         {
             "name": "async-aws/core",
@@ -14829,7 +14829,6 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-redis": "*",
         "ext-sodium": "*",
         "ext-xmlreader": "*",
         "ext-zip": "*",

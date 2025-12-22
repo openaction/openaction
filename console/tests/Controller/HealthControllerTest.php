@@ -13,6 +13,6 @@ class HealthControllerTest extends WebTestCase
         $client->request('GET', '/health/G7PjZtNL7zZenQY23OoCax2Ng0bV8cvl');
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Database: OK', $client->getResponse()->getContent());
-        $this->assertStringContainsString('Redis: OK', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Cache: OK', $client->getResponse()->getContent());
     }
 }

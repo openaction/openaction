@@ -83,9 +83,7 @@ docker compose exec public composer install
 ```
 
 The project uses several services:
-
-* PostgreSQL as its database engine;
-* Redis as its cache and key-value storage engine;
+* PostgreSQL as its database, cache and session engine;
 * Symfony Messenger queues (RabbitMQ by default; other backends via `docs/messenger-transports.md`);
 
 ### 3. Prepare the local database
@@ -99,7 +97,7 @@ docker compose exec console bin/console d:f:l --group test
 # Populate the search engine index
 docker compose exec console bin/console app:search:index-crm
 
-# Load the domains cache in Redis for public to work
+# Refresh the domains cache (stored in PostgreSQL) for public to work
 docker compose exec console bin/console app:proxy:refresh-domains-cache -n
 ```
 

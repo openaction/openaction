@@ -10,12 +10,12 @@ use Symfony\Contracts\Cache\CacheInterface;
 class HealthController extends AbstractController
 {
     private Connection $db;
-    private CacheInterface $redis;
+    private CacheInterface $cache;
 
-    public function __construct(Connection $db, CacheInterface $redis)
+    public function __construct(Connection $db, CacheInterface $cache)
     {
         $this->db = $db;
-        $this->redis = $redis;
+        $this->cache = $cache;
     }
 
     #[Route('/health/G7PjZtNL7zZenQY23OoCax2Ng0bV8cvl', name: 'health')]
@@ -23,7 +23,7 @@ class HealthController extends AbstractController
     {
         $checks = [
             'Database' => $this->isDatabaseHealthy(),
-            'Redis' => $this->isRedisHealthy(),
+            'Cache' => $this->isCacheHealthy(),
         ];
 
         $response = new Response();
@@ -53,10 +53,10 @@ class HealthController extends AbstractController
         }
     }
 
-    private function isRedisHealthy(): bool
+    private function isCacheHealthy(): bool
     {
         try {
-            return $this->redis->get(time(), static fn () => true);
+            return $this->cache->get(time(), static fn () => true);
         } catch (\Throwable) {
             return false;
         }

@@ -9,7 +9,6 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-redis": "*",
         "ext-sodium": "*",
         "ext-xmlreader": "*",
         "ext-zip": "*",

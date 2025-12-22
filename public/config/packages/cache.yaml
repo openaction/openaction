@@ -1,11 +1,5 @@
 framework:
     cache:
         prefix_seed: '%env(APP_NAMESPACE)%_cache_'
-        app: app.cache.adapter.redis
-        default_redis_provider: '%env(REDIS_URL)%'
-
-services:
-    app.cache.adapter.redis:
-        parent: 'cache.adapter.redis'
-        tags:
-            - { name: 'cache.pool', namespace: '%env(APP_NAMESPACE)%' }
+        app: cache.adapter.pdo
+        default_pdo_provider: cache.pdo.connection
