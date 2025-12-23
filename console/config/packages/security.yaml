@@ -34,6 +34,10 @@ security:
             pattern: ^/webhook/
             security: false
 
+        token_resolver:
+            pattern: ^/api/token-resolver
+            security: false
+
         integrations_api:
             pattern: ^/api/integrations
             stateless: true
@@ -75,6 +79,7 @@ security:
                 target: security_login
 
     access_control:
+        - { path: ^/api/token-resolver, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api/integrations, roles: ROLE_USER }
         - { path: ^/api, roles: ROLE_PROJECT }
