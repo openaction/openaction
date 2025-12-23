@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-redis": "*",
         "ext-simplexml": "*",
         "egulias/email-validator": "^2.1",
         "laminas/laminas-feed": "^2.14",

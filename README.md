@@ -83,7 +83,8 @@ docker compose exec public composer install
 ```
 
 The project uses several services:
-* PostgreSQL as its database, cache and session engine;
+* PostgreSQL as its database engine;
+* Redis as its cache and session storage engine;
 * Symfony Messenger queues (RabbitMQ by default; other backends via `docs/messenger-transports.md`);
 
 ### 3. Prepare the local database

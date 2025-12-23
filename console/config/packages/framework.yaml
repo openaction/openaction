@@ -6,11 +6,9 @@ framework:
 
     csrf_protection: true
     http_method_override: false
-    #esi: true
-    #fragments: true
 
     session:
-        handler_id: session.handler.pdo
+        handler_id: '%env(REDIS_URL)%?prefix=%env(APP_NAMESPACE)%_sessions_'
         cookie_secure: auto
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
@@ -22,5 +20,4 @@ when@test:
     framework:
         test: true
         session:
-            handler_id: null
             storage_factory_id: session.storage.factory.mock_file
