@@ -44,6 +44,7 @@
   },
   "packageManager": "yarn@1.22.22",
   "devDependencies": {
+    "prettier": "^3.5.1",
     "tw-animate-css": "^1.3.5"
   }
 }
