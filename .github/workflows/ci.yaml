@@ -283,9 +283,6 @@ jobs:
             - name: Prepare database
               run: cd console && symfony console doctrine:migrations:migrate -n && symfony console doctrine:fixtures:load -n --group test
 
-            - name: Prepare domains
-              run: cd console && symfony console app:proxy:refresh-domains-cache -n
-
             - name: PHPUnit
               run: |
                   cd console

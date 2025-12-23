@@ -101,7 +101,6 @@ cp -R public/tests/Fixtures/assets public/public/build
 cd console
 symfony console doctrine:migrations:migrate -n
 symfony console doctrine:fixtures:load -n --group test --purge-with-truncate
-symfony console app:proxy:refresh-domains-cache -n
 
 # Run Symfony local web server for public tests
 symfony server:ca:install

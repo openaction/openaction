@@ -1,5 +1,3 @@
 framework:
     cache:
-        prefix_seed: '%env(APP_NAMESPACE)%_cache_'
-        app: cache.adapter.pdo
-        default_pdo_provider: cache.pdo.connection
+        app: cache.adapter.apcu

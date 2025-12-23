@@ -96,9 +96,6 @@ docker compose exec console bin/console d:f:l --group test
 
 # Populate the search engine index
 docker compose exec console bin/console app:search:index-crm
-
-# Refresh the domains cache (stored in PostgreSQL) for public to work
-docker compose exec console bin/console app:proxy:refresh-domains-cache -n
 ```
 
 Once done, you can access the Console on the container console
