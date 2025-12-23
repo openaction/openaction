@@ -9,7 +9,7 @@ class HealthControllerTest extends WebTestCase
     public function testHealth(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/health/G7PjZtNL7zZenQY23OoCax2Ng0bV8cvl');
+        $client->request('GET', '/health');
         $this->assertResponseIsSuccessful();
     }
 }
