@@ -129,3 +129,4 @@ symfony php bin/phpunit
 - Tests must not hit real external services; mock them. Console tests rely on `DAMA\DoctrineTestBundle` for DB isolation.
 - Keep PHP PSR-12 and existing project conventions. Use provided `.php-cs-fixer.dist.php` configs.
 - Brevo campaigns: sync marketing stats with `symfony console app:community:sync-brevo-campaigns-reports "YYYY-MM-DD"` when needed.
+- Public liveness/readiness: GET `/health` on the public app returns `OK` with HTTP 200 (text/plain) and bypasses domain resolution. Use this for Kubernetes probes without needing domain token cache.

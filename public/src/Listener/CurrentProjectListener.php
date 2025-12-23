@@ -34,6 +34,10 @@ class CurrentProjectListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
+        if ('/health' === $request->getPathInfo()) {
+            return;
+        }
+
         if (!$apiToken = $this->tokenResolver->resolveProjectToken($request->getHost())) {
             throw new NotFoundHttpException('Project domain not found.');
         }

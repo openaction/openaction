@@ -1,10 +1,10 @@
-import {useMemo, useState, useEffect} from "react";
-import type {Project} from "@/types.ts";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {MultiSelect} from "@/components/multi-select.tsx";
-import {ChevronsUpDown} from "lucide-react";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
+import { useMemo, useState, useEffect } from 'react';
+import type { Project } from '@/types.ts';
+import { Checkbox } from '@/components/ui/checkbox.tsx';
+import { Label } from '@/components/ui/label.tsx';
+import { MultiSelect } from '@/components/multi-select.tsx';
+import { ChevronsUpDown } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible.tsx';
 
 interface Category {
     id: string;
@@ -41,7 +41,7 @@ interface Props {
         apply_permissions_specific_trombinoscope: string;
         apply_permissions_specific_events: string;
         select_categories_placeholder: string;
-    }
+    };
 }
 
 // Categories that support category-specific permissions
@@ -49,46 +49,50 @@ const CATEGORY_SPECIFIC_PERMISSIONS = ['posts', 'pages', 'trombinoscope', 'event
 
 export default function (props: Props) {
     const initialProjectPermissions = useMemo(
-        () => props.projectsPermissionsValue ? JSON.parse(props.projectsPermissionsValue) : {},
-        [props.projectsPermissionsValue],
+        () => (props.projectsPermissionsValue ? JSON.parse(props.projectsPermissionsValue) : {}),
+        [props.projectsPermissionsValue]
     );
 
     const initialProjectPermissionsCategories = useMemo(
-        () => props.projectsPermissionsCategoriesValue ? JSON.parse(props.projectsPermissionsCategoriesValue) : {},
-        [props.projectsPermissionsCategoriesValue],
+        () => (props.projectsPermissionsCategoriesValue ? JSON.parse(props.projectsPermissionsCategoriesValue) : {}),
+        [props.projectsPermissionsCategoriesValue]
     );
 
     const [isAdmin, setIsAdmin] = useState<boolean>(props.isAdminValue === '1');
     const [allAccess, setAllAccess] = useState<Record<string, boolean>>({});
-    const [projectPermissions, setProjectPermissions] = useState<Record<string, Record<string, boolean>>>(initialProjectPermissions);
-    
+    const [projectPermissions, setProjectPermissions] =
+        useState<Record<string, Record<string, boolean>>>(initialProjectPermissions);
+
     // Initialize category scope based on existing data
     const initialCategoryScope = useMemo(() => {
         const scope: Record<string, Record<string, 'all' | 'specific'>> = {};
-        
-        props.projects.forEach(project => {
+
+        props.projects.forEach((project) => {
             scope[project.uuid] = {};
-            CATEGORY_SPECIFIC_PERMISSIONS.forEach(categoryType => {
+            CATEGORY_SPECIFIC_PERMISSIONS.forEach((categoryType) => {
                 const hasSpecificCategories = initialProjectPermissionsCategories[project.uuid]?.[categoryType];
                 scope[project.uuid][categoryType] = hasSpecificCategories ? 'specific' : 'all';
             });
         });
-        
+
         return scope;
     }, [initialProjectPermissionsCategories, props.projects]);
 
     // State for category-specific permissions
-    const [categoryScope, setCategoryScope] = useState<Record<string, Record<string, 'all' | 'specific'>>>(initialCategoryScope);
-    
+    const [categoryScope, setCategoryScope] =
+        useState<Record<string, Record<string, 'all' | 'specific'>>>(initialCategoryScope);
+
     // State for selected categories for each project and permission
-    const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>(initialProjectPermissionsCategories);
+    const [selectedCategories, setSelectedCategories] = useState<Record<string, Record<string, string[]>>>(
+        initialProjectPermissionsCategories
+    );
 
     // Get all available permissions for checking if all are selected
     const getAllPermissions = useMemo(() => {
         const permissions: string[] = [];
-        Object.keys(props.definitions).forEach(section => {
-            Object.keys(props.definitions[section]).forEach(category => {
-                props.definitions[section][category].forEach(permission => {
+        Object.keys(props.definitions).forEach((section) => {
+            Object.keys(props.definitions[section]).forEach((category) => {
+                props.definitions[section][category].forEach((permission) => {
                     permissions.push(permission);
                 });
             });
@@ -99,15 +103,15 @@ export default function (props: Props) {
     // Compute the projects permissions categories data
     const projectsPermissionsCategories = useMemo(() => {
         const categoriesData: Record<string, Record<string, string[] | null>> = {};
-        
-        props.projects.forEach(project => {
+
+        props.projects.forEach((project) => {
             categoriesData[project.uuid] = {};
-            
+
             // Only include category-specific permissions
-            CATEGORY_SPECIFIC_PERMISSIONS.forEach(categoryType => {
+            CATEGORY_SPECIFIC_PERMISSIONS.forEach((categoryType) => {
                 const scope = categoryScope[project.uuid]?.[categoryType];
                 const selectedCats = selectedCategories[project.uuid]?.[categoryType];
-                
+
                 if (scope === 'specific' && selectedCats) {
                     categoriesData[project.uuid][categoryType] = selectedCats;
                 } else {
@@ -115,7 +119,7 @@ export default function (props: Props) {
                 }
             });
         });
-        
+
         return categoriesData;
     }, [selectedCategories, categoryScope, props.projects]);
 
@@ -123,13 +127,13 @@ export default function (props: Props) {
     const getCategoriesForProject = (projectId: string, categoryType: string): Category[] => {
         switch (categoryType) {
             case 'posts':
-                return props.postsCategories.filter(cat => cat.projectId === projectId);
+                return props.postsCategories.filter((cat) => cat.projectId === projectId);
             case 'pages':
-                return props.pagesCategories.filter(cat => cat.projectId === projectId);
+                return props.pagesCategories.filter((cat) => cat.projectId === projectId);
             case 'trombinoscope':
-                return props.trombinoscopeCategories.filter(cat => cat.projectId === projectId);
+                return props.trombinoscopeCategories.filter((cat) => cat.projectId === projectId);
             case 'events':
-                return props.eventsCategories.filter(cat => cat.projectId === projectId);
+                return props.eventsCategories.filter((cat) => cat.projectId === projectId);
             default:
                 return [];
         }
@@ -139,14 +143,14 @@ export default function (props: Props) {
     const areAllPermissionsEnabled = (projectId: string): boolean => {
         const projectPerms = projectPermissions[projectId];
         if (!projectPerms) return false;
-        
-        return getAllPermissions.every(permission => projectPerms[permission] === true);
+
+        return getAllPermissions.every((permission) => projectPerms[permission] === true);
     };
 
     // Update allAccess state when projectPermissions change
     useEffect(() => {
         const newAllAccess: Record<string, boolean> = {};
-        props.projects.forEach(project => {
+        props.projects.forEach((project) => {
             newAllAccess[project.uuid] = areAllPermissionsEnabled(project.uuid);
         });
         setAllAccess(newAllAccess);
@@ -162,7 +166,9 @@ export default function (props: Props) {
 
     // Update the hidden input when projectPermissions changes
     useEffect(() => {
-        const hiddenInput = document.querySelector(`input[name="${props.projectsPermissionsField}"]`) as HTMLInputElement;
+        const hiddenInput = document.querySelector(
+            `input[name="${props.projectsPermissionsField}"]`
+        ) as HTMLInputElement;
         if (hiddenInput) {
             hiddenInput.value = JSON.stringify(projectPermissions);
         }
@@ -170,72 +176,73 @@ export default function (props: Props) {
 
     // Update the hidden input when projectsPermissionsCategories changes
     useEffect(() => {
-        const hiddenInput = document.querySelector(`input[name="${props.projectsPermissionsCategoriesField}"]`) as HTMLInputElement;
+        const hiddenInput = document.querySelector(
+            `input[name="${props.projectsPermissionsCategoriesField}"]`
+        ) as HTMLInputElement;
         if (hiddenInput) {
             hiddenInput.value = JSON.stringify(projectsPermissionsCategories);
         }
     }, [projectsPermissionsCategories, props.projectsPermissionsCategoriesField]);
 
-
     // Handle allAccess change for a project
     const handleAllAccessChange = (projectId: string, checked: boolean) => {
-        setAllAccess(prev => ({ ...prev, [projectId]: checked }));
-        
+        setAllAccess((prev) => ({ ...prev, [projectId]: checked }));
+
         if (checked) {
             // Set all permissions to true for this project
             const allPermissions: Record<string, boolean> = {};
-            getAllPermissions.forEach(permission => {
+            getAllPermissions.forEach((permission) => {
                 allPermissions[permission] = true;
             });
-            
-            setProjectPermissions(prev => ({
+
+            setProjectPermissions((prev) => ({
                 ...prev,
-                [projectId]: allPermissions
+                [projectId]: allPermissions,
             }));
         } else {
             // Set all permissions to false for this project
             const allPermissions: Record<string, boolean> = {};
-            getAllPermissions.forEach(permission => {
+            getAllPermissions.forEach((permission) => {
                 allPermissions[permission] = false;
             });
-            
-            setProjectPermissions(prev => ({
+
+            setProjectPermissions((prev) => ({
                 ...prev,
-                [projectId]: allPermissions
+                [projectId]: allPermissions,
             }));
         }
     };
 
     // Handle individual permission change
     const handlePermissionChange = (projectId: string, permission: string, checked: boolean) => {
-        setProjectPermissions(prev => ({
+        setProjectPermissions((prev) => ({
             ...prev,
             [projectId]: {
                 ...prev[projectId],
-                [permission]: checked
-            }
+                [permission]: checked,
+            },
         }));
     };
 
     // Handle category scope change
     const handleCategoryScopeChange = (projectId: string, category: string, scope: 'all' | 'specific') => {
-        setCategoryScope(prev => ({
+        setCategoryScope((prev) => ({
             ...prev,
             [projectId]: {
                 ...prev[projectId],
-                [category]: scope
-            }
+                [category]: scope,
+            },
         }));
     };
 
     // Handle category selection change
     const handleCategorySelectionChange = (projectId: string, categoryType: string, selectedValues: string[]) => {
-        setSelectedCategories(prev => ({
+        setSelectedCategories((prev) => ({
             ...prev,
             [projectId]: {
                 ...prev[projectId],
-                [categoryType]: selectedValues
-            }
+                [categoryType]: selectedValues,
+            },
         }));
     };
 
@@ -274,11 +281,7 @@ export default function (props: Props) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3">
-                <Checkbox
-                    id="isAdmin"
-                    checked={isAdmin}
-                    onCheckedChange={(checked) => setIsAdmin(true === checked)}
-                />
+                <Checkbox id="isAdmin" checked={isAdmin} onCheckedChange={(checked) => setIsAdmin(true === checked)} />
 
                 <Label htmlFor="isAdmin" className="mb-0!">
                     {props.labels.is_admin_label}
@@ -288,9 +291,13 @@ export default function (props: Props) {
             </div>
 
             <input type="hidden" name={props.projectsPermissionsField} value={JSON.stringify(projectPermissions)} />
-            <input type="hidden" name={props.projectsPermissionsCategoriesField} value={JSON.stringify(projectsPermissionsCategories)} />
+            <input
+                type="hidden"
+                name={props.projectsPermissionsCategoriesField}
+                value={JSON.stringify(projectsPermissionsCategories)}
+            />
 
-            {props.projects.map(project => {
+            {props.projects.map((project) => {
                 return (
                     <div key={project.uuid} className="world-block p-3 mb-3">
                         <Collapsible defaultOpen={props.projects.length <= 5}>
@@ -299,9 +306,7 @@ export default function (props: Props) {
                                     <div>
                                         <ChevronsUpDown className="size-4" />
                                     </div>
-                                    <h5 className="mb-0!">
-                                        {project.name}
-                                    </h5>
+                                    <h5 className="mb-0!">{project.name}</h5>
                                 </div>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -311,68 +316,110 @@ export default function (props: Props) {
                                             id={`${project.uuid}-all`}
                                             disabled={isAdmin}
                                             checked={isAdmin || allAccess[project.uuid] || false}
-                                            onCheckedChange={(checked) => handleAllAccessChange(project.uuid, true === checked)}
+                                            onCheckedChange={(checked) =>
+                                                handleAllAccessChange(project.uuid, true === checked)
+                                            }
                                         />
 
                                         <Label
                                             htmlFor={`${project.uuid}-all`}
-                                            className="mb-0! font-normal text-slate-600 text-xs">
+                                            className="mb-0! font-normal text-slate-600 text-xs"
+                                        >
                                             {props.labels.grant_all_permissions}
                                         </Label>
                                     </div>
 
                                     {!isAdmin && (
                                         <div className="grid grid-cols-3 gap-3">
-                                            {Object.keys(props.definitions).map(section => (
+                                            {Object.keys(props.definitions).map((section) => (
                                                 <div key={`${project.uuid}-${section}`}>
                                                     <div className="uppercase text-slate-500 font-medium text-xs mb-2">
                                                         {props.translations[section]}
                                                     </div>
 
                                                     <div className="space-y-6">
-                                                        {Object.keys(props.definitions[section]).map(category => (
-                                                            <div className="space-y-1" key={`${project.uuid}-${category}`}>
+                                                        {Object.keys(props.definitions[section]).map((category) => (
+                                                            <div
+                                                                className="space-y-1"
+                                                                key={`${project.uuid}-${category}`}
+                                                            >
                                                                 <div className="text-slate-400 text-xs">
                                                                     {props.translations[category]}
                                                                 </div>
 
-                                                                {props.definitions[section][category].map(permission => (
-                                                                    <div className="flex items-center gap-1" key={`${project.uuid}-${permission}`}>
-                                                                        <Checkbox
-                                                                            id={`${project.uuid}-${permission}`}
-                                                                            checked={projectPermissions[project.uuid]?.[permission] || false}
-                                                                            onCheckedChange={(checked) => handlePermissionChange(project.uuid, permission, true === checked)}
-                                                                        />
-                                                                        <Label
-                                                                            htmlFor={`${project.uuid}-${permission}`}
-                                                                            className="mb-0! font-normal text-slate-600 text-xs">
-                                                                            {props.translations[permission]}
-                                                                        </Label>
-                                                                    </div>
-                                                                ))}
+                                                                {props.definitions[section][category].map(
+                                                                    (permission) => (
+                                                                        <div
+                                                                            className="flex items-center gap-1"
+                                                                            key={`${project.uuid}-${permission}`}
+                                                                        >
+                                                                            <Checkbox
+                                                                                id={`${project.uuid}-${permission}`}
+                                                                                checked={
+                                                                                    projectPermissions[project.uuid]?.[
+                                                                                        permission
+                                                                                    ] || false
+                                                                                }
+                                                                                onCheckedChange={(checked) =>
+                                                                                    handlePermissionChange(
+                                                                                        project.uuid,
+                                                                                        permission,
+                                                                                        true === checked
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                            <Label
+                                                                                htmlFor={`${project.uuid}-${permission}`}
+                                                                                className="mb-0! font-normal text-slate-600 text-xs"
+                                                                            >
+                                                                                {props.translations[permission]}
+                                                                            </Label>
+                                                                        </div>
+                                                                    )
+                                                                )}
 
                                                                 {/* Category-specific permissions block */}
                                                                 {CATEGORY_SPECIFIC_PERMISSIONS.includes(category) && (
                                                                     <Collapsible
-                                                                        defaultOpen={categoryScope[project.uuid]?.[category] === 'specific'}
+                                                                        defaultOpen={
+                                                                            categoryScope[project.uuid]?.[category] ===
+                                                                            'specific'
+                                                                        }
                                                                         className="mt-3 p-2 border border-slate-200 rounded-sm bg-slate-50"
                                                                     >
                                                                         <CollapsibleTrigger>
                                                                             <div className="text-xs flex items-center gap-1">
                                                                                 <ChevronsUpDown className="size-3" />
-                                                                                <span>{props.labels.apply_permissions_label}</span>
+                                                                                <span>
+                                                                                    {
+                                                                                        props.labels
+                                                                                            .apply_permissions_label
+                                                                                    }
+                                                                                </span>
                                                                             </div>
                                                                         </CollapsibleTrigger>
 
                                                                         <CollapsibleContent className="space-y-2 mt-1">
-                                                                            <div className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'opacity-50' : ''}`}>
+                                                                            <div
+                                                                                className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] === 'specific' ? 'opacity-50' : ''}`}
+                                                                            >
                                                                                 <input
                                                                                     type="radio"
                                                                                     id={`${project.uuid}-${category}-all`}
                                                                                     name={`${project.uuid}-${category}-scope`}
                                                                                     value="all"
-                                                                                    checked={categoryScope[project.uuid]?.[category] !== 'specific'}
-                                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'all')}
+                                                                                    checked={
+                                                                                        categoryScope[project.uuid]?.[
+                                                                                            category
+                                                                                        ] !== 'specific'
+                                                                                    }
+                                                                                    onChange={() =>
+                                                                                        handleCategoryScopeChange(
+                                                                                            project.uuid,
+                                                                                            category,
+                                                                                            'all'
+                                                                                        )
+                                                                                    }
                                                                                 />
                                                                                 <Label
                                                                                     htmlFor={`${project.uuid}-${category}-all`}
@@ -381,32 +428,66 @@ export default function (props: Props) {
                                                                                     {getCategoryAllLabel(category)}
                                                                                 </Label>
                                                                             </div>
-                                                                            <div className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'opacity-50' : ''}`}>
+                                                                            <div
+                                                                                className={`flex gap-2 items-start ${categoryScope[project.uuid]?.[category] !== 'specific' ? 'opacity-50' : ''}`}
+                                                                            >
                                                                                 <input
                                                                                     type="radio"
                                                                                     id={`${project.uuid}-${category}-specific`}
                                                                                     name={`${project.uuid}-${category}-scope`}
                                                                                     value="specific"
-                                                                                    checked={categoryScope[project.uuid]?.[category] === 'specific'}
-                                                                                    onChange={() => handleCategoryScopeChange(project.uuid, category, 'specific')}
+                                                                                    checked={
+                                                                                        categoryScope[project.uuid]?.[
+                                                                                            category
+                                                                                        ] === 'specific'
+                                                                                    }
+                                                                                    onChange={() =>
+                                                                                        handleCategoryScopeChange(
+                                                                                            project.uuid,
+                                                                                            category,
+                                                                                            'specific'
+                                                                                        )
+                                                                                    }
                                                                                 />
                                                                                 <Label
                                                                                     htmlFor={`${project.uuid}-${category}-specific`}
                                                                                     className="text-xs font-normal m-0! -mt-0.5!"
                                                                                 >
                                                                                     <div className="mb-1">
-                                                                                        {getCategorySpecificLabel(category)}
+                                                                                        {getCategorySpecificLabel(
+                                                                                            category
+                                                                                        )}
                                                                                     </div>
 
-                                                                                    {categoryScope[project.uuid]?.[category] === 'specific' && (
+                                                                                    {categoryScope[project.uuid]?.[
+                                                                                        category
+                                                                                    ] === 'specific' && (
                                                                                         <MultiSelect
-                                                                                            options={getCategoriesForProject(project.id, category).map(cat => ({
+                                                                                            options={getCategoriesForProject(
+                                                                                                project.id,
+                                                                                                category
+                                                                                            ).map((cat) => ({
                                                                                                 value: cat.uuid,
-                                                                                                label: cat.name
+                                                                                                label: cat.name,
                                                                                             }))}
-                                                                                            defaultValue={selectedCategories[project.uuid]?.[category] || []}
-                                                                                            onValueChange={(selectedValues) => handleCategorySelectionChange(project.uuid, category, selectedValues)}
-                                                                                            placeholder={props.labels.select_categories_placeholder}
+                                                                                            defaultValue={
+                                                                                                selectedCategories[
+                                                                                                    project.uuid
+                                                                                                ]?.[category] || []
+                                                                                            }
+                                                                                            onValueChange={(
+                                                                                                selectedValues
+                                                                                            ) =>
+                                                                                                handleCategorySelectionChange(
+                                                                                                    project.uuid,
+                                                                                                    category,
+                                                                                                    selectedValues
+                                                                                                )
+                                                                                            }
+                                                                                            placeholder={
+                                                                                                props.labels
+                                                                                                    .select_categories_placeholder
+                                                                                            }
                                                                                             variant="inverted"
                                                                                             maxCount={100}
                                                                                             className="min-h-8! bg-white hover:bg-white!"
