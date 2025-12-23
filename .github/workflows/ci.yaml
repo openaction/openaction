@@ -115,6 +115,25 @@ jobs:
             - name: Build projects JavaScript
               run: cd assets/projects && yarn build
 
+    # TS coding style
+    console-ts-modern-prettier:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: console
+        steps:
+            - uses: actions/checkout@master
+
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '22'
+
+            - name: Install dependencies
+              run: cd assets/modern && yarn install
+
+            - name: Check coding style
+              run: cd assets/modern && yarn prettier-check
+
     # PHP tests
     console-php-tests:
         runs-on: ubuntu-latest

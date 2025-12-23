@@ -7,7 +7,9 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "prettier": "prettier --write . --config .prettierrc.json",
+        "prettier-check": "prettier --check . --config .prettierrc.json"
     },
     "dependencies": {
         "@eslint/js": "^9.29.0",
