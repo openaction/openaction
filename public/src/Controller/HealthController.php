@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HealthController extends AbstractController
 {
-    #[Route("/health", name: 'health', methods: ['GET'])]
+    #[Route('/health', name: 'health', methods: ['GET'])]
     public function health(): Response
     {
         return new Response('OK', Response::HTTP_OK, [
