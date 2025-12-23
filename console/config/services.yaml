@@ -221,6 +221,9 @@ services:
         arguments:
             $sources: !tagged 'app.contact_history_source'
 
+    #
+    # Cache and session
+    #
     cache.pdo.connection:
         class: PDO
         arguments:
@@ -229,9 +232,6 @@ services:
             - null
             - { !php/const PDO::ATTR_ERRMODE: !php/const PDO::ERRMODE_EXCEPTION }
 
-    #
-    # Session
-    #
     session.handler.pdo:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
