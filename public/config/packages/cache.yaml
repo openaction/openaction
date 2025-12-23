@@ -2,7 +2,7 @@ framework:
     cache:
         prefix_seed: '%env(APP_NAMESPACE)%_cache_'
         app: app.cache.adapter.redis
-        default_redis_provider: '%env(REDIS_URL)%'
+        default_redis_provider: '%env(resolve:REDIS_URL)%'
 
 services:
     app.cache.adapter.redis:

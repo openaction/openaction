@@ -1,11 +1,11 @@
 services:
-    digitalocean_spaces_client:
+    s3_client:
         class: 'AsyncAws\S3\S3Client'
         arguments:
             -
-                endpoint: '%env(DIGITALOCEAN_SPACES_ENDPOINT)%'
-                accessKeyId: '%env(DIGITALOCEAN_SPACES_ID)%'
-                accessKeySecret: '%env(DIGITALOCEAN_SPACES_SECRET)%'
+                endpoint: '%env(resolve:APP_CDN_S3_ENDPOINT)%'
+                accessKeyId: '%env(resolve:APP_CDN_S3_ACCESS_KEY_ID)%'
+                accessKeySecret: '%env(resolve:APP_CDN_S3_ACCESS_KEY_SECRET)%'
 
 flysystem:
     storages:
@@ -15,11 +15,11 @@ flysystem:
         cdn.storage.memory:
             adapter: 'memory'
 
-        cdn.storage.digitalocean:
+        cdn.storage.s3:
             adapter: 'asyncaws'
             options:
-                client: 'digitalocean_spaces_client'
-                bucket: '%env(DIGITALOCEAN_SPACES_BUCKET)%'
+                client: 's3_client'
+                bucket: '%env(resolve:APP_CDN_S3_BUCKET)%'
 
         cdn.storage.local:
             adapter: 'local'
@@ -29,7 +29,7 @@ flysystem:
         cdn.storage:
             adapter: 'lazy'
             options:
-                source: '%env(APP_CDN_STORAGE)%'
+                source: '%env(resolve:APP_CDN_STORAGE)%'
 
         #
         # Screenshots
