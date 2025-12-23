@@ -18,11 +18,15 @@ class DomainTokenCache
     }
 
     /**
-     * Refreshes the Redis cache used by public to choose the project
+     * Refreshes the shared cache used by public to choose the project
      * token to use for a given domain.
      */
     public function refresh(): void
     {
-        $this->cache->get('domains-tokens', fn (ItemInterface $item) => $this->repository->findDomainsTokens(), INF);
+        $this->cache->get('domains-tokens', function (ItemInterface $item) {
+            $item->expiresAfter(null);
+
+            return $this->repository->findDomainsTokens();
+        });
     }
 }

@@ -9,11 +9,6 @@ services:
         labels:
             com.symfony.server.service-ignore: true
 
-    redis:
-        image: redis:6.2-alpine
-        labels:
-            com.symfony.server.service-ignore: true
-
     rabbitmq:
         image: rabbitmq:3.9-management-alpine
         environment:
