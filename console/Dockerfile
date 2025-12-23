@@ -21,7 +21,6 @@ RUN mkdir var && \
     printf "opcache.preload=/app/config/preload.php\nopcache.preload_user=root\n" > $PHP_INI_DIR/conf.d/preload.ini
 
 COPY cron/check-domains /etc/periodic/15min/
-COPY cron/refresh-domains-cache /etc/periodic/1min/
 COPY cron/admin-stats-refresh /etc/periodic/15min/
 COPY cron/index-crm /etc/periodic/daily/
 COPY cron/index-cms /etc/periodic/daily/
@@ -35,7 +34,6 @@ COPY cron/synchronize-1w-mailchimp-campaigns-reports /etc/periodic/hourly/
 COPY cron/synchronize-6m-mailchimp-campaigns-reports /etc/periodic/daily/
 
 RUN chmod a+x /etc/periodic/15min/check-domains && \
-    chmod a+x /etc/periodic/1min/refresh-domains-cache && \
     chmod a+x /etc/periodic/15min/admin-stats-refresh && \
     chmod a+x /etc/periodic/daily/index-crm && \
     chmod a+x /etc/periodic/daily/index-cms && \

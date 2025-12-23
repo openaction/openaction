@@ -8,11 +8,11 @@ using Symfony CLI for running the PHP applications locally. Follow it before pus
 - PHP 8.1 with Composer v2.
 - Symfony CLI installed (`symfony -v`).
 - Node.js 22 + Yarn (`corepack enable` sets up Yarn 4 on Node 22).
-- Docker (services only) to run dependencies (PostgreSQL, Meilisearch).
+- Docker (services only) to run dependencies (PostgreSQL, Redis, Meilisearch).
 - GitHub CLI (`gh`) logged in (`gh auth login`). Always use `gh` for PRs and CI checks.
 - Brevo marketing SDK installed via Composer (`getbrevo/brevo-php`).
 
-## Services (Postgres, Meilisearch)
+## Services (Postgres, Redis, Meilisearch)
 
 The CI brings up services with Docker. Locally, do the same:
 
@@ -101,7 +101,6 @@ cp -R public/tests/Fixtures/assets public/public/build
 cd console
 symfony console doctrine:migrations:migrate -n
 symfony console doctrine:fixtures:load -n --group test --purge-with-truncate
-symfony console app:proxy:refresh-domains-cache -n
 
 # Run Symfony local web server for public tests
 symfony server:ca:install
