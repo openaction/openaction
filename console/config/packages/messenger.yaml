@@ -11,62 +11,32 @@ framework:
 
         transports:
             async_emailing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_EMAILING)%'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
                     delay: 1000
                     multiplier: 2
-                options:
-                    exchange:
-                        name: emailing
-                    queues:
-                        messages_emailing: ~
 
             async_texting:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_TEXTING)%'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
                     delay: 1000
                     multiplier: 2
-                options:
-                    exchange:
-                        name: texting
-                    queues:
-                        messages_texting: ~
 
             async_importing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: importing
-                    queues:
-                        messages_importing: ~
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_IMPORTING)%'
 
             async_priority_high:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: priority_high
-                    queues:
-                        messages_priority_high: ~
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_PRIORITY_HIGH)%'
 
             async_priority_low:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: priority_low
-                    queues:
-                        messages_priority_low: ~
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_PRIORITY_LOW)%'
 
             async_indexing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    exchange:
-                        name: indexing
-                    queues:
-                        messages_indexing: ~
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_INDEXING)%'
 
             failed: 'doctrine://default?queue_name=failed'
 
