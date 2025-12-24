@@ -11,7 +11,7 @@ framework:
 
         transports:
             async_emailing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_EMAILING)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_EMAILING)%'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
@@ -19,7 +19,7 @@ framework:
                     multiplier: 2
 
             async_texting:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_TEXTING)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_TEXTING)%'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
@@ -27,16 +27,16 @@ framework:
                     multiplier: 2
 
             async_importing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_IMPORTING)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_IMPORTING)%'
 
             async_priority_high:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_PRIORITY_HIGH)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_HIGH)%'
 
             async_priority_low:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_PRIORITY_LOW)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_LOW)%'
 
             async_indexing:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN_INDEXING)%'
+                dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_INDEXING)%'
 
             failed: 'doctrine://default?queue_name=failed'
 

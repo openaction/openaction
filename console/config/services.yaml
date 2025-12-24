@@ -92,8 +92,8 @@ services:
     App\Bridge\Meilisearch\MeilisearchInterface:
         class: 'App\Bridge\Meilisearch\Meilisearch'
         arguments:
-            $endpoint: '%env(MEILISEARCH_ENDPOINT)%'
-            $masterKey: '%env(MEILISEARCH_MASTER_KEY)%'
+            $endpoint: '%env(resolve:MEILISEARCH_ENDPOINT)%'
+            $masterKey: '%env(resolve:MEILISEARCH_MASTER_KEY)%'
             $namespace: '%env(APP_NAMESPACE)%'
 
     App\Bridge\Revue\RevueInterface:
