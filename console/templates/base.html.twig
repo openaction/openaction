@@ -84,7 +84,7 @@
         }
     </script>
 
-    {% if app.debug %}
+    {% if app.environment == 'dev' %}
         <script type="module">
             import RefreshRuntime from "{{ vite_dev_server }}/@react-refresh"
             RefreshRuntime.injectIntoGlobalHook(window)
