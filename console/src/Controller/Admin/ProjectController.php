@@ -19,9 +19,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use OpenSpout\Common\Entity\Style\CellAlignment;
-use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,20 +121,17 @@ class ProjectController extends AbstractCrudController
         $filename = sys_get_temp_dir().'/'.date('Y-m-d').'-projects.xlsx';
         touch($filename);
 
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile($filename);
 
         $headerAdded = false;
         foreach ($this->repository->getExportData() as $project) {
             if (!$headerAdded) {
-                $row = WriterEntityFactory::createRowFromArray(array_keys($project));
-                $row->setStyle((new StyleBuilder())->setFontBold()->setCellAlignment(CellAlignment::CENTER)->build());
-
-                $writer->addRow($row);
+                $writer->addRow(Row::fromValues(array_keys($project)));
                 $headerAdded = true;
             }
 
-            $writer->addRow(WriterEntityFactory::createRowFromArray($project));
+            $writer->addRow(Row::fromValues($project));
         }
 
         $writer->close();

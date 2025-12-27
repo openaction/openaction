@@ -1,4 +1,4 @@
-FROM ghcr.io/openaction/docker-php/prod
+FROM ghcr.io/openaction/docker-php/prod:8.4
 
 LABEL org.opencontainers.image.source=https://github.com/openaction/openaction
 
