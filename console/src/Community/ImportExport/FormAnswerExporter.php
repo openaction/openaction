@@ -4,7 +4,8 @@ namespace App\Community\ImportExport;
 
 use App\Entity\Website\Form;
 use App\Repository\Website\FormAnswerRepository;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 
 class FormAnswerExporter
 {
@@ -17,7 +18,7 @@ class FormAnswerExporter
 
     public function export(Form $form)
     {
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile('php://output');
 
         $head = ['id', 'contact_id', 'contact_email', 'created_at'];
@@ -27,10 +28,10 @@ class FormAnswerExporter
             }
         }
 
-        $writer->addRow(WriterEntityFactory::createRowFromArray($head));
+        $writer->addRow(Row::fromValues($head));
 
         foreach ($this->repository->getExportData($form) as $contact) {
-            $writer->addRow(WriterEntityFactory::createRowFromArray($contact));
+            $writer->addRow(Row::fromValues($contact));
         }
 
         $writer->close();

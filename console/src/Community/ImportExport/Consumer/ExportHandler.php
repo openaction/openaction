@@ -8,7 +8,8 @@ use App\Entity\Organization;
 use App\Mailer\PlatformMailer;
 use App\Repository\Community\ContactRepository;
 use App\Repository\OrganizationRepository;
-use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Writer\XLSX\Writer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -59,17 +60,17 @@ final class ExportHandler implements MessageHandlerInterface
 
     private function doExport(string $filename, Organization $organization, ?int $tagId = null)
     {
-        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer = new Writer();
         $writer->openToFile($filename);
 
         $headerAdded = false;
         foreach ($this->contactRepository->getExportData($organization, $tagId) as $contact) {
             if (!$headerAdded) {
-                $writer->addRow(WriterEntityFactory::createRowFromArray(array_keys($contact)));
+                $writer->addRow(Row::fromValues(array_keys($contact)));
                 $headerAdded = true;
             }
 
-            $writer->addRow(WriterEntityFactory::createRowFromArray($contact));
+            $writer->addRow(Row::fromValues($contact));
         }
 
         $writer->close();
