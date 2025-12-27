@@ -32,7 +32,7 @@ class ServeControllerTest extends WebTestCase
         yield 'penguin.bmp' => [
             __DIR__.'/../../Fixtures/upload/penguin.bmp',
             'e816bcc6-0568-46d1-b0c5-917ce4810a87/penguin.bmp',
-            'image/x-ms-bmp',
+            'image/bmp',
         ];
     }
 
