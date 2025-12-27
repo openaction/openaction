@@ -19,29 +19,3 @@ RUN mkdir var && \
     bin/console assets:install && \
     chmod -R 777 var && \
     printf "opcache.preload=/app/config/preload.php\nopcache.preload_user=root\n" > $PHP_INI_DIR/conf.d/preload.ini
-
-COPY cron/check-domains /etc/periodic/15min/
-COPY cron/admin-stats-refresh /etc/periodic/15min/
-COPY cron/index-crm /etc/periodic/daily/
-COPY cron/index-cms /etc/periodic/daily/
-COPY cron/contacts-resolve-ambiguities /etc/periodic/daily/
-COPY cron/integration-revue /etc/periodic/15min/
-COPY cron/synchronize-customers /etc/periodic/hourly/
-COPY cron/website-sessions-build /etc/periodic/15min/
-COPY cron/website-sessions-clear /etc/periodic/daily/
-COPY cron/synchronize-24h-mailchimp-campaigns-reports /etc/periodic/1min/
-COPY cron/synchronize-1w-mailchimp-campaigns-reports /etc/periodic/hourly/
-COPY cron/synchronize-6m-mailchimp-campaigns-reports /etc/periodic/daily/
-
-RUN chmod a+x /etc/periodic/15min/check-domains && \
-    chmod a+x /etc/periodic/15min/admin-stats-refresh && \
-    chmod a+x /etc/periodic/daily/index-crm && \
-    chmod a+x /etc/periodic/daily/index-cms && \
-    chmod a+x /etc/periodic/daily/contacts-resolve-ambiguities && \
-    chmod a+x /etc/periodic/15min/integration-revue && \
-    chmod a+x /etc/periodic/hourly/synchronize-customers && \
-    chmod a+x /etc/periodic/15min/website-sessions-build && \
-    chmod a+x /etc/periodic/daily/website-sessions-clear && \
-    chmod a+x /etc/periodic/1min/synchronize-24h-mailchimp-campaigns-reports && \
-    chmod a+x /etc/periodic/hourly/synchronize-1w-mailchimp-campaigns-reports && \
-    chmod a+x /etc/periodic/daily/synchronize-6m-mailchimp-campaigns-reports
