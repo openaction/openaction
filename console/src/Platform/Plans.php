@@ -85,7 +85,6 @@ final class Plans
 
             Features::FEATURE_INTEGRATION_QUORUM,
             Features::FEATURE_INTEGRATION_WINGS,
-            Features::FEATURE_INTEGRATION_REVUE,
         ],
         self::ORGANIZATION => [
             Features::MODULE_MEMBERS_AREA,

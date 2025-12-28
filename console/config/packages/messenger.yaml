@@ -81,7 +81,6 @@ framework:
             'App\Bridge\Quorum\Consumer\QuorumMessage': async_priority_low
             'App\Bridge\Integromat\Consumer\IntegromatWebhookMessage': async_priority_low
             'App\Bridge\Spallian\Consumer\SpallianMessage': async_priority_low
-            'App\Bridge\Revue\Consumer\RevueSyncMessage': async_priority_low
 
             # Webhooks
             'App\Community\Webhook\SendgridWebhookMessage': async_priority_low

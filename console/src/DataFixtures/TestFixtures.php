@@ -37,7 +37,6 @@ use App\Entity\Community\TextingCampaign;
 use App\Entity\Community\TextingCampaignMessage;
 use App\Entity\Domain;
 use App\Entity\Integration\IntegromatWebhook;
-use App\Entity\Integration\RevueAccount;
 use App\Entity\Integration\TelegramApp;
 use App\Entity\Integration\TelegramAppAuthorization;
 use App\Entity\Model\CloudflareDomainConfig;
@@ -179,7 +178,6 @@ class TestFixtures extends AbstractFixtures
         $this->loadTelegramApps();
         $this->loadTelegramAppsAuthorizations();
         $this->loadIntegromatWebhooks();
-        $this->loadRevueAccounts();
         $this->loadRegistrations();
         $this->loadDomains();
         $this->loadTags();
@@ -724,30 +722,6 @@ class TestFixtures extends AbstractFixtures
 
         foreach ($items as $data) {
             $this->em->persist(IntegromatWebhook::createFixture($data));
-        }
-
-        $this->em->flush();
-    }
-
-    private function loadRevueAccounts()
-    {
-        $items = [
-            'deae46c2-20df-4ba3-9c08-9bfc1d638f32' => [
-                'orga' => $this->orgas['cbeb774c-284c-43e3-923a-5a2388340f91'], // Acme
-                'label' => 'citipoapp',
-                'apiToken' => 'adfdb95e90476cf7628eb8cd5c739cde',
-            ],
-            '4972c1e9-669e-485d-b225-1104ae3ce35a' => [
-                'orga' => $this->orgas['cbeb774c-284c-43e3-923a-5a2388340f91'], // Acme
-                'label' => 'titouangalopin',
-                'apiToken' => '6307b0e505daa60e2541c245adab86ef',
-                'lastSync' => new \DateTime('2021-09-26 11:30'),
-                'enabled' => false,
-            ],
-        ];
-
-        foreach ($items as $id => $data) {
-            $this->em->persist(RevueAccount::createFixture(array_merge($data, ['uuid' => $id])));
         }
 
         $this->em->flush();

@@ -18,10 +18,6 @@ index:
         title: Acquisition
         description: Acquérez de nouveaux contacts plus rapidement.
 
-        twitter_revue:
-            title: Twitter Revue
-            help: Affichez un bouton sur votre profil Twitter pour rejoindre votre base de contacts Citipo en un clic.
-
         wings:
             title: Wings
             help: |
@@ -175,30 +171,6 @@ index:
             title: API Citipo
             help: Utilisez l'API Citipo pour construire vos propres projets intégrés avec Citipo.
             link: En savoir plus
-
-revue:
-    read_doc: Apprendre à utiliser l'intégration Twitter Revue
-
-    index:
-        page_title: Comptes Twitter Revue
-        help: Liez vos comptes Revue à Citipo pour ajouter un bouton d'inscription à votre organisation sur votre profil Twitter.
-        register: Connecter un compte
-        none: Aucun compte Twitter Revue connecté pour le moment.
-        edit: Modifier
-        delete: Déconnecter
-        delete_confirm: |
-            Voulez-vous vraiment déconnecter le compte %label% ? Cela stoppera la synchronisation de ce compte
-            avec Citipo.
-
-    create:
-        page_title: Connecter un compte Twitter Revue
-
-    form:
-        back: Retour aux comptes
-        help: Les inscrits Twitter Revue de ce compte seront automatiquement ajoutés à votre base de contacts Citipo.
-        label: Quel est le nom d'utilisateur Twitter de ce compte ?
-        apiToken: Quel est le token API du compte Twitter Revue ?
-        submit: Enregistrer
 
 wings:
     title: Synchronisation Citipo x Wings

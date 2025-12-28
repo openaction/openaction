@@ -96,9 +96,6 @@ services:
             $masterKey: '%env(resolve:MEILISEARCH_MASTER_KEY)%'
             $namespace: '%env(APP_NAMESPACE)%'
 
-    App\Bridge\Revue\RevueInterface:
-        class: 'App\Bridge\Revue\Revue'
-
     App\Bridge\Github\GithubInterface:
         class: 'App\Bridge\Github\Github'
         arguments:

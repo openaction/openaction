@@ -38,7 +38,6 @@ final class Features
     public const FEATURE_INTEGRATION_WINGS = 'feature_integration_wings';
     public const FEATURE_INTEGRATION_QUORUM = 'feature_integration_quorum';
     public const FEATURE_INTEGRATION_TELEGRAM = 'feature_integration_telegram';
-    public const FEATURE_INTEGRATION_REVUE = 'feature_integration_revue';
     public const FEATURE_INTEGRATION_INTEGROMAT = 'feature_integration_integromat';
 
     // API
