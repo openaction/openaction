@@ -5,7 +5,6 @@ namespace App\Api\Persister;
 use App\Api\Model\ContactApiData;
 use App\Bridge\Integromat\IntegromatInterface;
 use App\Bridge\Quorum\QuorumInterface;
-use App\Bridge\Spallian\SpallianInterface;
 use App\Community\Automation\EmailAutomationDispatcher;
 use App\Community\ContactLocator;
 use App\Entity\Community\Contact;
@@ -35,7 +34,6 @@ class ContactApiPersister
     private MessageBusInterface $bus;
     private QuorumInterface $quorum;
     private IntegromatInterface $integromat;
-    private SpallianInterface $spallian;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -47,7 +45,6 @@ class ContactApiPersister
         MessageBusInterface $bus,
         QuorumInterface $quorum,
         IntegromatInterface $integromat,
-        SpallianInterface $spallian,
     ) {
         $this->em = $em;
         $this->repository = $repository;
@@ -58,7 +55,6 @@ class ContactApiPersister
         $this->bus = $bus;
         $this->quorum = $quorum;
         $this->integromat = $integromat;
-        $this->spallian = $spallian;
     }
 
     public function persist(ContactApiData $data, Project|Organization $in): Contact
@@ -107,8 +103,6 @@ class ContactApiPersister
             $this->quorum->persist($contact);
         }
 
-        $this->spallian->persist($contact, $created);
-
         return $contact;
     }
 
@@ -124,7 +118,6 @@ class ContactApiPersister
 
         // Trigger integrations
         $this->quorum->persist($contact);
-        $this->spallian->persist($contact, false);
 
         return $contact;
     }

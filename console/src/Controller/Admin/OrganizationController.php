@@ -178,9 +178,6 @@ class OrganizationController extends AbstractCrudController
             yield TextField::new('quorumDefaultCity', 'Quorum default city name')
                 ->onlyOnForms()
                 ->setColumns(6);
-
-            yield TextField::new('spallianEndpoint', 'Spallian API endpoint')
-                ->onlyOnForms();
         }
 
         yield FormField::addPanel('Subscription')
