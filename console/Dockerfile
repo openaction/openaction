@@ -18,4 +18,5 @@ RUN mkdir var && \
     bin/console cache:warmup && \
     bin/console assets:install && \
     chmod -R 777 var && \
+    chmod -R a+x /app/cron && \
     printf "opcache.preload=/app/config/preload.php\nopcache.preload_user=root\n" > $PHP_INI_DIR/conf.d/preload.ini
