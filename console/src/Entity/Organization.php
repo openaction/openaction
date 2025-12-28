@@ -140,9 +140,6 @@ class Organization
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $quorumDefaultCity = null;
 
-    #[ORM\Column(length: 200, nullable: true)]
-    private ?string $spallianEndpoint = null;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $consoleCustomCss = null;
 
@@ -324,7 +321,6 @@ class Organization
         $self->quorumToken = $data['quorumToken'] ?? null;
         $self->quorumDefaultCity = $data['quorumDefaultCity'] ?? null;
         $self->apiToken = $data['apiToken'] ?? $self->apiToken;
-        $self->spallianEndpoint = $data['spallianEndpoint'] ?? null;
         $self->subscriptionPlan = $data['subscriptionPlan'] ?? Plans::ORGANIZATION;
         $self->mollieCustomerId = $data['mollieCustomerId'] ?? null;
         $self->billingPricePerMonth = $data['billingPricePerMonth'] ?? 0;
@@ -841,16 +837,6 @@ class Organization
     public function setQuorumDefaultCity(?string $quorumDefaultCity)
     {
         $this->quorumDefaultCity = $quorumDefaultCity;
-    }
-
-    public function getSpallianEndpoint(): ?string
-    {
-        return $this->spallianEndpoint;
-    }
-
-    public function setSpallianEndpoint(?string $spallianEndpoint)
-    {
-        $this->spallianEndpoint = $spallianEndpoint;
     }
 
     /*
