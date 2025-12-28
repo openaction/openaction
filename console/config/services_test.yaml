@@ -27,8 +27,6 @@ services:
     App\Bridge\Twilio\TwilioInterface:
         class: 'App\Bridge\Twilio\MockTwilio'
 
-    App\Bridge\Revue\RevueInterface:
-        class: 'App\Bridge\Revue\MockRevue'
 
     App\Bridge\Github\GithubInterface:
         class: 'App\Bridge\Github\MockGithub'
