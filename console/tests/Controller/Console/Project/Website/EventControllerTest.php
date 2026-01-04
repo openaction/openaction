@@ -67,7 +67,7 @@ class EventControllerTest extends WebTestCase
     {
         yield [
             'title' => 'New title',
-            'date' => new \DateTime('2020-08-01T15:30:00+00:00'),
+            'date' => new \DateTime('2026-08-01T15:30:00+00:00'),
             'address' => '1 Rue de la Convention, Paris 15e Arrondissement, Île-de-France, France',
             'latitude' => '-1.2345',
             'longitude' => '45.6789',
@@ -79,7 +79,7 @@ class EventControllerTest extends WebTestCase
 
         yield [
             'title' => 'Event with form register',
-            'date' => new \DateTime('2020-08-01T15:30:00+00:00'),
+            'date' => new \DateTime('2026-08-01T15:30:00+00:00'),
             'address' => '1 Rue de la Convention, Paris 15e Arrondissement, Île-de-France, France',
             'latitude' => '-1.2345',
             'longitude' => '45.6789',
@@ -295,7 +295,7 @@ class EventControllerTest extends WebTestCase
 
     public function testUpdateMetadata()
     {
-        $expectedDate = new \DateTime('2020-08-27T10:05:00+02:00');
+        $expectedDate = new \DateTime('2026-08-27T10:05:00+02:00');
         $client = static::createClient();
         $this->authenticate($client);
 
@@ -313,7 +313,7 @@ class EventControllerTest extends WebTestCase
             '/console/project/'.self::PROJECT_CITIPO_UUID.'/website/events/'.self::EVENT_DRAFT_UUID.'/update/metadata',
             [
                 'update_event' => [
-                    'publishedAt' => '2020-08-27T10:05:00+02:00',
+                    'publishedAt' => '2026-08-27T10:05:00+02:00',
                     'categories' => '["'.$category->getId().'"]',
                     'onlyForMembers' => '1',
                     'externalUrl' => 'https://google.com',
