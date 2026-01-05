@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Client\CitipoInterface;
+use App\Feed\EnclosureMetadataProvider;
 use Laminas\Feed\Writer\Feed;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +14,7 @@ class RssController extends AbstractController
     /**
      * @Route("/rss.xml", name="rss_feed", defaults={"_format"="xml"})
      */
-    public function index(CitipoInterface $citipo)
+    public function index(CitipoInterface $citipo, EnclosureMetadataProvider $metadataProvider)
     {
         if (!$project = $this->getProject()) {
             throw $this->createNotFoundException();
@@ -50,7 +51,9 @@ class RssController extends AbstractController
             ));
 
             if ($post['image'] ?? null) {
-                $entry->setEnclosure(['uri' => $post['image'], 'type' => 'image/jpeg']);
+                if ($enclosure = $metadataProvider->get($post['image'])) {
+                    $entry->setEnclosure($enclosure);
+                }
             }
 
             $feed->addEntry($entry);
