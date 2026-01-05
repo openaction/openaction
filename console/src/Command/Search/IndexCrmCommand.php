@@ -89,6 +89,7 @@ class IndexCrmCommand extends Command
             if ($tasks) {
                 $this->crmIndexer->waitForIndexing(array_filter($tasks));
             }
+
             $progress->advance();
 
             // Create organization members search keys and swap live index version
