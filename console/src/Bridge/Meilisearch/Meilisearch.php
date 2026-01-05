@@ -3,11 +3,11 @@
 namespace App\Bridge\Meilisearch;
 
 use App\Bridge\Meilisearch\Model\Task;
-use MeiliSearch\Client;
-use MeiliSearch\Contracts\IndexesQuery;
-use MeiliSearch\Endpoints\Indexes;
-use MeiliSearch\Endpoints\Keys;
-use MeiliSearch\Exceptions\ApiException;
+use Meilisearch\Client;
+use Meilisearch\Contracts\IndexesQuery;
+use Meilisearch\Endpoints\Indexes;
+use Meilisearch\Endpoints\Keys;
+use Meilisearch\Exceptions\ApiException;
 
 class Meilisearch implements MeilisearchInterface
 {
@@ -37,7 +37,7 @@ class Meilisearch implements MeilisearchInterface
 
     public function listIndexes(): array
     {
-        $indexes = $this->getClient()->getAllIndexes((new IndexesQuery())->setOffset(0)->setLimit(5000))->getResults();
+        $indexes = $this->getClient()->getIndexes((new IndexesQuery())->setOffset(0)->setLimit(5000))->getResults();
 
         $names = [];
 
@@ -51,7 +51,10 @@ class Meilisearch implements MeilisearchInterface
 
     public function createIndex(string $index, array $searchableAttributes, array $filterableAttributes, array $sortableAttributes): Task
     {
-        $created = $this->getClient()->index($index);
+        $created = $this->getClient()->createIndex($index, ['primaryKey' => 'id']);
+        $this->waitForTasks([$this->mapToTask($created)]);
+
+        $created = $this->getClient()->getIndex($index);
         $created->updateSearchableAttributes($searchableAttributes);
         $created->updateFilterableAttributes($filterableAttributes);
         $created->updateSortableAttributes($sortableAttributes);
