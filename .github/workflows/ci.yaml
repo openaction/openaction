@@ -188,6 +188,14 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+              with:
+                  platforms: arm64,amd64
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
             - uses: actions/setup-node@v2
               with:
                   node-version: '22'
@@ -217,7 +225,7 @@ jobs:
               run: cd assets/projects && yarn build
 
             - name: Build and publish console production image
-              uses: elgohr/Publish-Docker-Github-Action@master
+              uses: elgohr/Publish-Docker-Github-Action@v5
               with:
                   name: ${{ github.repository }}/console
                   username: ${{ secrets.DOCKER_USERNAME }}
@@ -225,6 +233,7 @@ jobs:
                   registry: ghcr.io
                   workdir: console
                   dockerfile: Dockerfile
+                  platforms: linux/amd64,linux/arm64
 
     #
     # Public
@@ -324,6 +333,14 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+              with:
+                  platforms: arm64,amd64
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.4'
@@ -347,7 +364,7 @@ jobs:
               run: yarn build
 
             - name: Build and publish public production image
-              uses: elgohr/Publish-Docker-Github-Action@master
+              uses: elgohr/Publish-Docker-Github-Action@v5
               with:
                   name: ${{ github.repository }}/public
                   username: ${{ secrets.DOCKER_USERNAME }}
@@ -355,3 +372,4 @@ jobs:
                   registry: ghcr.io
                   workdir: public
                   dockerfile: Dockerfile
+                  platforms: linux/amd64,linux/arm64
