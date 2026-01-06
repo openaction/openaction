@@ -188,23 +188,21 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
-            - name: Set up QEMU
-              uses: docker/setup-qemu-action@v3
+            - uses: docker/setup-qemu-action@v3
               with:
                   platforms: arm64,amd64
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+            - uses: docker/setup-buildx-action@v3
+
+            - uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
 
             - uses: actions/setup-node@v2
               with:
                   node-version: '22'
-
-            - uses: azure/docker-login@v1
-              with:
-                  login-server: ghcr.io
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Install legacy JavaScript dependencies
               run: cd assets/legacy && yarn install
@@ -224,16 +222,25 @@ jobs:
             - name: Build projects JavaScript
               run: cd assets/projects && yarn build
 
-            - name: Build and publish console production image
-              uses: elgohr/Publish-Docker-Github-Action@v5
+            - uses: docker/metadata-action@v5
+              id: meta
               with:
-                  name: ${{ github.repository }}/console
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
-                  registry: ghcr.io
-                  workdir: console
-                  dockerfile: Dockerfile
+                  images: ghcr.io/${{ github.repository }}/console
+                  tags: |
+                      type=ref,event=branch
+                      type=ref,event=tag
+                      type=sha
+
+            - uses: docker/build-push-action@v6
+              with:
+                  context: console
+                  file: ./Dockerfile
                   platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
 
     #
     # Public
@@ -333,13 +340,17 @@ jobs:
         steps:
             - uses: actions/checkout@master
 
-            - name: Set up QEMU
-              uses: docker/setup-qemu-action@v3
+            - uses: docker/setup-qemu-action@v3
               with:
                   platforms: arm64,amd64
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+            - uses: docker/setup-buildx-action@v3
+
+            - uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
 
             - uses: shivammathur/setup-php@v2
               with:
@@ -348,28 +359,28 @@ jobs:
                   extensions: redis
                   tools: symfony-cli
 
-            - uses: azure/docker-login@v1
+            - run: symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
+
+            - run: yarn install
+
+            - run: yarn build
+
+            - uses: docker/metadata-action@v5
+              id: meta
               with:
-                  login-server: ghcr.io
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
+                  images: ghcr.io/${{ github.repository }}/public
+                  tags: |
+                      type=ref,event=branch
+                      type=ref,event=tag
+                      type=sha
 
-            - name: Install PHP dependencies
-              run: symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress --no-scripts
-
-            - name: Install JavaScript dependencies
-              run: yarn install
-
-            - name: Build JavaScript
-              run: yarn build
-
-            - name: Build and publish public production image
-              uses: elgohr/Publish-Docker-Github-Action@v5
+            - uses: docker/build-push-action@v6
               with:
-                  name: ${{ github.repository }}/public
-                  username: ${{ secrets.DOCKER_USERNAME }}
-                  password: ${{ secrets.DOCKER_PASSWORD }}
-                  registry: ghcr.io
-                  workdir: public
-                  dockerfile: Dockerfile
+                  context: public
+                  file: ./Dockerfile
                   platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
