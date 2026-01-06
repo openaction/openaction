@@ -3,6 +3,8 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
+                    - doctrine_ping_connection
+                    - doctrine_close_connection
                     - 'App\Messenger\UniqueIdMiddleware'
                     - 'App\Messenger\TimeMiddleware'
 
@@ -31,12 +33,27 @@ framework:
 
             async_priority_high:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_HIGH)%'
+                retry_strategy:
+                    # Ensure transient database connection drops are retried before moving messages to the failure transport
+                    max_retries: 5
+                    delay: 1000
+                    multiplier: 2
 
             async_priority_low:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_LOW)%'
+                retry_strategy:
+                    # Ensure transient database connection drops are retried before moving messages to the failure transport
+                    max_retries: 5
+                    delay: 1000
+                    multiplier: 2
 
             async_indexing:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_INDEXING)%'
+                retry_strategy:
+                    # Ensure transient database connection drops are retried before moving messages to the failure transport
+                    max_retries: 5
+                    delay: 1000
+                    multiplier: 2
 
             failed: 'doctrine://default?queue_name=failed'
 
