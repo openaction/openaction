@@ -234,7 +234,7 @@ jobs:
             - uses: docker/build-push-action@v6
               with:
                   context: console
-                  file: ./Dockerfile
+                  file: ./console/Dockerfile
                   platforms: linux/amd64,linux/arm64
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
@@ -377,7 +377,7 @@ jobs:
             - uses: docker/build-push-action@v6
               with:
                   context: public
-                  file: ./Dockerfile
+                  file: ./public/Dockerfile
                   platforms: linux/amd64,linux/arm64
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
