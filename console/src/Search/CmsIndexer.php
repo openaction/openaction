@@ -56,30 +56,6 @@ class CmsIndexer
         }
     }
 
-    public function resetIndex(): void
-    {
-        $this->meilisearch->waitForTasks(
-            tasks: [
-                $this->meilisearch->deleteIndex(self::INDEX_NAME),
-            ],
-            timeoutInMs: 30_000,
-            intervalInMs: 500,
-        );
-
-        $this->meilisearch->waitForTasks(
-            tasks: [
-                $this->meilisearch->createIndex(
-                    self::INDEX_NAME,
-                    ['encoded_uuid', 'title', 'content'],
-                    ['type', 'restrictions_organization', 'restrictions_projects', 'date', 'areas', 'categories', 'status'],
-                    ['date', 'title', 'status'],
-                ),
-            ],
-            timeoutInMs: 30_000,
-            intervalInMs: 500,
-        );
-    }
-
     public function indexDocuments(array $documents): void
     {
         foreach (array_chunk($documents, 1500) as $batch) {
