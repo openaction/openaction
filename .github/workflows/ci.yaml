@@ -232,7 +232,7 @@ jobs:
                   file: ./console/Dockerfile
                   platforms: linux/amd64,linux/arm64
                   push: true
-                  tags: ghcr.io/openaction/openaction/console:${{ steps.meta.outputs.tags }}
+                  tags: ghcr.io/openaction/openaction/console:${{ steps.meta.outputs.short_sha }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
 
@@ -370,6 +370,6 @@ jobs:
                   file: ./public/Dockerfile
                   platforms: linux/amd64,linux/arm64
                   push: true
-                  tags: ghcr.io/openaction/openaction/public:${{ steps.meta.outputs.tags }}
+                  tags: ghcr.io/openaction/openaction/public:${{ steps.meta.outputs.short_sha }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
