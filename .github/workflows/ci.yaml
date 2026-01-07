@@ -184,7 +184,7 @@ jobs:
             - console-js-legacy-tests
             - console-js-legacy-build
             - console-php-tests
-        # if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: actions/checkout@master
 
@@ -240,7 +240,7 @@ jobs:
             - console-js-legacy-tests
             - console-js-legacy-build
             - console-php-tests
-        # if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: actions/checkout@master
 
