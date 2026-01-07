@@ -73,9 +73,6 @@ class IndexCmsCommand extends Command
          * Indexing
          */
 
-        $io->writeln('Resetting index... ');
-        $this->cmsIndexer->resetIndex();
-
         $io->writeln('Indexing public documents... ');
         $this->cmsIndexer->indexDocuments($documents);
 
