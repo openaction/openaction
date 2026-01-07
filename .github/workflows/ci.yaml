@@ -289,7 +289,7 @@ jobs:
         needs:
             - console-release-amd64
             - console-release-arm64
-        #if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: docker/login-action@v3
               with:
@@ -406,7 +406,7 @@ jobs:
             - public-php-cs
             - public-translations
             - public-tests
-        #if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: actions/checkout@master
 
@@ -450,7 +450,7 @@ jobs:
             - public-php-cs
             - public-translations
             - public-tests
-        #if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: actions/checkout@master
 
@@ -490,7 +490,7 @@ jobs:
         needs:
             - public-release-amd64
             - public-release-arm64
-        #if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         steps:
             - uses: docker/login-action@v3
               with:
