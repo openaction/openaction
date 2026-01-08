@@ -36,7 +36,8 @@ class EmailingCampaignSender
             return false;
         }
 
-        $this->sendgrid->sendMessage($this->messageFactory->createEmailing($campaign, $recipients, true));
+        $batch = $this->messageFactory->createCampaignBatch($campaign, $recipients, true);
+        $this->sendgrid->sendMessage($this->messageFactory->createMailFromBatch($batch));
 
         return true;
     }

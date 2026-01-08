@@ -3,26 +3,34 @@
 namespace App\Bridge\Postmark\Consumer;
 
 use App\Bridge\Postmark\PostmarkInterface;
+use App\Community\PostmarkMailFactory;
+use App\Repository\Community\EmailBatchRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class PostmarkHandler implements MessageHandlerInterface
 {
-    private PostmarkInterface $postmark;
-    private LoggerInterface $logger;
-
-    public function __construct(PostmarkInterface $postmark, LoggerInterface $logger)
-    {
-        $this->postmark = $postmark;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly EmailBatchRepository $repository,
+        private readonly PostmarkMailFactory $mailFactory,
+        private readonly PostmarkInterface $postmark,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(PostmarkMessage $message)
     {
-        $this->logger->info('Sending email '.$message->getMail()->subject, [
-            'mail' => $message->getMail(),
-        ]);
+        if (!$batch = $this->repository->find($message->batchId)) {
+            $this->logger->error(sprintf('Batch %d not found', $message->batchId));
 
-        $this->postmark->sendMessage($message->getMail());
+            return;
+        }
+
+        $mail = $this->mailFactory->createMailFromBatch($batch);
+
+        $this->logger->info('Sending email '.$mail->subject);
+        $this->postmark->sendMessage($mail);
+
+        $this->repository->markSent($batch);
     }
 }

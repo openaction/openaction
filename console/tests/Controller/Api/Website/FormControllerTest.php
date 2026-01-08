@@ -4,12 +4,14 @@ namespace App\Tests\Controller\Api\Website;
 
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
+use App\Community\SendgridMailFactory;
 use App\Entity\Community\Contact;
 use App\Entity\Organization;
 use App\Entity\Website\FormAnswer;
 use App\Repository\Community\ContactRepository;
 use App\Repository\Community\EmailAutomationMessageRepository;
 use App\Repository\Community\EmailAutomationRepository;
+use App\Repository\Community\EmailBatchRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\Website\FormAnswerRepository;
 use App\Tests\ApiTestCase;
@@ -392,7 +394,7 @@ class FormControllerTest extends ApiTestCase
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
         // Check the mail
-        $mail = $message->getMail();
+        $mail = $this->getMailFromBatch($message);
         $this->assertSame('New contact alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
@@ -415,7 +417,7 @@ class FormControllerTest extends ApiTestCase
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
         // Check the mail
-        $mail = $message->getMail();
+        $mail = $this->getMailFromBatch($message);
         $this->assertSame('New form answer alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
@@ -594,7 +596,7 @@ class FormControllerTest extends ApiTestCase
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
         // Check the mail
-        $mail = $message->getMail();
+        $mail = $this->getMailFromBatch($message);
         $this->assertSame('New form answer alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
@@ -675,7 +677,7 @@ class FormControllerTest extends ApiTestCase
         $message = $messages[0]->getMessage();
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
-        $mail = $message->getMail();
+        $mail = $this->getMailFromBatch($message);
         $this->assertSame('New form answer alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
@@ -697,7 +699,7 @@ class FormControllerTest extends ApiTestCase
         $message = $messages[1]->getMessage();
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
-        $mail = $message->getMail();
+        $mail = $this->getMailFromBatch($message);
         $this->assertSame('Filtered form alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
@@ -750,5 +752,18 @@ class FormControllerTest extends ApiTestCase
     public function testAnswerInvalidToken()
     {
         $this->apiRequest(self::createClient(), 'POST', '/api/website/forms/3LdNrguFZQxHjHqYsYiBlr/answer', 'invalid', 401);
+    }
+
+    private function getMailFromBatch(SendgridMessage $message)
+    {
+        /** @var EmailBatchRepository $emailBatchRepository */
+        $emailBatchRepository = static::getContainer()->get(EmailBatchRepository::class);
+        $batch = $emailBatchRepository->find($message->batchId);
+        $this->assertNotNull($batch);
+
+        /** @var SendgridMailFactory $sendgridMailFactory */
+        $sendgridMailFactory = static::getContainer()->get(SendgridMailFactory::class);
+
+        return $sendgridMailFactory->createMailFromBatch($batch);
     }
 }

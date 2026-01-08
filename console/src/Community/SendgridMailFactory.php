@@ -4,6 +4,7 @@ namespace App\Community;
 
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Entity\Community\EmailAutomation;
+use App\Entity\Community\EmailBatch;
 use App\Entity\Community\EmailingCampaign;
 use SendGrid\Mail\CustomArg;
 use SendGrid\Mail\From;
@@ -25,64 +26,89 @@ class SendgridMailFactory
 
     /**
      * @param Recipient[] $recipients
-     *
-     * @throws \SendGrid\Mail\TypeException
      */
-    public function createEmailing(EmailingCampaign $campaign, array $recipients, bool $preview = false): Mail
+    public function createCampaignBatch(EmailingCampaign $campaign, array $recipients, bool $preview = false): EmailBatch
     {
-        $fromEmail = u($campaign->getFullFromEmail())->ascii()->toString();
-
-        $mail = new Mail(new From($fromEmail, $campaign->getFromName() ?: null));
-        $mail->setGlobalSubject(($preview ? 'Preview - ' : '').$campaign->getSubject());
-        $mail->setSubject(($preview ? 'Preview - ' : '').$campaign->getSubject());
-        $mail->setOpenTracking($campaign->hasTrackOpens());
-        $mail->setClickTracking($campaign->hasTrackClicks());
-        $mail->setFooter(false);
-        $mail->addContent('text/html', $this->createCampaignBody($campaign, $preview));
-
-        if ($campaign->getReplyToEmail()) {
-            $mail->setReplyTo($campaign->getReplyToEmail(), $campaign->getReplyToName());
-        }
-
+        $personnalizations = [];
         foreach ($this->cleanRecipients($recipients) as $email => $recipient) {
-            $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
-            $personalization->addTo(new To($email));
-            $personalization->addCustomArg(new CustomArg('message-uuid', $recipient->getMessageId()));
-            $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
-            $personalization->addHeader(new Header('List-Unsubscribe', sprintf(
-                '<%s>',
-                $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $recipient->getMessageId()]),
-            )));
-
-            foreach ($recipient->getVariables() as $name => $substitute) {
-                $personalization->addSubstitution($name, $substitute);
-            }
+            $personnalizations[] = [
+                'to' => $email,
+                'message-uuid' => $recipient->getMessageId(),
+                'list-unsubscribe' => sprintf(
+                    '<%s>',
+                    $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $recipient->getMessageId()]),
+                ),
+                'substitutions' => $recipient->getVariables(),
+            ];
         }
 
-        return $mail;
+        return new EmailBatch('campaign:'.$campaign->getId(), 'sendgrid', [
+            'fromEmail' => u($campaign->getFullFromEmail())->ascii()->toString(),
+            'fromName' => $campaign->getFromName() ?: null,
+            'subject' => ($preview ? 'Preview - ' : '').$campaign->getSubject(),
+            'replyToEmail' => $campaign->getReplyToEmail() ?: null,
+            'replyToName' => $campaign->getReplyToName() ?: null,
+            'trackOpens' => $campaign->hasTrackOpens(),
+            'trackClicks' => $campaign->hasTrackClicks(),
+            'content' => $this->createCampaignBody($campaign, $preview),
+            'personalizations' => $personnalizations,
+        ]);
     }
 
     /**
      * @throws \SendGrid\Mail\TypeException
      */
-    public function createAutomationEmail(EmailAutomation $automation, Recipient $recipient): Mail
+    public function createAutomationBatch(EmailAutomation $automation, Recipient $recipient): EmailBatch
     {
-        $mail = new Mail(new From($automation->getFromEmail(), $automation->getFromName() ?: null));
-        $mail->setSubject($automation->getSubject());
-        $mail->setOpenTracking($automation->getOrganization()->getEmailEnableOpenTracking());
-        $mail->setClickTracking($automation->getOrganization()->getEmailEnableClickTracking());
-        $mail->setFooter(false);
-        $mail->addContent('text/html', $this->createAutomationBody($automation));
+        return new EmailBatch('automation:'.$automation->getId(), 'sendgrid', [
+            'fromEmail' => u($automation->getFromEmail())->ascii()->toString(),
+            'fromName' => $automation->getFromName() ?: null,
+            'subject' => $automation->getSubject(),
+            'replyToEmail' => $automation->getReplyToEmail() ?: null,
+            'replyToName' => $automation->getReplyToName() ?: null,
+            'trackOpens' => $automation->getOrganization()?->getEmailEnableOpenTracking(),
+            'trackClicks' => $automation->getOrganization()?->getEmailEnableClickTracking(),
+            'content' => $this->createAutomationBody($automation),
+            'personalizations' => [
+                [
+                    'to' => $automation->getToEmail() ?: $recipient->getEmail(),
+                    'message-uuid' => $recipient->getMessageId(),
+                    'substitutions' => $recipient->getVariables(),
+                ],
+            ],
+        ]);
+    }
 
-        if ($automation->getReplyToEmail()) {
-            $mail->setReplyTo($automation->getReplyToEmail(), $automation->getReplyToName());
+    public function createMailFromBatch(EmailBatch $batch): Mail
+    {
+        $mail = new Mail(new From($batch->getPayload()['fromEmail'], $batch->getPayload()['fromName']));
+        $mail->setGlobalSubject($batch->getPayload()['subject']);
+        $mail->setSubject($batch->getPayload()['subject']);
+        $mail->setOpenTracking($batch->getPayload()['trackOpens']);
+        $mail->setClickTracking($batch->getPayload()['trackClicks']);
+        $mail->setFooter(false);
+        $mail->addContent('text/html', $batch->getPayload()['content']);
+
+        if ($batch->getPayload()['replyToEmail']) {
+            $mail->setReplyTo($batch->getPayload()['replyToEmail'], $batch->getPayload()['replyToName']);
         }
 
-        $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
-        $personalization->addTo(new To($automation->getToEmail() ?: $recipient->getEmail()));
+        foreach ($batch->getPayload()['personalizations'] as $data) {
+            $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
+            $personalization->addTo(new To($data['to']));
 
-        foreach ($recipient->getVariables() as $name => $substitute) {
-            $personalization->addSubstitution($name, $substitute);
+            if (isset($data['message-uuid'])) {
+                $personalization->addCustomArg(new CustomArg('message-uuid', $data['message-uuid']));
+            }
+
+            if (isset($data['list-unsubscribe'])) {
+                $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
+                $personalization->addHeader(new Header('List-Unsubscribe', $data['list-unsubscribe']));
+            }
+
+            foreach ($data['substitutions'] as $name => $substitute) {
+                $personalization->addSubstitution($name, $substitute);
+            }
         }
 
         return $mail;

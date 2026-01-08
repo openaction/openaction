@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Api\Community;
 use App\Bridge\Integromat\Consumer\IntegromatWebhookMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
+use App\Community\SendgridMailFactory;
 use App\Entity\Community\Contact;
 use App\Entity\Community\ContactUpdate;
 use App\Entity\Community\Tag;
@@ -12,6 +13,7 @@ use App\Entity\Organization;
 use App\Repository\Community\ContactRepository;
 use App\Repository\Community\ContactUpdateRepository;
 use App\Repository\Community\EmailAutomationMessageRepository;
+use App\Repository\Community\EmailBatchRepository;
 use App\Repository\Community\TagRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\ProjectRepository;
@@ -590,6 +592,11 @@ class ContactControllerTest extends ApiTestCase
 
         $expectedMailsSent = [];
 
+        /** @var EmailBatchRepository $emailBatchRepository */
+        $emailBatchRepository = static::getContainer()->get(EmailBatchRepository::class);
+        /** @var SendgridMailFactory $sendgridMailFactory */
+        $sendgridMailFactory = static::getContainer()->get(SendgridMailFactory::class);
+
         if ($expectedAdminAutomation) {
             $expectedMailsSent[] = [
                 'subject' => 'New contact alert',
@@ -626,7 +633,9 @@ class ContactControllerTest extends ApiTestCase
             $this->assertInstanceOf(SendgridMessage::class, $message);
 
             // Check the mail
-            $mail = $message->getMail();
+            $batch = $emailBatchRepository->find($message->batchId);
+            $this->assertNotNull($batch);
+            $mail = $sendgridMailFactory->createMailFromBatch($batch);
             $this->assertSame($expectedMail['subject'], $mail->getGlobalSubject()->getSubject());
             $this->assertSame($expectedMail['fromEmail'], $mail->getFrom()->getEmail());
             $this->assertSame($expectedMail['fromName'], $mail->getFrom()->getName());

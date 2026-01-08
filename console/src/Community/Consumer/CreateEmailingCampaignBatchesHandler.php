@@ -12,6 +12,7 @@ use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Util\PhoneNumber;
 use App\Util\Uid;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Uid\Uuid;
@@ -23,6 +24,7 @@ use Symfony\Component\Uid\Uuid;
 final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterface
 {
     public function __construct(
+        private readonly EntityManagerInterface $em,
         private readonly EmailingCampaignRepository $campaignRepository,
         private readonly EmailingCampaignMessageRepository $messageRepository,
         private readonly SendgridMailFactory $sendgridMailFactory,
@@ -82,9 +84,17 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
             }
 
             if ('postmark' === $organization->getEmailProvider()) {
-                $messages[] = new PostmarkMessage($this->postmarkMailFactory->createEmailing($campaign, $recipients));
+                $batch = $this->postmarkMailFactory->createCampaignBatch($campaign, $recipients);
+                $this->em->persist($batch);
+                $this->em->flush();
+
+                $messages[] = new PostmarkMessage($batch->getId());
             } else {
-                $messages[] = new SendgridMessage($this->sendgridMailFactory->createEmailing($campaign, $recipients));
+                $batch = $this->sendgridMailFactory->createCampaignBatch($campaign, $recipients);
+                $this->em->persist($batch);
+                $this->em->flush();
+
+                $messages[] = new SendgridMessage($batch->getId());
             }
         }
 
