@@ -40,7 +40,9 @@
     {% endif %}
 
     {% if campaign.unlayerEnabled %}
-        {{ campaign.content|raw }}
+        <div>
+            {{ campaign.content|raw }}
+        </div>
 
         <div class="footer">
             <p class="text-center">
