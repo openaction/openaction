@@ -30,5 +30,7 @@ final class PostmarkHandler implements MessageHandlerInterface
 
         $this->logger->info('Sending email '.$mail->subject);
         $this->postmark->sendMessage($mail);
+
+        $this->repository->markSent($batch);
     }
 }

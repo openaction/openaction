@@ -36,5 +36,7 @@ final class SendgridHandler implements MessageHandlerInterface
 
         $this->logger->info('Sending email '.$mail->getGlobalSubject()->getSubject());
         $this->sendgrid->sendMessage($mail);
+
+        $this->repository->markSent($batch);
     }
 }
