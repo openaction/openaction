@@ -3,26 +3,38 @@
 namespace App\Bridge\Sendgrid\Consumer;
 
 use App\Bridge\Sendgrid\SendgridInterface;
+use App\Community\SendgridMailFactory;
+use App\Repository\Community\EmailingCampaignBatchRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class SendgridHandler implements MessageHandlerInterface
 {
-    private SendgridInterface $sendgrid;
-    private LoggerInterface $logger;
-
-    public function __construct(SendgridInterface $sendgrid, LoggerInterface $logger)
-    {
-        $this->sendgrid = $sendgrid;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly EmailingCampaignBatchRepository $repository,
+        private readonly SendgridMailFactory $mailFactory,
+        private readonly SendgridInterface $sendgrid,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(SendgridMessage $message)
     {
-        $this->logger->info('Sending email '.$message->getMail()->getGlobalSubject()->getSubject(), [
-            'mail' => $message->getMail(),
-        ]);
+        if (!$batch = $this->repository->find($message->batchId)) {
+            $this->logger->error(sprintf('Batch %d not found', $message->batchId));
 
-        $this->sendgrid->sendMessage($message->getMail());
+            return;
+        }
+
+        if ($batch->getSentAt()) {
+            $this->logger->info('Batch already sent at '.$batch->getSentAt()->format('Y-m-d H:i:s').', skipping');
+
+            return;
+        }
+
+        $mail = $this->mailFactory->createMailFromBatch($batch);
+
+        $this->logger->info('Sending email '.$mail->getGlobalSubject()->getSubject());
+        $this->sendgrid->sendMessage($mail);
     }
 }

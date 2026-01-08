@@ -82,9 +82,9 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
             }
 
             if ('postmark' === $organization->getEmailProvider()) {
-                $messages[] = new PostmarkMessage($this->postmarkMailFactory->createEmailing($campaign, $recipients));
+                $messages[] = new PostmarkMessage($this->postmarkMailFactory->createBatch($campaign, $recipients)->getId());
             } else {
-                $messages[] = new SendgridMessage($this->sendgridMailFactory->createEmailing($campaign, $recipients));
+                $messages[] = new SendgridMessage($this->sendgridMailFactory->createBatch($campaign, $recipients)->getId());
             }
         }
 
