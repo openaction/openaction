@@ -72,6 +72,7 @@ class SendgridMailFactory
             'personalizations' => [
                 [
                     'to' => $automation->getToEmail() ?: $recipient->getEmail(),
+                    'message-uuid' => $recipient->getMessageId(),
                     'substitutions' => $recipient->getVariables(),
                 ],
             ],
@@ -95,9 +96,15 @@ class SendgridMailFactory
         foreach ($batch->getPayload()['personalizations'] as $data) {
             $personalization = $mail->getPersonalization($mail->getPersonalizationCount());
             $personalization->addTo(new To($data['to']));
-            $personalization->addCustomArg(new CustomArg('message-uuid', $data['message-uuid']));
-            $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
-            $personalization->addHeader(new Header('List-Unsubscribe', $data['list-unsubscribe']));
+
+            if (isset($data['message-uuid'])) {
+                $personalization->addCustomArg(new CustomArg('message-uuid', $data['message-uuid']));
+            }
+
+            if (isset($data['list-unsubscribe'])) {
+                $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
+                $personalization->addHeader(new Header('List-Unsubscribe', $data['list-unsubscribe']));
+            }
 
             foreach ($data['substitutions'] as $name => $substitute) {
                 $personalization->addSubstitution($name, $substitute);

@@ -5,11 +5,13 @@ namespace App\Tests\Controller\Console\Organization\Community;
 use App\Bridge\Integromat\Consumer\IntegromatWebhookMessage;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
+use App\Community\SendgridMailFactory;
 use App\Entity\Community\Contact;
 use App\Entity\Community\Tag;
 use App\Entity\Organization;
 use App\Repository\Community\ContactRepository;
 use App\Repository\Community\EmailAutomationMessageRepository;
+use App\Repository\Community\EmailBatchRepository;
 use App\Repository\Community\TagRepository;
 use App\Repository\OrganizationRepository;
 use App\Search\Consumer\RemoveCrmDocumentMessage;
@@ -187,6 +189,11 @@ class ContactManageControllerTest extends WebTestCase
         // Check email automation messages
         $this->assertSame(1, $automationMessageRepo->count(['email' => 'contact@citipo.com']));
 
+        /** @var EmailBatchRepository $emailBatchRepository */
+        $emailBatchRepository = static::getContainer()->get(EmailBatchRepository::class);
+        /** @var SendgridMailFactory $sendgridMailFactory */
+        $sendgridMailFactory = static::getContainer()->get(SendgridMailFactory::class);
+
         $messages = $transport->get();
         $this->assertCount(1, $messages);
 
@@ -195,7 +202,9 @@ class ContactManageControllerTest extends WebTestCase
         $this->assertInstanceOf(SendgridMessage::class, $message);
 
         // Check the mail
-        $mail = $message->getMail();
+        $batch = $emailBatchRepository->find($message->batchId);
+        $this->assertNotNull($batch);
+        $mail = $sendgridMailFactory->createMailFromBatch($batch);
         $this->assertSame('New contact alert', $mail->getGlobalSubject()->getSubject());
         $this->assertSame('contact@citipo.com', $mail->getFrom()->getEmail());
         $this->assertSame('Jacques BAUER', $mail->getFrom()->getName());
