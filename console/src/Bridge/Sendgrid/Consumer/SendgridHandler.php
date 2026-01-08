@@ -4,14 +4,14 @@ namespace App\Bridge\Sendgrid\Consumer;
 
 use App\Bridge\Sendgrid\SendgridInterface;
 use App\Community\SendgridMailFactory;
-use App\Repository\Community\EmailingCampaignBatchRepository;
+use App\Repository\Community\EmailBatchRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class SendgridHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private readonly EmailingCampaignBatchRepository $repository,
+        private readonly EmailBatchRepository $repository,
         private readonly SendgridMailFactory $mailFactory,
         private readonly SendgridInterface $sendgrid,
         private readonly LoggerInterface $logger,

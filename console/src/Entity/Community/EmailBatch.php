@@ -3,19 +3,18 @@
 namespace App\Entity\Community;
 
 use App\Entity\Util;
-use App\Repository\Community\EmailingCampaignBatchRepository;
+use App\Repository\Community\EmailBatchRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EmailingCampaignBatchRepository::class)]
-#[ORM\Table('community_emailing_campaigns_batches')]
-class EmailingCampaignBatch
+#[ORM\Entity(repositoryClass: EmailBatchRepository::class)]
+#[ORM\Table('community_email_batches')]
+class EmailBatch
 {
     use Util\EntityIdTrait;
     use Util\EntityTimestampableTrait;
 
-    #[ORM\ManyToOne(targetEntity: EmailingCampaign::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private EmailingCampaign $campaign;
+    #[ORM\Column(length: 100)]
+    private string $source;
 
     #[ORM\Column(length: 30)]
     private string $emailProvider;
@@ -26,17 +25,17 @@ class EmailingCampaignBatch
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $sentAt = null;
 
-    public function __construct(EmailingCampaign $campaign, string $emailProvider, array $payload)
+    public function __construct(string $source, string $emailProvider, array $payload)
     {
-        $this->campaign = $campaign;
+        $this->source = $source;
         $this->emailProvider = $emailProvider;
         $this->payload = $payload;
         $this->populateTimestampable();
     }
 
-    public function getCampaign(): EmailingCampaign
+    public function getSource(): string
     {
-        return $this->campaign;
+        return $this->source;
     }
 
     public function getEmailProvider(): string

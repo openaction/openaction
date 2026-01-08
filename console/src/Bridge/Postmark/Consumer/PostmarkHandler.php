@@ -4,14 +4,14 @@ namespace App\Bridge\Postmark\Consumer;
 
 use App\Bridge\Postmark\PostmarkInterface;
 use App\Community\PostmarkMailFactory;
-use App\Repository\Community\EmailingCampaignBatchRepository;
+use App\Repository\Community\EmailBatchRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class PostmarkHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private readonly EmailingCampaignBatchRepository $repository,
+        private readonly EmailBatchRepository $repository,
         private readonly PostmarkMailFactory $mailFactory,
         private readonly PostmarkInterface $postmark,
         private readonly LoggerInterface $logger,

@@ -5,8 +5,8 @@ namespace App\Community;
 use App\Bridge\Postmark\Model\Mail;
 use App\Bridge\Postmark\Model\Personalization;
 use App\Bridge\Sendgrid\Model\Recipient;
+use App\Entity\Community\EmailBatch;
 use App\Entity\Community\EmailingCampaign;
-use App\Entity\Community\EmailingCampaignBatch;
 use Twig\Environment;
 
 use function Symfony\Component\String\u;
@@ -21,7 +21,7 @@ class PostmarkMailFactory
     /**
      * @param Recipient[] $recipients
      */
-    public function createBatch(EmailingCampaign $campaign, array $recipients, bool $preview = false): EmailingCampaignBatch
+    public function createCampaignBatch(EmailingCampaign $campaign, array $recipients, bool $preview = false): EmailBatch
     {
         $htmlContent = $this->createCampaignBody($campaign, $preview);
 
@@ -38,7 +38,7 @@ class PostmarkMailFactory
             ];
         }
 
-        return new EmailingCampaignBatch($campaign, 'postmark', [
+        return new EmailBatch('campaign:'.$campaign->getId(), 'postmark', [
             'fromEmail' => u($campaign->getFullFromEmail())->ascii()->toString(),
             'fromName' => $campaign->getFromName() ?: null,
             'replyToEmail' => $campaign->getReplyToEmail() ?: null,
@@ -50,7 +50,7 @@ class PostmarkMailFactory
         ]);
     }
 
-    public function createMailFromBatch(EmailingCampaignBatch $batch): Mail
+    public function createMailFromBatch(EmailBatch $batch): Mail
     {
         $personnalizations = [];
         foreach ($batch->getPayload()['personalizations'] as $data) {

@@ -9,30 +9,23 @@ use App\Entity\Community\EmailAutomation;
 use App\Repository\Community\EmailAutomationMessageRepository;
 use App\Repository\OrganizationRepository;
 use App\Util\Uid;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class EmailAutomationSender
+readonly class EmailAutomationSender
 {
-    private OrganizationRepository $organizationRepo;
-    private SendgridMailFactory $messageFactory;
-    private EmailAutomationMessageRepository $messageRepository;
-    private MessageBusInterface $bus;
-
     public function __construct(
-        OrganizationRepository $organizationRepo,
-        SendgridMailFactory $messageFactory,
-        EmailAutomationMessageRepository $messageRepository,
-        MessageBusInterface $bus,
+        private EntityManagerInterface $em,
+        private OrganizationRepository $organizationRepository,
+        private SendgridMailFactory $messageFactory,
+        private EmailAutomationMessageRepository $messageRepository,
+        private MessageBusInterface $bus,
     ) {
-        $this->organizationRepo = $organizationRepo;
-        $this->messageFactory = $messageFactory;
-        $this->messageRepository = $messageRepository;
-        $this->bus = $bus;
     }
 
     public function send(EmailAutomation $automation, ?Contact $contact, array $additionalVariables = []): bool
     {
-        if (!$this->organizationRepo->useCredits($automation->getOrganization(), 1, 'automation')) {
+        if (!$this->organizationRepository->useCredits($automation->getOrganization(), 1, 'automation')) {
             return false;
         }
 
@@ -57,9 +50,11 @@ class EmailAutomationSender
         }
 
         if ($recipient) {
-            $this->bus->dispatch(
-                new SendgridMessage($this->messageFactory->createAutomationEmail($automation, $recipient))
-            );
+            $batch = $this->messageFactory->createAutomationBatch($automation, $recipient);
+            $this->em->persist($batch);
+            $this->em->flush();
+
+            $this->bus->dispatch(new SendgridMessage($batch->getId()));
         }
 
         return true;

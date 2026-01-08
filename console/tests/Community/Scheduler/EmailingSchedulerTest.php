@@ -4,7 +4,6 @@ namespace App\Tests\Community\Scheduler;
 
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Community\Scheduler\EmailingScheduler;
-use SendGrid\Mail\Mail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
@@ -85,7 +84,7 @@ class EmailingSchedulerTest extends KernelTestCase
         $scheduler = static::getContainer()->get(EmailingScheduler::class);
 
         $scheduler->scheduleCampaign(
-            messages: array_fill(0, $batchesCount, new SendgridMessage(new Mail())),
+            messages: array_fill(0, $batchesCount, new SendgridMessage(1)),
             batchSize: $batchSize,
             throttlePerHour: $throttlePerHour,
         );
