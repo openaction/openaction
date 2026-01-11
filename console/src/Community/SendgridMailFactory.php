@@ -38,6 +38,7 @@ class SendgridMailFactory
                     '<%s>',
                     $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $recipient->getMessageId()]),
                 ),
+                'webhook-url' => $this->router->generate('webhook_sendgrid'),
                 'substitutions' => $recipient->getVariables(),
             ];
         }
