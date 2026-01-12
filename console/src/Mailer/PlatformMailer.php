@@ -2,6 +2,7 @@
 
 namespace App\Mailer;
 
+use App\Cdn\CdnRouter;
 use App\Entity\Billing\Order;
 use App\Entity\Billing\Quote;
 use App\Entity\Organization;
@@ -17,12 +18,14 @@ class PlatformMailer
 {
     private MailerInterface $mailer;
     private TranslatorInterface $translator;
+    private CdnRouter $cdnRouter;
     private string $senderEmail;
 
-    public function __construct(MailerInterface $mailer, TranslatorInterface $translator, string $senderEmail)
+    public function __construct(MailerInterface $mailer, TranslatorInterface $translator, CdnRouter $cdnRouter, string $senderEmail)
     {
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->cdnRouter = $cdnRouter;
         $this->senderEmail = $senderEmail;
     }
 
@@ -33,12 +36,11 @@ class PlatformMailer
                 ->to($registration->getEmail())
                 ->subject($this->translator->trans('transactional.registration.verify.subject', [], 'emails', $registration->getLocale()))
                 ->htmlTemplate('emails/security/registration/verify.html.twig')
-                ->context([
-                    'current_organization' => $registration->getOrganization(),
+                ->context($this->createContext([
                     'locale' => $registration->getLocale(),
                     'registration_uuid' => $registration->getUuid()->toRfc4122(),
                     'registration_token' => $registration->getToken(),
-                ])
+                ], $registration->getOrganization()))
         );
     }
 
@@ -49,10 +51,10 @@ class PlatformMailer
                 ->to($user->getEmail())
                 ->subject($this->translator->trans('transactional.registration.welcome.subject', [], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/security/registration/welcome.html.twig')
-                ->context([
+                ->context($this->createContext([
                     'locale' => $user->getLocale(),
                     'name' => $user->getFullName(),
-                ])
+                ]))
         );
     }
 
@@ -70,14 +72,13 @@ class PlatformMailer
                 ->to($registration->getEmail())
                 ->subject($subject)
                 ->htmlTemplate('emails/console/organization/invite_new.html.twig')
-                ->context([
-                    'current_organization' => $organization,
+                ->context($this->createContext([
                     'locale' => $registration->getLocale(),
                     'registration_uuid' => $registration->getUuid()->toRfc4122(),
                     'registration_token' => $registration->getToken(),
                     'organization_name' => $organization->getName(),
                     'author_name' => $author->getFullName(),
-                ])
+                ], $organization))
         );
     }
 
@@ -95,13 +96,12 @@ class PlatformMailer
                 ->to($invited->getEmail())
                 ->subject($subject)
                 ->htmlTemplate('emails/console/organization/invite_registered.html.twig')
-                ->context([
-                    'current_organization' => $organization,
+                ->context($this->createContext([
                     'locale' => $invited->getLocale(),
                     'organization_uuid' => $organization->getUuid()->toRfc4122(),
                     'organization_name' => $organization->getName(),
                     'author_name' => $author->getFullName(),
-                ])
+                ], $organization))
         );
     }
 
@@ -112,10 +112,10 @@ class PlatformMailer
                 ->to($user->getEmail())
                 ->subject($this->translator->trans('transactional.forgot_password.request.subject', [], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/security/forgot-password/request.html.twig')
-                ->context([
+                ->context($this->createContext([
                     'locale' => $user->getLocale(),
                     'secret' => $user->getSecretResetPassword(),
-                ])
+                ]))
         );
     }
 
@@ -126,9 +126,9 @@ class PlatformMailer
                 ->to($user->getEmail())
                 ->subject($this->translator->trans('transactional.forgot_password.updated.subject', [], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/security/forgot-password/updated.html.twig')
-                ->context([
+                ->context($this->createContext([
                     'locale' => $user->getLocale(),
-                ])
+                ]))
         );
     }
 
@@ -139,12 +139,11 @@ class PlatformMailer
                 ->to($user->getEmail())
                 ->subject($this->translator->trans('transactional.notification.new_project.subject', [], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_project.html.twig')
-                ->context([
-                    'current_organization' => $organization,
+                ->context($this->createContext([
                     'locale' => $user->getLocale(),
                     'project_name' => $project->getName(),
                     'organization_name' => $organization->getName(),
-                ])
+                ], $organization))
         );
     }
 
@@ -165,12 +164,11 @@ class PlatformMailer
                     '%days_left%' => $daysLeft,
                 ], 'emails', $user->getLocale()))
                 ->htmlTemplate('emails/console/notification/subscription_expiration.html.twig')
-                ->context([
-                    'current_organization' => $organization,
+                ->context($this->createContext([
                     'locale' => $user->getLocale(),
                     'organization_name' => $organization->getName(),
                     'days_left' => $daysLeft,
-                ])
+                ], $organization))
         );
     }
 
@@ -184,11 +182,10 @@ class PlatformMailer
                     '%organization%' => $order->getOrganization()->getName(),
                 ], 'emails', $order->getRecipient()->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_invoice.html.twig')
-                ->context([
-                    'current_organization' => $order->getOrganization(),
+                ->context($this->createContext([
                     'organization_name' => $order->getOrganization()->getName(),
                     'locale' => $order->getRecipient()->getLocale(),
-                ])
+                ], $order->getOrganization()))
                 ->attach(file_get_contents($file), pathinfo($file, PATHINFO_FILENAME).'.pdf', 'application/pdf')
         );
     }
@@ -203,11 +200,10 @@ class PlatformMailer
                     '%organization%' => $quote->getOrganization()->getName(),
                 ], 'emails', $quote->getRecipient()->getLocale()))
                 ->htmlTemplate('emails/console/notification/new_quote.html.twig')
-                ->context([
-                    'current_organization' => $quote->getOrganization(),
+                ->context($this->createContext([
                     'organization_name' => $quote->getOrganization()->getName(),
                     'locale' => $quote->getRecipient()->getLocale(),
-                ])
+                ], $quote->getOrganization()))
                 ->attach(file_get_contents($file), pathinfo($file, PATHINFO_FILENAME).'.pdf', 'application/pdf')
         );
     }
@@ -221,18 +217,30 @@ class PlatformMailer
                     '%organization%' => $orga->getName(),
                 ], 'emails', $locale))
                 ->htmlTemplate('emails/console/notification/export.html.twig')
-                ->context([
-                    'current_organization' => $orga,
-                    'organization_uuid' => $orga->getUuid(),
+                ->context($this->createContext([
+                    'organization_uuid' => $orga->getUuid()->toRfc4122(),
                     'organization_name' => $orga->getName(),
                     'locale' => $locale,
                     'export_pathname' => $upload->getPathname(),
-                ])
+                ], $orga))
         );
     }
 
     private function createMessage(): TemplatedEmail
     {
         return (new TemplatedEmail())->from($this->senderEmail);
+    }
+
+    private function createContext(array $context, ?Organization $organization = null): array
+    {
+        if (!$organization) {
+            return $context;
+        }
+
+        return array_merge($context, array_filter([
+            'platform_name' => $organization->getWhiteLabelName(),
+            'platform_logo_url' => $organization->getWhiteLabelLogo() ? $this->cdnRouter->generateUrl($organization->getWhiteLabelLogo()) : null,
+            'platform_email' => $organization->getBillingEmail(),
+        ], static fn ($value) => null !== $value && '' !== $value));
     }
 }
