@@ -34,9 +34,14 @@ class SendgridMailFactory
             $personnalizations[] = [
                 'to' => $email,
                 'message-uuid' => $recipient->getMessageId(),
-                'list-unsubscribe' => sprintf(
-                    '<%s>',
-                    $this->router->generate('webhook_list_unsubscribe', ['contactUuid' => $recipient->getMessageId()]),
+                'list-unsubscribe' => sprintf('<%s>', $this->router->generate(
+                    name: 'webhook_list_unsubscribe',
+                    parameters: ['contactUuid' => $recipient->getMessageId()],
+                    referenceType: UrlGeneratorInterface::ABSOLUTE_URL,
+                )),
+                'webhook-url' => $this->router->generate(
+                    name: 'webhook_sendgrid',
+                    referenceType: UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
                 'substitutions' => $recipient->getVariables(),
             ];
