@@ -1,12 +1,7 @@
-{% set platform_name = console_name|default('OpenAction') %}
-{% set platform_logo = url('root_url')|trim('/') ~ console_logo|default(asset('res/logo/logo-dark.svg')) %}
+{% set platform_name = platform_name|default(console_name|default('OpenAction')) %}
+{% set platform_logo = platform_logo_url|default(url('root_url')|trim('/') ~ console_logo|default(asset('res/logo/logo-dark.svg'))) %}
 {% set platform_legal_name = console_email|default('OpenAction Foundation') %}
-{% set platform_email = console_email|default('contact@openaction.eu') %}
-
-{% if current_organization|default(null) %}
-    {% set platform_name = current_organization.whiteLabelName|default(platform_name) %}
-    {% set platform_logo = current_organization.whiteLabelLogo ? cdn_url(current_organization.whiteLabelLogo) : platform_logo %}
-{% endif %}
+{% set platform_email = platform_email|default(console_email|default('contact@openaction.eu')) %}
 
 {% apply inky_to_html|inline_css(source('@emails/inky.css'), source('@emails/custom.css')) %}
     {% block style '' %}

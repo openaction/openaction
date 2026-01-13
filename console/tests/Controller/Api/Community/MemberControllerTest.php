@@ -111,6 +111,8 @@ class MemberControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
+        $this->refreshMemberPassword('brunella.courtemanche2@orange.fr');
+
         /*
          * Login
          */
@@ -268,6 +270,8 @@ class MemberControllerTest extends ApiTestCase
     {
         $client = self::createClient();
 
+        $this->refreshMemberPassword('brunella.courtemanche2@orange.fr');
+
         /*
          * Reset request
          */
@@ -363,5 +367,19 @@ class MemberControllerTest extends ApiTestCase
             400,
             'invalid',
         );
+    }
+
+    private function refreshMemberPassword(string $email): void
+    {
+        $container = static::getContainer();
+        $contact = $container->get(ContactRepository::class)->findOneBy(['email' => $email]);
+        $this->assertNotNull($contact);
+
+        $hasher = $container->get(UserPasswordHasherInterface::class);
+        $contact->changePassword($hasher->hashPassword($contact, 'password'));
+
+        $em = $container->get('doctrine')->getManager();
+        $em->persist($contact);
+        $em->flush();
     }
 }
