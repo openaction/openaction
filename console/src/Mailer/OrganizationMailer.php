@@ -33,6 +33,8 @@ class OrganizationMailer
             return;
         }
 
+        $reference = Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountConfirmToken();
+
         $this->mailer->send(
             $this->createMessage($project->getRootDomain()->getName())
                 ->to($contact->getEmail())
@@ -41,7 +43,8 @@ class OrganizationMailer
                 ->context(array_merge(
                     $this->createContext($project),
                     [
-                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'register-confirm', Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountConfirmToken()),
+                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'register-confirm', $reference),
+                        'reference' => $reference,
                     ]
                 ))
         );
@@ -53,6 +56,8 @@ class OrganizationMailer
             return;
         }
 
+        $reference = Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountResetToken();
+
         $this->mailer->send(
             $this->createMessage($project->getRootDomain()->getName())
                 ->to($contact->getEmail())
@@ -61,7 +66,8 @@ class OrganizationMailer
                 ->context(array_merge(
                     $this->createContext($project),
                     [
-                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'reset-confirm', Uid::toBase62($contact->getUuid()).'/'.$contact->getAccountResetToken()),
+                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'reset-confirm', $reference),
+                        'reference' => $reference,
                     ]
                 ))
         );
@@ -74,6 +80,7 @@ class OrganizationMailer
         }
 
         $contact = $contactUpdate->getContact();
+        $reference = Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken();
 
         $this->mailer->send(
             $this->createMessage($project->getRootDomain()->getName())
@@ -83,7 +90,8 @@ class OrganizationMailer
                 ->context(array_merge(
                     $this->createContext($project),
                     [
-                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'update-email-confirm', Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken()),
+                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'update-email-confirm', $reference),
+                        'reference' => $reference,
                     ]
                 ))
         );
@@ -92,6 +100,7 @@ class OrganizationMailer
     public function sendUnregisterConfirm(Project $project, ContactUpdate $contactUpdate)
     {
         $contact = $contactUpdate->getContact();
+        $reference = Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken();
 
         $this->mailer->send(
             $this->createMessage($project->getRootDomain()->getName())
@@ -101,7 +110,8 @@ class OrganizationMailer
                 ->context(array_merge(
                     $this->createContext($project),
                     [
-                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'unregister-confirm', Uid::toBase62($contactUpdate->getUuid()).'/'.$contactUpdate->getToken()),
+                        'redirect_url' => $this->domainRouter->generateRedirectUrl($project, 'unregister-confirm', $reference),
+                        'reference' => $reference,
                     ]
                 ))
         );
