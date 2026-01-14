@@ -3,8 +3,12 @@ when@prod:
         dsn: '%env(SENTRY_DSN)%'
         register_error_listener: false
         register_error_handler: false
+        tracing:
+            enabled: false
         options:
             environment: "%kernel.environment%"
+            tags:
+                app_namespace: "%env(APP_NAMESPACE)%"
             ignore_exceptions:
                 - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
                 - 'Symfony\Component\HttpKernel\Exception\BadRequestHttpException'
