@@ -11,8 +11,8 @@ class AuthorizationToken
 
     public function __construct(string $firstName, string $lastName, string $nonce, string $encrypted)
     {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->firstName = htmlentities($firstName, ENT_QUOTES, 'UTF-8');
+        $this->lastName = htmlentities($lastName, ENT_QUOTES, 'UTF-8');
         $this->nonce = $nonce;
         $this->encrypted = $encrypted;
     }
