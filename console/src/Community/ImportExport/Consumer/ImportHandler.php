@@ -175,7 +175,7 @@ final class ImportHandler
         $progress = 0;
         $this->jobRepository->setJobStep($jobId, step: 4, payload: ['status' => 'importing_raw_data', 'progress' => $progress]);
 
-        foreach (array_chunk($sqlValues, 10_000) as $chunk) {
+        foreach (array_chunk($sqlValues, 2500) as $chunk) {
             $columnsNames = [];
             foreach (array_keys($columnsMappingWithUuid) as $column) {
                 $columnsNames[] = strtolower($column);
@@ -284,7 +284,7 @@ final class ImportHandler
                 $values[] = '('.implode(', ', $row).')';
             }
 
-            foreach (array_chunk($values, 5_000) as $chunk) {
+            foreach (array_chunk($values, 2500) as $chunk) {
                 $db->executeStatement('
                     INSERT INTO community_tags (id, organization_id, name, slug, created_at, updated_at)
                     VALUES '.implode(', ', $chunk).'
