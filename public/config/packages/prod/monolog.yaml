@@ -1,5 +1,10 @@
 monolog:
     handlers:
+        breadcrumbs:
+            type: service
+            id: Sentry\Monolog\BreadcrumbHandler
+            level: info
+            channels: ["!event"]
         main:
             type: fingers_crossed
             action_level: error
@@ -8,17 +13,15 @@ monolog:
             buffer_size: 100 # How many messages should be saved? Prevent memory leaks
         nested:
             type: group
-            members: [file, sentry_buffer]
+            members: [file, sentry]
         file:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
-        sentry_buffer:
-            type: buffer
-            handler: sentry
         sentry:
-            type: service
-            id: 'App\Bridge\Sentry\SentryHandler'
+            type: sentry
+            level: !php/const Monolog\Logger::ERROR
+            hub_id: Sentry\State\HubInterface
         console:
             type: console
             process_psr_3_messages: false

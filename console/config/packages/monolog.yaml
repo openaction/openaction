@@ -48,6 +48,11 @@ when@test:
 when@prod:
     monolog:
         handlers:
+            breadcrumbs:
+                type: service
+                id: Sentry\Monolog\BreadcrumbHandler
+                level: info
+                channels: ["!event"]
             main:
                 type: fingers_crossed
                 action_level: error

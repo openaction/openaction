@@ -119,6 +119,15 @@
     "sentry/sentry": {
         "version": "2.4.1"
     },
+    "sentry/sentry-symfony": {
+        "version": "4.14",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.6",
+            "ref": "9ce177d985f35c9d2a29478fa1de79b7749ee3bf"
+        }
+    },
     "symfony/asset": {
         "version": "v5.1.2"
     },

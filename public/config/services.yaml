@@ -26,15 +26,6 @@ services:
     #
     # Bridge
     #
-    App\Bridge\Sentry\SentryHandler: ~
-
-    Sentry\State\HubInterface:
-        factory: ['@App\Bridge\Sentry\SentryHubFactory', 'create']
-        arguments:
-            $dsn: '%env(SENTRY_DSN)%'
-            $projectRoot: '%kernel.project_dir%'
-            $cacheDir: '%kernel.cache_dir%'
-
     Monolog\Processor\PsrLogMessageProcessor:
         tags: ['monolog.processor']
 
