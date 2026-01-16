@@ -106,6 +106,10 @@ class SendgridMailFactory
                 $personalization->addCustomArg(new CustomArg('message-uuid', $data['message-uuid']));
             }
 
+            if (isset($data['webhook-url'])) {
+                $personalization->addCustomArg(new CustomArg('webhook-url', $data['webhook-url']));
+            }
+
             if (isset($data['list-unsubscribe'])) {
                 $personalization->addHeader(new Header('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click'));
                 $personalization->addHeader(new Header('List-Unsubscribe', $data['list-unsubscribe']));
