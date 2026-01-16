@@ -29,6 +29,8 @@ services:
     Monolog\Processor\PsrLogMessageProcessor:
         tags: ['monolog.processor']
 
+    Sentry\Monolog\BreadcrumbHandler: ~
+
     App\Bridge\Uploadcare\Uploadcare:
         arguments:
             $publicKey: '%env(UPLOADCARE_PUBLIC_KEY)%'
