@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Area;
 use App\Entity\Community\Tag;
+use App\Entity\Domain;
 use App\Entity\Organization;
 use App\Entity\Project;
 use App\Platform\Features;
@@ -323,5 +324,18 @@ class ProjectRepository extends ServiceEntityRepository
             ) data
             WHERE id = data.project_id
         ');
+    }
+
+    public function findSubdomainsUsedForDomain(Domain $domain): array
+    {
+        return array_column(
+            $this->createQueryBuilder('p')
+                ->select('p.subDomain')
+                ->where('p.rootDomain = :rootDomain')
+                ->setParameter('rootDomain', $domain)
+                ->getQuery()
+                ->getArrayResult(),
+            'subDomain',
+        );
     }
 }
