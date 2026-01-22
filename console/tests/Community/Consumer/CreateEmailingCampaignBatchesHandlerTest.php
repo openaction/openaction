@@ -2,10 +2,10 @@
 
 namespace App\Tests\Community\Consumer;
 
-use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Community\Consumer\CreateEmailingCampaignBatchesHandler;
 use App\Community\Consumer\CreateEmailingCampaignBatchesMessage;
 use App\Entity\Community\EmailingCampaign;
+use App\Repository\Community\EmailBatchRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Tests\KernelTestCase;
 
@@ -33,12 +33,24 @@ class CreateEmailingCampaignBatchesHandlerTest extends KernelTestCase
         $this->assertInstanceOf(EmailingCampaign::class, $campaign);
 
         $handler = static::getContainer()->get(CreateEmailingCampaignBatchesHandler::class);
+        $before = new \DateTimeImmutable();
         $handler(new CreateEmailingCampaignBatchesMessage($campaign->getId()));
+        $after = new \DateTimeImmutable();
 
-        // Should have published batches
+        // Should have scheduled batches without dispatching them immediately
         $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
-        $this->assertCount(1, $messages);
-        $this->assertInstanceOf(SendgridMessage::class, $messages[0]->getMessage());
+        $this->assertCount(0, $messages);
+
+        /** @var EmailBatchRepository $repository */
+        $repository = static::getContainer()->get(EmailBatchRepository::class);
+        $batches = $repository->findBy(['source' => 'campaign:'.$campaign->getId()]);
+        $this->assertCount(1, $batches);
+
+        $batch = $batches[0];
+        $this->assertNotNull($batch->getScheduledAt());
+        $this->assertNull($batch->getQueuedAt());
+        $this->assertGreaterThanOrEqual($before->getTimestamp(), $batch->getScheduledAt()->getTimestamp());
+        $this->assertLessThanOrEqual($after->getTimestamp(), $batch->getScheduledAt()->getTimestamp());
     }
 }

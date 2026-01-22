@@ -30,4 +30,42 @@ class EmailBatchRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @return EmailBatch[]
+     */
+    public function findDueCampaignBatches(\DateTimeInterface $now, int $limit = 500): array
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.scheduledAt IS NOT NULL')
+            ->andWhere('b.scheduledAt <= :now')
+            ->andWhere('b.sentAt IS NULL')
+            ->andWhere('b.queuedAt IS NULL')
+            ->andWhere('b.source LIKE :source')
+            ->setParameter('now', $now)
+            ->setParameter('source', 'campaign:%')
+            ->orderBy('b.scheduledAt', 'ASC')
+            ->addOrderBy('b.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function markQueued(EmailBatch $batch, ?\DateTimeInterface $queuedAt = null): bool
+    {
+        $queuedAt ??= new \DateTime();
+
+        $updated = $this->createQueryBuilder('b')
+            ->update()
+            ->set('b.queuedAt', ':queuedAt')
+            ->setParameter('queuedAt', $queuedAt)
+            ->where('b.id = :id')
+            ->andWhere('b.queuedAt IS NULL')
+            ->andWhere('b.sentAt IS NULL')
+            ->setParameter('id', $batch->getId())
+            ->getQuery()
+            ->execute();
+
+        return $updated > 0;
+    }
 }

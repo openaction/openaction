@@ -26,6 +26,12 @@ final class PostmarkHandler implements MessageHandlerInterface
             return;
         }
 
+        if ($batch->getSentAt()) {
+            $this->logger->info('Batch already sent at '.$batch->getSentAt()->format('Y-m-d H:i:s').', skipping');
+
+            return;
+        }
+
         $mail = $this->mailFactory->createMailFromBatch($batch);
 
         $this->logger->info('Sending email '.$mail->subject);

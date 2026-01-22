@@ -2,31 +2,29 @@
 
 namespace App\Community\Scheduler;
 
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
+use App\Entity\Community\EmailBatch;
 
 class EmailingScheduler
 {
-    public function __construct(
-        private readonly MessageBusInterface $bus,
-    ) {
-    }
-
-    public function scheduleCampaign(array $messages, int $batchSize, ?int $throttlePerHour): void
+    /**
+     * @param EmailBatch[]|iterable $batches
+     */
+    public function scheduleCampaign(iterable $batches, int $batchSize, ?int $throttlePerHour, ?\DateTimeInterface $now = null): void
     {
         if (null === $throttlePerHour) {
-            $maxMessagesPer10minutes = max(count($messages), 1); // Disable throtlling by creating only one chunk
+            $maxMessagesPer10minutes = PHP_INT_MAX; // Disable throttling by scheduling all batches at once
         } else {
-            $maxMessagesPer10minutes = max(floor($throttlePerHour / $batchSize / 6), 1);
+            $maxMessagesPer10minutes = max((int) floor($throttlePerHour / $batchSize / 6), 1);
         }
 
-        $delay = 0;
-        foreach (array_chunk($messages, $maxMessagesPer10minutes) as $chunk) {
-            foreach ($chunk as $message) {
-                $this->bus->dispatch($message, $delay ? [new DelayStamp($delay)] : []);
-            }
+        $baseTime = $now ? \DateTimeImmutable::createFromInterface($now) : new \DateTimeImmutable();
+        $index = 0;
 
-            $delay += 10 * 60 * 1000; // Send next chunk in 10min
+        foreach ($batches as $batch) {
+            $chunkIndex = intdiv($index, $maxMessagesPer10minutes);
+            $scheduledAt = $baseTime->modify(sprintf('+%d minutes', $chunkIndex * 10));
+            $batch->setScheduledAt(\DateTime::createFromInterface($scheduledAt));
+            ++$index;
         }
     }
 }
