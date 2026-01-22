@@ -203,7 +203,7 @@ class SendControllerTest extends WebTestCase
         $this->assertSame(999997, $orga->getCreditsBalance());
 
         // Test the dispatching of the message
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
         $this->assertCount(1, $messages);
         $this->assertInstanceOf(SendEmailingCampaignMessage::class, $messages[0]->getMessage());
@@ -228,7 +228,7 @@ class SendControllerTest extends WebTestCase
         $client->submit($button->form());
         $this->assertResponseRedirects('/console/project/643e47ea-fd9d-4963-958f-05970de2f88b/community/emailing');
 
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $this->assertCount(0, $transport->get());
 
         $client->followRedirect();
@@ -258,7 +258,7 @@ class SendControllerTest extends WebTestCase
         $this->assertSame(4997, $orga->getCreditsBalance());
 
         // Test the dispatching of the message
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
         $this->assertCount(1, $messages);
         $this->assertInstanceOf(SendEmailingCampaignMessage::class, $messages[0]->getMessage());
@@ -295,7 +295,7 @@ class SendControllerTest extends WebTestCase
         $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
         $this->assertSame(999997, $orga->getCreditsBalance());
 
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
         $this->assertCount(1, $messages);
         $this->assertInstanceOf(SendBrevoEmailingCampaignMessage::class, $messages[0]->getMessage());

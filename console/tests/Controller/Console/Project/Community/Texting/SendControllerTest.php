@@ -175,7 +175,7 @@ class SendControllerTest extends WebTestCase
         $this->assertSame(7, $orga->getTextsCreditsBalance());
 
         // Test the dispatching of the message
-        $transport = self::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = self::getContainer()->get('messenger.transport.async_texting');
         $messages = $transport->get();
         $this->assertCount(1, $messages);
         $this->assertInstanceOf(SendTextingCampaignMessage::class, $messages[0]->getMessage());
@@ -200,7 +200,7 @@ class SendControllerTest extends WebTestCase
         $client->submit($button->form());
         $this->assertResponseRedirects('/console/project/643e47ea-fd9d-4963-958f-05970de2f88b/community/texting');
 
-        $transport = self::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = self::getContainer()->get('messenger.transport.async_texting');
         $this->assertCount(0, $transport->get());
 
         $client->followRedirect();

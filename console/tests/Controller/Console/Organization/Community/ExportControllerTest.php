@@ -20,7 +20,7 @@ class ExportControllerTest extends WebTestCase
         $client->clickLink('Export contacts');
 
         // Should have published message
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
         $this->assertCount(1, $messages = $transport->get());
 
         /* @var ExportMessage $message */
@@ -47,7 +47,7 @@ class ExportControllerTest extends WebTestCase
         $client->click($crawler->filter('tr:contains("ExampleTag") a:contains("Export contacts")')->link());
 
         // Should have published message
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
         $this->assertCount(1, $messages = $transport->get());
 
         /* @var ExportMessage $message */

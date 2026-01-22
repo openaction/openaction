@@ -21,7 +21,7 @@ class SendEmailingCampaignHandlerTest extends KernelTestCase
         $handler(new SendEmailingCampaignMessage(0));
 
         // Shouldn't have done anything
-        $this->assertCount(0, static::getContainer()->get('messenger.transport.async_priority_low')->get());
+        $this->assertCount(0, static::getContainer()->get('messenger.transport.async_emailing')->get());
     }
 
     public function testConsumeAlreadySent()
@@ -38,7 +38,7 @@ class SendEmailingCampaignHandlerTest extends KernelTestCase
         $handler(new SendEmailingCampaignMessage($campaign->getId()));
 
         // Shouldn't have done anything
-        $transport = static::getContainer()->get('messenger.transport.async_priority_low');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
         $this->assertCount(0, $messages);
 
@@ -78,7 +78,7 @@ class SendEmailingCampaignHandlerTest extends KernelTestCase
         );
 
         // Should have published batches
-        $transport = static::getContainer()->get('messenger.transport.async_priority_low');
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
         $messages = $transport->get();
         $this->assertCount(1, $messages);
         $this->assertInstanceOf(CreateEmailingCampaignBatchesMessage::class, $messages[0]->getMessage());
