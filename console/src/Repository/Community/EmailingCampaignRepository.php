@@ -305,12 +305,12 @@ class EmailingCampaignRepository extends ServiceEntityRepository
                 c.created_at
             FROM community_emailing_campaigns_messages m
             LEFT JOIN community_contacts c ON m.contact_id = c.id
-            LEFT JOIN (
-                SELECT ct.contact_id, string_agg(t.name, \', \') AS tags_array
+            LEFT JOIN LATERAL (
+                SELECT string_agg(t.name, \', \') AS tags_array
                 FROM community_contacts_tags ct
                 JOIN community_tags t ON t.id = ct.tag_id
-                GROUP BY ct.contact_id
-            ) t ON t.contact_id = c.id
+                WHERE ct.contact_id = c.id
+            ) t ON true
             LEFT JOIN json_array_elements_text(c.contact_additional_emails) AS cae ON true
             LEFT JOIN areas a ON c.area_id = a.id
             LEFT JOIN areas ac ON c.address_country_id = ac.id
