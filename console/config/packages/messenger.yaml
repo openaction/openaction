@@ -73,13 +73,13 @@ framework:
             'App\Billing\Invoice\GenerateQuotePdfMessage': async_priority_high
 
             # Community
-            'App\Community\Consumer\SendEmailingCampaignMessage': async_priority_high
-            'App\Community\Consumer\SendMailchimpEmailingCampaignMessage': async_priority_high
-            'App\Community\Consumer\SendBrevoEmailingCampaignMessage': async_priority_high
-            'App\Community\Consumer\SendTextingCampaignMessage': async_priority_high
+            'App\Community\Consumer\SendEmailingCampaignMessage': async_emailing
+            'App\Community\Consumer\SendMailchimpEmailingCampaignMessage': async_emailing
+            'App\Community\Consumer\SendBrevoEmailingCampaignMessage': async_emailing
+            'App\Community\Consumer\SendTextingCampaignMessage': async_texting
             'App\Community\Consumer\StartPhoningCampaignMessage': async_priority_high
-            'App\Community\Consumer\CreateEmailingCampaignBatchesMessage': async_priority_low
-            'App\Community\Consumer\CreateTextingCampaignBatchesMessage': async_priority_low
+            'App\Community\Consumer\CreateEmailingCampaignBatchesMessage': async_emailing
+            'App\Community\Consumer\CreateTextingCampaignBatchesMessage': async_texting
             'App\Bridge\Sendgrid\Consumer\SendgridMessage': async_emailing
             'App\Bridge\Postmark\Consumer\PostmarkMessage': async_emailing
             'App\Bridge\Twilio\Consumer\TwilioMessage': async_texting
@@ -90,8 +90,8 @@ framework:
 
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_importing
-            'App\Community\ImportExport\Consumer\ExportMessage': async_priority_high
-            'App\Community\ImportExport\Consumer\ExportEmailingCampaignMessage': async_priority_high
+            'App\Community\ImportExport\Consumer\ExportMessage': async_importing
+            'App\Community\ImportExport\Consumer\ExportEmailingCampaignMessage': async_importing
             'App\Website\ImportExport\Consumer\ContentImportMessage': async_importing
 
             # Integrations

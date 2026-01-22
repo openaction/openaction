@@ -380,7 +380,7 @@ class StatsControllerTest extends WebTestCase
         $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/95b3f576-c643-45ba-9d5e-c9c44f65fab8/report/export');
 
         // Should have published message
-        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
         $this->assertCount(1, $messages = $transport->get());
 
         /* @var ExportEmailingCampaignMessage $message */
