@@ -198,96 +198,66 @@ class ContactRepository extends ServiceEntityRepository
 
     public function getExportData(Organization $organization, ?int $tagId = null): iterable
     {
-        $db = $this->_em->getConnection();
-
-        // Get tags list
-        $tags = $db->executeQuery('
-            SELECT t.name FROM community_tags t WHERE t.organization_id = ? ORDER BY t.name
-        ', [$organization->getId()])->fetchAllAssociative();
-
-        // Get projects list
-        $projects = $db->executeQuery('
-            SELECT 
-               p.name,
-               (
-                    SELECT STRING_AGG(t.name, \'~|~\') 
-                    FROM projects_tags pt 
-                    LEFT JOIN community_tags t ON t.id = pt.tag_id 
-                    WHERE pt.project_id = p.id
-               ) AS tags,
-               (
-                    SELECT STRING_AGG(CONCAT(CONCAT(a.tree_left, \';\'), a.tree_right), \'~|~\') 
-                    FROM projects_areas pa
-                    LEFT JOIN areas a ON a.id = pa.area_id 
-                    WHERE pa.project_id = p.id
-               ) AS areas
-            FROM projects p
-            WHERE p.organization_id = ?
-            ORDER BY p.name
-        ', [$organization->getId()])->fetchAllAssociative();
-
-        foreach ($projects as $key => $project) {
-            $areas = [];
-            foreach ($project['areas'] ? explode('~|~', $project['areas']) : [] as $area) {
-                $area = explode(';', $area);
-                $areas[] = ['left' => (int) $area[0], 'right' => (int) $area[1]];
-            }
-
-            $projects[$key]['areas'] = $areas;
-            $projects[$key]['tags'] = $project['tags'] ? explode('~|~', $project['tags']) : [];
-        }
-
         $sql = '
-            SELECT DISTINCT ON (c.email) 
-                c.email,
-                c.uuid AS id,
-                a.name AS area,
-                a.tree_left AS area_tree_left,
-                a.tree_right AS area_tree_right,
-                c.profile_formal_title,
-                c.profile_first_name,
-                c.profile_middle_name,
-                c.profile_last_name,
-                c.profile_birthdate,
-                c.profile_company,
-                c.profile_job_title,
-                c.contact_phone,
-                c.contact_work_phone,
-                c.parsed_contact_phone,
-                c.parsed_contact_work_phone,
-                c.social_facebook,
-                c.social_twitter,
-                c.social_linked_in,
-                c.social_telegram,
-                c.social_whatsapp,
-                c.address_street_line1,
-                c.address_street_line2,
-                c.address_zip_code,
-                c.address_city,
-                ac.name AS address_country,
-                (CASE WHEN c.account_password IS NOT NULL THEN 1 ELSE 0 END) AS is_member,
-                (CASE WHEN c.settings_receive_newsletters = true THEN 1 ELSE 0 END) AS settings_receive_newsletters,
-                (CASE WHEN c.settings_receive_sms = true THEN 1 ELSE 0 END) AS settings_receive_sms,
-                (CASE WHEN c.settings_receive_calls = true THEN 1 ELSE 0 END) AS settings_receive_calls,
-                t.tags_array AS metadata_tags,
-                c.metadata_comment, 
-                c.created_at
+            SELECT
+                c.email AS "email",
+                cae.additional_emails AS "contactAdditionalEmails",
+                c.profile_formal_title AS "profileFormalTitle",
+                c.profile_first_name AS "profileFirstName",
+                c.profile_middle_name AS "profileMiddleName",
+                c.profile_last_name AS "profileLastName",
+                c.birth_name AS "birthName",
+                c.profile_birthdate AS "profileBirthdate",
+                (CASE WHEN c.is_deceased = true THEN 1 ELSE 0 END) AS "isDeceased",
+                c.profile_gender AS "profileGender",
+                c.profile_nationality AS "profileNationality",
+                c.birth_city AS "birthCity",
+                c.birth_country_code AS "birthCountryCode",
+                c.profile_company AS "profileCompany",
+                c.profile_job_title AS "profileJobTitle",
+                c.account_language AS "accountLanguage",
+                c.contact_phone AS "contactPhone",
+                c.contact_work_phone AS "contactWorkPhone",
+                c.social_facebook AS "socialFacebook",
+                c.social_twitter AS "socialTwitter",
+                c.social_linked_in AS "socialLinkedIn",
+                c.social_instagram AS "socialInstagram",
+                c.social_tik_tok AS "socialTikTok",
+                c.social_bluesky AS "socialBluesky",
+                c.social_telegram AS "socialTelegram",
+                c.social_whatsapp AS "socialWhatsapp",
+                c.address_street_number AS "addressStreetNumber",
+                c.address_street_line1 AS "addressStreetLine1",
+                c.address_street_line2 AS "addressStreetLine2",
+                c.address_zip_code AS "addressZipCode",
+                c.address_city AS "addressCity",
+                ac.name AS "addressCountry",
+                (CASE WHEN c.settings_receive_newsletters = true THEN 1 ELSE 0 END) AS "settingsReceiveNewsletters",
+                (CASE WHEN c.settings_receive_sms = true THEN 1 ELSE 0 END) AS "settingsReceiveSms",
+                (CASE WHEN c.settings_receive_calls = true THEN 1 ELSE 0 END) AS "settingsReceiveCalls",
+                t.tags_array AS "metadataTags",
+                c.metadata_source AS "metadataSource",
+                c.metadata_comment AS "metadataComment",
+                c.metadata_custom_fields::text AS "metadataCustomFields",
+                recruiter.email AS "recruitedBy"
             FROM community_contacts c
+            LEFT JOIN LATERAL (
+                SELECT string_agg(value, \', \') AS additional_emails
+                FROM json_array_elements_text(c.contact_additional_emails) AS value
+            ) cae ON true
             LEFT JOIN LATERAL (
                 SELECT string_agg(t.name, \', \') AS tags_array
                 FROM community_contacts_tags ct
                 JOIN community_tags t ON t.id = ct.tag_id
                 WHERE ct.contact_id = c.id
             ) t ON true
-            LEFT JOIN json_array_elements_text(c.contact_additional_emails) AS cae ON true
-            LEFT JOIN areas a ON c.area_id = a.id
             LEFT JOIN areas ac ON c.address_country_id = ac.id
+            LEFT JOIN community_contacts recruiter ON c.recruited_by_id = recruiter.id
             WHERE c.organization_id = ?
         ';
 
         $params = [$organization->getId()];
 
-        // Filter by tag if requested
         if ($tagId) {
             $sql .= ' AND EXISTS (
                 SELECT 1
@@ -297,56 +267,9 @@ class ContactRepository extends ServiceEntityRepository
             $params[] = $tagId;
         }
 
-        // Create the contacts list
         $query = $this->_em->getConnection()->prepare($sql);
 
-        foreach ($query->executeQuery($params)->iterateAssociative() as $row) {
-            // Add individual tag columns
-            $contactTags = array_map('trim', explode(',', (string) $row['metadata_tags']));
-            foreach ($tags as $tag) {
-                $row['Tag '.$tag['name']] = in_array($tag['name'], $contactTags, true) ? 1 : 0;
-            }
-
-            // Add individual sub-projects
-            foreach ($projects as $project) {
-                // Global project: always true
-                if (!$project['tags'] && !$project['areas']) {
-                    $row['Project '.$project['name']] = 1;
-
-                    continue;
-                }
-
-                // Thematic project
-                if ($project['tags']) {
-                    $isInProject = false;
-                    foreach ($project['tags'] as $projectTag) {
-                        if (in_array($projectTag, $contactTags, true)) {
-                            $isInProject = true;
-                            break;
-                        }
-                    }
-
-                    $row['Project '.$project['name']] = $isInProject ? 1 : 0;
-
-                    continue;
-                }
-
-                // Local project
-                $isInProject = false;
-                foreach ($project['areas'] as $projectArea) {
-                    if ($projectArea['left'] >= $row['area_tree_left'] && $projectArea['right'] <= $row['area_tree_right']) {
-                        $isInProject = true;
-                        break;
-                    }
-                }
-
-                $row['Project '.$project['name']] = $isInProject ? 1 : 0;
-            }
-
-            unset($row['area_tree_left'], $row['area_tree_right']);
-
-            yield $row;
-        }
+        return $query->executeQuery($params)->iterateAssociative();
     }
 
     public function updateEmail(ContactUpdateEmailApiData $contactUpdateApiData)

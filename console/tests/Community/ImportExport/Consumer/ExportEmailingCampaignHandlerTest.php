@@ -62,7 +62,17 @@ class ExportEmailingCampaignHandlerTest extends WebTestCase
 
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
-            $this->assertCount(4, Spreadsheet::open(new File($tempFile)));
+            $sheet = Spreadsheet::open(new File($tempFile));
+            $this->assertCount(4, $sheet);
+            $rows = $sheet->getFirstLines(2);
+            $this->assertSame([
+                'Email',
+                "Date d'envoi",
+                'Ouvert',
+                'Cliqué',
+                'Erreur',
+                'Désinscrit',
+            ], array_values($rows[0]));
         } finally {
             unlink($tempFile);
         }
