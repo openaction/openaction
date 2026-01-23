@@ -103,7 +103,7 @@ services:
         class: 'App\Bridge\Github\Github'
         arguments:
             $appId: '%env(GITHUB_APP_ID)%'
-            $appKey: '%env(file:GITHUB_APP_KEY)%'
+            $appKey: '%env(GITHUB_APP_KEY)%'
 
     App\Bridge\Mollie\MollieInterface:
         class: 'App\Bridge\Mollie\Mollie'
