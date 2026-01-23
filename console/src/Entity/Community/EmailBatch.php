@@ -25,6 +25,12 @@ class EmailBatch
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $sentAt = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $scheduledAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $queuedAt = null;
+
     public function __construct(string $source, string $emailProvider, array $payload)
     {
         $this->source = $source;
@@ -51,5 +57,25 @@ class EmailBatch
     public function getSentAt(): ?\DateTime
     {
         return $this->sentAt;
+    }
+
+    public function getScheduledAt(): ?\DateTime
+    {
+        return $this->scheduledAt;
+    }
+
+    public function setScheduledAt(?\DateTime $scheduledAt): void
+    {
+        $this->scheduledAt = $scheduledAt;
+    }
+
+    public function getQueuedAt(): ?\DateTime
+    {
+        return $this->queuedAt;
+    }
+
+    public function setQueuedAt(?\DateTime $queuedAt): void
+    {
+        $this->queuedAt = $queuedAt;
     }
 }

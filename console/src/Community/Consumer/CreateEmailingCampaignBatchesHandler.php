@@ -2,8 +2,6 @@
 
 namespace App\Community\Consumer;
 
-use App\Bridge\Postmark\Consumer\PostmarkMessage;
-use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Community\PostmarkMailFactory;
 use App\Community\Scheduler\EmailingScheduler;
@@ -18,8 +16,8 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Uid\Uuid;
 
 /*
- * Resolve the filters of a given campaign, create entites for each message
- * and send the batch messages through a different consumer.
+ * Resolve the filters of a given campaign, create entities for each message
+ * and schedule the batches for dispatch.
  */
 final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterface
 {
@@ -47,7 +45,7 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
         $batchSize = 100;
         $batches = $this->messageRepository->buildMessagesBatches($campaign, batchSize: $batchSize);
 
-        $messages = [];
+        $emailBatches = [];
         foreach ($batches as $batch) {
             $recipients = [];
 
@@ -85,20 +83,16 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
 
             if ('postmark' === $organization->getEmailProvider()) {
                 $batch = $this->postmarkMailFactory->createCampaignBatch($campaign, $recipients);
-                $this->em->persist($batch);
-                $this->em->flush();
-
-                $messages[] = new PostmarkMessage($batch->getId());
             } else {
                 $batch = $this->sendgridMailFactory->createCampaignBatch($campaign, $recipients);
-                $this->em->persist($batch);
-                $this->em->flush();
-
-                $messages[] = new SendgridMessage($batch->getId());
             }
+
+            $this->em->persist($batch);
+            $emailBatches[] = $batch;
         }
 
-        $this->emailingScheduler->scheduleCampaign($messages, $batchSize, $organization->getEmailThrottlingPerHour());
+        $this->emailingScheduler->scheduleCampaign($emailBatches, $batchSize, $organization->getEmailThrottlingPerHour());
+        $this->em->flush();
 
         return true;
     }

@@ -2,12 +2,9 @@
 
 namespace App\Tests\Community\Scheduler;
 
-use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Community\Scheduler\EmailingScheduler;
+use App\Entity\Community\EmailBatch;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 
 class EmailingSchedulerTest extends KernelTestCase
 {
@@ -78,34 +75,27 @@ class EmailingSchedulerTest extends KernelTestCase
      */
     public function testScheduleCampaign(int $batchSize, int $batchesCount, ?int $throttlePerHour, array $expectedDelays): void
     {
-        self::bootKernel();
+        $scheduler = new EmailingScheduler();
+        $baseTime = new \DateTime('2025-01-01 12:00:00');
+        $batches = [];
 
-        /** @var EmailingScheduler $scheduler */
-        $scheduler = static::getContainer()->get(EmailingScheduler::class);
+        for ($i = 0; $i < $batchesCount; ++$i) {
+            $batches[] = new EmailBatch('campaign:1', 'sendgrid', ['index' => $i]);
+        }
 
-        $scheduler->scheduleCampaign(
-            messages: array_fill(0, $batchesCount, new SendgridMessage(1)),
-            batchSize: $batchSize,
-            throttlePerHour: $throttlePerHour,
-        );
-
-        // Should have published batches with appropriate delays
-        /** @var InMemoryTransport $transport */
-        $transport = static::getContainer()->get('messenger.transport.async_emailing');
-
-        $envelopes = $transport->getSent();
-        $this->assertCount($batchesCount, $envelopes);
+        $scheduler->scheduleCampaign($batches, $batchSize, $throttlePerHour, $baseTime);
+        $this->assertCount($batchesCount, $batches);
 
         foreach ($expectedDelays as $key => $expectedDelay) {
-            /** @var Envelope $envelope */
-            $envelope = $envelopes[$key];
-            $this->assertInstanceOf(SendgridMessage::class, $envelope->getMessage());
+            $scheduledAt = $batches[$key]->getScheduledAt();
+            $this->assertNotNull($scheduledAt);
 
+            $expectedAt = clone $baseTime;
             if ($expectedDelay) {
-                $this->assertSame($expectedDelay, $envelope->all(DelayStamp::class)[0]->getDelay());
-            } else {
-                $this->assertSame([], $envelope->all(DelayStamp::class));
+                $expectedAt->modify(sprintf('+%d seconds', (int) ($expectedDelay / 1000)));
             }
+
+            $this->assertSame($expectedAt->format('Y-m-d H:i:s'), $scheduledAt->format('Y-m-d H:i:s'));
         }
     }
 }
