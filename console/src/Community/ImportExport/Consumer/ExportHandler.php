@@ -17,6 +17,49 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 final class ExportHandler implements MessageHandlerInterface
 {
+    private const HEADERS = [
+        'email' => 'Email',
+        'contactAdditionalEmails' => 'Emails secondaires (séparés par des virgules)',
+        'profileFormalTitle' => 'Civilité',
+        'profileFirstName' => 'Prénom',
+        'profileMiddleName' => 'Deuxième prénom',
+        'profileLastName' => 'Nom',
+        'birthName' => 'Nom de naissance',
+        'profileBirthdate' => 'Date de naissance',
+        'isDeceased' => 'Décédé',
+        'profileGender' => 'Genre',
+        'profileNationality' => 'Nationalité',
+        'birthCity' => 'Ville de naissance',
+        'birthCountryCode' => 'Pays de naissance',
+        'profileCompany' => 'Organisation',
+        'profileJobTitle' => 'Rôle',
+        'accountLanguage' => 'Langue préférée',
+        'contactPhone' => 'Téléphone',
+        'contactWorkPhone' => 'Téléphone pro',
+        'socialFacebook' => 'Facebook',
+        'socialTwitter' => 'Twitter',
+        'socialLinkedIn' => 'LinkedIn',
+        'socialInstagram' => 'Instagram',
+        'socialTikTok' => 'TikTok',
+        'socialBluesky' => 'Bluesky',
+        'socialTelegram' => 'Telegram',
+        'socialWhatsapp' => 'WhatsApp',
+        'addressStreetNumber' => 'Numéro de rue',
+        'addressStreetLine1' => 'Adresse ligne 1',
+        'addressStreetLine2' => 'Adresse ligne 2',
+        'addressZipCode' => 'Code postal',
+        'addressCity' => 'Ville',
+        'addressCountry' => 'Pays',
+        'settingsReceiveNewsletters' => 'Abonnement newsletter',
+        'settingsReceiveSms' => 'Abonnement SMS',
+        'settingsReceiveCalls' => 'Abonnement appels',
+        'metadataTags' => 'Tags (séparés par des virgules)',
+        'metadataSource' => 'Source',
+        'metadataComment' => 'Commentaire',
+        'metadataCustomFields' => 'Champs personnalisés',
+        'recruitedBy' => 'Recruté par',
+    ];
+
     private OrganizationRepository $orgaRepository;
     private ContactRepository $contactRepository;
     private CdnUploader $uploader;
@@ -66,11 +109,16 @@ final class ExportHandler implements MessageHandlerInterface
         $headerAdded = false;
         foreach ($this->contactRepository->getExportData($organization, $tagId) as $contact) {
             if (!$headerAdded) {
-                $writer->addRow(Row::fromValues(array_keys($contact)));
+                $writer->addRow(Row::fromValues(array_values(self::HEADERS)));
                 $headerAdded = true;
             }
 
-            $writer->addRow(Row::fromValues($contact));
+            $row = [];
+            foreach (self::HEADERS as $key => $label) {
+                $row[] = $contact[$key] ?? null;
+            }
+
+            $writer->addRow(Row::fromValues($row));
         }
 
         $writer->close();

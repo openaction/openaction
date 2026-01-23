@@ -16,6 +16,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class ExportEmailingCampaignHandler implements MessageHandlerInterface
 {
+    private const HEADERS = [
+        'email' => 'Email',
+        'sentAt' => "Date d'envoi",
+        'opened' => 'Ouvert',
+        'clicked' => 'Cliqué',
+        'bounced' => 'Erreur',
+        'unsubscribed' => 'Désinscrit',
+    ];
+
     private EmailingCampaignRepository $repository;
     private SluggerInterface $slugger;
     private CdnUploader $uploader;
@@ -67,44 +76,15 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
         $writer = new Writer();
         $writer->openToFile($filename);
 
-        $writer->addRow(Row::fromValues([
-            'email',
-            'opens',
-            'clicks',
-            'id',
-            'area',
-            'profile_formal_title',
-            'profile_first_name',
-            'profile_middle_name',
-            'profile_last_name',
-            'profile_birthdate',
-            'profile_company',
-            'profile_job_title',
-            'contact_phone',
-            'contact_work_phone',
-            'parsed_contact_phone',
-            'parsed_contact_work_phone',
-            'social_facebook',
-            'social_twitter',
-            'social_linked_in',
-            'social_telegram',
-            'social_whatsapp',
-            'address_street_line1',
-            'address_street_line2',
-            'address_zip_code',
-            'address_city',
-            'address_country',
-            'is_member',
-            'settings_receive_newsletters',
-            'settings_receive_sms',
-            'settings_receive_calls',
-            'metadata_tags',
-            'metadata_comment',
-            'created_at',
-        ]));
+        $writer->addRow(Row::fromValues(array_values(self::HEADERS)));
 
         foreach ($this->repository->getExportData($campaign) as $contact) {
-            $writer->addRow(Row::fromValues($contact));
+            $row = [];
+            foreach (self::HEADERS as $key => $label) {
+                $row[] = $contact[$key] ?? null;
+            }
+
+            $writer->addRow(Row::fromValues($row));
         }
 
         $writer->close();

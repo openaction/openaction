@@ -65,7 +65,50 @@ class ExportHandlerTest extends WebTestCase
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
             $this->assertCount(7, $sheet = Spreadsheet::open(new File($tempFile)));
-            $this->assertCount(26, $sheet->getFirstLines(2)[1]);
+            $rows = $sheet->getFirstLines(2);
+            $this->assertSame([
+                'Email',
+                'Emails secondaires (séparés par des virgules)',
+                'Civilité',
+                'Prénom',
+                'Deuxième prénom',
+                'Nom',
+                'Nom de naissance',
+                'Date de naissance',
+                'Décédé',
+                'Genre',
+                'Nationalité',
+                'Ville de naissance',
+                'Pays de naissance',
+                'Organisation',
+                'Rôle',
+                'Langue préférée',
+                'Téléphone',
+                'Téléphone pro',
+                'Facebook',
+                'Twitter',
+                'LinkedIn',
+                'Instagram',
+                'TikTok',
+                'Bluesky',
+                'Telegram',
+                'WhatsApp',
+                'Numéro de rue',
+                'Adresse ligne 1',
+                'Adresse ligne 2',
+                'Code postal',
+                'Ville',
+                'Pays',
+                'Abonnement newsletter',
+                'Abonnement SMS',
+                'Abonnement appels',
+                'Tags (séparés par des virgules)',
+                'Source',
+                'Commentaire',
+                'Champs personnalisés',
+                'Recruté par',
+            ], array_values($rows[0]));
+            $this->assertArrayHasKey(1, $rows);
         } finally {
             unlink($tempFile);
         }
@@ -111,7 +154,50 @@ class ExportHandlerTest extends WebTestCase
         try {
             file_put_contents($tempFile, $client->getInternalResponse()->getContent());
             $this->assertCount(4, $sheet = Spreadsheet::open(new File($tempFile)));
-            $this->assertCount(26, $sheet->getFirstLines(2)[1]);
+            $rows = $sheet->getFirstLines(2);
+            $this->assertSame([
+                'Email',
+                'Emails secondaires (séparés par des virgules)',
+                'Civilité',
+                'Prénom',
+                'Deuxième prénom',
+                'Nom',
+                'Nom de naissance',
+                'Date de naissance',
+                'Décédé',
+                'Genre',
+                'Nationalité',
+                'Ville de naissance',
+                'Pays de naissance',
+                'Organisation',
+                'Rôle',
+                'Langue préférée',
+                'Téléphone',
+                'Téléphone pro',
+                'Facebook',
+                'Twitter',
+                'LinkedIn',
+                'Instagram',
+                'TikTok',
+                'Bluesky',
+                'Telegram',
+                'WhatsApp',
+                'Numéro de rue',
+                'Adresse ligne 1',
+                'Adresse ligne 2',
+                'Code postal',
+                'Ville',
+                'Pays',
+                'Abonnement newsletter',
+                'Abonnement SMS',
+                'Abonnement appels',
+                'Tags (séparés par des virgules)',
+                'Source',
+                'Commentaire',
+                'Champs personnalisés',
+                'Recruté par',
+            ], array_values($rows[0]));
+            $this->assertArrayHasKey(1, $rows);
         } finally {
             unlink($tempFile);
         }

@@ -261,59 +261,15 @@ class EmailingCampaignRepository extends ServiceEntityRepository
     public function getExportData(EmailingCampaign $campaign): iterable
     {
         $query = $this->_em->getConnection()->prepare('
-            SELECT DISTINCT ON (c.email) 
-                c.email,
-                (
-                    SELECT COUNT(*) 
-                    FROM community_emailing_campaigns_messages_logs lo
-                    WHERE lo.message_id = m.id AND lo.type = \'open\'
-                ) AS opens,
-                (
-                    SELECT COUNT(*) 
-                    FROM community_emailing_campaigns_messages_logs lc
-                    WHERE lc.message_id = m.id AND lc.type = \'click\'
-                ) AS clicks,
-                c.uuid AS id,
-                a.name AS area,
-                c.profile_formal_title,
-                c.profile_first_name,
-                c.profile_middle_name,
-                c.profile_last_name,
-                c.profile_birthdate,
-                c.profile_company,
-                c.profile_job_title,
-                c.contact_phone,
-                c.contact_work_phone,
-                c.parsed_contact_phone,
-                c.parsed_contact_work_phone,
-                c.social_facebook,
-                c.social_twitter,
-                c.social_linked_in,
-                c.social_telegram,
-                c.social_whatsapp,
-                c.address_street_line1,
-                c.address_street_line2,
-                c.address_zip_code,
-                c.address_city,
-                ac.name AS address_country,
-                (CASE WHEN c.account_password IS NOT NULL THEN 1 ELSE 0 END) AS is_member,
-                (CASE WHEN c.settings_receive_newsletters = true THEN 1 ELSE 0 END) AS settings_receive_newsletters,
-                (CASE WHEN c.settings_receive_sms = true THEN 1 ELSE 0 END) AS settings_receive_sms,
-                (CASE WHEN c.settings_receive_calls = true THEN 1 ELSE 0 END) AS settings_receive_calls,
-                t.tags_array AS metadata_tags,
-                c.metadata_comment,
-                c.created_at
+            SELECT
+                c.email AS "email",
+                m.sent_at AS "sentAt",
+                (CASE WHEN m.opened = true THEN 1 ELSE 0 END) AS "opened",
+                (CASE WHEN m.clicked = true THEN 1 ELSE 0 END) AS "clicked",
+                (CASE WHEN m.bounced = true THEN 1 ELSE 0 END) AS "bounced",
+                (CASE WHEN m.unsubscribed = true THEN 1 ELSE 0 END) AS "unsubscribed"
             FROM community_emailing_campaigns_messages m
-            LEFT JOIN community_contacts c ON m.contact_id = c.id
-            LEFT JOIN LATERAL (
-                SELECT string_agg(t.name, \', \') AS tags_array
-                FROM community_contacts_tags ct
-                JOIN community_tags t ON t.id = ct.tag_id
-                WHERE ct.contact_id = c.id
-            ) t ON true
-            LEFT JOIN json_array_elements_text(c.contact_additional_emails) AS cae ON true
-            LEFT JOIN areas a ON c.area_id = a.id
-            LEFT JOIN areas ac ON c.address_country_id = ac.id
+            INNER JOIN community_contacts c ON m.contact_id = c.id
             WHERE m.campaign_id = ?
         ');
 
