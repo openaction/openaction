@@ -1,3 +1,0 @@
-#!/bin/sh
-
-# php /app/bin/console app:tools:sync-customers
