@@ -1,3 +1,0 @@
-#!/bin/sh
-
-php /app/bin/console app:community:sync-mailchimp-campaigns-reports "1 week ago"
