@@ -49,9 +49,9 @@ class IntroControllerTest extends WebTestCase
         $pathname = $project->getWebsiteMainImage()->getPathname();
         $this->assertTrue($storage->fileExists($pathname), $pathname.' should exist in storage.');
 
-        $image = $imageManager->make($storage->read($pathname));
-        $this->assertSame(1192, $image->getWidth());
-        $this->assertSame(1500, $image->getHeight());
+        $image = $imageManager->read($storage->read($pathname));
+        $this->assertSame(1192, $image->width());
+        $this->assertSame(1500, $image->height());
 
         // Check the video has been uploaded
         /** @var FilesystemReader $storage */

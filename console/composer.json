@@ -28,7 +28,7 @@
         "endroid/qr-code": "^6.0",
         "getbrevo/brevo-php": "^2.0",
         "hidehalo/nanoid-php": "^2.0",
-        "intervention/image": "^2.5",
+        "intervention/image": "^3.11",
         "justinrainbow/json-schema": "^5.2",
         "knplabs/knp-time-bundle": "^2.0",
         "lcobucci/jwt": "^4.1",

@@ -83,9 +83,9 @@ class SyncThemeHandlerTest extends KernelTestCase
         $pathname = $theme->getThumbnail()->getPathname();
         $this->assertTrue($storage->fileExists($pathname), $pathname.' should exist in storage.');
 
-        $image = static::getContainer()->get(ImageManager::class)->make($storage->read($pathname));
-        $this->assertSame(450, $image->getWidth());
-        $this->assertSame(400, $image->getHeight());
+        $image = static::getContainer()->get(ImageManager::class)->read($storage->read($pathname));
+        $this->assertSame(450, $image->width());
+        $this->assertSame(400, $image->height());
 
         // Check asset
         $this->assertCount(1, $theme->getAssets());

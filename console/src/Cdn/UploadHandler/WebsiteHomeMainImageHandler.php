@@ -19,18 +19,14 @@ class WebsiteHomeMainImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $data->resize($this->width, $this->height, static function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $data->scaleDown($this->width, $this->height);
 
-        $canvas = $this->imageManager->canvas($data->getWidth(), $data->getHeight(), 'ffffff');
-        $canvas->insert($data, 'center');
+        $canvas = $this->imageManager->create($data->width(), $data->height())->fill('ffffff');
+        $canvas->place($data, 'center');
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $encoded = $canvas->toWebp(80);
+        $file->setStorageContent((string) $encoded, 'webp');
     }
 }

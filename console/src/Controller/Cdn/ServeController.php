@@ -38,11 +38,11 @@ class ServeController extends AbstractController
 
         // Social sharer requested: resize and reencode on the fly
         if ('sharer' === $request->query->get('t')) {
-            $image = $this->imageManager->make($this->storage->read($pathname));
-            $image->fit(1200, 760);
-            $image->encode('jpg', 75);
+            $image = $this->imageManager->read($this->storage->read($pathname));
+            $image->cover(1200, 760);
+            $encoded = $image->toJpeg(75);
 
-            $response = new Response($image->getEncoded());
+            $response = new Response((string) $encoded);
             $response->headers->set('Content-Type', 'image/jpeg');
 
             return $this->setResponseCache($response);
@@ -50,11 +50,11 @@ class ServeController extends AbstractController
 
         // Favicon requested: resize and reencode on the fly
         if ('favicon' === $request->query->get('t')) {
-            $image = $this->imageManager->make($this->storage->read($pathname));
-            $image->fit(96, 96);
-            $image->encode('png');
+            $image = $this->imageManager->read($this->storage->read($pathname));
+            $image->cover(96, 96);
+            $encoded = $image->toPng();
 
-            $response = new Response($image->getEncoded());
+            $response = new Response((string) $encoded);
             $response->headers->set('Content-Type', 'image/png');
 
             return $this->setResponseCache($response);

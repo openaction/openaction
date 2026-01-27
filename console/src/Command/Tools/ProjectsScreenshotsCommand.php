@@ -138,24 +138,24 @@ class ProjectsScreenshotsCommand extends Command
         $this->chromeClient->request('GET', $url);
         $height = $this->chromeClient->executeScript('return document.body.scrollHeight');
 
-        $image = $this->imageManager->canvas(1920, $height);
+        $image = $this->imageManager->create(1920, (int) $height);
 
         // Sections of the page
         for ($i = 0; $i < $height - 1080; $i += 1080) {
             $this->chromeClient->executeScript('window.scroll(0, '.$i.')');
 
-            $view = $this->imageManager->make($this->chromeClient->takeScreenshot());
-            $image->insert($view, 'top-left', 0, $i);
+            $view = $this->imageManager->read($this->chromeClient->takeScreenshot());
+            $image->place($view, 'top-left', 0, $i);
         }
 
         // Bottom of the page
         $this->chromeClient->executeScript('window.scroll(0, document.body.scrollHeight)');
 
-        $view = $this->imageManager->make($this->chromeClient->takeScreenshot());
-        $image->insert($view, 'top-left', 0, $height - 1080);
+        $view = $this->imageManager->read($this->chromeClient->takeScreenshot());
+        $image->place($view, 'top-left', 0, $height - 1080);
 
         // Encode and save
-        $image->encode('jpg');
-        $this->storage->write($saveAs, $image->getEncoded());
+        $encoded = $image->toJpeg(90);
+        $this->storage->write($saveAs, (string) $encoded);
     }
 }

@@ -19,17 +19,14 @@ class WebsiteTrombinoscopeMainImageHandler implements UploadedImageHandlerInterf
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $data->resize($this->width, $this->height, static function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $data->scale($this->width, $this->height);
 
-        $canvas = $this->imageManager->canvas($this->width, $this->height, 'ffffff');
-        $canvas->insert($data, 'center');
+        $canvas = $this->imageManager->create($this->width, $this->height)->fill('ffffff');
+        $canvas->place($data, 'center');
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $encoded = $canvas->toWebp(80);
+        $file->setStorageContent((string) $encoded, 'webp');
     }
 }

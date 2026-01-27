@@ -16,18 +16,14 @@ class ProjectIconImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $data->resize(256, 256, static function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $data->scaleDown(256, 256);
 
-        $canvas = $this->imageManager->canvas(256, 256);
-        $canvas->insert($data, 'center');
+        $canvas = $this->imageManager->create(256, 256);
+        $canvas->place($data, 'center');
 
-        $canvas->encode('png');
-        $file->setStorageContent($canvas->getEncoded(), 'png');
+        $encoded = $canvas->toPng();
+        $file->setStorageContent((string) $encoded, 'png');
     }
 }
