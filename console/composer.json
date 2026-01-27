@@ -27,7 +27,7 @@
         "egulias/email-validator": "^3.2",
         "endroid/qr-code": "^6.0",
         "getbrevo/brevo-php": "^2.0",
-        "hidehalo/nanoid-php": "^1.1",
+        "hidehalo/nanoid-php": "^2.0",
         "intervention/image": "^2.5",
         "justinrainbow/json-schema": "^5.2",
         "knplabs/knp-time-bundle": "^1.14",
