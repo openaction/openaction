@@ -89,7 +89,7 @@
         "twig/inky-extra": "^3.0",
         "twig/intl-extra": "^3.0",
         "twig/string-extra": "^3.0",
-        "twilio/sdk": "^6.19",
+        "twilio/sdk": "^8.0",
         "webmozart/assert": "^1.7",
         "wildbit/postmark-php": "^4.0"
     },
