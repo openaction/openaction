@@ -7,7 +7,7 @@ use App\Form\User\ConfirmPasswordType;
 use App\Form\User\Model\TwoFactorData;
 use App\Form\User\TwoFactorType;
 use Doctrine\ORM\EntityManagerInterface;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
@@ -96,10 +96,12 @@ class TwoFactorController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $qrCode = QrCode::create($totpAuthenticator->getQRContent($user));
-        $qrCode->setSize(400);
-        $qrCode->setMargin(10);
-        $qrCode->setErrorCorrectionLevel(new ErrorCorrectionLevelLow());
+        $qrCode = new QrCode(
+            data: $totpAuthenticator->getQRContent($user),
+            size: 400,
+            margin: 10,
+            errorCorrectionLevel: ErrorCorrectionLevel::Low,
+        );
 
         return new Response((new PngWriter())->write($qrCode)->getString(), 200, ['Content-Type' => 'image/png']);
     }
