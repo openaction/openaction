@@ -47,6 +47,8 @@ class LoginControllerTest extends WebTestCase
             'login[password]' => 'invalid',
         ]);
 
+        $this->assertResponseRedirects('/members/login?error=credentials');
+        $client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertCount(0, $client->getResponse()->headers->getCookies());
     }
