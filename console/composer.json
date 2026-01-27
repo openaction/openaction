@@ -52,7 +52,7 @@
         "scheb/2fa-totp": "^6.0",
         "scheb/2fa-trusted-device": "^6.0",
         "sendgrid/sendgrid": "^7.9",
-        "sentry/sentry-symfony": "^4.2",
+        "sentry/sentry-symfony": "^5.8",
         "stof/doctrine-extensions-bundle": "^1.7",
         "symfony/amazon-sqs-messenger": "6.4.*",
         "symfony/amqp-messenger": "~6.4.0",
