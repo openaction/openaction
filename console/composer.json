@@ -30,7 +30,7 @@
         "hidehalo/nanoid-php": "^2.0",
         "intervention/image": "^2.5",
         "justinrainbow/json-schema": "^5.2",
-        "knplabs/knp-time-bundle": "^1.14",
+        "knplabs/knp-time-bundle": "^2.0",
         "lcobucci/jwt": "^4.1",
         "league/flysystem-async-aws-s3": "^3.0",
         "league/flysystem-bundle": "^2.0",
