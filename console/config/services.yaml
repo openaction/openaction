@@ -132,7 +132,7 @@ services:
     #
     App\Twig\AssetExtension:
         arguments:
-            $stimulusExtension: '@webpack_encore.twig_stimulus_extension'
+            $stimulusExtension: '@stimulus.twig_extension'
 
     App\Twig\TransformerExtension:
         arguments:
