@@ -8,9 +8,7 @@ use App\Form\SubscribeNewsletterType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/pages")
- */
+#[Route('/pages')]
 class PageController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -20,9 +18,7 @@ class PageController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="page_view")
-     */
+    #[Route('/{id}/{slug}', name: 'page_view')]
     public function view(string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('website_pages');

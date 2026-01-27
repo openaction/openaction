@@ -7,10 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RedirectController extends AbstractController
 {
-    /**
-     * @Route("/_redirect/{type}", name="redirect")
-     * @Route("/_redirect/{type}/{id}", requirements={"id": ".+"}, name="redirect")
-     */
+    #[Route('/_redirect/{type}', name: 'redirect')]
+    #[Route('/_redirect/{type}/{id}', name: 'redirect', requirements: ['id' => '.+'])]
     public function entityRedirect(Request $request, string $type, ?string $id = null)
     {
         switch ($type) {
@@ -48,9 +46,7 @@ class RedirectController extends AbstractController
         throw $this->createNotFoundException();
     }
 
-    /**
-     * @Route("/share/{type}/{id}/{slug}", name="share")
-     */
+    #[Route('/share/{type}/{id}/{slug}', name: 'share')]
     public function entityShare(string $type, string $id, string $slug)
     {
         switch ($type) {

@@ -6,14 +6,10 @@ use MaxMind\Db\Reader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api")
- */
+#[Route('/api')]
 class ApiController extends AbstractController
 {
-    /**
-     * @Route("/country", name="api_country")
-     */
+    #[Route('/country', name: 'api_country')]
     public function country(Request $request)
     {
         $reader = new Reader($this->getParameter('kernel.project_dir').'/data/GeoLite2-Country.mmdb');

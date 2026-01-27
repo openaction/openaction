@@ -11,9 +11,7 @@ use App\Security\CookieManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/members")
- */
+#[Route('/members')]
 class LoginController extends AbstractController
 {
     private CookieManager $cookieManager;
@@ -25,9 +23,7 @@ class LoginController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("/login", name="membership_login")
-     */
+    #[Route('/login', name: 'membership_login')]
     public function login(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -64,9 +60,7 @@ class LoginController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/logout", name="membership_logout")
-     */
+    #[Route('/logout', name: 'membership_logout')]
     public function logout(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');

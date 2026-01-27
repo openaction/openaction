@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/trombinoscope")
- */
+#[Route('/trombinoscope')]
 class TrombinoscopeController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -19,9 +17,7 @@ class TrombinoscopeController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="trombinoscope_list")
-     */
+    #[Route('', name: 'trombinoscope_list')]
     public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_trombinoscope');
@@ -35,9 +31,7 @@ class TrombinoscopeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="trombinoscope_view")
-     */
+    #[Route('/{id}/{slug}', name: 'trombinoscope_view')]
     public function view(string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('website_trombinoscope');

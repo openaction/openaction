@@ -52,7 +52,6 @@
         "scheb/2fa-totp": "^6.0",
         "scheb/2fa-trusted-device": "^6.0",
         "sendgrid/sendgrid": "^7.9",
-        "sensio/framework-extra-bundle": "^6.2",
         "sentry/sentry-symfony": "^4.2",
         "stof/doctrine-extensions-bundle": "^1.7",
         "symfony/amazon-sqs-messenger": "6.4.*",

@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/posts")
- */
+#[Route('/posts')]
 class PostController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -19,9 +17,7 @@ class PostController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="post_list")
-     */
+    #[Route('', name: 'post_list')]
     public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_posts');
@@ -38,9 +34,7 @@ class PostController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="post_view")
-     */
+    #[Route('/{id}/{slug}', name: 'post_view')]
     public function view(string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('website_posts');

@@ -11,9 +11,7 @@ use App\Security\CookieManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/members/area/account")
- */
+#[Route('/members/area/account')]
 class AccountController extends AbstractMembershipController
 {
     private CitipoInterface $citipo;
@@ -23,9 +21,7 @@ class AccountController extends AbstractMembershipController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="membership_area_account")
-     */
+    #[Route('', name: 'membership_area_account')]
     public function details(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -56,9 +52,7 @@ class AccountController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/update-email", name="membership_area_update_email")
-     */
+    #[Route('/update-email', name: 'membership_area_update_email')]
     public function updateEmail(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -89,9 +83,7 @@ class AccountController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/update-email/confirm/{id}/{token}", name="membership_area_update_email_confirm")
-     */
+    #[Route('/update-email/confirm/{id}/{token}', name: 'membership_area_update_email_confirm')]
     public function updateEmailConfirm(CookieManager $cookieManager, Request $request, string $id, string $token)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -111,9 +103,7 @@ class AccountController extends AbstractMembershipController
         return $response;
     }
 
-    /**
-     * @Route("/unregister", name="membership_area_unregister")
-     */
+    #[Route('/unregister', name: 'membership_area_unregister')]
     public function unregister(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -142,9 +132,7 @@ class AccountController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/unregister/confirm/{id}/{token}", name="membership_area_unregister_confirm")
-     */
+    #[Route('/unregister/confirm/{id}/{token}', name: 'membership_area_unregister_confirm')]
     public function unregisterConfirm(CookieManager $cookieManager, Request $request, string $id, string $token)
     {
         $this->denyUnlessToolEnabled('members_area_account');

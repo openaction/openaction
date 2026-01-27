@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    /**
-     * @Route("", name="homepage")
-     */
+    #[Route('', name: 'homepage')]
     public function index(Turnstile $turnstile)
     {
         $challenge = $turnstile->createCaptchaChallenge($this->getProject());

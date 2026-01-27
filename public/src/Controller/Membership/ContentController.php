@@ -9,14 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/members/area")
- */
+#[Route('/members/area')]
 class ContentController extends AbstractMembershipController
 {
-    /**
-     * @Route("/dashboard", name="membership_area_dashboard")
-     */
+    #[Route('/dashboard', name: 'membership_area_dashboard')]
     public function dashboard(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -35,9 +31,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/resources", name="membership_area_resources")
-     */
+    #[Route('/resources', name: 'membership_area_resources')]
     public function resources(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_resources');
@@ -54,9 +48,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/resources/page/{id}/{slug}", name="membership_area_resources_page_view")
-     */
+    #[Route('/resources/page/{id}/{slug}', name: 'membership_area_resources_page_view')]
     public function pageView(Request $request, string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('members_area_resources');
@@ -85,9 +77,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/posts", name="membership_area_posts")
-     */
+    #[Route('/posts', name: 'membership_area_posts')]
     public function posts(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_posts');
@@ -108,9 +98,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/posts/{id}/{slug}", name="membership_area_post_view")
-     */
+    #[Route('/posts/{id}/{slug}', name: 'membership_area_post_view')]
     public function postView(Request $request, string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('members_area_posts');
@@ -143,9 +131,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/events", name="membership_area_events")
-     */
+    #[Route('/events', name: 'membership_area_events')]
     public function events(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_events');
@@ -166,9 +152,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/events/{id}/{slug}", name="membership_area_event_view")
-     */
+    #[Route('/events/{id}/{slug}', name: 'membership_area_event_view')]
     public function eventView(Request $request, string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('members_area_events');
@@ -201,9 +185,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/forms", name="membership_area_forms")
-     */
+    #[Route('/forms', name: 'membership_area_forms')]
     public function forms(Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_forms');
@@ -224,9 +206,7 @@ class ContentController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/forms/{id}/{slug}", name="membership_area_form_view")
-     */
+    #[Route('/forms/{id}/{slug}', name: 'membership_area_form_view')]
     public function formView(SymfonyFormBuilder $builder, Request $request, string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('members_area_forms');
