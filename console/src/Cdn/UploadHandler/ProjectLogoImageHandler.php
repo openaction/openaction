@@ -16,15 +16,14 @@ class ProjectLogoImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $canvas = $this->imageManager->make($file->getLocalContent());
-        $canvas->orientate();
+        $canvas = $this->imageManager->read($file->getLocalContent());
 
-        $canvas->resize(800, 400, static function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $scale = min(800 / $canvas->width(), 400 / $canvas->height(), 1);
+        $targetWidth = (int) ceil($canvas->width() * $scale);
+        $targetHeight = (int) ceil($canvas->height() * $scale);
+        $canvas->resize($targetWidth, $targetHeight);
 
-        $canvas->encode('png');
-        $file->setStorageContent($canvas->getEncoded(), 'png');
+        $encoded = $canvas->toPng();
+        $file->setStorageContent((string) $encoded, 'png');
     }
 }

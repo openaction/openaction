@@ -154,7 +154,8 @@ services:
     #
     # CDN
     #
-    Intervention\Image\ImageManager: ~
+    Intervention\Image\ImageManager:
+        factory: ['@App\Cdn\ImageManagerFactory', 'create']
 
     App\Cdn\CdnUploader:
         arguments:

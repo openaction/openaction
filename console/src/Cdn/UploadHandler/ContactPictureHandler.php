@@ -16,17 +16,14 @@ class ContactPictureHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $data->resize(800, 800, static function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $data->scale(800, 800);
 
-        $canvas = $this->imageManager->canvas(800, 800, 'ffffff');
-        $canvas->insert($data, 'center');
+        $canvas = $this->imageManager->create(800, 800)->fill('ffffff');
+        $canvas->place($data, 'center');
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $encoded = $canvas->toWebp(80);
+        $file->setStorageContent((string) $encoded, 'webp');
     }
 }

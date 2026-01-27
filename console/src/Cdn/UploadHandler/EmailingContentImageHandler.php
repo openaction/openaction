@@ -16,18 +16,14 @@ class EmailingContentImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $canvas = $this->imageManager->canvas($data->getWidth(), $data->getHeight(), 'ffffff');
-        $canvas->insert($data, 'top-left');
+        $canvas = $this->imageManager->create($data->width(), $data->height())->fill('ffffff');
+        $canvas->place($data, 'top-left');
 
-        $canvas->resize(2000, 2000, static function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $canvas->scaleDown(2000, 2000);
 
-        $canvas->encode('jpg', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'jpg');
+        $encoded = $canvas->toJpeg(80);
+        $file->setStorageContent((string) $encoded, 'jpg');
     }
 }

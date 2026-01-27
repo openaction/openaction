@@ -16,17 +16,14 @@ class ThemeThumbnailHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $data->resize(450, 400, static function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $data->scale(450, 400);
 
-        $canvas = $this->imageManager->canvas(450, 400, 'ffffff');
-        $canvas->insert($data, 'center');
+        $canvas = $this->imageManager->create(450, 400)->fill('ffffff');
+        $canvas->place($data, 'center');
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $encoded = $canvas->toWebp(80);
+        $file->setStorageContent((string) $encoded, 'webp');
     }
 }

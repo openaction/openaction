@@ -46,9 +46,9 @@ class SocialNetworksControllerTest extends WebTestCase
         $pathname = $project->getWebsiteSharer()->getPathname();
         $this->assertTrue($storage->fileExists($pathname), $pathname.' should exist in storage.');
 
-        $image = $imageManager->make($storage->read($pathname));
-        $this->assertSame(1200, $image->getWidth());
-        $this->assertSame(630, $image->getHeight());
+        $image = $imageManager->read($storage->read($pathname));
+        $this->assertSame(1200, $image->width());
+        $this->assertSame(630, $image->height());
 
         $this->assertResponseRedirects();
         $client->followRedirect();

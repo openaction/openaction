@@ -19,14 +19,13 @@ class WebsiteManifestoMainImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $data = $this->imageManager->make($file->getLocalContent());
-        $data->orientate();
+        $data = $this->imageManager->read($file->getLocalContent());
 
-        $canvas = $this->imageManager->canvas($data->getWidth(), $data->getHeight(), 'ffffff');
-        $canvas->insert($data, 'top-left');
-        $canvas->fit($this->width, $this->height);
+        $canvas = $this->imageManager->create($data->width(), $data->height())->fill('ffffff');
+        $canvas->place($data, 'top-left');
+        $canvas->cover($this->width, $this->height);
 
-        $canvas->encode('webp', quality: 80);
-        $file->setStorageContent($canvas->getEncoded(), 'webp');
+        $encoded = $canvas->toWebp(80);
+        $file->setStorageContent((string) $encoded, 'webp');
     }
 }

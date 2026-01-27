@@ -51,9 +51,9 @@ class LogosControllerTest extends WebTestCase
             $pathname = $field['upload']->getPathname();
             $this->assertTrue($storage->fileExists($pathname), $pathname.' should exist in storage.');
 
-            $image = $imageManager->make($storage->read($pathname));
-            $this->assertSame($field['width'], $image->getWidth());
-            $this->assertSame($field['height'], $image->getHeight());
+            $image = $imageManager->read($storage->read($pathname));
+            $this->assertSame($field['width'], $image->width());
+            $this->assertSame($field['height'], $image->height());
         }
 
         $this->assertResponseRedirects();

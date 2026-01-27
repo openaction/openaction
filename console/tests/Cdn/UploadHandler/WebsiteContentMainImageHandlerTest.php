@@ -41,14 +41,14 @@ class WebsiteContentMainImageHandlerTest extends UnitTestCase
      */
     public function testHandle(string $local, string $storage, string $extension, int $expectedWidth, int $expectedHeight)
     {
-        $manager = new ImageManager();
+        $manager = ImageManager::gd(autoOrientation: false);
         $handler = new WebsiteContentMainImageHandler($manager, '1700x1080');
 
         $upload = new CdnUpload($local, $storage, $extension);
         $handler->handle($upload);
 
-        $image = $manager->make($upload->getStorageContent());
-        $this->assertSame($expectedWidth, $image->getWidth());
-        $this->assertSame($expectedHeight, $image->getHeight());
+        $image = $manager->read($upload->getStorageContent());
+        $this->assertSame($expectedWidth, $image->width());
+        $this->assertSame($expectedHeight, $image->height());
     }
 }

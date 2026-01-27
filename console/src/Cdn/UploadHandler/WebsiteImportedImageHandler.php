@@ -16,15 +16,11 @@ class WebsiteImportedImageHandler implements UploadedImageHandlerInterface
 
     public function handle(CdnUpload $file)
     {
-        $canvas = $this->imageManager->make($file->getLocalContent());
-        $canvas->orientate();
+        $canvas = $this->imageManager->read($file->getLocalContent());
 
-        $canvas->resize(1800, 1800, static function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $canvas->scaleDown(1800, 1800);
 
-        $canvas->encode('png');
-        $file->setStorageContent($canvas->getEncoded(), 'png');
+        $encoded = $canvas->toPng();
+        $file->setStorageContent((string) $encoded, 'png');
     }
 }
