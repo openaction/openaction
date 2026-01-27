@@ -1,3 +1,6 @@
 doctrine:
     dbal:
-        logging: false
+        connections:
+            default:
+                logging: false
+                use_savepoints: true
