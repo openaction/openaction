@@ -45,7 +45,7 @@
         "monolog/monolog": "^2.6",
         "nelmio/api-doc-bundle": "^4.5",
         "nelmio/cors-bundle": "^2.0",
-        "odolbeau/phone-number-bundle": "^3.0",
+        "odolbeau/phone-number-bundle": "^4.0",
         "openspout/openspout": "^5.2",
         "scheb/2fa-backup-code": "^6.0",
         "scheb/2fa-bundle": "^6.0",

@@ -67,7 +67,7 @@ class SendController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('phone', TextType::class, [
                 'required' => true,
-                'constraints' => [new NotBlank(), new AssertPhoneNumber(['defaultRegion' => 'FR'])],
+                'constraints' => [new NotBlank(), new AssertPhoneNumber(defaultRegion: 'FR')],
             ])
             ->getForm()
         ;
