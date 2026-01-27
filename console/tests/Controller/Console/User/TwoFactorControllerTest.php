@@ -99,6 +99,17 @@ class TwoFactorControllerTest extends WebTestCase
         $client->request('GET', '/console/user/two-factor/qr-code');
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'image/png');
+
+        $content = $client->getResponse()->getContent();
+        $this->assertNotFalse($content);
+
+        $imageSize = getimagesizefromstring($content);
+        $this->assertIsArray($imageSize);
+        $this->assertSame('image/png', $imageSize['mime']);
+
+        $expectedSize = 400 + 2 * 10;
+        $this->assertSame($expectedSize, $imageSize[0]);
+        $this->assertSame($expectedSize, $imageSize[1]);
     }
 
     public function testDownloadBackupCodes()
