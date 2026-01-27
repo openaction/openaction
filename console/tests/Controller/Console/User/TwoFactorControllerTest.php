@@ -170,6 +170,9 @@ class TwoFactorControllerTest extends WebTestCase
 
         $this->assertTrue($user->isTwoFactorEnabled());
         $this->assertCount(10, $user->getTwoFactorBackupCodes());
+        foreach ($user->getTwoFactorBackupCodes() as $backupCode) {
+            $this->assertMatchesRegularExpression('/^\\d{6}$/', $backupCode);
+        }
     }
 
     public function twoFactorInValidCodes()
