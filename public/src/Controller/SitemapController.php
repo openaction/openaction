@@ -50,9 +50,7 @@ class SitemapController extends AbstractController
         ],
     ];
 
-    /**
-     * @Route("/sitemap.xml", name="sitemap", defaults={"_format"="xml"})
-     */
+    #[Route('/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
     public function index(CitipoInterface $citipo)
     {
         if (!$data = $citipo->getProjectSitemap($this->getApiToken())) {

@@ -7,9 +7,7 @@ use App\FormBuilder\SymfonyFormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/members/phoning/{id}")
- */
+#[Route('/members/phoning/{id}')]
 class PhoningController extends AbstractMembershipController
 {
     private CitipoInterface $citipo;
@@ -19,9 +17,7 @@ class PhoningController extends AbstractMembershipController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="membership_phoning_start")
-     */
+    #[Route('', name: 'membership_phoning_start')]
     public function start(Request $request, string $id)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -41,9 +37,7 @@ class PhoningController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/resolve-target", name="membership_phoning_resolve_target")
-     */
+    #[Route('/resolve-target', name: 'membership_phoning_resolve_target')]
     public function resolveTarget(Request $request, string $id)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -59,9 +53,7 @@ class PhoningController extends AbstractMembershipController
         return $this->redirectToRoute('membership_phoning_call_phone', ['id' => $id, 'callId' => $call->id]);
     }
 
-    /**
-     * @Route("/{callId}/phone", name="membership_phoning_call_phone")
-     */
+    #[Route('/{callId}/phone', name: 'membership_phoning_call_phone')]
     public function callPhone(Request $request, string $id, string $callId)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -85,9 +77,7 @@ class PhoningController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/{callId}/details", name="membership_phoning_call_details")
-     */
+    #[Route('/{callId}/details', name: 'membership_phoning_call_details')]
     public function callDetails(Request $request, string $id, string $callId)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -111,9 +101,7 @@ class PhoningController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/{callId}/answered", name="membership_phoning_call_answered")
-     */
+    #[Route('/{callId}/answered', name: 'membership_phoning_call_answered')]
     public function callResultForm(SymfonyFormBuilder $builder, Request $request, string $id, string $callId)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -213,9 +201,7 @@ class PhoningController extends AbstractMembershipController
         ]);
     }
 
-    /**
-     * @Route("/{callId}/failed/{type}", name="membership_phoning_call_failed")
-     */
+    #[Route('/{callId}/failed/{type}', name: 'membership_phoning_call_failed')]
     public function callResultFailed(Request $request, string $id, string $callId, string $type)
     {
         $this->denyUnlessToolEnabled('members_area_account');

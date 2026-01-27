@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewsletterController extends AbstractController
 {
-    /**
-     * @Route("/newsletter", name="contact_newsletter")
-     */
+    #[Route('/newsletter', name: 'contact_newsletter')]
     public function subscribe(Turnstile $turnstile, CitipoInterface $citipo, Request $request)
     {
         $this->denyUnlessToolEnabled('website_newsletter');

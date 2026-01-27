@@ -14,9 +14,7 @@ use App\Form\Member\ResetUpdateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/members")
- */
+#[Route('/members')]
 class JoinController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -26,9 +24,7 @@ class JoinController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("/join", name="membership_join")
-     */
+    #[Route('/join', name: 'membership_join')]
     public function join(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -64,9 +60,7 @@ class JoinController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/join/verify", name="membership_join_verify")
-     */
+    #[Route('/join/verify', name: 'membership_join_verify')]
     public function joinVerify()
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -74,9 +68,7 @@ class JoinController extends AbstractController
         return $this->render('member/join/verify.html.twig');
     }
 
-    /**
-     * @Route("/join/confirm/{id}/{token}", name="membership_join_confirm")
-     */
+    #[Route('/join/confirm/{id}/{token}', name: 'membership_join_confirm')]
     public function joinConfirm(string $id, string $token)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -88,9 +80,7 @@ class JoinController extends AbstractController
         return $this->redirectToRoute('membership_login', ['register' => '1']);
     }
 
-    /**
-     * @Route("/reset", name="membership_reset")
-     */
+    #[Route('/reset', name: 'membership_reset')]
     public function reset(Turnstile $turnstile, Request $request)
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -122,9 +112,7 @@ class JoinController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/reset/verify", name="membership_reset_verify")
-     */
+    #[Route('/reset/verify', name: 'membership_reset_verify')]
     public function resetVerify()
     {
         $this->denyUnlessToolEnabled('members_area_account');
@@ -132,9 +120,7 @@ class JoinController extends AbstractController
         return $this->render('member/reset/verify.html.twig');
     }
 
-    /**
-     * @Route("/reset/confirm/{id}/{token}", name="membership_reset_confirm")
-     */
+    #[Route('/reset/confirm/{id}/{token}', name: 'membership_reset_confirm')]
     public function resetConfirm(Request $request, string $id, string $token)
     {
         $this->denyUnlessToolEnabled('members_area_account');

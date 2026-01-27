@@ -10,9 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GdprController extends AbstractController
 {
-    /**
-     * @Route("/gdpr/{id}", name="manage_gdpr")
-     */
+    #[Route('/gdpr/{id}', name: 'manage_gdpr')]
     public function manage(CitipoInterface $citipo, Request $request, string $id)
     {
         if (!$contact = $citipo->getContact($this->getApiToken(), $id)) {

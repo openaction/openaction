@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/forms")
- */
+#[Route('/forms')]
 class FormController extends AbstractController
 {
     public function __construct(
@@ -21,9 +19,7 @@ class FormController extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="form_view")
-     */
+    #[Route('/{id}/{slug}', name: 'form_view')]
     public function view(SymfonyFormBuilder $builder, Request $request, string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('website_forms');

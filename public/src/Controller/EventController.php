@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/events")
- */
+#[Route('/events')]
 class EventController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -19,9 +17,7 @@ class EventController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="event_list")
-     */
+    #[Route('', name: 'event_list')]
     public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_events');
@@ -45,9 +41,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="event_view")
-     */
+    #[Route('/{id}/{slug}', name: 'event_view')]
     public function view(string $id, string $slug)
     {
         $this->denyUnlessToolEnabled('website_events');

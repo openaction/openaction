@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/manifesto")
- */
+#[Route('/manifesto')]
 class ManifestoController extends AbstractController
 {
     private CitipoInterface $citipo;
@@ -19,9 +17,7 @@ class ManifestoController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("", name="manifesto_list")
-     */
+    #[Route('', name: 'manifesto_list')]
     public function list(Request $request)
     {
         $this->denyUnlessToolEnabled('website_manifesto');
@@ -34,9 +30,7 @@ class ManifestoController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/{slug}", name="manifesto_view")
-     */
+    #[Route('/{id}/{slug}', name: 'manifesto_view')]
     public function view(string $id, string $slug, Request $request)
     {
         $this->denyUnlessToolEnabled('website_manifesto');

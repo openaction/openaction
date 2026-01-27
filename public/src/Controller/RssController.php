@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RssController extends AbstractController
 {
-    /**
-     * @Route("/rss.xml", name="rss_feed", defaults={"_format"="xml"})
-     */
+    #[Route('/rss.xml', name: 'rss_feed', defaults: ['_format' => 'xml'])]
     public function index(CitipoInterface $citipo, EnclosureMetadataProvider $metadataProvider)
     {
         if (!$project = $this->getProject()) {

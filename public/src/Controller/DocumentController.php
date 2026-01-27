@@ -17,9 +17,7 @@ class DocumentController extends AbstractController
         $this->citipo = $citipo;
     }
 
-    /**
-     * @Route("/document/{id}/{name}", name="document_serve")
-     */
+    #[Route('/document/{id}/{name}', name: 'document_serve')]
     public function serve(HttpClientInterface $httpClient, string $id, string $name)
     {
         $this->denyUnlessToolEnabled('website_documents');
