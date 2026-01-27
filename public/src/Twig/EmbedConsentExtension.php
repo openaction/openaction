@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -13,8 +13,6 @@ class EmbedConsentExtension extends AbstractExtension
     private bool $forceEmbedConsent;
     private StimulusTwigExtension $stimulus;
     private TranslatorInterface $translator;
-
-    private ?Environment $env = null;
 
     public function __construct(bool $forceEmbedConsent, StimulusTwigExtension $stimulus, TranslatorInterface $translator)
     {
@@ -32,8 +30,6 @@ class EmbedConsentExtension extends AbstractExtension
 
     public function applyEmbedConsent(Environment $env, ?string $content): string
     {
-        $this->env = $env;
-
         $content = trim($content ?: '');
 
         // Google Maps
@@ -98,6 +94,6 @@ class EmbedConsentExtension extends AbstractExtension
             'forceEmbedConsent' => $this->forceEmbedConsent,
         ]);
 
-        return '<div '.$this->stimulus->renderStimulusController($this->env, 'embed-consent', $values).'>'.$html.'</div>';
+        return '<div '.(string) $this->stimulus->renderStimulusController('embed-consent', $values).'>'.$html.'</div>';
     }
 }

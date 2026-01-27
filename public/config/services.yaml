@@ -43,4 +43,4 @@ services:
     App\Twig\EmbedConsentExtension:
         arguments:
             $forceEmbedConsent: '%env(bool:APP_FORCE_EMBED_CONSENT)%'
-            $stimulus: '@webpack_encore.twig_stimulus_extension'
+            $stimulus: '@stimulus.twig_extension'

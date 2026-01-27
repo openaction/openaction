@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use App\Util\Json;
-use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -27,7 +27,7 @@ class AssetExtension extends AbstractExtension
 
     public function renderLegacyReactComponent(Environment $env, string $componentName, array $props = []): string
     {
-        return $this->stimulusExtension->renderStimulusController($env, 'legacy-react', [
+        return (string) $this->stimulusExtension->renderStimulusController('legacy-react', [
             'component' => $componentName,
             'props' => $props,
         ]);
@@ -35,7 +35,7 @@ class AssetExtension extends AbstractExtension
 
     public function renderModernReactComponent(Environment $env, string $componentName, array $props = []): string
     {
-        return $this->stimulusExtension->renderStimulusController($env, 'modern-react', [
+        return (string) $this->stimulusExtension->renderStimulusController('modern-react', [
             'component' => $componentName,
             'props' => $props,
         ]);
