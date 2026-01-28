@@ -9,107 +9,67 @@ class UpdateAccountData
 {
     private string $email;
 
-    /**
-     * @Assert\NotBlank()
-     *
-     * @Assert\Length(max=50)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     public string $profileFirstName = '';
 
-    /**
-     * @Assert\NotBlank()
-     *
-     * @Assert\Length(max=50)
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     public string $profileLastName = '';
 
-    /**
-     * @Assert\Choice({"membership.join.civility.mister", "membership.join.civility.miss"})
-     */
+    #[Assert\Choice(choices: ['membership.join.civility.mister', 'membership.join.civility.miss'])]
     public ?string $profileFormalTitle = null;
 
-    /**
-     * @Assert\Length(max=50)
-     */
+    #[Assert\Length(max: 50)]
     public ?string $profileMiddleName = null;
 
-    /**
-     * @Assert\LessThanOrEqual("15 years ago", message="")
-     */
+    #[Assert\LessThanOrEqual(value: '15 years ago', message: '')]
     public ?\DateTime $profileBirthdate = null;
 
-    /**
-     * @Assert\Choice({"", ""})
-     */
+    #[Assert\Choice(choices: ['', ''])]
     public ?string $profileGender = null;
 
-    /**
-     * @Assert\Length(max=50)
-     */
+    #[Assert\Length(max: 50)]
     public ?string $profileNationality = null;
 
-    /**
-     * @Assert\Length(max=50)
-     */
+    #[Assert\Length(max: 50)]
     public ?string $profileCompany = null;
 
-    /**
-     * @Assert\Length(max=50)
-     */
+    #[Assert\Length(max: 50)]
     public ?string $profileJobTitle = null;
 
     public ?string $contactPhone = null;
 
     public ?string $contactWorkPhone = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $socialFacebook = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $socialTwitter = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $socialLinkedIn = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $socialTelegram = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $socialWhatsapp = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $addressStreetLine1 = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $addressStreetLine2 = null;
 
-    /**
-     * @Assert\Length(min=2, max=10)
-     */
+    #[Assert\Length(min: 2, max: 10)]
     public ?string $addressZipCode = null;
 
-    /**
-     * @Assert\Length(max=100)
-     */
+    #[Assert\Length(max: 100)]
     public ?string $addressCity = null;
 
-    /**
-     * @Assert\Country()
-     */
+    #[Assert\Country]
     public ?string $addressCountry = null;
 
     public ?bool $settingsReceiveNewsletters = null;

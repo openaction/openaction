@@ -49,25 +49,19 @@ abstract class AbstractCrmBatchHandler implements MessageHandlerInterface
         return $this->jobRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMeilisearch(MeilisearchInterface $meilisearch)
     {
         $this->meilisearch = $meilisearch;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setOrganizationRepository(OrganizationRepository $organizationRepository)
     {
         $this->organizationRepository = $organizationRepository;
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;
