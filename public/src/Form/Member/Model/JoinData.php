@@ -36,7 +36,13 @@ class JoinData
     #[Assert\LessThanOrEqual(value: '15 years ago', message: '')]
     public ?\DateTime $profileBirthdate = null;
 
-    #[Assert\Choice(choices: ['', ''])]
+    #[Assert\Choice(choices: [
+        '',
+        'membership.join.choices.profileGender.male',
+        'membership.join.choices.profileGender.female',
+        'membership.join.choices.profileGender.non_binary',
+        'membership.join.choices.profileGender.other',
+    ])]
     public ?string $profileGender = null;
 
     #[Assert\Length(max: 50)]
