@@ -55,6 +55,10 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Messenger\Transport\RetrySafeSerializer:
+        arguments:
+            $decorated: '@messenger.transport.symfony_serializer'
+
     #
     # Bridges
     #

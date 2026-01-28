@@ -14,6 +14,7 @@ framework:
         transports:
             async_emailing:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_EMAILING)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
@@ -22,6 +23,7 @@ framework:
 
             async_texting:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_TEXTING)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
                     # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
                     max_retries: 12
@@ -30,9 +32,11 @@ framework:
 
             async_importing:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_IMPORTING)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
 
             async_priority_high:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_HIGH)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
                     # Ensure transient database connection drops are retried before moving messages to the failure transport
                     max_retries: 5
@@ -41,6 +45,7 @@ framework:
 
             async_priority_low:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_PRIORITY_LOW)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
                     # Ensure transient database connection drops are retried before moving messages to the failure transport
                     max_retries: 5
@@ -49,6 +54,7 @@ framework:
 
             async_indexing:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_INDEXING)%'
+                serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
                     # Ensure transient database connection drops are retried before moving messages to the failure transport
                     max_retries: 5
