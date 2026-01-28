@@ -44,7 +44,7 @@ class LoginControllerTest extends WebTestCase
         $button = $crawler->selectButton('Se connecter');
         $client->submit($button->form(), [
             'login[email]' => 'jeanpaul@gmail.com',
-            'login[password]' => 'invalid',
+            'login[password]' => 'invalid1',
         ]);
 
         $this->assertResponseRedirects('/members/login?error=credentials');

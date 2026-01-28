@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class ValidArea extends Constraint
 {
     public const INVALID_CONTACT_STATUS = 'invalid_city';
@@ -24,6 +22,34 @@ class ValidArea extends Constraint
     public $countryField = 'addressCountry';
     public $zipCodeField = 'addressZipCode';
     public $message = 'Ce code postal semble invalide pour le pays choisi.';
+
+    public function __construct(
+        ?array $options = null,
+        ?array $groups = null,
+        $payload = null,
+        ?array $checkCountries = null,
+        ?string $countryField = null,
+        ?string $zipCodeField = null,
+        ?string $message = null,
+    ) {
+        parent::__construct($options, $groups, $payload);
+
+        if (null !== $checkCountries) {
+            $this->checkCountries = $checkCountries;
+        }
+
+        if (null !== $countryField) {
+            $this->countryField = $countryField;
+        }
+
+        if (null !== $zipCodeField) {
+            $this->zipCodeField = $zipCodeField;
+        }
+
+        if (null !== $message) {
+            $this->message = $message;
+        }
+    }
 
     public function getTargets(): string|array
     {

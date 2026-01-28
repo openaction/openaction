@@ -8,6 +8,7 @@ use App\Repository\OrganizationRepository;
 use App\Repository\Platform\JobRepository;
 use App\Search\Model\BatchRequest;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractCrmBatchHandler implements MessageHandlerInterface
 {
@@ -49,25 +50,19 @@ abstract class AbstractCrmBatchHandler implements MessageHandlerInterface
         return $this->jobRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setMeilisearch(MeilisearchInterface $meilisearch)
     {
         $this->meilisearch = $meilisearch;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setOrganizationRepository(OrganizationRepository $organizationRepository)
     {
         $this->organizationRepository = $organizationRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setJobRepository(JobRepository $jobRepository)
     {
         $this->jobRepository = $jobRepository;

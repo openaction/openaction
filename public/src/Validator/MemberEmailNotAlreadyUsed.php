@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class MemberEmailNotAlreadyUsed extends Constraint
 {
     public const INVALID_CONTACT_STATUS = 'invalid_contact_status';
@@ -16,6 +14,19 @@ class MemberEmailNotAlreadyUsed extends Constraint
     ];
 
     public $message = 'Cet email existe déjà.';
+
+    public function __construct(
+        ?array $options = null,
+        ?array $groups = null,
+        $payload = null,
+        ?string $message = null,
+    ) {
+        parent::__construct($options, $groups, $payload);
+
+        if (null !== $message) {
+            $this->message = $message;
+        }
+    }
 
     public function getTargets(): string|array
     {
