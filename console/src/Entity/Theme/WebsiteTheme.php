@@ -65,8 +65,8 @@ class WebsiteTheme
     #[ORM\OneToOne(targetEntity: Upload::class, cascade: ['persist', 'remove'])]
     private ?Upload $thumbnail = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $templates = [];
+    #[ORM\OneToMany(targetEntity: WebsiteThemeTemplate::class, mappedBy: 'theme', orphanRemoval: true)]
+    private Collection $templates;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
     private ?int $postsPerPage = null;
@@ -91,6 +91,7 @@ class WebsiteTheme
         $this->repositoryNodeId = $repositoryNodeId;
         $this->repositoryFullName = $repositoryFullName;
         $this->assets = new ArrayCollection();
+        $this->templates = new ArrayCollection();
         $this->forOrganizations = new ArrayCollection();
     }
 
@@ -105,7 +106,6 @@ class WebsiteTheme
         $self->updatedAt = $data['updatedAt'] ?? new \DateTime();
         $self->isUpdating = $data['isUpdate'] ?? false;
         $self->updateError = $data['updateError'] ?? null;
-        $self->templates = $data['templates'] ?? [];
         $self->defaultColors = $data['defaultColors'] ?? $self->defaultColors;
         $self->defaultFonts = $data['defaultFonts'] ?? $self->defaultFonts;
 
@@ -146,11 +146,10 @@ class WebsiteTheme
         $this->updateError = $error;
     }
 
-    public function updateDetails(array $name, array $description, ?Upload $thumbnail, array $templates)
+    public function updateDetails(array $name, array $description, ?Upload $thumbnail)
     {
         $this->name = $name;
         $this->description = $description;
-        $this->templates = $templates;
 
         if ($thumbnail) {
             $this->thumbnail = $thumbnail;
@@ -244,7 +243,23 @@ class WebsiteTheme
 
     public function getTemplates(): array
     {
-        return $this->templates;
+        $templates = [];
+        foreach ($this->templates as $template) {
+            $templates[$template->getName()] = $template->getContent();
+        }
+
+        return $templates;
+    }
+
+    public function getTemplateContent(string $name): ?string
+    {
+        foreach ($this->templates as $template) {
+            if ($template->getName() === $name) {
+                return $template->getContent();
+            }
+        }
+
+        return null;
     }
 
     public function getPostsPerPage(): ?int

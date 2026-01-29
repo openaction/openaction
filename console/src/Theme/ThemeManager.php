@@ -132,6 +132,6 @@ class ThemeManager
 
     private function resolveCoreTemplate(Project $project, string $filename): string
     {
-        return $project->getWebsiteTheme()->getTemplates()[self::RESOLVING[$filename]] ?? '';
+        return $project->getWebsiteTheme()->getTemplateContent(self::RESOLVING[$filename]) ?? '';
     }
 }

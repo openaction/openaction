@@ -53,6 +53,7 @@ use App\Entity\Registration;
 use App\Entity\Theme\ProjectAsset;
 use App\Entity\Theme\WebsiteTheme;
 use App\Entity\Theme\WebsiteThemeAsset;
+use App\Entity\Theme\WebsiteThemeTemplate;
 use App\Entity\Upload;
 use App\Entity\User;
 use App\Entity\Website\Document;
@@ -1010,7 +1011,20 @@ class TestFixtures extends AbstractFixtures
         ];
 
         foreach ($items as $id => $data) {
-            $this->em->persist($this->websiteThemes[$id] = WebsiteTheme::createFixture(array_merge($data, ['uuid' => $id])));
+            $templates = $data['templates'] ?? [];
+            unset($data['templates']);
+
+            $theme = WebsiteTheme::createFixture(array_merge($data, ['uuid' => $id]));
+            $this->em->persist($theme);
+            $this->websiteThemes[$id] = $theme;
+
+            foreach ($templates as $name => $content) {
+                $this->em->persist(WebsiteThemeTemplate::createFixture([
+                    'theme' => $theme,
+                    'name' => $name,
+                    'content' => $content,
+                ]));
+            }
         }
 
         $this->em->flush();
