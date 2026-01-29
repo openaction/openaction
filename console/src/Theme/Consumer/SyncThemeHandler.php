@@ -7,7 +7,9 @@ use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Theme\WebsiteTheme;
 use App\Entity\Theme\WebsiteThemeAsset;
+use App\Entity\Theme\WebsiteThemeTemplate;
 use App\Platform\Themes;
+use App\Repository\Theme\WebsiteThemeTemplateRepository;
 use App\Theme\Source\Model\WebsiteThemeManifest;
 use App\Theme\Source\ThemeManifestValidator;
 use App\Util\Json;
@@ -21,13 +23,15 @@ final class SyncThemeHandler implements MessageHandlerInterface
     private GithubInterface $github;
     private ThemeManifestValidator $manifestValidator;
     private CdnUploader $uploader;
+    private WebsiteThemeTemplateRepository $templateRepository;
 
-    public function __construct(EntityManagerInterface $em, GithubInterface $g, ThemeManifestValidator $mv, CdnUploader $u)
+    public function __construct(EntityManagerInterface $em, GithubInterface $g, ThemeManifestValidator $mv, CdnUploader $u, WebsiteThemeTemplateRepository $templateRepository)
     {
         $this->em = $em;
         $this->github = $g;
         $this->manifestValidator = $mv;
         $this->uploader = $u;
+        $this->templateRepository = $templateRepository;
     }
 
     public function __invoke(SyncThemeMessage $message)
@@ -61,10 +65,11 @@ final class SyncThemeHandler implements MessageHandlerInterface
         }
 
         $manifest = new WebsiteThemeManifest($manifestData);
+        $templatePaths = $manifest->getTemplates();
 
         // Fetch templates
         $templates = [];
-        foreach ($manifest->getTemplates() as $name => $path) {
+        foreach ($templatePaths as $name => $path) {
             $content = $this->getFileContent($theme, $path);
 
             if (null === $content) {
@@ -91,7 +96,7 @@ final class SyncThemeHandler implements MessageHandlerInterface
         }
 
         // Update theme
-        $theme->updateDetails($manifest->getName(), $manifest->getDescription(), $newThumbnail, $templates);
+        $theme->updateDetails($manifest->getName(), $manifest->getDescription(), $newThumbnail);
         $theme->setPostsPerPage($manifest->getPostsPerPage());
         $theme->setEventsPerPage($manifest->getEventsPerPage());
         $theme->updateDefaultColors(
@@ -107,6 +112,21 @@ final class SyncThemeHandler implements MessageHandlerInterface
         $theme->setUpdateError(null);
         $theme->setIsUpdating(false);
 
+        $this->em->persist($theme);
+        $this->em->flush();
+
+        $this->templateRepository->deleteByTheme($theme);
+
+        foreach ($templates as $name => $content) {
+            $this->em->persist(new WebsiteThemeTemplate(
+                $theme,
+                $name,
+                $content,
+                $templatePaths[$name] ?? null
+            ));
+        }
+
+        $theme->setUpdatedAt(new \DateTime());
         $this->em->persist($theme);
         $this->em->flush();
 
