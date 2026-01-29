@@ -38,91 +38,121 @@ The console also contains two related tools:
 The project uses Symfony both for Console and Public, with a HTTP API in between.
 It also uses StimulusJS and React when it's useful.
 
-OpenAction uses Docker both in development and production.
+OpenAction uses Docker for infrastructure services only. PHP runs locally via
+Symfony CLI for Console and Public.
   
-## Setup the development environment
+## Local development (Symfony CLI)
 
-To setup the development environment, you need [Docker](https://docs.docker.com/get-docker/) 
-and [Yarn](https://classic.yarnpkg.com/en/docs/install).
+### Prerequisites
 
-### 1. Copy the docker compose.override.yaml.dist file (optional)
+- PHP 8.4 (see `console/.php-version` and `public/.php-version`) + Composer v2
+- Symfony CLI (`symfony -v`)
+- Node.js 22 + Yarn 4 (`corepack enable`)
+- Docker (services only)
 
-If you want to access Console and Public using your host native network,
-you can copy the docker compose.override.yaml.dist file which associate
-various ports to your hosts machine, helping you get started quickly.
+### 1. Start infrastructure services (required)
 
-You can also use a local reverse proxy if you wish.
-
-### 2. Start the project and its services
+The local `.env` files point to `localhost`, so you must expose the service
+ports from Docker:
 
 ```
-cd path/to/openaction
+cp compose.override.yaml.dist compose.override.yaml
+docker compose up -d --quiet-pull
+```
 
-# Start Docker services
-docker compose up -d
+Services started by Docker:
+* PostgreSQL (database)
+* Redis (cache/sessions)
+* RabbitMQ (Symfony Messenger)
+* Meilisearch (search)
+* Gotenberg (PDF rendering)
+* Mailcatcher (local emails)
 
-# Build assets (Yarn is outside of the containers to ease usage, you should use node 14)
+### 2. Install PHP dependencies (Symfony CLI)
+
+```
 cd console
+symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+
+cd ../public
+symfony composer install --prefer-dist --no-interaction --no-ansi --no-progress
+
+cd ..
+```
+
+### 3. Install JS dependencies and build assets
+
+Console assets:
+
+```
+cd console/assets/legacy
 yarn install
 yarn build
 
-cd projects (console/projects)
+cd ../projects
 yarn install
 yarn build
 
+# Optional (release parity / modern stack used in CI)
+cd ../modern
+yarn install
+yarn build
+```
+
+Public assets:
+
+```
 cd public
 yarn install
 yarn build
-
-# Install PHP dependencies
-docker compose exec console composer install
-docker compose exec public composer install
-
-# Update /etc/hosts to add console as localhost
-127.0.0.1 console
 ```
 
-The project uses several services:
-* PostgreSQL as its database engine;
-* Redis as its cache and session storage engine;
-* Symfony Messenger queues (RabbitMQ by default; other backends via `docs/messenger-transports.md`);
-
-### 3. Prepare the local database
+### 4. Prepare database and search (Console)
 
 ```
-docker compose exec console bin/console d:d:d --force
-docker compose exec console bin/console d:d:c
-docker compose exec console bin/console d:m:m -n
-docker compose exec console bin/console d:f:l --group test
+cd console
+symfony console doctrine:migrations:migrate -n
+
+# Optional but recommended for local demo data
+symfony console doctrine:fixtures:load -n --group test --purge-with-truncate
 
 # Populate the search engine index
-docker compose exec console bin/console app:search:index-crm
+symfony console app:search:index-crm
 ```
 
-Once done, you can access the Console on the container console
-(for example, http://localhost if you use the default docker compose.override.yaml file).
+### 5. Run locally
 
-You can also access the default public website on the container public (http://localhost:9000).
-
-The default Console username/password is:
+Install the local TLS CA once if you want trusted HTTPS:
 
 ```
-titouan.galopin@citipo.com
-password
+symfony server:ca:install
 ```
 
-### 3. Configure bash/zsh aliases (optional)
-
-You can configure aliases to ease development using this setup (in your `.bashrc` file):
+Start Console and Public (ports are defined in `.symfony.local.yaml`):
 
 ```
-alias dc='docker compose'
-alias dconsole='dc exec console'
-alias dstandard='dc exec standard'
+cd console
+symfony serve -d
+
+cd ../public
+symfony serve -d
 ```
 
-This way, to run a command inside the Console container is easier:
+By default, the apps are reachable at:
+
+* Console: https://localhost:8000 (from `console/.env`)
+* Public: https://localhost:8001 (from `public/.env`)
+
+If you prefer HTTP, use `symfony serve --no-tls` and set matching URLs in
+`.env.local` (for example `APP_CONSOLE_ENDPOINT=http://localhost:8000`).
+
+### Default credentials (fixtures only)
+
+If you loaded the `test` fixtures, you can log in to Console with:
 
 ```
-dconsole bin/console make:controller 
+Email: titouan.galopin@citipo.com
+Password: password
 ```
+
+For CI parity (translations, coding style, tests), follow `AGENTS.md`.
