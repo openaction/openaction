@@ -14,14 +14,16 @@ class Meilisearch implements MeilisearchInterface
     private string $endpoint;
     private string $masterKey;
     private string $namespace;
+    private int $createIndexTimeoutInMs;
 
     private ?Client $client = null;
 
-    public function __construct(string $endpoint, string $masterKey, string $namespace)
+    public function __construct(string $endpoint, string $masterKey, string $namespace, int $createIndexTimeoutInMs)
     {
         $this->endpoint = $endpoint;
         $this->masterKey = $masterKey;
         $this->namespace = $namespace;
+        $this->createIndexTimeoutInMs = $createIndexTimeoutInMs;
     }
 
     public function indexExists(string $index): bool
@@ -52,7 +54,7 @@ class Meilisearch implements MeilisearchInterface
     public function createIndex(string $index, array $searchableAttributes, array $filterableAttributes, array $sortableAttributes): Task
     {
         $created = $this->getClient()->createIndex($index, ['primaryKey' => 'id']);
-        $this->waitForTasks([$this->mapToTask($created)]);
+        $this->waitForTasks([$this->mapToTask($created)], $this->createIndexTimeoutInMs);
 
         $created = $this->getClient()->getIndex($index);
         $created->updateSearchableAttributes($searchableAttributes);

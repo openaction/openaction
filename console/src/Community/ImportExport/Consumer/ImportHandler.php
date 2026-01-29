@@ -29,6 +29,8 @@ use function Symfony\Component\String\u;
 #[AsMessageHandler]
 final class ImportHandler
 {
+    private const CRM_IMPORT_BATCH_SIZE = 5_000;
+
     public function __construct(
         private readonly SluggerInterface $slugger,
         private readonly ImportRepository $importRepository,
@@ -378,7 +380,7 @@ final class ImportHandler
         $this->jobRepository->setJobStep($jobId, step: 9, payload: ['status' => 'indexing_batching']);
 
         // Create empty batches to ensure the creation of an index of organizations even without contacts
-        $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid);
+        $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid, self::CRM_IMPORT_BATCH_SIZE);
 
         // Create new index version
         $this->jobRepository->setJobStep($jobId, step: 10, payload: ['status' => 'indexing_uploading']);

@@ -102,6 +102,7 @@ services:
             $endpoint: '%env(resolve:MEILISEARCH_ENDPOINT)%'
             $masterKey: '%env(resolve:MEILISEARCH_MASTER_KEY)%'
             $namespace: '%env(APP_NAMESPACE)%'
+            $createIndexTimeoutInMs: '%env(int:MEILISEARCH_CREATE_INDEX_TIMEOUT_MS)%'
 
     App\Bridge\Github\GithubInterface:
         class: 'App\Bridge\Github\Github'
