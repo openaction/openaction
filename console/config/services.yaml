@@ -57,14 +57,13 @@ services:
 
     App\Messenger\Transport\RetrySafeSerializer:
         arguments:
-            $decorated: '@messenger.transport.symfony_serializer'
+            $decorated: '@messenger.default_serializer'
 
     #
     # Bridges
     #
     Monolog\Processor\PsrLogMessageProcessor:
         tags: ['monolog.processor']
-    Sentry\Monolog\BreadcrumbHandler: ~
 
     Sentry\Monolog\BreadcrumbHandler: ~
 
