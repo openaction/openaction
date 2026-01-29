@@ -24,7 +24,7 @@ class Github implements GithubInterface
         $this->httpClient = $h;
         $this->cache = $c;
         $this->appId = $appId;
-        $this->appKey = $appKey;
+        $this->appKey = $this->decodeAppKey($appKey);
     }
 
     public function getFileContent(string $installationId, string $repository, string $pathname): ?string
@@ -92,5 +92,16 @@ class Github implements GithubInterface
             ->getToken($config->signer(), $config->signingKey())
             ->toString()
         ;
+    }
+
+    private function decodeAppKey(string $appKey): string
+    {
+        $decodedKey = base64_decode(trim($appKey), true);
+
+        if (false === $decodedKey) {
+            throw new \InvalidArgumentException('Invalid GitHub App key. Expecting GITHUB_APP_KEY to be base64-encoded.');
+        }
+
+        return $decodedKey;
     }
 }
