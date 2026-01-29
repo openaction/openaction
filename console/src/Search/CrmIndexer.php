@@ -133,9 +133,9 @@ class CrmIndexer
      *
      * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function createIndexingBatchesForAllOrganizations(): array
+    public function createIndexingBatchesForAllOrganizations(?int $batchSize = null): array
     {
-        return $this->ndJsonBatchFactory->createForAllOrganizations();
+        return $this->ndJsonBatchFactory->createForAllOrganizations($batchSize);
     }
 
     /**
@@ -143,9 +143,9 @@ class CrmIndexer
      *
      * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function createIndexingBatchesForOrganization(string $organizationUuid): array
+    public function createIndexingBatchesForOrganization(string $organizationUuid, ?int $batchSize = null): array
     {
-        return $this->ndJsonBatchFactory->createForOrganization($organizationUuid);
+        return $this->ndJsonBatchFactory->createForOrganization($organizationUuid, $batchSize);
     }
 
     /**
@@ -153,9 +153,9 @@ class CrmIndexer
      *
      * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
      */
-    public function createIndexingBatchesForContacts(array $contactsUuids): array
+    public function createIndexingBatchesForContacts(array $contactsUuids, ?int $batchSize = null): array
     {
-        return $this->ndJsonBatchFactory->createForContacts($contactsUuids);
+        return $this->ndJsonBatchFactory->createForContacts($contactsUuids, $batchSize);
     }
 
     /**

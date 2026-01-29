@@ -12,32 +12,37 @@ use Symfony\Component\Uid\Uuid;
 
 class CrmNdJsonBatchFactory
 {
+    public const DEFAULT_BATCH_SIZE = 15_000;
+
     public function __construct(private readonly Connection $db, private readonly string $cacheDir)
     {
     }
 
-    public function createForAllOrganizations(): array
+    public function createForAllOrganizations(?int $batchSize = null): array
     {
-        return $this->createForSqlFilter('');
+        return $this->createForSqlFilter('', $batchSize);
     }
 
-    public function createForOrganization(string $organizationUuid): array
+    public function createForOrganization(string $organizationUuid, ?int $batchSize = null): array
     {
-        return $this->createForSqlFilter('WHERE organization = \''.$organizationUuid.'\'');
+        return $this->createForSqlFilter('WHERE organization = \''.$organizationUuid.'\'', $batchSize);
     }
 
-    public function createForContacts(array $contactsUuids): array
+    public function createForContacts(array $contactsUuids, ?int $batchSize = null): array
     {
         if (!$contactsUuids) {
             return [];
         }
 
-        return $this->createForSqlFilter('WHERE uuid IN (\''.implode("', '", $contactsUuids).'\')');
+        return $this->createForSqlFilter('WHERE uuid IN (\''.implode("', '", $contactsUuids).'\')', $batchSize);
     }
 
-    private function createForSqlFilter(string $sqlFilter): array
+    private function createForSqlFilter(string $sqlFilter, ?int $batchSize): array
     {
-        $cursor = new BatchCursor($this->cacheDir.'/indexing_crm_%s_%s.ndjson', batchSize: 15_000);
+        $cursor = new BatchCursor(
+            $this->cacheDir.'/indexing_crm_%s_%s.ndjson',
+            batchSize: $batchSize ?? self::DEFAULT_BATCH_SIZE
+        );
 
         $table = CrmIndexer::INDEXING_TABLE;
         $stmt = $this->db->executeQuery("SELECT * FROM $table $sqlFilter ORDER BY organization");
