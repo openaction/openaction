@@ -23,6 +23,17 @@ class CrmNdJsonBatchFactory
         return $this->createForSqlFilter('', $batchSize);
     }
 
+    public function createForOrganizations(array $organizationUuids, ?int $batchSize = null): array
+    {
+        if (!$organizationUuids) {
+            return [];
+        }
+
+        $escaped = array_map(static fn (string $uuid) => str_replace("'", "''", $uuid), $organizationUuids);
+
+        return $this->createForSqlFilter('WHERE organization IN (\''.implode("', '", $escaped).'\')', $batchSize);
+    }
+
     public function createForOrganization(string $organizationUuid, ?int $batchSize = null): array
     {
         return $this->createForSqlFilter('WHERE organization = \''.$organizationUuid.'\'', $batchSize);

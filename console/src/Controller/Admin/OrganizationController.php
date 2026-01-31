@@ -225,6 +225,14 @@ class OrganizationController extends AbstractCrudController
             ->onlyOnForms()
             ->setColumns(4);
 
+        yield FormField::addPanel('CRM')
+            ->setIcon('fa fa-search')
+            ->setHelp('Settings for the CRM indexing pipeline.');
+
+        yield BooleanField::new('shouldFullyReindex', 'Enable nightly full CRM reindex')
+            ->setHelp('Disable to skip the nightly full CRM reindex for this organization.')
+            ->onlyOnForms();
+
         yield FormField::addPanel('Specializations')
             ->setIcon('fa fa-terminal')
             ->setHelp('Customize the behavior of the Console for this organization.');

@@ -54,13 +54,22 @@ class IndexCrmCommand extends Command
         if ($orgaUuid) {
             $batches = $this->crmIndexer->createIndexingBatchesForOrganization($orgaUuid);
         } else {
+            $allowedUuids = $this->organizationRepo->findUuidsForFullCrmReindex();
+
+            if (!$allowedUuids) {
+                $io->writeln('OK');
+                $io->success('Indexing done (no organizations eligible for full reindex)');
+
+                return Command::SUCCESS;
+            }
+
             // Create empty batches to ensure the creation of an index even without contacts
-            foreach ($this->organizationRepo->findAllUuids() as $uuid) {
+            foreach ($allowedUuids as $uuid) {
                 $batches[(string) $uuid] = [];
             }
 
             // Override with actual batches for organizations with contacts
-            foreach ($this->crmIndexer->createIndexingBatchesForAllOrganizations() as $uuid => $filenames) {
+            foreach ($this->crmIndexer->createIndexingBatchesForOrganizations($allowedUuids) as $uuid => $filenames) {
                 $batches[$uuid] = $filenames;
             }
         }

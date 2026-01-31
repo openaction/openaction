@@ -139,6 +139,16 @@ class CrmIndexer
     }
 
     /**
+     * Create indexing batches for the given organizations contacts.
+     *
+     * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.
+     */
+    public function createIndexingBatchesForOrganizations(array $organizationUuids, ?int $batchSize = null): array
+    {
+        return $this->ndJsonBatchFactory->createForOrganizations($organizationUuids, $batchSize);
+    }
+
+    /**
      * Create indexing batches for the given organization contacts.
      *
      * @return array<string, string[]> The list of ndjson batches, indexed by organization UUID.

@@ -56,6 +56,12 @@ class Organization
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?Uuid $crmSearchKeyUid = null;
 
+    /**
+     * Whether the nightly full CRM reindex should run for this organization.
+     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    private bool $shouldFullyReindex = true;
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $partner = null;
@@ -346,6 +352,7 @@ class Organization
         $self->brevoListId = $data['brevoListId'] ?? $self->brevoListId;
         $self->brevoCampaignFolderId = $data['brevoCampaignFolderId'] ?? $self->brevoCampaignFolderId;
         $self->brevoCampaignTag = $data['brevoCampaignTag'] ?? $self->brevoCampaignTag;
+        $self->shouldFullyReindex = $data['shouldFullyReindex'] ?? $self->shouldFullyReindex;
         $self->setProjectsSlots($data['projectsSlots'] ?? 16);
         $self->addCredits($data['credits'] ?? 1000000);
         $self->addTextsCredits($data['textsCredits'] ?? 10);
@@ -458,6 +465,16 @@ class Organization
     public function setCrmSearchKeyUid(string $crmSearchKeyUid)
     {
         $this->crmSearchKeyUid = Uuid::fromString($crmSearchKeyUid);
+    }
+
+    public function getShouldFullyReindex(): bool
+    {
+        return $this->shouldFullyReindex;
+    }
+
+    public function setShouldFullyReindex(bool $shouldFullyReindex): void
+    {
+        $this->shouldFullyReindex = $shouldFullyReindex;
     }
 
     /*
