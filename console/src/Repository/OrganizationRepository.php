@@ -31,6 +31,18 @@ class OrganizationRepository extends ServiceEntityRepository
         );
     }
 
+    public function findUuidsForFullCrmReindex(): array
+    {
+        return array_column(
+            $this->createQueryBuilder('o')
+                ->select('o.uuid')
+                ->where('o.shouldFullyReindex = TRUE')
+                ->getQuery()
+                ->getArrayResult(),
+            'uuid',
+        );
+    }
+
     public function countActiveSubscriptions(): int
     {
         return $this->createQueryBuilder('o')

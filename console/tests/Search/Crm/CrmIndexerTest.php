@@ -140,6 +140,36 @@ class CrmIndexerTest extends KernelTestCase
         );
     }
 
+    public function testCreateIndexingBatchesForOrganizations(): void
+    {
+        self::bootKernel();
+
+        /** @var CrmIndexer $indexer */
+        $indexer = self::getContainer()->get(CrmIndexer::class);
+
+        $batches = $indexer->createIndexingBatchesForOrganizations([
+            '219025aa-7fe2-4385-ad8f-31f386720d10',
+            'cbeb774c-284c-43e3-923a-5a2388340f91',
+        ]);
+
+        $counts = array_map('count', $batches);
+        ksort($counts);
+
+        $this->assertSame(
+            [
+                '219025aa-7fe2-4385-ad8f-31f386720d10' => 1,
+                'cbeb774c-284c-43e3-923a-5a2388340f91' => 1,
+            ],
+            $counts,
+        );
+
+        foreach ($batches as $files) {
+            foreach ($files as $file) {
+                $this->assertFileExists($file);
+            }
+        }
+    }
+
     public function testCreateIndexingBatchesForOneOrganization(): void
     {
         self::bootKernel();
