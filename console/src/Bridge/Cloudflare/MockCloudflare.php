@@ -51,6 +51,11 @@ class MockCloudflare implements CloudflareInterface
         return true;
     }
 
+    public function getAllTrialSubdomains(): array
+    {
+        return array_keys($this->domains);
+    }
+
     public function hasTrialSubdomain(string $subdomain): bool
     {
         return isset($this->domains[$subdomain]);
@@ -61,5 +66,11 @@ class MockCloudflare implements CloudflareInterface
         $this->domains[$subdomain] = true;
 
         return true;
+    }
+
+
+    public function removeTrialSubdomain(string $recordId): void
+    {
+        unset($this->domains[$subdomain]);
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Model\CloudflareDomainConfig;
 use App\Util\Json;
 use Cloudflare\API\Adapter\Adapter;
 use Cloudflare\API\Adapter\Guzzle;
+use Cloudflare\API\Auth\APIKey;
 use Cloudflare\API\Auth\APIToken;
 use Cloudflare\API\Configurations\PageRulesActions;
 use Cloudflare\API\Configurations\PageRulesTargets;
@@ -170,6 +171,24 @@ class Cloudflare implements CloudflareInterface
         return new CloudflareDomainConfig($zone->id, $zone->name, $zone->status, $zone->name_servers);
     }
 
+    public function getAllTrialSubdomains(): array
+    {
+        $records = $this->getDNSClient()
+            ->listRecords($this->trialZoneId, 'CNAME', content: $this->trialCname, perPage: 1000)
+            ->result;
+
+        $subdomains = [];
+        foreach ($records as $record) {
+            $subdomain = explode('.', $record->name)[0];
+
+            if (!in_array($subdomain, ['www', 'scripts'], true)) {
+                $subdomains[$record->id] = explode('.', $record->name)[0];
+            }
+        }
+
+        return $subdomains;
+    }
+
     public function hasTrialSubdomain(string $subdomain): bool
     {
         return count($this->getDNSClient()->listRecords($this->trialZoneId, 'CNAME', $subdomain)->result) > 0;
@@ -178,6 +197,11 @@ class Cloudflare implements CloudflareInterface
     public function createTrialSubdomain(string $subdomain): bool
     {
         return $this->getDNSClient()->addRecord($this->trialZoneId, 'CNAME', $subdomain, $this->trialCname);
+    }
+
+    public function removeTrialSubdomain(string $recordId): void
+    {
+        $this->getDNSClient()->deleteRecord($this->trialZoneId, $recordId);
     }
 
     private function getZonesClient(): Zones
