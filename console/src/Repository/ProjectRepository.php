@@ -109,7 +109,9 @@ class ProjectRepository extends ServiceEntityRepository
         $data = $this->createQueryBuilder('p')
             ->select('p.subDomain', 'r.name AS domain', 'p.apiToken')
             ->leftJoin('p.rootDomain', 'r')
-            ->orderBy('p.id', 'ASC')
+            ->where('p.modules LIKE :hasWebsiteModule')
+            ->setParameter('hasWebsiteModule', '%'.Features::MODULE_WEBSITE.'%')
+            ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getArrayResult()
         ;
