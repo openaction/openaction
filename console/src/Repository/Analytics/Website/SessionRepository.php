@@ -21,14 +21,12 @@ class SessionRepository extends ServiceEntityRepository
         parent::__construct($registry, Session::class);
     }
 
-    public function removeOldSessions(Project $project, string $beforeDate)
+    public function removeOldSessions(string $beforeDate): void
     {
         $this->createQueryBuilder('s')
             ->delete()
             ->andWhere('s.endDate <= :before')
             ->setParameter('before', new \DateTime($beforeDate))
-            ->andWhere('s.project = :project')
-            ->setParameter('project', $project)
             ->getQuery()
             ->execute()
         ;
