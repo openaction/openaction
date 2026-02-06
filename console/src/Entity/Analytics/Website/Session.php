@@ -55,46 +55,6 @@ class Session
     #[ORM\Column(type: 'datetime')]
     private \DateTime $endDate;
 
-    /**
-     * @param PageView[] $pageViews
-     *
-     * @return static
-     */
-    public static function createFromPageViews(array $pageViews): self
-    {
-        $initialView = $pageViews[0];
-
-        $self = new self();
-        $self->organization = $initialView->getProject()->getOrganization();
-        $self->project = $initialView->getProject();
-        $self->hash = $initialView->getHash();
-        $self->platform = $initialView->getPlatform();
-        $self->browser = $initialView->getBrowser();
-        $self->country = $initialView->getCountry();
-        $self->originalReferrer = $initialView->getReferrer();
-        $self->utmSource = $initialView->getUtmSource();
-        $self->utmMedium = $initialView->getUtmMedium();
-        $self->utmCampaign = $initialView->getUtmCampaign();
-        $self->utmContent = $initialView->getUtmContent();
-        $self->startDate = $initialView->getDate();
-        $self->pathsCount = 0;
-
-        foreach ($pageViews as $pageView) {
-            $self->pathsFlow[] = $pageView->getPath();
-            $self->endDate = $pageView->getDate();
-            ++$self->pathsCount;
-
-            if (!$self->utmSource && $pageView->getUtmSource()) {
-                $self->utmSource = $pageView->getUtmSource();
-                $self->utmMedium = $pageView->getUtmMedium();
-                $self->utmCampaign = $pageView->getUtmCampaign();
-                $self->utmContent = $pageView->getUtmContent();
-            }
-        }
-
-        return $self;
-    }
-
     public function getHash(): Uuid
     {
         return $this->hash;

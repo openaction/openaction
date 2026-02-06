@@ -90,10 +90,6 @@ framework:
             'App\Bridge\Postmark\Consumer\PostmarkMessage': async_emailing
             'App\Bridge\Twilio\Consumer\TwilioMessage': async_texting
 
-            # Analytics
-            'App\Analytics\Consumer\BuildWebsiteSessionsMessage': async_priority_low
-            'App\Analytics\Consumer\ClearWebsiteSessionsMessage': async_priority_low
-
             # Import / Export
             'App\Community\ImportExport\Consumer\ImportMessage': async_importing
             'App\Community\ImportExport\Consumer\ExportMessage': async_importing
