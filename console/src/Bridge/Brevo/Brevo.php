@@ -233,6 +233,18 @@ class Brevo implements BrevoInterface
 
     protected function normalizeAttributeValue(mixed $value): ?string
     {
+        if ($value instanceof \BackedEnum) {
+            $value = $value->value;
+        } elseif ($value instanceof \UnitEnum) {
+            $value = $value->name;
+        } elseif (is_object($value) && !method_exists($value, '__toString')) {
+            return null;
+        }
+
+        if (!is_scalar($value) && !$value instanceof \Stringable) {
+            return null;
+        }
+
         $value = trim((string) $value);
 
         return '' === $value ? null : $value;
