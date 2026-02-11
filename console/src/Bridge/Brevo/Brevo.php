@@ -11,6 +11,7 @@ use Brevo\Client\Configuration;
 use Brevo\Client\Model\CreateEmailCampaign;
 use Brevo\Client\Model\CreateEmailCampaignRecipients;
 use Brevo\Client\Model\CreateEmailCampaignSender;
+use Brevo\Client\Model\CreateList;
 use Brevo\Client\Model\EmailExportRecipients;
 use Brevo\Client\Model\RequestContactImport;
 use Brevo\Client\Model\RequestContactImportJsonBody;
@@ -26,6 +27,7 @@ class Brevo implements BrevoInterface
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly HttpClientInterface $httpClient,
+        private readonly string $namespace,
     ) {
     }
 
@@ -33,17 +35,19 @@ class Brevo implements BrevoInterface
     {
         $organization = $campaign->getProject()->getOrganization();
         $config = $this->createConfiguration($organization->getBrevoApiKey() ?? '');
+        $contactsApi = $this->createContactsApi($config);
 
         try {
+            $listId = $this->createCampaignList($contactsApi, $campaign);
+
             $this->syncContacts(
-                contactsApi: $this->createContactsApi($config),
-                listId: (int) $organization->getBrevoListId(),
+                contactsApi: $contactsApi,
+                listId: $listId,
                 contacts: $contacts,
             );
 
-            $campaignTag = $organization->getBrevoCampaignTag() ?: 'citipo-campaign-'.$campaign->getId();
-            $brevoCampaign = $this->buildCampaignBody($campaign, $htmlContent, $campaignTag);
-            $brevoCampaign->setRecipients((new CreateEmailCampaignRecipients())->setListIds([(int) $organization->getBrevoListId()]));
+            $brevoCampaign = $this->buildCampaignBody($campaign, $htmlContent);
+            $brevoCampaign->setRecipients((new CreateEmailCampaignRecipients())->setListIds([$listId]));
 
             $emailCampaignsApi = $this->createEmailCampaignsApi($config);
             $createdCampaign = $emailCampaignsApi->createEmailCampaign($brevoCampaign);
@@ -109,21 +113,16 @@ class Brevo implements BrevoInterface
         throw new \RuntimeException('Brevo campaign report retrieval failed.');
     }
 
-    protected function buildCampaignBody(EmailingCampaign $campaign, string $htmlContent, string $tag): CreateEmailCampaign
+    protected function buildCampaignBody(EmailingCampaign $campaign, string $htmlContent): CreateEmailCampaign
     {
         $organization = $campaign->getProject()->getOrganization();
 
         $sender = (new CreateEmailCampaignSender())
-            ->setName($campaign->getFromName() ?: $organization->getName());
-
-        if ($organization->getBrevoSenderId()) {
-            $sender->setId($organization->getBrevoSenderId());
-        } elseif ($organization->getBrevoSenderEmail()) {
-            $sender->setEmail($organization->getBrevoSenderEmail());
-        }
+            ->setName($campaign->getFromName() ?: $organization->getName())
+            ->setEmail($organization->getBrevoSenderEmail());
 
         $body = (new CreateEmailCampaign())
-            ->setTag($tag)
+            ->setTag($this->getCampaignListName($campaign))
             ->setName($campaign->getSubject())
             ->setSubject($campaign->getSubject())
             ->setSender($sender)
@@ -148,6 +147,12 @@ class Brevo implements BrevoInterface
                 }
 
                 $body = (new RequestContactImportJsonBody())->setEmail(strtolower($contact['email']));
+                $attributes = $this->buildContactAttributes($contact);
+
+                if ($attributes) {
+                    $body->setAttributes($attributes);
+                }
+
                 $jsonBody[] = $body;
             }
 
@@ -162,6 +167,45 @@ class Brevo implements BrevoInterface
 
             $contactsApi->importContacts($request);
         }
+    }
+
+    protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
+    {
+        $list = (new CreateList())->setName($this->getCampaignListName($campaign));
+
+        return (int) $contactsApi->createList($list)->getId();
+    }
+
+    protected function getCampaignListName(EmailingCampaign $campaign): string
+    {
+        return sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
+    }
+
+    protected function buildContactAttributes(array $contact): array
+    {
+        return array_filter([
+            'PHONE' => $this->normalizeAttributeValue($contact['phone'] ?? null),
+            'FORMAL_TITLE' => $this->normalizeAttributeValue($contact['formalTitle'] ?? null),
+            'FIRST_NAME' => $this->normalizeAttributeValue($contact['firstName'] ?? null),
+            'LAST_NAME' => $this->normalizeAttributeValue($contact['lastName'] ?? null),
+            'FULL_NAME' => $this->normalizeAttributeValue($contact['fullName'] ?? null),
+            'GENDER' => $this->normalizeAttributeValue($contact['gender'] ?? null),
+            'NATIONALITY' => $this->normalizeAttributeValue($contact['nationality'] ?? null),
+            'COMPANY' => $this->normalizeAttributeValue($contact['company'] ?? null),
+            'JOB_TITLE' => $this->normalizeAttributeValue($contact['jobTitle'] ?? null),
+            'ADDRESS_LINE_1' => $this->normalizeAttributeValue($contact['addressLine1'] ?? null),
+            'ADDRESS_LINE_2' => $this->normalizeAttributeValue($contact['addressLine2'] ?? null),
+            'POSTAL_CODE' => $this->normalizeAttributeValue($contact['postalCode'] ?? null),
+            'CITY' => $this->normalizeAttributeValue($contact['city'] ?? null),
+            'COUNTRY' => $this->normalizeAttributeValue($contact['country'] ?? null),
+        ], static fn (?string $value): bool => null !== $value);
+    }
+
+    protected function normalizeAttributeValue(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+
+        return '' === $value ? null : $value;
     }
 
     protected function fetchExportedEmails(EmailCampaignsApi $emailCampaignsApi, ProcessApi $processApi, string $campaignId, string $recipientsType): array

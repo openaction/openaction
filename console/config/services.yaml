@@ -118,6 +118,8 @@ services:
 
     App\Bridge\Brevo\BrevoInterface:
         class: 'App\Bridge\Brevo\Brevo'
+        arguments:
+            $namespace: '%env(APP_NAMESPACE)%'
 
     App\Bridge\Unlayer\UnlayerInterface:
         class: 'App\Bridge\Unlayer\Unlayer'

@@ -83,7 +83,6 @@ class EmailingCampaignSender
     private function isBrevoConfigured(Organization $organization): bool
     {
         return (bool) $organization->getBrevoApiKey()
-            && (bool) $organization->getBrevoListId()
-            && ($organization->getBrevoSenderId() || $organization->getBrevoSenderEmail());
+            && (bool) $organization->getBrevoSenderEmail();
     }
 }
