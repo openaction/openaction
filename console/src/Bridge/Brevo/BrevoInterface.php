@@ -8,5 +8,5 @@ interface BrevoInterface
 {
     public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string;
 
-    public function getCampaignReport(string $apiKey, string $campaignId, ?string $campaignTag = null): array;
+    public function getCampaignReport(string $apiKey, string $campaignId): array;
 }

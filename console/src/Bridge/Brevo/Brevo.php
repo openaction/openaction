@@ -15,6 +15,8 @@ use Brevo\Client\Model\CreateList;
 use Brevo\Client\Model\EmailExportRecipients;
 use Brevo\Client\Model\RequestContactImport;
 use Brevo\Client\Model\RequestContactImportJsonBody;
+use OpenSpout\Reader\CSV\Options;
+use OpenSpout\Reader\CSV\Reader;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -57,14 +59,10 @@ class Brevo implements BrevoInterface
         } catch (ApiException $exception) {
             $this->handleApiException($exception);
         }
-
-        throw new \RuntimeException('Brevo campaign sending failed.');
     }
 
-    public function getCampaignReport(string $apiKey, string $campaignId, ?string $campaignTag = null): array
+    public function getCampaignReport(string $apiKey, string $campaignId): array
     {
-        unset($campaignTag);
-
         $config = $this->createConfiguration($apiKey);
         $emailCampaignsApi = $this->createEmailCampaignsApi($config);
         $processApi = $this->createProcessApi($config);
@@ -77,22 +75,23 @@ class Brevo implements BrevoInterface
                 $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_SOFT_BOUNCES),
                 $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_HARD_BOUNCES),
             );
+            $openedLookup = array_fill_keys($opened, true);
+            $clickedLookup = array_fill_keys($clicked, true);
+            $bouncedLookup = array_fill_keys($bounced, true);
 
             $report = [];
             foreach ($sent as $email) {
+                $isClicked = isset($clickedLookup[$email]);
+
                 $report[$email] = [
                     'sent' => true,
-                    'opened' => in_array($email, $opened, true),
-                    'clicked' => in_array($email, $clicked, true),
-                    'bounced' => in_array($email, $bounced, true),
+                    'opened' => $isClicked || isset($openedLookup[$email]),
+                    'clicked' => $isClicked,
+                    'bounced' => isset($bouncedLookup[$email]),
                 ];
-
-                if ($report[$email]['clicked']) {
-                    $report[$email]['opened'] = true;
-                }
             }
 
-            foreach ($bounced as $email) {
+            foreach (array_keys($bouncedLookup) as $email) {
                 if (!isset($report[$email])) {
                     $report[$email] = [
                         'sent' => false,
@@ -109,8 +108,6 @@ class Brevo implements BrevoInterface
         } catch (ApiException $exception) {
             $this->handleApiException($exception);
         }
-
-        throw new \RuntimeException('Brevo campaign report retrieval failed.');
     }
 
     protected function buildCampaignBody(EmailingCampaign $campaign, string $htmlContent): CreateEmailCampaign
@@ -171,7 +168,7 @@ class Brevo implements BrevoInterface
     protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
     {
         $list = (new CreateList())
-            ->setName($this->getCampaignListName($campaign))
+            ->setName(sprintf('%s-campaign-%d', $this->namespace, $campaign->getId()))
             ->setFolderId($this->resolveCampaignFolderId($contactsApi));
 
         return (int) $contactsApi->createList($list)->getId();
@@ -182,32 +179,20 @@ class Brevo implements BrevoInterface
         $folders = $contactsApi->getFolders('1', '0', 'asc')->getFolders() ?? [];
 
         foreach ($folders as $folder) {
-            $folderId = $this->extractIntProperty($folder, 'id');
+            $folderId = null;
 
-            if ($folderId) {
-                return $folderId;
+            if (is_array($folder)) {
+                $folderId = $folder['id'] ?? null;
+            } elseif (is_object($folder)) {
+                $folderId = $folder->id ?? null;
+            }
+
+            if (is_numeric($folderId)) {
+                return (int) $folderId;
             }
         }
 
         throw new \RuntimeException('Brevo error: no contact folder available. Please create at least one contacts folder in Brevo.');
-    }
-
-    protected function extractIntProperty(mixed $value, string $key): ?int
-    {
-        if (is_array($value) && isset($value[$key]) && is_numeric($value[$key])) {
-            return (int) $value[$key];
-        }
-
-        if (is_object($value) && isset($value->{$key}) && is_numeric($value->{$key})) {
-            return (int) $value->{$key};
-        }
-
-        return null;
-    }
-
-    protected function getCampaignListName(EmailingCampaign $campaign): string
-    {
-        return sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
     }
 
     protected function buildContactAttributes(array $contact): array
@@ -251,13 +236,21 @@ class Brevo implements BrevoInterface
 
     protected function fetchExportedEmails(EmailCampaignsApi $emailCampaignsApi, ProcessApi $processApi, string $campaignId, string $recipientsType): array
     {
-        $export = (new EmailExportRecipients())->setRecipientsType($recipientsType);
-        $process = $emailCampaignsApi->emailExportRecipients((int) $campaignId, $export);
+        $process = $emailCampaignsApi->emailExportRecipients(
+            (int) $campaignId,
+            new EmailExportRecipients()->setRecipientsType($recipientsType),
+        );
 
-        $exportUrl = $this->waitForExportUrl($processApi, $process->getProcessId());
-        $content = $this->httpClient->request('GET', $exportUrl)->getContent();
+        $processId = $process->getProcessId();
 
-        return $this->parseExportedEmails($content);
+        if (!$processId) {
+            return [];
+        }
+
+        $exportUrl = $this->waitForExportUrl($processApi, $processId);
+        $csvContent = $this->httpClient->request('GET', $exportUrl)->getContent();
+
+        return $this->parseExportedEmails($csvContent);
     }
 
     protected function waitForExportUrl(ProcessApi $processApi, int $processId): string
@@ -285,26 +278,61 @@ class Brevo implements BrevoInterface
 
     protected function parseExportedEmails(string $content): array
     {
-        $emails = [];
-        $lines = preg_split('/\r\n|\r|\n/', trim($content));
+        $tempPath = tempnam(sys_get_temp_dir(), 'brevo_export_');
 
-        if (!$lines) {
-            return [];
+        if (false === $tempPath) {
+            throw new \RuntimeException('Unable to create temporary file for Brevo export parsing.');
         }
 
-        $delimiter = str_contains($lines[0], ';') ? ';' : ',';
+        if (false === file_put_contents($tempPath, $content)) {
+            @unlink($tempPath);
 
-        foreach ($lines as $line) {
-            if (!$line) {
-                continue;
+            throw new \RuntimeException('Unable to write Brevo export in temporary file.');
+        }
+
+        $emails = [];
+        $isFirstRow = true;
+        $emailColumnIndex = 0;
+        $reader = new Reader(new Options(FIELD_DELIMITER: ';'));
+
+        try {
+            $reader->open($tempPath);
+
+            foreach ($reader->getSheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $row) {
+                    $columns = $row->toArray();
+
+                    if ($isFirstRow) {
+                        $isFirstRow = false;
+                        $headerEmailColumnIndex = null;
+
+                        foreach ($columns as $index => $column) {
+                            $normalizedColumn = strtolower(trim((string) $column));
+
+                            if (in_array($normalizedColumn, ['email_id', 'email id', 'email'], true)) {
+                                $headerEmailColumnIndex = (int) $index;
+
+                                break;
+                            }
+                        }
+
+                        if (null !== $headerEmailColumnIndex) {
+                            $emailColumnIndex = $headerEmailColumnIndex;
+
+                            continue;
+                        }
+                    }
+
+                    $email = strtolower(trim((string) ($columns[$emailColumnIndex] ?? '')));
+
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $emails[$email] = true;
+                    }
+                }
             }
-
-            $columns = str_getcsv($line, $delimiter);
-            $email = strtolower(trim($columns[0] ?? ''));
-
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emails[$email] = true;
-            }
+        } finally {
+            $reader->close();
+            @unlink($tempPath);
         }
 
         return array_keys($emails);
@@ -330,7 +358,7 @@ class Brevo implements BrevoInterface
         return new ProcessApi(null, $config);
     }
 
-    protected function handleApiException(ApiException $exception): void
+    protected function handleApiException(ApiException $exception): never
     {
         $this->logger->error('Brevo API error: '.$exception->getMessage(), [
             'exception' => $exception,
