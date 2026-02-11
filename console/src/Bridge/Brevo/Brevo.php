@@ -171,9 +171,39 @@ class Brevo implements BrevoInterface
 
     protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
     {
-        $list = (new CreateList())->setName($this->getCampaignListName($campaign));
+        $list = (new CreateList())
+            ->setName($this->getCampaignListName($campaign))
+            ->setFolderId($this->resolveCampaignFolderId($contactsApi));
 
         return (int) $contactsApi->createList($list)->getId();
+    }
+
+    protected function resolveCampaignFolderId(ContactsApi $contactsApi): int
+    {
+        $folders = $contactsApi->getFolders('1', '0', 'asc')->getFolders() ?? [];
+
+        foreach ($folders as $folder) {
+            $folderId = $this->extractIntProperty($folder, 'id');
+
+            if ($folderId) {
+                return $folderId;
+            }
+        }
+
+        throw new \RuntimeException('Brevo error: no contact folder available. Please create at least one contacts folder in Brevo.');
+    }
+
+    protected function extractIntProperty(mixed $value, string $key): ?int
+    {
+        if (is_array($value) && isset($value[$key]) && is_numeric($value[$key])) {
+            return (int) $value[$key];
+        }
+
+        if (is_object($value) && isset($value->{$key}) && is_numeric($value->{$key})) {
+            return (int) $value->{$key};
+        }
+
+        return null;
     }
 
     protected function getCampaignListName(EmailingCampaign $campaign): string
