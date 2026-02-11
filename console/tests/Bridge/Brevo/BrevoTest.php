@@ -15,6 +15,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpClient\MockHttpClient;
 
+enum TestContactFormalTitle: string
+{
+    case MR = 'Mr';
+}
+
 class BrevoTest extends TestCase
 {
     public function testGetCampaignReportAggregatesExports()
@@ -227,5 +232,40 @@ class BrevoTest extends TestCase
 
         $this->assertSame('jane.doe@example.test', $second->getEmail());
         $this->assertNull($second->getAttributes());
+    }
+
+    public function testSyncContactsNormalizesBackedEnums()
+    {
+        $capturedRequests = [];
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->once())
+            ->method('importContacts')
+            ->willReturnCallback(function (RequestContactImport $request) use (&$capturedRequests) {
+                $capturedRequests[] = $request;
+
+                return null;
+            });
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeSyncContacts(ContactsApi $contactsApi, int $listId, array $contacts): void
+            {
+                $this->syncContacts($contactsApi, $listId, $contacts);
+            }
+        };
+
+        $bridge->exposeSyncContacts($contactsApi, 99, [
+            [
+                'email' => 'jane.doe@example.test',
+                'formalTitle' => TestContactFormalTitle::MR,
+            ],
+        ]);
+
+        $this->assertCount(1, $capturedRequests);
+        $this->assertCount(1, $capturedRequests[0]->getJsonBody());
+
+        $first = $capturedRequests[0]->getJsonBody()[0];
+        $this->assertSame('jane.doe@example.test', $first->getEmail());
+        $this->assertSame(['FORMAL_TITLE' => 'Mr'], $first->getAttributes());
     }
 }
