@@ -12,6 +12,7 @@ use Brevo\Client\Model\CreateEmailCampaign;
 use Brevo\Client\Model\CreateEmailCampaignRecipients;
 use Brevo\Client\Model\CreateEmailCampaignSender;
 use Brevo\Client\Model\CreateList;
+use Brevo\Client\Model\CreateUpdateFolder;
 use Brevo\Client\Model\EmailExportRecipients;
 use Brevo\Client\Model\RequestContactImport;
 use Brevo\Client\Model\RequestContactImportJsonBody;
@@ -171,14 +172,47 @@ class Brevo implements BrevoInterface
 
     protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
     {
-        $list = (new CreateList())->setName($this->getCampaignListName($campaign));
+        $list = (new CreateList())
+            ->setName($this->getCampaignListName($campaign))
+            ->setFolderId($this->resolveCampaignFolderId($contactsApi));
 
         return (int) $contactsApi->createList($list)->getId();
+    }
+
+    protected function resolveCampaignFolderId(ContactsApi $contactsApi): int
+    {
+        $folderName = $this->getCampaignFolderName();
+        $limit = 50;
+        $offset = 0;
+
+        do {
+            $result = $contactsApi->getFolders((string) $limit, (string) $offset, 'asc');
+
+            foreach ($result->getFolders() ?: [] as $folder) {
+                $name = trim((string) ($folder->name ?? ''));
+                $id = (int) ($folder->id ?? 0);
+
+                if ($id > 0 && $name === $folderName) {
+                    return $id;
+                }
+            }
+
+            $offset += $limit;
+        } while ($offset < (int) $result->getCount());
+
+        $folder = (new CreateUpdateFolder())->setName($folderName);
+
+        return (int) $contactsApi->createFolder($folder)->getId();
     }
 
     protected function getCampaignListName(EmailingCampaign $campaign): string
     {
         return sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
+    }
+
+    protected function getCampaignFolderName(): string
+    {
+        return sprintf('%s-campaigns', $this->namespace);
     }
 
     protected function buildContactAttributes(array $contact): array

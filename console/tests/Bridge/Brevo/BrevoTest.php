@@ -6,7 +6,11 @@ use App\Bridge\Brevo\Brevo;
 use App\Entity\Community\EmailingCampaign;
 use Brevo\Client\Api\ContactsApi;
 use Brevo\Client\Configuration;
+use Brevo\Client\Model\CreateList;
+use Brevo\Client\Model\CreateModel;
+use Brevo\Client\Model\CreateUpdateFolder;
 use Brevo\Client\Model\EmailExportRecipients;
+use Brevo\Client\Model\GetFolders;
 use Brevo\Client\Model\RequestContactImport;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -154,5 +158,73 @@ class BrevoTest extends TestCase
 
         $this->assertSame('jane.doe@example.test', $second->getEmail());
         $this->assertNull($second->getAttributes());
+    }
+
+    public function testCreateCampaignListUsesExistingFolderWhenFound()
+    {
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getId')->willReturn(42);
+
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->once())
+            ->method('getFolders')
+            ->with('50', '0', 'asc')
+            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 123, 'name' => 'openaction-campaigns']])->setCount(1));
+        $contactsApi
+            ->expects($this->never())
+            ->method('createFolder');
+        $contactsApi
+            ->expects($this->once())
+            ->method('createList')
+            ->with($this->callback(function (CreateList $list): bool {
+                return 'openaction-campaign-42' === $list->getName() && 123 === $list->getFolderId();
+            }))
+            ->willReturn(new CreateModel(['id' => 456]));
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
+            {
+                return $this->createCampaignList($contactsApi, $campaign);
+            }
+        };
+
+        $this->assertSame(456, $bridge->exposeCreateCampaignList($contactsApi, $campaign));
+    }
+
+    public function testCreateCampaignListCreatesFolderWhenMissing()
+    {
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getId')->willReturn(42);
+
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->once())
+            ->method('getFolders')
+            ->with('50', '0', 'asc')
+            ->willReturn((new GetFolders())->setFolders([])->setCount(0));
+        $contactsApi
+            ->expects($this->once())
+            ->method('createFolder')
+            ->with($this->callback(function (CreateUpdateFolder $folder): bool {
+                return 'openaction-campaigns' === $folder->getName();
+            }))
+            ->willReturn(new CreateModel(['id' => 123]));
+        $contactsApi
+            ->expects($this->once())
+            ->method('createList')
+            ->with($this->callback(function (CreateList $list): bool {
+                return 'openaction-campaign-42' === $list->getName() && 123 === $list->getFolderId();
+            }))
+            ->willReturn(new CreateModel(['id' => 456]));
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
+            {
+                return $this->createCampaignList($contactsApi, $campaign);
+            }
+        };
+
+        $this->assertSame(456, $bridge->exposeCreateCampaignList($contactsApi, $campaign));
     }
 }
