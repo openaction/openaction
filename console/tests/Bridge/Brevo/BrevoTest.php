@@ -4,6 +4,8 @@ namespace App\Tests\Bridge\Brevo;
 
 use App\Bridge\Brevo\Brevo;
 use App\Entity\Community\EmailingCampaign;
+use App\Entity\Organization;
+use App\Entity\Project;
 use Brevo\Client\Api\ContactsApi;
 use Brevo\Client\Configuration;
 use Brevo\Client\Model\CreateList;
@@ -83,6 +85,41 @@ class BrevoTest extends TestCase
         $campaign->method('getId')->willReturn(42);
 
         $this->assertSame('my-app-campaign-42', $bridge->exposeCampaignListName($campaign));
+    }
+
+    public function testBuildCampaignBodyDoesNotSetTag()
+    {
+        $organization = $this->createMock(Organization::class);
+        $organization->method('getName')->willReturn('OpenAction');
+        $organization->method('getBrevoSenderEmail')->willReturn('sender@example.test');
+
+        $project = $this->createMock(Project::class);
+        $project->method('getOrganization')->willReturn($organization);
+
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getProject')->willReturn($project);
+        $campaign->method('getFromName')->willReturn('Campaign Sender');
+        $campaign->method('getSubject')->willReturn('Campaign Subject');
+        $campaign->method('getReplyToEmail')->willReturn(null);
+        $campaign->method('getFullFromEmail')->willReturn('reply@example.test');
+        $campaign->method('getPreview')->willReturn('Campaign preview');
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeBuildCampaignBody(EmailingCampaign $campaign, string $htmlContent)
+            {
+                return $this->buildCampaignBody($campaign, $htmlContent);
+            }
+        };
+
+        $body = $bridge->exposeBuildCampaignBody($campaign, '<p>Hello</p>');
+
+        $this->assertNull($body->getTag());
+        $this->assertSame('Campaign Subject', $body->getName());
+        $this->assertSame('Campaign Subject', $body->getSubject());
+        $this->assertSame('Campaign Sender', $body->getSender()->getName());
+        $this->assertSame('sender@example.test', $body->getSender()->getEmail());
+        $this->assertSame('reply@example.test', $body->getReplyTo());
+        $this->assertSame('Campaign preview', $body->getPreviewText());
     }
 
     public function testCreateCampaignListUsesExistingFolderId()

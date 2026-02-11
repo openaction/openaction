@@ -122,7 +122,6 @@ class Brevo implements BrevoInterface
             ->setEmail($organization->getBrevoSenderEmail());
 
         $body = (new CreateEmailCampaign())
-            ->setTag($this->getCampaignListName($campaign))
             ->setName($campaign->getSubject())
             ->setSubject($campaign->getSubject())
             ->setSender($sender)
