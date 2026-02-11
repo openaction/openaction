@@ -7,7 +7,10 @@ use App\Entity\Community\EmailingCampaign;
 use App\Entity\Organization;
 use App\Entity\Project;
 use Brevo\Client\Api\ContactsApi;
+use Brevo\Client\Api\EmailCampaignsApi;
+use Brevo\Client\Api\ProcessApi;
 use Brevo\Client\Configuration;
+use Brevo\Client\Model\CreatedProcessId;
 use Brevo\Client\Model\CreateList;
 use Brevo\Client\Model\CreateModel;
 use Brevo\Client\Model\EmailExportRecipients;
@@ -70,6 +73,36 @@ class BrevoTest extends TestCase
                 'bounced' => true,
             ],
         ], $report);
+    }
+
+    public function testFetchExportedEmailsReturnsEmptyWhenProcessIdIsMissing()
+    {
+        $emailCampaignsApi = $this->createMock(EmailCampaignsApi::class);
+        $emailCampaignsApi
+            ->expects($this->once())
+            ->method('emailExportRecipients')
+            ->willReturn(new CreatedProcessId());
+
+        $processApi = $this->createMock(ProcessApi::class);
+        $processApi
+            ->expects($this->never())
+            ->method('getProcess');
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeFetchExportedEmails(
+                EmailCampaignsApi $emailCampaignsApi,
+                ProcessApi $processApi,
+                string $campaignId,
+                string $recipientsType,
+            ): array {
+                return $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, $recipientsType);
+            }
+        };
+
+        $this->assertSame(
+            [],
+            $bridge->exposeFetchExportedEmails($emailCampaignsApi, $processApi, '42', EmailExportRecipients::RECIPIENTS_TYPE_CLICKERS),
+        );
     }
 
     public function testCampaignListNameUsesNamespaceAndCampaignId()

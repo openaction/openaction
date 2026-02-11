@@ -254,7 +254,19 @@ class Brevo implements BrevoInterface
         $export = (new EmailExportRecipients())->setRecipientsType($recipientsType);
         $process = $emailCampaignsApi->emailExportRecipients((int) $campaignId, $export);
 
-        $exportUrl = $this->waitForExportUrl($processApi, $process->getProcessId());
+        $processId = $process->getProcessId();
+
+        if (!is_numeric($processId) || (int) $processId <= 0) {
+            $this->logger->warning('Brevo export process id missing, treating export as empty', [
+                'campaign_id' => $campaignId,
+                'recipients_type' => $recipientsType,
+                'process_id' => $processId,
+            ]);
+
+            return [];
+        }
+
+        $exportUrl = $this->waitForExportUrl($processApi, (int) $processId);
         $content = $this->httpClient->request('GET', $exportUrl)->getContent();
 
         return $this->parseExportedEmails($content);
@@ -299,7 +311,7 @@ class Brevo implements BrevoInterface
                 continue;
             }
 
-            $columns = str_getcsv($line, $delimiter);
+            $columns = str_getcsv($line, $delimiter, '"', '\\');
             $email = strtolower(trim($columns[0] ?? ''));
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
