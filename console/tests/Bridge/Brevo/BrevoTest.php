@@ -3,8 +3,11 @@
 namespace App\Tests\Bridge\Brevo;
 
 use App\Bridge\Brevo\Brevo;
+use App\Entity\Community\EmailingCampaign;
+use Brevo\Client\Api\ContactsApi;
 use Brevo\Client\Configuration;
 use Brevo\Client\Model\EmailExportRecipients;
+use Brevo\Client\Model\RequestContactImport;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -13,7 +16,7 @@ class BrevoTest extends TestCase
 {
     public function testGetCampaignReportAggregatesExports()
     {
-        $bridge = new class(new NullLogger(), new MockHttpClient()) extends Brevo {
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
             public array $exports = [];
 
             protected function fetchExportedEmails($emailCampaignsApi, $processApi, string $campaignId, string $recipientsType): array
@@ -57,5 +60,99 @@ class BrevoTest extends TestCase
                 'bounced' => true,
             ],
         ], $report);
+    }
+
+    public function testCampaignListNameUsesNamespaceAndCampaignId()
+    {
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'my-app') extends Brevo {
+            public function exposeCampaignListName(EmailingCampaign $campaign): string
+            {
+                return $this->getCampaignListName($campaign);
+            }
+        };
+
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getId')->willReturn(42);
+
+        $this->assertSame('my-app-campaign-42', $bridge->exposeCampaignListName($campaign));
+    }
+
+    public function testSyncContactsSetsOnlyNonEmptyAttributes()
+    {
+        $capturedRequests = [];
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->once())
+            ->method('importContacts')
+            ->willReturnCallback(function (RequestContactImport $request) use (&$capturedRequests) {
+                $capturedRequests[] = $request;
+
+                return null;
+            });
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeSyncContacts(ContactsApi $contactsApi, int $listId, array $contacts): void
+            {
+                $this->syncContacts($contactsApi, $listId, $contacts);
+            }
+        };
+
+        $bridge->exposeSyncContacts($contactsApi, 99, [
+            [
+                'email' => 'John.Doe@Example.test',
+                'phone' => '+33601020304',
+                'formalTitle' => 'Mr',
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'fullName' => 'John Doe',
+                'gender' => 'male',
+                'nationality' => 'FR',
+                'company' => 'OpenAction',
+                'jobTitle' => 'Engineer',
+                'addressLine1' => '1 rue de Paris',
+                'addressLine2' => 'Bat A',
+                'postalCode' => '75000',
+                'city' => 'Paris',
+                'country' => 'FR',
+            ],
+            [
+                'email' => 'jane.doe@example.test',
+                'phone' => '',
+                'firstName' => '  ',
+            ],
+            [
+                'email' => null,
+                'phone' => '+33611111111',
+            ],
+        ]);
+
+        $this->assertCount(1, $capturedRequests);
+        $this->assertSame([99], $capturedRequests[0]->getListIds());
+        $this->assertTrue($capturedRequests[0]->getUpdateExistingContacts());
+        $this->assertCount(2, $capturedRequests[0]->getJsonBody());
+
+        $first = $capturedRequests[0]->getJsonBody()[0];
+        $second = $capturedRequests[0]->getJsonBody()[1];
+
+        $this->assertSame('john.doe@example.test', $first->getEmail());
+        $this->assertSame([
+            'PHONE' => '+33601020304',
+            'FORMAL_TITLE' => 'Mr',
+            'FIRST_NAME' => 'John',
+            'LAST_NAME' => 'Doe',
+            'FULL_NAME' => 'John Doe',
+            'GENDER' => 'male',
+            'NATIONALITY' => 'FR',
+            'COMPANY' => 'OpenAction',
+            'JOB_TITLE' => 'Engineer',
+            'ADDRESS_LINE_1' => '1 rue de Paris',
+            'ADDRESS_LINE_2' => 'Bat A',
+            'POSTAL_CODE' => '75000',
+            'CITY' => 'Paris',
+            'COUNTRY' => 'FR',
+        ], $first->getAttributes());
+
+        $this->assertSame('jane.doe@example.test', $second->getEmail());
+        $this->assertNull($second->getAttributes());
     }
 }

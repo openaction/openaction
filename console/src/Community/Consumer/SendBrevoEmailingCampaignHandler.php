@@ -53,9 +53,28 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
 
         $contacts = $this->contactViewBuilder->forEmailingCampaign($campaign)
             ->createQueryBuilder()
-            ->select('c.email', 'c.createdAt')
+            ->leftJoin('c.addressCountry', 'country')
+            ->select(
+                'c.email AS email',
+                'c.contactPhone AS phone',
+                'c.profileFormalTitle AS formalTitle',
+                'c.profileFirstName AS firstName',
+                'c.profileLastName AS lastName',
+                'c.profileGender AS gender',
+                'c.profileNationality AS nationality',
+                'c.profileCompany AS company',
+                'c.profileJobTitle AS jobTitle',
+                'c.addressStreetLine1 AS addressLine1',
+                'c.addressStreetLine2 AS addressLine2',
+                'c.addressZipCode AS postalCode',
+                'c.addressCity AS city',
+                'country.code AS countryCode',
+            )
             ->getQuery()
-            ->getArrayResult();
+            ->getArrayResult()
+        ;
+
+        $contacts = array_map(fn (array $contact) => $this->normalizeBrevoContactData($contact), $contacts);
 
         $brevoCampaignId = $this->brevo->sendCampaign(
             campaign: $campaign,
@@ -81,7 +100,30 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
     private function isConfigured(Organization $organization): bool
     {
         return (bool) $organization->getBrevoApiKey()
-            && (bool) $organization->getBrevoListId()
-            && ($organization->getBrevoSenderId() || $organization->getBrevoSenderEmail());
+            && (bool) $organization->getBrevoSenderEmail();
+    }
+
+    private function normalizeBrevoContactData(array $contact): array
+    {
+        $firstName = trim((string) ($contact['firstName'] ?? '')) ?: null;
+        $lastName = trim((string) ($contact['lastName'] ?? '')) ?: null;
+
+        return [
+            'email' => $contact['email'] ?? null,
+            'phone' => $contact['phone'] ?? null,
+            'formalTitle' => $contact['formalTitle'] ?? null,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'fullName' => trim(implode(' ', array_filter([$firstName, $lastName]))) ?: null,
+            'gender' => $contact['gender'] ?? null,
+            'nationality' => $contact['nationality'] ?? null,
+            'company' => $contact['company'] ?? null,
+            'jobTitle' => $contact['jobTitle'] ?? null,
+            'addressLine1' => $contact['addressLine1'] ?? null,
+            'addressLine2' => $contact['addressLine2'] ?? null,
+            'postalCode' => $contact['postalCode'] ?? null,
+            'city' => $contact['city'] ?? null,
+            'country' => $contact['countryCode'] ?? null,
+        ];
     }
 }

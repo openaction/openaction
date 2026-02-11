@@ -27,7 +27,6 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
         $organization->setEmailProvider('brevo');
         $organization->setBrevoApiKey('brevo_api_key');
-        $organization->setBrevoListId(1234);
         $organization->setBrevoSenderEmail('brevo@example.test');
         static::getContainer()->get('doctrine')->getManager()->flush();
 
@@ -46,6 +45,23 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $this->assertNotNull($campaign->getResolvedAt());
         $this->assertCount(3, $payload['contacts']);
         $this->assertStringContainsString('Hello world', $payload['html']);
+        foreach ($payload['contacts'] as $contact) {
+            $this->assertArrayHasKey('email', $contact);
+            $this->assertArrayHasKey('phone', $contact);
+            $this->assertArrayHasKey('formalTitle', $contact);
+            $this->assertArrayHasKey('firstName', $contact);
+            $this->assertArrayHasKey('lastName', $contact);
+            $this->assertArrayHasKey('fullName', $contact);
+            $this->assertArrayHasKey('gender', $contact);
+            $this->assertArrayHasKey('nationality', $contact);
+            $this->assertArrayHasKey('company', $contact);
+            $this->assertArrayHasKey('jobTitle', $contact);
+            $this->assertArrayHasKey('addressLine1', $contact);
+            $this->assertArrayHasKey('addressLine2', $contact);
+            $this->assertArrayHasKey('postalCode', $contact);
+            $this->assertArrayHasKey('city', $contact);
+            $this->assertArrayHasKey('country', $contact);
+        }
 
         $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
         $this->assertCount(3, $messages);

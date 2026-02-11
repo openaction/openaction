@@ -280,7 +280,6 @@ class SendControllerTest extends WebTestCase
         $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
         $orga->setEmailProvider('brevo');
         $orga->setBrevoApiKey('brevo_api_key');
-        $orga->setBrevoListId(4242);
         $orga->setBrevoSenderEmail('brevo@citipo.com');
         static::getContainer()->get(EntityManagerInterface::class)->flush();
 

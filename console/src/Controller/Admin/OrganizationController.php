@@ -145,25 +145,7 @@ class OrganizationController extends AbstractCrudController
                 ->setColumns(4)
                 ->onlyOnForms();
 
-            yield NumberField::new('brevoSenderId', 'Brevo sender ID')
-                ->setColumns(4)
-                ->onlyOnForms();
-
             yield TextField::new('brevoSenderEmail', 'Brevo sender email')
-                ->setColumns(4)
-                ->onlyOnForms();
-
-            yield NumberField::new('brevoListId', 'Brevo marketing list ID')
-                ->setColumns(4)
-                ->onlyOnForms();
-
-            yield NumberField::new('brevoCampaignFolderId', 'Brevo folder ID')
-                ->setHelp('Optional folder identifier to store campaigns')
-                ->setColumns(4)
-                ->onlyOnForms();
-
-            yield TextField::new('brevoCampaignTag', 'Brevo campaign tag')
-                ->setHelp('Optional tag applied to campaigns')
                 ->setColumns(4)
                 ->onlyOnForms();
 

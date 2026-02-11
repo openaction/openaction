@@ -180,20 +180,8 @@ class Organization
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $brevoApiKey = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $brevoSenderId = null;
-
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $brevoSenderEmail = null;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $brevoListId = null;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $brevoCampaignFolderId = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $brevoCampaignTag = null;
 
     /*
      * White label
@@ -347,11 +335,7 @@ class Organization
         $self->mailchimpApiKey = $data['mailchimpApiKey'] ?? $self->mailchimpApiKey;
         $self->mailchimpAudienceName = $data['mailchimpAudienceName'] ?? $self->mailchimpAudienceName;
         $self->brevoApiKey = $data['brevoApiKey'] ?? $self->brevoApiKey;
-        $self->brevoSenderId = $data['brevoSenderId'] ?? $self->brevoSenderId;
         $self->brevoSenderEmail = $data['brevoSenderEmail'] ?? $self->brevoSenderEmail;
-        $self->brevoListId = $data['brevoListId'] ?? $self->brevoListId;
-        $self->brevoCampaignFolderId = $data['brevoCampaignFolderId'] ?? $self->brevoCampaignFolderId;
-        $self->brevoCampaignTag = $data['brevoCampaignTag'] ?? $self->brevoCampaignTag;
         $self->shouldFullyReindex = $data['shouldFullyReindex'] ?? $self->shouldFullyReindex;
         $self->setProjectsSlots($data['projectsSlots'] ?? 16);
         $self->addCredits($data['credits'] ?? 1000000);
@@ -963,16 +947,6 @@ class Organization
         $this->brevoApiKey = $brevoApiKey;
     }
 
-    public function getBrevoSenderId(): ?int
-    {
-        return $this->brevoSenderId;
-    }
-
-    public function setBrevoSenderId(?int $brevoSenderId): void
-    {
-        $this->brevoSenderId = $brevoSenderId;
-    }
-
     public function getBrevoSenderEmail(): ?string
     {
         return $this->brevoSenderEmail;
@@ -981,36 +955,6 @@ class Organization
     public function setBrevoSenderEmail(?string $brevoSenderEmail): void
     {
         $this->brevoSenderEmail = $brevoSenderEmail;
-    }
-
-    public function getBrevoListId(): ?int
-    {
-        return $this->brevoListId;
-    }
-
-    public function setBrevoListId(?int $brevoListId): void
-    {
-        $this->brevoListId = $brevoListId;
-    }
-
-    public function getBrevoCampaignFolderId(): ?int
-    {
-        return $this->brevoCampaignFolderId;
-    }
-
-    public function setBrevoCampaignFolderId(?int $brevoCampaignFolderId): void
-    {
-        $this->brevoCampaignFolderId = $brevoCampaignFolderId;
-    }
-
-    public function getBrevoCampaignTag(): ?string
-    {
-        return $this->brevoCampaignTag;
-    }
-
-    public function setBrevoCampaignTag(?string $brevoCampaignTag): void
-    {
-        $this->brevoCampaignTag = $brevoCampaignTag;
     }
 
     /*
