@@ -23,7 +23,7 @@ class MockBrevo implements BrevoInterface
         return $id;
     }
 
-    public function getCampaignReport(string $apiKey, string $campaignId, ?string $campaignTag = null): array
+    public function getCampaignReport(string $apiKey, string $campaignId): array
     {
         return $this->reports[$campaignId] ?? [];
     }

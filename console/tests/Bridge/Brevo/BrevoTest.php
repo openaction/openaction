@@ -72,19 +72,27 @@ class BrevoTest extends TestCase
         ], $report);
     }
 
-    public function testCampaignListNameUsesNamespaceAndCampaignId()
+    public function testParseExportedEmailsReadsEmailIdColumnFromBrevoCsvExport()
     {
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'my-app') extends Brevo {
-            public function exposeCampaignListName(EmailingCampaign $campaign): string
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeParseExportedEmails(string $content): array
             {
-                return $this->getCampaignListName($campaign);
+                return $this->parseExportedEmails($content);
             }
         };
 
-        $campaign = $this->createMock(EmailingCampaign::class);
-        $campaign->method('getId')->willReturn(42);
+        $report = <<<'CSV'
+Campaign ID;Campaign Name;Email_ID;Send_Date;Delivered_Date;Open_Date;Total Opens;Total Apple MPP Opens;Unsubscribe_Date
+16;NL MENSUELLE;m.pons@datack.fr;11-02-2026 22:14:15;11-02-2026 22:14:18;;0;0;
+16;NL MENSUELLE;marine.decalbiac@gmail.com;11-02-2026 22:14:15;11-02-2026 22:14:18;11-02-2026 22:20:25;3;0;
+16;NL MENSUELLE;MARINE.DECALBIAC@GMAIL.COM;11-02-2026 22:14:15;11-02-2026 22:14:18;11-02-2026 22:20:25;3;0;
+16;NL MENSUELLE;invalid-email;11-02-2026 22:14:15;11-02-2026 22:14:18;;0;0;
+CSV;
 
-        $this->assertSame('my-app-campaign-42', $bridge->exposeCampaignListName($campaign));
+        $this->assertSame([
+            'm.pons@datack.fr',
+            'marine.decalbiac@gmail.com',
+        ], $bridge->exposeParseExportedEmails($report));
     }
 
     public function testBuildCampaignBodyDoesNotSetTag()
