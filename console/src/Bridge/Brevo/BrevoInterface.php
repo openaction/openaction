@@ -11,7 +11,11 @@ interface BrevoInterface
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function getEmailCampaignsStats(string $apiKey): array;
+    public function getEmailCampaignsStats(
+        string $apiKey,
+        ?\DateTimeInterface $startDate = null,
+        ?\DateTimeInterface $endDate = null,
+    ): array;
 
     public function getEmailCampaignReport(string $apiKey, string $campaignId): array;
 }

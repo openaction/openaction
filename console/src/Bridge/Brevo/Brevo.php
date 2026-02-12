@@ -93,24 +93,38 @@ class Brevo implements BrevoInterface
         return $createdCampaignId;
     }
 
-    public function getEmailCampaignsStats(string $apiKey): array
-    {
+    public function getEmailCampaignsStats(
+        string $apiKey,
+        ?\DateTimeInterface $startDate = null,
+        ?\DateTimeInterface $endDate = null,
+    ): array {
+        if (($startDate && !$endDate) || (!$startDate && $endDate)) {
+            throw new \InvalidArgumentException('Brevo campaigns stats requires both startDate and endDate.');
+        }
+
         $campaignsStats = [];
         $offset = 0;
 
         while (true) {
+            $query = [
+                'status' => 'sent',
+                'statistics' => 'globalStats',
+                'limit' => self::CAMPAIGNS_STATS_PAGE_SIZE,
+                'excludeHtmlContent' => 'true',
+                'offset' => $offset,
+            ];
+
+            if ($startDate && $endDate) {
+                $query['startDate'] = $startDate->format(\DateTimeInterface::RFC3339_EXTENDED);
+                $query['endDate'] = $endDate->format(\DateTimeInterface::RFC3339_EXTENDED);
+            }
+
             $response = $this->requestBrevo(
                 method: 'GET',
                 endpoint: '/emailCampaigns',
                 apiKey: $apiKey,
                 options: [
-                    'query' => [
-                        'status' => 'sent',
-                        'statistics' => 'globalStats',
-                        'limit' => self::CAMPAIGNS_STATS_PAGE_SIZE,
-                        'excludeHtmlContent' => 'true',
-                        'offset' => $offset,
-                    ],
+                    'query' => $query,
                 ],
                 limiter: $this->campaignStatsRateLimiter,
                 limiterContext: 'campaign_stats',
