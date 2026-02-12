@@ -67,17 +67,14 @@ class Brevo implements BrevoInterface
                 $brevoCampaignPayload['scheduledAt'] = $this->formatScheduledAt($scheduledAt);
             }
 
-            $createdCampaign = $this->decodeJsonResponse(
-                $this->requestBrevo(
-                    method: 'POST',
-                    endpoint: '/emailCampaigns',
-                    apiKey: $apiKey,
-                    options: ['json' => $brevoCampaignPayload],
-                    limiter: $this->sendCampaignRateLimiter,
-                    limiterContext: 'campaign_send',
-                ),
-                operation: 'create email campaign',
-            );
+            $createdCampaign = $this->requestBrevo(
+                method: 'POST',
+                endpoint: '/emailCampaigns',
+                apiKey: $apiKey,
+                options: ['json' => $brevoCampaignPayload],
+                limiter: $this->sendCampaignRateLimiter,
+                limiterContext: 'campaign_send',
+            )->toArray();
 
             $createdCampaignId = trim((string) ($createdCampaign['id'] ?? ''));
             if ('' === $createdCampaignId) {
@@ -123,7 +120,7 @@ class Brevo implements BrevoInterface
                 limiter: $this->campaignStatsRateLimiter,
                 limiterContext: 'campaign_stats',
             );
-            $payload = $this->decodeJsonResponse($response, 'fetch email campaigns stats');
+            $payload = $response->toArray();
             $campaigns = $payload['campaigns'] ?? [];
 
             if (!is_array($campaigns)) {
@@ -235,22 +232,19 @@ class Brevo implements BrevoInterface
             $listName .= '-'.$chunkIndex;
         }
 
-        $payload = $this->decodeJsonResponse(
-            $this->requestBrevo(
-                method: 'POST',
-                endpoint: '/contacts/lists',
-                apiKey: $apiKey,
-                options: [
-                    'json' => [
-                        'name' => $listName,
-                        'folderId' => $this->resolveCampaignFolderId($apiKey),
-                    ],
+        $payload = $this->requestBrevo(
+            method: 'POST',
+            endpoint: '/contacts/lists',
+            apiKey: $apiKey,
+            options: [
+                'json' => [
+                    'name' => $listName,
+                    'folderId' => $this->resolveCampaignFolderId($apiKey),
                 ],
-                limiter: $this->sendCampaignRateLimiter,
-                limiterContext: 'campaign_send',
-            ),
-            operation: 'create contacts list',
-        );
+            ],
+            limiter: $this->sendCampaignRateLimiter,
+            limiterContext: 'campaign_send',
+        )->toArray();
 
         if (!is_numeric($payload['id'] ?? null)) {
             throw new \RuntimeException('Brevo error: list could not be created.');
@@ -280,24 +274,21 @@ class Brevo implements BrevoInterface
 
     protected function resolveCampaignFolderId(string $apiKey): int
     {
-        $payload = $this->decodeJsonResponse(
-            $this->requestBrevo(
-                method: 'GET',
-                endpoint: '/contacts/folders',
-                apiKey: $apiKey,
-                options: [
-                    'query' => [
-                        'limit' => 1,
-                        'offset' => 0,
-                        'sort' => 'asc',
-                    ],
+        $payload = $this->requestBrevo(
+            method: 'GET',
+            endpoint: '/contacts/folders',
+            apiKey: $apiKey,
+            options: [
+                'query' => [
+                    'limit' => 1,
+                    'offset' => 0,
+                    'sort' => 'asc',
                 ],
-                limiter: $this->sendCampaignRateLimiter,
-                limiterContext: 'campaign_send',
-            ),
-            operation: 'resolve contacts folder',
+            ],
+            limiter: $this->sendCampaignRateLimiter,
+            limiterContext: 'campaign_send',
         );
-        $folders = $payload['folders'] ?? [];
+        $folders = $payload->toArray()['folders'] ?? [];
 
         foreach ($folders as $folder) {
             $folderId = is_array($folder) ? ($folder['id'] ?? null) : null;
@@ -398,7 +389,9 @@ class Brevo implements BrevoInterface
 
             if (429 === $statusCode) {
                 $rateLimitResetHeader = $response->getHeaders(false)['x-sib-ratelimit-reset'][0] ?? null;
-                $waitSeconds = $this->extractWaitSecondsFromRateLimitResetHeader($rateLimitResetHeader);
+                $waitSeconds = is_numeric($rateLimitResetHeader)
+                    ? max(0, (int) $rateLimitResetHeader) + 1
+                    : 1;
 
                 if ($attempt < self::MAX_RATE_LIMIT_ATTEMPTS) {
                     $this->logger->warning('Brevo API rate limit reached, retrying once', [
@@ -457,28 +450,6 @@ class Brevo implements BrevoInterface
         throw new \RuntimeException(sprintf('Brevo error: %s %s failed.', $method, $endpoint));
     }
 
-    private function decodeJsonResponse(ResponseInterface $response, string $operation): array
-    {
-        $content = trim($response->getContent(false));
-
-        if ('' === $content) {
-            return [];
-        }
-
-        $decoded = json_decode($content, true);
-
-        if (!is_array($decoded)) {
-            $this->logger->error('Brevo API returned an invalid JSON payload', [
-                'operation' => $operation,
-                'response_body' => $content,
-            ]);
-
-            throw new \RuntimeException('Brevo error: invalid API response while trying to '.$operation.'.');
-        }
-
-        return $decoded;
-    }
-
     private function consumeRateLimit(
         RateLimiterFactory $limiter,
         string $limiterContext,
@@ -486,7 +457,7 @@ class Brevo implements BrevoInterface
         string $method,
         string $endpoint,
     ): void {
-        $rateLimit = $limiter->create($this->createLimiterKey($apiKey, $limiterContext))->consume();
+        $rateLimit = $limiter->create(sprintf('%s_%s', $limiterContext, hash('sha256', $apiKey)))->consume();
 
         if ($rateLimit->isAccepted()) {
             return;
@@ -506,19 +477,5 @@ class Brevo implements BrevoInterface
         ]);
 
         throw new \RuntimeException(sprintf('Brevo error: local rate limiter reached for %s requests. Retry after %d seconds.', $limiterContext, $waitSeconds));
-    }
-
-    private function createLimiterKey(string $apiKey, string $limiterContext): string
-    {
-        return sprintf('%s_%s', $limiterContext, hash('sha256', $apiKey));
-    }
-
-    private function extractWaitSecondsFromRateLimitResetHeader(mixed $rateLimitResetHeader): int
-    {
-        if (!is_numeric($rateLimitResetHeader)) {
-            return 1;
-        }
-
-        return max(0, (int) $rateLimitResetHeader) + 1;
     }
 }
