@@ -84,6 +84,15 @@ class EmailingCampaign implements Searchable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $externalId = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $globalStatsSent = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $globalStatsOpened = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $globalStatsClicked = null;
+
     #[ORM\OneToMany(targetEntity: EmailingCampaignMessage::class, mappedBy: 'campaign', cascade: ['remove'])]
     private Collection $messages;
 
@@ -126,6 +135,9 @@ class EmailingCampaign implements Searchable
         $self->content = $data['content'] ?? '';
         $self->unlayerDesign = $data['unlayerDesign'] ?? null;
         $self->onlyForMembers = $data['onlyForMembers'] ?? false;
+        $self->globalStatsSent = $data['globalStatsSent'] ?? null;
+        $self->globalStatsOpened = $data['globalStatsOpened'] ?? null;
+        $self->globalStatsClicked = $data['globalStatsClicked'] ?? null;
 
         if (isset($data['uuid']) && $data['uuid']) {
             $self->uuid = Uuid::fromString($data['uuid']);
@@ -271,6 +283,13 @@ class EmailingCampaign implements Searchable
         $this->resolvedAt = new \DateTime();
     }
 
+    public function updateGlobalStats(?int $sent, ?int $opened, ?int $clicked): void
+    {
+        $this->globalStatsSent = $sent;
+        $this->globalStatsOpened = $opened;
+        $this->globalStatsClicked = $clicked;
+    }
+
     /*
      * Getters
      */
@@ -352,6 +371,21 @@ class EmailingCampaign implements Searchable
     public function getExternalId(): ?string
     {
         return $this->externalId;
+    }
+
+    public function getGlobalStatsSent(): ?int
+    {
+        return $this->globalStatsSent;
+    }
+
+    public function getGlobalStatsOpened(): ?int
+    {
+        return $this->globalStatsOpened;
+    }
+
+    public function getGlobalStatsClicked(): ?int
+    {
+        return $this->globalStatsClicked;
     }
 
     /**

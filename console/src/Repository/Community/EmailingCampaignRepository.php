@@ -70,6 +70,17 @@ class EmailingCampaignRepository extends ServiceEntityRepository
 
     public function findStats(EmailingCampaign $campaign): array
     {
+        if (null !== $campaign->getGlobalStatsSent()) {
+            $sent = (int) $campaign->getGlobalStatsSent();
+
+            return [
+                'total' => $sent,
+                'sent' => $sent,
+                'opened' => (int) ($campaign->getGlobalStatsOpened() ?? 0),
+                'clicked' => (int) ($campaign->getGlobalStatsClicked() ?? 0),
+            ];
+        }
+
         $data = $this->_em->createQueryBuilder()
             ->select(
                 'COUNT(m) AS total',

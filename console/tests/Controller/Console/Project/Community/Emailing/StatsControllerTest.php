@@ -47,6 +47,53 @@ class StatsControllerTest extends WebTestCase
         $this->assertSame($expectedStats, Json::decode($client->getResponse()->getContent()));
     }
 
+    public function testStatsUsesPersistedGlobalStatsWhenAvailable(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+
+        $campaign->updateGlobalStats(120, 54, 17);
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/95b3f576-c643-45ba-9d5e-c9c44f65fab8/stats');
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($client->getResponse()->getContent());
+        $this->assertSame([
+            'total' => 120,
+            'sent' => 120,
+            'opened' => 54,
+            'clicked' => 17,
+        ], Json::decode($client->getResponse()->getContent()));
+    }
+
+    public function testStatsFallsBackToMessagesAggregationWhenGlobalStatsAreMissing(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+
+        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
+        $campaign->updateGlobalStats(null, null, null);
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/95b3f576-c643-45ba-9d5e-c9c44f65fab8/stats');
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($client->getResponse()->getContent());
+        $this->assertSame([
+            'total' => 3,
+            'sent' => 2,
+            'opened' => 2,
+            'clicked' => 2,
+        ], Json::decode($client->getResponse()->getContent()));
+    }
+
     /**
      * @dataProvider provideStats
      */
