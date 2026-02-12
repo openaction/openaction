@@ -127,24 +127,24 @@ class BrevoTest extends TestCase
 
         $bridge = $this->createBridge($httpClient);
 
-        $this->assertSame(['201'], $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [
+        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [
             ['email' => 'first@example.test'],
             ['email' => 'second@example.test'],
         ]));
         $this->assertCount(5, $requests);
     }
 
-    public function testSendEmailCampaignSplitsContactsAndSchedulesCampaignsWhenThrottled(): void
+    public function testSendEmailCampaignUsesNativeBatchSendingWhenThrottlingApplies(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
         $createdListNames = [];
         $importedContactsPerList = [];
-        $scheduledAtValues = [];
+        $batchPayloads = [];
         $sendNowCalls = 0;
         $listId = 40;
         $campaignId = 200;
 
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$createdListNames, &$importedContactsPerList, &$scheduledAtValues, &$sendNowCalls, &$listId, &$campaignId): MockResponse {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$createdListNames, &$importedContactsPerList, &$batchPayloads, &$sendNowCalls, &$listId, &$campaignId): MockResponse {
             $path = (string) parse_url($url, PHP_URL_PATH);
 
             if ('GET' === $method && '/v3/contacts/folders' === $path) {
@@ -167,9 +167,15 @@ class BrevoTest extends TestCase
 
             if ('POST' === $method && '/v3/emailCampaigns' === $path) {
                 $requestBody = $this->decodeJsonRequestBody($options);
-                $scheduledAtValues[] = $requestBody['scheduledAt'] ?? null;
+                $this->assertArrayNotHasKey('scheduledAt', $requestBody);
 
                 return new MockResponse('{"id":'.(++$campaignId).'}');
+            }
+
+            if ('POST' === $method && '/v3/campaign/201/send-in-batch' === $path) {
+                $batchPayloads[] = $this->decodeJsonRequestBody($options);
+
+                return new MockResponse('', ['http_code' => 204]);
             }
 
             if ('POST' === $method && preg_match('#^/v3/emailCampaigns/\d+/sendNow$#', $path)) {
@@ -184,26 +190,77 @@ class BrevoTest extends TestCase
         $bridge = $this->createBridge($httpClient);
         $bridge->frozenNow = new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
 
-        $this->assertSame(['201', '202', '203'], $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [
-            ['email' => 'first@example.test'],
-            ['email' => 'second@example.test'],
-            ['email' => 'third@example.test'],
-            ['email' => 'fourth@example.test'],
-            ['email' => 'fifth@example.test'],
-        ]));
+        $contacts = [];
+        for ($index = 1; $index <= 16; ++$index) {
+            $contacts[] = ['email' => sprintf('contact%d@example.test', $index)];
+        }
+
+        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', $contacts));
 
         $this->assertSame([
-            'openaction-campaign-12-1',
-            'openaction-campaign-12-2',
-            'openaction-campaign-12-3',
+            'openaction-campaign-12',
         ], $createdListNames);
-        $this->assertSame([2, 2, 1], $importedContactsPerList);
+        $this->assertSame([16], $importedContactsPerList);
         $this->assertSame([
-            '2026-02-12T10:00:00.000Z',
-            '2026-02-12T10:15:00.000Z',
-            '2026-02-12T10:30:00.000Z',
-        ], $scheduledAtValues);
+            [
+                'schedule_date_time' => '2026-02-12 10:00:00',
+                'is_raw_schedule_date_time' => true,
+                'no_of_batches' => 2,
+                'time_interval' => 30,
+            ],
+        ], $batchPayloads);
         $this->assertSame(0, $sendNowCalls);
+    }
+
+    public function testSendEmailCampaignUsesTenNativeBatchesWhenAudienceIsVeryLarge(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
+        $batchPayload = null;
+
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$batchPayload): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42,"name":"Default"}]}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                return new MockResponse('{"id":99}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                return new MockResponse('{}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
+                return new MockResponse('{"id":201}');
+            }
+
+            if ('POST' === $method && '/v3/campaign/201/send-in-batch' === $path) {
+                $batchPayload = $this->decodeJsonRequestBody($options);
+
+                return new MockResponse('', ['http_code' => 204]);
+            }
+
+            if ('POST' === $method && preg_match('#^/v3/emailCampaigns/\d+/sendNow$#', $path)) {
+                $this->fail('sendNow should not be called when native batch sending is enabled.');
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+        $bridge->frozenNow = new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
+
+        $contacts = [];
+        for ($index = 1; $index <= 81; ++$index) {
+            $contacts[] = ['email' => sprintf('contact%d@example.test', $index)];
+        }
+
+        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', $contacts));
+        $this->assertNotNull($batchPayload);
+        $this->assertSame(10, $batchPayload['no_of_batches']);
+        $this->assertSame(30, $batchPayload['time_interval']);
     }
 
     public function testGetEmailCampaignsStatsUsesExpectedPaginationParameters(): void

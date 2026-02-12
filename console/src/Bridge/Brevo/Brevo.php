@@ -12,8 +12,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Brevo implements BrevoInterface
 {
     private const CONTACTS_CHUNK_SIZE = 500;
-    private const CAMPAIGNS_PER_HOUR = 4;
-    private const THROTTLED_CAMPAIGN_INTERVAL_MINUTES = 15;
+    private const MAX_NATIVE_BATCHES = 10;
+    private const BATCH_INTERVAL_MINUTES = 30;
     private const CAMPAIGNS_STATS_PAGE_SIZE = 100;
     private const API_BASE_URL = 'https://api.brevo.com/v3';
     private const MAX_RATE_LIMIT_ATTEMPTS = 2;
@@ -27,75 +27,70 @@ class Brevo implements BrevoInterface
     ) {
     }
 
-    /**
-     * @return string[]
-     */
-    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
         $organization = $campaign->getProject()->getOrganization();
         $apiKey = (string) ($organization->getBrevoApiKey() ?? '');
-        $throttlingPerHour = $organization->getEmailThrottlingPerHour();
-        $listCapacity = $this->computeListCapacity($throttlingPerHour);
-        $isThrottled = null !== $listCapacity;
-        $scheduledBaseAt = $this->getCurrentUtcDateTime();
-        $contactsChunks = $isThrottled ? array_chunk($contacts, $listCapacity) : [$contacts];
+        $batchConfiguration = $this->computeBatchConfiguration(
+            contactsCount: $this->countSendableContacts($contacts),
+            throttlingPerHour: $organization->getEmailThrottlingPerHour(),
+        );
 
-        if (!$contactsChunks) {
-            $contactsChunks = [[]];
+        $listId = $this->createCampaignList($apiKey, $campaign);
+
+        $this->syncContacts(
+            apiKey: $apiKey,
+            listId: $listId,
+            contacts: $contacts,
+        );
+
+        $brevoCampaignPayload = $this->buildCampaignPayload($campaign, $htmlContent);
+        $brevoCampaignPayload['recipients'] = ['listIds' => [$listId]];
+
+        $createdCampaign = $this->requestBrevo(
+            method: 'POST',
+            endpoint: '/emailCampaigns',
+            apiKey: $apiKey,
+            options: ['json' => $brevoCampaignPayload],
+            limiter: $this->sendCampaignRateLimiter,
+            limiterContext: 'campaign_send',
+        )->toArray();
+
+        $createdCampaignId = trim((string) ($createdCampaign['id'] ?? ''));
+        if ('' === $createdCampaignId) {
+            throw new \RuntimeException('Brevo error: campaign could not be created.');
         }
 
-        $createdCampaignIds = [];
-
-        foreach ($contactsChunks as $chunkIndex => $contactsChunk) {
-            $listId = $this->createCampaignList(
-                $apiKey,
-                $campaign,
-                $isThrottled ? $chunkIndex + 1 : null,
-            );
-
-            $this->syncContacts(
-                apiKey: $apiKey,
-                listId: $listId,
-                contacts: $contactsChunk,
-            );
-
-            $brevoCampaignPayload = $this->buildCampaignPayload($campaign, $htmlContent);
-            $brevoCampaignPayload['recipients'] = ['listIds' => [$listId]];
-
-            if ($isThrottled) {
-                $scheduledAt = $scheduledBaseAt->modify(sprintf('+%d minutes', $chunkIndex * self::THROTTLED_CAMPAIGN_INTERVAL_MINUTES));
-                $brevoCampaignPayload['scheduledAt'] = $this->formatScheduledAt($scheduledAt);
-            }
-
-            $createdCampaign = $this->requestBrevo(
+        if (null === $batchConfiguration) {
+            $this->requestBrevo(
                 method: 'POST',
-                endpoint: '/emailCampaigns',
+                endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
                 apiKey: $apiKey,
-                options: ['json' => $brevoCampaignPayload],
+                options: ['json' => new \stdClass()],
                 limiter: $this->sendCampaignRateLimiter,
                 limiterContext: 'campaign_send',
-            )->toArray();
+            );
 
-            $createdCampaignId = trim((string) ($createdCampaign['id'] ?? ''));
-            if ('' === $createdCampaignId) {
-                throw new \RuntimeException('Brevo error: campaign could not be created.');
-            }
-
-            $createdCampaignIds[] = $createdCampaignId;
-
-            if (!$isThrottled) {
-                $this->requestBrevo(
-                    method: 'POST',
-                    endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
-                    apiKey: $apiKey,
-                    options: ['json' => new \stdClass()],
-                    limiter: $this->sendCampaignRateLimiter,
-                    limiterContext: 'campaign_send',
-                );
-            }
+            return $createdCampaignId;
         }
 
-        return $createdCampaignIds;
+        $this->requestBrevo(
+            method: 'POST',
+            endpoint: '/campaign/'.$createdCampaignId.'/send-in-batch',
+            apiKey: $apiKey,
+            options: [
+                'json' => [
+                    'schedule_date_time' => $this->formatBatchScheduleDateTime($this->getCurrentUtcDateTime()),
+                    'is_raw_schedule_date_time' => true,
+                    'no_of_batches' => $batchConfiguration['batchesCount'],
+                    'time_interval' => self::BATCH_INTERVAL_MINUTES,
+                ],
+            ],
+            limiter: $this->sendCampaignRateLimiter,
+            limiterContext: 'campaign_send',
+        );
+
+        return $createdCampaignId;
     }
 
     public function getEmailCampaignsStats(string $apiKey): array
@@ -224,13 +219,9 @@ class Brevo implements BrevoInterface
         }
     }
 
-    protected function createCampaignList(string $apiKey, EmailingCampaign $campaign, ?int $chunkIndex = null): int
+    protected function createCampaignList(string $apiKey, EmailingCampaign $campaign): int
     {
         $listName = sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
-
-        if (null !== $chunkIndex) {
-            $listName .= '-'.$chunkIndex;
-        }
 
         $payload = $this->requestBrevo(
             method: 'POST',
@@ -253,13 +244,35 @@ class Brevo implements BrevoInterface
         return (int) $payload['id'];
     }
 
-    protected function computeListCapacity(?int $throttlingPerHour): ?int
+    protected function computeBatchConfiguration(int $contactsCount, ?int $throttlingPerHour): ?array
     {
         if (!$throttlingPerHour || $throttlingPerHour <= 0) {
             return null;
         }
 
-        return max((int) floor($throttlingPerHour / self::CAMPAIGNS_PER_HOUR), 1);
+        if ($contactsCount < $throttlingPerHour) {
+            return null;
+        }
+
+        if ($contactsCount <= self::MAX_NATIVE_BATCHES * $throttlingPerHour) {
+            return [
+                'batchSize' => $throttlingPerHour,
+                'batchesCount' => max((int) ceil($contactsCount / $throttlingPerHour), 1),
+            ];
+        }
+
+        return [
+            'batchSize' => (int) ceil($contactsCount / self::MAX_NATIVE_BATCHES),
+            'batchesCount' => self::MAX_NATIVE_BATCHES,
+        ];
+    }
+
+    protected function countSendableContacts(array $contacts): int
+    {
+        return count(array_filter(
+            $contacts,
+            static fn (array $contact): bool => !empty($contact['email']),
+        ));
     }
 
     protected function getCurrentUtcDateTime(): \DateTimeImmutable
@@ -267,9 +280,9 @@ class Brevo implements BrevoInterface
         return new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
-    protected function formatScheduledAt(\DateTimeImmutable $scheduledAt): string
+    protected function formatBatchScheduleDateTime(\DateTimeImmutable $scheduledAt): string
     {
-        return $scheduledAt->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s.v\Z');
+        return $scheduledAt->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
     }
 
     protected function resolveCampaignFolderId(string $apiKey): int
