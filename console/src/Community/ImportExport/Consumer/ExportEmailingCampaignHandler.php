@@ -2,6 +2,7 @@
 
 namespace App\Community\ImportExport\Consumer;
 
+use App\Bridge\Brevo\BrevoInterface;
 use App\Cdn\CdnUploader;
 use App\Cdn\Model\CdnUploadRequest;
 use App\Entity\Community\EmailingCampaign;
@@ -26,14 +27,16 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
     ];
 
     private EmailingCampaignRepository $repository;
+    private BrevoInterface $brevo;
     private SluggerInterface $slugger;
     private CdnUploader $uploader;
     private PlatformMailer $mailer;
     private LoggerInterface $logger;
 
-    public function __construct(EmailingCampaignRepository $r, SluggerInterface $s, CdnUploader $u, PlatformMailer $m, LoggerInterface $l)
+    public function __construct(EmailingCampaignRepository $r, BrevoInterface $b, SluggerInterface $s, CdnUploader $u, PlatformMailer $m, LoggerInterface $l)
     {
         $this->repository = $r;
+        $this->brevo = $b;
         $this->slugger = $s;
         $this->uploader = $u;
         $this->mailer = $m;
@@ -48,11 +51,15 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
             return true;
         }
 
-        $filename = sys_get_temp_dir().'/'.date('Y-m-d').'-'.$this->slugger->slug($campaign->getSubject())->lower().'-report.xlsx';
+        $filename = $this->createFilename($campaign);
         touch($filename);
 
         try {
-            $this->doExport($filename, $campaign);
+            if ($this->isBrevoCampaign($campaign)) {
+                $this->doBrevoExport($filename, $campaign);
+            } else {
+                $this->doExport($filename, $campaign);
+            }
 
             // Upload on CDN
             $upload = $this->uploader->upload(CdnUploadRequest::createOrganizationPrivateFileRequest(new File($filename)));
@@ -65,13 +72,47 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
                 $upload,
             );
         } finally {
-            unlink($filename);
+            if (file_exists($filename)) {
+                unlink($filename);
+            }
         }
 
         return true;
     }
 
-    private function doExport(string $filename, EmailingCampaign $campaign)
+    private function createFilename(EmailingCampaign $campaign): string
+    {
+        $extension = $this->isBrevoCampaign($campaign) ? 'csv' : 'xlsx';
+
+        return sys_get_temp_dir().'/'.date('Y-m-d').'-'.$this->slugger->slug($campaign->getSubject())->lower().'-report.'.$extension;
+    }
+
+    private function doBrevoExport(string $filename, EmailingCampaign $campaign): void
+    {
+        $organization = $campaign->getProject()->getOrganization();
+        $apiKey = trim((string) ($organization->getBrevoApiKey() ?? ''));
+        $campaignExternalId = trim((string) ($campaign->getExternalId() ?? ''));
+
+        if ('' === $apiKey || '' === $campaignExternalId) {
+            $this->logger->error('Brevo campaign export skipped due to incomplete configuration', [
+                'campaign_id' => $campaign->getId(),
+                'organization_id' => $organization->getId(),
+                'organization_provider' => $organization->getEmailProvider(),
+                'has_api_key' => '' !== $apiKey,
+                'has_campaign_external_id' => '' !== $campaignExternalId,
+            ]);
+
+            throw new \RuntimeException('Brevo campaign export requires both API key and campaign external ID.');
+        }
+
+        $exportContent = $this->brevo->exportEmailCampaignRecipients($apiKey, $campaignExternalId);
+
+        if (false === file_put_contents($filename, $exportContent)) {
+            throw new \RuntimeException('Brevo campaign export could not be written locally.');
+        }
+    }
+
+    private function doExport(string $filename, EmailingCampaign $campaign): void
     {
         $writer = new Writer();
         $writer->openToFile($filename);
@@ -88,5 +129,10 @@ final class ExportEmailingCampaignHandler implements MessageHandlerInterface
         }
 
         $writer->close();
+    }
+
+    private function isBrevoCampaign(EmailingCampaign $campaign): bool
+    {
+        return 'brevo' === $campaign->getProject()->getOrganization()->getEmailProvider();
     }
 }

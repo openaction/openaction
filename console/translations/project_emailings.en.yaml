@@ -28,6 +28,7 @@ index:
         stats: Statistics
         view: View content
         report: Openings
+        export_report: Export report
         duplicate: Duplicate
 
 create:
