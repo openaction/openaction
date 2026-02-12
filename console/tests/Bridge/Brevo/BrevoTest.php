@@ -6,277 +6,185 @@ use App\Bridge\Brevo\Brevo;
 use App\Entity\Community\EmailingCampaign;
 use App\Entity\Organization;
 use App\Entity\Project;
-use Brevo\Client\Api\ContactsApi;
-use Brevo\Client\Api\EmailCampaignsApi;
-use Brevo\Client\Configuration;
-use Brevo\Client\Model\CreateEmailCampaign;
-use Brevo\Client\Model\CreateList;
-use Brevo\Client\Model\CreateModel;
-use Brevo\Client\Model\EmailExportRecipients;
-use Brevo\Client\Model\GetFolders;
-use Brevo\Client\Model\RequestContactImport;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
 enum TestContactFormalTitle: string
 {
     case MR = 'Mr';
 }
 
+class TestableBrevo extends Brevo
+{
+    public ?\DateTimeImmutable $frozenNow = null;
+
+    public array $waitedSeconds = [];
+
+    public function exposeBuildCampaignPayload(EmailingCampaign $campaign, string $htmlContent): array
+    {
+        return $this->buildCampaignPayload($campaign, $htmlContent);
+    }
+
+    public function exposeBuildContactAttributes(array $contact): array
+    {
+        return $this->buildContactAttributes($contact);
+    }
+
+    protected function getCurrentUtcDateTime(): \DateTimeImmutable
+    {
+        return $this->frozenNow ?? parent::getCurrentUtcDateTime();
+    }
+
+    protected function waitForSeconds(int $seconds): void
+    {
+        $this->waitedSeconds[] = $seconds;
+    }
+}
+
 class BrevoTest extends TestCase
 {
-    public function testGetCampaignReportAggregatesExports()
-    {
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public array $exports = [];
-
-            protected function fetchExportedEmails($emailCampaignsApi, $processApi, string $campaignId, string $recipientsType): array
-            {
-                return $this->exports[$recipientsType] ?? [];
-            }
-
-            protected function createConfiguration(string $apiKey): Configuration
-            {
-                return new Configuration();
-            }
-        };
-
-        $bridge->exports = [
-            EmailExportRecipients::RECIPIENTS_TYPE_ALL => ['click@example.test', 'open@example.test'],
-            EmailExportRecipients::RECIPIENTS_TYPE_OPENERS => ['open@example.test'],
-            EmailExportRecipients::RECIPIENTS_TYPE_CLICKERS => ['click@example.test'],
-            EmailExportRecipients::RECIPIENTS_TYPE_SOFT_BOUNCES => [],
-            EmailExportRecipients::RECIPIENTS_TYPE_HARD_BOUNCES => ['bounce@example.test'],
-        ];
-
-        $report = $bridge->getCampaignReport('token', '42');
-
-        $this->assertSame([
-            'click@example.test' => [
-                'sent' => true,
-                'opened' => true,
-                'clicked' => true,
-                'bounced' => false,
-            ],
-            'open@example.test' => [
-                'sent' => true,
-                'opened' => true,
-                'clicked' => false,
-                'bounced' => false,
-            ],
-            'bounce@example.test' => [
-                'sent' => false,
-                'opened' => false,
-                'clicked' => false,
-                'bounced' => true,
-            ],
-        ], $report);
-    }
-
-    public function testParseExportedEmailsReadsEmailIdColumnFromBrevoCsvExport()
-    {
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeParseExportedEmails(string $content): array
-            {
-                return $this->parseExportedEmails($content);
-            }
-        };
-
-        $report = <<<'CSV'
-Campaign ID;Campaign Name;Email_ID;Send_Date;Delivered_Date;Open_Date;Total Opens;Total Apple MPP Opens;Unsubscribe_Date
-16;NL MENSUELLE;m.pons@datack.fr;11-02-2026 22:14:15;11-02-2026 22:14:18;;0;0;
-16;NL MENSUELLE;marine.decalbiac@gmail.com;11-02-2026 22:14:15;11-02-2026 22:14:18;11-02-2026 22:20:25;3;0;
-16;NL MENSUELLE;MARINE.DECALBIAC@GMAIL.COM;11-02-2026 22:14:15;11-02-2026 22:14:18;11-02-2026 22:20:25;3;0;
-16;NL MENSUELLE;invalid-email;11-02-2026 22:14:15;11-02-2026 22:14:18;;0;0;
-CSV;
-
-        $this->assertSame([
-            'm.pons@datack.fr',
-            'marine.decalbiac@gmail.com',
-        ], $bridge->exposeParseExportedEmails($report));
-    }
-
-    public function testBuildCampaignBodyDoesNotSetTag()
-    {
-        $organization = $this->createMock(Organization::class);
-        $organization->method('getName')->willReturn('OpenAction');
-        $organization->method('getBrevoSenderEmail')->willReturn('sender@example.test');
-
-        $project = $this->createMock(Project::class);
-        $project->method('getOrganization')->willReturn($organization);
-
-        $campaign = $this->createMock(EmailingCampaign::class);
-        $campaign->method('getProject')->willReturn($project);
-        $campaign->method('getFromName')->willReturn('Campaign Sender');
-        $campaign->method('getSubject')->willReturn('Campaign Subject');
-        $campaign->method('getReplyToEmail')->willReturn(null);
-        $campaign->method('getFullFromEmail')->willReturn('reply@example.test');
-        $campaign->method('getPreview')->willReturn('Campaign preview');
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeBuildCampaignBody(EmailingCampaign $campaign, string $htmlContent)
-            {
-                return $this->buildCampaignBody($campaign, $htmlContent);
-            }
-        };
-
-        $body = $bridge->exposeBuildCampaignBody($campaign, '<p>Hello</p>');
-
-        $this->assertNull($body->getTag());
-        $this->assertSame('Campaign Subject', $body->getName());
-        $this->assertSame('Campaign Subject', $body->getSubject());
-        $this->assertSame('Campaign Sender', $body->getSender()->getName());
-        $this->assertSame('sender@example.test', $body->getSender()->getEmail());
-        $this->assertSame('reply@example.test', $body->getReplyTo());
-        $this->assertSame('Campaign preview', $body->getPreviewText());
-    }
-
-    public function testSendCampaignSendsNowWhenThrottlingIsDisabled()
+    public function testBuildCampaignPayloadContainsExpectedFields(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $bridge = $this->createBridge(new MockHttpClient([]));
 
-        $contactsApi = $this->createMock(ContactsApi::class);
-        $contactsApi
-            ->expects($this->once())
-            ->method('getFolders')
-            ->with('1', '0', 'asc')
-            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+        $payload = $bridge->exposeBuildCampaignPayload($campaign, '<p>Hello</p>');
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('createList')
-            ->willReturnCallback(function (CreateList $list) {
-                $this->assertSame('openaction-campaign-12', $list->getName());
-                $this->assertSame(42, $list->getFolderId());
+        $this->assertSame('Campaign Subject', $payload['name']);
+        $this->assertSame('Campaign Subject', $payload['subject']);
+        $this->assertSame('Campaign Sender', $payload['sender']['name']);
+        $this->assertSame('sender@example.test', $payload['sender']['email']);
+        $this->assertSame('<p>Hello</p>', $payload['htmlContent']);
+        $this->assertSame('reply@example.test', $payload['replyTo']);
+        $this->assertSame('Campaign preview', $payload['previewText']);
+    }
 
-                return (new CreateModel())->setId(99);
-            });
+    public function testBuildContactAttributesNormalizesBackedEnumsAndSkipsEmptyValues(): void
+    {
+        $bridge = $this->createBridge(new MockHttpClient([]));
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('importContacts');
+        $attributes = $bridge->exposeBuildContactAttributes([
+            'phone' => '+33601020304',
+            'formalTitle' => TestContactFormalTitle::MR,
+            'firstName' => '  ',
+            'country' => null,
+        ]);
 
-        $emailCampaignsApi = $this->createMock(EmailCampaignsApi::class);
-        $emailCampaignsApi
-            ->expects($this->once())
-            ->method('createEmailCampaign')
-            ->willReturnCallback(function (CreateEmailCampaign $emailCampaign) {
-                $this->assertSame([99], $emailCampaign->getRecipients()->getListIds());
-                $this->assertNull($emailCampaign->getScheduledAt());
+        $this->assertSame([
+            'PHONE' => '+33601020304',
+            'FORMAL_TITLE' => 'Mr',
+        ], $attributes);
+    }
 
-                return (new CreateModel())->setId(201);
-            });
+    public function testSendEmailCampaignSendsNowWhenThrottlingIsDisabled(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $requests = [];
 
-        $emailCampaignsApi
-            ->expects($this->once())
-            ->method('sendEmailCampaignNow')
-            ->with(201);
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests): MockResponse {
+            $requests[] = [$method, $url, $options];
+            $path = (string) parse_url($url, PHP_URL_PATH);
 
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public ContactsApi $contactsApi;
-            public EmailCampaignsApi $emailCampaignsApi;
-
-            protected function createConfiguration(string $apiKey): Configuration
-            {
-                return new Configuration();
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42,"name":"Default"}]}');
             }
 
-            protected function createContactsApi(Configuration $config): ContactsApi
-            {
-                return $this->contactsApi;
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $this->assertSame('openaction-campaign-12', $requestBody['name']);
+                $this->assertSame(42, $requestBody['folderId']);
+
+                return new MockResponse('{"id":99}');
             }
 
-            protected function createEmailCampaignsApi(Configuration $config): EmailCampaignsApi
-            {
-                return $this->emailCampaignsApi;
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $this->assertSame([99], $requestBody['listIds']);
+                $this->assertCount(2, $requestBody['jsonBody']);
+                $this->assertTrue($requestBody['updateExistingContacts']);
+
+                return new MockResponse('{}');
             }
-        };
 
-        $bridge->contactsApi = $contactsApi;
-        $bridge->emailCampaignsApi = $emailCampaignsApi;
+            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $this->assertSame([99], $requestBody['recipients']['listIds']);
+                $this->assertArrayNotHasKey('scheduledAt', $requestBody);
 
-        $this->assertSame(['201'], $bridge->sendCampaign($campaign, '<p>Hello</p>', [
+                return new MockResponse('{"id":201}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns/201/sendNow' === $path) {
+                return new MockResponse('', ['http_code' => 204]);
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->assertSame(['201'], $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [
             ['email' => 'first@example.test'],
             ['email' => 'second@example.test'],
         ]));
+        $this->assertCount(5, $requests);
     }
 
-    public function testSendCampaignSplitsContactsAndSchedulesCampaignsWhenThrottled()
+    public function testSendEmailCampaignSplitsContactsAndSchedulesCampaignsWhenThrottled(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
-
         $createdListNames = [];
         $importedContactsPerList = [];
-        $contactsApi = $this->createMock(ContactsApi::class);
-        $contactsApi
-            ->expects($this->exactly(3))
-            ->method('getFolders')
-            ->with('1', '0', 'asc')
-            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
-
-        $listId = 40;
-        $contactsApi
-            ->expects($this->exactly(3))
-            ->method('createList')
-            ->willReturnCallback(function (CreateList $list) use (&$createdListNames, &$listId) {
-                $createdListNames[] = $list->getName();
-
-                return (new CreateModel())->setId(++$listId);
-            });
-
-        $contactsApi
-            ->expects($this->exactly(3))
-            ->method('importContacts')
-            ->willReturnCallback(function (RequestContactImport $request) use (&$importedContactsPerList) {
-                $importedContactsPerList[] = count($request->getJsonBody() ?? []);
-            });
-
         $scheduledAtValues = [];
-        $emailCampaignsApi = $this->createMock(EmailCampaignsApi::class);
+        $sendNowCalls = 0;
+        $listId = 40;
         $campaignId = 200;
-        $emailCampaignsApi
-            ->expects($this->exactly(3))
-            ->method('createEmailCampaign')
-            ->willReturnCallback(function (CreateEmailCampaign $emailCampaign) use (&$scheduledAtValues, &$campaignId) {
-                $scheduledAtValues[] = $emailCampaign->getScheduledAt();
 
-                return (new CreateModel())->setId(++$campaignId);
-            });
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$createdListNames, &$importedContactsPerList, &$scheduledAtValues, &$sendNowCalls, &$listId, &$campaignId): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
 
-        $emailCampaignsApi
-            ->expects($this->never())
-            ->method('sendEmailCampaignNow');
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public ContactsApi $contactsApi;
-            public EmailCampaignsApi $emailCampaignsApi;
-
-            protected function createConfiguration(string $apiKey): Configuration
-            {
-                return new Configuration();
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42,"name":"Default"}]}');
             }
 
-            protected function createContactsApi(Configuration $config): ContactsApi
-            {
-                return $this->contactsApi;
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $createdListNames[] = $requestBody['name'];
+
+                return new MockResponse('{"id":'.(++$listId).'}');
             }
 
-            protected function createEmailCampaignsApi(Configuration $config): EmailCampaignsApi
-            {
-                return $this->emailCampaignsApi;
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $importedContactsPerList[] = count($requestBody['jsonBody'] ?? []);
+
+                return new MockResponse('{}');
             }
 
-            protected function getCurrentUtcDateTime(): \DateTimeImmutable
-            {
-                return new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
+            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $scheduledAtValues[] = $requestBody['scheduledAt'] ?? null;
+
+                return new MockResponse('{"id":'.(++$campaignId).'}');
             }
-        };
 
-        $bridge->contactsApi = $contactsApi;
-        $bridge->emailCampaignsApi = $emailCampaignsApi;
+            if ('POST' === $method && preg_match('#^/v3/emailCampaigns/\d+/sendNow$#', $path)) {
+                ++$sendNowCalls;
 
-        $this->assertSame(['201', '202', '203'], $bridge->sendCampaign($campaign, '<p>Hello</p>', [
+                return new MockResponse('', ['http_code' => 204]);
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+        $bridge->frozenNow = new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
+
+        $this->assertSame(['201', '202', '203'], $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [
             ['email' => 'first@example.test'],
             ['email' => 'second@example.test'],
             ['email' => 'third@example.test'],
@@ -295,222 +203,183 @@ CSV;
             '2026-02-12T10:15:00.000Z',
             '2026-02-12T10:30:00.000Z',
         ], $scheduledAtValues);
+        $this->assertSame(0, $sendNowCalls);
     }
 
-    public function testCreateCampaignListUsesExistingFolderId()
+    public function testGetEmailCampaignsStatsUsesExpectedPaginationParameters(): void
     {
-        $contactsApi = $this->createMock(ContactsApi::class);
+        $requestedOffsets = [];
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('getFolders')
-            ->with('1', '0', 'asc')
-            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requestedOffsets): MockResponse {
+            $this->assertSame('GET', $method);
+            $this->assertSame('/v3/emailCampaigns', (string) parse_url($url, PHP_URL_PATH));
+            $this->assertSame('sent', $options['query']['status']);
+            $this->assertSame('globalStats', $options['query']['statistics']);
+            $this->assertSame(100, $options['query']['limit']);
+            $this->assertSame('true', (string) $options['query']['excludeHtmlContent']);
 
-        $contactsApi
-            ->expects($this->never())
-            ->method('createFolder');
+            $offset = (int) $options['query']['offset'];
+            $requestedOffsets[] = $offset;
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('createList')
-            ->willReturnCallback(function (CreateList $list) {
-                $this->assertSame('openaction-campaign-12', $list->getName());
-                $this->assertSame(42, $list->getFolderId());
-
-                return (new CreateModel())->setId(99);
-            });
-
-        $campaign = $this->createMock(EmailingCampaign::class);
-        $campaign->method('getId')->willReturn(12);
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
-            {
-                return $this->createCampaignList($contactsApi, $campaign);
+            if (0 === $offset) {
+                return new MockResponse('{"count":101,"campaigns":[{"id":10,"statistics":{"globalStats":{"delivered":12}}}]}');
             }
-        };
 
-        $this->assertSame(99, $bridge->exposeCreateCampaignList($contactsApi, $campaign));
+            if (100 === $offset) {
+                return new MockResponse('{"count":101,"campaigns":[{"id":20,"statistics":{"globalStats":{"delivered":8}}}]}');
+            }
+
+            $this->fail('Unexpected offset '.$offset);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+        $this->assertSame([
+            '10' => ['delivered' => 12],
+            '20' => ['delivered' => 8],
+        ], $bridge->getEmailCampaignsStats('test-api-key'));
+        $this->assertSame([0, 100], $requestedOffsets);
     }
 
-    public function testCreateCampaignListThrowsWhenNoFolderExists()
+    public function testGetEmailCampaignReportReturnsEmptyArray(): void
     {
-        $contactsApi = $this->createMock(ContactsApi::class);
+        $bridge = $this->createBridge(new MockHttpClient([]));
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('getFolders')
-            ->with('1', '0', 'asc')
-            ->willReturn((new GetFolders())->setFolders([]));
+        $this->assertSame([], $bridge->getEmailCampaignReport('test-api-key', '42'));
+    }
 
-        $contactsApi
-            ->expects($this->never())
-            ->method('createFolder');
+    public function testRequestRetriesOnceOn429UsingResetHeader(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
 
-        $contactsApi
-            ->expects($this->never())
-            ->method('createList');
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            static $listRequests = 0;
+            $path = (string) parse_url($url, PHP_URL_PATH);
 
-        $campaign = $this->createMock(EmailingCampaign::class);
-        $campaign->method('getId')->willReturn(12);
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
-            {
-                return $this->createCampaignList($contactsApi, $campaign);
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42}]}');
             }
-        };
+
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                ++$listRequests;
+
+                if (1 === $listRequests) {
+                    return new MockResponse(
+                        '{"message":"Rate limit"}',
+                        [
+                            'http_code' => 429,
+                            'response_headers' => ['x-sib-ratelimit-reset' => ['0']],
+                        ],
+                    );
+                }
+
+                return new MockResponse('{"id":99}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                return new MockResponse('{}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
+                return new MockResponse('{"id":201}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns/201/sendNow' === $path) {
+                return new MockResponse('', ['http_code' => 204]);
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+        $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
+
+        $this->assertSame([1], $bridge->waitedSeconds);
+    }
+
+    public function testRequestThrowsAfterSecond429(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42}]}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                return new MockResponse(
+                    '{"message":"Rate limit"}',
+                    [
+                        'http_code' => 429,
+                        'response_headers' => ['x-sib-ratelimit-reset' => ['2']],
+                    ],
+                );
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Brevo error: no contact folder available.');
-        $bridge->exposeCreateCampaignList($contactsApi, $campaign);
+        $this->expectExceptionMessage('after one retry');
+        $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
     }
 
-    public function testCreateCampaignListAddsChunkSuffixWhenProvided()
+    public function testLocalRateLimiterBlocksRequests(): void
     {
-        $contactsApi = $this->createMock(ContactsApi::class);
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('getFolders')
-            ->with('1', '0', 'asc')
-            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+        $httpClient = new MockHttpClient(fn (): MockResponse => new MockResponse('{"folders":[{"id":42}]}'));
+        $sendLimiter = $this->createLimiterFactory('send', 1);
+        $statsLimiter = $this->createLimiterFactory('stats', 50);
+        $bridge = $this->createBridge($httpClient, $sendLimiter, $statsLimiter);
 
-        $contactsApi
-            ->expects($this->once())
-            ->method('createList')
-            ->willReturnCallback(function (CreateList $list) {
-                $this->assertSame('openaction-campaign-12-3', $list->getName());
-
-                return (new CreateModel())->setId(99);
-            });
-
-        $campaign = $this->createMock(EmailingCampaign::class);
-        $campaign->method('getId')->willReturn(12);
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign, ?int $chunkIndex = null): int
-            {
-                return $this->createCampaignList($contactsApi, $campaign, $chunkIndex);
-            }
-        };
-
-        $this->assertSame(99, $bridge->exposeCreateCampaignList($contactsApi, $campaign, 3));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('local rate limiter reached');
+        $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
     }
 
-    public function testSyncContactsSetsOnlyNonEmptyAttributes()
-    {
-        $capturedRequests = [];
-        $contactsApi = $this->createMock(ContactsApi::class);
-        $contactsApi
-            ->expects($this->once())
-            ->method('importContacts')
-            ->willReturnCallback(function (RequestContactImport $request) use (&$capturedRequests) {
-                $capturedRequests[] = $request;
-
-                return null;
-            });
-
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeSyncContacts(ContactsApi $contactsApi, int $listId, array $contacts): void
-            {
-                $this->syncContacts($contactsApi, $listId, $contacts);
-            }
-        };
-
-        $bridge->exposeSyncContacts($contactsApi, 99, [
-            [
-                'email' => 'John.Doe@Example.test',
-                'phone' => '+33601020304',
-                'formalTitle' => 'Mr',
-                'firstName' => 'John',
-                'lastName' => 'Doe',
-                'fullName' => 'John Doe',
-                'gender' => 'male',
-                'nationality' => 'FR',
-                'company' => 'OpenAction',
-                'jobTitle' => 'Engineer',
-                'addressLine1' => '1 rue de Paris',
-                'addressLine2' => 'Bat A',
-                'postalCode' => '75000',
-                'city' => 'Paris',
-                'country' => 'FR',
-            ],
-            [
-                'email' => 'jane.doe@example.test',
-                'phone' => '',
-                'firstName' => '  ',
-            ],
-            [
-                'email' => null,
-                'phone' => '+33611111111',
-            ],
-        ]);
-
-        $this->assertCount(1, $capturedRequests);
-        $this->assertSame([99], $capturedRequests[0]->getListIds());
-        $this->assertTrue($capturedRequests[0]->getUpdateExistingContacts());
-        $this->assertCount(2, $capturedRequests[0]->getJsonBody());
-
-        $first = $capturedRequests[0]->getJsonBody()[0];
-        $second = $capturedRequests[0]->getJsonBody()[1];
-
-        $this->assertSame('john.doe@example.test', $first->getEmail());
-        $this->assertSame([
-            'PHONE' => '+33601020304',
-            'FORMAL_TITLE' => 'Mr',
-            'FIRST_NAME' => 'John',
-            'LAST_NAME' => 'Doe',
-            'FULL_NAME' => 'John Doe',
-            'GENDER' => 'male',
-            'NATIONALITY' => 'FR',
-            'COMPANY' => 'OpenAction',
-            'JOB_TITLE' => 'Engineer',
-            'ADDRESS_LINE_1' => '1 rue de Paris',
-            'ADDRESS_LINE_2' => 'Bat A',
-            'POSTAL_CODE' => '75000',
-            'CITY' => 'Paris',
-            'COUNTRY' => 'FR',
-        ], $first->getAttributes());
-
-        $this->assertSame('jane.doe@example.test', $second->getEmail());
-        $this->assertNull($second->getAttributes());
+    private function createBridge(
+        MockHttpClient $httpClient,
+        ?RateLimiterFactory $sendCampaignRateLimiter = null,
+        ?RateLimiterFactory $campaignStatsRateLimiter = null,
+    ): TestableBrevo {
+        return new TestableBrevo(
+            new NullLogger(),
+            $httpClient,
+            $sendCampaignRateLimiter ?? $this->createLimiterFactory('send', 50),
+            $campaignStatsRateLimiter ?? $this->createLimiterFactory('stats', 50),
+            'openaction',
+        );
     }
 
-    public function testSyncContactsNormalizesBackedEnums()
+    private function createLimiterFactory(string $id, int $limit): RateLimiterFactory
     {
-        $capturedRequests = [];
-        $contactsApi = $this->createMock(ContactsApi::class);
-        $contactsApi
-            ->expects($this->once())
-            ->method('importContacts')
-            ->willReturnCallback(function (RequestContactImport $request) use (&$capturedRequests) {
-                $capturedRequests[] = $request;
+        return new RateLimiterFactory([
+            'id' => $id,
+            'policy' => 'sliding_window',
+            'limit' => $limit,
+            'interval' => '1 hour',
+        ], new InMemoryStorage());
+    }
 
-                return null;
-            });
+    private function decodeJsonRequestBody(array $options): array
+    {
+        $body = $options['body'] ?? null;
 
-        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
-            public function exposeSyncContacts(ContactsApi $contactsApi, int $listId, array $contacts): void
-            {
-                $this->syncContacts($contactsApi, $listId, $contacts);
-            }
-        };
+        if (!is_string($body) || '' === $body) {
+            $this->fail('Missing JSON request body.');
+        }
 
-        $bridge->exposeSyncContacts($contactsApi, 99, [
-            [
-                'email' => 'jane.doe@example.test',
-                'formalTitle' => TestContactFormalTitle::MR,
-            ],
-        ]);
+        $decoded = json_decode($body, true);
 
-        $this->assertCount(1, $capturedRequests);
-        $this->assertCount(1, $capturedRequests[0]->getJsonBody());
+        if (!is_array($decoded)) {
+            $this->fail('Invalid JSON request body.');
+        }
 
-        $first = $capturedRequests[0]->getJsonBody()[0];
-        $this->assertSame('jane.doe@example.test', $first->getEmail());
-        $this->assertSame(['FORMAL_TITLE' => 'Mr'], $first->getAttributes());
+        return $decoded;
     }
 
     private function createCampaignMock(?int $emailThrottlingPerHour): EmailingCampaign

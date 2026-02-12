@@ -9,7 +9,12 @@ interface BrevoInterface
     /**
      * @return string[]
      */
-    public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array;
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array;
 
-    public function getCampaignReport(string $apiKey, string $campaignId): array;
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function getEmailCampaignsStats(string $apiKey): array;
+
+    public function getEmailCampaignReport(string $apiKey, string $campaignId): array;
 }

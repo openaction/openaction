@@ -3,34 +3,26 @@
 namespace App\Bridge\Brevo;
 
 use App\Entity\Community\EmailingCampaign;
-use Brevo\Client\Api\ContactsApi;
-use Brevo\Client\Api\EmailCampaignsApi;
-use Brevo\Client\Api\ProcessApi;
-use Brevo\Client\ApiException;
-use Brevo\Client\Configuration;
-use Brevo\Client\Model\CreateEmailCampaign;
-use Brevo\Client\Model\CreateEmailCampaignRecipients;
-use Brevo\Client\Model\CreateEmailCampaignSender;
-use Brevo\Client\Model\CreateList;
-use Brevo\Client\Model\EmailExportRecipients;
-use Brevo\Client\Model\RequestContactImport;
-use Brevo\Client\Model\RequestContactImportJsonBody;
-use OpenSpout\Reader\CSV\Options;
-use OpenSpout\Reader\CSV\Reader;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Brevo implements BrevoInterface
 {
     private const CONTACTS_CHUNK_SIZE = 500;
-    private const EXPORT_MAX_ATTEMPTS = 10;
-    private const EXPORT_WAIT_SECONDS = 1;
     private const CAMPAIGNS_PER_HOUR = 4;
     private const THROTTLED_CAMPAIGN_INTERVAL_MINUTES = 15;
+    private const CAMPAIGNS_STATS_PAGE_SIZE = 100;
+    private const API_BASE_URL = 'https://api.brevo.com/v3';
+    private const MAX_RATE_LIMIT_ATTEMPTS = 2;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly HttpClientInterface $httpClient,
+        private readonly RateLimiterFactory $sendCampaignRateLimiter,
+        private readonly RateLimiterFactory $campaignStatsRateLimiter,
         private readonly string $namespace,
     ) {
     }
@@ -38,12 +30,10 @@ class Brevo implements BrevoInterface
     /**
      * @return string[]
      */
-    public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
     {
         $organization = $campaign->getProject()->getOrganization();
-        $config = $this->createConfiguration($organization->getBrevoApiKey() ?? '');
-        $contactsApi = $this->createContactsApi($config);
-        $emailCampaignsApi = $this->createEmailCampaignsApi($config);
+        $apiKey = (string) ($organization->getBrevoApiKey() ?? '');
         $throttlingPerHour = $organization->getEmailThrottlingPerHour();
         $listCapacity = $this->computeListCapacity($throttlingPerHour);
         $isThrottled = null !== $listCapacity;
@@ -54,116 +44,149 @@ class Brevo implements BrevoInterface
             $contactsChunks = [[]];
         }
 
-        try {
-            $createdCampaignIds = [];
+        $createdCampaignIds = [];
 
-            foreach ($contactsChunks as $chunkIndex => $contactsChunk) {
-                $listId = $this->createCampaignList(
-                    $contactsApi,
-                    $campaign,
-                    $isThrottled ? $chunkIndex + 1 : null,
-                );
-
-                $this->syncContacts(
-                    contactsApi: $contactsApi,
-                    listId: $listId,
-                    contacts: $contactsChunk,
-                );
-
-                $brevoCampaign = $this->buildCampaignBody($campaign, $htmlContent);
-                $brevoCampaign->setRecipients((new CreateEmailCampaignRecipients())->setListIds([$listId]));
-
-                if ($isThrottled) {
-                    $scheduledAt = $scheduledBaseAt->modify(sprintf('+%d minutes', $chunkIndex * self::THROTTLED_CAMPAIGN_INTERVAL_MINUTES));
-                    $brevoCampaign->setScheduledAt($this->formatScheduledAt($scheduledAt));
-                }
-
-                $createdCampaign = $emailCampaignsApi->createEmailCampaign($brevoCampaign);
-                $createdCampaignIds[] = (string) $createdCampaign->getId();
-
-                if (!$isThrottled) {
-                    $emailCampaignsApi->sendEmailCampaignNow($createdCampaign->getId());
-                }
-            }
-
-            return $createdCampaignIds;
-        } catch (ApiException $exception) {
-            $this->handleApiException($exception);
-        }
-    }
-
-    public function getCampaignReport(string $apiKey, string $campaignId): array
-    {
-        $config = $this->createConfiguration($apiKey);
-        $emailCampaignsApi = $this->createEmailCampaignsApi($config);
-        $processApi = $this->createProcessApi($config);
-
-        try {
-            $sent = $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_ALL);
-            $opened = $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_OPENERS);
-            $clicked = $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_CLICKERS);
-            $bounced = array_merge(
-                $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_SOFT_BOUNCES),
-                $this->fetchExportedEmails($emailCampaignsApi, $processApi, $campaignId, EmailExportRecipients::RECIPIENTS_TYPE_HARD_BOUNCES),
+        foreach ($contactsChunks as $chunkIndex => $contactsChunk) {
+            $listId = $this->createCampaignList(
+                $apiKey,
+                $campaign,
+                $isThrottled ? $chunkIndex + 1 : null,
             );
-            $openedLookup = array_fill_keys($opened, true);
-            $clickedLookup = array_fill_keys($clicked, true);
-            $bouncedLookup = array_fill_keys($bounced, true);
 
-            $report = [];
-            foreach ($sent as $email) {
-                $isClicked = isset($clickedLookup[$email]);
+            $this->syncContacts(
+                apiKey: $apiKey,
+                listId: $listId,
+                contacts: $contactsChunk,
+            );
 
-                $report[$email] = [
-                    'sent' => true,
-                    'opened' => $isClicked || isset($openedLookup[$email]),
-                    'clicked' => $isClicked,
-                    'bounced' => isset($bouncedLookup[$email]),
-                ];
+            $brevoCampaignPayload = $this->buildCampaignPayload($campaign, $htmlContent);
+            $brevoCampaignPayload['recipients'] = ['listIds' => [$listId]];
+
+            if ($isThrottled) {
+                $scheduledAt = $scheduledBaseAt->modify(sprintf('+%d minutes', $chunkIndex * self::THROTTLED_CAMPAIGN_INTERVAL_MINUTES));
+                $brevoCampaignPayload['scheduledAt'] = $this->formatScheduledAt($scheduledAt);
             }
 
-            foreach (array_keys($bouncedLookup) as $email) {
-                if (!isset($report[$email])) {
-                    $report[$email] = [
-                        'sent' => false,
-                        'opened' => false,
-                        'clicked' => false,
-                        'bounced' => true,
-                    ];
-                } else {
-                    $report[$email]['bounced'] = true;
-                }
+            $createdCampaign = $this->decodeJsonResponse(
+                $this->requestBrevo(
+                    method: 'POST',
+                    endpoint: '/emailCampaigns',
+                    apiKey: $apiKey,
+                    options: ['json' => $brevoCampaignPayload],
+                    limiter: $this->sendCampaignRateLimiter,
+                    limiterContext: 'campaign_send',
+                ),
+                operation: 'create email campaign',
+            );
+
+            $createdCampaignId = trim((string) ($createdCampaign['id'] ?? ''));
+            if ('' === $createdCampaignId) {
+                throw new \RuntimeException('Brevo error: campaign could not be created.');
             }
 
-            return $report;
-        } catch (ApiException $exception) {
-            $this->handleApiException($exception);
+            $createdCampaignIds[] = $createdCampaignId;
+
+            if (!$isThrottled) {
+                $this->requestBrevo(
+                    method: 'POST',
+                    endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
+                    apiKey: $apiKey,
+                    options: ['json' => new \stdClass()],
+                    limiter: $this->sendCampaignRateLimiter,
+                    limiterContext: 'campaign_send',
+                );
+            }
         }
+
+        return $createdCampaignIds;
     }
 
-    protected function buildCampaignBody(EmailingCampaign $campaign, string $htmlContent): CreateEmailCampaign
+    public function getEmailCampaignsStats(string $apiKey): array
+    {
+        $campaignsStats = [];
+        $offset = 0;
+
+        while (true) {
+            $response = $this->requestBrevo(
+                method: 'GET',
+                endpoint: '/emailCampaigns',
+                apiKey: $apiKey,
+                options: [
+                    'query' => [
+                        'status' => 'sent',
+                        'statistics' => 'globalStats',
+                        'limit' => self::CAMPAIGNS_STATS_PAGE_SIZE,
+                        'excludeHtmlContent' => 'true',
+                        'offset' => $offset,
+                    ],
+                ],
+                limiter: $this->campaignStatsRateLimiter,
+                limiterContext: 'campaign_stats',
+            );
+            $payload = $this->decodeJsonResponse($response, 'fetch email campaigns stats');
+            $campaigns = $payload['campaigns'] ?? [];
+
+            if (!is_array($campaigns)) {
+                break;
+            }
+
+            foreach ($campaigns as $campaign) {
+                if (!is_array($campaign)) {
+                    continue;
+                }
+
+                $campaignId = trim((string) ($campaign['id'] ?? ''));
+
+                if ('' === $campaignId) {
+                    continue;
+                }
+
+                $globalStats = $campaign['statistics']['globalStats'] ?? [];
+                $campaignsStats[$campaignId] = is_array($globalStats) ? $globalStats : [];
+            }
+
+            $totalCount = is_numeric($payload['count'] ?? null)
+                ? (int) $payload['count']
+                : $offset + count($campaigns);
+
+            $offset += self::CAMPAIGNS_STATS_PAGE_SIZE;
+
+            if (0 === count($campaigns) || $offset >= $totalCount) {
+                break;
+            }
+        }
+
+        return $campaignsStats;
+    }
+
+    public function getEmailCampaignReport(string $apiKey, string $campaignId): array
+    {
+        return [];
+    }
+
+    protected function buildCampaignPayload(EmailingCampaign $campaign, string $htmlContent): array
     {
         $organization = $campaign->getProject()->getOrganization();
 
-        $sender = (new CreateEmailCampaignSender())
-            ->setName($campaign->getFromName() ?: $organization->getName())
-            ->setEmail($organization->getBrevoSenderEmail());
-
-        $body = (new CreateEmailCampaign())
-            ->setName($campaign->getSubject())
-            ->setSubject($campaign->getSubject())
-            ->setSender($sender)
-            ->setHtmlContent($htmlContent)
-            ->setReplyTo($campaign->getReplyToEmail() ?: $campaign->getFullFromEmail());
+        $payload = [
+            'name' => $campaign->getSubject(),
+            'subject' => $campaign->getSubject(),
+            'sender' => [
+                'name' => $campaign->getFromName() ?: $organization->getName(),
+                'email' => $organization->getBrevoSenderEmail(),
+            ],
+            'htmlContent' => $htmlContent,
+            'replyTo' => $campaign->getReplyToEmail() ?: $campaign->getFullFromEmail(),
+        ];
 
         if ($campaign->getPreview()) {
-            $body->setPreviewText($campaign->getPreview());
+            $payload['previewText'] = $campaign->getPreview();
         }
 
-        return $body;
+        return $payload;
     }
 
-    protected function syncContacts(ContactsApi $contactsApi, int $listId, array $contacts): void
+    protected function syncContacts(string $apiKey, int $listId, array $contacts): void
     {
         foreach (array_chunk($contacts, self::CONTACTS_CHUNK_SIZE) as $chunk) {
             $jsonBody = [];
@@ -173,11 +196,11 @@ class Brevo implements BrevoInterface
                     continue;
                 }
 
-                $body = (new RequestContactImportJsonBody())->setEmail(strtolower($contact['email']));
+                $body = ['email' => strtolower((string) $contact['email'])];
                 $attributes = $this->buildContactAttributes($contact);
 
                 if ($attributes) {
-                    $body->setAttributes($attributes);
+                    $body['attributes'] = $attributes;
                 }
 
                 $jsonBody[] = $body;
@@ -187,16 +210,24 @@ class Brevo implements BrevoInterface
                 continue;
             }
 
-            $request = (new RequestContactImport())
-                ->setListIds([$listId])
-                ->setJsonBody($jsonBody)
-                ->setUpdateExistingContacts(true);
-
-            $contactsApi->importContacts($request);
+            $this->requestBrevo(
+                method: 'POST',
+                endpoint: '/contacts/import',
+                apiKey: $apiKey,
+                options: [
+                    'json' => [
+                        'listIds' => [$listId],
+                        'jsonBody' => $jsonBody,
+                        'updateExistingContacts' => true,
+                    ],
+                ],
+                limiter: $this->sendCampaignRateLimiter,
+                limiterContext: 'campaign_send',
+            );
         }
     }
 
-    protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign, ?int $chunkIndex = null): int
+    protected function createCampaignList(string $apiKey, EmailingCampaign $campaign, ?int $chunkIndex = null): int
     {
         $listName = sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
 
@@ -204,11 +235,28 @@ class Brevo implements BrevoInterface
             $listName .= '-'.$chunkIndex;
         }
 
-        $list = (new CreateList())
-            ->setName($listName)
-            ->setFolderId($this->resolveCampaignFolderId($contactsApi));
+        $payload = $this->decodeJsonResponse(
+            $this->requestBrevo(
+                method: 'POST',
+                endpoint: '/contacts/lists',
+                apiKey: $apiKey,
+                options: [
+                    'json' => [
+                        'name' => $listName,
+                        'folderId' => $this->resolveCampaignFolderId($apiKey),
+                    ],
+                ],
+                limiter: $this->sendCampaignRateLimiter,
+                limiterContext: 'campaign_send',
+            ),
+            operation: 'create contacts list',
+        );
 
-        return (int) $contactsApi->createList($list)->getId();
+        if (!is_numeric($payload['id'] ?? null)) {
+            throw new \RuntimeException('Brevo error: list could not be created.');
+        }
+
+        return (int) $payload['id'];
     }
 
     protected function computeListCapacity(?int $throttlingPerHour): ?int
@@ -230,18 +278,29 @@ class Brevo implements BrevoInterface
         return $scheduledAt->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s.v\Z');
     }
 
-    protected function resolveCampaignFolderId(ContactsApi $contactsApi): int
+    protected function resolveCampaignFolderId(string $apiKey): int
     {
-        $folders = $contactsApi->getFolders('1', '0', 'asc')->getFolders() ?? [];
+        $payload = $this->decodeJsonResponse(
+            $this->requestBrevo(
+                method: 'GET',
+                endpoint: '/contacts/folders',
+                apiKey: $apiKey,
+                options: [
+                    'query' => [
+                        'limit' => 1,
+                        'offset' => 0,
+                        'sort' => 'asc',
+                    ],
+                ],
+                limiter: $this->sendCampaignRateLimiter,
+                limiterContext: 'campaign_send',
+            ),
+            operation: 'resolve contacts folder',
+        );
+        $folders = $payload['folders'] ?? [];
 
         foreach ($folders as $folder) {
-            $folderId = null;
-
-            if (is_array($folder)) {
-                $folderId = $folder['id'] ?? null;
-            } elseif (is_object($folder)) {
-                $folderId = $folder->id ?? null;
-            }
+            $folderId = is_array($folder) ? ($folder['id'] ?? null) : null;
 
             if (is_numeric($folderId)) {
                 return (int) $folderId;
@@ -290,138 +349,176 @@ class Brevo implements BrevoInterface
         return '' === $value ? null : $value;
     }
 
-    protected function fetchExportedEmails(EmailCampaignsApi $emailCampaignsApi, ProcessApi $processApi, string $campaignId, string $recipientsType): array
+    protected function waitForSeconds(int $seconds): void
     {
-        $process = $emailCampaignsApi->emailExportRecipients(
-            (int) $campaignId,
-            new EmailExportRecipients()->setRecipientsType($recipientsType),
-        );
+        sleep(max(0, $seconds));
+    }
 
-        $processId = $process->getProcessId();
+    private function requestBrevo(
+        string $method,
+        string $endpoint,
+        string $apiKey,
+        array $options,
+        RateLimiterFactory $limiter,
+        string $limiterContext,
+    ): ResponseInterface {
+        $requestOptions = array_replace_recursive([
+            'headers' => [
+                'accept' => 'application/json',
+                'api-key' => $apiKey,
+            ],
+        ], $options);
 
-        if (!$processId) {
+        for ($attempt = 1; $attempt <= self::MAX_RATE_LIMIT_ATTEMPTS; ++$attempt) {
+            $this->consumeRateLimit(
+                limiter: $limiter,
+                limiterContext: $limiterContext,
+                apiKey: $apiKey,
+                method: $method,
+                endpoint: $endpoint,
+            );
+
+            try {
+                $response = $this->httpClient->request(
+                    $method,
+                    self::API_BASE_URL.$endpoint,
+                    $requestOptions,
+                );
+            } catch (TransportExceptionInterface $exception) {
+                $this->logger->error('Brevo HTTP transport failed', [
+                    'method' => $method,
+                    'endpoint' => $endpoint,
+                    'exception' => $exception,
+                ]);
+
+                throw new \RuntimeException('Brevo error: '.$exception->getMessage(), previous: $exception);
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if (429 === $statusCode) {
+                $rateLimitResetHeader = $response->getHeaders(false)['x-sib-ratelimit-reset'][0] ?? null;
+                $waitSeconds = $this->extractWaitSecondsFromRateLimitResetHeader($rateLimitResetHeader);
+
+                if ($attempt < self::MAX_RATE_LIMIT_ATTEMPTS) {
+                    $this->logger->warning('Brevo API rate limit reached, retrying once', [
+                        'method' => $method,
+                        'endpoint' => $endpoint,
+                        'status_code' => $statusCode,
+                        'attempt' => $attempt,
+                        'wait_seconds' => $waitSeconds,
+                        'x_sib_ratelimit_reset' => $rateLimitResetHeader,
+                    ]);
+
+                    $this->waitForSeconds($waitSeconds);
+
+                    continue;
+                }
+
+                $this->logger->error('Brevo API rate limit reached after one retry', [
+                    'method' => $method,
+                    'endpoint' => $endpoint,
+                    'status_code' => $statusCode,
+                    'attempt' => $attempt,
+                    'wait_seconds' => $waitSeconds,
+                    'x_sib_ratelimit_reset' => $rateLimitResetHeader,
+                    'response_headers' => $response->getHeaders(false),
+                    'response_body' => $response->getContent(false),
+                ]);
+
+                throw new \RuntimeException(sprintf('Brevo error: rate limit reached for %s %s after one retry.', $method, $endpoint));
+            }
+
+            if ($statusCode >= 400) {
+                $responseBody = $response->getContent(false);
+                $decodedResponse = json_decode($responseBody, true);
+                $brevoErrorMessage = is_array($decodedResponse)
+                    ? trim((string) ($decodedResponse['message'] ?? $decodedResponse['code'] ?? ''))
+                    : '';
+
+                if ('' === $brevoErrorMessage) {
+                    $brevoErrorMessage = 'Unexpected Brevo API error';
+                }
+
+                $this->logger->error('Brevo API request failed', [
+                    'method' => $method,
+                    'endpoint' => $endpoint,
+                    'status_code' => $statusCode,
+                    'response_headers' => $response->getHeaders(false),
+                    'response_body' => $responseBody,
+                ]);
+
+                throw new \RuntimeException(sprintf('Brevo error: %s (HTTP %d).', $brevoErrorMessage, $statusCode));
+            }
+
+            return $response;
+        }
+
+        throw new \RuntimeException(sprintf('Brevo error: %s %s failed.', $method, $endpoint));
+    }
+
+    private function decodeJsonResponse(ResponseInterface $response, string $operation): array
+    {
+        $content = trim($response->getContent(false));
+
+        if ('' === $content) {
             return [];
         }
 
-        $exportUrl = $this->waitForExportUrl($processApi, $processId);
-        $csvContent = $this->httpClient->request('GET', $exportUrl)->getContent();
+        $decoded = json_decode($content, true);
 
-        return $this->parseExportedEmails($csvContent);
-    }
+        if (!is_array($decoded)) {
+            $this->logger->error('Brevo API returned an invalid JSON payload', [
+                'operation' => $operation,
+                'response_body' => $content,
+            ]);
 
-    protected function waitForExportUrl(ProcessApi $processApi, int $processId): string
-    {
-        $attempts = 0;
-
-        while ($attempts < self::EXPORT_MAX_ATTEMPTS) {
-            ++$attempts;
-
-            $process = $processApi->getProcess($processId);
-
-            if ('completed' === $process->getStatus() && $process->getExportUrl()) {
-                return $process->getExportUrl();
-            }
-
-            if ('failed' === $process->getStatus()) {
-                break;
-            }
-
-            sleep(self::EXPORT_WAIT_SECONDS);
+            throw new \RuntimeException('Brevo error: invalid API response while trying to '.$operation.'.');
         }
 
-        throw new \RuntimeException('Brevo export did not complete for process '.$processId);
+        return $decoded;
     }
 
-    protected function parseExportedEmails(string $content): array
-    {
-        $tempPath = tempnam(sys_get_temp_dir(), 'brevo_export_');
+    private function consumeRateLimit(
+        RateLimiterFactory $limiter,
+        string $limiterContext,
+        string $apiKey,
+        string $method,
+        string $endpoint,
+    ): void {
+        $rateLimit = $limiter->create($this->createLimiterKey($apiKey, $limiterContext))->consume();
 
-        if (false === $tempPath) {
-            throw new \RuntimeException('Unable to create temporary file for Brevo export parsing.');
+        if ($rateLimit->isAccepted()) {
+            return;
         }
 
-        if (false === file_put_contents($tempPath, $content)) {
-            @unlink($tempPath);
+        $retryAfter = $rateLimit->getRetryAfter();
+        $waitSeconds = max(1, $retryAfter->getTimestamp() - time());
 
-            throw new \RuntimeException('Unable to write Brevo export in temporary file.');
-        }
-
-        $emails = [];
-        $isFirstRow = true;
-        $emailColumnIndex = 0;
-        $reader = new Reader(new Options(FIELD_DELIMITER: ';'));
-
-        try {
-            $reader->open($tempPath);
-
-            foreach ($reader->getSheetIterator() as $sheet) {
-                foreach ($sheet->getRowIterator() as $row) {
-                    $columns = $row->toArray();
-
-                    if ($isFirstRow) {
-                        $isFirstRow = false;
-                        $headerEmailColumnIndex = null;
-
-                        foreach ($columns as $index => $column) {
-                            $normalizedColumn = strtolower(trim((string) $column));
-
-                            if (in_array($normalizedColumn, ['email_id', 'email id', 'email'], true)) {
-                                $headerEmailColumnIndex = (int) $index;
-
-                                break;
-                            }
-                        }
-
-                        if (null !== $headerEmailColumnIndex) {
-                            $emailColumnIndex = $headerEmailColumnIndex;
-
-                            continue;
-                        }
-                    }
-
-                    $email = strtolower(trim((string) ($columns[$emailColumnIndex] ?? '')));
-
-                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $emails[$email] = true;
-                    }
-                }
-            }
-        } finally {
-            $reader->close();
-            @unlink($tempPath);
-        }
-
-        return array_keys($emails);
-    }
-
-    protected function createConfiguration(string $apiKey): Configuration
-    {
-        return (new Configuration())->setApiKey('api-key', $apiKey);
-    }
-
-    protected function createContactsApi(Configuration $config): ContactsApi
-    {
-        return new ContactsApi(null, $config);
-    }
-
-    protected function createEmailCampaignsApi(Configuration $config): EmailCampaignsApi
-    {
-        return new EmailCampaignsApi(null, $config);
-    }
-
-    protected function createProcessApi(Configuration $config): ProcessApi
-    {
-        return new ProcessApi(null, $config);
-    }
-
-    protected function handleApiException(ApiException $exception): never
-    {
-        $this->logger->error('Brevo API error: '.$exception->getMessage(), [
-            'exception' => $exception,
-            'response' => $exception->getResponseBody(),
-            'response_headers' => $exception->getResponseHeaders(),
+        $this->logger->error('Brevo local rate limiter blocked request', [
+            'limiter_context' => $limiterContext,
+            'method' => $method,
+            'endpoint' => $endpoint,
+            'retry_after' => $retryAfter->format(\DateTimeInterface::ATOM),
+            'wait_seconds' => $waitSeconds,
+            'remaining_tokens' => $rateLimit->getRemainingTokens(),
+            'limit' => $rateLimit->getLimit(),
         ]);
 
-        throw new \RuntimeException('Brevo error: '.$exception->getMessage());
+        throw new \RuntimeException(sprintf('Brevo error: local rate limiter reached for %s requests. Retry after %d seconds.', $limiterContext, $waitSeconds));
+    }
+
+    private function createLimiterKey(string $apiKey, string $limiterContext): string
+    {
+        return sprintf('%s_%s', $limiterContext, hash('sha256', $apiKey));
+    }
+
+    private function extractWaitSecondsFromRateLimitResetHeader(mixed $rateLimitResetHeader): int
+    {
+        if (!is_numeric($rateLimitResetHeader)) {
+            return 1;
+        }
+
+        return max(0, (int) $rateLimitResetHeader) + 1;
     }
 }

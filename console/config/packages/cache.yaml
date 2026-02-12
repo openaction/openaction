@@ -3,6 +3,11 @@ framework:
         prefix_seed: '%env(APP_NAMESPACE)%_cache_'
         app: app.cache.adapter.redis
         default_redis_provider: '%env(resolve:REDIS_URL)%'
+        pools:
+            cache.brevo_campaign_send_limiter:
+                adapter: app.cache.adapter.redis
+            cache.brevo_campaign_stats_limiter:
+                adapter: app.cache.adapter.redis
 
 services:
     app.cache.adapter.redis:

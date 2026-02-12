@@ -121,7 +121,7 @@ class SyncBrevoCampaignsReportsCommand extends Command
         $aggregatedReport = [];
 
         foreach ($externalCampaignIds as $externalCampaignId) {
-            $report = $this->brevo->getCampaignReport($apiKey, $externalCampaignId);
+            $report = $this->brevo->getEmailCampaignReport($apiKey, $externalCampaignId);
 
             foreach ($report as $email => $activity) {
                 if (!isset($aggregatedReport[$email])) {

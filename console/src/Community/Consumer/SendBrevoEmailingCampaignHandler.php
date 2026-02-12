@@ -76,7 +76,7 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
 
         $contacts = array_map(fn (array $contact) => $this->normalizeBrevoContactData($contact), $contacts);
 
-        $brevoCampaignIds = $this->brevo->sendCampaign(
+        $brevoCampaignIds = $this->brevo->sendEmailCampaign(
             campaign: $campaign,
             htmlContent: $this->messageFactory->createBrevoCampaignBody($campaign),
             contacts: $contacts,
