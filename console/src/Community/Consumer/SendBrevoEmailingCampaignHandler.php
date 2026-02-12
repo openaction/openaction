@@ -76,13 +76,13 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
 
         $contacts = array_map(fn (array $contact) => $this->normalizeBrevoContactData($contact), $contacts);
 
-        $brevoCampaignIds = $this->brevo->sendEmailCampaign(
+        $brevoCampaignId = $this->brevo->sendEmailCampaign(
             campaign: $campaign,
             htmlContent: $this->messageFactory->createBrevoCampaignBody($campaign),
             contacts: $contacts,
         );
 
-        if (!$brevoCampaignIds) {
+        if ('' === trim($brevoCampaignId)) {
             throw new \RuntimeException('Brevo error: campaign could not be created.');
         }
 
@@ -94,7 +94,7 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
 
         $this->logger->info('Marking Brevo campaign as resolved and sent', ['id' => $message->getCampaignId()]);
 
-        $campaign->markSentExternally(implode(',', $brevoCampaignIds));
+        $campaign->markSentExternally($brevoCampaignId);
         $this->em->persist($campaign);
         $this->em->flush();
 

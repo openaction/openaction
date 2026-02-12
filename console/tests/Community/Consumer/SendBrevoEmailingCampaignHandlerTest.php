@@ -43,6 +43,7 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $this->assertCount(1, $brevo->campaigns);
         $payload = $brevo->campaigns['1'];
         $this->assertNull($payload['scheduledAt']);
+        $this->assertNull($payload['batching']);
         $this->assertSame('1', $campaign->getExternalId());
         $this->assertNotNull($campaign->getResolvedAt());
         $this->assertCount(3, $payload['contacts']);
@@ -86,7 +87,7 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $organization->setEmailProvider('brevo');
         $organization->setBrevoApiKey('brevo_api_key');
         $organization->setBrevoSenderEmail('brevo@example.test');
-        $organization->setEmailThrottlingPerHour(4);
+        $organization->setEmailThrottlingPerHour(2);
         static::getContainer()->get('doctrine')->getManager()->flush();
 
         /** @var BrevoInterface $brevo */
@@ -96,21 +97,17 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
         $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
 
-        $this->assertCount(3, $brevo->campaigns);
-        $this->assertSame('1,2,3', $campaign->getExternalId());
+        $this->assertCount(1, $brevo->campaigns);
+        $payload = $brevo->campaigns['1'];
+        $this->assertSame('1', $campaign->getExternalId());
         $this->assertNotNull($campaign->getResolvedAt());
-        $this->assertCount(1, $brevo->campaigns['1']['contacts']);
-        $this->assertCount(1, $brevo->campaigns['2']['contacts']);
-        $this->assertCount(1, $brevo->campaigns['3']['contacts']);
-        $this->assertNotNull($brevo->campaigns['1']['scheduledAt']);
-        $this->assertNotNull($brevo->campaigns['2']['scheduledAt']);
-        $this->assertNotNull($brevo->campaigns['3']['scheduledAt']);
-
-        $first = $brevo->campaigns['1']['scheduledAt']->getTimestamp();
-        $second = $brevo->campaigns['2']['scheduledAt']->getTimestamp();
-        $third = $brevo->campaigns['3']['scheduledAt']->getTimestamp();
-        $this->assertSame(15 * 60, $second - $first);
-        $this->assertSame(15 * 60, $third - $second);
+        $this->assertCount(3, $payload['contacts']);
+        $this->assertNotNull($payload['scheduledAt']);
+        $this->assertSame([
+            'batchSize' => 2,
+            'batchesCount' => 2,
+            'intervalMinutes' => 30,
+        ], $payload['batching']);
 
         $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
         $this->assertCount(3, $messages);

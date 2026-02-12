@@ -6,10 +6,7 @@ use App\Entity\Community\EmailingCampaign;
 
 interface BrevoInterface
 {
-    /**
-     * @return string[]
-     */
-    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array;
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string;
 
     /**
      * @return array<string, array<string, mixed>>

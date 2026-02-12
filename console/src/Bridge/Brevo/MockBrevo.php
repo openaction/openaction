@@ -12,37 +12,27 @@ class MockBrevo implements BrevoInterface
 
     public array $reports = [];
 
-    /**
-     * @return string[]
-     */
-    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
+        $id = (string) (count($this->campaigns) + 1);
         $throttlingPerHour = $campaign->getProject()->getOrganization()->getEmailThrottlingPerHour();
-        $listCapacity = (!$throttlingPerHour || $throttlingPerHour <= 0) ? null : max((int) floor($throttlingPerHour / 4), 1);
-        $contactChunks = $listCapacity ? array_chunk($contacts, $listCapacity) : [$contacts];
-        $baseScheduledAt = new \DateTimeImmutable('now');
-        $createdIds = [];
+        $batchConfiguration = $this->computeBatchConfiguration(
+            contactsCount: count(array_filter(
+                $contacts,
+                static fn (array $contact): bool => !empty($contact['email']),
+            )),
+            throttlingPerHour: $throttlingPerHour,
+        );
 
-        if (!$contactChunks) {
-            $contactChunks = [[]];
-        }
+        $this->campaigns[$id] = [
+            'campaign' => $campaign,
+            'html' => $htmlContent,
+            'contacts' => $contacts,
+            'scheduledAt' => $batchConfiguration ? new \DateTimeImmutable('now') : null,
+            'batching' => $batchConfiguration,
+        ];
 
-        foreach ($contactChunks as $chunkIndex => $contactChunk) {
-            $id = (string) (count($this->campaigns) + 1);
-
-            $this->campaigns[$id] = [
-                'campaign' => $campaign,
-                'html' => $htmlContent,
-                'contacts' => $contactChunk,
-                'scheduledAt' => $listCapacity
-                    ? $baseScheduledAt->modify(sprintf('+%d minutes', $chunkIndex * 15))
-                    : null,
-            ];
-
-            $createdIds[] = $id;
-        }
-
-        return $createdIds;
+        return $id;
     }
 
     public function getEmailCampaignsStats(string $apiKey): array
@@ -53,5 +43,26 @@ class MockBrevo implements BrevoInterface
     public function getEmailCampaignReport(string $apiKey, string $campaignId): array
     {
         return $this->reports[$campaignId] ?? [];
+    }
+
+    private function computeBatchConfiguration(int $contactsCount, ?int $throttlingPerHour): ?array
+    {
+        if (!$throttlingPerHour || $throttlingPerHour <= 0 || $contactsCount < $throttlingPerHour) {
+            return null;
+        }
+
+        if ($contactsCount <= 10 * $throttlingPerHour) {
+            return [
+                'batchSize' => $throttlingPerHour,
+                'batchesCount' => max((int) ceil($contactsCount / $throttlingPerHour), 1),
+                'intervalMinutes' => 30,
+            ];
+        }
+
+        return [
+            'batchSize' => (int) ceil($contactsCount / 10),
+            'batchesCount' => 10,
+            'intervalMinutes' => 30,
+        ];
     }
 }
