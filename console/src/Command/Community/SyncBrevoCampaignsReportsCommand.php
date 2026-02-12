@@ -68,17 +68,17 @@ class SyncBrevoCampaignsReportsCommand extends Command
             foreach ($apiKeyCampaigns as $campaign) {
                 $io->write('Synchronizing '.$campaign['id']);
 
-                $externalCampaignIds = $this->extractExternalCampaignIds((string) $campaign['external_id']);
-                $aggregatedStats = $this->aggregateGlobalStats($campaignsStats, $externalCampaignIds);
+                $externalCampaignId = trim((string) $campaign['external_id']);
+                $globalStats = $externalCampaignId ? ($campaignsStats[$externalCampaignId] ?? null) : null;
 
                 $db->executeStatement('
                     UPDATE community_emailing_campaigns
                     SET global_stats_sent = ?, global_stats_opened = ?, global_stats_clicked = ?
                     WHERE id = ?
                 ', [
-                    $aggregatedStats['sent'],
-                    $aggregatedStats['opened'],
-                    $aggregatedStats['clicked'],
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['delivered', 'sent']) : null,
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['uniqueViews', 'uniqueOpens', 'viewed', 'opens']) : null,
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['uniqueClicks', 'clickers', 'clicks']) : null,
                     $campaign['id'],
                 ]);
             }
@@ -87,69 +87,6 @@ class SyncBrevoCampaignsReportsCommand extends Command
         $io->success('Synchronized');
 
         return Command::SUCCESS;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function extractExternalCampaignIds(string $externalId): array
-    {
-        $externalId = trim($externalId);
-
-        if ('' === $externalId) {
-            return [];
-        }
-
-        if (str_starts_with($externalId, '[')) {
-            $decoded = json_decode($externalId, true);
-
-            if (is_array($decoded)) {
-                $externalIds = array_map(static fn (mixed $id): string => trim((string) $id), $decoded);
-
-                return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
-            }
-        }
-
-        $externalIds = array_map('trim', explode(',', $externalId));
-
-        return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
-    }
-
-    /**
-     * @param string[]                            $externalCampaignIds
-     * @param array<string, array<string, mixed>> $campaignsStats
-     *
-     * @return array{sent: ?int, opened: ?int, clicked: ?int}
-     */
-    private function aggregateGlobalStats(array $campaignsStats, array $externalCampaignIds): array
-    {
-        $sent = 0;
-        $opened = 0;
-        $clicked = 0;
-        $matched = false;
-
-        foreach ($externalCampaignIds as $externalCampaignId) {
-            $globalStats = $campaignsStats[$externalCampaignId] ?? null;
-
-            if (!is_array($globalStats)) {
-                continue;
-            }
-
-            $matched = true;
-            $sent += $this->extractStatValue($globalStats, ['delivered', 'sent']);
-            $opened += $this->extractStatValue($globalStats, ['uniqueViews', 'uniqueOpens', 'viewed', 'opens']);
-            $clicked += $this->extractStatValue($globalStats, ['uniqueClicks', 'clickers', 'clicks']);
-        }
-
-        if (!$matched) {
-            return ['sent' => null, 'opened' => null, 'clicked' => null];
-        }
-
-        return [
-            'sent' => $sent,
-            'opened' => $opened,
-            'clicked' => $clicked,
-        ];
     }
 
     /**

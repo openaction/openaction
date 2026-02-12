@@ -32,7 +32,7 @@ class SyncBrevoCampaignsReportsCommandTest extends KernelTestCase
         $organization = $organizationRepository->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
         $organization->setEmailProvider('brevo');
         $organization->setBrevoApiKey('brevo_api_key');
-        $campaign->markSentExternally('10,20');
+        $campaign->markSentExternally('10');
         $em->flush();
 
         /** @var BrevoInterface $brevo */
@@ -40,7 +40,6 @@ class SyncBrevoCampaignsReportsCommandTest extends KernelTestCase
         $this->assertInstanceOf(MockBrevo::class, $brevo);
         $brevo->campaignsStats = [
             '10' => ['delivered' => 15, 'uniqueViews' => 6, 'uniqueClicks' => 2],
-            '20' => ['delivered' => 5, 'uniqueViews' => 1, 'uniqueClicks' => 1],
         ];
 
         $tester = new CommandTester(static::getContainer()->get(SyncBrevoCampaignsReportsCommand::class));
@@ -49,9 +48,9 @@ class SyncBrevoCampaignsReportsCommandTest extends KernelTestCase
         $em->clear();
         $campaign = $campaignRepository->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
         $this->assertInstanceOf(EmailingCampaign::class, $campaign);
-        $this->assertSame(20, $campaign->getGlobalStatsSent());
-        $this->assertSame(7, $campaign->getGlobalStatsOpened());
-        $this->assertSame(3, $campaign->getGlobalStatsClicked());
+        $this->assertSame(15, $campaign->getGlobalStatsSent());
+        $this->assertSame(6, $campaign->getGlobalStatsOpened());
+        $this->assertSame(2, $campaign->getGlobalStatsClicked());
 
         $this->assertCount(1, $brevo->campaignStatsCalls);
         $this->assertSame('brevo_api_key', $brevo->campaignStatsCalls[0]['apiKey']);
