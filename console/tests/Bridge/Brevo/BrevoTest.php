@@ -263,17 +263,21 @@ class BrevoTest extends TestCase
         $this->assertSame(30, $batchPayload['time_interval']);
     }
 
-    public function testGetEmailCampaignsStatsUsesExpectedPaginationParameters(): void
+    public function testGetEmailCampaignsStatsUsesExpectedPaginationParametersAndDateRange(): void
     {
         $requestedOffsets = [];
+        $startDate = new \DateTimeImmutable('2026-02-10 09:30:00', new \DateTimeZone('UTC'));
+        $endDate = new \DateTimeImmutable('2026-02-12 11:45:00', new \DateTimeZone('UTC'));
 
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requestedOffsets): MockResponse {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requestedOffsets, $startDate, $endDate): MockResponse {
             $this->assertSame('GET', $method);
             $this->assertSame('/v3/emailCampaigns', (string) parse_url($url, PHP_URL_PATH));
             $this->assertSame('sent', $options['query']['status']);
             $this->assertSame('globalStats', $options['query']['statistics']);
             $this->assertSame(100, $options['query']['limit']);
             $this->assertSame('true', (string) $options['query']['excludeHtmlContent']);
+            $this->assertSame($startDate->format(\DateTimeInterface::RFC3339_EXTENDED), $options['query']['startDate']);
+            $this->assertSame($endDate->format(\DateTimeInterface::RFC3339_EXTENDED), $options['query']['endDate']);
 
             $offset = (int) $options['query']['offset'];
             $requestedOffsets[] = $offset;
@@ -293,7 +297,7 @@ class BrevoTest extends TestCase
         $this->assertSame([
             '10' => ['delivered' => 12],
             '20' => ['delivered' => 8],
-        ], $bridge->getEmailCampaignsStats('test-api-key'));
+        ], $bridge->getEmailCampaignsStats('test-api-key', $startDate, $endDate));
         $this->assertSame([0, 100], $requestedOffsets);
     }
 

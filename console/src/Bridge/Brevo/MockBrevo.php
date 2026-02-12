@@ -12,6 +12,10 @@ class MockBrevo implements BrevoInterface
 
     public array $reports = [];
 
+    public array $campaignStatsCalls = [];
+
+    public int $campaignReportCalls = 0;
+
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
         $id = (string) (count($this->campaigns) + 1);
@@ -35,13 +39,24 @@ class MockBrevo implements BrevoInterface
         return $id;
     }
 
-    public function getEmailCampaignsStats(string $apiKey): array
-    {
+    public function getEmailCampaignsStats(
+        string $apiKey,
+        ?\DateTimeInterface $startDate = null,
+        ?\DateTimeInterface $endDate = null,
+    ): array {
+        $this->campaignStatsCalls[] = [
+            'apiKey' => $apiKey,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ];
+
         return $this->campaignsStats;
     }
 
     public function getEmailCampaignReport(string $apiKey, string $campaignId): array
     {
+        ++$this->campaignReportCalls;
+
         return $this->reports[$campaignId] ?? [];
     }
 

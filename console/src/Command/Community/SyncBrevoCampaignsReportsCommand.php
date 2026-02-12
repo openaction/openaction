@@ -32,7 +32,8 @@ class SyncBrevoCampaignsReportsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $sentAfter = new \DateTime($input->getArgument('sent-after'));
+        $sentAfter = new \DateTimeImmutable($input->getArgument('sent-after'));
+        $syncUntil = new \DateTimeImmutable();
         $db = $this->em->getConnection();
 
         $campaigns = $db->executeQuery('
@@ -52,31 +53,32 @@ class SyncBrevoCampaignsReportsCommand extends Command
             return Command::SUCCESS;
         }
 
+        $campaignsByApiKey = [];
         foreach ($campaigns as $campaign) {
-            $io->write('Synchronizing '.$campaign['id']);
+            $campaignsByApiKey[(string) $campaign['brevo_api_key']][] = $campaign;
+        }
 
-            $externalCampaignIds = $this->extractExternalCampaignIds((string) $campaign['external_id']);
-            $report = $this->aggregateReports(
-                (string) $campaign['brevo_api_key'],
-                $externalCampaignIds,
+        foreach ($campaignsByApiKey as $apiKey => $apiKeyCampaigns) {
+            $campaignsStats = $this->brevo->getEmailCampaignsStats(
+                $apiKey,
+                $sentAfter,
+                $syncUntil,
             );
 
-            foreach ($report as $email => $activity) {
+            foreach ($apiKeyCampaigns as $campaign) {
+                $io->write('Synchronizing '.$campaign['id']);
+
+                $externalCampaignId = trim((string) $campaign['external_id']);
+                $globalStats = $externalCampaignId ? ($campaignsStats[$externalCampaignId] ?? null) : null;
+
                 $db->executeStatement('
-                    UPDATE community_emailing_campaigns_messages 
-                    SET sent = ?, opened = ?, clicked = ?, bounced = ?
-                    WHERE id = (
-                        SELECT m.id 
-                        FROM community_emailing_campaigns_messages m
-                        LEFT JOIN community_contacts c ON m.contact_id = c.id
-                        WHERE c.email = ? AND m.campaign_id = ?
-                    )
+                    UPDATE community_emailing_campaigns
+                    SET global_stats_sent = ?, global_stats_opened = ?, global_stats_clicked = ?
+                    WHERE id = ?
                 ', [
-                    $activity['sent'] ? 'true' : 'false',
-                    $activity['opened'] ? 'true' : 'false',
-                    $activity['clicked'] ? 'true' : 'false',
-                    $activity['bounced'] ? 'true' : 'false',
-                    $email,
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['delivered', 'sent']) : null,
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['uniqueViews', 'uniqueOpens', 'viewed', 'opens']) : null,
+                    is_array($globalStats) ? $this->extractStatValue($globalStats, ['uniqueClicks', 'clickers', 'clicks']) : null,
                     $campaign['id'],
                 ]);
             }
@@ -88,58 +90,23 @@ class SyncBrevoCampaignsReportsCommand extends Command
     }
 
     /**
-     * @return string[]
+     * @param array<string, mixed> $globalStats
+     * @param string[]             $keys
      */
-    private function extractExternalCampaignIds(string $externalId): array
+    private function extractStatValue(array $globalStats, array $keys): int
     {
-        $externalId = trim($externalId);
+        foreach ($keys as $key) {
+            if (!array_key_exists($key, $globalStats)) {
+                continue;
+            }
 
-        if ('' === $externalId) {
-            return [];
-        }
+            $value = $globalStats[$key];
 
-        if (str_starts_with($externalId, '[')) {
-            $decoded = json_decode($externalId, true);
-
-            if (is_array($decoded)) {
-                $externalIds = array_map(static fn (mixed $id): string => trim((string) $id), $decoded);
-
-                return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
+            if (is_numeric($value)) {
+                return (int) $value;
             }
         }
 
-        $externalIds = array_map('trim', explode(',', $externalId));
-
-        return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
-    }
-
-    /**
-     * @param string[] $externalCampaignIds
-     */
-    private function aggregateReports(string $apiKey, array $externalCampaignIds): array
-    {
-        $aggregatedReport = [];
-
-        foreach ($externalCampaignIds as $externalCampaignId) {
-            $report = $this->brevo->getEmailCampaignReport($apiKey, $externalCampaignId);
-
-            foreach ($report as $email => $activity) {
-                if (!isset($aggregatedReport[$email])) {
-                    $aggregatedReport[$email] = [
-                        'sent' => false,
-                        'opened' => false,
-                        'clicked' => false,
-                        'bounced' => false,
-                    ];
-                }
-
-                $aggregatedReport[$email]['sent'] = $aggregatedReport[$email]['sent'] || ($activity['sent'] ?? false);
-                $aggregatedReport[$email]['opened'] = $aggregatedReport[$email]['opened'] || ($activity['opened'] ?? false);
-                $aggregatedReport[$email]['clicked'] = $aggregatedReport[$email]['clicked'] || ($activity['clicked'] ?? false);
-                $aggregatedReport[$email]['bounced'] = $aggregatedReport[$email]['bounced'] || ($activity['bounced'] ?? false);
-            }
-        }
-
-        return $aggregatedReport;
+        return 0;
     }
 }
