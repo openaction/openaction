@@ -7,7 +7,9 @@ use App\Entity\Community\EmailingCampaign;
 use App\Entity\Organization;
 use App\Entity\Project;
 use Brevo\Client\Api\ContactsApi;
+use Brevo\Client\Api\EmailCampaignsApi;
 use Brevo\Client\Configuration;
+use Brevo\Client\Model\CreateEmailCampaign;
 use Brevo\Client\Model\CreateList;
 use Brevo\Client\Model\CreateModel;
 use Brevo\Client\Model\EmailExportRecipients;
@@ -130,6 +132,171 @@ CSV;
         $this->assertSame('Campaign preview', $body->getPreviewText());
     }
 
+    public function testSendCampaignSendsNowWhenThrottlingIsDisabled()
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->once())
+            ->method('getFolders')
+            ->with('1', '0', 'asc')
+            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+
+        $contactsApi
+            ->expects($this->once())
+            ->method('createList')
+            ->willReturnCallback(function (CreateList $list) {
+                $this->assertSame('openaction-campaign-12', $list->getName());
+                $this->assertSame(42, $list->getFolderId());
+
+                return (new CreateModel())->setId(99);
+            });
+
+        $contactsApi
+            ->expects($this->once())
+            ->method('importContacts');
+
+        $emailCampaignsApi = $this->createMock(EmailCampaignsApi::class);
+        $emailCampaignsApi
+            ->expects($this->once())
+            ->method('createEmailCampaign')
+            ->willReturnCallback(function (CreateEmailCampaign $emailCampaign) {
+                $this->assertSame([99], $emailCampaign->getRecipients()->getListIds());
+                $this->assertNull($emailCampaign->getScheduledAt());
+
+                return (new CreateModel())->setId(201);
+            });
+
+        $emailCampaignsApi
+            ->expects($this->once())
+            ->method('sendEmailCampaignNow')
+            ->with(201);
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public ContactsApi $contactsApi;
+            public EmailCampaignsApi $emailCampaignsApi;
+
+            protected function createConfiguration(string $apiKey): Configuration
+            {
+                return new Configuration();
+            }
+
+            protected function createContactsApi(Configuration $config): ContactsApi
+            {
+                return $this->contactsApi;
+            }
+
+            protected function createEmailCampaignsApi(Configuration $config): EmailCampaignsApi
+            {
+                return $this->emailCampaignsApi;
+            }
+        };
+
+        $bridge->contactsApi = $contactsApi;
+        $bridge->emailCampaignsApi = $emailCampaignsApi;
+
+        $this->assertSame(['201'], $bridge->sendCampaign($campaign, '<p>Hello</p>', [
+            ['email' => 'first@example.test'],
+            ['email' => 'second@example.test'],
+        ]));
+    }
+
+    public function testSendCampaignSplitsContactsAndSchedulesCampaignsWhenThrottled()
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
+
+        $createdListNames = [];
+        $importedContactsPerList = [];
+        $contactsApi = $this->createMock(ContactsApi::class);
+        $contactsApi
+            ->expects($this->exactly(3))
+            ->method('getFolders')
+            ->with('1', '0', 'asc')
+            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+
+        $listId = 40;
+        $contactsApi
+            ->expects($this->exactly(3))
+            ->method('createList')
+            ->willReturnCallback(function (CreateList $list) use (&$createdListNames, &$listId) {
+                $createdListNames[] = $list->getName();
+
+                return (new CreateModel())->setId(++$listId);
+            });
+
+        $contactsApi
+            ->expects($this->exactly(3))
+            ->method('importContacts')
+            ->willReturnCallback(function (RequestContactImport $request) use (&$importedContactsPerList) {
+                $importedContactsPerList[] = count($request->getJsonBody() ?? []);
+            });
+
+        $scheduledAtValues = [];
+        $emailCampaignsApi = $this->createMock(EmailCampaignsApi::class);
+        $campaignId = 200;
+        $emailCampaignsApi
+            ->expects($this->exactly(3))
+            ->method('createEmailCampaign')
+            ->willReturnCallback(function (CreateEmailCampaign $emailCampaign) use (&$scheduledAtValues, &$campaignId) {
+                $scheduledAtValues[] = $emailCampaign->getScheduledAt();
+
+                return (new CreateModel())->setId(++$campaignId);
+            });
+
+        $emailCampaignsApi
+            ->expects($this->never())
+            ->method('sendEmailCampaignNow');
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public ContactsApi $contactsApi;
+            public EmailCampaignsApi $emailCampaignsApi;
+
+            protected function createConfiguration(string $apiKey): Configuration
+            {
+                return new Configuration();
+            }
+
+            protected function createContactsApi(Configuration $config): ContactsApi
+            {
+                return $this->contactsApi;
+            }
+
+            protected function createEmailCampaignsApi(Configuration $config): EmailCampaignsApi
+            {
+                return $this->emailCampaignsApi;
+            }
+
+            protected function getCurrentUtcDateTime(): \DateTimeImmutable
+            {
+                return new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
+            }
+        };
+
+        $bridge->contactsApi = $contactsApi;
+        $bridge->emailCampaignsApi = $emailCampaignsApi;
+
+        $this->assertSame(['201', '202', '203'], $bridge->sendCampaign($campaign, '<p>Hello</p>', [
+            ['email' => 'first@example.test'],
+            ['email' => 'second@example.test'],
+            ['email' => 'third@example.test'],
+            ['email' => 'fourth@example.test'],
+            ['email' => 'fifth@example.test'],
+        ]));
+
+        $this->assertSame([
+            'openaction-campaign-12-1',
+            'openaction-campaign-12-2',
+            'openaction-campaign-12-3',
+        ], $createdListNames);
+        $this->assertSame([2, 2, 1], $importedContactsPerList);
+        $this->assertSame([
+            '2026-02-12T10:00:00.000Z',
+            '2026-02-12T10:15:00.000Z',
+            '2026-02-12T10:30:00.000Z',
+        ], $scheduledAtValues);
+    }
+
     public function testCreateCampaignListUsesExistingFolderId()
     {
         $contactsApi = $this->createMock(ContactsApi::class);
@@ -198,6 +365,38 @@ CSV;
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Brevo error: no contact folder available.');
         $bridge->exposeCreateCampaignList($contactsApi, $campaign);
+    }
+
+    public function testCreateCampaignListAddsChunkSuffixWhenProvided()
+    {
+        $contactsApi = $this->createMock(ContactsApi::class);
+
+        $contactsApi
+            ->expects($this->once())
+            ->method('getFolders')
+            ->with('1', '0', 'asc')
+            ->willReturn((new GetFolders())->setFolders([(object) ['id' => 42, 'name' => 'Default']]));
+
+        $contactsApi
+            ->expects($this->once())
+            ->method('createList')
+            ->willReturnCallback(function (CreateList $list) {
+                $this->assertSame('openaction-campaign-12-3', $list->getName());
+
+                return (new CreateModel())->setId(99);
+            });
+
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getId')->willReturn(12);
+
+        $bridge = new class(new NullLogger(), new MockHttpClient(), 'openaction') extends Brevo {
+            public function exposeCreateCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign, ?int $chunkIndex = null): int
+            {
+                return $this->createCampaignList($contactsApi, $campaign, $chunkIndex);
+            }
+        };
+
+        $this->assertSame(99, $bridge->exposeCreateCampaignList($contactsApi, $campaign, 3));
     }
 
     public function testSyncContactsSetsOnlyNonEmptyAttributes()
@@ -312,5 +511,28 @@ CSV;
         $first = $capturedRequests[0]->getJsonBody()[0];
         $this->assertSame('jane.doe@example.test', $first->getEmail());
         $this->assertSame(['FORMAL_TITLE' => 'Mr'], $first->getAttributes());
+    }
+
+    private function createCampaignMock(?int $emailThrottlingPerHour): EmailingCampaign
+    {
+        $organization = $this->createMock(Organization::class);
+        $organization->method('getName')->willReturn('OpenAction');
+        $organization->method('getBrevoSenderEmail')->willReturn('sender@example.test');
+        $organization->method('getBrevoApiKey')->willReturn('test-api-key');
+        $organization->method('getEmailThrottlingPerHour')->willReturn($emailThrottlingPerHour);
+
+        $project = $this->createMock(Project::class);
+        $project->method('getOrganization')->willReturn($organization);
+
+        $campaign = $this->createMock(EmailingCampaign::class);
+        $campaign->method('getId')->willReturn(12);
+        $campaign->method('getProject')->willReturn($project);
+        $campaign->method('getFromName')->willReturn('Campaign Sender');
+        $campaign->method('getSubject')->willReturn('Campaign Subject');
+        $campaign->method('getReplyToEmail')->willReturn(null);
+        $campaign->method('getFullFromEmail')->willReturn('reply@example.test');
+        $campaign->method('getPreview')->willReturn('Campaign preview');
+
+        return $campaign;
     }
 }

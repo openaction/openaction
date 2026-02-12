@@ -55,9 +55,10 @@ class SyncBrevoCampaignsReportsCommand extends Command
         foreach ($campaigns as $campaign) {
             $io->write('Synchronizing '.$campaign['id']);
 
-            $report = $this->brevo->getCampaignReport(
-                $campaign['brevo_api_key'],
-                (string) $campaign['external_id'],
+            $externalCampaignIds = $this->extractExternalCampaignIds((string) $campaign['external_id']);
+            $report = $this->aggregateReports(
+                (string) $campaign['brevo_api_key'],
+                $externalCampaignIds,
             );
 
             foreach ($report as $email => $activity) {
@@ -84,5 +85,61 @@ class SyncBrevoCampaignsReportsCommand extends Command
         $io->success('Synchronized');
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function extractExternalCampaignIds(string $externalId): array
+    {
+        $externalId = trim($externalId);
+
+        if ('' === $externalId) {
+            return [];
+        }
+
+        if (str_starts_with($externalId, '[')) {
+            $decoded = json_decode($externalId, true);
+
+            if (is_array($decoded)) {
+                $externalIds = array_map(static fn (mixed $id): string => trim((string) $id), $decoded);
+
+                return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
+            }
+        }
+
+        $externalIds = array_map('trim', explode(',', $externalId));
+
+        return array_values(array_unique(array_filter($externalIds, static fn (string $id): bool => '' !== $id)));
+    }
+
+    /**
+     * @param string[] $externalCampaignIds
+     */
+    private function aggregateReports(string $apiKey, array $externalCampaignIds): array
+    {
+        $aggregatedReport = [];
+
+        foreach ($externalCampaignIds as $externalCampaignId) {
+            $report = $this->brevo->getCampaignReport($apiKey, $externalCampaignId);
+
+            foreach ($report as $email => $activity) {
+                if (!isset($aggregatedReport[$email])) {
+                    $aggregatedReport[$email] = [
+                        'sent' => false,
+                        'opened' => false,
+                        'clicked' => false,
+                        'bounced' => false,
+                    ];
+                }
+
+                $aggregatedReport[$email]['sent'] = $aggregatedReport[$email]['sent'] || ($activity['sent'] ?? false);
+                $aggregatedReport[$email]['opened'] = $aggregatedReport[$email]['opened'] || ($activity['opened'] ?? false);
+                $aggregatedReport[$email]['clicked'] = $aggregatedReport[$email]['clicked'] || ($activity['clicked'] ?? false);
+                $aggregatedReport[$email]['bounced'] = $aggregatedReport[$email]['bounced'] || ($activity['bounced'] ?? false);
+            }
+        }
+
+        return $aggregatedReport;
     }
 }

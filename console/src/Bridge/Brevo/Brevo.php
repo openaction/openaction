@@ -25,6 +25,8 @@ class Brevo implements BrevoInterface
     private const CONTACTS_CHUNK_SIZE = 500;
     private const EXPORT_MAX_ATTEMPTS = 10;
     private const EXPORT_WAIT_SECONDS = 1;
+    private const CAMPAIGNS_PER_HOUR = 4;
+    private const THROTTLED_CAMPAIGN_INTERVAL_MINUTES = 15;
 
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -33,29 +35,58 @@ class Brevo implements BrevoInterface
     ) {
     }
 
-    public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
+    /**
+     * @return string[]
+     */
+    public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
     {
         $organization = $campaign->getProject()->getOrganization();
         $config = $this->createConfiguration($organization->getBrevoApiKey() ?? '');
         $contactsApi = $this->createContactsApi($config);
+        $emailCampaignsApi = $this->createEmailCampaignsApi($config);
+        $throttlingPerHour = $organization->getEmailThrottlingPerHour();
+        $listCapacity = $this->computeListCapacity($throttlingPerHour);
+        $isThrottled = null !== $listCapacity;
+        $scheduledBaseAt = $this->getCurrentUtcDateTime();
+        $contactsChunks = $isThrottled ? array_chunk($contacts, $listCapacity) : [$contacts];
+
+        if (!$contactsChunks) {
+            $contactsChunks = [[]];
+        }
 
         try {
-            $listId = $this->createCampaignList($contactsApi, $campaign);
+            $createdCampaignIds = [];
 
-            $this->syncContacts(
-                contactsApi: $contactsApi,
-                listId: $listId,
-                contacts: $contacts,
-            );
+            foreach ($contactsChunks as $chunkIndex => $contactsChunk) {
+                $listId = $this->createCampaignList(
+                    $contactsApi,
+                    $campaign,
+                    $isThrottled ? $chunkIndex + 1 : null,
+                );
 
-            $brevoCampaign = $this->buildCampaignBody($campaign, $htmlContent);
-            $brevoCampaign->setRecipients((new CreateEmailCampaignRecipients())->setListIds([$listId]));
+                $this->syncContacts(
+                    contactsApi: $contactsApi,
+                    listId: $listId,
+                    contacts: $contactsChunk,
+                );
 
-            $emailCampaignsApi = $this->createEmailCampaignsApi($config);
-            $createdCampaign = $emailCampaignsApi->createEmailCampaign($brevoCampaign);
-            $emailCampaignsApi->sendEmailCampaignNow($createdCampaign->getId());
+                $brevoCampaign = $this->buildCampaignBody($campaign, $htmlContent);
+                $brevoCampaign->setRecipients((new CreateEmailCampaignRecipients())->setListIds([$listId]));
 
-            return (string) $createdCampaign->getId();
+                if ($isThrottled) {
+                    $scheduledAt = $scheduledBaseAt->modify(sprintf('+%d minutes', $chunkIndex * self::THROTTLED_CAMPAIGN_INTERVAL_MINUTES));
+                    $brevoCampaign->setScheduledAt($this->formatScheduledAt($scheduledAt));
+                }
+
+                $createdCampaign = $emailCampaignsApi->createEmailCampaign($brevoCampaign);
+                $createdCampaignIds[] = (string) $createdCampaign->getId();
+
+                if (!$isThrottled) {
+                    $emailCampaignsApi->sendEmailCampaignNow($createdCampaign->getId());
+                }
+            }
+
+            return $createdCampaignIds;
         } catch (ApiException $exception) {
             $this->handleApiException($exception);
         }
@@ -165,13 +196,38 @@ class Brevo implements BrevoInterface
         }
     }
 
-    protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign): int
+    protected function createCampaignList(ContactsApi $contactsApi, EmailingCampaign $campaign, ?int $chunkIndex = null): int
     {
+        $listName = sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
+
+        if (null !== $chunkIndex) {
+            $listName .= '-'.$chunkIndex;
+        }
+
         $list = (new CreateList())
-            ->setName(sprintf('%s-campaign-%d', $this->namespace, $campaign->getId()))
+            ->setName($listName)
             ->setFolderId($this->resolveCampaignFolderId($contactsApi));
 
         return (int) $contactsApi->createList($list)->getId();
+    }
+
+    protected function computeListCapacity(?int $throttlingPerHour): ?int
+    {
+        if (!$throttlingPerHour || $throttlingPerHour <= 0) {
+            return null;
+        }
+
+        return max((int) floor($throttlingPerHour / self::CAMPAIGNS_PER_HOUR), 1);
+    }
+
+    protected function getCurrentUtcDateTime(): \DateTimeImmutable
+    {
+        return new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+    }
+
+    protected function formatScheduledAt(\DateTimeImmutable $scheduledAt): string
+    {
+        return $scheduledAt->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s.v\Z');
     }
 
     protected function resolveCampaignFolderId(ContactsApi $contactsApi): int
