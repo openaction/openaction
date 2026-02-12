@@ -120,6 +120,8 @@ services:
         class: 'App\Bridge\Brevo\Brevo'
         arguments:
             $namespace: '%env(APP_NAMESPACE)%'
+            $sendCampaignRateLimiter: '@limiter.brevo_campaign_send'
+            $campaignStatsRateLimiter: '@limiter.brevo_campaign_stats'
 
     App\Bridge\Unlayer\UnlayerInterface:
         class: 'App\Bridge\Unlayer\Unlayer'

@@ -1,0 +1,13 @@
+framework:
+    rate_limiter:
+        brevo_campaign_send:
+            policy: sliding_window
+            limit: 50
+            interval: '1 hour'
+            cache_pool: cache.brevo_campaign_send_limiter
+
+        brevo_campaign_stats:
+            policy: sliding_window
+            limit: 50
+            interval: '1 hour'
+            cache_pool: cache.brevo_campaign_stats_limiter

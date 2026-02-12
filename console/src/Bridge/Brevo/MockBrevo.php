@@ -8,12 +8,14 @@ class MockBrevo implements BrevoInterface
 {
     public array $campaigns = [];
 
+    public array $campaignsStats = [];
+
     public array $reports = [];
 
     /**
      * @return string[]
      */
-    public function sendCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
+    public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): array
     {
         $throttlingPerHour = $campaign->getProject()->getOrganization()->getEmailThrottlingPerHour();
         $listCapacity = (!$throttlingPerHour || $throttlingPerHour <= 0) ? null : max((int) floor($throttlingPerHour / 4), 1);
@@ -43,7 +45,12 @@ class MockBrevo implements BrevoInterface
         return $createdIds;
     }
 
-    public function getCampaignReport(string $apiKey, string $campaignId): array
+    public function getEmailCampaignsStats(string $apiKey): array
+    {
+        return $this->campaignsStats;
+    }
+
+    public function getEmailCampaignReport(string $apiKey, string $campaignId): array
     {
         return $this->reports[$campaignId] ?? [];
     }
