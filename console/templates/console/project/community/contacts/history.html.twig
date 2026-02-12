@@ -64,11 +64,20 @@
                                         {% endif %}
                                     </div>
 
-                                    <a href="{{ path('console_community_emailing_stats_report', {
+                                    {% set isBrevoProvider = item.entity.campaign.project.organization.emailProvider == 'brevo' %}
+                                    {% set campaignReportRoute = isBrevoProvider
+                                        ? 'console_community_emailing_stats_report_export'
+                                        : 'console_community_emailing_stats_report' %}
+
+                                    <a href="{{ path(campaignReportRoute, {
                                         'projectUuid': item.entity.campaign.project.uuid,
                                         'uuid': item.entity.campaign.uuid,
                                     }) }}">
-                                        {{ 'view.history.emailing.openCampaignReport'|trans({}, 'project_contacts') }}
+                                        {% if isBrevoProvider %}
+                                            {{ 'index.sent.export_report'|trans({}, 'project_emailings') }}
+                                        {% else %}
+                                            {{ 'view.history.emailing.openCampaignReport'|trans({}, 'project_contacts') }}
+                                        {% endif %}
                                     </a>
 
                                 {% elseif item.type == 'form_answer' %}

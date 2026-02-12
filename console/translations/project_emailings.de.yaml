@@ -27,6 +27,7 @@ index:
         stats: Statistik
         view: 'Inhalt anzeigen'
         report: 'Offene Stellen'
+        export_report: 'Bericht exportieren'
         duplicate: 'Duplizieren Sie'
 create:
     subject: '(Unbenannte Kampagne)'

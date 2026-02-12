@@ -28,6 +28,7 @@ index:
         stats: Statistiques
         view: Voir le contenu
         report: Ouvertures
+        export_report: Exporter le rapport
         duplicate: Dupliquer
 
 create:

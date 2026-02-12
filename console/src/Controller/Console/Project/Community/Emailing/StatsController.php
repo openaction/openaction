@@ -40,6 +40,13 @@ class StatsController extends AbstractController
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($campaign);
 
+        if ($this->isBrevoCampaign($campaign)) {
+            return $this->redirectToRoute('console_community_emailing_stats_report_export', [
+                'projectUuid' => $campaign->getProject()->getUuid(),
+                'uuid' => $campaign->getUuid(),
+            ]);
+        }
+
         return $this->render('console/project/community/emailing/report.html.twig', [
             'campaign' => $campaign,
         ]);
@@ -50,7 +57,12 @@ class StatsController extends AbstractController
     {
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_CONTACTS_VIEW, $this->getProject());
         $this->denyIfSubscriptionExpired();
+        $this->denyUnlessSameProject($campaign);
         $this->denyUnlessValidCsrf($request);
+
+        if ($this->isBrevoCampaign($campaign)) {
+            throw $this->createNotFoundException();
+        }
 
         /** @var EmailingCampaignMessage[][] $results */
         $results = $this->repository->searchReport($campaign, Json::decode($request->getContent()));
@@ -95,9 +107,20 @@ class StatsController extends AbstractController
 
         $this->addFlash('success', 'export.success');
 
+        if ($this->isBrevoCampaign($campaign)) {
+            return $this->redirectToRoute('console_community_emailing', [
+                'projectUuid' => $campaign->getProject()->getUuid(),
+            ]);
+        }
+
         return $this->redirectToRoute('console_community_emailing_stats_report', [
             'projectUuid' => $campaign->getProject()->getUuid(),
             'uuid' => $campaign->getUuid(),
         ]);
+    }
+
+    private function isBrevoCampaign(EmailingCampaign $campaign): bool
+    {
+        return 'brevo' === $campaign->getProject()->getOrganization()->getEmailProvider();
     }
 }

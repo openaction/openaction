@@ -18,4 +18,6 @@ interface BrevoInterface
     ): array;
 
     public function getEmailCampaignReport(string $apiKey, string $campaignId): array;
+
+    public function exportEmailCampaignRecipients(string $apiKey, string $campaignId): string;
 }

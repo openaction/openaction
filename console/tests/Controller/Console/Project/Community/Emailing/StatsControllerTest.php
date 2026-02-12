@@ -419,6 +419,60 @@ class StatsControllerTest extends WebTestCase
         $this->assertApiResponse(Json::decode($client->getResponse()->getContent()), $expected);
     }
 
+    public function testReportRedirectsToExportForBrevoProvider()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.$campaign->getUuid().'/report');
+        $this->assertResponseRedirects('/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.$campaign->getUuid().'/report/export');
+
+        $client->followRedirect();
+        $this->assertResponseRedirects('/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+
+        // Should have published message
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
+        $this->assertCount(1, $messages = $transport->get());
+        $this->assertInstanceOf(ExportEmailingCampaignMessage::class, $messages[0]->getMessage());
+    }
+
+    public function testReportSearchReturnsNotFoundForBrevoProvider()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+        $this->assertResponseIsSuccessful();
+
+        $client->request(
+            'POST',
+            '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.$campaign->getUuid().'/report/search',
+            [],
+            [],
+            ['HTTP_X-XSRF-TOKEN' => $this->filterGlobalCsrfToken($crawler)],
+            Json::encode([
+                'start' => 0,
+                'end' => 1,
+                'sort' => [],
+                'filter' => [],
+            ]),
+        );
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
     public function testExport()
     {
         $client = static::createClient();
@@ -438,6 +492,29 @@ class StatsControllerTest extends WebTestCase
 
         $this->assertSame('en', $message->getLocale());
         $this->assertSame('titouan.galopin@citipo.com', $message->getEmail());
+        $this->assertSame($campaign->getId(), $message->getCampaignId());
+    }
+
+    public function testExportRedirectsToCampaignIndexForBrevoProvider()
+    {
+        $client = static::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.$campaign->getUuid().'/report/export');
+        $this->assertResponseRedirects('/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+
+        // Should have published message
+        $transport = static::getContainer()->get('messenger.transport.async_importing');
+        $this->assertCount(1, $messages = $transport->get());
+
+        /* @var ExportEmailingCampaignMessage $message */
+        $this->assertInstanceOf(ExportEmailingCampaignMessage::class, $message = $messages[0]->getMessage());
         $this->assertSame($campaign->getId(), $message->getCampaignId());
     }
 }

@@ -156,6 +156,7 @@
                 </div>
             </div>
             {% else %}
+                {% set isBrevoProvider = current_organization.emailProvider == 'brevo' %}
                 <table class="world-table table">
                     <thead>
                     <tr>
@@ -221,9 +222,14 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <a href="{{ path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
-                                           class="btn btn-sm btn-outline-primary border-0 mr-1" target="_blank">
-                                            {{ 'index.sent.report'|trans({}, 'project_emailings') }}
+                                        {% set reportActionPath = isBrevoProvider
+                                            ? path('console_community_emailing_stats_report_export', {'projectUuid': project.uuid, 'uuid': sent.uuid})
+                                            : path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) %}
+
+                                        <a href="{{ reportActionPath }}"
+                                           class="btn btn-sm btn-outline-primary border-0 mr-1"
+                                           {% if not isBrevoProvider %}target="_blank"{% endif %}>
+                                            {{ (isBrevoProvider ? 'index.sent.export_report' : 'index.sent.report')|trans({}, 'project_emailings') }}
                                         </a>
                                     </div>
 

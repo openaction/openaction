@@ -2,6 +2,8 @@
 
 namespace App\Tests\Community\ImportExport\Consumer;
 
+use App\Bridge\Brevo\BrevoInterface;
+use App\Bridge\Brevo\MockBrevo;
 use App\Community\ImportExport\Consumer\ExportEmailingCampaignHandler;
 use App\Community\ImportExport\Consumer\ExportEmailingCampaignMessage;
 use App\Entity\Community\EmailingCampaign;
@@ -76,5 +78,44 @@ class ExportEmailingCampaignHandlerTest extends WebTestCase
         } finally {
             unlink($tempFile);
         }
+    }
+
+    public function testConsumeValidBrevo()
+    {
+        $client = self::createClient();
+        $this->authenticate($client);
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->markSentExternally('42');
+        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        /** @var BrevoInterface $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+        $brevo->reportExports['42'] = "email,opens,clicks\njohn@example.test,2,1\n";
+
+        $handler = static::getContainer()->get(ExportEmailingCampaignHandler::class);
+        $handler(new ExportEmailingCampaignMessage('fr', 'titouan.galopin@citipo.com', $campaign->getId()));
+
+        $this->assertSame(1, $brevo->campaignReportExportCalls);
+
+        // Should have send email
+        $transport = static::getContainer()->get('messenger.transport.async_priority_high');
+        $this->assertCount(1, $messages = $transport->get());
+
+        /* @var SendEmailMessage $message */
+        $this->assertInstanceOf(SendEmailMessage::class, $message = $messages[0]->getMessage());
+
+        /** @var TemplatedEmail $email */
+        $email = $message->getMessage();
+        $this->assertArrayHasKey('export_pathname', $email->getContext());
+
+        // Check download
+        $client->request('GET', '/console/organization/219025aa-7fe2-4385-ad8f-31f386720d10/community/contacts/export/download/'.$email->getContext()['export_pathname']);
+        $this->assertResponseIsSuccessful();
+        $this->assertSame("email,opens,clicks\njohn@example.test,2,1\n", $client->getInternalResponse()->getContent());
     }
 }

@@ -15,6 +15,8 @@ class Brevo implements BrevoInterface
     private const MAX_NATIVE_BATCHES = 10;
     private const BATCH_INTERVAL_MINUTES = 30;
     private const CAMPAIGNS_STATS_PAGE_SIZE = 100;
+    private const REPORT_EXPORT_POLL_MAX_ATTEMPTS = 30;
+    private const REPORT_EXPORT_POLL_WAIT_SECONDS = 1;
     private const API_BASE_URL = 'https://api.brevo.com/v3';
     private const MAX_RATE_LIMIT_ATTEMPTS = 2;
 
@@ -168,6 +170,36 @@ class Brevo implements BrevoInterface
     public function getEmailCampaignReport(string $apiKey, string $campaignId): array
     {
         return [];
+    }
+
+    public function exportEmailCampaignRecipients(string $apiKey, string $campaignId): string
+    {
+        $campaignId = trim($campaignId);
+
+        if ('' === $campaignId) {
+            throw new \InvalidArgumentException('Brevo campaigns export requires a campaign ID.');
+        }
+
+        $response = $this->requestBrevo(
+            method: 'POST',
+            endpoint: '/emailCampaigns/'.$campaignId.'/exportRecipients',
+            apiKey: $apiKey,
+            options: [
+                'json' => [
+                    'recipientsType' => 'all',
+                ],
+            ],
+            limiter: $this->campaignStatsRateLimiter,
+            limiterContext: 'campaign_stats',
+        )->toArray();
+
+        if (!is_numeric($response['processId'] ?? null)) {
+            throw new \RuntimeException('Brevo error: campaign export process could not be created.');
+        }
+
+        $exportUrl = $this->waitForCampaignReportExportUrl($apiKey, (int) $response['processId']);
+
+        return $this->downloadCampaignReportExport($exportUrl);
     }
 
     protected function buildCampaignPayload(EmailingCampaign $campaign, string $htmlContent): array
@@ -370,6 +402,81 @@ class Brevo implements BrevoInterface
     protected function waitForSeconds(int $seconds): void
     {
         sleep(max(0, $seconds));
+    }
+
+    private function waitForCampaignReportExportUrl(string $apiKey, int $processId): string
+    {
+        for ($attempt = 1; $attempt <= self::REPORT_EXPORT_POLL_MAX_ATTEMPTS; ++$attempt) {
+            $payload = $this->requestBrevo(
+                method: 'GET',
+                endpoint: '/processes/'.$processId,
+                apiKey: $apiKey,
+                options: [],
+                limiter: $this->campaignStatsRateLimiter,
+                limiterContext: 'campaign_stats',
+            )->toArray();
+
+            $status = trim((string) ($payload['status'] ?? ''));
+
+            if ('completed' === $status) {
+                $exportUrl = trim((string) ($payload['export_url'] ?? ''));
+
+                if ('' === $exportUrl) {
+                    throw new \RuntimeException('Brevo error: campaign export completed without download URL.');
+                }
+
+                return $exportUrl;
+            }
+
+            if (in_array($status, ['failed', 'cancelled'], true)) {
+                $error = trim((string) ($payload['error'] ?? ''));
+                $error = '' === $error ? $status : $error;
+
+                throw new \RuntimeException(sprintf('Brevo error: campaign export process failed (process %d, status %s, error %s).', $processId, $status, $error));
+            }
+
+            if (!in_array($status, ['queued', 'processing'], true)) {
+                throw new \RuntimeException(sprintf('Brevo error: campaign export process returned unexpected status "%s".', $status));
+            }
+
+            if ($attempt < self::REPORT_EXPORT_POLL_MAX_ATTEMPTS) {
+                $this->waitForSeconds(self::REPORT_EXPORT_POLL_WAIT_SECONDS);
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Brevo error: campaign export process %d did not complete in time.', $processId));
+    }
+
+    private function downloadCampaignReportExport(string $exportUrl): string
+    {
+        try {
+            $response = $this->httpClient->request('GET', $exportUrl, [
+                'headers' => [
+                    'accept' => 'text/csv,application/octet-stream;q=0.9,*/*;q=0.8',
+                ],
+            ]);
+        } catch (TransportExceptionInterface $exception) {
+            $this->logger->error('Brevo report export download failed', [
+                'url' => $exportUrl,
+                'exception' => $exception,
+            ]);
+
+            throw new \RuntimeException('Brevo error: '.$exception->getMessage(), previous: $exception);
+        }
+
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 400) {
+            $this->logger->error('Brevo report export download failed', [
+                'url' => $exportUrl,
+                'status_code' => $statusCode,
+                'response_headers' => $response->getHeaders(false),
+                'response_body' => $response->getContent(false),
+            ]);
+
+            throw new \RuntimeException(sprintf('Brevo error: report export file download failed (HTTP %d).', $statusCode));
+        }
+
+        return $response->getContent();
     }
 
     private function requestBrevo(

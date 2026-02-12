@@ -12,9 +12,13 @@ class MockBrevo implements BrevoInterface
 
     public array $reports = [];
 
+    public array $reportExports = [];
+
     public array $campaignStatsCalls = [];
 
     public int $campaignReportCalls = 0;
+
+    public int $campaignReportExportCalls = 0;
 
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
@@ -58,6 +62,13 @@ class MockBrevo implements BrevoInterface
         ++$this->campaignReportCalls;
 
         return $this->reports[$campaignId] ?? [];
+    }
+
+    public function exportEmailCampaignRecipients(string $apiKey, string $campaignId): string
+    {
+        ++$this->campaignReportExportCalls;
+
+        return $this->reportExports[$campaignId] ?? '';
     }
 
     private function computeBatchConfiguration(int $contactsCount, ?int $throttlingPerHour): ?array

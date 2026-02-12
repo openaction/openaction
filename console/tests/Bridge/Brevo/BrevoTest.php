@@ -308,6 +308,69 @@ class BrevoTest extends TestCase
         $this->assertSame([], $bridge->getEmailCampaignReport('test-api-key', '42'));
     }
 
+    public function testExportEmailCampaignRecipientsRequestsAndPollsProcessUntilCompleted(): void
+    {
+        $processPolls = 0;
+
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$processPolls): MockResponse {
+            if ('POST' === $method && 'https://api.brevo.com/v3/emailCampaigns/42/exportRecipients' === $url) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $this->assertSame('all', $requestBody['recipientsType']);
+
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && 'https://api.brevo.com/v3/processes/78' === $url) {
+                ++$processPolls;
+
+                if (1 === $processPolls) {
+                    return new MockResponse('{"id":78,"status":"queued"}');
+                }
+
+                if (2 === $processPolls) {
+                    return new MockResponse('{"id":78,"status":"processing"}');
+                }
+
+                return new MockResponse('{"id":78,"status":"completed","export_url":"https://files.example.test/campaign-report.csv"}');
+            }
+
+            if ('GET' === $method && 'https://files.example.test/campaign-report.csv' === $url) {
+                return new MockResponse("email,opens,clicks\njohn@example.test,2,1\n");
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->assertSame(
+            "email,opens,clicks\njohn@example.test,2,1\n",
+            $bridge->exportEmailCampaignRecipients('test-api-key', '42'),
+        );
+        $this->assertSame([1, 1], $bridge->waitedSeconds);
+    }
+
+    public function testExportEmailCampaignRecipientsThrowsWhenProcessFails(): void
+    {
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            if ('POST' === $method && 'https://api.brevo.com/v3/emailCampaigns/42/exportRecipients' === $url) {
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && 'https://api.brevo.com/v3/processes/78' === $url) {
+                return new MockResponse('{"id":78,"status":"failed","error":"Processing timeout exceeded after 30 minutes"}');
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('campaign export process failed');
+        $bridge->exportEmailCampaignRecipients('test-api-key', '42');
+    }
+
     public function testRequestRetriesOnceOn429UsingResetHeader(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
