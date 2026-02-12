@@ -47,7 +47,7 @@ class StatsControllerTest extends WebTestCase
         $this->assertSame($expectedStats, Json::decode($client->getResponse()->getContent()));
     }
 
-    public function testStatsUsesPersistedGlobalStatsForBrevoCampaigns(): void
+    public function testStatsUsesPersistedGlobalStatsWhenAvailable(): void
     {
         $client = static::createClient();
         $this->authenticate($client);
@@ -56,7 +56,6 @@ class StatsControllerTest extends WebTestCase
         $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('95b3f576-c643-45ba-9d5e-c9c44f65fab8');
         $this->assertInstanceOf(EmailingCampaign::class, $campaign);
 
-        $campaign->getProject()->getOrganization()->setEmailProvider('brevo');
         $campaign->updateGlobalStats(120, 54, 17);
         static::getContainer()->get('doctrine')->getManager()->flush();
 
@@ -71,7 +70,7 @@ class StatsControllerTest extends WebTestCase
         ], Json::decode($client->getResponse()->getContent()));
     }
 
-    public function testStatsFallbackToZeroWhenGlobalStatsAreMissingForBrevoCampaigns(): void
+    public function testStatsFallsBackToMessagesAggregationWhenGlobalStatsAreMissing(): void
     {
         $client = static::createClient();
         $this->authenticate($client);
@@ -88,10 +87,10 @@ class StatsControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($client->getResponse()->getContent());
         $this->assertSame([
-            'total' => 0,
-            'sent' => 0,
-            'opened' => 0,
-            'clicked' => 0,
+            'total' => 3,
+            'sent' => 2,
+            'opened' => 2,
+            'clicked' => 2,
         ], Json::decode($client->getResponse()->getContent()));
     }
 

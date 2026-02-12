@@ -70,8 +70,8 @@ class EmailingCampaignRepository extends ServiceEntityRepository
 
     public function findStats(EmailingCampaign $campaign): array
     {
-        if ('brevo' === $campaign->getProject()->getOrganization()->getEmailProvider()) {
-            $sent = (int) ($campaign->getGlobalStatsSent() ?? 0);
+        if (null !== $campaign->getGlobalStatsSent()) {
+            $sent = (int) $campaign->getGlobalStatsSent();
 
             return [
                 'total' => $sent,
