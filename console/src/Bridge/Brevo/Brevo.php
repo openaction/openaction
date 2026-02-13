@@ -4,6 +4,8 @@ namespace App\Bridge\Brevo;
 
 use App\Entity\Community\EmailingCampaign;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Clock\ClockInterface;
+use Symfony\Component\Clock\NativeClock;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -11,14 +13,14 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Brevo implements BrevoInterface
 {
-    private const CONTACTS_CHUNK_SIZE = 500;
-    private const MAX_NATIVE_BATCHES = 10;
-    private const BATCH_INTERVAL_MINUTES = 30;
-    private const CAMPAIGNS_STATS_PAGE_SIZE = 100;
-    private const REPORT_EXPORT_POLL_MAX_ATTEMPTS = 30;
-    private const REPORT_EXPORT_POLL_WAIT_SECONDS = 1;
-    private const API_BASE_URL = 'https://api.brevo.com/v3';
-    private const MAX_RATE_LIMIT_ATTEMPTS = 2;
+    private const int CONTACTS_CHUNK_SIZE = 500;
+    private const int CAMPAIGNS_STATS_PAGE_SIZE = 100;
+    private const int REPORT_EXPORT_POLL_MAX_ATTEMPTS = 30;
+    private const int REPORT_EXPORT_POLL_WAIT_SECONDS = 1;
+    private const string API_BASE_URL = 'https://api.brevo.com/v3';
+    private const int MAX_RATE_LIMIT_ATTEMPTS = 2;
+
+    private readonly ClockInterface $clock;
 
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -26,17 +28,15 @@ class Brevo implements BrevoInterface
         private readonly RateLimiterFactory $sendCampaignRateLimiter,
         private readonly RateLimiterFactory $campaignStatsRateLimiter,
         private readonly string $namespace,
+        ?ClockInterface $clock = null,
     ) {
+        $this->clock = $clock ?? new NativeClock();
     }
 
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
         $organization = $campaign->getProject()->getOrganization();
-        $apiKey = (string) ($organization->getBrevoApiKey() ?? '');
-        $batchConfiguration = $this->computeBatchConfiguration(
-            contactsCount: $this->countSendableContacts($contacts),
-            throttlingPerHour: $organization->getEmailThrottlingPerHour(),
-        );
+        $apiKey = ($organization->getBrevoApiKey() ?? '');
 
         $listId = $this->createCampaignList($apiKey, $campaign);
 
@@ -63,31 +63,11 @@ class Brevo implements BrevoInterface
             throw new \RuntimeException('Brevo error: campaign could not be created.');
         }
 
-        if (null === $batchConfiguration) {
-            $this->requestBrevo(
-                method: 'POST',
-                endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
-                apiKey: $apiKey,
-                options: ['json' => new \stdClass()],
-                limiter: $this->sendCampaignRateLimiter,
-                limiterContext: 'campaign_send',
-            );
-
-            return $createdCampaignId;
-        }
-
         $this->requestBrevo(
             method: 'POST',
-            endpoint: '/campaign/'.$createdCampaignId.'/send-in-batch',
+            endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
             apiKey: $apiKey,
-            options: [
-                'json' => [
-                    'schedule_date_time' => $this->formatBatchScheduleDateTime($this->getCurrentUtcDateTime()),
-                    'is_raw_schedule_date_time' => true,
-                    'no_of_batches' => $batchConfiguration['batchesCount'],
-                    'time_interval' => self::BATCH_INTERVAL_MINUTES,
-                ],
-            ],
+            options: ['json' => new \stdClass()],
             limiter: $this->sendCampaignRateLimiter,
             limiterContext: 'campaign_send',
         );
@@ -290,47 +270,6 @@ class Brevo implements BrevoInterface
         return (int) $payload['id'];
     }
 
-    protected function computeBatchConfiguration(int $contactsCount, ?int $throttlingPerHour): ?array
-    {
-        if (!$throttlingPerHour || $throttlingPerHour <= 0) {
-            return null;
-        }
-
-        if ($contactsCount < $throttlingPerHour) {
-            return null;
-        }
-
-        if ($contactsCount <= self::MAX_NATIVE_BATCHES * $throttlingPerHour) {
-            return [
-                'batchSize' => $throttlingPerHour,
-                'batchesCount' => max((int) ceil($contactsCount / $throttlingPerHour), 1),
-            ];
-        }
-
-        return [
-            'batchSize' => (int) ceil($contactsCount / self::MAX_NATIVE_BATCHES),
-            'batchesCount' => self::MAX_NATIVE_BATCHES,
-        ];
-    }
-
-    protected function countSendableContacts(array $contacts): int
-    {
-        return count(array_filter(
-            $contacts,
-            static fn (array $contact): bool => !empty($contact['email']),
-        ));
-    }
-
-    protected function getCurrentUtcDateTime(): \DateTimeImmutable
-    {
-        return new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-    }
-
-    protected function formatBatchScheduleDateTime(\DateTimeImmutable $scheduledAt): string
-    {
-        return $scheduledAt->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
-    }
-
     protected function resolveCampaignFolderId(string $apiKey): int
     {
         $payload = $this->requestBrevo(
@@ -399,11 +338,6 @@ class Brevo implements BrevoInterface
         return '' === $value ? null : $value;
     }
 
-    protected function waitForSeconds(int $seconds): void
-    {
-        sleep(max(0, $seconds));
-    }
-
     private function waitForCampaignReportExportUrl(string $apiKey, int $processId): string
     {
         for ($attempt = 1; $attempt <= self::REPORT_EXPORT_POLL_MAX_ATTEMPTS; ++$attempt) {
@@ -440,7 +374,7 @@ class Brevo implements BrevoInterface
             }
 
             if ($attempt < self::REPORT_EXPORT_POLL_MAX_ATTEMPTS) {
-                $this->waitForSeconds(self::REPORT_EXPORT_POLL_WAIT_SECONDS);
+                $this->clock->sleep(self::REPORT_EXPORT_POLL_WAIT_SECONDS);
             }
         }
 
@@ -537,7 +471,7 @@ class Brevo implements BrevoInterface
                         'x_sib_ratelimit_reset' => $rateLimitResetHeader,
                     ]);
 
-                    $this->waitForSeconds($waitSeconds);
+                    $this->clock->sleep($waitSeconds);
 
                     continue;
                 }
@@ -591,25 +525,26 @@ class Brevo implements BrevoInterface
         string $method,
         string $endpoint,
     ): void {
-        $rateLimit = $limiter->create(sprintf('%s_%s', $limiterContext, hash('sha256', $apiKey)))->consume();
+        $rateLimiter = $limiter->create(sprintf('%s_%s', $limiterContext, hash('sha256', $apiKey)));
+        $reservation = $rateLimiter->reserve();
+        $rateLimit = $reservation->getRateLimit();
 
         if ($rateLimit->isAccepted()) {
             return;
         }
 
-        $retryAfter = $rateLimit->getRetryAfter();
-        $waitSeconds = max(1, $retryAfter->getTimestamp() - time());
+        $waitSeconds = max(0.0, $reservation->getWaitDuration());
 
-        $this->logger->error('Brevo local rate limiter blocked request', [
+        $this->logger->warning('Brevo local rate limiter blocked request, waiting before retrying', [
             'limiter_context' => $limiterContext,
             'method' => $method,
             'endpoint' => $endpoint,
-            'retry_after' => $retryAfter->format(\DateTimeInterface::ATOM),
-            'wait_seconds' => $waitSeconds,
+            'retry_after' => $rateLimit->getRetryAfter()->format(\DateTimeInterface::ATOM),
+            'wait_seconds' => (int) ceil($waitSeconds),
             'remaining_tokens' => $rateLimit->getRemainingTokens(),
             'limit' => $rateLimit->getLimit(),
         ]);
 
-        throw new \RuntimeException(sprintf('Brevo error: local rate limiter reached for %s requests. Retry after %d seconds.', $limiterContext, $waitSeconds));
+        $this->clock->sleep($waitSeconds);
     }
 }

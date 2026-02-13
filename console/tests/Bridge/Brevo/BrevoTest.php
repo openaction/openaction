@@ -8,6 +8,7 @@ use App\Entity\Organization;
 use App\Entity\Project;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -20,10 +21,6 @@ enum TestContactFormalTitle: string
 
 class TestableBrevo extends Brevo
 {
-    public ?\DateTimeImmutable $frozenNow = null;
-
-    public array $waitedSeconds = [];
-
     public function exposeBuildCampaignPayload(EmailingCampaign $campaign, string $htmlContent): array
     {
         return $this->buildCampaignPayload($campaign, $htmlContent);
@@ -32,16 +29,6 @@ class TestableBrevo extends Brevo
     public function exposeBuildContactAttributes(array $contact): array
     {
         return $this->buildContactAttributes($contact);
-    }
-
-    protected function getCurrentUtcDateTime(): \DateTimeImmutable
-    {
-        return $this->frozenNow ?? parent::getCurrentUtcDateTime();
-    }
-
-    protected function waitForSeconds(int $seconds): void
-    {
-        $this->waitedSeconds[] = $seconds;
     }
 }
 
@@ -134,135 +121,6 @@ class BrevoTest extends TestCase
         $this->assertCount(5, $requests);
     }
 
-    public function testSendEmailCampaignUsesNativeBatchSendingWhenThrottlingApplies(): void
-    {
-        $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
-        $createdListNames = [];
-        $importedContactsPerList = [];
-        $batchPayloads = [];
-        $sendNowCalls = 0;
-        $listId = 40;
-        $campaignId = 200;
-
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$createdListNames, &$importedContactsPerList, &$batchPayloads, &$sendNowCalls, &$listId, &$campaignId): MockResponse {
-            $path = (string) parse_url($url, PHP_URL_PATH);
-
-            if ('GET' === $method && '/v3/contacts/folders' === $path) {
-                return new MockResponse('{"folders":[{"id":42,"name":"Default"}]}');
-            }
-
-            if ('POST' === $method && '/v3/contacts/lists' === $path) {
-                $requestBody = $this->decodeJsonRequestBody($options);
-                $createdListNames[] = $requestBody['name'];
-
-                return new MockResponse('{"id":'.(++$listId).'}');
-            }
-
-            if ('POST' === $method && '/v3/contacts/import' === $path) {
-                $requestBody = $this->decodeJsonRequestBody($options);
-                $importedContactsPerList[] = count($requestBody['jsonBody'] ?? []);
-
-                return new MockResponse('{}');
-            }
-
-            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
-                $requestBody = $this->decodeJsonRequestBody($options);
-                $this->assertArrayNotHasKey('scheduledAt', $requestBody);
-
-                return new MockResponse('{"id":'.(++$campaignId).'}');
-            }
-
-            if ('POST' === $method && '/v3/campaign/201/send-in-batch' === $path) {
-                $batchPayloads[] = $this->decodeJsonRequestBody($options);
-
-                return new MockResponse('', ['http_code' => 204]);
-            }
-
-            if ('POST' === $method && preg_match('#^/v3/emailCampaigns/\d+/sendNow$#', $path)) {
-                ++$sendNowCalls;
-
-                return new MockResponse('', ['http_code' => 204]);
-            }
-
-            $this->fail('Unexpected request: '.$method.' '.$url);
-        });
-
-        $bridge = $this->createBridge($httpClient);
-        $bridge->frozenNow = new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
-
-        $contacts = [];
-        for ($index = 1; $index <= 16; ++$index) {
-            $contacts[] = ['email' => sprintf('contact%d@example.test', $index)];
-        }
-
-        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', $contacts));
-
-        $this->assertSame([
-            'openaction-campaign-12',
-        ], $createdListNames);
-        $this->assertSame([16], $importedContactsPerList);
-        $this->assertSame([
-            [
-                'schedule_date_time' => '2026-02-12 10:00:00',
-                'is_raw_schedule_date_time' => true,
-                'no_of_batches' => 2,
-                'time_interval' => 30,
-            ],
-        ], $batchPayloads);
-        $this->assertSame(0, $sendNowCalls);
-    }
-
-    public function testSendEmailCampaignUsesTenNativeBatchesWhenAudienceIsVeryLarge(): void
-    {
-        $campaign = $this->createCampaignMock(emailThrottlingPerHour: 8);
-        $batchPayload = null;
-
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$batchPayload): MockResponse {
-            $path = (string) parse_url($url, PHP_URL_PATH);
-
-            if ('GET' === $method && '/v3/contacts/folders' === $path) {
-                return new MockResponse('{"folders":[{"id":42,"name":"Default"}]}');
-            }
-
-            if ('POST' === $method && '/v3/contacts/lists' === $path) {
-                return new MockResponse('{"id":99}');
-            }
-
-            if ('POST' === $method && '/v3/contacts/import' === $path) {
-                return new MockResponse('{}');
-            }
-
-            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
-                return new MockResponse('{"id":201}');
-            }
-
-            if ('POST' === $method && '/v3/campaign/201/send-in-batch' === $path) {
-                $batchPayload = $this->decodeJsonRequestBody($options);
-
-                return new MockResponse('', ['http_code' => 204]);
-            }
-
-            if ('POST' === $method && preg_match('#^/v3/emailCampaigns/\d+/sendNow$#', $path)) {
-                $this->fail('sendNow should not be called when native batch sending is enabled.');
-            }
-
-            $this->fail('Unexpected request: '.$method.' '.$url);
-        });
-
-        $bridge = $this->createBridge($httpClient);
-        $bridge->frozenNow = new \DateTimeImmutable('2026-02-12 10:00:00', new \DateTimeZone('UTC'));
-
-        $contacts = [];
-        for ($index = 1; $index <= 81; ++$index) {
-            $contacts[] = ['email' => sprintf('contact%d@example.test', $index)];
-        }
-
-        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', $contacts));
-        $this->assertNotNull($batchPayload);
-        $this->assertSame(10, $batchPayload['no_of_batches']);
-        $this->assertSame(30, $batchPayload['time_interval']);
-    }
-
     public function testGetEmailCampaignsStatsUsesExpectedPaginationParametersAndDateRange(): void
     {
         $requestedOffsets = [];
@@ -311,6 +169,8 @@ class BrevoTest extends TestCase
     public function testExportEmailCampaignRecipientsRequestsAndPollsProcessUntilCompleted(): void
     {
         $processPolls = 0;
+        $clock = new MockClock('2026-02-12 10:00:00', 'UTC');
+        $beforeWait = (float) $clock->now()->format('U.u');
 
         $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$processPolls): MockResponse {
             if ('POST' === $method && 'https://api.brevo.com/v3/emailCampaigns/42/exportRecipients' === $url) {
@@ -341,13 +201,13 @@ class BrevoTest extends TestCase
             $this->fail('Unexpected request: '.$method.' '.$url);
         });
 
-        $bridge = $this->createBridge($httpClient);
+        $bridge = $this->createBridge($httpClient, null, null, $clock);
 
         $this->assertSame(
             "email,opens,clicks\njohn@example.test,2,1\n",
             $bridge->exportEmailCampaignRecipients('test-api-key', '42'),
         );
-        $this->assertSame([1, 1], $bridge->waitedSeconds);
+        $this->assertEqualsWithDelta($beforeWait + 2.0, (float) $clock->now()->format('U.u'), 0.0001);
     }
 
     public function testExportEmailCampaignRecipientsThrowsWhenProcessFails(): void
@@ -374,6 +234,8 @@ class BrevoTest extends TestCase
     public function testRequestRetriesOnceOn429UsingResetHeader(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $clock = new MockClock('2026-02-12 10:00:00', 'UTC');
+        $beforeWait = (float) $clock->now()->format('U.u');
 
         $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
             static $listRequests = 0;
@@ -414,10 +276,10 @@ class BrevoTest extends TestCase
             $this->fail('Unexpected request: '.$method.' '.$url);
         });
 
-        $bridge = $this->createBridge($httpClient);
+        $bridge = $this->createBridge($httpClient, null, null, $clock);
         $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
 
-        $this->assertSame([1], $bridge->waitedSeconds);
+        $this->assertEqualsWithDelta($beforeWait + 1.0, (float) $clock->now()->format('U.u'), 0.0001);
     }
 
     public function testRequestThrowsAfterSecond429(): void
@@ -451,24 +313,50 @@ class BrevoTest extends TestCase
         $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
     }
 
-    public function testLocalRateLimiterBlocksRequests(): void
+    public function testLocalRateLimiterWaitsBeforeRetryingRequests(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $clock = new MockClock('2026-02-12 10:00:00', 'UTC');
+        $beforeWait = (float) $clock->now()->format('U.u');
 
-        $httpClient = new MockHttpClient(fn (): MockResponse => new MockResponse('{"folders":[{"id":42}]}'));
-        $sendLimiter = $this->createLimiterFactory('send', 1);
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42}]}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                return new MockResponse('{"id":99}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                return new MockResponse('{}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns' === $path) {
+                return new MockResponse('{"id":201}');
+            }
+
+            if ('POST' === $method && '/v3/emailCampaigns/201/sendNow' === $path) {
+                return new MockResponse('', ['http_code' => 204]);
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+        $sendLimiter = $this->createLimiterFactory('send', 4, '1 hour');
         $statsLimiter = $this->createLimiterFactory('stats', 50);
-        $bridge = $this->createBridge($httpClient, $sendLimiter, $statsLimiter);
+        $bridge = $this->createBridge($httpClient, $sendLimiter, $statsLimiter, $clock);
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('local rate limiter reached');
-        $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
+        $this->assertSame('201', $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]));
+        $this->assertGreaterThan($beforeWait, (float) $clock->now()->format('U.u'));
     }
 
     private function createBridge(
         MockHttpClient $httpClient,
         ?RateLimiterFactory $sendCampaignRateLimiter = null,
         ?RateLimiterFactory $campaignStatsRateLimiter = null,
+        ?MockClock $clock = null,
     ): TestableBrevo {
         return new TestableBrevo(
             new NullLogger(),
@@ -476,16 +364,17 @@ class BrevoTest extends TestCase
             $sendCampaignRateLimiter ?? $this->createLimiterFactory('send', 50),
             $campaignStatsRateLimiter ?? $this->createLimiterFactory('stats', 50),
             'openaction',
+            $clock ?? new MockClock('2026-02-12 10:00:00', 'UTC'),
         );
     }
 
-    private function createLimiterFactory(string $id, int $limit): RateLimiterFactory
+    private function createLimiterFactory(string $id, int $limit, string $interval = '1 hour'): RateLimiterFactory
     {
         return new RateLimiterFactory([
             'id' => $id,
             'policy' => 'sliding_window',
             'limit' => $limit,
-            'interval' => '1 hour',
+            'interval' => $interval,
         ], new InMemoryStorage());
     }
 
