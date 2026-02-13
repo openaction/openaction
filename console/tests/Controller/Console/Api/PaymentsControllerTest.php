@@ -3,11 +3,13 @@
 namespace App\Tests\Controller\Console\Api;
 
 use App\Entity\Community\ContactPayment;
+use App\Entity\Community\ContactSubscription;
 use App\Entity\Community\Enum\ContactPaymentMethod;
 use App\Entity\Community\Enum\ContactPaymentProvider;
 use App\Entity\Community\Enum\ContactPaymentType;
 use App\Repository\Community\ContactPaymentRepository;
 use App\Repository\Community\ContactRepository;
+use App\Repository\Community\ContactSubscriptionRepository;
 use App\Repository\OrganizationRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
@@ -254,6 +256,61 @@ class PaymentsControllerTest extends WebTestCase
 
         $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments', server: [], content: $payload);
         $this->assertResponseIsSuccessful();
+    }
+
+    public function testScheduleCreatesOnlyFirstPayment(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        $container = static::getContainer();
+        /** @var ContactRepository $contacts */
+        $contacts = $container->get(ContactRepository::class);
+        /** @var ContactPaymentRepository $payments */
+        $payments = $container->get(ContactPaymentRepository::class);
+        /** @var ContactSubscriptionRepository $subscriptions */
+        $subscriptions = $container->get(ContactSubscriptionRepository::class);
+
+        $contact = $contacts->findOneBy(['email' => 'olivie.gregoire@gmail.com']);
+        $this->assertNotNull($contact);
+
+        $payload = Json::encode([
+            'email' => 'olivie.gregoire@gmail.com',
+            'type' => 'Membership',
+            'netAmount' => 4200,
+            'feesAmount' => 0,
+            'currency' => 'EUR',
+            'paymentMethod' => 'Sepa',
+            'intervalInMonths' => 3,
+            'startDate' => '2026-01-01',
+            'occurrences' => 4,
+        ]);
+
+        $client->request('POST', '/console/api/'.self::ORGA_UUID.'/payments/schedule', server: [], content: $payload);
+        $this->assertResponseIsSuccessful();
+
+        $response = Json::decode($client->getResponse()->getContent());
+        $this->assertArrayHasKey('data', $response);
+        $this->assertCount(1, $response['data']);
+
+        /** @var ContactSubscription|null $subscription */
+        $subscription = $subscriptions->findActiveByContactTypeMethod($contact, ContactPaymentType::Membership, ContactPaymentMethod::Sepa);
+        $this->assertNotNull($subscription);
+        $this->assertSame('2026-01-01', $subscription->getStartsAt()->format('Y-m-d'));
+        $this->assertSame('2026-10-01', $subscription->getEndsAt()?->format('Y-m-d'));
+
+        $subscriptionPayments = $payments->createQueryBuilder('p')
+            ->andWhere('p.subscription = :subscription')
+            ->setParameter('subscription', $subscription)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $this->assertCount(1, $subscriptionPayments);
+        $firstPayment = $subscriptionPayments[0];
+        $this->assertSame('2026-01-01', $firstPayment->getCreatedAt()->format('Y-m-d'));
+        $this->assertSame('2026-01-01', $firstPayment->getMembershipStartAt()?->format('Y-m-d'));
+        $this->assertSame('2026-03-31', $firstPayment->getMembershipEndAt()?->format('Y-m-d'));
     }
 
     public function testRejectNonManualProvider(): void

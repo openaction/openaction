@@ -23,6 +23,10 @@ class ContactPayment
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Contact $contact;
 
+    #[ORM\ManyToOne(targetEntity: ContactSubscription::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?ContactSubscription $subscription = null;
+
     #[ORM\Column(type: 'string', enumType: ContactPaymentType::class)]
     private ContactPaymentType $type;
 
@@ -143,6 +147,7 @@ class ContactPayment
         );
 
         $self->paymentProviderDetails = $data['paymentProviderDetails'] ?? null;
+        $self->subscription = $data['subscription'] ?? null;
         $self->capturedAt = $data['capturedAt'] ?? null;
         $self->failedAt = $data['failedAt'] ?? null;
         $self->refundedAt = $data['refundedAt'] ?? null;
@@ -173,6 +178,16 @@ class ContactPayment
     public function getContact(): Contact
     {
         return $this->contact;
+    }
+
+    public function getSubscription(): ?ContactSubscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?ContactSubscription $subscription): void
+    {
+        $this->subscription = $subscription;
     }
 
     public function setPayerSnapshot(?string $civility, ?string $firstName, ?string $lastName, ?string $email, ?string $streetAddressLine1, ?string $streetAddressLine2, ?string $city, ?string $postalCode, ?string $countryCode, ?\DateTime $birthdate, ?string $phone, ?string $nationality, ?string $fiscalCountryCode): void

@@ -3,15 +3,19 @@
 namespace App\Controller\Console\Api;
 
 use App\Api\Model\ContactPaymentApiData;
+use App\Api\Model\ContactPaymentScheduleApiData;
 use App\Api\Transformer\Community\ContactPaymentListItemTransformer;
 use App\Controller\Api\AbstractApiController;
 use App\Controller\Util\ApiControllerTrait;
+use App\Entity\Community\Contact;
 use App\Entity\Community\ContactPayment;
+use App\Entity\Community\ContactSubscription;
 use App\Entity\Community\Enum\ContactPaymentMethod;
 use App\Entity\Community\Enum\ContactPaymentProvider;
 use App\Entity\Community\Enum\ContactPaymentType;
 use App\Repository\Community\ContactPaymentRepository;
 use App\Repository\Community\ContactRepository;
+use App\Repository\Community\ContactSubscriptionRepository;
 use App\Repository\OrganizationMemberRepository;
 use App\Repository\OrganizationRepository;
 use App\Util\Json;
@@ -32,6 +36,7 @@ class PaymentsController extends AbstractApiController
         private readonly ContactPaymentListItemTransformer $transformer,
         private readonly EntityManagerInterface $em,
         private readonly ContactRepository $contacts,
+        private readonly ContactSubscriptionRepository $subscriptions,
         private readonly ValidatorInterface $validator,
     ) {
     }
@@ -94,19 +99,9 @@ class PaymentsController extends AbstractApiController
             return $this->createJsonApiProblemResponse('Only Manual provider is supported for console payments currently.', 400);
         }
 
-        // Resolve contact by id or email in orga
-        if ($data->contactId) {
-            $contact = $this->contacts->findOneByBase62Uid($data->contactId);
-            if (!$contact || $contact->getOrganization()->getId() !== $orga->getId()) {
-                return $this->createJsonApiProblemResponse('Contact not found in organization', 404);
-            }
-        } elseif ($data->email) {
-            $contact = $this->contacts->findOneByAnyEmail($orga, $data->email);
-            if (!$contact) {
-                return $this->createJsonApiProblemResponse('Contact not found in organization', 404);
-            }
-        } else {
-            return $this->createJsonApiProblemResponse('You must provide either contactId or email', 400);
+        $contact = $this->resolveOrganizationContact($orga, $data->contactId, $data->email);
+        if (!$contact) {
+            return $this->createJsonApiProblemResponse('Contact not found in organization', 404);
         }
 
         // Create payment entity
@@ -121,14 +116,6 @@ class PaymentsController extends AbstractApiController
         );
 
         // Payer snapshot
-        $birthdate = null;
-        if ($data->birthdate) {
-            try {
-                $birthdate = new \DateTime((string) $data->birthdate);
-            } catch (\Exception) {
-                $birthdate = null;
-            }
-        }
         $payment->setPayerSnapshot(
             $data->civility,
             $data->firstName,
@@ -139,7 +126,7 @@ class PaymentsController extends AbstractApiController
             $data->city,
             $data->postalCode,
             $data->countryCode,
-            $birthdate,
+            $this->parseBirthdate($data->birthdate),
             $data->phone,
             $data->nationality,
             $data->fiscalCountryCode,
@@ -178,5 +165,183 @@ class PaymentsController extends AbstractApiController
         $this->em->flush();
 
         return $this->handleApiItem($payment, $this->transformer);
+    }
+
+    #[Route('/schedule', name: 'console_api_payments_schedule', methods: ['POST'])]
+    public function schedulePayment(string $organizationUuid, Request $request)
+    {
+        if (!$orga = $this->organizationRepository->findOneByUuid($organizationUuid)) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$this->memberRepository->findMember($this->getUser(), $orga)) {
+            throw $this->createNotFoundException();
+        }
+
+        try {
+            $payload = Json::decode($request->getContent());
+        } catch (\JsonException) {
+            return $this->createJsonApiProblemResponse('Invalid JSON provided as payload', 400);
+        }
+
+        $data = ContactPaymentScheduleApiData::createFromPayload($payload);
+        $errors = $this->validator->validate($data);
+        if ($errors->count() > 0) {
+            return $this->handleApiConstraintViolations($errors);
+        }
+
+        if (ContactPaymentMethod::Sepa->value !== $data->paymentMethod) {
+            return $this->createJsonApiProblemResponse('Only Sepa payment method is supported for payment schedules.', 400);
+        }
+
+        $contact = $this->resolveOrganizationContact($orga, $data->contactId, $data->email);
+        if (!$contact) {
+            return $this->createJsonApiProblemResponse('Contact not found in organization', 404);
+        }
+
+        $startDate = $this->parseDate($data->startDate);
+        if (!$startDate) {
+            return $this->createJsonApiProblemResponse('Invalid startDate provided.', 400);
+        }
+
+        $endsAt = $this->computeScheduleEnd($startDate, (int) $data->intervalInMonths, $data->occurrences, $data->endDate);
+        if (false === $endsAt) {
+            return $this->createJsonApiProblemResponse('Invalid schedule horizon provided.', 400);
+        }
+
+        $type = ContactPaymentType::from($data->type);
+        $paymentMethod = ContactPaymentMethod::from($data->paymentMethod);
+        $subscription = $this->subscriptions->findActiveByContactTypeMethod($contact, $type, $paymentMethod);
+
+        if ($subscription) {
+            $subscription->updateSchedule(
+                (int) $data->netAmount,
+                (int) $data->feesAmount,
+                strtoupper((string) $data->currency),
+                $paymentMethod,
+                (int) $data->intervalInMonths,
+                $startDate,
+                $endsAt,
+            );
+        } else {
+            $subscription = new ContactSubscription(
+                $contact,
+                $type,
+                (int) $data->netAmount,
+                (int) $data->feesAmount,
+                strtoupper((string) $data->currency),
+                $paymentMethod,
+                (int) $data->intervalInMonths,
+                $startDate,
+                $endsAt,
+            );
+        }
+
+        $subscription->setPayerSnapshot(
+            $data->civility,
+            $data->firstName,
+            $data->lastName,
+            $data->payerEmail,
+            $data->streetAddressLine1,
+            $data->streetAddressLine2,
+            $data->city,
+            $data->postalCode,
+            $data->countryCode,
+            $this->parseBirthdate($data->birthdate),
+            $data->phone,
+            $data->nationality,
+            $data->fiscalCountryCode,
+        );
+        $subscription->setMetadata($data->metadata ?: null);
+
+        $this->em->persist($subscription);
+
+        $created = [];
+        if (null === $subscription->getId() || !$this->payments->existsForSubscriptionAndDate($subscription, $startDate)) {
+            $payment = $subscription->createPaymentForDate($startDate);
+            $this->em->persist($payment);
+            $created[] = $payment;
+        }
+
+        $this->em->flush();
+
+        return $this->handleApiCollection($created, $this->transformer, false);
+    }
+
+    private function resolveOrganizationContact(
+        \App\Entity\Organization $organization,
+        ?string $contactId,
+        ?string $email,
+    ): ?Contact {
+        if ($contactId) {
+            $contact = $this->contacts->findOneByBase62Uid($contactId);
+
+            return $contact && $contact->getOrganization()->getId() === $organization->getId() ? $contact : null;
+        }
+
+        if ($email) {
+            return $this->contacts->findOneByAnyEmail($organization, $email);
+        }
+
+        return null;
+    }
+
+    private function parseBirthdate(?string $birthdate): ?\DateTime
+    {
+        if (!$birthdate) {
+            return null;
+        }
+
+        try {
+            return new \DateTime($birthdate);
+        } catch (\Exception) {
+            return null;
+        }
+    }
+
+    private function parseDate(?string $value): ?\DateTimeImmutable
+    {
+        if (!$value) {
+            return null;
+        }
+
+        try {
+            return (new \DateTimeImmutable($value))->setTime(0, 0, 0);
+        } catch (\Exception) {
+            return null;
+        }
+    }
+
+    private function computeScheduleEnd(
+        \DateTimeImmutable $startDate,
+        int $intervalInMonths,
+        ?int $occurrences,
+        ?string $endDate,
+    ): \DateTimeImmutable|false|null {
+        $endFromOccurrences = null;
+        if (null !== $occurrences) {
+            if ($occurrences < 1) {
+                return false;
+            }
+
+            $months = ($occurrences - 1) * $intervalInMonths;
+            $endFromOccurrences = $startDate->modify(sprintf('+%d months', $months));
+        }
+
+        $endFromDate = $this->parseDate($endDate);
+        if ($endDate && !$endFromDate) {
+            return false;
+        }
+
+        $endsAt = $endFromOccurrences;
+        if ($endFromDate && (!$endsAt || $endFromDate < $endsAt)) {
+            $endsAt = $endFromDate;
+        }
+
+        if ($endsAt && $endsAt < $startDate) {
+            return false;
+        }
+
+        return $endsAt;
     }
 }

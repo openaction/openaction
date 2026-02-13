@@ -3,6 +3,7 @@
 namespace App\Repository\Community;
 
 use App\Entity\Community\ContactPayment;
+use App\Entity\Community\ContactSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -74,5 +75,36 @@ class ContactPaymentRepository extends ServiceEntityRepository
         $qb->setFirstResult(max(0, $page - 1) * $perPage)->setMaxResults($perPage);
 
         return new \Doctrine\ORM\Tools\Pagination\Paginator($qb);
+    }
+
+    public function findLatestForSubscription(ContactSubscription $subscription): ?ContactPayment
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.subscription = :subscription')
+            ->setParameter('subscription', $subscription)
+            ->orderBy('p.createdAt', 'DESC')
+            ->addOrderBy('p.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function existsForSubscriptionAndDate(ContactSubscription $subscription, \DateTimeImmutable $date): bool
+    {
+        $startOfDay = $date->setTime(0, 0, 0);
+        $endOfDay = $startOfDay->modify('+1 day');
+
+        $count = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->andWhere('p.subscription = :subscription')
+            ->setParameter('subscription', $subscription)
+            ->andWhere('p.createdAt >= :startOfDay')
+            ->setParameter('startOfDay', \DateTime::createFromImmutable($startOfDay))
+            ->andWhere('p.createdAt < :endOfDay')
+            ->setParameter('endOfDay', \DateTime::createFromImmutable($endOfDay))
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $count > 0;
     }
 }
