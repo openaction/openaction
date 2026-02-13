@@ -7,7 +7,6 @@ export interface Project {
         stylesheet: string;
         javascript: string;
         javascript_custom: string;
-        analytics: string;
     };
     uuid: string;
     id: string;
