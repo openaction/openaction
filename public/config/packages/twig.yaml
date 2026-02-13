@@ -3,7 +3,6 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         console_endpoint: '%env(APP_CONSOLE_ENDPOINT)%'
-        analytics_url: '%env(APP_ANALYTICS_URL)%'
         force_embed_consent: '%env(bool:APP_FORCE_EMBED_CONSENT)%'
 
 services:

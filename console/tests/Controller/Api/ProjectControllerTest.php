@@ -263,15 +263,6 @@ class ProjectControllerTest extends ApiTestCase
         $this->apiRequest(self::createClient(), 'GET', '/api/project', null, 401);
     }
 
-    public function testViewDoesNotExposeAnalyticsEndpoint()
-    {
-        $result = $this->apiRequest(self::createClient(), 'GET', '/api/project');
-
-        $this->assertArrayHasKey('_links', $result);
-        $this->assertArrayHasKey('javascript', $result['_links']);
-        $this->assertArrayNotHasKey('analytics', $result['_links']);
-    }
-
     public function testViewInvalidToken()
     {
         $this->apiRequest(self::createClient(), 'GET', '/api/project', 'invalid', 401);

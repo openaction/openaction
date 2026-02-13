@@ -23,7 +23,7 @@
 
     <script defer src="{{ current_project.links.javascript }}"
             data-project="{{ current_project.id }}"
-            data-stats-api="{{ analytics_url }}"></script>
+            data-stats-api="{{ current_project.links.analytics }}"></script>
     {{ encore_entry_script_tags('app') }}
     {{ encore_entry_script_tags('ejs') }}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
