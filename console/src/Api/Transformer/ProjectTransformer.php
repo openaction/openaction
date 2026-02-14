@@ -33,6 +33,7 @@ class ProjectTransformer extends AbstractTransformer
         private readonly AssetManager $assetManager,
         private readonly CdnLookup $cdnLookup,
         private readonly CdnRouter $cdnRouter,
+        private readonly string $cdnBaseUrl,
         private readonly DomainRouter $domainRouter,
         private readonly RedirectionRepository $redirectionRepository,
         private readonly PostRepository $postRepository,
@@ -80,9 +81,9 @@ class ProjectTransformer extends AbstractTransformer
                 'pages' => $this->createLink('api_website_pages_list'),
                 'events' => $this->createLink('api_website_events_list'),
                 'stylesheet' => $this->createLink('cdn_theme_css', ['uuid' => $uuid, 'b' => $cssVersion, 'v' => $appearanceVersion]),
-                'javascript' => $this->createAssetUrl($project, 'root_url').$this->cdnLookup->getProjectsBaseJavaScriptPath(),
-                'javascript_custom' => $this->createAssetUrl($project, 'cdn_theme_js', ['uuid' => $uuid, 'v' => $appearanceVersion]),
-                'analytics' => $this->createAssetUrl($project, 'root_url').'/projects/event',
+                'javascript' => $this->createAssetUrl('root_url').$this->cdnLookup->getProjectsBaseJavaScriptPath(),
+                'javascript_custom' => $this->createAssetUrl('cdn_theme_js', ['uuid' => $uuid, 'v' => $appearanceVersion]),
+                'analytics' => $this->createAssetUrl('root_url').'/projects/event',
             ],
             'uuid' => $project->getUuid()->toRfc4122(),
             'id' => Uid::toBase62($project->getUuid()),
@@ -308,14 +309,9 @@ class ProjectTransformer extends AbstractTransformer
         return $this->collection($this->blockRepository->getApiBlocks($project, BlockInterface::PAGE_HOME), $this->homeBlockTranformer);
     }
 
-    private function createAssetUrl(Project $project, string $route, array $params = []): string
+    private function createAssetUrl(string $route, array $params = []): string
     {
-        $cdnDomain = 'https://ca.'.$project->getRootDomain()->getName();
-        if ('localhost' === $project->getRootDomain()->getName()) {
-            $cdnDomain = 'https://localhost:8000';
-        }
-
-        return rtrim($cdnDomain.$this->urlGenerator->generate($route, $params), '/');
+        return rtrim(rtrim($this->cdnBaseUrl, '/').'/'.ltrim($this->urlGenerator->generate($route, $params), '/'), '/');
     }
 
     private function resolveProjectMenu(Project $project, string $position): iterable

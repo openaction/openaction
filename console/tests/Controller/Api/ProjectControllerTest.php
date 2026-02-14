@@ -106,6 +106,10 @@ class ProjectControllerTest extends ApiTestCase
                 'settingsReceiveCalls' => 'membership.form.rule.ignore',
             ],
         ]);
+
+        $this->assertMatchesRegularExpression('#^https://localhost:8000/projects/.+\.js$#', $result['_links']['javascript']);
+        $this->assertMatchesRegularExpression('#^https://localhost:8000/theme/[^/]+\.js\?v=.+$#', $result['_links']['javascript_custom']);
+        $this->assertSame('https://localhost:8000/projects/event', $result['_links']['analytics']);
     }
 
     public function testViewIncludesMenus()

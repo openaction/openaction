@@ -151,6 +151,10 @@ services:
     App\Api\OpenApi\ApiTransformerDescriber:
         tags: ['nelmio_api_doc.model_describer']
 
+    App\Api\Transformer\ProjectTransformer:
+        arguments:
+            $cdnBaseUrl: '%env(APP_CDN_BASE_URL)%'
+
     #
     # Mailer
     #
