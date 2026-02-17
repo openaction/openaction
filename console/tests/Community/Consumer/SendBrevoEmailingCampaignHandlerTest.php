@@ -45,6 +45,7 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $this->assertNull($payload['scheduledAt']);
         $this->assertNull($payload['batching']);
         $this->assertSame('1', $campaign->getExternalId());
+        $this->assertSame(1, $campaign->getExternalListId());
         $this->assertNotNull($campaign->getResolvedAt());
         $this->assertCount(3, $payload['contacts']);
         $this->assertStringContainsString('Hello world', $payload['html']);
@@ -100,6 +101,7 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $this->assertCount(1, $brevo->campaigns);
         $payload = $brevo->campaigns['1'];
         $this->assertSame('1', $campaign->getExternalId());
+        $this->assertSame(1, $campaign->getExternalListId());
         $this->assertNotNull($campaign->getResolvedAt());
         $this->assertCount(3, $payload['contacts']);
         $this->assertNotNull($payload['scheduledAt']);
@@ -115,5 +117,98 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         foreach ($messages as $message) {
             $this->assertTrue($message->isSent());
         }
+    }
+
+    public function testConsumeRetryReusesPersistedIdsAndSendsPendingCampaign(): void
+    {
+        self::bootKernel();
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+
+        /** @var Organization $organization */
+        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
+        $organization->setEmailProvider('brevo');
+        $organization->setBrevoApiKey('brevo_api_key');
+        $organization->setBrevoSenderEmail('brevo@example.test');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        /** @var BrevoInterface $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $listId = $brevo->createCampaignList($campaign);
+        $campaignId = $brevo->createEmailCampaign($campaign, '<p>Existing campaign</p>', $listId);
+
+        $campaign->setExternalListId($listId);
+        $campaign->setExternalId($campaignId);
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $createListCallsBefore = $brevo->createCampaignListCalls;
+        $createCampaignCallsBefore = $brevo->createEmailCampaignCalls;
+        $statusCallsBefore = $brevo->isEmailCampaignSentCalls;
+        $sendCallsBefore = $brevo->sendEmailCampaignNowCalls;
+
+        $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+
+        $this->assertSame($createListCallsBefore, $brevo->createCampaignListCalls);
+        $this->assertSame($createCampaignCallsBefore, $brevo->createEmailCampaignCalls);
+        $this->assertSame($statusCallsBefore + 1, $brevo->isEmailCampaignSentCalls);
+        $this->assertSame($sendCallsBefore + 1, $brevo->sendEmailCampaignNowCalls);
+        $this->assertSame((string) $campaignId, $campaign->getExternalId());
+        $this->assertNotNull($campaign->getResolvedAt());
+        $this->assertNotNull($campaign->getSentAt());
+
+        $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
+        $this->assertCount(3, $messages);
+    }
+
+    public function testConsumeRetrySkipsSendWhenCampaignAlreadySentRemotely(): void
+    {
+        self::bootKernel();
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+
+        /** @var Organization $organization */
+        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
+        $organization->setEmailProvider('brevo');
+        $organization->setBrevoApiKey('brevo_api_key');
+        $organization->setBrevoSenderEmail('brevo@example.test');
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        /** @var BrevoInterface $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $listId = $brevo->createCampaignList($campaign);
+        $campaignId = $brevo->createEmailCampaign($campaign, '<p>Existing campaign</p>', $listId);
+        $brevo->sendEmailCampaignNow($campaign, $campaignId);
+
+        $campaign->setExternalListId($listId);
+        $campaign->setExternalId($campaignId);
+        static::getContainer()->get('doctrine')->getManager()->flush();
+
+        $createListCallsBefore = $brevo->createCampaignListCalls;
+        $createCampaignCallsBefore = $brevo->createEmailCampaignCalls;
+        $statusCallsBefore = $brevo->isEmailCampaignSentCalls;
+        $sendCallsBefore = $brevo->sendEmailCampaignNowCalls;
+
+        $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+
+        $this->assertSame($createListCallsBefore, $brevo->createCampaignListCalls);
+        $this->assertSame($createCampaignCallsBefore, $brevo->createEmailCampaignCalls);
+        $this->assertSame($statusCallsBefore + 1, $brevo->isEmailCampaignSentCalls);
+        $this->assertSame($sendCallsBefore, $brevo->sendEmailCampaignNowCalls);
+        $this->assertSame((string) $campaignId, $campaign->getExternalId());
+        $this->assertNotNull($campaign->getResolvedAt());
+        $this->assertNotNull($campaign->getSentAt());
+
+        $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
+        $this->assertCount(3, $messages);
     }
 }

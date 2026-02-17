@@ -8,6 +8,10 @@ class MockBrevo implements BrevoInterface
 {
     public array $campaigns = [];
 
+    public array $lists = [];
+
+    public array $listContacts = [];
+
     public array $campaignsStats = [];
 
     public array $reports = [];
@@ -20,9 +24,48 @@ class MockBrevo implements BrevoInterface
 
     public int $campaignReportExportCalls = 0;
 
+    public int $createCampaignListCalls = 0;
+
+    public int $syncCampaignContactsCalls = 0;
+
+    public int $createEmailCampaignCalls = 0;
+
+    public int $isEmailCampaignSentCalls = 0;
+
+    public int $sendEmailCampaignNowCalls = 0;
+
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
+        $listId = $this->createCampaignList($campaign);
+        $this->syncCampaignContacts($campaign, $listId, $contacts);
+        $campaignId = $this->createEmailCampaign($campaign, $htmlContent, $listId);
+        $this->sendEmailCampaignNow($campaign, $campaignId);
+
+        return $campaignId;
+    }
+
+    public function createCampaignList(EmailingCampaign $campaign): int
+    {
+        ++$this->createCampaignListCalls;
+        $listId = count($this->lists) + 1;
+        $this->lists[$listId] = [
+            'campaign' => $campaign,
+        ];
+
+        return $listId;
+    }
+
+    public function syncCampaignContacts(EmailingCampaign $campaign, int $listId, array $contacts): void
+    {
+        ++$this->syncCampaignContactsCalls;
+        $this->listContacts[$listId] = $contacts;
+    }
+
+    public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string
+    {
+        ++$this->createEmailCampaignCalls;
         $id = (string) (count($this->campaigns) + 1);
+        $contacts = $this->listContacts[$listId] ?? [];
         $throttlingPerHour = $campaign->getProject()->getOrganization()->getEmailThrottlingPerHour();
         $batchConfiguration = $this->computeBatchConfiguration(
             contactsCount: count(array_filter(
@@ -36,11 +79,31 @@ class MockBrevo implements BrevoInterface
             'campaign' => $campaign,
             'html' => $htmlContent,
             'contacts' => $contacts,
+            'listId' => $listId,
+            'status' => 'draft',
             'scheduledAt' => $batchConfiguration ? new \DateTimeImmutable('now') : null,
             'batching' => $batchConfiguration,
         ];
 
         return $id;
+    }
+
+    public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool
+    {
+        ++$this->isEmailCampaignSentCalls;
+
+        return 'sent' === ($this->campaigns[$campaignId]['status'] ?? null);
+    }
+
+    public function sendEmailCampaignNow(EmailingCampaign $campaign, string $campaignId): void
+    {
+        ++$this->sendEmailCampaignNowCalls;
+
+        if (!isset($this->campaigns[$campaignId])) {
+            throw new \RuntimeException(sprintf('Brevo mock campaign "%s" not found.', $campaignId));
+        }
+
+        $this->campaigns[$campaignId]['status'] = 'sent';
     }
 
     public function getEmailCampaignsStats(

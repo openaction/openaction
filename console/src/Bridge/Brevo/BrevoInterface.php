@@ -8,6 +8,16 @@ interface BrevoInterface
 {
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string;
 
+    public function createCampaignList(EmailingCampaign $campaign): int;
+
+    public function syncCampaignContacts(EmailingCampaign $campaign, int $listId, array $contacts): void;
+
+    public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string;
+
+    public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool;
+
+    public function sendEmailCampaignNow(EmailingCampaign $campaign, string $campaignId): void;
+
     /**
      * @return array<string, array<string, mixed>>
      */

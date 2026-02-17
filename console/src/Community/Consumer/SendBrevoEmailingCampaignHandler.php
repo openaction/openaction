@@ -9,6 +9,7 @@ use App\Entity\Organization;
 use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -51,44 +52,45 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
             return true;
         }
 
-        $contacts = $this->contactViewBuilder->forEmailingCampaign($campaign)
-            ->createQueryBuilder()
-            ->leftJoin('c.addressCountry', 'country')
-            ->select(
-                'c.email AS email',
-                'c.contactPhone AS phone',
-                'c.profileFormalTitle AS formalTitle',
-                'c.profileFirstName AS firstName',
-                'c.profileLastName AS lastName',
-                'c.profileGender AS gender',
-                'c.profileNationality AS nationality',
-                'c.profileCompany AS company',
-                'c.profileJobTitle AS jobTitle',
-                'c.addressStreetLine1 AS addressLine1',
-                'c.addressStreetLine2 AS addressLine2',
-                'c.addressZipCode AS postalCode',
-                'c.addressCity AS city',
-                'country.code AS countryCode',
-            )
-            ->getQuery()
-            ->getArrayResult()
-        ;
+        $htmlContent = $this->messageFactory->createBrevoCampaignBody($campaign);
+        $contactsQueryBuilder = $this->contactViewBuilder->forEmailingCampaign($campaign)->createQueryBuilder();
+        $contacts = $this->createContactsFromQueryBuilder($contactsQueryBuilder);
 
-        $contacts = array_map(fn (array $contact) => $this->normalizeBrevoContactData($contact), $contacts);
+        $brevoListId = $campaign->getExternalListId();
+        if (null === $brevoListId) {
+            $brevoListId = $this->brevo->createCampaignList($campaign);
+            $campaign->setExternalListId($brevoListId);
+            $this->em->persist($campaign);
+            $this->em->flush();
+        }
 
-        $brevoCampaignId = $this->brevo->sendEmailCampaign(
-            campaign: $campaign,
-            htmlContent: $this->messageFactory->createBrevoCampaignBody($campaign),
-            contacts: $contacts,
-        );
+        $this->brevo->syncCampaignContacts($campaign, $brevoListId, $contacts);
 
-        if ('' === trim($brevoCampaignId)) {
-            throw new \RuntimeException('Brevo error: campaign could not be created.');
+        $brevoCampaignId = $this->normalizeBrevoCampaignId($campaign->getExternalId());
+
+        if (null === $brevoCampaignId) {
+            $brevoCampaignId = $this->normalizeBrevoCampaignId($this->brevo->createEmailCampaign(
+                campaign: $campaign,
+                htmlContent: $htmlContent,
+                listId: $brevoListId,
+            ));
+
+            if (null === $brevoCampaignId) {
+                throw new \RuntimeException('Brevo error: campaign could not be created.');
+            }
+
+            $campaign->setExternalId($brevoCampaignId);
+            $this->em->persist($campaign);
+            $this->em->flush();
+        }
+
+        if (!$this->brevo->isEmailCampaignSent($campaign, $brevoCampaignId)) {
+            $this->brevo->sendEmailCampaignNow($campaign, $brevoCampaignId);
         }
 
         $this->messageRepository->createCampaignMessages(
             $campaign,
-            $this->contactViewBuilder->forEmailingCampaign($campaign)->createQueryBuilder(),
+            $contactsQueryBuilder,
             sent: true,
         );
 
@@ -105,6 +107,13 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
     {
         return (bool) $organization->getBrevoApiKey()
             && (bool) $organization->getBrevoSenderEmail();
+    }
+
+    private function normalizeBrevoCampaignId(?string $campaignId): ?string
+    {
+        $campaignId = null !== $campaignId ? trim($campaignId) : null;
+
+        return '' === $campaignId ? null : $campaignId;
     }
 
     private function normalizeBrevoContactData(array $contact): array
@@ -129,5 +138,32 @@ final class SendBrevoEmailingCampaignHandler implements MessageHandlerInterface
             'city' => $contact['city'] ?? null,
             'country' => $contact['countryCode'] ?? null,
         ];
+    }
+
+    private function createContactsFromQueryBuilder(QueryBuilder $contactsQueryBuilder): array
+    {
+        $contacts = (clone $contactsQueryBuilder)
+            ->leftJoin('c.addressCountry', 'country')
+            ->select(
+                'c.email AS email',
+                'c.contactPhone AS phone',
+                'c.profileFormalTitle AS formalTitle',
+                'c.profileFirstName AS firstName',
+                'c.profileLastName AS lastName',
+                'c.profileGender AS gender',
+                'c.profileNationality AS nationality',
+                'c.profileCompany AS company',
+                'c.profileJobTitle AS jobTitle',
+                'c.addressStreetLine1 AS addressLine1',
+                'c.addressStreetLine2 AS addressLine2',
+                'c.addressZipCode AS postalCode',
+                'c.addressCity AS city',
+                'country.code AS countryCode',
+            )
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map(fn (array $contact) => $this->normalizeBrevoContactData($contact), $contacts);
     }
 }

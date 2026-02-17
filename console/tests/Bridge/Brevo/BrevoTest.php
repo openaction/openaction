@@ -121,6 +121,38 @@ class BrevoTest extends TestCase
         $this->assertCount(5, $requests);
     }
 
+    public function testIsEmailCampaignSentReturnsTrueWhenStatusIsSent(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $this->assertSame('GET', $method);
+            $this->assertSame('/v3/emailCampaigns/201', (string) parse_url($url, PHP_URL_PATH));
+
+            return new MockResponse('{"id":201,"status":"sent"}');
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->assertTrue($bridge->isEmailCampaignSent($campaign, '201'));
+    }
+
+    public function testIsEmailCampaignSentReturnsFalseWhenStatusIsNotSent(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $this->assertSame('GET', $method);
+            $this->assertSame('/v3/emailCampaigns/201', (string) parse_url($url, PHP_URL_PATH));
+
+            return new MockResponse('{"id":201,"status":"draft"}');
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->assertFalse($bridge->isEmailCampaignSent($campaign, '201'));
+    }
+
     public function testGetEmailCampaignsStatsUsesExpectedPaginationParametersAndDateRange(): void
     {
         $requestedOffsets = [];
