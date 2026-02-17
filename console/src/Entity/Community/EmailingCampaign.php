@@ -81,6 +81,9 @@ class EmailingCampaign implements Searchable
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $resolvedAt;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $externalListId = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $externalId = null;
 
@@ -138,6 +141,7 @@ class EmailingCampaign implements Searchable
         $self->globalStatsSent = $data['globalStatsSent'] ?? null;
         $self->globalStatsOpened = $data['globalStatsOpened'] ?? null;
         $self->globalStatsClicked = $data['globalStatsClicked'] ?? null;
+        $self->externalListId = $data['externalListId'] ?? $data['brevoListId'] ?? null;
 
         if (isset($data['uuid']) && $data['uuid']) {
             $self->uuid = Uuid::fromString($data['uuid']);
@@ -268,9 +272,20 @@ class EmailingCampaign implements Searchable
 
     public function markSentExternally(string $externalId)
     {
-        $this->externalId = $externalId;
+        $this->setExternalId($externalId);
         $this->resolvedAt = new \DateTime();
         $this->sentAt = new \DateTime();
+    }
+
+    public function setExternalListId(?int $externalListId): void
+    {
+        $this->externalListId = $externalListId;
+    }
+
+    public function setExternalId(?string $externalId): void
+    {
+        $externalId = null !== $externalId ? trim($externalId) : null;
+        $this->externalId = '' === $externalId ? null : $externalId;
     }
 
     public function markSent()
@@ -371,6 +386,11 @@ class EmailingCampaign implements Searchable
     public function getExternalId(): ?string
     {
         return $this->externalId;
+    }
+
+    public function getExternalListId(): ?int
+    {
+        return $this->externalListId;
     }
 
     public function getGlobalStatsSent(): ?int

@@ -35,44 +35,90 @@ class Brevo implements BrevoInterface
 
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
-        $organization = $campaign->getProject()->getOrganization();
-        $apiKey = ($organization->getBrevoApiKey() ?? '');
+        $listId = $this->createCampaignList($campaign);
+        $this->syncCampaignContacts($campaign, $listId, $contacts);
+        $createdCampaignId = $this->createEmailCampaign($campaign, $htmlContent, $listId);
+        $this->sendEmailCampaignNow($campaign, $createdCampaignId);
 
-        $listId = $this->createCampaignList($apiKey, $campaign);
+        return $createdCampaignId;
+    }
 
+    public function createCampaignList(EmailingCampaign $campaign): int
+    {
+        return $this->createCampaignListOnBrevo(
+            apiKey: $this->getCampaignApiKey($campaign),
+            campaign: $campaign,
+        );
+    }
+
+    public function syncCampaignContacts(EmailingCampaign $campaign, int $listId, array $contacts): void
+    {
         $this->syncContacts(
-            apiKey: $apiKey,
+            apiKey: $this->getCampaignApiKey($campaign),
             listId: $listId,
             contacts: $contacts,
         );
+    }
 
+    public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string
+    {
         $brevoCampaignPayload = $this->buildCampaignPayload($campaign, $htmlContent);
         $brevoCampaignPayload['recipients'] = ['listIds' => [$listId]];
 
         $createdCampaign = $this->requestBrevo(
             method: 'POST',
             endpoint: '/emailCampaigns',
-            apiKey: $apiKey,
+            apiKey: $this->getCampaignApiKey($campaign),
             options: ['json' => $brevoCampaignPayload],
             limiter: $this->sendCampaignRateLimiter,
             limiterContext: 'campaign_send',
         )->toArray();
 
         $createdCampaignId = trim((string) ($createdCampaign['id'] ?? ''));
+
         if ('' === $createdCampaignId) {
             throw new \RuntimeException('Brevo error: campaign could not be created.');
         }
 
+        return $createdCampaignId;
+    }
+
+    public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool
+    {
+        $campaignId = trim($campaignId);
+
+        if ('' === $campaignId) {
+            throw new \InvalidArgumentException('Brevo campaign status requires a campaign ID.');
+        }
+
+        $payload = $this->requestBrevo(
+            method: 'GET',
+            endpoint: '/emailCampaigns/'.$campaignId,
+            apiKey: $this->getCampaignApiKey($campaign),
+            options: [],
+            limiter: $this->sendCampaignRateLimiter,
+            limiterContext: 'campaign_send',
+        )->toArray();
+
+        return 'sent' === strtolower(trim((string) ($payload['status'] ?? '')));
+    }
+
+    public function sendEmailCampaignNow(EmailingCampaign $campaign, string $campaignId): void
+    {
+        $campaignId = trim($campaignId);
+
+        if ('' === $campaignId) {
+            throw new \InvalidArgumentException('Brevo campaign send requires a campaign ID.');
+        }
+
         $this->requestBrevo(
             method: 'POST',
-            endpoint: '/emailCampaigns/'.$createdCampaignId.'/sendNow',
-            apiKey: $apiKey,
+            endpoint: '/emailCampaigns/'.$campaignId.'/sendNow',
+            apiKey: $this->getCampaignApiKey($campaign),
             options: ['json' => new \stdClass()],
             limiter: $this->sendCampaignRateLimiter,
             limiterContext: 'campaign_send',
         );
-
-        return $createdCampaignId;
     }
 
     public function getEmailCampaignsStats(
@@ -245,7 +291,7 @@ class Brevo implements BrevoInterface
         }
     }
 
-    protected function createCampaignList(string $apiKey, EmailingCampaign $campaign): int
+    protected function createCampaignListOnBrevo(string $apiKey, EmailingCampaign $campaign): int
     {
         $listName = sprintf('%s-campaign-%d', $this->namespace, $campaign->getId());
 
@@ -336,6 +382,11 @@ class Brevo implements BrevoInterface
         $value = trim((string) $value);
 
         return '' === $value ? null : $value;
+    }
+
+    private function getCampaignApiKey(EmailingCampaign $campaign): string
+    {
+        return (string) ($campaign->getProject()->getOrganization()->getBrevoApiKey() ?? '');
     }
 
     private function waitForCampaignReportExportUrl(string $apiKey, int $processId): string
