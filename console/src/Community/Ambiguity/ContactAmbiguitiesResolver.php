@@ -7,6 +7,8 @@ use Doctrine\DBAL\Connection;
 
 class ContactAmbiguitiesResolver
 {
+    private const INSERT_BATCH_SIZE = 500;
+
     private Connection $db;
 
     public function __construct(Connection $db)
@@ -90,18 +92,7 @@ class ContactAmbiguitiesResolver
 
     public function persistResolvedAmbiguities(array $ambiguities, ?Organization $organization = null)
     {
-        // Clean untreated ambiguities and persist newly detected ones
-        $sets = [];
-        foreach ($ambiguities as $ambiguity) {
-            $sets[] = sprintf(
-                '(nextval(\'community_ambiguities_id_seq\'), %s, %s, %s, NULL)',
-                $ambiguity[0],
-                $ambiguity[1],
-                $ambiguity[2],
-            );
-        }
-
-        $this->db->transactional(static function (Connection $db) use ($sets, $organization) {
+        $this->db->transactional(static function (Connection $db) use ($ambiguities, $organization) {
             // Delete untreated ambiguities
             $db->executeStatement('
                 DELETE FROM community_ambiguities
@@ -109,6 +100,32 @@ class ContactAmbiguitiesResolver
             );
 
             // Insert the new ones
+            if (!$ambiguities) {
+                return;
+            }
+
+            $sets = [];
+            $count = 0;
+            foreach ($ambiguities as $ambiguity) {
+                $sets[] = sprintf(
+                    '(nextval(\'community_ambiguities_id_seq\'), %s, %s, %s, NULL)',
+                    $ambiguity[0],
+                    $ambiguity[1],
+                    $ambiguity[2],
+                );
+                ++$count;
+
+                if (self::INSERT_BATCH_SIZE === $count) {
+                    $db->executeStatement('
+                        INSERT INTO community_ambiguities (id, organization_id, oldest_id, newest_id, ignored_at)
+                        VALUES '.implode(', ', $sets)
+                    );
+
+                    $sets = [];
+                    $count = 0;
+                }
+            }
+
             if ($sets) {
                 $db->executeStatement('
                     INSERT INTO community_ambiguities (id, organization_id, oldest_id, newest_id, ignored_at)
