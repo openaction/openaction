@@ -2,6 +2,8 @@
 
 namespace App\Tests\Controller\Console\Project\Community\Emailing;
 
+use App\Bridge\Brevo\BrevoInterface;
+use App\Bridge\Brevo\MockBrevo;
 use App\Bridge\Sendgrid\MockSendgrid;
 use App\Bridge\Sendgrid\SendgridInterface;
 use App\Community\Consumer\SendBrevoEmailingCampaignMessage;
@@ -155,6 +157,59 @@ class SendControllerTest extends WebTestCase
         sort($to);
 
         $this->assertSame(['adrien.duguet@citipo.com', 'titouan.galopin@citipo.com'], $to);
+
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testSendTestBrevo(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        /** @var Organization $orga */
+        $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
+        $this->assertSame(1000000, $orga->getCreditsBalance());
+        $orga->setEmailProvider('brevo');
+        $orga->setBrevoApiKey('brevo_api_key');
+        $orga->setBrevoSenderEmail('brevo@citipo.com');
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/10808026-bbae-4db5-a8ab-8abecb50102c/send-test');
+        $this->assertResponseIsSuccessful();
+
+        $button = $crawler->selectButton('Send the preview');
+        $client->submit($button->form(), ['form[emails]' => 'titouan.galopin@citipo.com, adrien.duguet@citipo.com']);
+        $this->assertResponseRedirects('/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+
+        /** @var Organization $orga */
+        $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => '219025aa-7fe2-4385-ad8f-31f386720d10']);
+        $this->assertSame(999998, $orga->getCreditsBalance());
+
+        /** @var MockSendgrid $sendgrid */
+        $sendgrid = static::getContainer()->get(SendgridInterface::class);
+        $this->assertCount(0, $sendgrid->mails);
+
+        /** @var BrevoInterface $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+        $this->assertCount(2, $brevo->transactionalEmails);
+
+        $subjects = array_column($brevo->transactionalEmails, 'subject');
+        sort($subjects);
+        $this->assertSame([
+            'Test - [URGENT] Submit your applications before due date!',
+            'Test - [URGENT] Submit your applications before due date!',
+        ], $subjects);
+
+        $to = array_column($brevo->transactionalEmails, 'toEmail');
+        sort($to);
+        $this->assertSame(['adrien.duguet@citipo.com', 'titouan.galopin@citipo.com'], $to);
+
+        foreach ($brevo->transactionalEmails as $transactionalEmail) {
+            $this->assertSame('brevo_api_key', $transactionalEmail['apiKey']);
+            $this->assertSame('brevo@citipo.com', $transactionalEmail['fromEmail']);
+        }
 
         $client->followRedirect();
         $this->assertResponseIsSuccessful();

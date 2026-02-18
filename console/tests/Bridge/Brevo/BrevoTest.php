@@ -121,6 +121,92 @@ class BrevoTest extends TestCase
         $this->assertCount(5, $requests);
     }
 
+    public function testSendTransactionalEmailUsesExpectedPayloadAndParams(): void
+    {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options): MockResponse {
+            $this->assertSame('POST', $method);
+            $this->assertSame('/v3/smtp/email', (string) parse_url($url, PHP_URL_PATH));
+
+            $requestBody = $this->decodeJsonRequestBody($options);
+            $this->assertSame([
+                'sender' => [
+                    'email' => 'brevo@citipo.com',
+                    'name' => 'Citipo',
+                ],
+                'to' => [['email' => 'contact@example.test']],
+                'subject' => 'Automation subject',
+                'htmlContent' => '<p>Hello</p>',
+                'replyTo' => [
+                    'email' => 'reply@example.test',
+                    'name' => 'Reply Name',
+                ],
+                'params' => [
+                    '-contact-firstname-' => 'Apolline',
+                    '-form-answer-1-' => 'Yes',
+                ],
+            ], $requestBody);
+
+            return new MockResponse('', ['http_code' => 201]);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+        $bridge->sendTransactionalEmail(
+            apiKey: 'test-api-key',
+            fromEmail: 'brevo@citipo.com',
+            fromName: 'Citipo',
+            toEmail: 'contact@example.test',
+            subject: 'Automation subject',
+            htmlContent: '<p>Hello</p>',
+            replyToEmail: 'reply@example.test',
+            replyToName: 'Reply Name',
+            customVariables: [
+                '-contact-firstname-' => 'Apolline',
+                '-form-answer-1-' => 'Yes',
+            ],
+        );
+    }
+
+    public function testSendTransactionalEmailBypassesLocalRateLimiter(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $clock = new MockClock('2026-02-12 10:00:00', 'UTC');
+
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('GET' === $method && '/v3/contacts/folders' === $path) {
+                return new MockResponse('{"folders":[{"id":42}]}');
+            }
+
+            if ('POST' === $method && '/v3/contacts/lists' === $path) {
+                return new MockResponse('{"id":99}');
+            }
+
+            if ('POST' === $method && '/v3/smtp/email' === $path) {
+                return new MockResponse('', ['http_code' => 201]);
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $sendLimiter = $this->createLimiterFactory('send', 2, '1 hour');
+        $bridge = $this->createBridge($httpClient, $sendLimiter, null, $clock);
+
+        $bridge->createCampaignList($campaign); // Consume all available local send limiter tokens.
+        $beforeTransactionalSend = (float) $clock->now()->format('U.u');
+
+        $bridge->sendTransactionalEmail(
+            apiKey: 'test-api-key',
+            fromEmail: 'brevo@citipo.com',
+            fromName: 'Citipo',
+            toEmail: 'contact@example.test',
+            subject: 'Automation subject',
+            htmlContent: '<p>Hello</p>',
+        );
+
+        $this->assertEqualsWithDelta($beforeTransactionalSend, (float) $clock->now()->format('U.u'), 0.0001);
+    }
+
     public function testIsEmailCampaignSentReturnsTrueWhenStatusIsSent(): void
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);

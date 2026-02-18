@@ -2,6 +2,7 @@
 
 namespace App\Community;
 
+use App\Bridge\Brevo\BrevoInterface;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Bridge\Sendgrid\SendgridInterface;
 use App\Community\Consumer\SendBrevoEmailingCampaignMessage;
@@ -19,6 +20,7 @@ class EmailingCampaignSender
         private readonly OrganizationRepository $organizationRepo,
         private readonly ContactViewBuilder $contactViewBuilder,
         private readonly SendgridMailFactory $messageFactory,
+        private readonly BrevoInterface $brevo,
         private readonly SendgridInterface $sendgrid,
         private readonly MessageBusInterface $bus,
         private readonly LoggerInterface $logger,
@@ -32,8 +34,29 @@ class EmailingCampaignSender
             $recipients[] = new Recipient($email);
         }
 
-        if (!$this->organizationRepo->useCredits($campaign->getProject()->getOrganization(), count($recipients), 'emailing_preview')) {
+        $organization = $campaign->getProject()->getOrganization();
+
+        if (!$this->organizationRepo->useCredits($organization, count($recipients), 'emailing_preview')) {
             return false;
+        }
+
+        if ('brevo' === $organization->getEmailProvider() && $this->isBrevoConfigured($organization)) {
+            $htmlContent = $this->messageFactory->createBrevoCampaignBody($campaign, true);
+
+            foreach ($recipients as $recipient) {
+                $this->brevo->sendTransactionalEmail(
+                    apiKey: (string) $organization->getBrevoApiKey(),
+                    fromEmail: (string) $organization->getBrevoSenderEmail(),
+                    fromName: $organization->getName(),
+                    toEmail: $recipient->getEmail(),
+                    subject: 'Test - '.$campaign->getSubject(),
+                    htmlContent: $htmlContent,
+                    replyToEmail: $campaign->getReplyToEmail() ?: null,
+                    replyToName: $campaign->getReplyToName() ?: null,
+                );
+            }
+
+            return true;
         }
 
         $batch = $this->messageFactory->createCampaignBatch($campaign, $recipients, true);

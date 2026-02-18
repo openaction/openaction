@@ -2,10 +2,12 @@
 
 namespace App\Community;
 
+use App\Bridge\Brevo\BrevoInterface;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Bridge\Sendgrid\Model\Recipient;
 use App\Entity\Community\Contact;
 use App\Entity\Community\EmailAutomation;
+use App\Entity\Organization;
 use App\Repository\Community\EmailAutomationMessageRepository;
 use App\Repository\OrganizationRepository;
 use App\Util\Uid;
@@ -18,6 +20,7 @@ readonly class EmailAutomationSender
         private EntityManagerInterface $em,
         private OrganizationRepository $organizationRepository,
         private SendgridMailFactory $messageFactory,
+        private BrevoInterface $brevo,
         private EmailAutomationMessageRepository $messageRepository,
         private MessageBusInterface $bus,
     ) {
@@ -50,6 +53,28 @@ readonly class EmailAutomationSender
         }
 
         if ($recipient) {
+            $organization = $automation->getOrganization();
+            if ($this->isBrevoConfigured($organization)) {
+                $customVariables = $recipient->getVariables();
+                if ($additionalVariables) {
+                    $customVariables = array_merge($customVariables, $additionalVariables);
+                }
+
+                $this->brevo->sendTransactionalEmail(
+                    apiKey: (string) $organization->getBrevoApiKey(),
+                    fromEmail: (string) $organization->getBrevoSenderEmail(),
+                    fromName: $organization->getName(),
+                    toEmail: $recipient->getEmail(),
+                    subject: $automation->getSubject(),
+                    htmlContent: $this->messageFactory->createAutomationBody($automation),
+                    replyToEmail: $automation->getReplyToEmail(),
+                    replyToName: $automation->getReplyToName(),
+                    customVariables: $customVariables,
+                );
+
+                return true;
+            }
+
             $batch = $this->messageFactory->createAutomationBatch($automation, $recipient);
             $this->em->persist($batch);
             $this->em->flush();
@@ -58,5 +83,12 @@ readonly class EmailAutomationSender
         }
 
         return true;
+    }
+
+    private function isBrevoConfigured(Organization $organization): bool
+    {
+        return 'brevo' === $organization->getEmailProvider()
+            && (bool) $organization->getBrevoApiKey()
+            && (bool) $organization->getBrevoSenderEmail();
     }
 }
