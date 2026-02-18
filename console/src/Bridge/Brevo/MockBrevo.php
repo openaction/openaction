@@ -8,6 +8,8 @@ class MockBrevo implements BrevoInterface
 {
     public array $campaigns = [];
 
+    public array $transactionalEmails = [];
+
     public array $lists = [];
 
     public array $listContacts = [];
@@ -34,6 +36,8 @@ class MockBrevo implements BrevoInterface
 
     public int $sendEmailCampaignNowCalls = 0;
 
+    public int $sendTransactionalEmailCalls = 0;
+
     public function sendEmailCampaign(EmailingCampaign $campaign, string $htmlContent, array $contacts): string
     {
         $listId = $this->createCampaignList($campaign);
@@ -42,6 +46,31 @@ class MockBrevo implements BrevoInterface
         $this->sendEmailCampaignNow($campaign, $campaignId);
 
         return $campaignId;
+    }
+
+    public function sendTransactionalEmail(
+        string $apiKey,
+        string $fromEmail,
+        ?string $fromName,
+        string $toEmail,
+        string $subject,
+        string $htmlContent,
+        ?string $replyToEmail = null,
+        ?string $replyToName = null,
+        array $customVariables = [],
+    ): void {
+        ++$this->sendTransactionalEmailCalls;
+        $this->transactionalEmails[] = [
+            'apiKey' => $apiKey,
+            'fromEmail' => $fromEmail,
+            'fromName' => $fromName,
+            'toEmail' => $toEmail,
+            'subject' => $subject,
+            'htmlContent' => $htmlContent,
+            'replyToEmail' => $replyToEmail,
+            'replyToName' => $replyToName,
+            'customVariables' => $customVariables,
+        ];
     }
 
     public function createCampaignList(EmailingCampaign $campaign): int

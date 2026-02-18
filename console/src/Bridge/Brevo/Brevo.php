@@ -43,6 +43,51 @@ class Brevo implements BrevoInterface
         return $createdCampaignId;
     }
 
+    public function sendTransactionalEmail(
+        string $apiKey,
+        string $fromEmail,
+        ?string $fromName,
+        string $toEmail,
+        string $subject,
+        string $htmlContent,
+        ?string $replyToEmail = null,
+        ?string $replyToName = null,
+        array $customVariables = [],
+    ): void {
+        $payload = [
+            'sender' => array_filter([
+                'email' => trim($fromEmail),
+                'name' => $this->normalizeAttributeValue($fromName),
+            ], static fn (?string $value): bool => null !== $value),
+            'to' => [[
+                'email' => trim($toEmail),
+            ]],
+            'subject' => $subject,
+            'htmlContent' => $htmlContent,
+        ];
+
+        $replyToEmail = $this->normalizeAttributeValue($replyToEmail);
+        if ($replyToEmail) {
+            $payload['replyTo'] = array_filter([
+                'email' => $replyToEmail,
+                'name' => $this->normalizeAttributeValue($replyToName),
+            ], static fn (?string $value): bool => null !== $value);
+        }
+
+        if ($customVariables) {
+            $payload['params'] = $customVariables;
+        }
+
+        $this->requestBrevo(
+            method: 'POST',
+            endpoint: '/smtp/email',
+            apiKey: $apiKey,
+            options: [
+                'json' => $payload,
+            ],
+        );
+    }
+
     public function createCampaignList(EmailingCampaign $campaign): int
     {
         return $this->createCampaignListOnBrevo(
@@ -469,8 +514,8 @@ class Brevo implements BrevoInterface
         string $endpoint,
         string $apiKey,
         array $options,
-        RateLimiterFactory $limiter,
-        string $limiterContext,
+        ?RateLimiterFactory $limiter = null,
+        ?string $limiterContext = null,
     ): ResponseInterface {
         $requestOptions = array_replace_recursive([
             'headers' => [
@@ -480,13 +525,15 @@ class Brevo implements BrevoInterface
         ], $options);
 
         for ($attempt = 1; $attempt <= self::MAX_RATE_LIMIT_ATTEMPTS; ++$attempt) {
-            $this->consumeRateLimit(
-                limiter: $limiter,
-                limiterContext: $limiterContext,
-                apiKey: $apiKey,
-                method: $method,
-                endpoint: $endpoint,
-            );
+            if ($limiter && $limiterContext) {
+                $this->consumeRateLimit(
+                    limiter: $limiter,
+                    limiterContext: $limiterContext,
+                    apiKey: $apiKey,
+                    method: $method,
+                    endpoint: $endpoint,
+                );
+            }
 
             try {
                 $response = $this->httpClient->request(

@@ -2,6 +2,8 @@
 
 namespace App\Tests\Controller\Api\Website;
 
+use App\Bridge\Brevo\BrevoInterface;
+use App\Bridge\Brevo\MockBrevo;
 use App\Bridge\Quorum\Consumer\QuorumMessage;
 use App\Bridge\Sendgrid\Consumer\SendgridMessage;
 use App\Community\SendgridMailFactory;
@@ -479,6 +481,87 @@ class FormControllerTest extends ApiTestCase
             'Time' => 'ok',
             'Newsletter' => 'Yes',
         ], $answer->getAnswers());
+    }
+
+    public function testAnswerNewContactFullMappingWithBrevoProvider(): void
+    {
+        $client = self::createClient();
+
+        /** @var Organization $orga */
+        $orga = static::getContainer()->get(OrganizationRepository::class)->findOneBy(['uuid' => self::ACME_ORG]);
+        $orga->setEmailProvider('brevo');
+        $orga->setBrevoApiKey('brevo_api_key');
+        $orga->setBrevoSenderEmail('brevo-acme@example.test');
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $response = $this->apiRequest($client, 'POST', '/api/website/forms/4x0UjLrg8RJYHWTY9ZyCWs/answer', self::ACME_TOKEN, 201, Json::encode([
+            'fields' => [
+                '25',
+                'Employed',
+                'Male',
+                'Indifferent',
+                'Test textarea',
+                'Transport, Agriculture',
+                'new@email.com',
+                'M.',
+                'Titouan',
+                'Antoine',
+                'Galopin',
+                '2000-06-01',
+                'male',
+                'be',
+                'Citipo',
+                'President',
+                '06 06 06 06 06',
+                '06 06 06 06 07',
+                'https://facebook.com',
+                'titouangalopin',
+                'https://linkedin.com',
+                'tgalopin',
+                '06 06 06 06 06',
+                '49 Rue de Ponthieu',
+                'Etage 1',
+                'CLICHY',
+                '92110',
+                'FR',
+                'TagB',
+                'TagB, TagF',
+                '2020-01-01',
+                '13:10',
+                'ok',
+                '1',
+            ],
+        ]));
+
+        $this->assertArrayHasKey('id', $response);
+
+        /** @var EmailAutomationMessageRepository $automationMessageRepo */
+        $automationMessageRepo = static::getContainer()->get(EmailAutomationMessageRepository::class);
+        $this->assertSame(2, $automationMessageRepo->count(['email' => 'contact@citipo.com']));
+
+        /** @var TransportInterface $transport */
+        $transport = static::getContainer()->get('messenger.transport.async_emailing');
+        $this->assertCount(0, $transport->get());
+
+        /** @var BrevoInterface $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+        $this->assertCount(2, $brevo->transactionalEmails);
+
+        $emailsBySubject = [];
+        foreach ($brevo->transactionalEmails as $transactionalEmail) {
+            $emailsBySubject[$transactionalEmail['subject']] = $transactionalEmail;
+            $this->assertSame('brevo_api_key', $transactionalEmail['apiKey']);
+            $this->assertSame('brevo-acme@example.test', $transactionalEmail['fromEmail']);
+            $this->assertSame('contact@citipo.com', $transactionalEmail['toEmail']);
+        }
+
+        $this->assertArrayHasKey('New contact alert', $emailsBySubject);
+        $this->assertArrayHasKey('New form answer alert', $emailsBySubject);
+
+        $formVariables = $emailsBySubject['New form answer alert']['customVariables'];
+        $this->assertSame('Our Sustainable Europe', $formVariables['-form-title-'] ?? null);
+        $this->assertSame('25', $formVariables['-form-answer-1-'] ?? null);
     }
 
     public function testAnswerNewContactNewsletterWithoutMailDontSubscribe()
