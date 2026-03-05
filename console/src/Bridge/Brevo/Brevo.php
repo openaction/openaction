@@ -17,6 +17,9 @@ class Brevo implements BrevoInterface
     private const int CAMPAIGNS_STATS_PAGE_SIZE = 100;
     private const int REPORT_EXPORT_POLL_MAX_ATTEMPTS = 30;
     private const int REPORT_EXPORT_POLL_WAIT_SECONDS = 1;
+    private const int CONTACTS_IMPORT_POLL_MAX_ATTEMPTS = 3;
+    private const int CONTACTS_IMPORT_POLL_INITIAL_WAIT_SECONDS = 15;
+    private const int CONTACTS_IMPORT_POLL_WAIT_SECONDS = 60;
     private const string API_BASE_URL = 'https://api.brevo.com/v3';
     private const int MAX_RATE_LIMIT_ATTEMPTS = 2;
 
@@ -319,7 +322,7 @@ class Brevo implements BrevoInterface
                 continue;
             }
 
-            $this->requestBrevo(
+            $response = $this->requestBrevo(
                 method: 'POST',
                 endpoint: '/contacts/import',
                 apiKey: $apiKey,
@@ -332,7 +335,13 @@ class Brevo implements BrevoInterface
                 ],
                 limiter: $this->sendCampaignRateLimiter,
                 limiterContext: 'campaign_send',
-            );
+            )->toArray();
+
+            if (!is_numeric($response['processId'] ?? null)) {
+                throw new \RuntimeException('Brevo error: contacts import process could not be created.');
+            }
+
+            $this->waitForContactsImportProcessCompletion($apiKey, (int) $response['processId']);
         }
     }
 
@@ -475,6 +484,45 @@ class Brevo implements BrevoInterface
         }
 
         throw new \RuntimeException(sprintf('Brevo error: campaign export process %d did not complete in time.', $processId));
+    }
+
+    private function waitForContactsImportProcessCompletion(string $apiKey, int $processId): void
+    {
+        for ($attempt = 1; $attempt <= self::CONTACTS_IMPORT_POLL_MAX_ATTEMPTS; ++$attempt) {
+            $this->clock->sleep(
+                1 === $attempt
+                    ? self::CONTACTS_IMPORT_POLL_INITIAL_WAIT_SECONDS
+                    : self::CONTACTS_IMPORT_POLL_WAIT_SECONDS,
+            );
+
+            $payload = $this->requestBrevo(
+                method: 'GET',
+                endpoint: '/processes/'.$processId,
+                apiKey: $apiKey,
+                options: [],
+                limiter: $this->campaignStatsRateLimiter,
+                limiterContext: 'campaign_stats',
+            )->toArray();
+
+            $status = trim((string) ($payload['status'] ?? ''));
+
+            if ('completed' === $status) {
+                return;
+            }
+
+            if (in_array($status, ['failed', 'cancelled'], true)) {
+                $error = trim((string) ($payload['error'] ?? ''));
+                $error = '' === $error ? $status : $error;
+
+                throw new \RuntimeException(sprintf('Brevo error: contacts import process failed (process %d, status %s, error %s).', $processId, $status, $error));
+            }
+
+            if (!in_array($status, ['queued', 'processing'], true)) {
+                throw new \RuntimeException(sprintf('Brevo error: contacts import process returned unexpected status "%s".', $status));
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Brevo error: contacts import process %d did not complete in time.', $processId));
     }
 
     private function downloadCampaignReportExport(string $exportUrl): string

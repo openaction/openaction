@@ -71,8 +71,9 @@ class BrevoTest extends TestCase
     {
         $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
         $requests = [];
+        $importProcessPolls = 0;
 
-        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests): MockResponse {
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$requests, &$importProcessPolls): MockResponse {
             $requests[] = [$method, $url, $options];
             $path = (string) parse_url($url, PHP_URL_PATH);
 
@@ -94,7 +95,13 @@ class BrevoTest extends TestCase
                 $this->assertCount(2, $requestBody['jsonBody']);
                 $this->assertTrue($requestBody['updateExistingContacts']);
 
-                return new MockResponse('{}');
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && '/v3/processes/78' === $path) {
+                ++$importProcessPolls;
+
+                return new MockResponse('{"id":78,"status":"completed"}');
             }
 
             if ('POST' === $method && '/v3/emailCampaigns' === $path) {
@@ -118,7 +125,75 @@ class BrevoTest extends TestCase
             ['email' => 'first@example.test'],
             ['email' => 'second@example.test'],
         ]));
-        $this->assertCount(5, $requests);
+        $this->assertCount(6, $requests);
+        $this->assertSame(1, $importProcessPolls);
+        $this->assertSame('/v3/contacts/import', (string) parse_url($requests[2][1], PHP_URL_PATH));
+        $this->assertSame('/v3/processes/78', (string) parse_url($requests[3][1], PHP_URL_PATH));
+        $this->assertSame('/v3/emailCampaigns', (string) parse_url($requests[4][1], PHP_URL_PATH));
+        $this->assertSame('/v3/emailCampaigns/201/sendNow', (string) parse_url($requests[5][1], PHP_URL_PATH));
+    }
+
+    public function testSyncCampaignContactsPollsImportProcessWithInitialAndRegularDelays(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+        $processPolls = 0;
+        $clock = new MockClock('2026-02-12 10:00:00', 'UTC');
+        $beforeWait = (float) $clock->now()->format('U.u');
+
+        $httpClient = new MockHttpClient(function (string $method, string $url, array $options) use (&$processPolls): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                $requestBody = $this->decodeJsonRequestBody($options);
+                $this->assertSame([99], $requestBody['listIds']);
+                $this->assertCount(1, $requestBody['jsonBody']);
+
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && '/v3/processes/78' === $path) {
+                ++$processPolls;
+
+                if (1 === $processPolls) {
+                    return new MockResponse('{"id":78,"status":"queued"}');
+                }
+
+                return new MockResponse('{"id":78,"status":"completed"}');
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient, null, null, $clock);
+        $bridge->syncCampaignContacts($campaign, 99, [['email' => 'first@example.test']]);
+
+        $this->assertSame(2, $processPolls);
+        $this->assertEqualsWithDelta($beforeWait + 75.0, (float) $clock->now()->format('U.u'), 0.0001);
+    }
+
+    public function testSyncCampaignContactsThrowsWhenImportProcessFails(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null);
+
+        $httpClient = new MockHttpClient(function (string $method, string $url): MockResponse {
+            $path = (string) parse_url($url, PHP_URL_PATH);
+
+            if ('POST' === $method && '/v3/contacts/import' === $path) {
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && '/v3/processes/78' === $path) {
+                return new MockResponse('{"id":78,"status":"failed","error":"Internal queue failure"}');
+            }
+
+            $this->fail('Unexpected request: '.$method.' '.$url);
+        });
+
+        $bridge = $this->createBridge($httpClient);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contacts import process failed');
+        $bridge->syncCampaignContacts($campaign, 99, [['email' => 'first@example.test']]);
     }
 
     public function testSendTransactionalEmailUsesExpectedPayloadAndParams(): void
@@ -380,7 +455,11 @@ class BrevoTest extends TestCase
             }
 
             if ('POST' === $method && '/v3/contacts/import' === $path) {
-                return new MockResponse('{}');
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && '/v3/processes/78' === $path) {
+                return new MockResponse('{"id":78,"status":"completed"}');
             }
 
             if ('POST' === $method && '/v3/emailCampaigns' === $path) {
@@ -397,7 +476,7 @@ class BrevoTest extends TestCase
         $bridge = $this->createBridge($httpClient, null, null, $clock);
         $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
 
-        $this->assertEqualsWithDelta($beforeWait + 1.0, (float) $clock->now()->format('U.u'), 0.0001);
+        $this->assertEqualsWithDelta($beforeWait + 16.0, (float) $clock->now()->format('U.u'), 0.0001);
     }
 
     public function testRequestThrowsAfterSecond429(): void
@@ -449,7 +528,11 @@ class BrevoTest extends TestCase
             }
 
             if ('POST' === $method && '/v3/contacts/import' === $path) {
-                return new MockResponse('{}');
+                return new MockResponse('{"processId":78}', ['http_code' => 202]);
+            }
+
+            if ('GET' === $method && '/v3/processes/78' === $path) {
+                return new MockResponse('{"id":78,"status":"completed"}');
             }
 
             if ('POST' === $method && '/v3/emailCampaigns' === $path) {
