@@ -168,7 +168,7 @@ class BrevoTest extends TestCase
         $bridge->syncCampaignContacts($campaign, 99, [['email' => 'first@example.test']]);
 
         $this->assertSame(2, $processPolls);
-        $this->assertEqualsWithDelta($beforeWait + 40.0, (float) $clock->now()->format('U.u'), 0.0001);
+        $this->assertEqualsWithDelta($beforeWait + 75.0, (float) $clock->now()->format('U.u'), 0.0001);
     }
 
     public function testSyncCampaignContactsThrowsWhenImportProcessFails(): void
@@ -476,7 +476,7 @@ class BrevoTest extends TestCase
         $bridge = $this->createBridge($httpClient, null, null, $clock);
         $bridge->sendEmailCampaign($campaign, '<p>Hello</p>', [['email' => 'first@example.test']]);
 
-        $this->assertEqualsWithDelta($beforeWait + 11.0, (float) $clock->now()->format('U.u'), 0.0001);
+        $this->assertEqualsWithDelta($beforeWait + 16.0, (float) $clock->now()->format('U.u'), 0.0001);
     }
 
     public function testRequestThrowsAfterSecond429(): void

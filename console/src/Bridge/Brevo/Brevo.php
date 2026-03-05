@@ -17,9 +17,9 @@ class Brevo implements BrevoInterface
     private const int CAMPAIGNS_STATS_PAGE_SIZE = 100;
     private const int REPORT_EXPORT_POLL_MAX_ATTEMPTS = 30;
     private const int REPORT_EXPORT_POLL_WAIT_SECONDS = 1;
-    private const int CONTACTS_IMPORT_POLL_MAX_ATTEMPTS = 30;
-    private const int CONTACTS_IMPORT_POLL_INITIAL_WAIT_SECONDS = 10;
-    private const int CONTACTS_IMPORT_POLL_WAIT_SECONDS = 30;
+    private const int CONTACTS_IMPORT_POLL_MAX_ATTEMPTS = 3;
+    private const int CONTACTS_IMPORT_POLL_INITIAL_WAIT_SECONDS = 15;
+    private const int CONTACTS_IMPORT_POLL_WAIT_SECONDS = 60;
     private const string API_BASE_URL = 'https://api.brevo.com/v3';
     private const int MAX_RATE_LIMIT_ATTEMPTS = 2;
 
@@ -500,8 +500,8 @@ class Brevo implements BrevoInterface
                 endpoint: '/processes/'.$processId,
                 apiKey: $apiKey,
                 options: [],
-                limiter: $this->sendCampaignRateLimiter,
-                limiterContext: 'campaign_send',
+                limiter: $this->campaignStatsRateLimiter,
+                limiterContext: 'campaign_stats',
             )->toArray();
 
             $status = trim((string) ($payload['status'] ?? ''));
