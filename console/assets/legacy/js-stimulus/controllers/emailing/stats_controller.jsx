@@ -6,11 +6,12 @@ import dayjs from 'dayjs';
 
 export default class extends Controller {
     connect() {
-        const sentAt = dayjs(this.element.getAttribute('data-sent-at'));
+        const sentAtAttribute = this.element.getAttribute('data-sent-at');
+        const sentAt = dayjs(sentAtAttribute || undefined);
 
         render(
             <StatsView
-                sentAt={sentAt}
+                sentAt={sentAt.isValid() ? sentAt : dayjs()}
                 url={this.element.getAttribute('data-url')}
                 link={this.element.getAttribute('data-link')}
             />,

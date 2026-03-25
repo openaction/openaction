@@ -26,6 +26,8 @@ interface BrevoInterface
 
     public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string;
 
+    public function findEmailCampaignByDedupKey(EmailingCampaign $campaign, string $dedupKey): ?string;
+
     public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool;
 
     public function sendEmailCampaignNow(EmailingCampaign $campaign, string $campaignId): void;

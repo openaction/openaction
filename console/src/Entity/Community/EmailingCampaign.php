@@ -27,6 +27,11 @@ class EmailingCampaign implements Searchable
 
     public const FILTER_OR = 'or';
     public const FILTER_AND = 'and';
+    public const BREVO_SEND_STATE_DRAFT = 'draft';
+    public const BREVO_SEND_STATE_QUEUED = 'queued';
+    public const BREVO_SEND_STATE_SENDING = 'sending';
+    public const BREVO_SEND_STATE_SENT = 'sent';
+    public const BREVO_SEND_STATE_FAILED = 'failed';
 
     #[ORM\Column(length: 150)]
     private string $subject;
@@ -80,6 +85,21 @@ class EmailingCampaign implements Searchable
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $resolvedAt;
+
+    #[ORM\Column(length: 20, options: ['default' => self::BREVO_SEND_STATE_DRAFT])]
+    private string $brevoSendState = self::BREVO_SEND_STATE_DRAFT;
+
+    #[ORM\Column(length: 36, nullable: true)]
+    private ?string $sendToken = null;
+
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $brevoDedupKey = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $brevoRemoteCreatedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $brevoRemoteSentAt = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $externalListId = null;
@@ -135,6 +155,11 @@ class EmailingCampaign implements Searchable
         $self->createdAt = $data['createdAt'] ?? new \DateTime();
         $self->sentAt = $data['sentAt'] ?? null;
         $self->resolvedAt = $data['resolvedAt'] ?? null;
+        $self->brevoSendState = $data['brevoSendState'] ?? self::BREVO_SEND_STATE_DRAFT;
+        $self->sendToken = $data['sendToken'] ?? null;
+        $self->brevoDedupKey = $data['brevoDedupKey'] ?? null;
+        $self->brevoRemoteCreatedAt = $data['brevoRemoteCreatedAt'] ?? null;
+        $self->brevoRemoteSentAt = $data['brevoRemoteSentAt'] ?? null;
         $self->content = $data['content'] ?? '';
         $self->unlayerDesign = $data['unlayerDesign'] ?? null;
         $self->onlyForMembers = $data['onlyForMembers'] ?? false;
@@ -298,6 +323,57 @@ class EmailingCampaign implements Searchable
         $this->resolvedAt = new \DateTime();
     }
 
+    public function markBrevoSendQueued(string $sendToken, ?string $brevoDedupKey = null): void
+    {
+        $this->brevoSendState = self::BREVO_SEND_STATE_QUEUED;
+        $this->sendToken = trim($sendToken);
+
+        if ($brevoDedupKey) {
+            $this->setBrevoDedupKey($brevoDedupKey);
+        }
+    }
+
+    public function markBrevoSendSending(): void
+    {
+        $this->brevoSendState = self::BREVO_SEND_STATE_SENDING;
+    }
+
+    public function markBrevoRemoteCreated(string $externalId): void
+    {
+        $this->setExternalId($externalId);
+
+        if (null === $this->brevoRemoteCreatedAt) {
+            $this->brevoRemoteCreatedAt = new \DateTime();
+        }
+    }
+
+    public function markBrevoRemoteSent(): void
+    {
+        if (null === $this->brevoRemoteSentAt) {
+            $this->brevoRemoteSentAt = new \DateTime();
+        }
+    }
+
+    public function markBrevoSendSent(string $externalId): void
+    {
+        $this->markBrevoRemoteCreated($externalId);
+        $this->markBrevoRemoteSent();
+        $this->brevoSendState = self::BREVO_SEND_STATE_SENT;
+        $this->resolvedAt = new \DateTime();
+        $this->sentAt = new \DateTime();
+    }
+
+    public function markBrevoSendFailed(): void
+    {
+        $this->brevoSendState = self::BREVO_SEND_STATE_FAILED;
+    }
+
+    public function resetBrevoSendToDraft(): void
+    {
+        $this->brevoSendState = self::BREVO_SEND_STATE_DRAFT;
+        $this->sendToken = null;
+    }
+
     public function updateGlobalStats(?int $sent, ?int $opened, ?int $clicked): void
     {
         $this->globalStatsSent = $sent;
@@ -381,6 +457,77 @@ class EmailingCampaign implements Searchable
     public function getResolvedAt(): ?\DateTime
     {
         return $this->resolvedAt;
+    }
+
+    public function isMutableDraftState(): bool
+    {
+        return null === $this->sentAt
+            && self::BREVO_SEND_STATE_DRAFT === $this->brevoSendState;
+    }
+
+    public function getBrevoSendState(): string
+    {
+        return $this->brevoSendState;
+    }
+
+    public function isBrevoSendDraftState(): bool
+    {
+        return self::BREVO_SEND_STATE_DRAFT === $this->brevoSendState;
+    }
+
+    public function isBrevoSendQueuedState(): bool
+    {
+        return self::BREVO_SEND_STATE_QUEUED === $this->brevoSendState;
+    }
+
+    public function isBrevoSendSendingState(): bool
+    {
+        return self::BREVO_SEND_STATE_SENDING === $this->brevoSendState;
+    }
+
+    public function isBrevoSendSentState(): bool
+    {
+        return self::BREVO_SEND_STATE_SENT === $this->brevoSendState;
+    }
+
+    public function isBrevoSendFailedState(): bool
+    {
+        return self::BREVO_SEND_STATE_FAILED === $this->brevoSendState;
+    }
+
+    public function getSendToken(): ?string
+    {
+        return $this->sendToken;
+    }
+
+    public function hasMatchingSendToken(?string $sendToken): bool
+    {
+        if (null === $sendToken) {
+            return false;
+        }
+
+        return $this->sendToken === trim($sendToken);
+    }
+
+    public function getBrevoDedupKey(): ?string
+    {
+        return $this->brevoDedupKey;
+    }
+
+    public function setBrevoDedupKey(?string $brevoDedupKey): void
+    {
+        $brevoDedupKey = null !== $brevoDedupKey ? trim($brevoDedupKey) : null;
+        $this->brevoDedupKey = '' === $brevoDedupKey ? null : $brevoDedupKey;
+    }
+
+    public function getBrevoRemoteCreatedAt(): ?\DateTime
+    {
+        return $this->brevoRemoteCreatedAt;
+    }
+
+    public function getBrevoRemoteSentAt(): ?\DateTime
+    {
+        return $this->brevoRemoteSentAt;
     }
 
     public function getExternalId(): ?string

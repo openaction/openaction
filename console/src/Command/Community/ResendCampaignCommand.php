@@ -3,6 +3,7 @@
 namespace App\Command\Community;
 
 use App\Community\Consumer\SendEmailingCampaignMessage;
+use App\Community\EmailingCampaignSender;
 use App\Entity\Community\EmailingCampaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,13 +22,15 @@ class ResendCampaignCommand extends Command
 {
     private EntityManagerInterface $em;
     private MessageBusInterface $bus;
+    private EmailingCampaignSender $campaignSender;
 
-    public function __construct(EntityManagerInterface $em, MessageBusInterface $bus)
+    public function __construct(EntityManagerInterface $em, MessageBusInterface $bus, EmailingCampaignSender $campaignSender)
     {
         parent::__construct();
 
         $this->em = $em;
         $this->bus = $bus;
+        $this->campaignSender = $campaignSender;
     }
 
     protected function configure()
@@ -45,6 +48,20 @@ class ResendCampaignCommand extends Command
 
         if (!$campaign) {
             throw new \InvalidArgumentException('Campaign not found');
+        }
+
+        if ('brevo' === $campaign->getProject()->getOrganization()->getEmailProvider()) {
+            $result = $this->campaignSender->sendAll($campaign);
+
+            if (EmailingCampaignSender::SEND_RESULT_DISPATCHED !== $result) {
+                $io->warning(sprintf('Campaign was not queued for Brevo resend (%s).', $result));
+
+                return Command::FAILURE;
+            }
+
+            $io->success('Brevo campaign resend dispatched.');
+
+            return Command::SUCCESS;
         }
 
         $this->bus->dispatch(new SendEmailingCampaignMessage($campaign->getId()));

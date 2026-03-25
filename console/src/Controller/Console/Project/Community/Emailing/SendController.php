@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/console/project/{projectUuid}/community/emailing')]
 class SendController extends AbstractController
@@ -21,12 +22,18 @@ class SendController extends AbstractController
     private ContactViewBuilder $contactViewBuilder;
     private EmailingCampaignSender $campaignSender;
     private EntityManagerInterface $em;
+    private TranslatorInterface $translator;
 
-    public function __construct(ContactViewBuilder $cvb, EmailingCampaignSender $cs, EntityManagerInterface $em)
-    {
+    public function __construct(
+        ContactViewBuilder $cvb,
+        EmailingCampaignSender $cs,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator,
+    ) {
         $this->contactViewBuilder = $cvb;
         $this->campaignSender = $cs;
         $this->em = $em;
+        $this->translator = $translator;
     }
 
     #[Route('/{uuid}/filter-preview', name: 'console_community_emailing_filter_preview', methods: ['GET'])]
@@ -107,17 +114,32 @@ class SendController extends AbstractController
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($campaign);
 
+        $isBrevoProvider = 'brevo' === $campaign->getProject()->getOrganization()->getEmailProvider();
+        if ($isBrevoProvider && !$campaign->isBrevoSendDraftState()) {
+            $this->addFlash('error', $this->translator->trans('send_all.already_in_progress_error', [], 'project_emailings'));
+
+            return $this->redirectToRoute('console_community_emailing', [
+                'projectUuid' => $this->getProject()->getUuid(),
+            ]);
+        }
+
         $form = $this->createFormBuilder()->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->campaignSender->sendAll($campaign)) {
+            $sendResult = $this->campaignSender->sendAll($campaign);
+
+            if (EmailingCampaignSender::SEND_RESULT_DISPATCHED === $sendResult) {
                 $this->addFlash('success', 'emailings.campaign_sent_success');
 
-                $campaign->markSent();
+                if (!$isBrevoProvider) {
+                    $campaign->markSent();
 
-                $this->em->persist($campaign);
-                $this->em->flush();
+                    $this->em->persist($campaign);
+                    $this->em->flush();
+                }
+            } elseif (EmailingCampaignSender::SEND_RESULT_ALREADY_CLAIMED === $sendResult) {
+                $this->addFlash('error', $this->translator->trans('send_all.already_in_progress_error', [], 'project_emailings'));
             } else {
                 $this->addFlash('error', 'subscription.not_enough_credits');
             }

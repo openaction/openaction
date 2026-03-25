@@ -6,8 +6,10 @@ use App\Entity\Community\EmailingCampaign;
 use App\Repository\AreaRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Repository\Community\TagRepository;
+use App\Repository\ProjectRepository;
 use App\Tests\WebTestCase;
 use App\Util\Json;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,6 +102,74 @@ class IndexControllerTest extends WebTestCase
 
         $client->request('GET', $link->link()->getUri().'invalid');
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testQueuedBrevoCampaignCannotBeEditedOrDeleted(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneBy(['uuid' => self::CAMPAIGN_DRAFT_UUID]);
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->markBrevoSendQueued('queued-token');
+
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.self::CAMPAIGN_DRAFT_UUID.'/metadata');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+        $this->assertResponseIsSuccessful();
+
+        $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing/'.self::CAMPAIGN_DRAFT_UUID.'/delete', [
+            '_token' => $this->filterGlobalCsrfToken($crawler),
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $project = static::getContainer()->get(ProjectRepository::class)->findOneByUuid(self::PROJECT_IDF_UUID);
+        $this->assertNotNull($project);
+
+        $draftIds = array_map(
+            static fn (EmailingCampaign $draft): int => $draft->getId(),
+            static::getContainer()->get(EmailingCampaignRepository::class)->findAllDrafts($project),
+        );
+
+        $this->assertNotContains($campaign->getId(), $draftIds);
+        $this->assertNotNull(static::getContainer()->get(EmailingCampaignRepository::class)->findOneBy(['uuid' => self::CAMPAIGN_DRAFT_UUID]));
+    }
+
+    public function testSendingBrevoCampaignIsListedAsSentWithLoaderAndNoStatsHydration(): void
+    {
+        $client = static::createClient();
+        $this->authenticate($client, 'titouan.galopin@citipo.com');
+
+        /** @var EmailingCampaign $campaign */
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneBy(['uuid' => self::CAMPAIGN_DRAFT_UUID]);
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign->markBrevoSendSending();
+
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $project = static::getContainer()->get(ProjectRepository::class)->findOneByUuid(self::PROJECT_IDF_UUID);
+        $this->assertNotNull($project);
+
+        $draftIds = array_map(
+            static fn (EmailingCampaign $draft): int => $draft->getId(),
+            static::getContainer()->get(EmailingCampaignRepository::class)->findAllDrafts($project),
+        );
+
+        $this->assertNotContains($campaign->getId(), $draftIds);
+
+        $crawler = $client->request('GET', '/console/project/'.self::PROJECT_IDF_UUID.'/community/emailing');
+        $this->assertResponseIsSuccessful();
+
+        $selector = '#campaign-'.self::CAMPAIGN_DRAFT_UUID;
+        $this->assertCount(1, $crawler->filter($selector));
+        $this->assertCount(1, $crawler->filter($selector.'[data-brevo-send-state="sending"]'));
+        $this->assertCount(1, $crawler->filter($selector.' .fa-spinner.fa-spin'));
+        $this->assertCount(1, $crawler->filter($selector.' .text-muted:contains("Sending...")'));
+        $this->assertCount(0, $crawler->filter($selector.' [data-controller="emailing--stats"]'));
     }
 
     public function testList()

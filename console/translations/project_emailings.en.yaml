@@ -24,6 +24,7 @@ index:
         title: Sent campaigns
         shareable_history: Open shareable emailing history
         no_records: No campaigns have been sent yet
+        sending: Sending...
         subject: Subject
         stats: Statistics
         view: View content
@@ -108,6 +109,7 @@ send_test:
 send_all:
     back: Back to the list of campaigns
     title: Send the campaign "%title%"
+    already_in_progress_error: This campaign has already been queued or sent. Wait for completion before retrying.
     confirm: |
         You're about to send the campaign to <strong>%count% subscribers</strong>.
         <br />

@@ -2,6 +2,7 @@
 
 namespace App\Messenger;
 
+use App\Community\Consumer\SendBrevoEmailingCampaignMessage;
 use App\Messenger\Stamp\QueueTimeStamp;
 use App\Messenger\Stamp\StartTimeStamp;
 use App\Messenger\Stamp\UniqueIdStamp;
@@ -47,25 +48,41 @@ class WorkerLoggingListener implements EventSubscriberInterface
 
     private function log(Envelope $envelope, string $type, string $message)
     {
-        /** @var UniqueIdStamp $uniqueIdStamp */
         $uniqueIdStamp = $envelope->last(UniqueIdStamp::class);
-
-        /** @var QueueTimeStamp $queueTimeStamp */
         $queueTimeStamp = $envelope->last(QueueTimeStamp::class);
         $queueTime = $queueTimeStamp?->getQueueTime();
-
-        /** @var StartTimeStamp $startTimeStamp */
         $startTimeStamp = $envelope->last(StartTimeStamp::class);
         $startTime = $startTimeStamp?->getStartTime();
 
-        $this->workerLogger->info(implode(' ', [
-            '['.gethostname().']',
-            '['.$uniqueIdStamp->getUniqueId().']',
-            '['.$envelope->getMessage()::class.']',
-            '['.($queueTime ? round((microtime(true) - $queueTime) * 1000) : 0).']',
-            '['.($startTime ? round((microtime(true) - $startTime) * 1000) : 0).']',
-            '['.$type.']',
-            $message,
-        ]));
+        $messagePayload = $envelope->getMessage();
+        $isBrevoCampaignSend = $messagePayload instanceof SendBrevoEmailingCampaignMessage;
+
+        $context = [
+            'hostname' => gethostname() ?: null,
+            'messengerUniqueId' => $uniqueIdStamp?->getUniqueId(),
+            'messageClass' => $messagePayload::class,
+            'queueTimeMs' => $queueTime ? round((microtime(true) - $queueTime) * 1000) : 0,
+            'durationMs' => $startTime ? round((microtime(true) - $startTime) * 1000) : 0,
+            'state' => $type,
+            'campaignId' => null,
+            'sendToken' => null,
+            'externalId' => null,
+            'brevoMessageUniqueId' => null,
+        ];
+
+        if ($isBrevoCampaignSend) {
+            /* @var SendBrevoEmailingCampaignMessage $messagePayload */
+            $context['campaignId'] = $messagePayload->getCampaignId();
+            $context['sendToken'] = $messagePayload->getSendToken();
+            $context['brevoMessageUniqueId'] = $messagePayload->getMessengerUniqueId();
+        }
+
+        $logLevel = match ($type) {
+            'failed' => 'error',
+            'retried' => $isBrevoCampaignSend ? 'error' : 'warning',
+            default => 'info',
+        };
+
+        $this->workerLogger->log($logLevel, $message, $context);
     }
 }

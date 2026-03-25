@@ -32,6 +32,8 @@ class MockBrevo implements BrevoInterface
 
     public int $createEmailCampaignCalls = 0;
 
+    public int $findEmailCampaignByDedupKeyCalls = 0;
+
     public int $isEmailCampaignSentCalls = 0;
 
     public int $sendEmailCampaignNowCalls = 0;
@@ -92,6 +94,12 @@ class MockBrevo implements BrevoInterface
 
     public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string
     {
+        if ($dedupKey = $campaign->getBrevoDedupKey()) {
+            if ($existingCampaignId = $this->findEmailCampaignByDedupKey($campaign, $dedupKey)) {
+                return $existingCampaignId;
+            }
+        }
+
         ++$this->createEmailCampaignCalls;
         $id = (string) (count($this->campaigns) + 1);
         $contacts = $this->listContacts[$listId] ?? [];
@@ -112,9 +120,23 @@ class MockBrevo implements BrevoInterface
             'status' => 'draft',
             'scheduledAt' => $batchConfiguration ? new \DateTimeImmutable('now') : null,
             'batching' => $batchConfiguration,
+            'dedupKey' => $campaign->getBrevoDedupKey(),
         ];
 
         return $id;
+    }
+
+    public function findEmailCampaignByDedupKey(EmailingCampaign $campaign, string $dedupKey): ?string
+    {
+        ++$this->findEmailCampaignByDedupKeyCalls;
+
+        foreach ($this->campaigns as $campaignId => $payload) {
+            if (($payload['dedupKey'] ?? null) === $dedupKey) {
+                return (string) $campaignId;
+            }
+        }
+
+        return null;
     }
 
     public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool
