@@ -52,5 +52,24 @@ class CreateEmailingCampaignBatchesHandlerTest extends KernelTestCase
         $this->assertNull($batch->getQueuedAt());
         $this->assertGreaterThanOrEqual($before->getTimestamp(), $batch->getScheduledAt()->getTimestamp());
         $this->assertLessThanOrEqual($after->getTimestamp(), $batch->getScheduledAt()->getTimestamp());
+
+        $personalizations = $batch->getPayload()['personalizations'] ?? [];
+        $this->assertIsArray($personalizations);
+        $this->assertNotEmpty($personalizations);
+
+        $substitutions = $personalizations[0]['substitutions'] ?? null;
+        $this->assertIsArray($substitutions);
+        $this->assertArrayHasKey('-contact-formal-title-', $substitutions);
+        $this->assertArrayHasKey('-contact-formaltitle-', $substitutions);
+        $this->assertSame($substitutions['-contact-formal-title-'], $substitutions['-contact-formaltitle-']);
+        $this->assertArrayHasKey('-contact-job-title-', $substitutions);
+        $this->assertArrayHasKey('-contact-jobtitle-', $substitutions);
+        $this->assertSame($substitutions['-contact-job-title-'], $substitutions['-contact-jobtitle-']);
+        $this->assertArrayHasKey('-contact-streetline-1-', $substitutions);
+        $this->assertArrayHasKey('-contact-streetline1-', $substitutions);
+        $this->assertSame($substitutions['-contact-streetline-1-'], $substitutions['-contact-streetline1-']);
+        $this->assertArrayHasKey('-contact-streetline-2-', $substitutions);
+        $this->assertArrayHasKey('-contact-streetline2-', $substitutions);
+        $this->assertSame($substitutions['-contact-streetline-2-'], $substitutions['-contact-streetline2-']);
     }
 }
