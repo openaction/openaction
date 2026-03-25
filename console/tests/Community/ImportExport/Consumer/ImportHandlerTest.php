@@ -53,6 +53,17 @@ class ImportHandlerTest extends KernelTestCase
         $import = static::getContainer()->get(ImportRepository::class)->findOneByUuid('b25ca589-a613-4e62-ac0b-168b9bdf0339');
         $this->assertInstanceOf(Import::class, $import);
 
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $existingContact = static::getContainer()->get(ContactRepository::class)->findOneBy([
+            'organization' => $import->getOrganization(),
+            'email' => 'fabiennebeaujolie1@jourrapide.com',
+        ]);
+
+        if ($existingContact) {
+            $em->remove($existingContact);
+            $em->flush();
+        }
+
         $job = $import->getJob();
         $this->assertFalse($job->isFinished());
         $this->assertSame(12, $job->getTotal());
@@ -68,7 +79,7 @@ class ImportHandlerTest extends KernelTestCase
         $contact = static::getContainer()->get(ContactRepository::class)->findOneBy(['email' => 'fabiennebeaujolie1@jourrapide.com']);
 
         // Fetch the tags association changes
-        static::getContainer()->get(EntityManagerInterface::class)->refresh($contact);
+        $em->refresh($contact);
 
         $this->assertSame(36778547219895752, $contact->getArea()->getId());
         $this->assertSame('Mme', $contact->getProfileFormalTitle());
@@ -98,11 +109,65 @@ class ImportHandlerTest extends KernelTestCase
 
         $tags = $contact->getMetadataTagsNames();
         sort($tags);
-        $this->assertSame(['Black', 'Blue', 'Red'], $tags);
+        $this->assertSame(['Black', 'Blue', 'Green', 'Red'], $tags);
 
         // Should have been marked as processed
         $job = $import->getJob();
-        static::getContainer()->get(EntityManagerInterface::class)->refresh($job);
+        $em->refresh($job);
+        $this->assertTrue($job->isFinished());
+    }
+
+    public function testConsumeValidWithExistingContact(): void
+    {
+        self::bootKernel();
+
+        /** @var Import $import */
+        $import = static::getContainer()->get(ImportRepository::class)->findOneByUuid('5deedfb6-173d-4e8b-b208-f62dbf0c4e80');
+        $this->assertInstanceOf(Import::class, $import);
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $contactRepository = static::getContainer()->get(ContactRepository::class);
+
+        $existingContact = $contactRepository->findOneBy([
+            'organization' => $import->getOrganization(),
+            'email' => 'fabiennebeaujolie1@jourrapide.com',
+        ]);
+
+        if ($existingContact) {
+            $em->remove($existingContact);
+            $em->flush();
+        }
+
+        // Create a contact that should be updated by import conflict on email.
+        $existingContact = new Contact($import->getOrganization(), 'fabiennebeaujolie1@jourrapide.com');
+        $em->persist($existingContact);
+        $em->flush();
+
+        $existingContactId = $existingContact->getId();
+        $existingContactUuid = $existingContact->getUuid()->toRfc4122();
+
+        static::getContainer()->get('cdn.storage')->write('import-started.xlsx', file_get_contents(__DIR__.'/../../../Fixtures/import/contacts-map-columns.xlsx'));
+
+        $handler = static::getContainer()->get(ImportHandler::class);
+        $handler(new ImportMessage($import->getId()));
+
+        /** @var Contact $contact */
+        $contact = $contactRepository->findOneBy(['email' => 'fabiennebeaujolie1@jourrapide.com']);
+        $this->assertInstanceOf(Contact::class, $contact);
+
+        // Fetch the tags association changes
+        $em->refresh($contact);
+
+        $this->assertSame($existingContactId, $contact->getId());
+        $this->assertSame($existingContactUuid, $contact->getUuid()->toRfc4122());
+
+        $tags = $contact->getMetadataTagsNames();
+        sort($tags);
+        $this->assertSame(['Black', 'Blue', 'Green', 'Red'], $tags);
+
+        // Should have been marked as processed
+        $job = $import->getJob();
+        $em->refresh($job);
         $this->assertTrue($job->isFinished());
     }
 }
