@@ -15,6 +15,7 @@ use App\Repository\Util\RepositoryUuidEncodedTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @method EmailingCampaign|null find($id, $lockMode = null, $lockVersion = null)
@@ -46,7 +47,9 @@ class EmailingCampaignRepository extends ServiceEntityRepository
             ->select('e')
             ->where('e.project = :project')
             ->andWhere('e.sentAt IS NULL')
+            ->andWhere('e.brevoSendState = :brevoDraftState')
             ->setParameter('project', $project->getId())
+            ->setParameter('brevoDraftState', EmailingCampaign::BREVO_SEND_STATE_DRAFT)
             ->orderBy('e.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -66,6 +69,77 @@ class EmailingCampaignRepository extends ServiceEntityRepository
                 ->setFirstResult(($currentPage - 1) * $limit)
                 ->getQuery()
         );
+    }
+
+    public function findAllSentForConsolePaginator(Project $project, int $currentPage, int $limit = 10): Paginator
+    {
+        return new Paginator(
+            $this->createQueryBuilder('c')
+                ->select('c', 'COALESCE(c.sentAt, c.createdAt) AS HIDDEN sortDate')
+                ->where('c.project = :project')
+                ->andWhere('(c.sentAt IS NOT NULL OR c.brevoSendState = :brevoSendingState)')
+                ->setParameter('project', $project)
+                ->setParameter('brevoSendingState', EmailingCampaign::BREVO_SEND_STATE_SENDING)
+                ->orderBy('sortDate', 'DESC')
+                ->addOrderBy('c.id', 'DESC')
+                ->setMaxResults($limit)
+                ->setFirstResult(($currentPage - 1) * $limit)
+                ->getQuery()
+        );
+    }
+
+    public function claimBrevoSend(EmailingCampaign $campaign): ?string
+    {
+        $sendToken = Uuid::v4()->toRfc4122();
+        $dedupKey = Uuid::v4()->toRfc4122();
+
+        $updatedRows = $this->_em->getConnection()->executeStatement(
+            '
+                UPDATE community_emailing_campaigns
+                SET brevo_send_state = :queued_state,
+                    send_token = :send_token,
+                    brevo_dedup_key = COALESCE(brevo_dedup_key, :dedup_key),
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = :campaign_id
+                  AND brevo_send_state = :draft_state
+            ',
+            [
+                'queued_state' => EmailingCampaign::BREVO_SEND_STATE_QUEUED,
+                'send_token' => $sendToken,
+                'dedup_key' => $dedupKey,
+                'campaign_id' => $campaign->getId(),
+                'draft_state' => EmailingCampaign::BREVO_SEND_STATE_DRAFT,
+            ]
+        );
+
+        if (1 !== $updatedRows) {
+            return null;
+        }
+
+        return $sendToken;
+    }
+
+    public function rollbackBrevoClaimToDraft(EmailingCampaign $campaign, string $sendToken): bool
+    {
+        $updatedRows = $this->_em->getConnection()->executeStatement(
+            '
+                UPDATE community_emailing_campaigns
+                SET brevo_send_state = :draft_state,
+                    send_token = NULL,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = :campaign_id
+                  AND brevo_send_state = :queued_state
+                  AND send_token = :send_token
+            ',
+            [
+                'draft_state' => EmailingCampaign::BREVO_SEND_STATE_DRAFT,
+                'campaign_id' => $campaign->getId(),
+                'queued_state' => EmailingCampaign::BREVO_SEND_STATE_QUEUED,
+                'send_token' => trim($sendToken),
+            ]
+        );
+
+        return 1 === $updatedRows;
     }
 
     public function findStats(EmailingCampaign $campaign): array

@@ -22,14 +22,14 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8 col-xl-6">
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'id': 'emailing-send-all-form'}}) }}
 
                     <div class="world-block p-4">
                         <div class="mb-4">
                             {{ 'send_all.confirm'|trans({'%count%': countFiltered}, 'project_emailings')|raw }}
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="emailing-send-all-submit">
                             {{ 'send_all.send'|trans({}, 'project_emailings') }}
                         </button>
 
@@ -40,6 +40,22 @@
                     </div>
 
                     {{ form_end(form) }}
+
+                    <script>
+                        (function () {
+                            var form = document.getElementById('emailing-send-all-form');
+                            var submit = document.getElementById('emailing-send-all-submit');
+
+                            if (!form || !submit) {
+                                return;
+                            }
+
+                            form.addEventListener('submit', function () {
+                                submit.disabled = true;
+                                submit.classList.add('disabled');
+                            });
+                        })();
+                    </script>
 
                 </div>
             </div>

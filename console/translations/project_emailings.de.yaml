@@ -23,6 +23,7 @@ index:
         title: 'Gesendete Kampagnen'
         shareable_history: 'Freigegebenen E-Mail-Verlauf öffnen'
         no_records: 'Es wurden noch keine Kampagnen verschickt'
+        sending: 'Wird gesendet ...'
         subject: Thema
         stats: Statistik
         view: 'Inhalt anzeigen'
@@ -96,6 +97,7 @@ send_test:
 send_all:
     back: 'Zurück zur Liste der Kampagnen'
     title: 'Senden Sie die Kampagne "%title%".'
+    already_in_progress_error: Diese Kampagne wurde bereits in die Warteschlange gestellt oder versendet. Warten Sie den Abschluss ab, bevor Sie erneut senden.
     confirm: "Sie sind dabei, die Kampagne an <strong>%count% Abonnenten</strong> zu senden.\n<br />\n<br />\nDer Versand dieser Kampagne verbraucht <strong>%count% Credits</strong> von Ihrer Organisation.\n<br />\n<br />\nSind Sie sicher, dass Sie die Kampagne senden können?\nNach dem Versenden können Sie sie nicht mehr aktualisieren.\n"
     send: 'Senden Sie die Kampagne'
     cancel: Abbrechen

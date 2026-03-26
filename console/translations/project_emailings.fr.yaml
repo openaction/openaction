@@ -24,6 +24,7 @@ index:
         title: Campagnes envoyées
         shareable_history: Ouvrir l'historique partageable
         no_records: Aucune campagne n'a été envoyée pour le moment
+        sending: Envoi en cours...
         subject: Sujet
         stats: Statistiques
         view: Voir le contenu
@@ -110,6 +111,7 @@ send_test:
 send_all:
     back: Retour à la liste
     title: Envoyer la campagne d'emailing "%title%"
+    already_in_progress_error: Cette campagne est déjà en cours d'envoi ou déjà envoyée. Attendez la fin avant de relancer.
     confirm: |
         Vous vous apprêtez à envoyer une campagne d'emailing à <strong>%count% personnes</strong>.
         <br />

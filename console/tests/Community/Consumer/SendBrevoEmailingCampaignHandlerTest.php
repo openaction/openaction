@@ -12,33 +12,27 @@ use App\Repository\Community\EmailingCampaignMessageRepository;
 use App\Repository\Community\EmailingCampaignRepository;
 use App\Repository\OrganizationRepository;
 use App\Tests\KernelTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
 {
-    public function testConsumeValidWithoutThrottling()
+    public function testConsumeValidWithoutThrottling(): void
     {
         self::bootKernel();
 
-        /** @var EmailingCampaign $campaign */
-        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
-        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
-
-        /** @var Organization $organization */
-        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
-        $organization->setEmailProvider('brevo');
-        $organization->setBrevoApiKey('brevo_api_key');
-        $organization->setBrevoSenderEmail('brevo@example.test');
-        $organization->setEmailThrottlingPerHour(null);
-        static::getContainer()->get('doctrine')->getManager()->flush();
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
 
         $this->assertSame(0, static::getContainer()->get(EmailingCampaignMessageRepository::class)->count(['campaign' => $campaign]));
 
-        /** @var BrevoInterface $brevo */
+        /** @var MockBrevo $brevo */
         $brevo = static::getContainer()->get(BrevoInterface::class);
         $this->assertInstanceOf(MockBrevo::class, $brevo);
 
+        $sendToken = $this->claimCampaign($campaign);
+
         $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
-        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), $sendToken, 'msg-valid-no-throttle'));
 
         $this->assertCount(1, $brevo->campaigns);
         $payload = $brevo->campaigns['1'];
@@ -46,7 +40,11 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $this->assertNull($payload['batching']);
         $this->assertSame('1', $campaign->getExternalId());
         $this->assertSame(1, $campaign->getExternalListId());
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
+        $this->assertNotNull($campaign->getBrevoRemoteCreatedAt());
+        $this->assertNotNull($campaign->getBrevoRemoteSentAt());
         $this->assertNotNull($campaign->getResolvedAt());
+        $this->assertNotNull($campaign->getSentAt());
         $this->assertCount(3, $payload['contacts']);
         $this->assertStringContainsString('Hello world', $payload['html']);
         foreach ($payload['contacts'] as $contact) {
@@ -75,34 +73,27 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         }
     }
 
-    public function testConsumeValidWithThrottling()
+    public function testConsumeValidWithThrottling(): void
     {
         self::bootKernel();
 
-        /** @var EmailingCampaign $campaign */
-        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
-        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: 2);
 
-        /** @var Organization $organization */
-        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
-        $organization->setEmailProvider('brevo');
-        $organization->setBrevoApiKey('brevo_api_key');
-        $organization->setBrevoSenderEmail('brevo@example.test');
-        $organization->setEmailThrottlingPerHour(2);
-        static::getContainer()->get('doctrine')->getManager()->flush();
-
-        /** @var BrevoInterface $brevo */
+        /** @var MockBrevo $brevo */
         $brevo = static::getContainer()->get(BrevoInterface::class);
         $this->assertInstanceOf(MockBrevo::class, $brevo);
 
+        $sendToken = $this->claimCampaign($campaign);
+
         $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
-        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), $sendToken, 'msg-valid-throttle'));
 
         $this->assertCount(1, $brevo->campaigns);
         $payload = $brevo->campaigns['1'];
         $this->assertSame('1', $campaign->getExternalId());
         $this->assertSame(1, $campaign->getExternalListId());
-        $this->assertNotNull($campaign->getResolvedAt());
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
         $this->assertCount(3, $payload['contacts']);
         $this->assertNotNull($payload['scheduledAt']);
         $this->assertSame([
@@ -123,27 +114,21 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        /** @var EmailingCampaign $campaign */
-        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
-        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
 
-        /** @var Organization $organization */
-        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
-        $organization->setEmailProvider('brevo');
-        $organization->setBrevoApiKey('brevo_api_key');
-        $organization->setBrevoSenderEmail('brevo@example.test');
-        static::getContainer()->get('doctrine')->getManager()->flush();
-
-        /** @var BrevoInterface $brevo */
+        /** @var MockBrevo $brevo */
         $brevo = static::getContainer()->get(BrevoInterface::class);
         $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $sendToken = $this->claimCampaign($campaign);
 
         $listId = $brevo->createCampaignList($campaign);
         $campaignId = $brevo->createEmailCampaign($campaign, '<p>Existing campaign</p>', $listId);
 
         $campaign->setExternalListId($listId);
         $campaign->setExternalId($campaignId);
-        static::getContainer()->get('doctrine')->getManager()->flush();
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $createListCallsBefore = $brevo->createCampaignListCalls;
         $createCampaignCallsBefore = $brevo->createEmailCampaignCalls;
@@ -151,15 +136,16 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $sendCallsBefore = $brevo->sendEmailCampaignNowCalls;
 
         $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
-        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), $sendToken, 'msg-retry-pending'));
 
         $this->assertSame($createListCallsBefore, $brevo->createCampaignListCalls);
         $this->assertSame($createCampaignCallsBefore, $brevo->createEmailCampaignCalls);
         $this->assertSame($statusCallsBefore + 1, $brevo->isEmailCampaignSentCalls);
         $this->assertSame($sendCallsBefore + 1, $brevo->sendEmailCampaignNowCalls);
         $this->assertSame((string) $campaignId, $campaign->getExternalId());
-        $this->assertNotNull($campaign->getResolvedAt());
-        $this->assertNotNull($campaign->getSentAt());
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
+        $this->assertNotNull($campaign->getBrevoRemoteCreatedAt());
+        $this->assertNotNull($campaign->getBrevoRemoteSentAt());
 
         $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
         $this->assertCount(3, $messages);
@@ -169,20 +155,14 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        /** @var EmailingCampaign $campaign */
-        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid('10808026-bbae-4db5-a8ab-8abecb50102c');
-        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
 
-        /** @var Organization $organization */
-        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
-        $organization->setEmailProvider('brevo');
-        $organization->setBrevoApiKey('brevo_api_key');
-        $organization->setBrevoSenderEmail('brevo@example.test');
-        static::getContainer()->get('doctrine')->getManager()->flush();
-
-        /** @var BrevoInterface $brevo */
+        /** @var MockBrevo $brevo */
         $brevo = static::getContainer()->get(BrevoInterface::class);
         $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $sendToken = $this->claimCampaign($campaign);
 
         $listId = $brevo->createCampaignList($campaign);
         $campaignId = $brevo->createEmailCampaign($campaign, '<p>Existing campaign</p>', $listId);
@@ -190,7 +170,7 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
 
         $campaign->setExternalListId($listId);
         $campaign->setExternalId($campaignId);
-        static::getContainer()->get('doctrine')->getManager()->flush();
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
 
         $createListCallsBefore = $brevo->createCampaignListCalls;
         $createCampaignCallsBefore = $brevo->createEmailCampaignCalls;
@@ -198,17 +178,123 @@ class SendBrevoEmailingCampaignHandlerTest extends KernelTestCase
         $sendCallsBefore = $brevo->sendEmailCampaignNowCalls;
 
         $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
-        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId()));
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), $sendToken, 'msg-retry-sent'));
 
         $this->assertSame($createListCallsBefore, $brevo->createCampaignListCalls);
         $this->assertSame($createCampaignCallsBefore, $brevo->createEmailCampaignCalls);
         $this->assertSame($statusCallsBefore + 1, $brevo->isEmailCampaignSentCalls);
         $this->assertSame($sendCallsBefore, $brevo->sendEmailCampaignNowCalls);
         $this->assertSame((string) $campaignId, $campaign->getExternalId());
-        $this->assertNotNull($campaign->getResolvedAt());
-        $this->assertNotNull($campaign->getSentAt());
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
+        $this->assertNotNull($campaign->getBrevoRemoteCreatedAt());
+        $this->assertNotNull($campaign->getBrevoRemoteSentAt());
 
         $messages = static::getContainer()->get(EmailingCampaignMessageRepository::class)->findBy(['campaign' => $campaign]);
         $this->assertCount(3, $messages);
+    }
+
+    public function testTokenMismatchMessageIsIgnored(): void
+    {
+        self::bootKernel();
+
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
+
+        /** @var MockBrevo $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $this->claimCampaign($campaign);
+
+        $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), 'different-token', 'msg-token-mismatch'));
+
+        $this->assertSame(0, $brevo->createEmailCampaignCalls);
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_QUEUED, $campaign->getBrevoSendState());
+    }
+
+    public function testLegacyMessageWithoutTokenClaimsDraftAndSendsCampaign(): void
+    {
+        self::bootKernel();
+
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_DRAFT, $campaign->getBrevoSendState());
+
+        /** @var MockBrevo $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), null, 'msg-legacy-no-token'));
+
+        $this->assertSame(1, $brevo->createEmailCampaignCalls);
+        $this->assertSame(1, $brevo->sendEmailCampaignNowCalls);
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
+        $this->assertNotNull($campaign->getSendToken());
+    }
+
+    public function testRetryAfterRemoteCreateWithoutLocalCheckpointDoesNotCreateSecondCampaign(): void
+    {
+        self::bootKernel();
+
+        $campaign = $this->findCampaign('10808026-bbae-4db5-a8ab-8abecb50102c');
+        $this->configureBrevoOrganization(emailThrottlingPerHour: null);
+
+        /** @var MockBrevo $brevo */
+        $brevo = static::getContainer()->get(BrevoInterface::class);
+        $this->assertInstanceOf(MockBrevo::class, $brevo);
+
+        $sendToken = $this->claimCampaign($campaign);
+        $this->assertNotNull($campaign->getBrevoDedupKey());
+
+        $precreatedListId = $brevo->createCampaignList($campaign);
+        $precreatedCampaignId = $brevo->createEmailCampaign($campaign, '<p>Pre-created</p>', $precreatedListId);
+
+        $campaign->setExternalListId($precreatedListId);
+        $campaign->setExternalId(null);
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+
+        $createCampaignCallsBefore = $brevo->createEmailCampaignCalls;
+
+        $handler = static::getContainer()->get(SendBrevoEmailingCampaignHandler::class);
+        $handler(new SendBrevoEmailingCampaignMessage($campaign->getId(), $sendToken, 'msg-retry-dedup'));
+
+        $this->assertSame($createCampaignCallsBefore, $brevo->createEmailCampaignCalls);
+        $this->assertSame((string) $precreatedCampaignId, $campaign->getExternalId());
+        $this->assertNotNull($campaign->getBrevoRemoteCreatedAt());
+        $this->assertNotNull($campaign->getBrevoRemoteSentAt());
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_SENT, $campaign->getBrevoSendState());
+    }
+
+    private function findCampaign(string $uuid): EmailingCampaign
+    {
+        $campaign = static::getContainer()->get(EmailingCampaignRepository::class)->findOneByUuid($uuid);
+        $this->assertInstanceOf(EmailingCampaign::class, $campaign);
+
+        return $campaign;
+    }
+
+    private function configureBrevoOrganization(?int $emailThrottlingPerHour): void
+    {
+        /** @var Organization $organization */
+        $organization = static::getContainer()->get(OrganizationRepository::class)->findOneByUuid('219025aa-7fe2-4385-ad8f-31f386720d10');
+        $organization->setEmailProvider('brevo');
+        $organization->setBrevoApiKey('brevo_api_key');
+        $organization->setBrevoSenderEmail('brevo@example.test');
+        $organization->setEmailThrottlingPerHour($emailThrottlingPerHour);
+
+        static::getContainer()->get(EntityManagerInterface::class)->flush();
+    }
+
+    private function claimCampaign(EmailingCampaign $campaign): string
+    {
+        $sendToken = static::getContainer()->get(EmailingCampaignRepository::class)->claimBrevoSend($campaign);
+        $this->assertNotNull($sendToken);
+
+        static::getContainer()->get(EntityManagerInterface::class)->refresh($campaign);
+        $this->assertSame(EmailingCampaign::BREVO_SEND_STATE_QUEUED, $campaign->getBrevoSendState());
+
+        return $sendToken;
     }
 }

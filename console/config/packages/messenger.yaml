@@ -16,8 +16,8 @@ framework:
                 dsn: '%env(resolve:MESSENGER_TRANSPORT_DSN_EMAILING)%'
                 serializer: 'App\Messenger\Transport\RetrySafeSerializer'
                 retry_strategy:
-                    # Retry after 1 second delay, 2 seconds, 4 seconds, .. up to 1 hour
-                    max_retries: 12
+                    # Keep retries for transient pre-send failures only; post-send uncertainty is handled in the Brevo handler.
+                    max_retries: 5
                     delay: 1000
                     multiplier: 2
 

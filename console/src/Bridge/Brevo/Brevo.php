@@ -110,6 +110,11 @@ class Brevo implements BrevoInterface
 
     public function createEmailCampaign(EmailingCampaign $campaign, string $htmlContent, int $listId): string
     {
+        $dedupKey = $campaign->getBrevoDedupKey();
+        if ($dedupKey && $existingCampaignId = $this->findEmailCampaignByDedupKey($campaign, $dedupKey)) {
+            return $existingCampaignId;
+        }
+
         $brevoCampaignPayload = $this->buildCampaignPayload($campaign, $htmlContent);
         $brevoCampaignPayload['recipients'] = ['listIds' => [$listId]];
 
@@ -129,6 +134,59 @@ class Brevo implements BrevoInterface
         }
 
         return $createdCampaignId;
+    }
+
+    public function findEmailCampaignByDedupKey(EmailingCampaign $campaign, string $dedupKey): ?string
+    {
+        $dedupMarker = $this->buildCampaignDedupMarker($dedupKey);
+        $offset = 0;
+
+        while (true) {
+            $payload = $this->requestBrevo(
+                method: 'GET',
+                endpoint: '/emailCampaigns',
+                apiKey: $this->getCampaignApiKey($campaign),
+                options: [
+                    'query' => [
+                        'limit' => self::CAMPAIGNS_STATS_PAGE_SIZE,
+                        'offset' => $offset,
+                        'excludeHtmlContent' => 'true',
+                    ],
+                ],
+                limiter: $this->sendCampaignRateLimiter,
+                limiterContext: 'campaign_send',
+            )->toArray();
+
+            $campaigns = $payload['campaigns'] ?? [];
+            if (!is_array($campaigns)) {
+                return null;
+            }
+
+            foreach ($campaigns as $entry) {
+                if (!is_array($entry)) {
+                    continue;
+                }
+
+                $campaignId = trim((string) ($entry['id'] ?? ''));
+                if ('' === $campaignId) {
+                    continue;
+                }
+
+                if ($this->campaignMatchesDedupMarker($entry, $dedupMarker)) {
+                    return $campaignId;
+                }
+            }
+
+            $totalCount = is_numeric($payload['count'] ?? null)
+                ? (int) $payload['count']
+                : $offset + count($campaigns);
+
+            $offset += self::CAMPAIGNS_STATS_PAGE_SIZE;
+
+            if (0 === count($campaigns) || $offset >= $totalCount) {
+                return null;
+            }
+        }
     }
 
     public function isEmailCampaignSent(EmailingCampaign $campaign, string $campaignId): bool
@@ -279,9 +337,16 @@ class Brevo implements BrevoInterface
     protected function buildCampaignPayload(EmailingCampaign $campaign, string $htmlContent): array
     {
         $organization = $campaign->getProject()->getOrganization();
+        $campaignName = $campaign->getSubject();
+        $dedupKey = $campaign->getBrevoDedupKey();
+        $dedupMarker = $dedupKey ? $this->buildCampaignDedupMarker($dedupKey) : null;
+
+        if ($dedupMarker) {
+            $campaignName = sprintf('%s [%s]', $campaignName, $dedupMarker);
+        }
 
         $payload = [
-            'name' => $campaign->getSubject(),
+            'name' => $campaignName,
             'subject' => $campaign->getSubject(),
             'sender' => [
                 'name' => $campaign->getFromName() ?: $organization->getName(),
@@ -290,6 +355,10 @@ class Brevo implements BrevoInterface
             'htmlContent' => $htmlContent,
             'replyTo' => $campaign->getReplyToEmail() ?: $campaign->getFullFromEmail(),
         ];
+
+        if ($dedupMarker) {
+            $payload['tag'] = $dedupMarker;
+        }
 
         if ($campaign->getPreview()) {
             $payload['previewText'] = $campaign->getPreview();
@@ -692,5 +761,30 @@ class Brevo implements BrevoInterface
         ]);
 
         $this->clock->sleep($waitSeconds);
+    }
+
+    private function buildCampaignDedupMarker(string $dedupKey): string
+    {
+        return 'oa-dedup-'.trim($dedupKey);
+    }
+
+    private function campaignMatchesDedupMarker(array $campaign, string $dedupMarker): bool
+    {
+        $name = trim((string) ($campaign['name'] ?? ''));
+        if ('' !== $name && str_contains($name, $dedupMarker)) {
+            return true;
+        }
+
+        $tag = trim((string) ($campaign['tag'] ?? ''));
+        if ($dedupMarker === $tag) {
+            return true;
+        }
+
+        $tags = $campaign['tags'] ?? null;
+        if (!is_array($tags)) {
+            return false;
+        }
+
+        return in_array($dedupMarker, array_map(static fn ($value): string => trim((string) $value), $tags), true);
     }
 }

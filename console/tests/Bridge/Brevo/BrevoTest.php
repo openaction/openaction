@@ -50,6 +50,17 @@ class BrevoTest extends TestCase
         $this->assertSame('Campaign preview', $payload['previewText']);
     }
 
+    public function testBuildCampaignPayloadIncludesDedupMarkerWhenAvailable(): void
+    {
+        $campaign = $this->createCampaignMock(emailThrottlingPerHour: null, brevoDedupKey: 'dedup-123');
+        $bridge = $this->createBridge(new MockHttpClient([]));
+
+        $payload = $bridge->exposeBuildCampaignPayload($campaign, '<p>Hello</p>');
+
+        $this->assertSame('Campaign Subject [oa-dedup-dedup-123]', $payload['name']);
+        $this->assertSame('oa-dedup-dedup-123', $payload['tag']);
+    }
+
     public function testBuildContactAttributesNormalizesBackedEnumsAndSkipsEmptyValues(): void
     {
         $bridge = $this->createBridge(new MockHttpClient([]));
@@ -596,7 +607,7 @@ class BrevoTest extends TestCase
         return $decoded;
     }
 
-    private function createCampaignMock(?int $emailThrottlingPerHour): EmailingCampaign
+    private function createCampaignMock(?int $emailThrottlingPerHour, ?string $brevoDedupKey = null): EmailingCampaign
     {
         $organization = $this->createMock(Organization::class);
         $organization->method('getName')->willReturn('OpenAction');
@@ -615,6 +626,7 @@ class BrevoTest extends TestCase
         $campaign->method('getReplyToEmail')->willReturn(null);
         $campaign->method('getFullFromEmail')->willReturn('reply@example.test');
         $campaign->method('getPreview')->willReturn('Campaign preview');
+        $campaign->method('getBrevoDedupKey')->willReturn($brevoDedupKey);
 
         return $campaign;
     }

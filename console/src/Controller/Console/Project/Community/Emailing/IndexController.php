@@ -50,7 +50,7 @@ class IndexController extends AbstractController
             'project' => $project,
             'current_page' => $currentPage,
             'campaigns_drafts' => $this->repository->findAllDrafts($project),
-            'campaigns_sent' => $this->repository->findAllSentPaginator($project, $currentPage),
+            'campaigns_sent' => $this->repository->findAllSentForConsolePaginator($project, $currentPage),
             'items_per_page' => 10,
         ]);
     }
@@ -120,11 +120,7 @@ class IndexController extends AbstractController
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessSameProject($campaign);
-
-        // Already sent campaigns can't be edited anymore
-        if ($campaign->getSentAt()) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyUnlessCampaignMutable($campaign);
 
         $metadata = EmailingCampaignMetaData::createFromCampaign($campaign);
 
@@ -175,10 +171,7 @@ class IndexController extends AbstractController
     #[Route('/{uuid}/content/update', name: 'console_community_emailing_content_update', methods: ['POST'])]
     public function updateContent(EmailingCampaign $campaign, Request $request)
     {
-        // Already sent campaigns can't be edited anymore
-        if ($campaign->getSentAt()) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyUnlessCampaignMutable($campaign);
 
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_MANAGE_DRAFTS, $this->getProject());
         $this->denyUnlessValidCsrf($request);
@@ -203,10 +196,7 @@ class IndexController extends AbstractController
     #[Route('/{uuid}/content/upload', name: 'console_community_emailing_content_upload_images', methods: ['POST'])]
     public function uploadImage(CdnUploader $uploader, CdnRouter $router, EmailingCampaign $campaign, Request $request)
     {
-        // Already sent campaigns can't be edited anymore
-        if ($campaign->getSentAt()) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyUnlessCampaignMutable($campaign);
 
         $this->denyAccessUnlessGranted(Permissions::COMMUNITY_EMAIL_MANAGE_DRAFTS, $this->getProject());
         $this->denyIfSubscriptionExpired();
@@ -236,6 +226,7 @@ class IndexController extends AbstractController
         $this->denyIfSubscriptionExpired();
         $this->denyUnlessValidCsrf($request);
         $this->denyUnlessSameProject($campaign);
+        $this->denyUnlessCampaignMutable($campaign);
 
         $this->em->remove($campaign);
         $this->em->flush();
@@ -245,5 +236,12 @@ class IndexController extends AbstractController
         }
 
         return $this->redirectToRoute('console_community_emailing', ['projectUuid' => $this->getProject()->getUuid()]);
+    }
+
+    private function denyUnlessCampaignMutable(EmailingCampaign $campaign): void
+    {
+        if (!$campaign->isMutableDraftState()) {
+            throw $this->createAccessDeniedException();
+        }
     }
 }

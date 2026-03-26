@@ -174,13 +174,20 @@
 
                     <tbody>
                     {% for sent in campaigns_sent %}
-                        <tr id="campaign-{{ sent.uuid }}">
+                        {% set isSendingBrevoCampaign = sent.sentAt is null and sent.isBrevoSendSendingState %}
+
+                        <tr id="campaign-{{ sent.uuid }}" data-brevo-send-state="{{ sent.brevoSendState }}">
                             <td>
                                 <div class="font-weight-bold">
                                     {{ sent.subject }}
                                 </div>
                                 <div class="text-muted">
-                                    {{ sent.sentAt|format_datetime('medium', 'short') }}
+                                    {% if isSendingBrevoCampaign %}
+                                        <i class="fal fa-spinner fa-spin mr-1"></i>
+                                        {{ 'index.sent.sending'|trans({}, 'project_emailings') }}
+                                    {% else %}
+                                        {{ sent.sentAt|format_datetime('medium', 'short') }}
+                                    {% endif %}
                                 </div>
                                 <div class="text-muted">
                                     {% set to = 'to' %}
@@ -206,10 +213,12 @@
                             </td>
                             {% if is_granted('community_emailing_stats', current_project) %}
                                 <td class="world-table-stats text-muted"
-                                    data-controller="emailing--stats"
-                                    data-sent-at="{{ sent.sentAt|date('Y-m-d\\TH:i:sP') }}"
-                                    data-url="{{ path('console_community_emailing_stats', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
-                                    data-link="{{ current_organization.emailProvider not in ['mailchimp', 'brevo'] ? path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}">
+                                    {% if not isSendingBrevoCampaign %}
+                                        data-controller="emailing--stats"
+                                        data-sent-at="{{ sent.sentAt|date('Y-m-d\\TH:i:sP') }}"
+                                        data-url="{{ path('console_community_emailing_stats', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                        data-link="{{ current_organization.emailProvider not in ['mailchimp', 'brevo'] ? path('console_community_emailing_stats_report', {'projectUuid': project.uuid, 'uuid': sent.uuid}) }}"
+                                    {% endif %}>
                                 </td>
                             {% endif %}
                             <td class="world-table-actions-documents text-muted">
