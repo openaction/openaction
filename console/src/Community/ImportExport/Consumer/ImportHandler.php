@@ -248,29 +248,35 @@ final class ImportHandler
          */
         $this->jobRepository->setJobStep($jobId, step: 6, payload: ['status' => 'inserting_tags']);
 
-        $tags = [];
+        $tagSelectQueries = [];
 
         if (isset($columnsMapping['metadataTag'])) {
-            $tags = array_merge(array_column(
-                $db->executeQuery('SELECT DISTINCT metadatatag AS tag FROM '.$tableName)
-                    ->fetchAllAssociative(),
-                'tag',
-            ));
+            $tagSelectQueries[] = 'SELECT '.$this->getTagTokenSelectExpression('metadatatag').' AS tag FROM '.$tableName;
         }
 
         if (isset($columnsMapping['metadataTagsList'])) {
-            $tags = array_merge(array_column(
-                $db->executeQuery('SELECT DISTINCT regexp_split_to_table(metadatatagslist, \',\') AS tag FROM '.$tableName)
-                    ->fetchAllAssociative(),
+            $tagSelectQueries[] = 'SELECT '.$this->getTagTokenSelectExpression('regexp_split_to_table(metadatatagslist, \',\')').' AS tag FROM '.$tableName;
+        }
+
+        $tags = [];
+        if ($tagSelectQueries) {
+            $tags = array_column(
+                $db->executeQuery('
+                    SELECT DISTINCT tag
+                    FROM (
+                        '.implode(' UNION ALL ', $tagSelectQueries).'
+                    ) i
+                    WHERE tag IS NOT NULL
+                ')->fetchAllAssociative(),
                 'tag',
-            ));
+            );
         }
 
         if ($tags) {
             $values = [];
 
             foreach ($tags as $tag) {
-                if (!trim($tag) || !($slug = $this->slugger->slug($tag)->lower()->toString())) {
+                if (!($slug = $this->slugger->slug($tag)->lower()->toString())) {
                     continue;
                 }
 
@@ -300,32 +306,32 @@ final class ImportHandler
          */
         $this->jobRepository->setJobStep($jobId, step: 7, payload: ['status' => 'linking_tags']);
 
+        $tagLinkQueries = [];
+
         if (isset($columnsMapping['metadataTag'])) {
-            $db->executeStatement('
-                INSERT INTO community_contacts_tags (tag_id, contact_id) 
-                SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
-                FROM (
-                    SELECT uuid, metadatatag AS tag
-                    FROM '.$tableName.'
-                ) i
-                LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
-                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.uuid = i.uuid
-                WHERE t.id IS NOT NULL AND c.id IS NOT NULL
-                ON CONFLICT DO NOTHING
-            ');
+            $tagLinkQueries[] = '
+                SELECT '.$this->getEmailSelectExpression('i').' AS contact_key, '.$this->getTagTokenSelectExpression('i.metadatatag').' AS tag
+                FROM '.$tableName.' i
+            ';
         }
 
         if (isset($columnsMapping['metadataTagsList'])) {
+            $tagLinkQueries[] = '
+                SELECT '.$this->getEmailSelectExpression('i').' AS contact_key, '.$this->getTagTokenSelectExpression('regexp_split_to_table(i.metadatatagslist, \',\')').' AS tag
+                FROM '.$tableName.' i
+            ';
+        }
+
+        if ($tagLinkQueries) {
             $db->executeStatement('
-                INSERT INTO community_contacts_tags (tag_id, contact_id) 
+                INSERT INTO community_contacts_tags (tag_id, contact_id)
                 SELECT DISTINCT t.id AS tag_id, c.id AS contact_id
                 FROM (
-                    SELECT uuid, regexp_split_to_table(metadatatagslist, \',\') AS tag
-                    FROM '.$tableName.'
+                    '.implode(' UNION ALL ', $tagLinkQueries).'
                 ) i
                 LEFT JOIN community_tags t ON t.organization_id = '.$organization->getId().' AND t.name = i.tag
-                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND c.uuid = i.uuid
-                WHERE t.id IS NOT NULL AND c.id IS NOT NULL
+                LEFT JOIN community_contacts c ON c.organization_id = '.$organization->getId().' AND '.$this->getEmailSelectExpression('c').' = i.contact_key
+                WHERE i.tag IS NOT NULL AND t.id IS NOT NULL AND c.id IS NOT NULL
                 ON CONFLICT DO NOTHING
             ');
         }
@@ -582,8 +588,15 @@ final class ImportHandler
         return $mapping;
     }
 
-    private function getEmailSelectExpression(): string
+    private function getTagTokenSelectExpression(string $source): string
     {
-        return 'LOWER(COALESCE(NULLIF(email, \'\'), uuid::text || \''.Contact::NO_EMAIL_SUFFIX.'\'))';
+        return 'NULLIF(BTRIM('.$source.'), \'\')';
+    }
+
+    private function getEmailSelectExpression(?string $tableAlias = null): string
+    {
+        $prefix = $tableAlias ? $tableAlias.'.' : '';
+
+        return 'LOWER(COALESCE(NULLIF('.$prefix.'email, \'\'), '.$prefix.'uuid::text || \''.Contact::NO_EMAIL_SUFFIX.'\'))';
     }
 }
