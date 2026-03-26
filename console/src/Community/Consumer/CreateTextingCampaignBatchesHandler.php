@@ -3,6 +3,7 @@
 namespace App\Community\Consumer;
 
 use App\Bridge\Twilio\Model\Recipient;
+use App\Community\MergeTag\ContactMergeTags;
 use App\Community\TextingMessageFactory;
 use App\Repository\Community\TextingCampaignMessageRepository;
 use App\Repository\Community\TextingCampaignRepository;
@@ -52,7 +53,7 @@ final class CreateTextingCampaignBatchesHandler implements MessageHandlerInterfa
         foreach ($batches as $batch) {
             $recipients = [];
             foreach ($batch as $textMessage) {
-                $recipients[] = new Recipient($textMessage['parsedContactPhone'], $textMessage['id'], [
+                $recipients[] = new Recipient($textMessage['parsedContactPhone'], $textMessage['id'], ContactMergeTags::withLegacyAliases([
                     '-contact-id-' => Uid::toBase62(Uuid::fromString($textMessage['uuid'])),
                     '-contact-email-' => $textMessage['email'],
                     '-contact-phone-' => PhoneNumber::format($textMessage['parsedContactPhone']),
@@ -69,7 +70,7 @@ final class CreateTextingCampaignBatchesHandler implements MessageHandlerInterfa
                     '-contact-zipcode-' => $textMessage['addressZipCode'],
                     '-contact-city-' => $textMessage['addressCity'],
                     '-contact-country-' => $textMessage['addressCountry'],
-                ]);
+                ]));
             }
 
             $this->bus->dispatch($this->messageFactory->createMessage($campaign, $recipients));

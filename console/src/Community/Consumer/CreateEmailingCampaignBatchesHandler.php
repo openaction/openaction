@@ -3,6 +3,7 @@
 namespace App\Community\Consumer;
 
 use App\Bridge\Sendgrid\Model\Recipient;
+use App\Community\MergeTag\ContactMergeTags;
 use App\Community\PostmarkMailFactory;
 use App\Community\Scheduler\EmailingScheduler;
 use App\Community\SendgridMailFactory;
@@ -61,7 +62,7 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
                     continue;
                 }
 
-                $recipients[] = new Recipient($mailMessage['email'], $mailMessage['id'], [
+                $recipients[] = new Recipient($mailMessage['email'], $mailMessage['id'], ContactMergeTags::withLegacyAliases([
                     '-contact-id-' => Uid::toBase62(Uuid::fromString($mailMessage['uuid'])),
                     '-contact-email-' => $mailMessage['email'],
                     '-contact-phone-' => PhoneNumber::format($mailMessage['parsedContactPhone']),
@@ -78,7 +79,7 @@ final class CreateEmailingCampaignBatchesHandler implements MessageHandlerInterf
                     '-contact-zipcode-' => $mailMessage['addressZipCode'],
                     '-contact-city-' => $mailMessage['addressCity'],
                     '-contact-country-' => $mailMessage['addressCountry'],
-                ]);
+                ]));
             }
 
             if ('postmark' === $organization->getEmailProvider()) {

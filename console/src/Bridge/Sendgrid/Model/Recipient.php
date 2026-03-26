@@ -2,6 +2,7 @@
 
 namespace App\Bridge\Sendgrid\Model;
 
+use App\Community\MergeTag\ContactMergeTags;
 use App\Entity\Community\Contact;
 use App\Util\PhoneNumber;
 use App\Util\Uid;
@@ -28,7 +29,7 @@ class Recipient
 
     public static function createFromContact(Contact $contact, ?string $messageId = null, array $additionalVariables = []): self
     {
-        return new self($contact->getEmail() ?: '', $messageId, [
+        $vars = ContactMergeTags::withLegacyAliases([
             '-contact-id-' => Uid::toBase62($contact->getUuid()),
             '-contact-email-' => $contact->getEmail() ?: '',
             '-contact-phone-' => PhoneNumber::format($contact->getParsedContactPhone()),
@@ -46,6 +47,10 @@ class Recipient
             '-contact-city-' => $contact->getAddressCity(),
             '-contact-country-' => $contact->getAddressCountry()?->getCode(),
         ]);
+
+        $vars = ContactMergeTags::withLegacyAliases(array_merge($vars, $additionalVariables));
+
+        return new self($contact->getEmail() ?: '', $messageId, $vars);
     }
 
     public function getEmail(): string

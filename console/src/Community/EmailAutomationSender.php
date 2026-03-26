@@ -12,10 +12,13 @@ use App\Repository\Community\EmailAutomationMessageRepository;
 use App\Repository\OrganizationRepository;
 use App\Util\Uid;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 readonly class EmailAutomationSender
 {
+    private const UNRESOLVED_TOKEN_PATTERN = '/-[a-z][a-z0-9]*(?:-[a-z0-9]+)*-/i';
+
     public function __construct(
         private EntityManagerInterface $em,
         private OrganizationRepository $organizationRepository,
@@ -23,6 +26,7 @@ readonly class EmailAutomationSender
         private BrevoInterface $brevo,
         private EmailAutomationMessageRepository $messageRepository,
         private MessageBusInterface $bus,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -60,13 +64,27 @@ readonly class EmailAutomationSender
                     $customVariables = array_merge($customVariables, $additionalVariables);
                 }
 
+                $htmlContent = $this->renderHtmlContent(
+                    $this->messageFactory->createAutomationBody($automation),
+                    $this->normalizeSubstitutions($customVariables),
+                );
+                $unresolvedTokens = $this->extractUnresolvedTokens($htmlContent);
+                if ($unresolvedTokens) {
+                    $this->logger->warning('Brevo transactional email contains unresolved merge tokens after rendering', [
+                        'automation_id' => $automation->getId(),
+                        'automation_uuid' => $automation->getUuid()->toRfc4122(),
+                        'to_email' => $recipient->getEmail(),
+                        'tokens' => $unresolvedTokens,
+                    ]);
+                }
+
                 $this->brevo->sendTransactionalEmail(
                     apiKey: (string) $organization->getBrevoApiKey(),
                     fromEmail: (string) $organization->getBrevoSenderEmail(),
                     fromName: $organization->getName(),
                     toEmail: $recipient->getEmail(),
                     subject: $automation->getSubject(),
-                    htmlContent: $this->messageFactory->createAutomationBody($automation),
+                    htmlContent: $htmlContent,
                     replyToEmail: $automation->getReplyToEmail(),
                     replyToName: $automation->getReplyToName(),
                     customVariables: $customVariables,
@@ -90,5 +108,71 @@ readonly class EmailAutomationSender
         return 'brevo' === $organization->getEmailProvider()
             && (bool) $organization->getBrevoApiKey()
             && (bool) $organization->getBrevoSenderEmail();
+    }
+
+    /**
+     * @param array<string, mixed> $substitutions
+     *
+     * @return array<string, string>
+     */
+    private function normalizeSubstitutions(array $substitutions): array
+    {
+        $normalized = [];
+
+        foreach ($substitutions as $key => $value) {
+            if (!\is_string($key)) {
+                continue;
+            }
+
+            $key = trim($key);
+            if ('' === $key) {
+                continue;
+            }
+
+            $normalized[$key] = $this->normalizeSubstitutionValue($value);
+        }
+
+        return $normalized;
+    }
+
+    private function normalizeSubstitutionValue(mixed $value): string
+    {
+        if (null === $value) {
+            return '';
+        }
+
+        if (\is_scalar($value) || $value instanceof \Stringable) {
+            return (string) $value;
+        }
+
+        try {
+            return (string) json_encode($value, \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return '';
+        }
+    }
+
+    /**
+     * @param array<string, string> $substitutions
+     */
+    private function renderHtmlContent(string $content, array $substitutions): string
+    {
+        if (!$substitutions) {
+            return $content;
+        }
+
+        return strtr($content, $substitutions);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function extractUnresolvedTokens(string $content): array
+    {
+        if (!preg_match_all(self::UNRESOLVED_TOKEN_PATTERN, $content, $matches)) {
+            return [];
+        }
+
+        return array_values(array_unique($matches[0]));
     }
 }

@@ -50,5 +50,19 @@ class CreateTextingCampaignBatchesHandlerTest extends KernelTestCase
             ['+33757591557'],
             array_map(static fn (Personalization $p) => $p->getTo(), $textMessage->getPersonalizations())
         );
+
+        $variables = $textMessage->getPersonalizations()[0]->getVariables();
+        $this->assertArrayHasKey('-contact-formal-title-', $variables);
+        $this->assertArrayHasKey('-contact-formaltitle-', $variables);
+        $this->assertSame($variables['-contact-formal-title-'], $variables['-contact-formaltitle-']);
+        $this->assertArrayHasKey('-contact-job-title-', $variables);
+        $this->assertArrayHasKey('-contact-jobtitle-', $variables);
+        $this->assertSame($variables['-contact-job-title-'], $variables['-contact-jobtitle-']);
+        $this->assertArrayHasKey('-contact-streetline-1-', $variables);
+        $this->assertArrayHasKey('-contact-streetline1-', $variables);
+        $this->assertSame($variables['-contact-streetline-1-'], $variables['-contact-streetline1-']);
+        $this->assertArrayHasKey('-contact-streetline-2-', $variables);
+        $this->assertArrayHasKey('-contact-streetline2-', $variables);
+        $this->assertSame($variables['-contact-streetline-2-'], $variables['-contact-streetline2-']);
     }
 }
